@@ -1,0 +1,26 @@
+.g-page {
+  position: relative;
+
+  overflow-x: hidden;
+  font: 400 16px $font__family;
+
+  background: #fff;
+
+  // mods
+  &_bg:after {
+    content: "";
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+
+    width: 100%;
+    height: 100vh;
+
+    background-image: url('../img/pattern-big.jpg');
+    background-size: cover;
+  }
+
+}
+

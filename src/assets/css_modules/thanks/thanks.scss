@@ -1,0 +1,17 @@
+.thanks {
+  &__body {
+    text-align: center;
+    padding: 50px 0 70px 0;
+    background-color: #399;
+  }
+  &__title {
+    margin-bottom: 90px;
+    font-size: 2.5em;
+    color: #fff;
+  }
+  &__btn {
+    font-size: 3.125em;
+    color: #fff;
+    cursor: pointer;
+  }
+}

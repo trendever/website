@@ -1,0 +1,38 @@
+.why{
+	color: #808080;
+	&__content{
+		padding: 0 0 0 64px;
+	}
+	&__title{
+		margin-bottom: 40px;
+		font-size: 3.625em;
+		&__inner{
+			color: #125688;
+		}
+	}
+	&__inner{
+		position: relative;
+		&__text{
+			position: absolute;
+			top: -30px;
+			left: 33%;
+			font-size: 3.625em;
+			&__item{
+				&_position{
+					&_one{
+						
+					}
+					&_two{
+						margin-left: 50px;
+					}
+					&_three{
+						margin-left: 105px;
+					}
+					&_four{
+						margin-left: 196px;
+					}
+				}
+			}
+		}
+	}
+}

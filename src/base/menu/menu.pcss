@@ -1,0 +1,73 @@
+@import "base/vars/vars.pcss";
+
+.menu-cnt {
+  .menu {
+    position: fixed * 0 0 0;
+    z-index: 10;
+
+    overflow-y: auto;
+
+    max-height: 700px;
+
+    &_i {
+      display: block;
+
+      padding: 32px 0 27px;
+
+      cursor: default;
+      text-align: center;
+
+      border-bottom: 1px solid #bfbfbf;
+      background: white;
+
+      &_t {
+        color: #595959;
+
+        font-size: 36px;
+
+        &.__txt-white {
+          color: white;
+        }
+        &.__txt-green {
+          color: $color__green;
+        }
+        &.__txt-red {
+          color: $color__red;
+        }
+      }
+      // Mods
+      &:hover {
+        background: #f0f0f0;
+      }
+      &.__bg-green {
+        background: #61A96F;
+
+        &:hover {
+          background: color(#61A96F shade(7%));
+        }
+      }
+      &.__bg-blue {
+        background: #5E8BCE;
+
+        &:hover {
+          background: color(#5E8BCE shade(7%));
+        }
+      }
+      &.__bg-orange {
+        background: #FBD150;
+
+        &:hover {
+          background: color(#FBD150 shade(7%));
+        }
+      }
+      &.__bg-red {
+        background: #EF3758;
+
+        &:hover {
+          background: color(#EF3758 shade(7%));
+        }
+      }
+
+    }
+  }
+}

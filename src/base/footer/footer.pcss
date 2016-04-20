@@ -1,0 +1,39 @@
+@import "base/vars/vars.pcss";
+
+.footer {
+  &__content {
+    &__links {
+      display: flex;
+
+      width: 75%;
+      margin: 0 auto;
+
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    &__link {
+      margin-right: 30px;
+      margin-bottom: 20px;
+      margin-left: 30px;
+
+      text-align: left;
+
+      color: $color__gray;
+
+      font-size: $font__big;
+
+      &:hover {
+        color: color($color__gray shade(50%));
+      }
+    }
+    &__copyright {
+      padding: 60px 0 50px;
+
+      text-align: center;
+
+      color: $color__gray;
+
+      font-size: $font__big;
+    }
+  }
+}

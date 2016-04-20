@@ -1,0 +1,224 @@
+@import "base/vars/vars.pcss";
+
+.signup {
+  padding: 50px 30px 0 30px;
+  padding-top: 120px;
+
+  color: #FFF;
+  background-color: #12302d;
+
+  font-size: 24px;
+  line-height: 1.2;
+
+  @media(--mobile) {
+    padding: 50px 30px 0 30px;
+
+    font-size: 36px;
+  }
+  .input__clear-btn {
+    right: 0;
+
+    height: 48px;
+
+    i {
+      font-size: 1rem;
+
+      @media (--mobile) {
+        font-size: 2rem;
+      }
+    }
+  }
+  .input input {
+    height: 3rem;
+
+    font-size: 24px;
+
+    @media(--mobile) {
+      height: 4rem;
+
+      font-size: 36px;
+    }
+  }
+  h1 {
+    margin-bottom: 60px;
+
+    text-align: left;
+
+    /*margin-bottom: 50px;*/
+    font-size: 40px;
+
+    @media(--mobile) {
+      margin-bottom: 0;
+
+      text-align: center;
+
+      font-size: 54px;
+    }
+  }
+  .section {
+    position: absolute;
+    top: 50%; right: 0;
+    left: 0;
+
+    transform: translateY(-50%);
+
+     @media(--mobile) {
+      position: static;
+
+      transform: none;
+     }
+  }
+  &.confirm h1 {
+    text-align: center;
+  }
+  .bottom-container {
+    position: static; right: 0; bottom: 0;
+    left: 0;
+
+    width: 520px;
+    padding: 20px 0;
+    padding-top: 0;
+
+    text-align: center;
+
+    @media(--mobile) {
+      float: none;
+
+      width: 100%;
+      margin-right: 0;
+      padding: 20px 0;
+    }
+    @media(--mobile) { position: absolute; }
+  }
+  &.confirm .bottom-container {
+    padding-top: 60px;
+    padding-bottom: 0;
+
+    @media(--mobile) {
+      padding-bottom: 20px;
+    }
+  }
+  .input-container {
+    padding: 20px 50px;
+    padding-top: 0;
+
+    @media(--mobile) {
+      padding: 20px 50px;
+    }
+  }
+  &.confirm .input-container {
+    padding: 0;
+
+    @media(--mobile) { padding: 20px 50px; }
+  }
+  .btn.__orange {
+    margin: 10px 0;
+
+    font-size: 36px;
+  }
+  .error {
+    color: #FFDE1E;
+  }
+  .emoji {
+    width: 40px;
+    height: 40px;
+
+    @media(--mobile) {
+      width: 50px;
+      height: 60px;
+    }
+  }
+  .column-desktop-50 {
+    position: relative;
+
+    width: 45%;
+
+    @media(--mobile) {
+       position: static;
+
+      width: 100%;
+    }
+  }
+  .column-desktop-50.header {
+    padding: 0 50px;
+
+    @media(--mobile) {
+      padding: 0;
+    }
+  }
+  .column-desktop-right {
+    float: right;
+
+    width: 55%;
+    margin-top: -60px;
+
+    @media(--mobile) { float: none; }
+    @media(--mobile) { margin-top: 0; }
+  }
+  .desktop-text-right {
+    text-align: left;
+
+    @media(--mobile) { text-align: center; }
+
+  }
+  .btn.fast__big__btn {
+    width: 420px;
+    height: 77px;
+    margin: 10px 0;
+
+    font-family: $font__family;
+    font-size: 24px;
+    line-height: 77px;
+
+    @media(--mobile) {
+      width: 490px;
+      height: 118px;
+
+      font-size: 36px;
+      line-height: 118px;
+    }
+  }
+}
+
+.confirm .middle-container {
+  padding-top: 60px;
+
+  text-align: center;
+
+  @media(--mobile) {
+    position: absolute;
+    top: 50%; right: 0; left: 0;
+
+    padding-top: 0;
+
+    transform: translateY(-50%);
+  }
+}
+
+.confirm .confirm-input {
+  text-align: center;
+}
+
+.input.confirm-input {
+  display: inline-block;
+
+  width: 160px;
+
+  @media(--mobile) { width: 240px; }
+}
+
+.input.confirm-input input {
+  margin-bottom: 10px;
+  padding: 0;
+
+  text-align: center;
+  letter-spacing: 10px;
+
+  font-size: 40px;
+
+  @media(--mobile) {
+    margin-bottom: 20px;
+
+    font-size: 56px;
+  }
+}

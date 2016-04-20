@@ -1,0 +1,110 @@
+@import "base/vars/vars.pcss";
+.chat-cnt {}
+
+.chat {}
+
+.chat_messages {
+  padding-top: 20px;
+
+  .bubble {
+    position: relative;
+
+    width: 656px;
+    margin-bottom: 20px;
+
+    border-radius: 12px;
+
+    &:before {
+      position: absolute;
+      z-index: -1;
+      top: 0px;
+
+      height: 20px;
+
+      content: "";
+    }
+    &:after {
+      position: absolute;
+      z-index: -1;
+      top: -12px;
+
+      height: 20px;
+
+      content: "";
+    }
+    &_info {
+      position: absolute * 20px 20px *;
+
+      display: flex;
+
+      &_time {
+        color: #91A6A2;
+
+        font-size: 22px;
+      }
+      &_status {
+        margin-left: 10px;
+
+        color: #91A6A2;
+      }
+    }
+  }
+}
+
+.chat-row {
+  display: flex;
+
+  &.__center {
+    justify-content: center;
+  }
+  &.__right {
+    justify-content: flex-end;
+    .bubble {
+      margin-right: 16px;
+
+      background: #CAE6E1;
+
+      &:before {
+        right: -11px;
+
+        border-right: 12px solid #CAE6E1;
+        border-bottom-right-radius: 20px 30px;
+        background: #CAE6E1;
+      }
+      &:after {
+        right: -13px;
+
+        width: 14px;
+        height: 20px;
+
+        border-bottom-right-radius: 20px 15px;
+        background: white;
+      }
+    }
+  }
+  &.__left {
+    justify-content: flex-start;
+    .bubble {
+      margin-left: 16px;
+
+      background: #f0f0f0;
+
+      &:before {
+        left: -11px;
+
+        border-left: 12px solid #f0f0f0;
+        border-bottom-left-radius: 20px 30px;
+        background: #f0f0f0;
+      }
+      &:after {
+        left: -13px;
+
+        width: 14px;
+        height: 20px;
+
+        border-bottom-left-radius: 20px 15px;
+        background: white;
+      }
+    }
+  }
+}

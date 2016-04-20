@@ -1,0 +1,138 @@
+@import "base/vars/vars.pcss";
+@import "./photo-item.pcss";
+
+.photos {
+  // elements
+  &__ {
+    &list {
+      display: flex;
+
+      padding-bottom: 46px;
+
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    &link {
+      display: inline-block;
+
+      margin: 0 0 3px 0;
+    }
+    &image {
+    }
+    &more-wrap {
+      display: flex;
+
+      margin-bottom: 46px;
+
+      justify-content: center;
+    }
+    &more {
+      position: relative;
+
+      cursor: pointer;
+
+      $btn-size: 110px;
+      size: $btn-size;
+      &__base-ic {
+        position: absolute 0 0 *;
+
+        display: flex;
+
+        transition: $btn-transition;
+
+        color: $color__green;
+
+        justify-content: center;
+        align-items: center;
+        size: $btn-size;
+        span {
+          display: block;
+
+          margin-top: -7px;
+
+          font-size: 34px;
+        }
+      }
+      &__anim-ic {
+        position: absolute 0 0 *;
+
+        display: flex;
+
+        transition: $btn-transition;
+
+        color: $color__green;
+
+        font-size: $btn-size;
+
+        justify-content: center;
+        align-items: center;
+        size: $btn-size;
+        i {
+          size: $btn-size;
+        }
+      }
+      // mods
+      &._active &__anim-ic {
+        animation-name: rotate;
+        animation-duration: 2s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      }
+      &._active:hover &__anim-ic,
+      &._active:hover &__base-ic {
+        color: #595959;
+      }
+    }
+  }
+}
+
+.photos__no-goods {
+  margin-top: 120px;
+
+  text-align: center;
+
+  font-size: 36px;
+}
+
+.main__bottom.__no-goods {
+  margin-top: 20px;
+  margin-bottom: 120px;
+}
+
+.photo__title-row {
+  display: none;
+
+  width: 100%;
+  padding: 20px 0;
+
+  text-align: center;
+
+  border-top: 1px solid #BFBFBF;
+
+  @media(--mobile) { display: block; }
+}
+
+.photo__title-column {
+  display: inline-block;
+
+  width: 50%;
+
+  cursor: pointer;
+
+  color: #BFBFBF;
+
+  font-size: 36px;
+
+  &.active {
+    color: #595959;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

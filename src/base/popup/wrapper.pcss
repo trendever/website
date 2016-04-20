@@ -1,0 +1,172 @@
+@import "base/vars/vars.pcss";
+
+#page_body.popup {
+  margin-bottom: 192px;
+
+  @media(--mobile) {
+    margin-bottom: 30%;
+  }
+}
+
+.popup-wrapper {
+  position: fixed;
+  z-index: 1000;
+  bottom: 0;
+
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 10px;
+
+  text-align: center;
+
+  color: #FFF;
+  background-color: rgba(18, 48, 45, .85);
+
+  font-size: 24px;
+
+  @media(--mobile) {
+    min-height: 30%;
+    padding: 20px 0;
+
+    font-size: 36px;
+  }
+  .emoji {
+    width: 40px;
+    height: 40px;
+
+    @media(--mobile) {
+      width: 50px;
+      height: 60px;
+    }
+  }
+  .column-desktop-50 {
+    width: 50%;
+
+    @media(--mobile) {
+      width: 100%;
+    }
+  }
+  .column-desktop-left {
+    padding-right: 50px;
+
+    text-align: right;
+
+    @media(--mobile) {
+      padding-right: 0;
+
+      text-align: center;
+    }
+  }
+  .column-desktop-right {
+    float: right;
+
+    height: 136px;
+    padding-top: 20px;
+    padding-left: 50px;
+
+    @media(--mobile) {
+      float: none;
+
+      height: 152px;
+      padding-left: 0;
+    }
+  }
+  .desktop-text-right {
+    text-align: left;
+
+    @media(--mobile) {
+      padding-bottom: 20px;
+
+      text-align: center;
+    }
+  }
+}
+
+.btn.fast__big__btn {
+  width: 420px;
+  height: 77px;
+  margin: 10px 0;
+
+  font-family: $font__family;
+  font-size: 24px;
+  line-height: 77px;
+
+  @media(--mobile) {
+    width: 490px;
+    height: 118px;
+
+    font-size: 36px;
+    line-height: 118px;
+  }
+}
+
+.popup .container-left {
+  display: inline-block;
+
+  width: 420px;
+
+  @media(--mobile) {
+    width: 100%;
+  }
+}
+
+.link-container {
+  display: inline-block;
+
+  width: 100%;
+  width: 420px;
+
+  text-align: center;
+
+  @media(--mobile) {
+    width: 490px;
+    height: 55px;
+  }
+}
+
+.link-bottom {
+  display: inline-block;
+
+  height: 34px;
+
+  text-align: center;
+  text-decoration: none;
+
+  opacity: .5;
+  color: #FFF;
+  border-color: white;
+  border-bottom: 1px solid;
+
+  font-size: 24px;
+  line-height: 34px;
+
+  @media(--mobile) {
+    height: 44px;
+
+    line-height: 44px;
+    // height: 54px;
+    // line-height: 54px;
+  }
+  @media(--mobile) {
+    font-size: 36px;
+  }
+}
+
+.popup-wrapper h3 {
+  margin: 0;
+
+  font-size: 40px;
+
+  @media(--mobile) {
+    font-size: 56px;
+  }
+}
+
+.popup-wrapper .fast__btn {
+  display: block;
+
+  margin: 10px 0;
+
+  opacity: .5;
+  color: white;
+}

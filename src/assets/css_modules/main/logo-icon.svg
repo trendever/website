@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="300px" height="300px" viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.4 (17249) - http://www.bohemiancoding.com/sketch -->
+    <title>logo-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="logo-icon" sketch:type="MSLayerGroup">
+            <g id="Group" sketch:type="MSShapeGroup">
+                <circle id="Oval" fill="#EF3758" cx="150" cy="150" r="150"></circle>
+                <circle id="Oval" fill="#FBD150" cx="150" cy="150" r="131.25"></circle>
+                <path d="M150,262.5 C87.966,262.5 37.5,212.032 37.5,150 C37.5,87.968 87.966,37.5 150,37.5 C212.032,37.5 262.5,87.968 262.5,150 C262.5,212.032 212.032,262.5 150,262.5 L150,262.5 Z" id="Shape" fill="#61A96F"></path>
+                <path d="M150,243.75 C98.305,243.75 56.25,201.693 56.25,150 C56.25,98.305 98.305,56.25 150,56.25 C201.693,56.25 243.75,98.305 243.75,150 C243.75,201.693 201.693,243.75 150,243.75 L150,243.75 Z" id="Shape" fill="#5E8BCE"></path>
+                <path d="M150,225 C108.646,225 75,191.354 75,150 C75,108.646 108.646,75 150,75 C191.354,75 225,108.646 225,150 C225,191.354 191.354,225 150,225 L150,225 Z" id="Shape" fill="#EF3758"></path>
+                <path d="M150,206.25 C118.982,206.25 93.75,181.016 93.75,150 C93.75,118.982 118.982,93.75 150,93.75 C181.016,93.75 206.25,118.982 206.25,150 C206.25,181.016 181.016,206.25 150,206.25 L150,206.25 Z" id="Shape" fill="#FBD150"></path>
+                <path d="M150,187.5 C129.323,187.5 112.5,170.677 112.5,150 C112.5,129.323 129.323,112.5 150,112.5 C170.677,112.5 187.5,129.323 187.5,150 C187.5,170.677 170.677,187.5 150,187.5 L150,187.5 Z" id="Shape" fill="#61A96F"></path>
+                <path d="M150,168.75 C139.659,168.75 131.25,160.339 131.25,150 C131.25,139.662 139.659,131.25 150,131.25 C160.339,131.25 168.75,139.662 168.75,150 C168.75,160.339 160.339,168.75 150,168.75 L150,168.75 Z" id="Shape" fill="#5E8BCE"></path>
+            </g>
+        </g>
+    </g>
+</svg>

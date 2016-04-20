@@ -1,0 +1,21 @@
+.free{
+	color: #808080;
+	&__title{
+		margin-bottom: 55px;
+		text-align: center;
+		font-size: 3.375em;
+	}
+	&__text{
+		padding: 0 30px;
+		margin-bottom: 60px;
+
+		font-size: 2em;
+    @media(--mobile) {
+      font-size: 1.5em;
+    }
+
+	}
+	&__img{
+		text-align: center;
+	}
+}

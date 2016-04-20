@@ -1,0 +1,33 @@
+.together{
+	padding: 70px 0;
+	// padding-top: 200px;
+	background-image: url('../img/earth_bgr.jpg');
+	background-size: cover;
+	background-position: center;
+	color: #808080;
+	&__title{
+		text-align: center;
+		font-size: 2em;
+	}
+	&__img{
+		padding: 70px 0;
+		text-align: center;
+	}
+	&__text{
+		text-align: center;
+		font-size: 2em;
+	}
+	&__bottom{
+		text-align: center;
+	}
+	&__link{
+		display: inline-block;
+		margin-top: 60px;
+		font-size: 2.875em;
+	}
+	&__tomain{
+		display: inline-block;
+		margin-top: 60px;
+		font-size: 1.875em;
+	}
+}

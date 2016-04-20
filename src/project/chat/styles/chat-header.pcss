@@ -1,0 +1,42 @@
+@import "base/vars/vars.pcss";
+.chat-header {
+  &_cnt {
+    color: white;
+
+    &_t {
+      font-size: calc(36px / 2);
+
+      @media(--mobile) {
+        font-size: 36px;
+      }
+    }
+    &_info {
+      margin-top: 2px;
+
+      font-size: calc(28px / 2);
+
+      @media(--mobile) {
+        margin-top: 4px;
+
+        font-size: 28px;
+      }
+    }
+  }
+  &_photo {
+    position: absolute 7px 30px 0 *;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    size: calc(70px / 2);
+    img {
+      width: 100%;
+    }
+    @media(--mobile) {
+      top: 16px;
+
+      size: 70px;
+    }
+  }
+}

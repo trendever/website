@@ -1,0 +1,260 @@
+@import "base/vars/vars.pcss";
+
+.repost {
+  position: relative;
+
+  width: 750px;
+  margin: 0 auto;
+
+  color: white;
+  background-color: rgba(51, 153, 153, 1);
+
+  .info__close {
+    i {
+      font-size: 32px;
+    }
+  }
+  .crop {
+    position: relative;
+
+    overflow: hidden;
+
+    width: 100%;
+    height: 226px;
+    margin-bottom: 29px;
+
+    img {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+
+      width: 100%;
+      height: auto;
+
+      transform: translate(-50%, -30%);
+    }
+    .repost_header {
+      position: relative;
+
+      width: 100%;
+      height: 100%;
+
+      background-color: rgba(0, 0, 0, 0.5);
+
+      h1 {
+        position: absolute;
+        bottom: 35px;
+
+        width: 100%;
+
+        text-align: center;
+
+        color: white;
+
+        font-size: 47px;
+      }
+    }
+  }
+  .step {
+    position: relative;
+
+    width: 100%;
+    height: 290px;
+    padding-right: 30px;
+    padding-left: 30px;
+
+    background-color: rgba(51, 153, 153, 1);
+
+    $height: 44px;
+    .title {
+      height: $height;
+      margin-bottom: 27px;
+
+      font-size: 38px;
+      line-height: $height;
+
+      .circle {
+        position: relative;
+
+        float: left;
+
+        width: $height;
+        height: $height;
+        margin-right: 14px;
+
+        border: 1px solid white;
+        border-radius: 50%;
+
+        p {
+          position: absolute;
+          top: 2px;
+
+          display: inline-block;
+
+          width: 100%;
+          padding: 0;
+
+          text-align: center;
+
+          opacity: 1;
+          color: white;
+
+          font-size: 33px;
+        }
+      }
+    }
+    .step_cnt {
+      display: flex;
+
+      align-items: center;
+      .action {
+        .pict {
+          position: relative;
+
+          float: left;
+          overflow: hidden;
+
+          width: 316px;
+          height: 176px;
+          margin-right: 22px;
+        }
+        .tap {
+          position: absolute;
+          top: 90px;
+          left: 145px;
+
+          width: 96px;
+          height: 170px;
+
+          transform: none;
+          pointer-events: none;
+        }
+      }
+      p {
+        user-select: none;
+
+        opacity: 0.8;
+
+        font-size: 33px;
+
+        .emoji {
+          height: 36px;
+        }
+      }
+    }
+  }
+  .step_1 {
+    .circle {
+      span {
+        top: -2px;
+        left: 13px;
+      }
+    }
+    .pict {
+      margin-left: 4px;
+    }
+    img {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+
+      width: 100%;
+      height: auto;
+
+      transform: translate(-50%, -30%);
+    }
+  }
+  .step_2 {
+    .circle {
+      span {
+        top: -3px;
+        left: 9px;
+      }
+    }
+    .pict {
+      padding: 20px;
+
+      text-overflow: ellipsis;
+
+      color: rgb(89, 89, 89);
+      border-radius: 30px;
+      background-color: white;
+
+      font-size: 25px;
+      line-height: 28px;
+
+      span {
+        word-break: break-all;
+      }
+      span.whitespace {
+        margin-right: 0.5em;
+      }
+    }
+    .tail {
+      position: absolute;
+
+      &:before {
+        position: absolute;
+        top: -3px;
+        left: -15px;
+
+        height: 30px;
+
+        content: "";
+        transform: rotate(-5deg);
+
+        border-right: 30px solid white;
+        border-top-right-radius: 80px 60px;
+        background: white;
+      }
+      &:after {
+        position: absolute;
+        top: 0;
+        left: -27px;
+
+        width: 30px;
+        height: 30px;
+
+        content: "";
+        transform: rotate(15deg);
+
+        border-top-right-radius: 51px 50px;
+        background: rgb(51, 153, 153);
+      }
+    }
+  }
+  .footer {
+    position: relative;
+
+    width: 100%;
+    margin-top: -1px;
+
+    text-align: center;
+
+    background-color: rgba(51, 153, 153, 1);
+
+    font-size: 38px;
+  }
+  button {
+    position: relative;
+
+    width: 500px;
+    height: 118px;
+    margin: 0 auto;
+    margin-top: 35px;
+
+    cursor: pointer;
+
+    color: white;
+    border: 1px solid white;
+    border-radius: 58px;
+    background-color: rgba(51, 153, 153, 1);
+
+    font-family: inherit;
+    font-size: 37px;
+
+    i {
+      padding-left: 20px;
+    }
+  }
+}

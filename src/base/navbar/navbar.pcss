@@ -1,0 +1,71 @@
+@import "base/vars/vars.pcss";
+
+
+.navbar-cnt {
+  .navbar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+
+    height: 100%;
+    height: 90px;
+
+    background: white;
+
+    align-items: center;
+    &_i {
+      width: 100%;
+
+      cursor: pointer;
+      text-align: center;
+
+      &_wrap {
+        position: relative;
+
+        display: inline-block;
+
+        &_ic {
+          width: 38px;
+          height: 38px;
+          margin-top: 2px;
+        }
+        &_t {
+          padding-top: 6px;
+
+          color: #b2b2b2;
+
+          .navbar_i.__active & {
+            color: #399;
+          }
+        }
+        &_notify {
+          position: absolute;
+          top: -6px;
+          right: 0px;
+
+          display: flex;
+
+          min-width: 30px;
+          min-height: 30px;
+
+          border-radius: 15px;
+          background: #399;
+
+          align-items: center;
+          justify-content: center;
+          span {
+            margin-top: 2px;
+
+            color: white;
+          }
+        }
+      }
+      &.__active {
+        cursor: default;
+      }
+    }
+  }
+}
