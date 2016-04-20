@@ -5,286 +5,311 @@
     @click.stop.prevent="missClick",
     @touchmove="missClick",
     :class="{'fix-on-top': fixOnTop}")
+
     .search-input
       .search-input__container
         .search-input__search-btn(
-          @click="onSearch")
+          @click="onSearch()")
           i.ic-search.__mirror
+
         input.search-input__input(
           v-el:input,
-          @keyup="onSearch | debounce 500",
+          @keyup="onSearch() | debounce 500",
           v-model='search',
           @click="onFocusInput",
           type='text',
           placeholder='Ищите или фильтруйте...')
+
         .search-input__clear-btn
           span.badge(v-if="tag_list_selected.length")
             | {{ tag_list_selected.length }}
           span.close(
           v-show="search.length || tag_list_selected.length",
           @click="onClear"): i.ic-close
+
     .search-tags(
       v-if="showTags",
       :class="{'__open': openTags}")
       ul.search-tags__container(v-el:tags)
+
         li.search-tags__item__selected(
-          v-for="tag in tag_list_selected | filterBy search in 'Name'",
+          v-for="tag in tag_list_selected | filterBy search in 'name'",
           @click="removeTag(tag, $index)",
           @touch="removeTag(tag, $index)")
-          span {{ tag.Name }}&nbsp;
+          span {{ tag.name }}&nbsp;
           i.ic-close
+
         li.search-tags__item.tag_list(
-          v-for="tag in tag_list | filterBy search in 'Name'",
-          @click="selectTag(tag)") {{ tag.Name }}
-        li.search-tags__item.tag_list_tovar(
-          v-for="tag in tag_list_tovar | filterBy search in 'Name'",
-          @click="selectTagTovar(tag)") {{ tag.Name }}
+          v-for="tag in tag_list | filterBy search in 'name'",
+          @click="selectTag(tag)") {{ tag.name }}
+
+        li.search-tags__item.tag_list_tolet(
+          v-for="tag in tag_list_tolet | filterBy search in 'name'",
+          @click="selectTagTolet(tag)") {{ tag.name }}
+
       .search-tags__button(
         v-if="showMoreButton",
         @click="onOpenTags")
 
 </template>
 
-<script>
+<script type="text/babel">
+  import {products} from '../../vuex/getters'
 
   const CACHE = {
     search: '',
     tag_list: [],
     tag_list_selected: [],
-    tag_list_tovar: [],
+    tag_list_tolet: [],
   };
 
   export default {
     props: [
       { name: 'show_on_elem', default: '' },
     ],
-    data: () => ({
-      search: '',
-      openTags: false,
-      showTags: true,
-      tag_list: [],
-      tag_list_selected: [],
-      tag_list_tovar: [],
-      fixOnTop: false,
-      showMoreButton: false,
-      isMissClick: false,
-    }),
+    
+    data(){
+      return {
+        search: '',
+        openTags: false,
+        showTags: true,
+        tag_list: [],
+        tag_list_selected: [],
+        tag_list_tolet: [],
+        fixOnTop: false,
+        showMoreButton: false,
+        isMissClick: false,
+      }
+    },
+
+    vuex: {
+      getters: {
+        products
+      },
+
+      actions: {
+
+      }
+    },
+    
     created() {
       // get from cache
-      this.$set('search', CACHE.search);
-      this.$set('tag_list', CACHE.tag_list);
-      this.$set('tag_list_selected', CACHE.tag_list_selected);
-      this.$set('tag_list_tovar', CACHE.tag_list_tovar);
+      let {search, tag_list, tag_list_selected, tag_list_tolet} = CACHE;
+      
+      Object.assign(this, {search, tag_list, tag_list_selected, tag_list_tolet});
 
       if (!CACHE.tag_list_selected.length) {
-        var callback = () => this._sort_photos_tags_selected(tag.Name);
+        let callback = () => this._sort_photos_tags_selected(tag.name);
         this.getTags();
       }
       // document.addEventListener('click', this.clickOutService, false);
       // document.addEventListener('touchmove', this.clickOutService, false);
-      // document.addEventListener('scroll', this.OnScroll, false);
+      // document.addEventListener('scroll', this.onScroll, false);
     },
+    
     destroyed() {
       // document.removeEventListener('click', this.clickOutService, false);
       // document.removeEventListener('touchmove', this.clickOutService, false);
-      // document.removeEventListener('scroll', this.OnScroll, false);
+      // document.removeEventListener('scroll', this.onScroll, false);
     },
+
     methods: {
       onOpenTags() {
         this.$els.tags.scrollTop = 0;
-        this.$set('openTags', !this.$get('openTags'));
+        this.openTags = !this.openTags;
       },
+
       onSearch(callback = null, force = false) {
-        var search = this.$get('search');
+        let {search, tag_list_selected: tag_list} = this;
 
-        var isTagsEmpty = !(this.tag_list_selected && this.tag_list_selected.length);
-        var isSearchEmpty = !search && (search.length < 1);
+        if (force || tag_list.length || search.trim().length) {
+          // scroll to
+          document.getElementById('tags').scrollIntoView();
 
-        if ( !force && isTagsEmpty && isSearchEmpty ) {
-          return;
+          const delay = this.tag_list_selected.length === 1 ? 600 : 0;
+
+          setTimeout(() => {
+            this.$root.$broadcast('search', {search, tag_list, callback});
+          }, delay);
+
+          callback(); // todo: remove after debug
         }
-        // if space
-        if (search.trim() !== search && !force) { return; }
-
-        // scroll to
-        document.getElementById('tags').scrollIntoView();
-
-        var onTimeOut = this.tag_list_selected.length === 1 ? 600 : 0;
-        setTimeout( () => {
-          this.$root.$broadcast('search', {
-            search, callback,
-            tag_list: this.$get('tag_list_selected')
-          });
-        }, onTimeOut);
       },
+
       onClear() {
-        this.$set('search', '');
-        this.$set('tag_list_selected', []);
-        this.$set('openTags', false);
+        Object.assign(this, {
+          search: '',
+          tag_list_selected: [],
+          openTags: false
+        });
+
         this.getTags();
         this.onSearch(null, true);
       },
+
       onFocusInput() {
-        this.$set('openTags', false);
-        this.$set('showTags', true);
+        this.openTags = false;
+        this.showTags = true;
       },
+
       _sort_photos_tags_selected() {
-        var arr = [].concat(this.$get('tag_list'), this.$get('tag_list_selected'));
+        const tags = [].concat(this.tag_list, this.tag_list_selected);
+        const getTagsFromProduct = product => product.items.reduce((tags, item) => tags.concat(item.tags) , []);
+        const getTagsFromProducts = (tags, product) => tags.concat(getTagsFromProduct(product));
+        const sort = (a, b) => {
+          if (a.name < b.name) return -1;
+          if (a.name > b.name) return 1;
+          return 0;
+        };
 
-        var tags = (window.photos || []).map( photo => photo.Tags )
-          .reduce( (tagsList, arr) => tagsList.concat(arr), [] )
-          .sort( (a, b) => {
-            if (a.Name < b.Name) return -1;
-            if (a.Name > b.Name) return 1;
-            return 0;
-          }).filter( (item, pos, arr) => {
-            return !pos || item.Name !== arr[pos - 1].Name
-          }).sort( (a, b) => a.Weight - b.Weight)
-          .filter( ({Name}) => !arr.find( tag => tag.Name === Name ) );
-
-          this.$set('tag_list_tovar', tags || []);
+        this.tag_list_tolet = (this.products || [])
+          .reduce(getTagsFromProducts, [])
+          .sort(sort)
+          .filter( (item, pos, arr) => !pos || item.name !== arr[pos - 1].name)
+          .filter( ({name}) => !tags.find( tag => tag.name === name ) );
       },
+
       selectTag(tag) {
-        var length = this.$get('tag_list_selected').length;
-        var callback = () => this._sort_photos_tags_selected(tag.Name);
+        let length = this.tag_list_selected.length;
 
         // select main tag
         if (length === 0) {
-          this.getTags({id: tag.Id});
+          this.getTags(tag.id);
         }
         // select daughter tag, uniq them and sort by Weight
         if (length === 1) {
-          this.$set('tag_list', []);
+          this.tag_list = [];
         }
 
         this.tag_list_selected.push(tag);
-        this.onSearch(callback, true);
+
+        this.onSearch(() => this._sort_photos_tags_selected(tag.name), true);
 
         // this.$els.input.focus();
-        this.$set('openTags', false);
+        this.openTags = false;
       },
-      selectTagTovar(tag) {
-        var callback = () => this._sort_photos_tags_selected(tag.Name);
 
+      selectTagTolet(tag) {
         this.tag_list_selected.push(tag);
-        this.$set('tag_list', []);
-        this.onSearch(callback, true);
+        this.tag_list = [];
+
+        this.onSearch(() => this._sort_photos_tags_selected(tag.name), true);
 
         // this.$els.input.focus();
-        this.$set('openTags', false);
+        this.openTags = false;
       },
+
       removeTag(tag, $index) {
-        var callback = () => this._sort_photos_tags_selected(tag.Name);
+        let callback = () => this._sort_photos_tags_selected(tag.name);
 
         // remove main tag
         if ($index === 0) {
-          this.$set('tag_list_selected', []);
+          this.tag_list_selected = [];
           this.getTags();
           this.onSearch(callback, true);
         }
 
         // remove daughter tag
         if ($index === 1) {
-          this.$set('tag_list_selected', [this.tag_list_selected[0]]);
-          this.getTags({id: this.tag_list_selected[0].Id});
+          let firstTag = this.tag_list_selected[0];
+
+          this.tag_list_selected = [firstTag];
+          this.getTags(firstTag.id);
           this.onSearch(callback);
         }
 
         if ($index > 1) {
           this.tag_list.push(tag);
           this.tag_list_selected.$remove(tag);
-          var length = this.tag_list_selected.length;
-          var filter = this.tag_list_selected[length - 1].Name;
+          let length = this.tag_list_selected.length;
+          let filter = this.tag_list_selected[length - 1].name;
           this.onSearch( (callback) => this._sort_photos_tags_selected(filter) );
         }
 
-        this.$set('openTags', false);
+        this.openTags = false;
       },
-      getTags(settings = { is_main: true, limit: 40 }) {
 
+      getTags(...tags) {
         window.channel.model.request(
-          'retrieve', 'tag', [], settings, {},
+          'retrieve', 'tag', [], {is_main: !tags.length, limit: 40, tags}, {},
           resp => {
-            let tag_list = resp["response_map"]["object_list"] || [];
-            var length = this.$get('tag_list_selected').length;
-            var filter = length ? this.$get('tag_list_selected')[length - 1].Name : '';
-
-            tag_list = tag_list.filter( ({Name}) => filter !== Name );
-            this.$set('tag_list', tag_list);
-
-            if (resp.log_list[0] && resp.log_list[0].code_key == "200") {
-            } else {
-              this.$set('tag_list', []);
+            if (!(resp.log_list[0] && resp.log_list[0].code_key == "200")) {
+              this.tag_list = [];
               window.topError(resp.log_list[0].code_str, resp.log_list[0].user_msg);
+              return;
             }
+
+            let tag_list = resp.response_map.object_list || [];
+            let length = this.tag_list_selected.length;
+            let lastSelectedTagName = length ? this.tag_list_selected[length - 1].name : '';
+
+            this.tag_list = tag_list.filter(({name}) => lastSelectedTagName !== name);
           }
         )
       },
-      detectHeightTags() {
-        // TODO - need detect this
-        // if (this.openTags) { return; }
 
-        if (this.$els.tags && (this.$els.tags.scrollHeight > this.$els.tags.clientHeight)) {
-          this.$set('showMoreButton', true);
-        } else {
-          this.$set('showMoreButton', false);
-        }
+      detectHeightTags() {
+        this.$nextTick(() => {
+          // TODO - need detect this
+          // if (this.openTags) { return; }
+          this.showMoreButton = !!(this.$els.tags && (this.$els.tags.scrollHeight > this.$els.tags.clientHeight));
+        })
       },
+
       clickOutService() {
-        if (this.$get('isMissClick')) {
-          this.$set('isMissClick', false);
+        if (this.isMissClick) {
+          this.isMissClick = false;
           return;
         }
+
         if (this.fixOnTop) {
-          this.$set('showTags', false);
-        }
-        if (!this.$get('search.length')) {
-          this.$set('fixOnTop', false);
-          this.$set('showTags', true);
-          this.$set('openTags', false)
-        };
-      },
-      OnScroll() {
-        var show_on_elem = this.$get('show_on_elem');
-        var position = window.getXY(show_on_elem)[1];
-
-        // var isNeedVisiblity = (this.lastPosition - position < 0) || this.$get('search.length');
-        var isNeedVisiblity = (window.getXY(show_on_elem)[1] < 0);
-
-        if (isNeedVisiblity) {
-          this.$set('fixOnTop', true);
-          this.$set('showTags', false);
-        } else {
-          this.$set('fixOnTop', false);
-          this.$set('showTags', true);
+          this.showTags = false;
         }
 
-        this.lastPosition = position;
+        if (!this.search.length) {
+          this.fixOnTop = false;
+          this.showTags = true;
+          this.openTags = false;
+        }
       },
+
+      onScroll() {
+        let position = window.getXY(this.show_on_elem)[1];
+        let isNeedVisibility = position < 0;
+
+        this.fixOnTop = isNeedVisibility;
+        this.showTags = !isNeedVisibility;
+      },
+
       missClick() {
-        this.$set('isMissClick', true);
+        this.isMissClick = true;
       },
     },
+
     events: {
       ['drop:search']() {
         this.onClear();
       },
     },
+
     watch: {
       search() {
-        CACHE.search = this.$get('search');
+        CACHE.search = this.search;
       },
+
       tag_list() {
-         CACHE.tag_list = this.$get('tag_list');
-         this.$nextTick(this.detectHeightTags);
+         CACHE.tag_list = this.tag_list;
+         this.detectHeightTags();
       },
+
       tag_list_selected() {
-        CACHE.tag_list_selected = this.$get('tag_list_selected');
-        this.$nextTick(this.detectHeightTags);
+        CACHE.tag_list_selected = this.tag_list_selected;
+        this.detectHeightTags();
       },
-      tag_list_tovar() {
-        CACHE.tag_list_tovar = this.$get('tag_list_tovar');
-        this.$nextTick(this.detectHeightTags);
+
+      tag_list_tolet() {
+        CACHE.tag_list_tolet = this.tag_list_tolet;
+        this.detectHeightTags();
       },
     }
   }
