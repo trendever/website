@@ -189,3 +189,48 @@ export function join(lead_id) {
 
   });
 }
+
+
+/**
+ * Call customer by sms and email (if exists)
+ * @login_required
+ * @param  {number} lead_id
+ */
+export function callCustomer(lead_id) {
+
+  return new Promise( (resolve, reject) => {
+
+    channel.req("call_customer", "chat", { lead_id }).then( data => {
+      resolve(data.response_map.status);
+    }).catch( error => {
+      if (error.log_map.code_key === '403') {
+        reject(ERROR_CODES.UNATHORIZED);
+      } else if (error.log_map.code_key === '400') {
+        reject(ERROR_CODES.NOT_EXISTS);
+      }
+    });
+
+  });
+}
+
+/**
+ * Call supplier by sms and email (if exists)
+ * @login_required
+ * @param  {number} lead_id
+ */
+export function callSupplier(lead_id) {
+
+  return new Promise( (resolve, reject) => {
+
+    channel.req("call_supplier", "chat", { lead_id }).then( data => {
+      resolve(data.response_map.status);
+    }).catch( error => {
+      if (error.log_map.code_key === '403') {
+        reject(ERROR_CODES.UNATHORIZED);
+      } else if (error.log_map.code_key === '400') {
+        reject(ERROR_CODES.NOT_EXISTS);
+      }
+    });
+
+  });
+}

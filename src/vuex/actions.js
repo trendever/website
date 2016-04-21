@@ -272,7 +272,7 @@ export const createChatMsg = ({ dispatch, state }, conversation_id, text, mime_t
   return new Promise((resolve, reject) => {
 
     messages.create(conversation_id, text, mime_type).then( data => {
-      dispatch(types.RECEIVE_CHAT_MSG, data.chat.id, data.messages[0]);
+      // dispatch(types.RECEIVE_CHAT_MSG, data.chat.id, data.messages[0]);
       resolve(data.chat.id, data.messages[0]);
     }).catch( error => {
       reject(error);

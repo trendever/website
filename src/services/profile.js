@@ -1,5 +1,7 @@
 /* globals getCookie, setCookie, removeCookie */
 
+import jwt_decode from 'jwt-decode';
+
 /*
  * WARNING: don't use direct (isn't sync correctly).
  * Use vuex/modules/user instead
@@ -44,6 +46,11 @@ export function getProfile(withoutCache) {
     profile.isAuthorized = false;
   } else {
     profile.isAuthorized = true;
+
+    if (!profile.user) {
+      saveUser({id: jwt_decode(profile.token).UID});
+      profile = getProfile(true);
+    }
   }
 
   Storage.setItem('last_visit_at', (new Date()).getTime());
