@@ -1,20 +1,20 @@
 <template lang="jade">
+div
+  popup-signup(
+    :show="showPopupSignup",
+    v-if="showPopupSignup")
 
-popup-signup(
-  :show="showPopupSignup",
-  v-if="showPopupSignup")
+  popup-fast-signup(
+    :show="showPopupFastSignup",
+    v-if="showPopupFastSignup")
 
-popup-fast-signup(
-  :show="showPopupFastSignup",
-  v-if="showPopupFastSignup")
+  router-view
 
-router-view
-
-notify-component
+  notify-component
 
 </template>
 
-<script>
+<script type="text/babel">
   import store from 'vuex/store';
   import { loadUser } from 'vuex/actions';
   import { isAuth } from 'vuex/getters';

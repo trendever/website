@@ -4,6 +4,7 @@ import * as leads from 'services/leads.js';
 import * as chats from 'services/chat.js';
 import * as messages from 'services/message.js';
 import * as profile from 'services/profile.js';
+import * as tagsService from 'services/tags';
 
 // User
 
@@ -110,6 +111,35 @@ export const enableInfinityProducts = ({ dispatch }) => {
   dispatch(types.ENABLE_INFINITY_PRODUCTS);
 };
 
+// Search
+
+export const setSearchValue = ({dispatch}, value) => {
+  dispatch(types.SET_SEARCH_VALUE, value);
+};
+
+export const loadTags = ({dispatch, state}) => {
+  let tags = state.search.selectedTags.map(tag => tag.id);
+
+  tagsService
+    .find({tags})
+    .then(tags => dispatch('RECEIVE_TAGS', tags));
+};
+
+export const selectTag = (store, tag) => {
+  store.dispatch(types.SELECT_TAG, tag);
+  loadTags(store);
+};
+
+export const removeTag = (store, tag) => {
+  store.dispatch(types.REMOVE_TAG, tag);
+  loadTags(store);
+};
+
+
+export const clearSearch = (store) => {
+  store.dispatch(types.CLEAR_SEARCH);
+  loadTags(store);
+};
 
 // Leads
 

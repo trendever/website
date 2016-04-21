@@ -23,3 +23,10 @@ export const RECEIVE_CHAT_MSG = 'RECEIVE_CHAT_MSG';
 // User
 export const RECEIVE_USER = 'RECEIVE_USER';
 export const USER_AUTHENTICATED = 'USER_AUTHENTICATED';
+
+// Search
+export const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE';
+export const RECEIVE_TAGS = 'RECEIVE_TAGS';
+export const SELECT_TAG = 'SELECT_TAG';
+export const REMOVE_TAG = 'REMOVE_TAG';
+export const CLEAR_SEARCH = 'CLEAR_SEARCH';

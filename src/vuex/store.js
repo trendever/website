@@ -8,6 +8,7 @@ import user from './modules/user';
 import leads from './modules/leads';
 import chat from './modules/chat';
 import products from './modules/products';
+import search from './modules/search';
 
 
 Vue.use(Vuex);
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     chat,
     leads,
     products,
+    search
   },
   strict: config.debug,
   middlewares: config.debug ? [createLogger()] : []

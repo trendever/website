@@ -34,3 +34,8 @@ export const currentChatMember = state => {
 
   return curChat.members.find( obj =>  obj.user_id === state.user.id );
 };
+
+// Search
+export const searchValue = state => state.search.value;
+export const tags = state => state.search.tags;
+export const selectedTags = state => state.search.selectedTags;

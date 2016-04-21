@@ -27,13 +27,15 @@
       href="#") Сбросить поиск
 </template>
 
-<script>
+<script type="text/babel">
     import {
       getPartProducts,
       getMoreProducts,
       enableInfinityProducts,
       } from 'vuex/actions';
     import {
+      searchValue,
+      selectedTags,
       products,
       isWaitReponseProducts,
       isInfinityProducts,
@@ -96,6 +98,8 @@
 
       vuex: {
         getters: {
+          searchValue,
+          selectedTags,
           object_list: products,
           chatNotifyCount,
           isWaitReponseProducts,
@@ -135,7 +139,7 @@
         },
 
         showMore(callback = null, call) {
-          var settings = {
+          let settings = {
             offset: this.$get('need_clear_objects_list') ? 0 : this.$get('object_list.length'),
             limit: LIMIT_TOVAR,
             type: "more"
@@ -146,13 +150,7 @@
             view: `${ this.countColumn }columns`,
           });
 
-          // if (this.$get('search').length) {
-          //   settings.q = this.search;
-          // }
-
-          // if (this.$get('tag_list').length) {
-          //   settings.tags = this.tag_list;
-          // }
+          Object.assign(settings, this.getSearchOptions());
 
           this.getMoreProducts(settings);
         },
@@ -184,6 +182,36 @@
 
           // if (typeof callback === "function") { callback(); }
         // },
+
+        getSearchOptions() {
+          let options = {};
+          let q = this.searchValue.trim();
+          let tags = this.selectedTags.map(tag => tag.id);
+
+          if(q) {
+            Object.assign(options, {q});
+          }
+
+          if(tags) {
+            Object.assign(options, {tags});
+          }
+
+          return options;
+        },
+
+        loadProducts() {
+          this.$nextTick(() => this.getPartProducts(this.getSearchOptions()))
+        }
+      },
+
+      watch: {
+        selectedTags() {
+          this.loadProducts();
+        },
+
+        searchValue() {
+          this.loadProducts();
+        }
       },
 
     //   events: {
