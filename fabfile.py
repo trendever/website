@@ -8,13 +8,10 @@ env.roledefs = {
     'production': ['production@dev.trendever.com'],
 }
 env.shell = "/bin/bash -l -i -c"
+env.forward_agent = True
 
 HOME = "~/"
 PROJECT_PATH = HOME + "trendever_website/"
-BACKEND_PATH = PROJECT_PATH + "backend/"
-PROJECT_SRC = PROJECT_PATH + "backend/src/core/"
-
-APP = PROJECT_PATH + "bin/core"
 
 
 def git_pull():
@@ -24,25 +21,6 @@ def git_pull():
         else:
             run("git pull origin dev")
         print("Git pull: Success")
-
-
-#
-# def droptables():
-#     with cd(BACKEND_PATH):
-#         run("%s droptables" % APP)
-#         print("droptables: Success")
-#
-#
-# def migrate():
-#     with cd(BACKEND_PATH):
-#         run("%s migrate" % APP)
-#         print("migrate: Success")
-#
-#
-def build_backend():
-    with cd(BACKEND_PATH):
-        run("gb build all")
-        print("Building: Success")
 
 
 def install_req():
@@ -55,21 +33,6 @@ def build():
     with cd(PROJECT_PATH):
         run("npm run build")
         print("Build static: Success")
-
-
-def restart_backend():
-    if "production" in env.roles:
-        run("sudo supervisorctl restart production_webserver")
-    else:
-        run("sudo supervisorctl restart dev_webserver")
-    print("Restart supervisor: Success")
-
-
-def update_backend():
-    git_pull()
-    build_backend()
-    restart_backend()
-
 
 def update():
     git_pull()
