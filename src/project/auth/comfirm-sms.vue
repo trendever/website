@@ -31,8 +31,8 @@ div
 </template>
 
 <script type="text/ecmascript-6">
-  import * as auth from '../../services/auth';
-  import * as profile from 'services/profile';
+  import { authenticateUser } from 'vuex/actions';
+  import * as auth from 'services/auth';
 
   const TEXT_HEADER = {
     DEFAULT: 'Введите код из sms',
@@ -54,6 +54,12 @@ div
       this.$dispatch('show:popup:fast-signup', false);
     },
 
+    vuex: {
+      actions: {
+        authenticateUser,
+      }
+    },
+
     computed: {
       isDisabled() {
         return (this.$get('code').length !== 6) && !this.$get('isCompleted');
@@ -73,10 +79,11 @@ div
       },
 
       onButton() {
-        if (this.$get('isCompleted')) {
+        if (this.isCompleted) {
           // go to back
-          this.closePage();
-          this.closePage();
+          // this.closePage();
+          // this.closePage();
+          this.$router.go({name: 'home'});
         } else {
           this.onConfirm();
           setTimeout( () => this.$set('needNewSMS', true), 7000);
@@ -84,9 +91,9 @@ div
       },
 
       onConfirm() {
-        var config = { code: this.$get('code') };
-        auth.confirmPhone(config).then( token => {
-          this.onComplete(token);
+        var config = { code: this.code };
+        auth.confirmByCode(config).then( ({ user, token }) => {
+          this.onComplete(user, token);
         }).catch( error => {
           if (error === auth.ERROR_CODES.WRONG_CREDENTIALS) {
             this.onErrorCode();
@@ -94,9 +101,9 @@ div
         })
       },
 
-      onComplete(token) {
-        profile.setToken(token);
-        this.$set('isCompleted', true);
+      onComplete(user, token) {
+        this.isCompleted = true;
+        this.authenticateUser(user, token);
       },
 
       onErrorCode() {

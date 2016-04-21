@@ -3,7 +3,7 @@
 
 div
   .chat-bar.section__content
-    .chat-bar_menu-btn(@click="menuActive=true")
+    .chat-bar_menu-btn(v-if="isAdmin", @click="menuActive=true")
       i.ic-menu_light
     .chat-bar_input
       textarea(placeholder="Введите сообщение",
@@ -12,16 +12,22 @@ div
     .chat-bar_send-btn(@click="send()")
       i.ic-send
 
-  chat-menu(:menu-active.sync="menuActive")
+  chat-menu(v-if="isAdmin", :menu-active.sync="menuActive")
 
 </template>
 
 <script>
   import {
+    currentLead,
+    currentChatMember,
+  } from 'vuex/getters';
+  import {
     createChatMsg,
+    setLeadStatus,
   } from "vuex/actions";
 
   import * as service from "services/message";
+  import * as leads from "services/leads";
 
   import ChatMenu from './chat-menu.vue';
 
@@ -33,8 +39,27 @@ div
 
     vuex: {
       actions: {
-        createChatMsg
+        createChatMsg,
+        setLeadStatus,
+      },
+      getters: {
+        currentLead,
+        currentChatMember,
       }
+    },
+
+    computed: {
+      isAdmin: function() {
+        if (!this.currentChatMember) {
+          return false;
+        }
+        if (this.currentChatMember.role === leads.USER_ROLES.SUPPLIER.key
+          || this.currentChatMember.role === leads.USER_ROLES.SELLER.key
+          || this.currentChatMember.role === leads.USER_ROLES.SUPER_SELLER.key) {
+          return true;
+        }
+        return false;
+      },
     },
 
     methods: {
@@ -45,8 +70,15 @@ div
         this.txtMsg = "";
         if (!_txtMsg.length) return;
 
-        this.createChatMsg(+this.$route.params.id, _txtMsg, "text/plain").then( () => {
-           this.$nextTick(this.goToBottom);
+        this.createChatMsg(+this.$route.params.id, _txtMsg, "text/plain")
+        .then( () => {
+
+          this.$nextTick(this.goToBottom);
+
+          if (this.currentLead.status === leads.STATUSES.NEW.key) {
+            this.setLeadStatus(this.currentLead.id, 'PROGRESS');
+          }
+
         }).catch( error => {
           alert(error)
         });

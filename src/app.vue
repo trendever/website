@@ -16,6 +16,8 @@ notify-component
 
 <script>
   import store from 'vuex/store';
+  import { loadUser } from 'vuex/actions';
+  import { isAuth } from 'vuex/getters';
   import * as types from 'vuex/mutation-types';
   import profile from 'services/profile';
   import * as messages from 'services/message';
@@ -29,11 +31,21 @@ notify-component
       showPopupSignup: false,
       showPopupFastSignup: false,
     }),
+    init() {
+      loadUser(store);
+    },
+
+    vuex: {
+      getters: {
+        isAuth
+      }
+    },
 
     ready() {
       mixpanel.track("App Open");
+      var self = this;
 
-      if (!profile.isAuthorized) {
+      if (!this.isAuth) {
         if (profile.isFirstVisit) {
           this.$router.go({name: 'hello'});
         } else {
@@ -42,11 +54,13 @@ notify-component
       }
 
       // if not try subscribed, do it after 30s
-      if (!profile.isAuthorized && !profile.subscribe_at) {
-        setTimeout( () => {
-          this.$router.go({name: 'subscribe'});
-        }, 30*1000);
-      }
+      // if (!this.isAuth && !profile.subscribe_at) {
+      //   setTimeout( () => {
+      //     if (!self.isAuth) {
+      //       this.$router.go({name: 'subscribe'});
+      //     }
+      //   }, 30*1000);
+      // }
 
     },
 
@@ -57,7 +71,7 @@ notify-component
 
      ['show:popup:fast-signup'](flag = true) {
        var div = document.getElementById('page_body');
-       this.$set('showPopupFastSignup', flag);
+       this.showPopupFastSignup = flag;
        if (flag) {
          div.className = div.className + ' popup';
        } else {

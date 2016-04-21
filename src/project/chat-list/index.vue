@@ -15,19 +15,19 @@ div
       .section__content
         .chat-list
 
-          .chat-list_i(v-for="chat in object_list | orderBy 'status'",
-          v-link="{name: 'chat', params: {id: chat.conversation_id}}")
+          .chat-list_i(v-for="lead in object_list | orderBy 'status'",
+          v-link="{name: 'chat', params: {id: lead.chat.id}}")
 
             .chat-list_i_photo
-              img(:src="chat.products[0].instagram_image_url")
+              img(:src="lead.products[0].instagram_image_url")
             .chat-list_i_body
-              .body_t {{ getTitle(chat) }}
-              .body_status ({{ getStatus(chat) | lowercase }})
-              //.body_last-msg
-                | Здесь видно начало текста сообщения из чата обрезает...
-            //.chat-list_i_date 6 мин
-            //.chat-list_i_notify
-              span 1
+              .body_t {{ getTitle(lead) }}
+              .body_status ({{ getStatus(lead) | lowercase }})
+              .body_last-msg
+                | {{ getRecentMessage(lead) }}
+            .chat-list_i_date {{ getDatetime(lead) }}
+            .chat-list_i_notify
+              span {{ lead.chat.unread_count }}
 
     navbar-component(current="chat")
 </template>
@@ -41,11 +41,13 @@ div
    } from 'vuex/actions';
   import {
     leads,
+    userID,
     leadsTab
     } from 'vuex/getters';
 
   import * as service from 'services/leads';
 
+  import { formatDatetime } from 'project/chat/utils';
   import HeaderComponent from 'base/header/header.vue';
   import NavbarComponent from 'base/navbar/navbar.vue';
 
@@ -107,20 +109,33 @@ div
         } else if (!this.buy_list.length && this.sell_list.length) {
           return "Чаты с покупателями";
         }
-      }
+      },
     },
 
     methods: {
-      getStatus: function(chat) {
-        return service.getStatus(chat.status).name
+      getStatus: function(lead) {
+        return service.getStatus(lead.status).name
       },
-      getTitle: function(chat) {
-        if (chat.user_role === service.USER_ROLES.CUSTOMER.key
-            || chat.user_role === service.USER_ROLES.SUPPLIER.key) {
-          return chat.shop.instagram_username
+      getTitle: function(lead) {
+        if (lead.user_role === service.USER_ROLES.CUSTOMER.key
+            || lead.user_role === service.USER_ROLES.SUPPLIER.key) {
+          return lead.shop.instagram_username
         }
-        return `${chat.customer.instagram_username} (${chat.shop.instagram_username})`
-      }
+        return `${lead.customer.instagram_username} (${lead.shop.instagram_username})`
+      },
+      getRecentMessage: function(lead) {
+        let msg = lead.chat.recent_message;
+        if (msg.parts[0].mime_type === 'text/plain') {
+          return msg.parts[0].content;
+        }
+        if (msg.parts[0].mime_type === 'text/json') {
+          let product = JSON.parse(msg.parts[0].content);
+          return `товар: ${product.Title}`;
+        }
+      },
+      getDatetime: function(lead) {
+        return formatDatetime(lead.chat.recent_message.created_at);
+      },
     },
 
     components: {

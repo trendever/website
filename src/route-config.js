@@ -1,4 +1,5 @@
 /* globals mixpanel */
+import store from 'vuex/store';
 
 export function configRouter(router) {
   router.map({
@@ -19,12 +20,14 @@ export function configRouter(router) {
 
     '/chat': {
       name: "chat_list",
-      component: require('./project/chat-list/index.vue')
+      auth: true,
+      component: require('./project/chat-list/index.vue'),
     },
 
     '/chat/:id': {
       name: "chat",
-      component: require('./project/chat/index.vue')
+      auth: true,
+      component: require('./project/chat/index.vue'),
     },
 
     //'/wall': {
@@ -35,21 +38,21 @@ export function configRouter(router) {
     // Info pages
     '/why': {
       name: 'why',
-      component: function(resolve){
+      component: function(resolve) {
         require(['./_components/why/index.vue'], resolve);
       }
     },
 
     '/agreement': {
       name: 'agreement',
-      component: function(resolve){
+      component: function(resolve) {
         require(['./_components/agreement/index.vue'], resolve);
       }
     },
 
     '/guide': {
       name: 'guide',
-      component: function(resolve){
+      component: function(resolve) {
         require(['./_components/guide/index.vue'], resolve);
       }
     },
@@ -64,10 +67,10 @@ export function configRouter(router) {
       component: require('./project/subscribe/hello.vue')
     },
 
-    '/subscribe': {
-      name: 'subscribe',
-      component: require('./project/subscribe/subscribe.vue')
-    },
+    // '/subscribe': {
+    //   name: 'subscribe',
+    //   component: require('./project/subscribe/subscribe.vue')
+    // },
 
     '/settings/tracking': {
       name: 'settings-tracking',
@@ -92,7 +95,15 @@ export function configRouter(router) {
 
   });
 
-  router.afterEach(function (transition) {
+  router.beforeEach(function(transition) {
+    if (transition.to.auth && !store.state.user.isAuth) {
+      transition.redirect({name: 'signup'});
+    } else {
+      transition.next();
+    }
+  });
+
+  router.afterEach(function(transition) {
     window.scrollToTop(0, 0);
 
     // Mixpanel
@@ -101,8 +112,8 @@ export function configRouter(router) {
       toName: transition.to.name
     };
     if (transition.from) {
-      data['fromPath'] = transition.from.path;
-      data['fromName'] = transition.from.name;
+      data.fromPath = transition.from.path;
+      data.fromName = transition.from.name;
     }
     mixpanel.track("Page: " + transition.to.name, data);
   });

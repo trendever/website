@@ -57,7 +57,8 @@ export const ERROR_CODES = {
  *       {
  *         "id": 1,
  *         "user_id": 1379,
- *         "name": "happierall"
+ *         "name": "happierall",
+ *         "role": 1
  *       },
  *       {
  *         "id": 2,

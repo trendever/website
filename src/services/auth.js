@@ -70,20 +70,37 @@ export function sendPassword(config) {
 }
 
 /**
- * Confirm code from sms and get token
+ * Confirm by code from sms and get token with user data
  * @param  {Object} config       object with data
  * @param  {code}   config.code  code from sms
- * @return {Promise<string>}        token
+ *
+ * RESOLVE
+ * {
+ *  "token": "Strong.Happy.Token",
+ *  "user": {
+ *    "id": 1379,
+ *    "name": "Покупатель #1",
+ *    "email": "happierall@gmail.com",
+ *    "phone": "+79388708600",
+ *    "instagram_id": 1482392154,
+ *    "instagram_username": "happierall",
+ *    "instagram_fullname": "Руслан Янбердин",
+ *    "instagram_avatar_url": "https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg",
+ *    "instagram_caption": "Hi all"
+ *   }
+ * }
+ *
+ * REJECT ERROR_CODES {WRONG_CREDENTIALS, INCORRECT_PHONE_FORMAT}
  */
-export function confirmPhone(config) {
+export function confirmByCode(config) {
 
   return new Promise( (resolve, reject) => {
 
     channel.req("login", "auth", {
       phone: CONFIG.phone, password: config.code
     }).then( data => {
-      if (data.response_map.ErrorCode === ERROR_CODES.NO_ERRORS) {
-        resolve(data.response_map.token);
+      if (!data.response_map.ErrorCode) {
+        resolve(data.response_map);
       } else {
         reject(data.response_map.ErrorCode);
       }

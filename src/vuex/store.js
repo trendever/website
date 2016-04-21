@@ -4,6 +4,7 @@ import createLogger from 'vuex/logger';
 import config from '../../config';
 
 // Modules
+import user from './modules/user';
 import leads from './modules/leads';
 import chat from './modules/chat';
 import products from './modules/products';
@@ -16,6 +17,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
+    user,
     chat,
     leads,
     products,

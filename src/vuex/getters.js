@@ -1,3 +1,13 @@
+// User
+export const isAuth = state => state.user.isAuth;
+export const userID = state => state.user.id;
+export const userName = state => {
+  if (state.user.name) {
+    return state.user.name;
+  }
+  return state.user.instagram_username;
+};
+
 // Products
 export const products = state => state.products.all;
 export const openedProduct = state => state.products.opened;
@@ -10,7 +20,7 @@ export const leadsTab = state => state.leads.tab;
 export const currentLead = state => {
   return state.leads.all.find(
     obj => obj.conversation_id === state.chat.opened_id
-    );
+  );
 };
 
 // Chat
@@ -21,6 +31,6 @@ export const currentChat = state => {
 export const currentChatMember = state => {
   let curChat = currentChat(state);
   if (!curChat) {return;}
-  // ToDo it is incorrect...
-  return curChat.members.find( obj => !obj.role );
+
+  return curChat.members.find( obj =>  obj.user_id === state.user.id );
 };

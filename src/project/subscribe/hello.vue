@@ -66,21 +66,21 @@ div
       closePage() {
         mixpanel.track("Close Hello Page");
 
-        this.trySubscribe();
+        // this.trySubscribe();
         if (window.history.length > 2) {
           window.history.back();
         } else {
           this.$router.go({name: 'home'});
         }
       },
-      trySubscribe() {
-        // if not try subscribed, do it after 30s
-        if (!profile.subscribe_at) {
-          setTimeout( () => {
-            this.$router.go({name: 'subscribe'});
-          }, 30*1000);
-        }
-      }
+      // trySubscribe() {
+      //   // if not try subscribed, do it after 30s
+      //   if (!profile.subscribe_at) {
+      //     setTimeout( () => {
+      //       this.$router.go({name: 'subscribe'});
+      //     }, 30*1000);
+      //   }
+      // }
     },
 
     destroyed() {

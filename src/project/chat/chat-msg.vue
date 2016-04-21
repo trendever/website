@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {
+  import {
     currentChatMember,
     currentChat,
     currentLead,
@@ -59,16 +59,13 @@ import {
       },
 
       getUsername () {
-        if (!this.msg.user.role) {
+        if (this.msg.user.role === leads.USER_ROLES.CUSTOMER.key) {
           return `<b>${this.msg.user.name}</b>`
         }
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
           return `<b>${this.currentLead.shop.instagram_username}</b>`
         }
-        if (this.msg.user.role === leads.USER_ROLES.SELLER.key
-            || this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
-          return this.msg.user.name;
-        }
+
         return `<b>${this.currentLead.shop.instagram_username}</b> (продавец ${this.msg.user.name})`
       }
     },

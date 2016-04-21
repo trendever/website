@@ -105,6 +105,40 @@ export const STATUS_EVENTS = [
  *        "instagram_fullname": "(TEST 1) ASOS Russia",
  *        "instagram_avatar_url": "https://scontent.cdninstagram.com/t51.2885-19/s150x150/11262572_227962937541098_815996954_a.jpg",
  *        "instagram_caption": "Добро пожаловать на официальную страницу ASOS Russia, где вы откроете для себя мир моды онлайн. Присоединяйтесь!"
+ *      },
+ *      "chat": {
+ *        "id": 7,
+ *        "members": [
+ *          {
+ *            "id": 12,
+ *            "user_id": 3653,
+ *            "role": 3
+ *          },
+ *          {
+ *            "id": 11,
+ *            "user_id": 1379,
+ *            "role": 1,
+ *            "name": "happierall"
+ *          }
+ *        ],
+ *        "unread_count": 4,
+ *        "recent_message": {
+ *          "conversation_id": 7,
+ *          "user_id": 12,
+ *          "parts": [
+ *            {
+ *              "content": "Hello world",
+ *              "mime_type": "text/plain"
+ *            }
+ *          ],
+ *          "created_at": 1461110215,
+ *          "id": 147,
+ *          "user": {
+ *            "id": 12,
+ *            "user_id": 3653,
+ *            "role": 3
+ *          }
+ *        }
  *      }
  *    }
  *  ]
@@ -169,7 +203,7 @@ export function create(product_id) {
  *   conversation_id: 19
  * }
  *
- * REJECT (one of ERROR_CODES) {OBJECT_NOT_EXIST, UNATHORIZED}
+ * REJECT (one of ERROR_CODES) {FORBIDDEN, UNATHORIZED}
  */
 export function setEvent(lead_id, event) {
 
@@ -181,11 +215,23 @@ export function setEvent(lead_id, event) {
     }).catch( error => {
       if (error.log_map.code_key === '400') {
         // Not exists or forbiden
-        reject(ERROR_CODES.OBJECT_NOT_EXIST);
+        reject(ERROR_CODES.FORBIDDEN);
       } else if (error.log_map.code_key === '403') {
         reject(ERROR_CODES.UNATHORIZED);
       }
     });
 
   });
+}
+
+/**
+ * Listen when status changed notify received
+ * @param  {function} handler    call it func when fired event
+ */
+export function onChangeStatus(handler) {
+  channel.on('RETRIEVED', 'lead', handler);
+}
+
+export function removeStatusListener(handler) {
+  channel.removeListener('RETRIEVED', 'lead', handler);
 }

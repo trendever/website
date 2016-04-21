@@ -3,6 +3,31 @@ import * as products from 'services/products.js';
 import * as leads from 'services/leads.js';
 import * as chats from 'services/chat.js';
 import * as messages from 'services/message.js';
+import * as profile from 'services/profile.js';
+
+// User
+
+/**
+ * Authenticate user
+ * @param  {object} user             user data
+ * @param  {string} token            auth token
+ */
+export const authenticateUser = ({ dispatch }, user, token) => {
+  dispatch(types.USER_AUTHENTICATED, token);
+  dispatch(types.RECEIVE_USER, user);
+  profile.saveUser(user);
+  profile.saveToken(token);
+};
+
+export const loadUser = ({ dispatch }) => {
+  let _profile = profile.getProfile();
+  if (_profile.token) {
+    dispatch(types.USER_AUTHENTICATED, _profile.token);
+  }
+  if (_profile.user) {
+    dispatch(types.RECEIVE_USER, _profile.user);
+  }
+};
 
 // Products
 
@@ -107,6 +132,23 @@ export const getAllLeads = ({ dispatch, state }) => {
   });
 };
 
+export const setLeadStatus = ({ dispatch, state }, lead_id, event) => {
+  return new Promise((resolve, reject) => {
+
+    leads.setEvent(lead_id, event).then( (lead) => {
+      dispatch(types.CHANGED_LEAD_STATUS, lead.id, lead.status);
+      resolve(lead);
+    }).catch( error => {
+      reject(error);
+    });
+
+  });
+};
+
+export const receiveChangedStatusNotify = ({ dispatch }, lead_id, status_key) => {
+  dispatch(types.CHANGED_LEAD_STATUS, lead_id, status_key);
+};
+
 /**
  * Set tab on lead list page
  * @param  {string} tab              buy or sell
@@ -208,3 +250,4 @@ export const createChatMsg = ({ dispatch, state }, conversation_id, text, mime_t
 
   });
 };
+

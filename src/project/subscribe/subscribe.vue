@@ -78,7 +78,7 @@ div
         var image = new Image();
         image.onload = () => {
           image = null;
-          transition.next()
+          transition.next();
         };
         image.src = '/static/img/hello-subscribe.svg';
       },

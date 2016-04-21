@@ -1,4 +1,5 @@
-import profile from 'services/profile'
+import profile from 'services/profile';
+import store from 'vuex/store';
 
 import Store from './store';
 import Model from './model';
@@ -33,7 +34,9 @@ var channel = {};
     if (!trans_map) {
       trans_map = {};
     }
-    trans_map.token = profile.token;
+    if (store.state.user.isAuth) {
+      trans_map.token = store.state.user.token;
+    }
 
     return new Promise((resolve, reject) => {
       _channel.model.request(
