@@ -13,7 +13,7 @@ caption-component
     // register-offer
     tags-component
     search-component
-    photos-component
+    photos-component(id="headerAnchor")
     footer-component
     navbar-component(current="feed")
 </template>

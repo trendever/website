@@ -61,8 +61,7 @@ article.product-post
 
 <script type="text/ecmascript-6">
   import { urlThumbnail } from 'utils'
-  import { openedProduct } from 'vuex/getters';
-  import profile from 'services/profile';
+  import { openedProduct, isAuth } from 'vuex/getters';
   import * as leads from 'services/leads';
 
   export default {
@@ -72,7 +71,8 @@ article.product-post
 
     vuex: {
       getters: {
-        openedProduct
+        openedProduct,
+        isAuth,
       },
     },
 
@@ -93,7 +93,7 @@ article.product-post
       },
 
       onBuy() {
-        if (!profile.isAuthorized) {
+        if (!isAuth) {
           this.$router.go({ name: 'signup' });
         } else {
           leads.create(this.openedProduct.product.id).then( leadId => {

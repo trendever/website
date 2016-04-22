@@ -46,7 +46,7 @@
     searchValue,
     tags,
     selectedTags
-  } from '../../vuex/getters'
+  } from 'vuex/getters';
 
   import {
     loadTags,
@@ -54,13 +54,9 @@
     selectTag,
     removeTag,
     clearSearch
-  } from '../../vuex/actions'
+  } from 'vuex/actions';
 
   export default {
-    props: [
-      { name: 'showOnElem', default: '' }
-    ],
-
     data(){
       return {
         showMoreTags: false,
@@ -101,7 +97,8 @@
 
       scrollToView() {
         if(this.searchValue.trim().length || this.selectedTags.length) {
-          document.getElementById('tags').scrollIntoView();
+          // document.getElementById('tags').scrollIntoView();
+          window.body.scrollTop = document.getElementById('tags').offsetTop;
         }
       },
 

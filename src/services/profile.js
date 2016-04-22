@@ -1,5 +1,4 @@
-/* globals getCookie, setCookie, removeCookie */
-
+import { setCookie, getCookie, removeCookie} from 'utils';
 import jwt_decode from 'jwt-decode';
 
 /*

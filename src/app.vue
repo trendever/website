@@ -1,12 +1,13 @@
 <template lang="jade">
 div
-  popup-signup(
-    :show="showPopupSignup",
-    v-if="showPopupSignup")
+  div(:class="{popup: showPopupFastSignup}")
+    popup-signup(
+      :show="showPopupSignup",
+      v-if="showPopupSignup")
 
-  popup-fast-signup(
-    :show="showPopupFastSignup",
-    v-if="showPopupFastSignup")
+    popup-fast-signup(
+      :show="showPopupFastSignup",
+      v-if="showPopupFastSignup")
 
   router-view
 
@@ -50,7 +51,7 @@ div
       if (this.$route.query && this.$route.query.token) {
         // Auth by token in url
         authenticateUser(store, null, this.$route.query.token);
-        console.log(this.$route);
+
         // Reload in vuex
         loadUser(store);
       }
@@ -76,17 +77,11 @@ div
 
     events: {
      ['show:popup:signup'](flag = true) {
-       this.$set('showPopupSignup', flag);
+       this.showPopupSignup = flag;
      },
 
      ['show:popup:fast-signup'](flag = true) {
-       var div = document.getElementById('page_body');
        this.showPopupFastSignup = flag;
-       if (flag) {
-         div.className = div.className + ' popup';
-       } else {
-         div.className = '';
-       }
      },
     },
 

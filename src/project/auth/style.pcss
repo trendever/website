@@ -91,6 +91,9 @@
     @media(--mobile) { position: absolute; }
   }
   &.confirm .bottom-container {
+    position: auto;
+
+    width: auto;
     padding-top: 60px;
     padding-bottom: 0;
 
@@ -106,10 +109,15 @@
       padding: 20px 50px;
     }
   }
-  &.confirm .input-container {
-    padding: 0;
+  &.confirm {
+    .link-container {
+      display: block;
+    }
+    .input-container {
+      padding: 0;
 
-    @media(--mobile) { padding: 20px 50px; }
+      @media(--mobile) { padding: 20px 50px; }
+    }
   }
   .btn.__orange {
     margin: 10px 0;

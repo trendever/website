@@ -31,7 +31,14 @@ div
   import profile from 'services/profile'
 
   export default {
+    data: () => ({
+      prevPath: null,
+    }),
+
     route: {
+      data(transition) {
+        console.log(transition);
+      },
       canActivate({abort}) {
         if (profile.isFirstVisit || window.__debugMode) {
           return true;
@@ -68,6 +75,7 @@ div
 
         // this.trySubscribe();
         if (window.history.length > 2) {
+          window.history.back();
           window.history.back();
         } else {
           this.$router.go({name: 'home'});

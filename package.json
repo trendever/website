@@ -21,6 +21,7 @@
     "del": "^2.0.2",
     "es6-promise": "^3.0.2",
     "eslint-friendly-formatter": "^2.0.1",
+    "event-listener": "^1.1.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "fastclick": "^1.0.6",
     "file-loader": "^0.8.5",

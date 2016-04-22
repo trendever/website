@@ -18,7 +18,7 @@ div
                 v-model="code",
                 placeholder="9999")
 
-      .bottom-container
+      .bottom-container.__fixed-width
         .btn-container
           button.btn.btn_primary.__orange.__xl.fast__big__btn(
             :disabled="isDisabled",
