@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default function() {
 
@@ -7,13 +7,17 @@ export default function() {
     check: function (val) {
       return /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val);
     }
-  })
+  });
 
   Vue.validator('phone', {
-    message: 'неверный формат phone',
+    message: 'неверный формат телефона',
     check: function (val) {
-      // allow empty or format: '+7 (9XX) XXX-XX-XX'
-      return val ? /^(7|8)9([0-9]{9})$/.test(+val.replace(/\(|\)|\+|-|\s|\./g,'')) : true;
+      // allow format: '+xxx (XXX) XXX-XX-XX'
+      let len = val.replace(/\D/g,'').length;
+      if (len >= 10 && len <= 13) {
+        return true;
+      }
+      return false;
     }
-  })
+  });
 }

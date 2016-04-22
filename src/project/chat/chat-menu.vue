@@ -9,10 +9,12 @@ div
       //-.menu_i
         .menu_i_t Отправить условия оплаты
 
-      .menu_i(v-if="isAdmin")
+      .menu_i(v-if="isAdmin",
+              @click="callCustomer()")
         .menu_i_t Позвать покупателя в чат
 
-      .menu_i(v-if="canCallSupplier")
+      .menu_i(v-if="canCallSupplier",
+              @click="callCustomer()")
         .menu_i_t Позвать магазин в чат
 
       .menu_i(v-if="isAdmin",
@@ -34,8 +36,10 @@ div
 <script>
   import {
     currentChatMember,
+    currentLead,
   } from 'vuex/getters';
   import * as leads from 'services/leads';
+  import * as service from 'services/chat';
 
   import MenuComponent from 'base/menu/menu.vue';
   import ChatMenuStatus from './chat-menu-status.vue';
@@ -55,7 +59,19 @@ div
     vuex: {
       getters: {
         currentChatMember,
+        currentLead,
       }
+    },
+
+    methods: {
+      callCustomer: function() {
+        service.callCustomer(this.currentLead.id);
+        this.menuActive = false;
+      },
+      callSupplier: function() {
+        service.callSupplier(this.currentLead.id);
+        this.menuActive = false;
+      },
     },
 
     computed: {

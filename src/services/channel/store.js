@@ -9,6 +9,7 @@ export default class {
     this.cache = {
       requests: []
     };
+    this.callbacks = [];
   }
 
   init(onOpen, onMessage) {
@@ -16,7 +17,14 @@ export default class {
 
     self.sock = new SockJS(self.echo_url);
     self.sock.onmessage = function(data) {
-        onMessage.call(self, data);
+        var ctx = JSON.parse(data.data);
+        if (!ctx) {
+          return;
+        }
+        if (!ctx.trans_map) {
+          ctx.trans_map = {};
+        }
+        onMessage.call(self, ctx);
     };
 
     self.sock.onclose = (function () {
@@ -44,6 +52,7 @@ export default class {
     /**
      data (object) *
      */
+    data.trans_map.sendedAt = new Date().getTime();
     this.sock.send(JSON.stringify(data));
   }
 
@@ -64,7 +73,6 @@ export default class {
       })) {
         // Write new request
         this.cache.requests.push({
-          created: Date.now(),
           data: data
         });
       }

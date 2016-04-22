@@ -16,7 +16,10 @@ div
 
 <script type="text/babel">
   import store from 'vuex/store';
-  import { loadUser } from 'vuex/actions';
+  import {
+    loadUser,
+    authenticateUser,
+  } from 'vuex/actions';
   import { isAuth } from 'vuex/getters';
   import * as types from 'vuex/mutation-types';
   import profile from 'services/profile';
@@ -42,8 +45,15 @@ div
     },
 
     ready() {
-      mixpanel.track("App Open");
       var self = this;
+
+      if (this.$route.query.token) {
+        // Auth by token in url
+        authenticateUser(store, null, this.$route.query.token);
+        console.log(this.$route);
+        // Reload in vuex
+        loadUser(store);
+      }
 
       if (!this.isAuth) {
         if (profile.isFirstVisit) {

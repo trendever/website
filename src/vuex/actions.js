@@ -15,8 +15,11 @@ import * as tagsService from 'services/tags';
  */
 export const authenticateUser = ({ dispatch }, user, token) => {
   dispatch(types.USER_AUTHENTICATED, token);
-  dispatch(types.RECEIVE_USER, user);
-  profile.saveUser(user);
+  if (user) {
+    // Note: If without user, need reload user data: loadUser()
+    dispatch(types.RECEIVE_USER, user);
+    profile.saveUser(user);
+  }
   profile.saveToken(token);
 };
 
@@ -272,7 +275,7 @@ export const createChatMsg = ({ dispatch, state }, conversation_id, text, mime_t
   return new Promise((resolve, reject) => {
 
     messages.create(conversation_id, text, mime_type).then( data => {
-      dispatch(types.RECEIVE_CHAT_MSG, data.chat.id, data.messages[0]);
+      // dispatch(types.RECEIVE_CHAT_MSG, data.chat.id, data.messages[0]);
       resolve(data.chat.id, data.messages[0]);
     }).catch( error => {
       reject(error);

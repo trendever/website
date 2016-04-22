@@ -29,7 +29,7 @@ div
                   @focus="onFocusPhone",
                   v-validate:phone="[ 'phone', 'required' ]",
                   v-model="phone",
-                  placeholder="Введите номер +7XXXXXXXXXX")
+                  placeholder="Введите номер +XXXXXXXXXXX")
                 .input__clear-btn(
                   v-if="phone",
                   @click="phone = ''")

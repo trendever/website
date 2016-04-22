@@ -1,6 +1,4 @@
-import profile from 'services/profile';
 import store from 'vuex/store';
-
 import Store from './store';
 import Model from './model';
 import Controller from './controller';

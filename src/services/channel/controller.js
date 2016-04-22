@@ -1,8 +1,9 @@
 /* global debugLog, __debugMode */
 
 export default class {
-  constructor(model) {
+  constructor(model, store) {
     this.model = model;
+    this.store = store;
     this.routes = [];
     this.init();
   }
@@ -49,41 +50,35 @@ export default class {
       return;
     }
 
-    this.executeLog(ctx);
+    // this.executeLog(ctx);
   }
 
-  executeLog(ctx) {
-    if (ctx.log_list.length) {
-      for (let log of ctx.log_list) {
-        switch (log.level_str) {
-          case "emerg":
-            // this.view.emergencyLog(log);
-            break;
-          case "alert":
-            // this.view.alertLog(log);
-            break;
-          case "crit":
-            // this.view.criticalLog(log);
-            break;
-          default:
-            // window.debugLog("[CHANNEL-LOG]", log);
-        }
-      }
-    }
-  }
+  // executeLog(ctx) {
+  //   if (ctx.log_list.length) {
+  //     for (let log of ctx.log_list) {
+  //       switch (log.level_str) {
+  //         case "emerg":
+  //           // this.view.emergencyLog(log);
+  //           break;
+  //         case "alert":
+  //           // this.view.alertLog(log);
+  //           break;
+  //         case "crit":
+  //           // this.view.criticalLog(log);
+  //           break;
+  //         default:
+  //           // window.debugLog("[CHANNEL-LOG]", log);
+  //       }
+  //     }
+  //   }
+  // }
 
-  onMessage(e) {
-    var ctx = JSON.parse(e.data);
-    if (!ctx) {
-      return;
-    }
-    if (!ctx.trans_map) {
-      ctx.trans_map = {};
-    }
+  onMessage(ctx) {
     console.log(ctx);
 
     if (__debugMode && ctx.trans_map.trans_id) {
-      var startTime = this.model.callbacks[ctx.trans_map.trans_id].startTime;
+      var createdAt = ctx.trans_map.createdAt;
+      var sendedAt = ctx.trans_map.sendedAt;
       var endTime = new Date().getTime();
 
       let code_int = parseInt(ctx.log_list[0].code_key);
@@ -98,11 +93,13 @@ export default class {
        " %c " + ctx.log_list[0].code_str +
        " " + ctx.log_list[0].user_msg +
        " " + ctx.log_list[0].level_str +
-       " %c " + (endTime - startTime) + "ms",
+       " %c " + (endTime - createdAt) + "ms" +
+       " %c clean(" + (endTime - sendedAt) + "ms)",
        'color: #2196F3',
        'color: #FF9800',
        color_code_key,
-       'color: #5E35B1'
+       'color: #5E35B1',
+       'color: #2196F3'
        );
     }
 
