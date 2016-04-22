@@ -7,7 +7,7 @@ div
       i.ic-menu_light
     .chat-bar_input
       textarea(placeholder="Введите сообщение",
-      rows=1, v-model="txtMsg",
+      rows=1, v-model="txtMsg", v-el:input-msg
       @keydown.enter.prevent="send($event)")
     .chat-bar_send-btn(@click="send($event)")
       i.ic-send
@@ -64,9 +64,8 @@ div
 
     methods: {
       send (event) {
-        console.log("Enter pressed");
         event.preventDefault();
-        console.log("Enter pressed 2");
+        this.$els.inputMsg.focus();
 
         var _txtMsg = this.txtMsg.trim();
         this.txtMsg = "";
