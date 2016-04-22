@@ -5,7 +5,7 @@ from fabric.operations import local as lrun, run, sudo
 
 env.roledefs = {
     'dev': ['dev@dev.trendever.com'],
-    'production': ['production@dev.trendever.com'],
+    'live': ['live@demo.trendever.com'],
 }
 env.shell = "/bin/bash -l -i -c"
 env.forward_agent = True
@@ -16,7 +16,7 @@ PROJECT_PATH = HOME + "trendever_website/"
 
 def git_pull():
     with cd(PROJECT_PATH):
-        if "production" in env.roles:
+        if "live" in env.roles:
             run("git pull origin master")
         else:
             run("git pull origin dev")
