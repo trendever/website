@@ -1,6 +1,8 @@
 .g-page {
   position: relative;
 
+  overflow-x: hidden;
+
   background: #fff;
 
   font: 400 16px $font__family;
