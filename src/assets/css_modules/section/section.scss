@@ -4,16 +4,16 @@
     max-width: 750px;
     margin: 0 auto;
   }
-
   &.top {
-    margin-top: 50px;
+    padding-top: 50px;
+
     @media(--mobile) {
-      margin-top: 102px;
+      padding-top: 102px;
     }
   }
-
   &.bottom {
     padding-bottom: 90px;
+
     @media(--mobile) {
       padding-bottom: 90px;
     }
