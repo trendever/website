@@ -14,13 +14,16 @@ import * as tagsService from 'services/tags';
  * @param  {string} token            auth token
  */
 export const authenticateUser = ({ dispatch }, user, token) => {
+  if (!profile.saveToken(token)) {
+    return;
+  }
   dispatch(types.USER_AUTHENTICATED, token);
+
   if (user) {
     // Note: If without user, need reload user data: loadUser()
     dispatch(types.RECEIVE_USER, user);
     profile.saveUser(user);
   }
-  profile.saveToken(token);
 };
 
 export const loadUser = ({ dispatch }) => {

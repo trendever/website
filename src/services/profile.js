@@ -42,17 +42,6 @@ export function getProfile(withoutCache) {
     profile.isFirstVisit = false;
   }
 
-  if (!profile.token) {
-    profile.isAuthorized = false;
-  } else {
-    profile.isAuthorized = true;
-
-    if (!profile.user) {
-      saveUser({id: jwt_decode(profile.token).UID});
-      profile = getProfile(true);
-    }
-  }
-
   Storage.setItem('last_visit_at', (new Date()).getTime());
   cachedProfile = profile;
 
@@ -86,9 +75,18 @@ export function setSubscribeEmail(flag) {
 }
 
 export function saveToken(token) {
-  Storage.setItem('token', token);
-  Storage.setItem('user', null);
-  return getProfile(true);
+  try {
+    let decoded = jwt_decode(token);
+
+    Storage.setItem('token', token);
+    saveUser({id: decoded.UID});
+    return getProfile(true);
+
+  } catch (err) {
+    // incorrect token
+    console.warn("WARNING: incorrect token");
+    return false;
+  }
 }
 
 /**
