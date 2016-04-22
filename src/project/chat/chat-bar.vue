@@ -9,7 +9,7 @@ div
       textarea(placeholder="Введите сообщение",
       rows=1, v-model="txtMsg",
       @keydown.enter.prevent="send($event)")
-    .chat-bar_send-btn(@click="send()")
+    .chat-bar_send-btn(@click="send($event)")
       i.ic-send
 
   chat-menu(v-if="isAdmin", :menu-active.sync="menuActive")
@@ -64,7 +64,9 @@ div
 
     methods: {
       send (event) {
+        console.log("Enter pressed");
         event.preventDefault();
+        console.log("Enter pressed 2");
 
         var _txtMsg = this.txtMsg.trim();
         this.txtMsg = "";
