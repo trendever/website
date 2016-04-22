@@ -17,7 +17,14 @@ export default class {
 
     self.sock = new SockJS(self.echo_url);
     self.sock.onmessage = function(data) {
-        onMessage.call(self, data);
+        var ctx = JSON.parse(data.data);
+        if (!ctx) {
+          return;
+        }
+        if (!ctx.trans_map) {
+          ctx.trans_map = {};
+        }
+        onMessage.call(self, ctx);
     };
 
     self.sock.onclose = (function () {

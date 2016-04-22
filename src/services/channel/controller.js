@@ -73,14 +73,7 @@ export default class {
   //   }
   // }
 
-  onMessage(e) {
-    var ctx = JSON.parse(e.data);
-    if (!ctx) {
-      return;
-    }
-    if (!ctx.trans_map) {
-      ctx.trans_map = {};
-    }
+  onMessage(ctx) {
     console.log(ctx);
 
     if (__debugMode && ctx.trans_map.trans_id) {
