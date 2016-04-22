@@ -1,8 +1,8 @@
+/* global __debugMode */
 export default class {
   constructor(store) {
     this.store = store;
-    this.sock;
-    this.callbacks = [];
+    this.sock = null;
   }
 
   init(onMessage) {
@@ -10,9 +10,9 @@ export default class {
      Init SockJS
      */
     this.store.init((socket) => {
-      return this.sock = socket;
+      this.sock = socket;
     }, onMessage);
-  };
+  }
 
   request(action_str, data_type,
           log_list, request_map,
@@ -34,32 +34,29 @@ export default class {
     };
     if (callback) {
       var trans_id = window.guid();
-      data.trans_map["trans_id"] = trans_id;
+      data.trans_map.trans_id = trans_id;
+      data.trans_map.createdAt = new Date().getTime();
       this._addCallback(trans_id, callback);
     }
 
     this.store.send(data);
-  };
+  }
 
   _addCallback(guid_key, callback) {
     /**
      * @param {method} callback function
      */
 
-    let _callback = {callback}
-    if (__debugMode) {
-      // Remember when we started
-      _callback.startTime = new Date().getTime();
-    }
-    this.callbacks[guid_key] = _callback;
+    let _callback = {callback};
+    this.store.callbacks[guid_key] = _callback;
 
-  };
+  }
 
   executeCallback(guid_key, response) {
-    if (this.callbacks[guid_key]) {
-      this.callbacks[guid_key].callback.call(this, response);
-      delete this.callbacks[guid_key];
+    if (this.store.callbacks[guid_key]) {
+      this.store.callbacks[guid_key].callback.call(this, response);
+      delete this.store.callbacks[guid_key];
     }
-  };
+  }
 
-};
+}
