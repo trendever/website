@@ -1,11 +1,17 @@
-.g-page {
-  position: relative;
+html,
+body {
+    overflow: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
 
-  overflow-x: hidden;
-
-  background: #fff;
-
-  font: 400 16px $font__family;
-
+    height: 100% !important;
 }
 
+.g-page {
+    position: relative;
+
+    overflow-x: hidden;
+
+    background: #fff;
+
+    font: 400 16px $font__family;
+}
