@@ -60,7 +60,7 @@ export function find({ limit, offset, q, tags }) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("retrieve", "product", {limit, offset, q, tags})
+    channel.req("search", "product", {limit, offset, q, tags})
     .then( data => {
 
         resolve(data.response_map);
