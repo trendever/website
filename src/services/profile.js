@@ -87,6 +87,7 @@ export function setSubscribeEmail(flag) {
 
 export function saveToken(token) {
   Storage.setItem('token', token);
+  Storage.setItem('user', null);
   return getProfile(true);
 }
 

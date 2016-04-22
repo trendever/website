@@ -62,7 +62,7 @@ div
 
     computed: {
       isDisabled() {
-        return (this.$get('code').length !== 6) && !this.$get('isCompleted');
+        return (this.$get('code').length !== 4) && !this.$get('isCompleted');
       },
     },
 
@@ -73,7 +73,7 @@ div
           e.preventDefault();
         }
 
-        if (this.$get('code').length >= 6) {
+        if (this.$get('code').length >= 4) {
           e.preventDefault();
         }
       },
