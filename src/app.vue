@@ -47,7 +47,7 @@ div
     ready() {
       var self = this;
 
-      if (this.$route.query.token) {
+      if (this.$route.query && this.$route.query.token) {
         // Auth by token in url
         authenticateUser(store, null, this.$route.query.token);
         console.log(this.$route);
