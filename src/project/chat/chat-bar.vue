@@ -8,7 +8,9 @@ div
     .chat-bar_input
       textarea(placeholder="Введите сообщение",
       rows=1, v-model="txtMsg", v-el:input-msg
-      @keydown.enter.prevent="send($event)")
+      @keydown.enter.prevent="send($event)",
+      v-on:touchstart="inputTouchStart()",
+      v-on:blur="inputBlur()")
     .chat-bar_send-btn(@click="send($event)")
       i.ic-send
 
@@ -35,6 +37,7 @@ div
     data: () => ({
       menuActive: false,
       txtMsg: "",
+      saveScrollPos: 0,
     }),
 
     vuex: {
@@ -63,6 +66,18 @@ div
     },
 
     methods: {
+      inputTouchStart(){
+        this.saveScrollPos = window.body.scrollTop;
+        window.body.style.position = 'relative';
+        window.body.style.top = -window.body.scrollTop;
+        document.getElementsByTagName("html")[0].style.overflow = 'hidden';
+      },
+      inputBlur(){
+        window.body.style.position = 'auto';
+        window.body.style.top = 'auto';
+        document.getElementsByTagName("html")[0].style.overflow = 'auto';
+      },
+
       send (event) {
         event.preventDefault();
         this.$els.inputMsg.focus();

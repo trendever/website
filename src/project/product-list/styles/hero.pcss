@@ -4,13 +4,14 @@
   &__content {
     position: relative;
 
-    overflow-x: hidden;
-
     width: 750px;
     height: 615px;
 
     text-align: center;
 
+    @media (--mobile) {
+      overflow-x: hidden;
+    }
     &__img {
       position: absolute;
       top: 0;
