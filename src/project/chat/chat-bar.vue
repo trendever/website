@@ -81,7 +81,9 @@ div
 
       send (event) {
         event.preventDefault();
+        window.body.scrollTop = this.saveScrollPos;
         this.$els.inputMsg.focus();
+        window.body.scrollTop = this.saveScrollPos;
 
         var _txtMsg = this.txtMsg.trim();
         this.txtMsg = "";
