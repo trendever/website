@@ -76,6 +76,7 @@ div
         window.body.style.position = 'auto';
         window.body.style.top = 'auto';
         document.getElementsByTagName("html")[0].style.overflow = 'auto';
+        window.body.scrollTop = this.saveScrollPos;
       },
 
       send (event) {
