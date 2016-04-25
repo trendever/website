@@ -3,8 +3,7 @@
 
 .chat-row(:class="getSide")
   .bubble
-    a.chat-msg-photo-txt(target="_blank",
-     v-link="{name: 'product_detail', params: {id: product.ID}}")
+    a.chat-msg-photo-txt(v-link="{name: 'product_detail', params: {id: product.ID}}")
       .chat-msg-photo-txt_photo
         img(:src="product.InstagramImageURL")
 
