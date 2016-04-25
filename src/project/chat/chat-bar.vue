@@ -8,10 +8,8 @@ div
     .chat-bar_input
       textarea(placeholder="Введите сообщение",
       rows=1, v-model="txtMsg", v-el:input-msg
-      @keydown.enter.prevent="send($event)",
-      v-on:touchstart="inputTouchStart()",
-      v-on:blur="inputBlur()")
-    .chat-bar_send-btn(@click="send($event)")
+      @keydown.enter.prevent="send($event)")
+    .chat-bar_send-btn(@click.prevent="send($event)")
       i.ic-send
 
   chat-menu(v-if="isAdmin", :menu-active.sync="menuActive")
@@ -66,24 +64,9 @@ div
     },
 
     methods: {
-      inputTouchStart(){
-        this.saveScrollPos = window.body.scrollTop;
-        window.body.style.position = 'relative';
-        window.body.style.top = -window.body.scrollTop;
-        document.getElementsByTagName("html")[0].style.overflow = 'hidden';
-      },
-      inputBlur(){
-        window.body.style.position = 'auto';
-        window.body.style.top = 'auto';
-        document.getElementsByTagName("html")[0].style.overflow = 'auto';
-        window.body.scrollTop = this.saveScrollPos;
-      },
-
       send (event) {
-        event.preventDefault();
-        window.body.scrollTop = this.saveScrollPos;
         this.$els.inputMsg.focus();
-        window.body.scrollTop = this.saveScrollPos;
+        event.preventDefault();
 
         var _txtMsg = this.txtMsg.trim();
         this.txtMsg = "";

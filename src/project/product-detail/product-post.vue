@@ -18,7 +18,7 @@ article.product-post
       height="750px")
   section.product-post__bottom-photo(v-for="item in openedProduct.product.items")
     .product-post__price-container
-      template(v-if="discountPrice(item)")
+      template(v-if="item.discount_price")
         .product-post__price-main(v-if="item.discount_price") {{ item.discount_price | curency_spaces }} ₽
         .product-post__price-discount(v-if="item.price") {{ item.price | curency_spaces }} ₽
       template(v-if="price(item)")
@@ -81,11 +81,8 @@ article.product-post
     },
 
     methods: {
-      discountPrice (item) {
-        return (item.discount_price !== item.price && item.discount_price);
-      },
       price (item) {
-        return (item.price > 0 && item.discount_price === 0);
+        return (item.price && !item.discount_price);
       },
 
       zeroPrice (item) {
