@@ -19,7 +19,7 @@ div
           v-link="{name: 'chat', params: {id: lead.chat.id}}")
 
             .chat-list_i_photo
-              img(:src="lead.products[0].instagram_image_url")
+              img(:src="lead.products && lead.products[0].instagram_image_url")
             .chat-list_i_body
               .body_t {{ getTitle(lead) }}
               .body_status ({{ getStatus(lead) | lowercase }})
@@ -32,7 +32,7 @@ div
     navbar-component(current="chat")
 </template>
 
-<script>
+<script type="text/babel">
   import Vue from "vue";
   import {
     getAllLeads,
@@ -104,7 +104,7 @@ div
       title () {
         if (this.buy_list.length && this.sell_list.length) return;
 
-        if (this.buy_list.length && !this.sell_list.lengt) {
+        if (this.buy_list.length && !this.sell_list.length) {
           return "Шопинг-чаты";
         } else if (!this.buy_list.length && this.sell_list.length) {
           return "Чаты с покупателями";
