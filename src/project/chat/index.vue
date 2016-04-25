@@ -87,7 +87,7 @@ div
       },
 
       onMsg(r){
-        if (r.response_map.chat.id === this.currentChat.id) {
+        if (this.currentChat && r.response_map.chat.id === this.currentChat.id) {
           this.$nextTick(this.goToBottom);
         }
       }

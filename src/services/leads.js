@@ -161,6 +161,113 @@ export function find() {
   });
 }
 
+/**
+ * Get lead by lead_id or conversation_id
+ * @param  {number} options.lead_id
+ * @param  {number} options.conversation_id
+ * RESOLVE
+ *    {
+ *      "id": 1,
+ *      "source": "website",
+ *      "customer_id": 1379,
+ *      "status": 3,
+ *      "user_role": 1,
+ *      "conversation_id": 1,
+ *      "products": [
+ *        {
+ *          "id": 17622,
+ *          "title": "Тестовый товар #2 (17622)",
+ *          "code": "tf9744",
+ *          "instagram_image_caption": "Минимализм в лучшем виде 💗✌️Этот комбинезон вы сможете найти по ссылке в профиле 😊 RG: @syanafromparis",
+ *          "instagram_image_id": "1223302707884078653",
+ *          "instagram_image_url": "https://scontent.cdninstagram.com/l/t51.2885-15/s480x480/e35/12965842_803674876433752_380340161_n.jpg?ig_cache_key=MTIyMzMwMjcwNzg4NDA3ODY1Mw%3D%3D.2",
+ *          "instagram_link": "https://www.instagram.com/p/BD6C1TcNDY9/",
+ *          "instagram_published_at": -62135596800,
+ *          "supplier_id": 129,
+ *          "supplier": {},
+ *          "mentioned_id": 1996,
+ *          "mentioned": {},
+ *          "isSale": true,
+ *          "items": [
+ *            {
+ *              "name": "Ветровка"
+ *            },
+ *          ]
+ *        },
+ *      ],
+ *      "customer": {
+ *        "id": 1379,
+ *        "instagram_id": 1482392154,
+ *        "instagram_username": "happierall",
+ *        "instagram_fullname": "Руслан Янбердин",
+ *        "instagram_avatar_url": "https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg",
+ *        "instagram_caption": "Hi all"
+ *      },
+ *      "shop": {
+ *        "id": 129,
+ *        "instagram_id": 1552963340,
+ *        "instagram_username": "asos_ru",
+ *        "instagram_fullname": "(TEST 1) ASOS Russia",
+ *        "instagram_avatar_url": "https://scontent.cdninstagram.com/t51.2885-19/s150x150/11262572_227962937541098_815996954_a.jpg",
+ *        "instagram_caption": "Добро пожаловать на официальную страницу ASOS Russia, где вы откроете для себя мир моды онлайн. Присоединяйтесь!"
+ *      },
+ *      "chat": {
+ *        "id": 7,
+ *        "members": [
+ *          {
+ *            "id": 12,
+ *            "user_id": 3653,
+ *            "role": 3
+ *          },
+ *          {
+ *            "id": 11,
+ *            "user_id": 1379,
+ *            "role": 1,
+ *            "name": "happierall"
+ *          }
+ *        ],
+ *        "unread_count": 4,
+ *        "recent_message": {
+ *          "conversation_id": 7,
+ *          "user_id": 12,
+ *          "parts": [
+ *            {
+ *              "content": "Hello world",
+ *              "mime_type": "text/plain"
+ *            }
+ *          ],
+ *          "created_at": 1461110215,
+ *          "id": 147,
+ *          "user": {
+ *            "id": 12,
+ *            "user_id": 3653,
+ *            "role": 3
+ *          }
+ *        }
+ *      }
+ *    }
+ *
+ * REJECT (one of ERROR_CODES) {OBJECT_NOT_EXIST, UNATHORIZED}
+ */
+export function get({ lead_id, conversation_id }) {
+
+  return new Promise( (resolve, reject) => {
+
+    channel.req("retrieve", "lead", { lead_id, conversation_id })
+    .then( data => {
+      resolve(data.response_map.lead);
+    }).catch( error => {
+      if (error.log_map.code_key === '403') {
+        reject(ERROR_CODES.UNATHORIZED);
+      } else if (error.log_map.code_key === '404') {
+        reject(ERROR_CODES.OBJECT_NOT_EXIST);
+      }
+      console.log("Lead retrieve err:", error);
+    });
+
+  });
+}
+
 
 /**
  * Create lead

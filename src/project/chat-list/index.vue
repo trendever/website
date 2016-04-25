@@ -14,8 +14,7 @@ div
     .section.top.bottom
       .section__content
         .chat-list
-
-          .chat-list_i(v-for="lead in object_list | orderBy 'status'",
+          .chat-list_i(v-for="lead in object_list | orderBy '-chat.recent_message.created_at'", track-by="id",
           v-link="{name: 'chat', params: {id: lead.chat.id}}")
 
             .chat-list_i_photo
@@ -26,7 +25,7 @@ div
               .body_last-msg
                 | {{ getRecentMessage(lead) }}
             .chat-list_i_date {{ getDatetime(lead) }}
-            .chat-list_i_notify
+            .chat-list_i_notify(v-if="lead.chat.unread_count")
               span {{ lead.chat.unread_count }}
 
     navbar-component(current="chat")

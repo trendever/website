@@ -1,5 +1,5 @@
 <template lang="jade">
-popup-wrapper(:show="show", :close="onClose")
+popup-wrapper(:show="isShowPopupSignup", :close="onClose")
   h3 Вход на территорию cвободного шопинга
   button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn(
     @click="onClick") Войти
@@ -10,11 +10,25 @@ popup-wrapper(:show="show", :close="onClose")
 
 <script type="text/ecmascript-6">
   import popupWrapper from 'base/popup/wrapper.vue'
+  import {
+    isShowPopupSignup,
+    isShowPopupFastSignup,
+  } from 'vuex/getters';
+  import {
+    hidePopupSignup,
+    showPopupFastSignup,
+  } from 'vuex/actions';
 
   export default {
-    props: [
-      { name: 'show', default: false }
-    ],
+    vuex: {
+      getters: {
+        isShowPopupSignup,
+      },
+      actions: {
+        hidePopupSignup,
+        showPopupFastSignup,
+      }
+    },
 
     methods: {
       onClick() {
@@ -23,14 +37,8 @@ popup-wrapper(:show="show", :close="onClose")
       },
 
       onClose() {
-        this.$dispatch('show:popup:signup', false);
+        this.hidePopupSignup();
       },
-    },
-
-    watch: {
-      show() {
-        console.log('show signup!!!')
-      }
     },
 
     components: {
