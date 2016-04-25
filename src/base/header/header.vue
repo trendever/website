@@ -21,12 +21,14 @@
 </template>
 
 <script>
-var w = window;
+import listen from 'event-listener';
 
 export default {
   data: () => ({
     is_visible: false,
-    is_action_up: false
+    is_action_up: false,
+    scrollEvent: null,
+    showOnEl: null,
   }),
   props: {
     // Title of header
@@ -74,35 +76,31 @@ export default {
       default: 0
     }
   },
-  created() {
-    this.$on('hook:beforeDestroy', () => {
-      // remove old events and data
-      w.processDestroy(w.cur);
-    });
+  beforeDestroy() {
+    this.scrollEvent.remove();
   },
   ready() {
+    if (this.show_on_elem) {
+      this.showOnEl = document.getElementById(this.show_on_elem);
+    }
+
     // Run, function for stopped scroll.
     // Because function work only in motion.
     this.toggleHeaderOnScroll();
 
-    // Add event for scroll.
-    w.addEvent(window, "scroll", this.toggleHeaderOnScroll.bind(this));
-    w.cur.destroy.push(() => {
-      w.removeEvent(window, "scroll", this.toggleHeaderOnScroll.bind(this));
-    });
+    this.scrollEvent = listen(window, 'scroll', this.toggleHeaderOnScroll.bind(this))
   },
   methods: {
     leftBtnAction() {
-      var show_on_elem = this.$get('show_on_elem');
+      if (this.show_on_elem) {
+        let scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        let elemY = this.showOnEl.offsetTop;
+        if (scrollY - elemY >= 0) {
 
-      if (show_on_elem) {
-        if (w.getXY(show_on_elem)[1] <= 0) {
-          var scrollToElement = this.$get('scrollToElement');
-
-          if (scrollToElement) {
-            w.scrollToY(document.getElementById(scrollToElement).offsetTop);
+          if (this.scrollToElement) {
+            window.body.scrollTop = document.getElementById(this.scrollToElement).offsetTop;
           } else {
-            w.scrollToTop();
+            window.body.scrollTop = 0;
           }
           return;
         }
@@ -114,25 +112,26 @@ export default {
       if (backLink) {
         this.$router.go(backLink);
       } else if (path && path == '/') { // ToDo not optimal. Have bugs
-        this.$router.go(w.history.back());
+        this.$router.go(window.history.back());
       } else {
         this.$router.go({ name: 'home' });
       }
     },
     toggleHeaderOnScroll() {
-      let show_on_elem = this.$get('show_on_elem');
-
-      if (show_on_elem) {
+      if (this.show_on_elem) {
         // If show_on_elem not exists, then wait when render it.
         // Be careful, it's may cycling as
         // infinity recursion if element not exists.
-        if (!w.ge(show_on_elem)) {
+        if (!this.showOnEl) {
           setTimeout(this.toggleHeaderOnScroll.bind(this), 50);
           return;
         }
 
         // Show header, if show_on_elem scrollY is 0 or smaller
-        if (w.getXY(show_on_elem)[1] <= 0) {
+        let scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        let elemY = this.showOnEl.offsetTop;
+
+        if (scrollY - elemY >= 0) {
           this.$set('is_visible', true);
 
           // Left btn now work as ScrollToTop

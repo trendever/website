@@ -19,7 +19,7 @@ div
           v-link="{name: 'chat', params: {id: lead.chat.id}}")
 
             .chat-list_i_photo
-              img(:src="lead.products[0].instagram_image_url")
+              img(:src="lead.products && lead.products[0].instagram_image_url")
             .chat-list_i_body
               .body_t {{ getTitle(lead) }}
               .body_status ({{ getStatus(lead) | lowercase }})
@@ -32,7 +32,7 @@ div
     navbar-component(current="chat")
 </template>
 
-<script>
+<script type="text/babel">
   import Vue from "vue";
   import {
     getAllLeads,
@@ -59,6 +59,7 @@ div
     vuex: {
       getters: {
         leads,
+        userID,
         leadsTab
       },
       actions: {
@@ -89,14 +90,20 @@ div
       },
       buy_list () {
         return this.leads.filter(
-          obj => obj.user_role === service.USER_ROLES.CUSTOMER.key );
+          obj =>  {
+            if ( obj.user_role === service.USER_ROLES.CUSTOMER.key
+              || obj.customer_id === this.userID ) { // if i'm superseller
+              return true;
+            }
+          });
       },
       sell_list () {
         return this.leads.filter( obj => {
-          if (obj.user_role === service.USER_ROLES.SELLER.key
+          if ((obj.user_role === service.USER_ROLES.SELLER.key
            || obj.user_role === service.USER_ROLES.SUPPLIER.key
            || obj.user_role === service.USER_ROLES.SUPER_SELLER.key
-           || obj.user_role === service.USER_ROLES.UNKNOWN.key ) {
+           || obj.user_role === service.USER_ROLES.UNKNOWN.key)
+           && obj.customer_id !== this.userID ) {
             return true;
           };
         })
@@ -104,7 +111,7 @@ div
       title () {
         if (this.buy_list.length && this.sell_list.length) return;
 
-        if (this.buy_list.length && !this.sell_list.lengt) {
+        if (this.buy_list.length && !this.sell_list.length) {
           return "Шопинг-чаты";
         } else if (!this.buy_list.length && this.sell_list.length) {
           return "Чаты с покупателями";

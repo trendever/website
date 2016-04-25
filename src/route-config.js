@@ -82,7 +82,7 @@ export function configRouter(router) {
       component: require('project/auth/signup.vue')
     },
 
-    '/comfirm-sms': {
+    '/confirm-sms': {
       name: 'comfirm-sms',
       component: require('project/auth/comfirm-sms.vue')
     },
@@ -104,7 +104,7 @@ export function configRouter(router) {
   });
 
   router.afterEach(function(transition) {
-    window.scrollToTop(0, 0);
+    window.body.scrollTop = 0;
 
     // Mixpanel
     var data = {

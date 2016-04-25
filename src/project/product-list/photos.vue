@@ -1,7 +1,7 @@
 <style src="./styles/photos.pcss"></style>
 <template lang="jade">
 .photos
-  .photos__list#PhotosList
+  .photos__list(v-el:photos-list)
     .photo__title-row
       .photo__title-column(
         :class="{'active': countColumn == 2}",
@@ -28,6 +28,8 @@
 </template>
 
 <script type="text/babel">
+    import listen from 'event-listener';
+
     import {
       getPartProducts,
       getMoreProducts,
@@ -45,7 +47,6 @@
     import photoItemColumn3 from './photo-item-column-3.vue';
     import photoItemColumn2 from './photo-item-column-2.vue';
 
-    var w = window;
     var firstLoad =true;
     const CACHE = {
       search: '',
@@ -62,6 +63,8 @@
         tag_list: [],
         need_clear_objects_list: false,
         search: '',
+
+        scrollEvent: null,
       }),
 
       activate(done) {
@@ -75,19 +78,13 @@
       },
 
       created() {
-        // get from cache
-        // this.$set('search', CACHE.search);
-        // this.$set('tag_list', CACHE.tag_list);
         this.countColumn = CACHE.countColumn;
-        this.$on('hook:beforeDestroy', () => {
-          // remove old events and data
-          w.processDestroy(w.cur);
-        });
       },
 
       beforeDestroy() {
-        document.removeEventListener('scroll', this._handlerScroll, false);
-        // w.search = this.$get('search');
+        if (this.scrollEvent) {
+          this.scrollEvent.remove();
+        }
       },
 
       computed: {
@@ -113,20 +110,6 @@
       },
 
       methods: {
-    //     onDropList() {
-    //       this.$root.$broadcast('drop:search');
-    //     },
-
-        _handlerScroll() {
-          var pos_scroll = w.scrollGetY();
-          var full_scroll = w.ge("PhotosList").offsetHeight;
-          var diff_scroll = full_scroll - pos_scroll;
-
-          if (diff_scroll < 1500 && !this.isWaitReponseProducts) {
-              this.showMore()
-          }
-        },
-
         enableInfinityScroll(e, show_more) {
           this.enableInfinityProducts();
 
@@ -134,8 +117,17 @@
           if (show_more) {
             this.showMore();
           }
+          var self = this;
           // Add event for infinity scroll
-          document.addEventListener('scroll', this._handlerScroll, false);
+          this.scrollEvent = listen(window, 'scroll', function(){
+            var pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
+            var full_scroll = self.$els.photosList.offsetHeight;
+            var diff_scroll = full_scroll - pos_scroll;
+
+            if (diff_scroll < 1500 && !self.isWaitReponseProducts) {
+                self.showMore()
+            }
+          });
         },
 
         showMore(callback = null, call) {
@@ -154,34 +146,6 @@
 
           this.getMoreProducts(settings);
         },
-
-        // _handleResponse(resp, callback) {
-          // this.$set('is_wait_response', false);
-          // let object_list = resp["response_map"]["object_list"];
-
-          // // if empty response
-          // if (!object_list.length) {
-          //   this.$set('showMoreWrapper', false);
-          //   document.removeEventListener('scroll', this._handlerScroll, false);
-          // }
-
-          // object_list = this.$get('need_clear_objects_list')
-          //   ? object_list
-          //   : this.$get('objects_list').concat(object_list);
-          // this.$set('need_clear_objects_list', false);
-
-          // // if empty all response
-          // if (!object_list.length) {
-          //   this.$set('showBillEmpty', true);
-          // }
-
-          // this.$set('objects_list', object_list);
-
-          // // caching data
-          // window.photos = this.$get('objects_list');
-
-          // if (typeof callback === "function") { callback(); }
-        // },
 
         getSearchOptions() {
           let options = {};
@@ -213,44 +177,6 @@
           this.loadProducts();
         }
       },
-
-    //   events: {
-    //     // search({search, tag_list, callback = null}) {
-    //     //   this.$set('tag_list',tag_list.map( tag => tag.Id ));
-    //     //   this.$set('search', search.trim());
-    //     //   this.$set('need_clear_objects_list', true);
-    //     //   this.$nextTick( () => this.showMore(callback));
-    //     // },
-    //   },
-
-    //   watch: {
-    //     objects_list: {
-    //       handler() {
-    //         var count = this.$get('objects_list').length;
-
-    //         if(!count) {
-    //           this.$set('showMoreWrapper', false);
-    //           this.$set('showBillEmpty', true);
-    //         } else if (count % LIMIT_TOVAR === 0){
-    //           this.$set('showMoreWrapper', true);
-    //           this.$set('showBillEmpty', false);
-    //         } else if (count % LIMIT_TOVAR !== 0) {
-    //           this.$set('showMoreWrapper', false);
-    //           this.$set('showBillEmpty', false);
-    //           }
-    //       },
-    //       deep: true,
-    //     },
-    //     // search() {
-    //     //   CACHE.search = this.$get('search');
-    //     // },
-    //     // tag_list() {
-    //     //   CACHE.tag_list = this.$get('tag_list');
-    //     // },
-    //     countColumn() {
-    //       CACHE.countColumn = this.$get('countColumn');
-    //     },
-    //   },
 
       components: {
         photoItemColumn3,

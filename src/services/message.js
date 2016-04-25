@@ -54,7 +54,6 @@ export const ERROR_CODES = {
 export function create(conversation_id, text, mime_type) {
 
   return new Promise( (resolve, reject) => {
-    console.log(conversation_id, text, mime_type);
     channel.req("create", "message", { conversation_id, text, mime_type })
     .then( data => {
       if (data.error && data.error.code === ERROR_CODES.NOT_EXISTS) {

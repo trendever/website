@@ -6,20 +6,38 @@
     img.photos__image.photo-item__column-2(
      :src="product.instagram_image_url | url_thumbnail 306")
 
-  .photos__summ {{ DiscountPrice | curency_spaces }} #[i.ic-currency-rub]
-  .photos__bottom-title {{{ product.Title | replace_incorrect_chars }}}
+  .photos__summ {{ DiscountPrice | curency_spaces }} ₽
+  .photos__bottom-title {{{ Title }}}
 
 </template>
 
 <script type="text/ecmascript-6">
+  import pluralize from 'pluralize-ru';
+
   export default {
     props: [{ name: 'product', required: true }],
     computed: {
       DiscountPrice() {
-        var DiscountPrice = this.$get('product.DiscountPrice');
-        var Price = this.$get('product.Price');
-        return (DiscountPrice > 1) ? DiscountPrice : (Price > 1) ? Price : '?';
+        let items = this.product.items;
+        if (items.length === 0) {
+          return '?';
+        }
+        if (items[0].discount_price) {
+          return items[0].discount_price;
+        } else if (items[0].price) {
+          return items[0].price
+        }
+        return '?'
       },
+      Title() {
+        let items = this.product.items;
+        if (items.length === 0) {
+          return this.product.title;
+        } else if (items.length > 1) {
+          return `${items[0].name} (+${pluralize(items.length-1, '', '%d товар', '%d товара', '%d товаров')})`
+        }
+        return items[0].name
+      }
     },
   }
 </script>

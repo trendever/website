@@ -1,4 +1,5 @@
-/* global __debugMode */
+import { guid } from 'utils';
+
 export default class {
   constructor(store) {
     this.store = store;
@@ -33,7 +34,7 @@ export default class {
       trans_map: trans_map ? trans_map : {}
     };
     if (callback) {
-      var trans_id = window.guid();
+      var trans_id = guid();
       data.trans_map.trans_id = trans_id;
       data.trans_map.createdAt = new Date().getTime();
       this._addCallback(trans_id, callback);
@@ -49,7 +50,6 @@ export default class {
 
     let _callback = {callback};
     this.store.callbacks[guid_key] = _callback;
-
   }
 
   executeCallback(guid_key, response) {
