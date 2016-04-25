@@ -1,7 +1,7 @@
 <style src="./styles/chat-msg-photo-txt.pcss"></style>
 <template lang="jade">
 
-.chat-row(:class="getSide()")
+.chat-row(:class="getSide")
   .bubble
     a.chat-msg-photo-txt(target="_blank",
      v-link="{name: 'product_detail', params: {id: product.ID}}")
@@ -13,12 +13,12 @@
 
       .bubble_info
         .bubble_info_time {{ datetime }}
-        //.bubble_info_status
-          i.ic-check-double
+        .bubble_info_status(v-if="isOwnMessage")
+          i(:class="{'ic-check': isSent, 'ic-check-double': isRead}")
 
 </template>
 
-<script>
+<script type="text/babel">
 import {
     currentChatMember
   } from 'vuex/getters';
@@ -26,9 +26,6 @@ import {
   import { formatDatetime } from './utils';
 
   export default{
-    data: () => ({
-    }),
-
     props: {
       msg: {
         type: Object,
@@ -40,9 +37,11 @@ import {
       product() {
         return JSON.parse(this.msg.parts[0].content);
       },
+
       description() {
         return this.product.Items.reduce(function(desc, item, i, arr) {
-          desc += `${item.Name} `
+          desc += `${item.Name} `;
+
           if (item.DiscountPrice) {
             desc += `${item.DiscountPrice} ₽`
           } else if (item.Price) {
@@ -58,21 +57,25 @@ import {
           return desc
         }, '')
       },
-      datetime () {
-        return formatDatetime(this.msg.created_at);
-      }
-    },
 
-    methods: {
+      isOwnMessage() {
+        return this.currentMember.user_id === this.msg.user.user_id
+      },
+
+      isSent() {
+        return !this.isRead
+      },
+
+      isRead() {
+        return false
+      },
+
       getSide(){
-        if (!this.msg.user || !this.currentMember) {
+        if(!this.msg.user || !this.currentMember) {
           return '__center';
         }
-        if (this.currentMember.user_id === this.msg.user.user_id) {
-          return '__right';
-        } else {
-          return '__left';
-        }
+
+        return this.isOwnMessage ? '__right' : '__left';
       },
     },
 

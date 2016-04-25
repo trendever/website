@@ -1,7 +1,7 @@
 <style src="./styles/chat-msg.pcss"></style>
 <template lang="jade">
 
-.chat-row(:class="getSide()")
+.chat-row(:class="getSide")
   .chat-msg.bubble
     .chat-msg_t
       | {{{ getUsername }}}
@@ -9,12 +9,12 @@
       | {{ msg.parts[0].content }}
     .bubble_info
       .bubble_info_time {{ datetime }}
-      //.bubble_info_status
-        i.ic-check-double
+      .bubble_info_status(v-if="isOwnMessage")
+        i(:class="{'ic-check': isSent, 'ic-check-double': isRead}")
 
 </template>
 
-<script>
+<script type="text/babel">
   import {
     currentChatMember,
     currentChat,
@@ -26,24 +26,11 @@
   import { formatDatetime } from './utils';
 
   export default{
-    data: () => ({
-    }),
-
     props: {
       msg: {
         type: Object,
         required: true
       }
-    },
-
-    methods: {
-      getSide(){
-        if (this.currentMember.user_id === this.msg.user.user_id) {
-          return '__right';
-        } else {
-          return '__left';
-        }
-      },
     },
 
     vuex: {
@@ -67,7 +54,23 @@
         }
 
         return `<b>${this.currentLead.shop.instagram_username}</b> (продавец ${this.msg.user.name})`
-      }
+      },
+
+      isOwnMessage() {
+        return this.currentMember.user_id === this.msg.user.user_id
+      },
+
+      isSent() {
+        return !this.isRead
+      },
+
+      isRead() {
+        return false
+      },
+
+      getSide(){
+        return this.isOwnMessage ? '__right' : '__left';
+      },
     },
 
   }

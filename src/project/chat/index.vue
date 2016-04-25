@@ -10,18 +10,13 @@ div
 
             //- chat-msg-date
 
-            chat-msg-product(
-            v-if="msg.parts[0].mime_type === 'text/json'",
-            :msg="msg")
-
-            chat-msg(
-            v-if="msg.parts[0].mime_type === 'text/plain'",
-            :msg="msg")
+            chat-msg-product(v-if="msg.parts[0].mime_type === 'text/json'", :msg="msg")
+            chat-msg(v-if="msg.parts[0].mime_type === 'text/plain'", :msg="msg")
 
       chat-bar
 </template>
 
-<script>
+<script type="text/babel">
   import {
     getChat,
     setOpenedChat,
@@ -40,11 +35,13 @@ div
   import ChatBar from './chat-bar.vue';
   import ChatHeader from './chat-header.vue';
 
-  export default{
-    data: () => ({
-      chat: {},
-      messages: []
-    }),
+  export default {
+    data() {
+      return {
+        lastReadMessages: {}
+      }
+    },
+
     route: {
       data({to: {params: { id }}}) {
         // Listen messagess
@@ -61,11 +58,13 @@ div
         });
       },
     },
+
     vuex: {
       actions: {
         getChat,
         setOpenedChat,
       },
+
       getters: {
         currentChat,
         chatNotifyCount,
@@ -73,10 +72,9 @@ div
     },
 
     computed: {
-      messages () {
-        if (!this.currentChat) {return []};
-        return this.currentChat.messages;
-      }
+      messages() {
+        return this.currentChat ? this.currentChat.messages : [];
+      },
     },
 
     beforeDestroy() {
@@ -84,14 +82,15 @@ div
     },
 
     methods: {
-      goToBottom (){
+      goToBottom(){
         window.scrollTo(0, document.body.scrollHeight);
       },
+
       onMsg(r){
         if (r.response_map.chat.id === this.currentChat.id) {
           this.$nextTick(this.goToBottom);
         }
-      },
+      }
     },
 
     components: {
@@ -100,6 +99,24 @@ div
       ChatMsg,
       ChatMsgProduct,
       ChatMsgDate,
+    },
+
+    watch: {
+      messages() {
+        let count = this.messages.length;
+
+        if(count) {
+          let msg = this.messages[count - 1];
+
+          if(this.lastReadMessages[msg.conversation_id] !== msg.id) { // TODO: check data from server
+            messages
+              .update(msg.conversation_id, msg.id)
+              .then(ok => {
+                ok && (this.lastReadMessages[msg.conversation_id] = msg.id);
+              });
+          }
+        }
+      }
     }
   }
 </script>
