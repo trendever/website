@@ -67,6 +67,7 @@
     "modernizr": "^3.2.0",
     "node-sass": "^3.4.2",
     "open": "0.0.5",
+    "pluralize-ru": "^1.0.1",
     "postcss": "^5.0.19",
     "postcss-browser-reporter": "^0.4.0",
     "postcss-calc": "^5.0.0",

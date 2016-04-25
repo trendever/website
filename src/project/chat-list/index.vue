@@ -59,6 +59,7 @@ div
     vuex: {
       getters: {
         leads,
+        userID,
         leadsTab
       },
       actions: {
@@ -89,14 +90,20 @@ div
       },
       buy_list () {
         return this.leads.filter(
-          obj => obj.user_role === service.USER_ROLES.CUSTOMER.key );
+          obj =>  {
+            if ( obj.user_role === service.USER_ROLES.CUSTOMER.key
+              || obj.customer_id === this.userID ) { // if i'm superseller
+              return true;
+            }
+          });
       },
       sell_list () {
         return this.leads.filter( obj => {
-          if (obj.user_role === service.USER_ROLES.SELLER.key
+          if ((obj.user_role === service.USER_ROLES.SELLER.key
            || obj.user_role === service.USER_ROLES.SUPPLIER.key
            || obj.user_role === service.USER_ROLES.SUPER_SELLER.key
-           || obj.user_role === service.USER_ROLES.UNKNOWN.key ) {
+           || obj.user_role === service.USER_ROLES.UNKNOWN.key)
+           && obj.customer_id !== this.userID ) {
             return true;
           };
         })
