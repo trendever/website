@@ -1,4 +1,4 @@
-import { setCookie, getCookie, removeCookie} from 'utils';
+import { setCookie, getCookie, removeCookie, guid} from 'utils';
 import jwt_decode from 'jwt-decode';
 
 /*
@@ -49,7 +49,7 @@ export function getProfile(withoutCache) {
 
 export function createProfile() {
 
-  var uid = window.guid();
+  var uid = guid();
   var first_visit_at = (new Date()).getTime();
 
   Storage.setItem('uid', uid);
