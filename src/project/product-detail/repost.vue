@@ -103,7 +103,7 @@ div
           let obj = this.openedProduct.product;
           var selection = window.getSelection(),
               before = 'Покупайте в этой ленте, написав в комментарии @wantit 🙌 <br><br>',
-              after = '<br><br>Напишите @wantit 🌷 и товар добавиться в вашу корзину на #trenderver.com  ✒️' + obj.supplier.instagram_username + ', ' + obj.code,
+              after = '<br><br>Напишите @wantit 🌷 и товар добавится в вашу корзину на #trenderver.com  ✒️' + obj.supplier.instagram_username + ', ' + obj.code,
               copytext = before + obj.instagram_image_caption + after,
               newdiv = document.createElement('div');
 
