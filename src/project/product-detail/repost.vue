@@ -50,7 +50,6 @@ div
 
   export default {
     data: () => ({
-      object: {},
       id: ''
     }),
     route: {
@@ -101,10 +100,11 @@ div
       },
       addInfo() {
           //Get the selected text and append the extra info
+          let obj = this.openedProduct.product;
           var selection = window.getSelection(),
               before = 'Покупайте в этой ленте, написав в комментарии @wantit 🙌 <br><br>',
-              after = '<br><br>Напишите @wantit 🌷 и инста-шоп ' + this.object.IgSupplierUsername + ' вам ответит ✒️' + this.object.Code + ', все товары на #trendever.com @trendevercom',
-              copytext = before + this.object.IgImageCaption + after,
+              after = '<br><br>Напишите @wantit 🌷 и товар добавиться в вашу корзину на #trenderver.com  ✒️' + obj.supplier.instagram_username + ', ' + obj.code,
+              copytext = before + obj.instagram_image_caption + after,
               newdiv = document.createElement('div');
 
           //hide the newly created container
