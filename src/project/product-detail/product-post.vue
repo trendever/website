@@ -116,7 +116,7 @@ article.product-post
         // Load and set full image.
         var img = new Image();
         img.load(this.openedProduct.product.instagram_image_url, null, null, () => {
-          this.IgImageUrl = this.openedProduct.product.instagram_image_url;
+          this.IgImageUrl = urlThumbnail(this.openedProduct.product.instagram_image_url);
         });
       }
     },
