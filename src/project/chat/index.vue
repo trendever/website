@@ -10,8 +10,15 @@ div
 
             //- chat-msg-date
 
-            chat-msg-product(v-if="msg.parts[0].mime_type === 'text/json'", :msg="msg")
-            chat-msg(v-if="msg.parts[0].mime_type === 'text/plain'", :msg="msg")
+            chat-msg-product(
+              v-if="msg.parts[0].mime_type === 'text/json'",
+              :msg="msg",
+              :last-read-message-id="lastReadMessageId")
+
+            chat-msg(
+              v-if="msg.parts[0].mime_type === 'text/plain'",
+              :msg="msg",
+              :last-read-message-id="lastReadMessageId")
 
       chat-bar
 </template>
@@ -21,8 +28,10 @@ div
     getChat,
     setOpenedChat,
   } from 'vuex/actions';
+
   import {
     currentChat,
+    currentChatMember,
     chatNotifyCount,
   } from "vuex/getters";
 
@@ -36,12 +45,6 @@ div
   import ChatHeader from './chat-header.vue';
 
   export default {
-    data() {
-      return {
-        lastReadMessages: {}
-      }
-    },
-
     route: {
       data({to: {params: { id }}}) {
         // Listen messagess
@@ -67,6 +70,7 @@ div
 
       getters: {
         currentChat,
+        currentChatMember,
         chatNotifyCount,
       }
     },
@@ -74,6 +78,15 @@ div
     computed: {
       messages() {
         return this.currentChat ? this.currentChat.messages : [];
+      },
+
+      lastReadMessageId() {
+        let ids = this.currentChat.members
+          .filter(member => member.user_id !== this.currentChatMember.user_id)
+          .map(member => member.last_message_id)
+          .sort((a, b) => a - b);
+
+        return ids[0] // min last message id of all members (execept current)
       },
     },
 
@@ -108,12 +121,8 @@ div
         if(count) {
           let msg = this.messages[count - 1];
 
-          if(this.lastReadMessages[msg.conversation_id] !== msg.id) { // TODO: check data from server
-            messages
-              .update(msg.conversation_id, msg.id)
-              .then(ok => {
-                ok && (this.lastReadMessages[msg.conversation_id] = msg.id);
-              });
+          if(this.currentChatMember.last_message_id !== msg.id) {
+            messages.update(msg.conversation_id, msg.id)
           }
         }
       }

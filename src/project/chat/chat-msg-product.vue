@@ -29,7 +29,8 @@ import {
       msg: {
         type: Object,
         required: true
-      }
+      },
+      lastReadMessageId: Number
     },
 
     computed: {
@@ -66,7 +67,7 @@ import {
       },
 
       isRead() {
-        return false
+        return this.lastReadMessageId >= this.msg.id
       },
 
       getSide(){

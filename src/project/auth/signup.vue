@@ -16,6 +16,7 @@ div
                 input(type="text",
                   :class=" {error: errorLogin} ",
                   @focus="onFocusLogin",
+                  @keydown.enter="sendSMS()",
                   v-validate:login="[ 'required' ]",
                   v-model="login",
                   :placeholder="placeholder")
@@ -27,9 +28,10 @@ div
                 input(type="tel",
                   :class=" {error: errorPhone} ",
                   @focus="onFocusPhone",
+                  @keydown.enter="sendSMS()",
                   v-validate:phone="[ 'phone', 'required' ]",
                   v-model="phone",
-                  placeholder="Введите номер +XXXXXXXXXXX")
+                  placeholder="Введите номер телефона")
                 .input__clear-btn(
                   v-if="phone",
                   @click="phone = ''")
@@ -51,6 +53,18 @@ div
 </style>
 
 <script type="text/ecmascript-6">
+  import {
+    saveAuthData,
+    signup,
+    hidePopupFastSignup,
+    showPopupFastSignup,
+  } from 'vuex/actions';
+  import {
+    authData,
+    isAuth,
+  } from 'vuex/getters';
+
+  import store from 'vuex/store';
   import * as auth from 'services/auth';
   import { formatPhone } from 'utils.js';
   import Slider from './slider.vue';
@@ -82,45 +96,68 @@ div
       instagram: true
     }),
 
+    route: {
+      canActivate({abort}){
+        if (isAuth(store.state)) {
+          abort();
+        }
+        return true;
+      }
+    },
+
     ready() {
-      this.$dispatch('show:popup:fast-signup', false);
+      this.hidePopupFastSignup();
       this.$set('height', `${ document.body.scrollHeight }px`);
+      this.phone = this.authData.phone;
+      this.login = this.authData.username;
+      this.instagram = this.authData.instagram;
+    },
+
+    vuex: {
+      actions: {
+        saveAuthData,
+        signup,
+        hidePopupFastSignup,
+        showPopupFastSignup,
+      },
+      getters: {
+        authData,
+        isAuth,
+      }
     },
 
     methods: {
       closePage() {
-          mixpanel.track("Close Signup Page");
-          this.$dispatch('show:popup:fast-signup');
+        mixpanel.track("Close Signup Page");
+        this.save();
+        this.showPopupFastSignup();
 
-          if (window.history.length > 2) {
-            this.$router.go(window.history.back());
-          } else {
-            this.$router.go({name: 'home'});
-          }
+        if (window.history.length > 2) {
+          this.$router.go(window.history.back());
+        } else {
+          this.$router.go({name: 'home'});
+        }
+      },
+
+      save() {
+        this.saveAuthData({
+          username: this.login,
+          phone: this.phone,
+          instagram: this.instagram,
+        })
       },
 
       sendSMS() {
-        var config = {
-          username: this.login,
-          phone: formatPhone(this.phone, true),
-          instagram: this.instagram,
+        if (!this.$signup.valid) {
+          return;
         }
+        this.save();
 
-        auth.signup(config).then( data => {
-          this.$router.go({ name: 'comfirm-sms' })
-        }).catch( error => {
-          if (error === auth.ERROR_CODES.USER_ALREADY_EXISTS) {
-
-            auth.sendPassword({phone: config.phone}).then( data => {
-                this.$router.go({ name: 'comfirm-sms' })
-            }).catch( error => {
-              console.log(error);
-            })
-
-          } else if (error === auth.ERROR_CODES.INCORRECT_PHONE_FORMAT) {
-              this.onErrorPhone();
-          }
-
+        this.signup().then( ()=> {
+          this.$router.go({ name: 'comfirm-sms' });
+        }).catch( (error) => {
+          this.onErrorPhone();
+          console.log(error);
         })
       },
 

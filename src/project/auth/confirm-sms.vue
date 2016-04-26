@@ -15,6 +15,8 @@ div
               input(type="tel",
                 @keypress="onInput",
                 @focus="onFocus",
+                @keydown.enter="onButton()",
+                v-el:confirm-field,
                 v-model="code",
                 placeholder="9999")
 
@@ -22,6 +24,8 @@ div
         .btn-container
           button.btn.btn_primary.__orange.__xl.fast__big__btn(
             :disabled="isDisabled",
+            v-el:confirm-btn,
+            @keydown.enter="onButton()",
             @click="onButton") {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
           .link-container
             a.link-bottom(href="#",
@@ -30,8 +34,15 @@ div
               @click.prevent="sendSMS") Отправить новый код
 </template>
 
-<script type="text/ecmascript-6">
-  import { authenticateUser } from 'vuex/actions';
+<script>
+  import {
+    hidePopupFastSignup,
+    authenticateUser,
+  } from 'vuex/actions';
+  import {
+    authData,
+  } from 'vuex/getters';
+  import store from 'vuex/store';
   import * as auth from 'services/auth';
 
   const TEXT_HEADER = {
@@ -49,20 +60,34 @@ div
       needNewSMS: false,
     }),
 
+    route: {
+      canActivate({abort}){
+        if (!authData(store.state).phone && !authData(store.state).username) {
+          abort();
+        }
+        return true;
+      }
+    },
+
     ready() {
       this.$set('height', `${ document.body.scrollHeight }px`);
-      this.$dispatch('show:popup:fast-signup', false);
+      this.hidePopupFastSignup();
+      this.$els.confirmField.focus();
     },
 
     vuex: {
       actions: {
         authenticateUser,
+        hidePopupFastSignup,
+      },
+      getters: {
+        authData,
       }
     },
 
     computed: {
       isDisabled() {
-        return (this.$get('code').length !== 4) && !this.$get('isCompleted');
+        return (this.code.length !== 4) && !this.isCompleted;
       },
     },
 
@@ -79,6 +104,9 @@ div
       },
 
       onButton() {
+        if (this.isDisabled) {
+          return;
+        }
         if (this.isCompleted) {
           // go to back
           // this.closePage();
@@ -104,6 +132,7 @@ div
       onComplete(user, token) {
         this.isCompleted = true;
         this.authenticateUser(user, token);
+        this.$els.confirmBtn.focus();
       },
 
       onErrorCode() {

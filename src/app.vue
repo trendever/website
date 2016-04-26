@@ -1,11 +1,11 @@
 <template lang="jade">
 div
-  div(:class="{popup: showPopupFastSignup}")
+  div(:class="{popup: isShowPopupFastSignup}")
     popup-signup(
-      v-if="showPopupSignup")
+      v-if="isShowPopupSignup")
 
     popup-fast-signup(
-      v-if="showPopupFastSignup")
+      v-if="isShowPopupFastSignup")
 
   router-view
 
@@ -36,8 +36,6 @@ div
 
   export default {
     data: () => ({
-      // showPopupSignup: false,
-      // showPopupFastSignup: false,
     }),
     init() {
       loadUser(store);
@@ -63,11 +61,7 @@ div
       }
 
       if (!this.isAuth) {
-        if (profile.isFirstVisit) {
-          this.$router.go({name: 'hello'});
-        } else {
-          showPopupFastSignup(store);
-        }
+        showPopupFastSignup(store);
       }
 
       // if not try subscribed, do it after 30s

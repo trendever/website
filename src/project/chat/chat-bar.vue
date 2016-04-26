@@ -49,6 +49,10 @@ div
       }
     },
 
+    ready() {
+      this.$els.inputMsg.focus();
+    },
+
     computed: {
       isAdmin: function() {
         if (!this.currentChatMember) {

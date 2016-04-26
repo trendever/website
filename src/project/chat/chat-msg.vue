@@ -30,7 +30,8 @@
       msg: {
         type: Object,
         required: true
-      }
+      },
+      lastReadMessageId: Number
     },
 
     vuex: {
@@ -65,7 +66,7 @@
       },
 
       isRead() {
-        return false
+        return this.lastReadMessageId >= this.msg.id
       },
 
       getSide(){
