@@ -5,7 +5,7 @@ from fabric.operations import local as lrun, run, sudo
 
 env.roledefs = {
     'dev': ['dev@dev.trendever.com'],
-    'live': ['live@demo.trendever.com'],
+    'live': ['live@trendever.com'],
 }
 env.shell = "/bin/bash -l -i -c"
 env.forward_agent = True
