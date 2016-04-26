@@ -12,7 +12,7 @@
       p ...искать и покупать в живой ленте#[br]товаров от трендскаутов.
       img(src="/static/img/auth-slide-1.svg")
     .swipe-item.slide.slide-2
-      p ...покупать в приложении Instagram#[br]по комментарию @wantit..
+      p ...покупать в приложении Instagram#[br]по комментарию @wantit.
       img(src="/static/img/auth-slide-2.svg")
       p.hide-desktop(style="margin-top: -10px")
         | Поэтому укажите инста-логин #[i.emoji.emoji_down]

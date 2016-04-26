@@ -1,3 +1,11 @@
+export const authData = state => {
+  return {
+    phone: state.auth.phone,
+    username: state.auth.username,
+    instagram: state.auth.instagram,
+  };
+};
+
 // User
 export const isAuth = state => state.user.isAuth;
 export const userID = state => state.user.id;

@@ -1,10 +1,59 @@
 import * as types from './mutation-types';
+import * as auth from 'services/auth';
 import * as products from 'services/products.js';
 import * as leads from 'services/leads.js';
 import * as chats from 'services/chat.js';
 import * as messages from 'services/message.js';
 import * as profile from 'services/profile.js';
 import * as tagsService from 'services/tags';
+import * as utils from 'utils';
+
+// Auth
+
+/**
+ * Save auth data
+ * Need for registration
+ * @param  {string} options.phone
+ * @param  {string} options.username
+ * @param  {boolean} options.instagram   username is instagram username?
+ */
+export const saveAuthData = ({ dispatch }, { phone, username, instagram }) => {
+  phone = phone ? utils.formatPhone(phone, true) : '';
+  dispatch(types.RECEIVED_AUTH_DATA, { phone, username, instagram });
+};
+
+/**
+ * User registration (with sms confirmation)
+ * Params must be saved with actions.saveAuthData
+ */
+export const signup = ({ dispatch, state }) => {
+  return new Promise((resolve, reject) => {
+    let _data = {
+      phone: state.auth.phone,
+      username: state.auth.username,
+      instagram: state.auth.instagram,
+    };
+
+    auth.signup(_data).then( () => {
+      resolve(true);
+    }).catch( error => {
+      if (error === auth.ERROR_CODES.USER_ALREADY_EXISTS) {
+
+        return auth.sendPassword({phone: state.auth.phone}).then( () => {
+            resolve(true);
+        }).catch( error => {
+          console.log(error);
+        });
+
+      } else if (error === auth.ERROR_CODES.INCORRECT_PHONE_FORMAT) {
+          return reject(error);
+      }
+      console.log(error);
+
+    });
+
+  });
+};
 
 // User
 

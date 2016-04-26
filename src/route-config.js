@@ -62,11 +62,6 @@ export function configRouter(router) {
       component: require('./project/info/info.vue')
     },
 
-    '/hello': {
-      name: 'hello',
-      component: require('./project/subscribe/hello.vue')
-    },
-
     // '/subscribe': {
     //   name: 'subscribe',
     //   component: require('./project/subscribe/subscribe.vue')
@@ -84,7 +79,7 @@ export function configRouter(router) {
 
     '/confirm-sms': {
       name: 'comfirm-sms',
-      component: require('project/auth/comfirm-sms.vue')
+      component: require('project/auth/confirm-sms.vue')
     },
 
     // not found handler
