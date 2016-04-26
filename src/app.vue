@@ -2,11 +2,9 @@
 div
   div(:class="{popup: showPopupFastSignup}")
     popup-signup(
-      :show="showPopupSignup",
       v-if="showPopupSignup")
 
     popup-fast-signup(
-      :show="showPopupFastSignup",
       v-if="showPopupFastSignup")
 
   router-view
@@ -20,8 +18,14 @@ div
   import {
     loadUser,
     authenticateUser,
+    showPopupSignup,
+    showPopupFastSignup,
   } from 'vuex/actions';
-  import { isAuth } from 'vuex/getters';
+  import {
+    isAuth,
+    isShowPopupSignup,
+    isShowPopupFastSignup,
+  } from 'vuex/getters';
   import * as types from 'vuex/mutation-types';
   import profile from 'services/profile';
   import * as messages from 'services/message';
@@ -32,8 +36,8 @@ div
 
   export default {
     data: () => ({
-      showPopupSignup: false,
-      showPopupFastSignup: false,
+      // showPopupSignup: false,
+      // showPopupFastSignup: false,
     }),
     init() {
       loadUser(store);
@@ -41,7 +45,9 @@ div
 
     vuex: {
       getters: {
-        isAuth
+        isAuth,
+        isShowPopupSignup,
+        isShowPopupFastSignup,
       }
     },
 
@@ -60,7 +66,7 @@ div
         if (profile.isFirstVisit) {
           this.$router.go({name: 'hello'});
         } else {
-          this.$dispatch('show:popup:fast-signup');
+          showPopupFastSignup(store);
         }
       }
 
@@ -73,16 +79,6 @@ div
       //   }, 30*1000);
       // }
 
-    },
-
-    events: {
-     ['show:popup:signup'](flag = true) {
-       this.showPopupSignup = flag;
-     },
-
-     ['show:popup:fast-signup'](flag = true) {
-       this.showPopupFastSignup = flag;
-     },
     },
 
     components: {

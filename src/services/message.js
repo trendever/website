@@ -74,6 +74,31 @@ export function create(conversation_id, text, mime_type) {
 }
 
 /**
+ * Set message status to 'read'
+ * @param {Number} conversation_id
+ * @param {Number} message_id
+ * @return {Promise}
+ */
+export function update(conversation_id, message_id) {
+  return channel
+    .req('update', 'message', {conversation_id, message_id})
+    .then(data => {
+      if (data.error && data.error.code === ERROR_CODES.NOT_EXISTS) {
+        throw ERROR_CODES.NOT_EXISTS;
+      } else {
+        return data.response_map.status === 'ok';
+      }
+    })
+    .catch(err => {
+      if (err.log_map.code_key === '403') {
+        throw ERROR_CODES.UNATHORIZED;
+      } else if (err.log_map.code_key === '400') {
+        throw ERROR_CODES.NOT_EXISTS;
+      }
+    });
+}
+
+/**
  * Listen when msg notify received
  * @param  {function} handler    call it func when fired event
  */

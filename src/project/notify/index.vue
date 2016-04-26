@@ -6,7 +6,11 @@
   import {
     receiveChatNotify,
     receiveChangedStatusNotify,
+    getAllLeads,
   } from 'vuex/actions';
+  import {
+    currentLead
+  } from 'vuex/getters';
   import store from 'vuex/store';
   import * as types from 'vuex/mutation-types';
   import * as messages from 'services/message';
@@ -20,6 +24,9 @@
       actions: {
         receiveChatNotify,
         receiveChangedStatusNotify,
+      },
+      getters: {
+        currentLead
       }
     },
 
@@ -30,7 +37,7 @@
         self.receiveChatNotify(r.response_map.chat.id);
         store.dispatch(types.RECEIVE_CHAT_MSG,
         r.response_map.chat.id, r.response_map.messages[0]);
-      })
+      });
 
       leads.onChangeStatus(function(r){
         self.receiveChangedStatusNotify(r.response_map.lead.id, r.response_map.lead.status);

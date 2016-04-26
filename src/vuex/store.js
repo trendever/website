@@ -9,6 +9,7 @@ import leads from './modules/leads';
 import chat from './modules/chat';
 import products from './modules/products';
 import search from './modules/search';
+import popups from './modules/popups';
 
 
 Vue.use(Vuex);
@@ -22,7 +23,8 @@ export default new Vuex.Store({
     chat,
     leads,
     products,
-    search
+    search,
+    popups,
   },
   strict: config.debug,
   middlewares: config.debug ? [createLogger()] : []

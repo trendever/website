@@ -150,19 +150,36 @@ export const clearSearch = (store) => {
 // Leads
 
 /**
- * Get leads (with cache)
+ * Get leads
  */
-export const getAllLeads = ({ dispatch, state }) => {
+export const getAllLeads = ({ dispatch }) => {
   return new Promise((resolve) => {
-
-    if (state.leads.all.length) {
-      resolve(state.leads.all);
-      return;
-    }
 
     leads.find().then( data => {
       dispatch(types.RECEIVE_LEADS, data);
       resolve(data);
+    });
+
+  });
+};
+
+/**
+ * Get lead by lead_id or converstation_id (witch cache)
+ * @param  {number} options.lead_id
+ * @param  {number} options.conversation_id
+ * @param  {bool} reset     if true, then get without cache
+ */
+export const getLead = ({ dispatch, state }, { lead_id, conversation_id , without_cache}) => {
+  return new Promise((resolve) => {
+
+    if (!without_cache && state.leads.all.length) {
+      resolve(state.leads.all.filter( lead => lead.id === lead_id || lead.conversation_id === conversation_id));
+      return;
+    }
+
+    leads.get({ lead_id, conversation_id }).then( lead => {
+      dispatch(types.RECEIVE_LEAD, lead);
+      resolve(lead);
     });
 
   });
@@ -198,6 +215,9 @@ export const leadsSetTab = ({ dispatch }, tab) => {
 export const receiveChatNotify = ({ dispatch, state }, chat_id) => {
   if (state.chat.opened_id !== chat_id) {
     dispatch(types.INCREMENT_CHAT_NOTIFY_COUNT);
+  }
+  if (!state.chat.opened_id) {
+    getLead( {dispatch, state}, { conversation_id: chat_id, without_cache: true});
   }
 };
 export const readedAllChatNotify = ({ dispatch }) => {
@@ -255,15 +275,9 @@ export const getChat = ({ dispatch, state }, chat_id) => {
       });
     }
 
-    // ToDo delete it, if Igor added custom method for get lead
-    if (!state.leads.all.length) {
-      leads.find().then( data => {
-        dispatch(types.RECEIVE_LEADS, data);
-        getHistory();
-      });
-    } else {
+    getLead({ dispatch, state }, {conversation_id: chat_id}).then( () => {
       getHistory();
-    }
+    });
 
   });
 };
@@ -278,7 +292,6 @@ export const createChatMsg = ({ dispatch, state }, conversation_id, text, mime_t
   return new Promise((resolve, reject) => {
 
     messages.create(conversation_id, text, mime_type).then( data => {
-      // dispatch(types.RECEIVE_CHAT_MSG, data.chat.id, data.messages[0]);
       resolve(data.chat.id, data.messages[0]);
     }).catch( error => {
       reject(error);
@@ -287,3 +300,21 @@ export const createChatMsg = ({ dispatch, state }, conversation_id, text, mime_t
   });
 };
 
+
+// Popups
+
+export const showPopupSignup = ({ dispatch }) => {
+  dispatch(types.SHOW_POPUP_SIGNUP);
+};
+
+export const hidePopupSignup = ({ dispatch }) => {
+  dispatch(types.HIDE_POPUP_SIGNUP);
+};
+
+export const showPopupFastSignup = ({ dispatch }) => {
+  dispatch(types.SHOW_POPUP_FAST_SIGNUP);
+};
+
+export const hidePopupFastSignup = ({ dispatch }) => {
+  dispatch(types.HIDE_POPUP_FAST_SIGNUP);
+};

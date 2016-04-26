@@ -29,6 +29,11 @@ div
 
 <script>
   import profile from 'services/profile'
+  import {
+    showPopupSignup,
+    showPopupFastSignup,
+    hidePopupFastSignup,
+  } from 'vuex/actions';
 
   export default {
     data: () => ({
@@ -65,8 +70,16 @@ div
       },
     },
 
+    vuex: {
+      actions: {
+        showPopupSignup,
+        showPopupFastSignup,
+        hidePopupFastSignup
+      }
+    },
+
     created() {
-      this.$dispatch('show:popup:fast-signup', false);
+      this.hidePopupFastSignup();
     },
 
     methods: {
@@ -92,7 +105,7 @@ div
     },
 
     destroyed() {
-      this.$dispatch('show:popup:fast-signup');
+      this.showPopupFastSignup();
     },
   }
 </script>

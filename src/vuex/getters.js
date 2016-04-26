@@ -39,3 +39,7 @@ export const currentChatMember = state => {
 export const searchValue = state => state.search.value;
 export const tags = state => state.search.tags;
 export const selectedTags = state => state.search.selectedTags;
+
+// Popups
+export const isShowPopupSignup = state => state.popups.showSignup;
+export const isShowPopupFastSignup = state => state.popups.showFastSignup;
