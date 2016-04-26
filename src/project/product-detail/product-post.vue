@@ -61,6 +61,7 @@ article.product-post
 
 <script type="text/ecmascript-6">
   import { urlThumbnail } from 'utils'
+  import { createLead } from 'vuex/actions';
   import { openedProduct, isAuth } from 'vuex/getters';
   import * as leads from 'services/leads';
 
@@ -70,6 +71,9 @@ article.product-post
     }),
 
     vuex: {
+      actions: {
+        createLead
+      },
       getters: {
         openedProduct,
         isAuth,
@@ -93,13 +97,13 @@ article.product-post
         if (!isAuth) {
           this.$router.go({ name: 'signup' });
         } else {
-          leads.create(this.openedProduct.product.id).then( leadId => {
+          this.createLead(this.openedProduct.product.id).then( leadId => {
             this.$router.go({ name: 'chat', params: {id: leadId} });
           }).catch( error => {
             if (error === leads.ERROR_CODES.UNATHORIZED) {
               this.$router.go({ name: 'signup' });
             }
-          });
+          })
         }
       },
 

@@ -198,6 +198,27 @@ export const clearSearch = (store) => {
 
 // Leads
 
+export const createLead = ({ dispatch, state }, product_id) => {
+  return new Promise((resolve, reject) => {
+
+    leads.create(product_id).then( leadId => {
+
+      // ToDo  Когда Игорь сделает,
+      // чтобы возвращался целый лид, вместо id тогда открывать чат.
+      setOpenedChat({ dispatch, state }, leadId); // ToDo Warning, id may be wrong!
+
+      resolve(leadId);
+
+    }).catch( error => {
+      if (error === leads.ERROR_CODES.UNATHORIZED) {
+        return reject(error);
+      }
+      console.log(error);
+    });
+
+  });
+};
+
 /**
  * Get leads
  */
@@ -269,14 +290,15 @@ export const receiveChatNotify = ({ dispatch, state }, chat_id) => {
     getLead( {dispatch, state}, { conversation_id: chat_id, without_cache: true});
   }
 };
+
 export const readedAllChatNotify = ({ dispatch }) => {
   dispatch(types.CLEAR_CHAT_NOTIFY_COUNT);
 };
 
 export const setOpenedChat = ({ dispatch, state }, chat_id) => {
-  let chat = state.chat.all.find(obj => obj.id === chat_id);
-  if (!chat) {return;}
-  dispatch(types.OPEN_CHAT, chat.id);
+  // let chat = state.chat.all.find(obj => obj.id === chat_id);
+  // if (!chat) {return;}
+  dispatch(types.OPEN_CHAT, chat_id);
 };
 
 /**

@@ -4,7 +4,7 @@ div
   .repost(:style="{height: height}")
     .info__close(@click="back"): i.ic-close
     .crop
-      img(:src="object.IgImageUrl")
+      img(:src="igImageUrl")
       .repost_header
         h1 Пост в Instagram
     .step.step_1
@@ -15,7 +15,7 @@ div
       .step_cnt
         .action
           .pict
-            img(:src="object.IgImageUrl")
+            img(:src="igImageUrl")
           img.tap(src="/static/img/tap_white.png")
         p Нажмите на фото#[br] #[span.emoji.emoji_fingleft] здесь слева#[br]и удерживайте,#[br]чтобы сохранить
 
@@ -42,7 +42,10 @@ div
 </template>
 
 <script>
+  import { urlThumbnail } from 'utils'
   import products_find from 'services/products/products'
+  import { openedProduct } from 'vuex/getters';
+  import { openProduct } from 'vuex/actions';
   import { createOpportunity, getFromCache } from 'services/actions'
 
   export default {
@@ -51,27 +54,20 @@ div
       id: ''
     }),
     route: {
-      data(transition) {
-        var id = +transition.to.params.id;
-        var object = getFromCache(id);
+      activate({to: {params: { id }}}) {
+        return this.openProduct(+id).catch( error => {
+          this.$route.router.go({name: '404'});
+        })
+      },
+    },
 
-        if (object) {
-          products_find([], {id}, {}, resp => {
-            let object = resp["response_map"]["object_list"][0];
-            this.$set('object', object);
-          });
-
-          return {id, object};
-        }
-
-        return new Promise ( res => products_find([], {id}, {}, resp => {
-          let object = resp["response_map"]["object_list"][0];
-          res({id, object});
-
-          // for cached
-          window.photos = (window.photos || []).concat(object);
-        }));
-      }
+    vuex: {
+      actions: {
+        openProduct,
+      },
+      getters: {
+        openedProduct,
+      },
     },
     computed: {
       height() {
@@ -79,24 +75,25 @@ div
         return `${window.innerHeight}px`;
       },
       caption() {
-        var source = this.object.IgImageCaption;
+        var source = this.openedProduct.product.instagram_image_caption;
         if (!source) return;
-        // remove emoji
-        // source = source.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, ' ');
         source = source.replace(/([^0-9a-zа-я\s])/ig, ' ').replace(/\s{2,}/g, ' ');
         // need part of text for bubble
         source = source.slice(0, 80);
         source = source.replace(/[.,\/#!\'\"$%+\s@\^☀️&\*;:{}=\-_`~()]/g, "<span class='whitespace'></span>");
         return source + '...'
+      },
+      igImageUrl() {
+        return urlThumbnail(this.openedProduct.product.instagram_image_url);
       }
     },
     methods: {
-      back(productId) {
-        mixpanel.track("Close Repost Page", {productId: productId});
+      back() {
+        mixpanel.track("Close Repost Page", {productId: this.openedProduct.product.id});
 
         this.$route.router.go({
           name: 'product_detail',
-          params: { id: this.$get('id') }
+          params: { id: this.openedProduct.product.id }
         });
       },
       openInsta() {
