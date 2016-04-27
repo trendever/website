@@ -77,7 +77,8 @@ div
 
           this.$nextTick(this.goToBottom);
 
-          if (this.currentLead.status === leads.STATUSES.NEW.key) {
+          if (this.currentLead.status === leads.STATUSES.NEW.key
+            && this.currentChatMember.role === leads.USER_ROLES.CUSTOMER.key) {
             this.setLeadStatus(this.currentLead.id, 'PROGRESS');
           }
 
