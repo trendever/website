@@ -34,14 +34,14 @@ if (!config.debug) {
 // Exctract all css from components
 if (getArg('build')) {
   plugins = plugins.concat([
-    new ExtractTextPlugin("static/css/styles_vue.css")
+    new ExtractTextPlugin("static/css/style_vue.css")
   ]);
   vue_loaders["css"] = ExtractTextPlugin.extract("css");
 }
 
 module.exports = {
   entry: {
-    app: ['./src/index.js']
+    app_1: ['./src/index.js']
   },
 
   output: {
