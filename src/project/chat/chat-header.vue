@@ -2,6 +2,7 @@
 <template lang="jade">
 header-component(:notify-count='chatNotifyCount',
 :back-link="{name: 'chat_list'}")
+
   .chat-header(slot="content")
     .chat-header_cnt
       .chat-header_cnt_t {{ shopName }}
@@ -10,8 +11,11 @@ header-component(:notify-count='chatNotifyCount',
         | {{ id }},
         span  {{ status }}
 
+
+
     .chat-header_photo
-      img(:src="shopPhoto | url_thumbnail 150")
+      img(:src="shopPhoto | url_thumbnail 150",
+      onerror="this.error=null;this.src='/static/img/favicon.png'",)
 </template>
 
 <script>

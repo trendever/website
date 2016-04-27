@@ -356,6 +356,7 @@ export const getChat = ({ dispatch, state }, chat_id) => {
       getHistory(lead);
     } else {
       leads.get({ converstation_id: chat_id }).then( lead => {
+        dispatch(types.RECEIVE_LEAD, lead);
         getHistory(lead);
       });
     }

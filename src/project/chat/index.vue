@@ -52,16 +52,16 @@ div
         // Listen messagess
         messages.onMsg(this.onMsg);
 
-          this.getChat(+id).then( () => {
+        this.getChat(+id).then( () => {
 
-            this.setOpenedChat(+id);
+          this.setOpenedChat(+id);
 
-            this.$nextTick(this.goToBottom);
+          this.$nextTick(this.goToBottom);
 
-          }).catch( error => {
+        }).catch( error => {
 
-            this.$router.go({name: '404'});
-          });
+          this.$router.go({name: '404'});
+        });
 
       },
     },
