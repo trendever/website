@@ -382,6 +382,7 @@ export const createChatMsg = ({ dispatch, state }, conversation_id, text, mime_t
   });
 };
 
+export const setMessageRead = ({dispatch}, {id, members}) => dispatch(types.UPDATE_CHAT_MEMBERS, id, members);
 
 // Popups
 
