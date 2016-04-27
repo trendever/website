@@ -21,7 +21,7 @@ var src = 'src/',
                 src_modules + 'b-*/*.{css,scss}',
                 src_modules + '**/*.{css,scss}'
             ],
-            name: 'styles.css',
+            name: 'style.css',
             dest: dest + 'css/'
         },
         img: {
