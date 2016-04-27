@@ -13,7 +13,7 @@ div
           .input-container
             .input.confirm-input
               input(type="tel",
-                @keypress="onInput",
+                @keyup="onInput",
                 @focus="onFocus",
                 @keydown.enter="onButton()",
                 v-el:confirm-field,
@@ -94,12 +94,10 @@ div
     methods: {
       // input only numbers
       onInput(e) {
-        if (!(e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
-          e.preventDefault();
-        }
+        this.code = this.code.replace(/[^0-9]/g, '');
 
-        if (this.$get('code').length >= 4) {
-          e.preventDefault();
+        if (this.code.length >= 4) {
+          this.code = this.code.slice(0, 4);
         }
       },
 

@@ -19,10 +19,10 @@ article.product-post
   section.product-post__bottom-photo(v-for="item in openedProduct.product.items")
     .product-post__price-container
       template(v-if="item.discount_price")
-        .product-post__price-main(v-if="item.discount_price") {{ item.discount_price | curency_spaces }} ₽
-        .product-post__price-discount(v-if="item.price") {{ item.price | curency_spaces }} ₽
+        .product-post__price-main(v-if="item.discount_price") {{ item.discount_price | curency_spaces }} #[i.ic-currency-rub]
+        .product-post__price-discount(v-if="item.price") {{ item.price | curency_spaces }} #[i.ic-currency-rub]
       template(v-if="price(item)")
-        .product-post__price-main(v-if="item.price") {{ item.price | curency_spaces }} ₽
+        .product-post__price-main(v-if="item.price") {{ item.price | curency_spaces }} #[i.ic-currency-rub]
       template(v-if="zeroPrice(item)") цена по #[br] запросу
     .product-post__title.__bottom {{{ item.name }}}
 
@@ -59,7 +59,7 @@ article.product-post
     .product-post__text {{{ openedProduct.product.instagram_image_caption }}}
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   import { urlThumbnail } from 'utils'
   import { createLead } from 'vuex/actions';
   import { openedProduct, isAuth } from 'vuex/getters';
