@@ -26,6 +26,7 @@ div
 <script type="text/babel">
   import {
     getChat,
+    getLead,
     setOpenedChat,
   } from 'vuex/actions';
 
@@ -35,6 +36,7 @@ div
     chatNotifyCount,
   } from "vuex/getters";
 
+  import store from 'vuex/store';
   import * as service from 'services/chat';
   import * as messages from 'services/message';
 
@@ -50,21 +52,24 @@ div
         // Listen messagess
         messages.onMsg(this.onMsg);
 
-        this.getChat(+id).then( () => {
+          this.getChat(+id).then( () => {
 
-          this.setOpenedChat(+id);
+            this.setOpenedChat(+id);
 
-          this.$nextTick(this.goToBottom);
+            this.$nextTick(this.goToBottom);
 
-        }).catch( error => {
-          this.$router.go({name: '404'});
-        });
+          }).catch( error => {
+
+            this.$router.go({name: '404'});
+          });
+
       },
     },
 
     vuex: {
       actions: {
         getChat,
+        getLead,
         setOpenedChat,
       },
 
