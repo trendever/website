@@ -243,7 +243,7 @@ export const getLead = ({ dispatch, state }, { lead_id, conversation_id , withou
   return new Promise((resolve) => {
 
     if (!without_cache && state.leads.all.length) {
-      resolve(state.leads.all.filter( lead => lead.id === lead_id || lead.conversation_id === conversation_id));
+      resolve(state.leads.all.filter( lead => lead.id === lead_id || lead.conversation_id === conversation_id)[0]);
       return;
     }
 
@@ -316,18 +316,10 @@ export const getChat = ({ dispatch, state }, chat_id) => {
 
     dispatch(types.CLOSE_OPENED_CHAT);
 
-    function tryJoinToChat() {
-      chats.join(chat_id).then(() => {
-        this.getHistory();
-      }).catch( error => {
-        if (error === chats.ERROR_CODES.NOT_EXISTS) {
-          reject(error);
-        }
-      });
-    }
+    var lead = null;
 
     function getHistory() {
-      chats.history(chat_id).then( data => {
+      chats.history(lead.chat.id).then( data => {
 
         let chat = {
           id: data.chat.id,
@@ -346,7 +338,19 @@ export const getChat = ({ dispatch, state }, chat_id) => {
       });
     }
 
-    getLead({ dispatch, state }, {conversation_id: chat_id}).then( () => {
+    function tryJoinToChat() {
+      chats.join(lead.id).then(() => {
+        this.getHistory();
+      }).catch( error => {
+        if (error === chats.ERROR_CODES.NOT_EXISTS) {
+          reject(error);
+        }
+      });
+    }
+
+    getLead({ dispatch, state }, {conversation_id: chat_id}).then( _lead => {
+      lead = _lead;
+      console.log("lead", lead);
       getHistory();
     });
 
