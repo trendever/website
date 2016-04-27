@@ -249,11 +249,11 @@ export function find() {
  *
  * REJECT (one of ERROR_CODES) {OBJECT_NOT_EXIST, UNATHORIZED}
  */
-export function get({ lead_id, conversation_id }) {
+export function get({ lead_id, converstation_id }) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("retrieve", "lead", { lead_id, conversation_id })
+    channel.req("retrieve", "lead", { lead_id, conversation_id: converstation_id })
     .then( data => {
       resolve(data.response_map.lead);
     }).catch( error => {

@@ -61,7 +61,7 @@ article.product-post
 
 <script>
   import { urlThumbnail } from 'utils'
-  import { createLead } from 'vuex/actions';
+  import { createLead, getLead } from 'vuex/actions';
   import { openedProduct, isAuth } from 'vuex/getters';
   import * as leads from 'services/leads';
 
@@ -72,7 +72,8 @@ article.product-post
 
     vuex: {
       actions: {
-        createLead
+        createLead,
+        getLead,
       },
       getters: {
         openedProduct,
@@ -97,8 +98,8 @@ article.product-post
         if (!isAuth) {
           this.$router.go({ name: 'signup' });
         } else {
-          this.createLead(this.openedProduct.product.id).then( leadId => {
-            this.$router.go({ name: 'chat', params: {id: leadId} });
+          this.createLead(this.openedProduct.product.id).then( lead => {
+            this.$router.go({ name: 'chat', params: {id: lead.chat.id} });
           }).catch( error => {
             if (error === leads.ERROR_CODES.UNATHORIZED) {
               this.$router.go({ name: 'signup' });

@@ -39,6 +39,7 @@ export default class {
       data.trans_map.createdAt = new Date().getTime();
       this._addCallback(trans_id, callback);
     }
+    console.log("request", request_map);
 
     this.store.send(data);
   }

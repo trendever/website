@@ -203,11 +203,9 @@ export const createLead = ({ dispatch, state }, product_id) => {
 
     leads.create(product_id).then( leadId => {
 
-      // ToDo  Когда Игорь сделает,
-      // чтобы возвращался целый лид, вместо id тогда открывать чат.
-      setOpenedChat({ dispatch, state }, leadId); // ToDo Warning, id may be wrong!
-
-      resolve(leadId);
+      leads.get({converstation_id: leadId}).then( lead => {
+        resolve(lead);
+      });
 
     }).catch( error => {
       if (error === leads.ERROR_CODES.UNATHORIZED) {
@@ -239,17 +237,21 @@ export const getAllLeads = ({ dispatch }) => {
  * @param  {number} options.conversation_id
  * @param  {bool} reset     if true, then get without cache
  */
-export const getLead = ({ dispatch, state }, { lead_id, conversation_id , without_cache}) => {
-  return new Promise((resolve) => {
+export const getLead = ({ dispatch, state }, { lead_id, converstation_id , without_cache}) => {
+  return new Promise((resolve, reject) => {
 
     if (!without_cache && state.leads.all.length) {
-      resolve(state.leads.all.filter( lead => lead.id === lead_id || lead.conversation_id === conversation_id)[0]);
-      return;
+      let lead = state.leads.all.find( lead => lead.id === lead_id || lead.chat.id === converstation_id);
+      if (!lead) {
+        return;
+      }
+      return resolve(lead);
     }
-
-    leads.get({ lead_id, conversation_id }).then( lead => {
+    leads.get({ lead_id, converstation_id }).then( lead => {
       dispatch(types.RECEIVE_LEAD, lead);
       resolve(lead);
+    }).catch( error => {
+      reject(error);
     });
 
   });
@@ -287,7 +289,8 @@ export const receiveChatNotify = ({ dispatch, state }, chat_id) => {
     dispatch(types.INCREMENT_CHAT_NOTIFY_COUNT);
   }
   if (!state.chat.opened_id) {
-    getLead( {dispatch, state}, { conversation_id: chat_id, without_cache: true});
+    getLead( {dispatch, state}, { converstation_id: chat_id, without_cache: true});
+    leads.get({ converstation_id: chat_id });
   }
 };
 
@@ -316,31 +319,30 @@ export const getChat = ({ dispatch, state }, chat_id) => {
 
     dispatch(types.CLOSE_OPENED_CHAT);
 
-    var lead = null;
+    function getHistory(lead) {
 
-    function getHistory() {
       chats.history(lead.chat.id).then( data => {
-
-        let chat = {
+        let _chat = {
           id: data.chat.id,
           members: data.chat.members,
           messages: data.messages,
         };
-        dispatch(types.RECEIVE_CHAT, chat);
-        resolve(chat);
+        dispatch(types.RECEIVE_CHAT, _chat);
+
+        resolve(_chat);
 
       }).catch( error => {
         if (error.code === chats.ERROR_CODES.FORBIDDEN) {
-          tryJoinToChat();
+          tryJoinToChat(lead);
         } else if (error.code === chats.ERROR_CODES.NOT_EXISTS) {
           reject(error.code);
         }
       });
     }
 
-    function tryJoinToChat() {
+    function tryJoinToChat(lead) {
       chats.join(lead.id).then(() => {
-        this.getHistory();
+        getHistory(lead);
       }).catch( error => {
         if (error === chats.ERROR_CODES.NOT_EXISTS) {
           reject(error);
@@ -348,11 +350,15 @@ export const getChat = ({ dispatch, state }, chat_id) => {
       });
     }
 
-    getLead({ dispatch, state }, {conversation_id: chat_id}).then( _lead => {
-      lead = _lead;
-      console.log("lead", lead);
-      getHistory();
-    });
+    // init
+    let lead = state.leads.all.find( lead => lead.chat.id === chat_id);
+    if (lead) {
+      getHistory(lead);
+    } else {
+      leads.get({ converstation_id: chat_id }).then( lead => {
+        getHistory(lead);
+      });
+    }
 
   });
 };
