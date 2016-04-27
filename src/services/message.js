@@ -109,3 +109,11 @@ export function onMsg(handler) {
 export function removeListenerMsg(handler) {
   channel.removeListener('RETRIEVED', 'message', handler);
 }
+
+export function onMsgRead(handler) {
+  channel.on('READED', 'message', handler)
+}
+
+export function removeListenerMsgRead(handler) {
+  channel.on('READED', 'message', handler)
+}

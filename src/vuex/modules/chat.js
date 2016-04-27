@@ -5,7 +5,10 @@ import {
   INCREMENT_CHAT_NOTIFY_COUNT,
   CLEAR_CHAT_NOTIFY_COUNT,
   RECEIVE_CHAT_MSG,
+  UPDATE_CHAT_MEMBERS
 } from '../mutation-types';
+
+import find from 'lodash/find'
 
 // initial state
 const state = {
@@ -43,6 +46,13 @@ const mutations = {
         chat.messages.push(msg);
       }
     });
+  },
+  [UPDATE_CHAT_MEMBERS] (state, id, members) {
+    let chat = find(state.all, {id});
+
+    if(chat) {
+      Object.assign(chat, {members});
+    }
   },
 };
 
