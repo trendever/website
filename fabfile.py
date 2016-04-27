@@ -4,7 +4,7 @@ from fabric.api import run, env, cd, roles, lcd
 from fabric.operations import local as lrun, run, sudo
 
 env.roledefs = {
-    'dev': ['dev@dev.trendever.com'],
+    'dev': ['dev2@dev.trendever.com'],
     'live': ['live@trendever.com'],
 }
 env.shell = "/bin/bash -l -i -c"

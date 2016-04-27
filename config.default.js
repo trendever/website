@@ -6,8 +6,8 @@ var config = {
    *
    */
   socket_server: {
-    hostname: "site.dev.trendever.com",
-    port: 8081
+    hostname: "dev.trendever.com",
+    port: 80
   },
   /**
    * Webserver config.

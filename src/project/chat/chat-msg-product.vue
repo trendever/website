@@ -8,7 +8,7 @@
         img(:src="product.InstagramImageURL")
 
       .chat-msg-photo-txt_txt
-        |{{ description }}
+        |{{{ description }}}
 
       .bubble_info
         .bubble_info_time {{ datetime }}
@@ -43,9 +43,9 @@ import {
           desc += `${item.Name} `;
 
           if (item.DiscountPrice) {
-            desc += `${item.DiscountPrice} ₽`
+            desc += `${item.DiscountPrice} <i class="ic-currency-rub"</i>`
           } else if (item.Price) {
-            desc += `${item.Price} ₽`
+            desc += `${item.Price} <i class="ic-currency-rub"</i>`
           } else {
             desc += `цена по запросу`
           }
