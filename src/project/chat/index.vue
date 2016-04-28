@@ -50,6 +50,7 @@ div
   export default {
     route: {
       data({to: {params: { id }}}) {
+
         this.getChat(+id).then( () => {
           this.setOpenedChat(+id);
           this.updateLastMessageId();
@@ -57,6 +58,7 @@ div
         }).catch( error => {
           this.$router.go({name: '404'});
         });
+
       },
     },
 

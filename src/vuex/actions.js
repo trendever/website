@@ -203,7 +203,7 @@ export const createLead = ({ dispatch, state }, product_id) => {
 
     leads.create(product_id).then( leadId => {
 
-      leads.get({converstation_id: leadId}).then( lead => {
+      leads.get({lead_id: leadId}).then( lead => {
         resolve(lead);
       });
 
@@ -356,6 +356,7 @@ export const getChat = ({ dispatch, state }, chat_id) => {
       getHistory(lead);
     } else {
       leads.get({ converstation_id: chat_id }).then( lead => {
+        dispatch(types.RECEIVE_LEAD, lead);
         getHistory(lead);
       });
     }
