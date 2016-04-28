@@ -19,6 +19,7 @@ div
 <script>
   import {
     currentLead,
+    currentChat,
     currentChatMember,
   } from 'vuex/getters';
   import {
@@ -45,6 +46,7 @@ div
       },
       getters: {
         currentLead,
+        currentChat,
         currentChatMember,
       }
     },
@@ -72,7 +74,7 @@ div
         this.txtMsg = "";
         if (!_txtMsg.length) return;
 
-        this.createChatMsg(+this.$route.params.id, _txtMsg, "text/plain")
+        this.createChatMsg(this.currentChat.id, _txtMsg, "text/plain")
         .then( () => {
 
           this.$nextTick(this.goToBottom);
