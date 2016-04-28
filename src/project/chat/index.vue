@@ -51,6 +51,8 @@ div
     route: {
       data({to: {params: { id }}}) {
 
+        this.getLead({conversation_id: +id});
+
         this.getChat(+id).then( () => {
           this.setOpenedChat(+id);
           this.updateLastMessageId();

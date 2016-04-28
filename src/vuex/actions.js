@@ -201,11 +201,19 @@ export const clearSearch = (store) => {
 export const createLead = ({ dispatch, state }, product_id) => {
   return new Promise((resolve, reject) => {
 
-    leads.create(product_id).then( leadId => {
+    leads.create(product_id).then( _lead => {
 
-      leads.get({lead_id: leadId}).then( lead => {
+      // ToDo убрать загрузку лида, когда
+      // Игорь добавит chat в лид, после его создания
+      let lead = state.leads.all.find( lead => lead.id === _lead.id);
+      if (lead) {
         resolve(lead);
-      });
+      } else {
+        leads.get({ lead_id: _lead.id }).then( lead => {
+          dispatch(types.RECEIVE_LEAD, lead);
+          resolve(lead);
+        });
+      }
 
     }).catch( error => {
       if (error === leads.ERROR_CODES.UNATHORIZED) {
@@ -219,11 +227,12 @@ export const createLead = ({ dispatch, state }, product_id) => {
 
 /**
  * Get leads
+ * @login_required
  */
 export const getAllLeads = ({ dispatch }) => {
   return new Promise((resolve) => {
 
-    leads.find().then( data => {
+    leads.find({}).then( data => {
       dispatch(types.RECEIVE_LEADS, data);
       resolve(data);
     });
@@ -232,22 +241,22 @@ export const getAllLeads = ({ dispatch }) => {
 };
 
 /**
- * Get lead by lead_id or converstation_id (witch cache)
+ * Get lead by lead_id or conversation_id (witch cache)
  * @param  {number} options.lead_id
  * @param  {number} options.conversation_id
  * @param  {bool} reset     if true, then get without cache
  */
-export const getLead = ({ dispatch, state }, { lead_id, converstation_id , without_cache}) => {
+export const getLead = ({ dispatch, state }, { lead_id, conversation_id , without_cache}) => {
   return new Promise((resolve, reject) => {
 
     if (!without_cache && state.leads.all.length) {
-      let lead = state.leads.all.find( lead => lead.id === lead_id || lead.chat.id === converstation_id);
+      let lead = state.leads.all.find( lead => lead.id === lead_id || lead.chat.id === conversation_id);
       if (!lead) {
         return;
       }
       return resolve(lead);
     }
-    leads.get({ lead_id, converstation_id }).then( lead => {
+    leads.get({ lead_id, conversation_id }).then( lead => {
       dispatch(types.RECEIVE_LEAD, lead);
       resolve(lead);
     }).catch( error => {
@@ -288,10 +297,6 @@ export const receiveChatNotify = ({ dispatch, state }, chat_id) => {
   if (state.chat.opened_id !== chat_id) {
     dispatch(types.INCREMENT_CHAT_NOTIFY_COUNT);
   }
-  if (!state.chat.opened_id) {
-    getLead( {dispatch, state}, { converstation_id: chat_id, without_cache: true});
-    leads.get({ converstation_id: chat_id });
-  }
 };
 
 export const readedAllChatNotify = ({ dispatch }) => {
@@ -319,9 +324,9 @@ export const getChat = ({ dispatch, state }, chat_id) => {
 
     dispatch(types.CLOSE_OPENED_CHAT);
 
-    function getHistory(lead) {
+    function getHistory() {
 
-      chats.history(lead.chat.id).then( data => {
+      chats.history({ conversation_id: chat_id }).then( data => {
         let _chat = {
           id: data.chat.id,
           members: data.chat.members,
@@ -333,16 +338,16 @@ export const getChat = ({ dispatch, state }, chat_id) => {
 
       }).catch( error => {
         if (error.code === chats.ERROR_CODES.FORBIDDEN) {
-          tryJoinToChat(lead);
+          tryJoinToChat();
         } else if (error.code === chats.ERROR_CODES.NOT_EXISTS) {
           reject(error.code);
         }
       });
     }
 
-    function tryJoinToChat(lead) {
-      chats.join(lead.id).then(() => {
-        getHistory(lead);
+    function tryJoinToChat() {
+      chats.join({ conversation_id: chat_id }).then(() => {
+        getHistory();
       }).catch( error => {
         if (error === chats.ERROR_CODES.NOT_EXISTS) {
           reject(error);
@@ -351,16 +356,7 @@ export const getChat = ({ dispatch, state }, chat_id) => {
     }
 
     // init
-    let lead = state.leads.all.find( lead => lead.chat.id === chat_id);
-    if (lead) {
-      getHistory(lead);
-    } else {
-      leads.get({ converstation_id: chat_id }).then( lead => {
-        dispatch(types.RECEIVE_LEAD, lead);
-        getHistory(lead);
-      });
-    }
-
+    getHistory();
   });
 };
 
