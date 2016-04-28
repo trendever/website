@@ -5,7 +5,7 @@ div
   :back-link="{name: 'chat_list'}")
 
     .chat-header(slot="content")
-      .chat-header_cnt
+      .chat-header_cnt(v-show="shopName")
         .chat-header_cnt_t {{ shopName }}
         .chat-header_cnt_info
           span #

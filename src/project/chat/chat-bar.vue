@@ -4,19 +4,19 @@
 div
   .chat-bar.section__content
     .chat-bar_menu-btn(v-if="isAdmin", @click="menuActive=true")
-      i.ic-menu_light
+      i.ic-menu-light
     .chat-bar_input
       textarea(placeholder="Введите сообщение",
-      rows=1, v-model="txtMsg", v-el:input-msg
+      v-model="txtMsg", v-el:input-msg
       @keydown.enter.prevent="send($event)")
-    .chat-bar_send-btn(@click.prevent="send($event)")
-      i.ic-send
+    .chat-bar_send-btn(@click.prevent="send($event)", :class="{'__active': !!txtMsg}")
+      i.ic-send-plane
 
   chat-menu(v-if="isAdmin", :menu-active.sync="menuActive")
 
 </template>
 
-<script>
+<script type="text/babel">
   import {
     currentLead,
     currentChat,
@@ -91,6 +91,16 @@ div
       goToBottom (){
         window.scrollTo(0, document.body.scrollHeight);
       },
+    },
+
+    watch: {
+      txtMsg(msg) {
+        this.$nextTick(() => {
+          let inputMsg = this.$els.inputMsg;
+          inputMsg.style.height = (msg ? inputMsg.scrollHeight : 53)  + 'px';
+        });
+
+      }
     },
 
     components: {
