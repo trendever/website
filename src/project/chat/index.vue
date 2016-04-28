@@ -49,16 +49,19 @@ div
 
   export default {
     route: {
+      // ToDo temp getting chat by lead. Igor will add get chat by lead_id
       data({to: {params: { id }}}) {
 
-        this.getLead({conversation_id: +id});
+        this.getLead({lead_id: +id}).then( lead => {
 
-        this.getChat(+id).then( () => {
-          this.setOpenedChat(+id);
-          this.updateLastMessageId();
-          this.$nextTick(this.goToBottom);
-        }).catch( error => {
-          this.$router.go({name: '404'});
+          this.getChat(lead.chat.id).then( () => {
+            this.setOpenedChat(lead.chat.id);
+            this.updateLastMessageId();
+            this.$nextTick(this.goToBottom);
+          }).catch( error => {
+            this.$router.go({name: '404'});
+          });
+
         });
 
       },

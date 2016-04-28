@@ -15,7 +15,7 @@ div
       .section__content
         .chat-list
           .chat-list_i(v-for="lead in object_list | orderBy '-chat.recent_message.created_at'", track-by="id",
-          v-link="{name: 'chat', params: {id: lead.chat.id}}")
+          v-link="{name: 'chat', params: {id: lead.id}}")
 
             .chat-list_i_photo
               img(:src="lead.products && lead.products[0].instagram_image_url")

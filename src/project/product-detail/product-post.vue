@@ -100,7 +100,7 @@ article.product-post
         } else {
           this.createLead(this.openedProduct.product.id).then( lead => {
             console.log(lead);
-            this.$router.go({ name: 'chat', params: {id: lead.chat.id} });
+            this.$router.go({ name: 'chat', params: {id: lead.id} });
           }).catch( error => {
             if (error === leads.ERROR_CODES.UNATHORIZED) {
               this.$router.go({ name: 'signup' });
