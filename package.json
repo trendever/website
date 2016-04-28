@@ -65,6 +65,7 @@
     "jwt-decode": "^2.0.1",
     "merge-stream": "^1.0.0",
     "modernizr": "^3.2.0",
+    "node-mkdirp": "0.0.1",
     "node-sass": "^3.4.2",
     "open": "0.0.5",
     "pluralize-ru": "^1.0.1",
