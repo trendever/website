@@ -16,7 +16,7 @@ const state = {
   },
 
   isWaitResponse: false,
-  isInfinity: false,
+  isInfinity: true,
 };
 
 // mutations
