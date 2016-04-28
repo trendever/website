@@ -137,10 +137,9 @@ div
 
         if(count) {
           let msg = this.messages[count - 1];
-          let isNotCurrentUserMessage = this.currentChatMember.user_id !== msg.user.user_id;
           let isNotLastMessage = this.currentChatMember.last_message_id !== msg.id;
 
-          if(isNotCurrentUserMessage && isNotLastMessage) {
+          if(isNotLastMessage) {
             messages.update(msg.conversation_id, msg.id);
           }
         }
