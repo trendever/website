@@ -8,8 +8,6 @@ import {
   UPDATE_CHAT_MEMBERS
 } from '../mutation-types';
 
-import find from 'lodash/find'
-
 // initial state
 const state = {
   all: [
@@ -47,8 +45,8 @@ const mutations = {
       }
     });
   },
-  [UPDATE_CHAT_MEMBERS] (state, id, members) {
-    let chat = find(state.all, {id});
+  [UPDATE_CHAT_MEMBERS] (state, chatId, members) {
+    let chat = state.all.find(chat => chat.id === chatId);
 
     if(chat) {
       Object.assign(chat, {members});

@@ -6,7 +6,7 @@
     img.photos__image.photo-item__column-2(
      :src="product.instagram_image_url | url_thumbnail 306")
 
-  .photos__summ {{ DiscountPrice | curency_spaces }} ₽
+  .photos__summ {{ DiscountPrice | curency_spaces }} #[i.ic-currency-rub]
   .photos__bottom-title {{{ Title }}}
 
 </template>

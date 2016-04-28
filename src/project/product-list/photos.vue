@@ -53,7 +53,7 @@
       tag_list: [],
       countColumn: document.body.offsetWidth < 751 ? 2 : 3,
     };
-    const LIMIT_TOVAR = 9;
+    const LIMIT_TOVAR = 12;
 
     export default {
       data: () => ({
@@ -68,7 +68,7 @@
       }),
 
       activate(done) {
-        if (this.object_list.length > 1) {
+        if (this.isInfinityProducts) {
           this.enableInfinityScroll();
           done();
           return;
@@ -105,18 +105,12 @@
         actions: {
           getPartProducts,
           getMoreProducts,
-          enableInfinityProducts,
+          // enableInfinityProducts,
         }
       },
 
       methods: {
         enableInfinityScroll(e, show_more) {
-          this.enableInfinityProducts();
-
-          // Add new
-          if (show_more) {
-            this.showMore();
-          }
           var self = this;
           // Add event for infinity scroll
           this.scrollEvent = listen(window, 'scroll', function(){

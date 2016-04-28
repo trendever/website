@@ -47,11 +47,11 @@ div
   import ChatBar from './chat-bar.vue';
   import ChatHeader from './chat-header.vue';
 
-  import find from 'lodash/find'
-
   export default {
     route: {
       data({to: {params: { id }}}) {
+
+        this.getLead({conversation_id: +id});
 
         this.getChat(+id).then( () => {
           this.setOpenedChat(+id);
@@ -119,13 +119,13 @@ div
         }
       },
 
-      onMsgRead({response_map: {chat, messages: message_id, user_id}}) {
+      onMsgRead({response_map: {chat, message_id, user_id}}) {
         let isCurrentChat = this.currentChat && chat.id === this.currentChat.id;
         let isNotCurrentUser = user_id !== this.currentChatMember.user_id;
 
         if (isCurrentChat && isNotCurrentUser) {
           let {id, members} = chat;
-          let member = find(members, {user_id});
+          let member = members.find(member => member.user_id === user_id);
 
           member.last_message_id = message_id; // fix not updated last_message_id
 

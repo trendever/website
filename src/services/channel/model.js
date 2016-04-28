@@ -1,3 +1,4 @@
+/* global __debugMode */
 import { guid } from 'utils';
 
 export default class {
@@ -39,7 +40,9 @@ export default class {
       data.trans_map.createdAt = new Date().getTime();
       this._addCallback(trans_id, callback);
     }
-    console.log("request", request_map);
+    if (__debugMode) {
+      console.trace("request trace", request_map);
+    }
 
     this.store.send(data);
   }

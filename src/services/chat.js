@@ -130,7 +130,7 @@ export function history(conversation_id) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("history", "chat", {conversation_id}).then( data => {
+    channel.req("history", "chat", conversation_id).then( data => {
       if (!data.response_map.error) {
         resolve(data.response_map);
       } else if (data.response_map.error.code === ERROR_CODES.NOT_EXISTS) {
@@ -151,6 +151,7 @@ export function history(conversation_id) {
  * Join to chat
  * @login_required
  * @param {number} lead_id
+ * @param {number} conversation_id
  *
  * RESOLVE
  *  [
@@ -173,11 +174,11 @@ export function history(conversation_id) {
  *
  * REJECT (one of ERROR_CODES) {UNATHORIZED, NOT_EXISTS}
  */
-export function join(lead_id) {
+export function join(lead_id, conversation_id) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("join", "chat", { lead_id }).then( data => {
+    channel.req("join", "chat", { lead_id, conversation_id }).then( data => {
       resolve(data.response_map.chat);
     }).catch( error => {
       if (error.log_map.code_key === '403') {

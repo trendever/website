@@ -58,6 +58,8 @@ export const STATUS_EVENTS = [
 /**
  * List of user leads
  * @login_required
+ * @param  {number} options.limit
+ * @param  {number} options.from_lead_id
  *
  * RESOLVE
  * [
@@ -145,11 +147,11 @@ export const STATUS_EVENTS = [
  *
  * REJECT (one of ERROR_CODES) {UNATHORIZED}
  */
-export function find() {
+export function find({ limit, from_lead_id }) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("list", "lead").then( data => {
+    channel.req("list", "lead", { limit, from_lead_id }).then( data => {
       resolve(data.response_map.leads);
     }).catch( error => {
       if (error.log_map.code_key === '403') {
@@ -249,11 +251,11 @@ export function find() {
  *
  * REJECT (one of ERROR_CODES) {OBJECT_NOT_EXIST, UNATHORIZED}
  */
-export function get({ lead_id, converstation_id }) {
+export function get({ lead_id, conversation_id }) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("retrieve", "lead", { lead_id, conversation_id: converstation_id })
+    channel.req("retrieve", "lead", { lead_id, conversation_id })
     .then( data => {
       resolve(data.response_map.lead);
     }).catch( error => {
@@ -273,7 +275,7 @@ export function get({ lead_id, converstation_id }) {
  * Create lead
  * @param  {number} product_id
  *
- * RESOLVE {number} created lead id
+ * RESOLVE {object} of lead (see struct in get or find)
  * REJECT (one of ERROR_CODES) {OBJECT_NOT_EXIST, UNATHORIZED}
  */
 export function create(product_id) {
@@ -282,7 +284,7 @@ export function create(product_id) {
 
     channel.req("create", "lead", {id: product_id})
     .then( data => {
-      resolve(data.response_map.leadId);
+      resolve(data.response_map.lead);
     }).catch( error => {
       if (error.log_map.code_key === '400') {
         reject(ERROR_CODES.OBJECT_NOT_EXIST);
