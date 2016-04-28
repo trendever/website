@@ -14,7 +14,7 @@ div
         .menu_i_t Позвать покупателя в чат
 
       .menu_i(v-if="canCallSupplier",
-              @click="callCustomer()")
+              @click="callSupplier()")
         .menu_i_t Позвать магазин в чат
 
       .menu_i(v-if="isAdmin",
