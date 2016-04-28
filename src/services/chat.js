@@ -154,23 +154,41 @@ export function history(conversation_id) {
  * @param {number} object.conversation_id
  *
  * RESOLVE
- *  [
- *    {
- *      "id": 1,
- *      "members": [
+ *  "chat": {
+ *    "id": 88,
+ *    "members": [
+ *      {
+ *        "id": 127,
+ *        "user_id": 1379,
+ *        "role": 1,
+ *        "name": "happierall"
+ *      }
+ *    ],
+ *    "recent_message": {
+ *      "conversation_id": 88,
+ *      "user_id": 127,
+ *      "parts": [
  *        {
- *          "id": 1,
- *          "user_id": 1379,
- *          "name": "happierall"
- *        },
- *        {
- *          "id": 2,
- *          "user_id": 3653,
- *          "role": 2
+ *          "content": "Все работает",
+ *          "mime_type": "text/plain"
  *        }
- *      ]
+ *      ],
+ *      "created_at": 1461845250,
+ *      "id": 663,
+ *      "user": {
+ *        "id": 127,
+ *        "user_id": 1379,
+ *        "role": 1,
+ *        "name": "happierall"
+ *      }
  *    }
- *  ]
+ *  },
+ *  "member": {
+ *    "id": 127,
+ *    "user_id": 1379,
+ *    "role": 1,
+ *    "name": "happierall"
+ *  }
  *
  * REJECT (one of ERROR_CODES) {UNATHORIZED, NOT_EXISTS}
  */
@@ -179,7 +197,7 @@ export function join({ lead_id, conversation_id }) {
   return new Promise( (resolve, reject) => {
 
     channel.req("join", "chat", { lead_id, conversation_id }).then( data => {
-      resolve(data.response_map.chat);
+      resolve(data.response_map);
     }).catch( error => {
       if (error.log_map.code_key === '403') {
         reject(ERROR_CODES.UNATHORIZED);

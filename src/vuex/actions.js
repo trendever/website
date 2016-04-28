@@ -231,8 +231,8 @@ export const createLead = ({ dispatch, state }, product_id) => {
  */
 export const getAllLeads = ({ dispatch }) => {
   return new Promise((resolve) => {
-
-    leads.find({}).then( data => {
+    // ToDo temp limit. Need remove. After refactor backend api.
+    leads.find({limit: 500}).then( data => {
       dispatch(types.RECEIVE_LEADS, data);
       resolve(data);
     });
@@ -325,8 +325,8 @@ export const getChat = ({ dispatch, state }, chat_id) => {
     dispatch(types.CLOSE_OPENED_CHAT);
 
     function getHistory() {
-
-      chats.history({ conversation_id: chat_id }).then( data => {
+      // ToDo remove limit:500 after refactor backend API.
+      chats.history({ conversation_id: chat_id, limit: 500 }).then( data => {
         let _chat = {
           id: data.chat.id,
           members: data.chat.members,
