@@ -150,8 +150,8 @@ export function history(conversation_id) {
 /**
  * Join to chat
  * @login_required
- * @param {number} lead_id
- * @param {number} conversation_id
+ * @param {number} object.lead_id
+ * @param {number} object.conversation_id
  *
  * RESOLVE
  *  [
@@ -174,7 +174,7 @@ export function history(conversation_id) {
  *
  * REJECT (one of ERROR_CODES) {UNATHORIZED, NOT_EXISTS}
  */
-export function join(lead_id, conversation_id) {
+export function join({ lead_id, conversation_id }) {
 
   return new Promise( (resolve, reject) => {
 
