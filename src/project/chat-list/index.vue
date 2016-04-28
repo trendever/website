@@ -35,6 +35,7 @@ div
   import Vue from "vue";
   import {
     getAllLeads,
+    getLead,
     leadsSetTab,
     readedAllChatNotify,
    } from 'vuex/actions';
@@ -45,6 +46,7 @@ div
     } from 'vuex/getters';
 
   import * as service from 'services/leads';
+  import * as messages from 'services/message';
 
   import { formatDatetime } from 'project/chat/utils';
   import HeaderComponent from 'base/header/header.vue';
@@ -63,6 +65,7 @@ div
       },
       actions: {
         getAllLeads,
+        getLead,
         leadsSetTab,
         readedAllChatNotify,
       }
@@ -73,6 +76,14 @@ div
         this.readedAllChatNotify();
         return this.getAllLeads();
       },
+    },
+
+    created() {
+      messages.onMsg(this.onMsg);
+    },
+
+    beforeDestroy() {
+      messages.removeListenerMsg(this.onMsg);
     },
 
     computed: {
@@ -141,6 +152,10 @@ div
       },
       getDatetime: function(lead) {
         return formatDatetime(lead.chat.recent_message.created_at);
+      },
+
+      onMsg({response_map: {chat}}){
+        this.getLead({conversation_id: chat.id, without_cache: true})
       },
     },
 

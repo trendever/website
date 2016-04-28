@@ -39,14 +39,14 @@ const mutations = {
     state.notify_count = 0;
   },
   [RECEIVE_CHAT_MSG](state, chat_id, msg) {
-    state.all.forEach( chat => {
-      if (chat.id === chat_id) {
-        chat.messages.push(msg);
-      }
-    });
+    let chat = state.all.find( chat => chat.id === chat_id);
+    
+    if(chat) {
+      chat.messages.push(msg);
+    }
   },
-  [UPDATE_CHAT_MEMBERS] (state, chatId, members) {
-    let chat = state.all.find(chat => chat.id === chatId);
+  [UPDATE_CHAT_MEMBERS] (state, chat_id, members) {
+    let chat = state.all.find(chat => chat.id === chat_id);
 
     if(chat) {
       Object.assign(chat, {members});

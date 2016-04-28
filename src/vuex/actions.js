@@ -293,8 +293,10 @@ export const leadsSetTab = ({ dispatch }, tab) => {
 
 
 // Chat
-export const receiveChatNotify = ({ dispatch, state }, chat_id) => {
-  if (state.chat.opened_id !== chat_id) {
+export const receiveChatNotify = ({ dispatch, state }, chatId, messages) => {
+  dispatch(types.RECEIVE_CHAT_MSG, chatId, messages[0]);
+
+  if (state.chat.opened_id !== chatId) {
     dispatch(types.INCREMENT_CHAT_NOTIFY_COUNT);
   }
 };

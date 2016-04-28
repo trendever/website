@@ -1,24 +1,25 @@
 <style src="./styles/chat-header.pcss"></style>
 <template lang="jade">
-header-component(:notify-count='chatNotifyCount',
-:back-link="{name: 'chat_list'}")
+div
+  header-component(:notify-count='chatNotifyCount',
+  :back-link="{name: 'chat_list'}")
 
-  .chat-header(slot="content")
-    .chat-header_cnt
-      .chat-header_cnt_t {{ shopName }}
-      .chat-header_cnt_info
-        span #
-        | {{ id }},
-        span  {{ status }}
+    .chat-header(slot="content")
+      .chat-header_cnt
+        .chat-header_cnt_t {{ shopName }}
+        .chat-header_cnt_info
+          span #
+          | {{ id }},
+          span  {{ status }}
 
 
 
-    .chat-header_photo
-      img(:src="shopPhoto | url_thumbnail 150",
-      onerror="this.error=null;this.src='/static/img/favicon.png'",)
+      .chat-header_photo
+        img(:src="shopPhoto | url_thumbnail 150",
+        onerror="this.error=null;this.src='/static/img/favicon.png'",)
 </template>
 
-<script>
+<script type="text/babel">
 import {
     chatNotifyCount,
     currentChatMember,

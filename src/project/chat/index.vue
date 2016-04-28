@@ -122,16 +122,12 @@ div
         }
       },
 
-      onMsgRead({response_map: {chat, message_id, user_id}}) {
+      onMsgRead({response_map: {chat, user_id}}) {
         let isCurrentChat = this.currentChat && chat.id === this.currentChat.id;
         let isNotCurrentUser = user_id !== this.currentChatMember.user_id;
 
         if (isCurrentChat && isNotCurrentUser) {
           let {id, members} = chat;
-          let member = members.find(member => member.user_id === user_id);
-
-          member.last_message_id = message_id; // fix not updated last_message_id
-
           this.setMessageRead({id, members});
         }
       },

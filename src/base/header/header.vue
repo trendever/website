@@ -1,6 +1,6 @@
 <style src="./header.pcss"></style>
 <template lang="jade">
-.section.header.u-fixed(v-if="is_visible")
+.section.header.u-fixed(v-show="is_visible")
   .section__content.header__content
     .header__arrow(@click="leftBtnAction" v-if="leftBtnShow")
       i.header__arrow__ic.ic-arrow-left(
@@ -20,7 +20,7 @@
         a.header__menu-link(href="#") Выйти
 </template>
 
-<script>
+<script type="text/babel">
 import listen from 'event-listener';
 
 export default {
