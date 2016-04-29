@@ -2,13 +2,13 @@
 <template lang="jade">
 
 .chat-row(:class="getSide")
+  .bubble_info_time {{ datetime }}
   .chat-msg.bubble
-    .chat-msg_t
+    .chat-msg_t(v-if="!isOwnMessage")
       | {{{ getUsername }}}
     .chat-msg_txt
       | {{ msg.parts[0].content }}
     .bubble_info
-      .bubble_info_time {{ datetime }}
       .bubble_info_status(v-if="isOwnMessage")
         i(:class="{'ic-check': isSent, 'ic-check-double': isRead}")
 
@@ -23,7 +23,7 @@
 
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
-  import { formatDatetime } from './utils';
+  import { formatTime } from './utils';
 
   export default{
     props: {
@@ -43,7 +43,7 @@
 
     computed: {
       datetime () {
-        return formatDatetime(this.msg.created_at);
+        return formatTime(this.msg.created_at);
       },
 
       getUsername () {
