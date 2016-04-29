@@ -28,13 +28,18 @@
         display: inline-block;
 
         &_ic {
-          width: 38px;
-          height: 38px;
+          size: 21px;
+          @media(--mobile){
+            size: 38px;
+          }
           margin-top: 2px;
         }
         &_t {
           padding-top: 6px;
-
+          font-size: 12px;
+          @media(--mobile){
+            font-size: $font__size;
+          }
           color: #b2b2b2;
 
           .navbar_i.__active & {
@@ -43,8 +48,15 @@
         }
         &_notify {
           position: absolute;
+
+          size: 20px;
           top: -6px;
-          right: 0px;
+          right: 6px;
+
+          @media(--mobile){
+            size: 30px;
+            right: 0px;
+          }
 
           display: flex;
 
