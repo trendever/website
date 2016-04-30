@@ -201,20 +201,8 @@ export const clearSearch = (store) => {
 export const createLead = ({ dispatch, state }, product_id) => {
   return new Promise((resolve, reject) => {
 
-    leads.create(product_id).then( _lead => {
-
-      // ToDo убрать загрузку лида, когда
-      // Игорь добавит chat в лид, после его создания
-      let lead = state.leads.all.find( lead => lead.id === _lead.id);
-      if (lead) {
-        resolve(lead);
-      } else {
-        leads.get({ lead_id: _lead.id }).then( lead => {
-          dispatch(types.RECEIVE_LEAD, lead);
-          resolve(lead);
-        });
-      }
-
+    leads.create(product_id).then( lead => {
+      resolve(lead);
     }).catch( error => {
       if (error === leads.ERROR_CODES.UNATHORIZED) {
         return reject(error);
@@ -229,12 +217,48 @@ export const createLead = ({ dispatch, state }, product_id) => {
  * Get leads
  * @login_required
  */
-export const getAllLeads = ({ dispatch }) => {
+export const getPartLeads = ({ dispatch }) => {
   return new Promise((resolve) => {
-    // ToDo temp limit. Need remove. After refactor backend api.
-    leads.find({limit: 500}).then( data => {
-      dispatch(types.RECEIVE_LEADS, data);
+    dispatch(types.WAIT_LEADS_RESPONSE);
+
+    leads.find({limit: 5}).then( data => {
+      dispatch(types.RECEIVE_LEADS_RESPONSE);
+      let leads_sell = data.seller.map( obj => {
+        obj.type = 'sell';
+        return obj;
+      });
+      let leads_buy = data.customer.map( obj => {
+        obj.type = 'buy';
+        return obj;
+      });
+
+      dispatch(types.RECEIVE_LEADS, leads_sell.concat(leads_buy));
       resolve(data);
+    });
+
+  });
+};
+
+export const getMoreLeads = ({ dispatch, state }) => {
+  return new Promise((resolve) => {
+    dispatch(types.WAIT_LEADS_RESPONSE);
+
+    let roles = state.leads.tab === "buy" ? 'customer' : "seller,supplier";
+    let _leads = state.leads.all.filter( obj => obj.type === state.leads.tab);
+    if (!_leads) {return;}
+
+    let from_lead_id = _leads[_leads.length - 1].id;
+
+    leads.find({limit: 5, from_lead_id, roles}).then( data => {
+      dispatch(types.RECEIVE_LEADS_RESPONSE);
+      let leads = data.leads.map( (obj) => {
+        obj.type = state.leads.tab;
+        return obj;
+      });
+
+      dispatch(types.RECEIVE_MORE_LEADS, leads);
+      resolve(leads);
+
     });
 
   });
@@ -248,20 +272,56 @@ export const getAllLeads = ({ dispatch }) => {
  */
 export const getLead = ({ dispatch, state }, { lead_id, conversation_id , without_cache}) => {
   return new Promise((resolve, reject) => {
+    // dispatch(types.CLOSE_OPENED_CHAT);
 
     if (!without_cache && state.leads.all.length) {
       let lead = state.leads.all.find( lead => lead.id === lead_id || lead.chat.id === conversation_id);
       if (!lead) {
         return;
       }
-      return resolve(lead);
+      return resolve({lead});
     }
-    leads.get({ lead_id, conversation_id }).then( lead => {
-      dispatch(types.RECEIVE_LEAD, lead);
-      resolve(lead);
-    }).catch( error => {
-      reject(error);
-    });
+
+    // Otherwise get from server
+    function _getLead() {
+      leads.get({ lead_id, conversation_id }).then( data => {
+        let role = data.lead.chat.members.find( obj =>  obj.user_id === state.user.id ).role;
+        if (role === leads.USER_ROLES.CUSTOMER.key) {
+          data.lead.type = 'buy';
+        } else {
+          data.lead.type='sell';
+        }
+        dispatch(types.RECEIVE_LEAD, data.lead);
+
+        // Save chat
+        let _chat = {
+          id: data.lead.chat.id,
+          members: data.lead.chat.members,
+          messages: data.messages,
+        };
+        dispatch(types.RECEIVE_CHAT, _chat);
+
+        resolve(data);
+      }).catch( error => {
+        if (error.code === chats.ERROR_CODES.FORBIDDEN) {
+          tryJoinToChat();
+        } else if (error.code === chats.ERROR_CODES.NOT_EXISTS) {
+          reject(error.code);
+        }
+      });
+    }
+
+    function tryJoinToChat() {
+      chats.join({ lead_id, conversation_id }).then(() => {
+        _getLead();
+      }).catch( error => {
+        if (error === chats.ERROR_CODES.NOT_EXISTS) {
+          reject(error);
+        }
+      });
+    }
+
+    _getLead();
 
   });
 };
@@ -318,20 +378,20 @@ export const setOpenedChat = ({ dispatch, state }, chat_id) => {
 export const getChat = ({ dispatch, state }, chat_id) => {
   return new Promise((resolve, reject) => {
 
-    let chat = state.chat.all.find( obj => obj.id === chat_id );
-    if (chat) {
-      resolve(chat);
-      return;
-    }
+    // let chat = state.chat.all.find( obj => obj.id === chat_id );
+    // if (chat) {
+    //   resolve(chat);
+    //   return;
+    // }
 
     dispatch(types.CLOSE_OPENED_CHAT);
 
-    function getHistory() {
-      // ToDo remove limit:500 after refactor backend API.
-      chats.history({ conversation_id: chat_id, limit: 500 }).then( data => {
+    function _getLead() {
+      leads.get({ conversation_id: chat_id }).then( data => {
+
         let _chat = {
-          id: data.chat.id,
-          members: data.chat.members,
+          id: data.lead.chat.id,
+          members: data.lead.chat.members,
           messages: data.messages,
         };
         dispatch(types.RECEIVE_CHAT, _chat);
@@ -349,7 +409,7 @@ export const getChat = ({ dispatch, state }, chat_id) => {
 
     function tryJoinToChat() {
       chats.join({ conversation_id: chat_id }).then(() => {
-        getHistory();
+        _getLead();
       }).catch( error => {
         if (error === chats.ERROR_CODES.NOT_EXISTS) {
           reject(error);
@@ -358,7 +418,7 @@ export const getChat = ({ dispatch, state }, chat_id) => {
     }
 
     // init
-    getHistory();
+    _getLead();
   });
 };
 

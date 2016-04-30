@@ -1,5 +1,8 @@
 import {
   RECEIVE_LEADS,
+  RECEIVE_MORE_LEADS,
+  WAIT_LEADS_RESPONSE,
+  RECEIVE_LEADS_RESPONSE,
   RECEIVE_LEAD,
   LEADS_SET_TAB,
   CHANGED_LEAD_STATUS,
@@ -9,12 +12,22 @@ import {
 const state = {
   all: [],
   tab: "buy",
+  isWaitResponse: false,
 };
 
 // mutations
 const mutations = {
   [RECEIVE_LEADS] (state, leads) {
     state.all = leads;
+  },
+  [RECEIVE_MORE_LEADS] (state, leads) {
+    state.all = state.all.concat(leads);
+  },
+  [WAIT_LEADS_RESPONSE] (state) {
+    state.isWaitResponse = true;
+  },
+  [RECEIVE_LEADS_RESPONSE] (state) {
+    state.isWaitResponse = false;
   },
   [RECEIVE_LEAD] (state, lead) {
     let updated = false;

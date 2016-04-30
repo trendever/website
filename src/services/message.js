@@ -2,10 +2,113 @@ import channel from "services/channel/channel.js";
 
 export const ERROR_CODES = {
     NOT_EXISTS: 1,
+    FORBIDDEN: 2,
 
     // Local
     UNATHORIZED: 10
 };
+
+
+/**
+ * History messages of chat
+ * @param  {number} product_id
+ *
+ * RESOLVE
+ * {
+ *   "chat": {
+ *     "id": 1,
+ *     "members": [
+ *       {
+ *         "id": 1,
+ *         "user_id": 1379,
+ *         "name": "happierall",
+ *         "role": 1
+ *       },
+ *       {
+ *         "id": 2,
+ *         "user_id": 3653,
+ *         "role": 2
+ *       }
+ *     ]
+ *   },
+ *   "recent_message": {
+ *      "conversation_id": 1,
+ *      "user_id": 1,
+ *      "parts": [
+ *        {
+ *          "content": "Йо нига",
+ *          "mime_type": "text/plain"
+ *        }
+ *      ],
+ *      "created_at": 1461083329,
+ *      "id": 37,
+ *      "user": {
+ *        "id": 1,
+ *        "user_id": 1379,
+ *        "name": "happierall"
+ *      }
+ *    }
+ *   "error": null,
+ *   "messages": [
+ *     {
+ *       "conversation_id": 1,
+ *       "user_id": 1379,
+ *       "parts": [
+ *         {
+ *           "content": "{product object}",
+ *           "mime_type": "text/json"
+ *         }
+ *       ],
+ *       "user": {
+ *          "id": 6,
+ *          "user_id": 1379,
+ *          "name": "happierall"
+ *        }
+ *       "created_at": 1460905108,
+ *       "id": 1
+ *     },
+ *     {
+ *       "conversation_id": 1,
+ *       "user_id": 1379,
+ *       "parts": [
+ *         {
+ *           "content": "Товар в наличии?",
+ *           "mime_type": "text/plain"
+ *         }
+ *       ],
+ *       "user": {
+ *          "id": 6,
+ *          "user_id": 1379,
+ *          "name": "happierall"
+ *        }
+ *       "created_at": 1460910536,
+ *       "id": 2
+ *     },
+ *   ]
+ * }
+ *
+* REJECT (one of ERROR_CODES) {NOT_EXISTS, UNATHORIZED}
+ */
+
+export function find({ conversation_id, from_message_id, limit }) {
+
+  return new Promise( (resolve, reject) => {
+
+    channel.req("search", "message", { conversation_id, from_message_id, limit })
+    .then( data => {
+      if (!data.response_map.error) {
+        resolve(data.response_map);
+      } else if (data.response_map.error.code === ERROR_CODES.FORBIDDEN) {
+        reject(data.response_map.error);
+      }
+    }).catch( error => {
+      if (error.log_map.code_key === '403') {
+        reject(ERROR_CODES.UNATHORIZED);
+      }
+    });
+
+  });
+}
 
 
 /**

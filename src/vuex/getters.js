@@ -24,10 +24,13 @@ export const isInfinityProducts = state => state.products.isInfinity;
 
 // Leads
 export const leads = state => state.leads.all;
+export const leadsBuy = state => state.leads.all.filter(obj => obj.type === 'buy');
+export const leadsSell = state => state.leads.all.filter(obj => obj.type === 'sell');
 export const leadsTab = state => state.leads.tab;
+export const isWaitReponseLeads = state => state.leads.isWaitResponse;
 export const currentLead = state => {
   return state.leads.all.find(
-    obj => obj.conversation_id === state.chat.opened_id
+    obj => obj.chat.id === state.chat.opened_id
   );
 };
 
