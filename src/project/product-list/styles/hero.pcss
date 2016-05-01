@@ -29,26 +29,49 @@
     .profile-header {
       z-index: 2;
     }
+    &__logo-color{
+      position: absolute;
+    }
+    @media
+    (-webkit-min-device-pixel-ratio: 2),
+    (   min--moz-device-pixel-ratio: 2),
+    (     -o-min-device-pixel-ratio: 2/1),
+    (        min-device-pixel-ratio: 2),
+    (                min-resolution: 192dpi),
+    (                min-resolution: 2dppx){
+      &__logo {
+        background: url(/static/img/logo@2x.png) no-repeat 90% 35%;
+        background-size: 57px;
+      }
+    }
     &__logo {
       position: relative;
       z-index: 1;
-
-      color: $color__white;
+      height: 160px;
+      width: 100%;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-
-      font-size: 91px;
+      background: url(/static/img/logo.png) no-repeat 90% 35%;
+      background-size: 57px;
+      &::before{
+        color: $color__white;
+        font-size: 500px;
+        position: absolute;
+        top: -160px;
+        left: 115px;
+      }
     }
     &__description {
       position: relative;
       z-index: 1;
-
-      margin-top: 34px;
 
       color: $color__white;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 
       font-size: $font__slogan;
       line-height: 1.5em;
+      box-sizing: border-box;
+      padding: 0 125px;
+
     }
     &__btn-cnt {
       position: relative;;
