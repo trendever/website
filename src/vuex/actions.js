@@ -307,10 +307,10 @@ export const getLead = ({ dispatch, state }, { lead_id, conversation_id , withou
 
         resolve(data);
       }).catch( error => {
-        if (error.code === chats.ERROR_CODES.FORBIDDEN) {
+        if (error === leads.ERROR_CODES.FORBIDDEN) {
           tryJoinToChat();
-        } else if (error.code === chats.ERROR_CODES.NOT_EXISTS) {
-          reject(error.code);
+        } else if (error === leads.ERROR_CODES.NOT_EXISTS) {
+          reject(error);
         }
       });
     }
@@ -373,57 +373,6 @@ export const setOpenedChat = ({ dispatch, state }, chat_id) => {
   // let chat = state.chat.all.find(obj => obj.id === chat_id);
   // if (!chat) {return;}
   dispatch(types.OPEN_CHAT, chat_id);
-};
-
-/**
- * Get chat with history messages by id
- * @param  {number} chat_id
- */
-export const getChat = ({ dispatch, state }, chat_id) => {
-  return new Promise((resolve, reject) => {
-
-    // let chat = state.chat.all.find( obj => obj.id === chat_id );
-    // if (chat) {
-    //   resolve(chat);
-    //   return;
-    // }
-
-    dispatch(types.CLOSE_OPENED_CHAT);
-
-    function _getLead() {
-      leads.get({ conversation_id: chat_id }).then( data => {
-
-        let _chat = {
-          id: data.lead.chat.id,
-          members: data.lead.chat.members,
-          messages: data.messages,
-        };
-        dispatch(types.RECEIVE_CHAT, _chat);
-
-        resolve(_chat);
-
-      }).catch( error => {
-        if (error.code === chats.ERROR_CODES.FORBIDDEN) {
-          tryJoinToChat();
-        } else if (error.code === chats.ERROR_CODES.NOT_EXISTS) {
-          reject(error.code);
-        }
-      });
-    }
-
-    function tryJoinToChat() {
-      chats.join({ conversation_id: chat_id }).then(() => {
-        _getLead();
-      }).catch( error => {
-        if (error === chats.ERROR_CODES.NOT_EXISTS) {
-          reject(error);
-        }
-      });
-    }
-
-    // init
-    _getLead();
-  });
 };
 
 /**

@@ -280,6 +280,8 @@ export function get({ lead_id, conversation_id }) {
         reject(ERROR_CODES.UNATHORIZED);
       } else if (error.log_map.code_key === '404') {
         reject(ERROR_CODES.OBJECT_NOT_EXIST);
+      } else if (error.log_map.code_key === '400') {
+        reject(ERROR_CODES.FORBIDDEN);
       }
       console.log("Lead retrieve err:", error);
     });
