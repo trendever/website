@@ -13,6 +13,7 @@
     height: 100%;
     height: 90px;
 
+    border-top:1px solid $color__gray;
     background: white;
 
     align-items: center;
@@ -40,10 +41,12 @@
           @media(--mobile){
             font-size: $font__size;
           }
-          color: #b2b2b2;
-
+          color: $color__gray;
           .navbar_i.__active & {
             color: #399;
+          }
+          &.active{
+            color: $color__green;
           }
         }
         &_notify {

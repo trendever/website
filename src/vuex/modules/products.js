@@ -4,7 +4,8 @@ import {
   WAIT_PRODUCTS_RESPONSE,
   RECEIVE_PRODUCTS_RESPONSE,
   OPEN_PRODUCT,
-  ENABLE_INFINITY_PRODUCTS
+  ENABLE_INFINITY_PRODUCTS,
+  SET_COLUMN_NUMBER
 } from '../mutation-types';
 
 // initial state
@@ -14,7 +15,7 @@ const state = {
     product: {},
     cachedImages: false,
   },
-
+  columnNumber: 0,
   isWaitResponse: false,
   isInfinity: true,
 };
@@ -38,6 +39,9 @@ const mutations = {
   },
   [ENABLE_INFINITY_PRODUCTS] (state) {
     state.isInfinity = true;
+  },
+  [SET_COLUMN_NUMBER] (state, columnNumber) {
+    state.columnNumber = columnNumber;
   },
 };
 

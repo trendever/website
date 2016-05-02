@@ -16,6 +16,7 @@ footer.section.footer
     // END footer__content__links
 
     .footer__content__copyright © Trendever {{ year }}
+      .footer__content__img
 </template>
 
 <script>

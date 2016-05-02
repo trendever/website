@@ -1,7 +1,6 @@
 <template lang="jade">
 div
-  header-component(
-    :title="title")
+  header-component(:title="title")
   .section.main.top
     .section__content#headerAnchor
       .wall#PostsList
@@ -32,8 +31,9 @@ div
   import { getFromCache } from 'services/actions';
 
   export default {
-    data: () => ({
-    }),
+    data(){
+      return {};
+    },
     computed: {
      title(){
        return "Код товара " + this.openedProduct.product.code

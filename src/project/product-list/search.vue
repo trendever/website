@@ -98,7 +98,7 @@
       scrollToView() {
         if(this.searchValue.trim().length || this.selectedTags.length) {
           // document.getElementById('tags').scrollIntoView();
-          window.body.scrollTop = document.getElementById('tags').offsetTop;
+          //window.body.scrollTop = document.getElementById('tags').offsetTop;
         }
       },
 

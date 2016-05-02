@@ -8,7 +8,7 @@
   profile = '/static/img/profile.png'
   profile_active = '/static/img/profile-active.png'
 
-.navbar-cnt
+.navbar-cnt(v-if="isAuth")
   .navbar.section__content
     .navbar_i(:class="{'__active': current=='feed'}",
     @click="current='feed'",
@@ -17,7 +17,7 @@
         img.navbar_i_wrap_ic(src=feed, v-show="current!='feed'")
         img.navbar_i_wrap_ic(src=feed_active, v-show="current=='feed'")
 
-        .navbar_i_wrap_t Лента
+        .navbar_i_wrap_t(:class="{'active': current=='feed'}") Лента
 
     .navbar_i(:class="{'__active': current=='chat'}",
     @click="current='chat'",
@@ -25,7 +25,7 @@
       .navbar_i_wrap
         img.navbar_i_wrap_ic(src=chat, v-show="current!='chat'")
         img.navbar_i_wrap_ic(src=chat_active, v-show="current=='chat'")
-        .navbar_i_wrap_t Шопинг-чаты
+        .navbar_i_wrap_t(:class="{'active': current=='chat'}") Шопинг-чаты
         .navbar_i_wrap_notify(v-show="chatNotifyCount")
           span {{ chatNotifyCount }}
 
@@ -34,27 +34,29 @@
       .navbar_i_wrap
         img.navbar_i_wrap_ic(src=profile, v-show="current!='profile'")
         img.navbar_i_wrap_ic(src=profile_active, v-show="current=='profile'")
-        .navbar_i_wrap_t Профиль
+        .navbar_i_wrap_t(:class="{'active': current=='profile'}") Профиль
 
 </template>
 
 <script>
-  import { chatNotifyCount } from 'vuex/getters'
+  import { chatNotifyCount, isAuth } from 'vuex/getters'
 
 
   export default{
-    data: () => ({
-    }),
+    data() {
+      return {};
+    },
     props: {
       current: {
         type: String,
-        default: null
-      }
+        default: null,
+      },
     },
     vuex: {
       getters: {
-        chatNotifyCount
-      }
-    }
-  }
+        isAuth,
+        chatNotifyCount,
+      },
+    },
+  };
 </script>

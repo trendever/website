@@ -1,17 +1,19 @@
 <style src="./styles/photos.pcss"></style>
 <template lang="jade">
 .photos
-  .photos__list(v-el:photos-list)
-    .photo__title-row
-      .photo__title-column(
-        :class="{'active': countColumn == 2}",
-        @click="countColumn = 2") 2 колонки
-      .photo__title-column(
-        :class="{'active': countColumn == 3}",
-        @click="countColumn = 3") 3 колонки
+  .photo__title-row
+    .photo__title-column( :class="{'active': getColumnNumber === 2}", @click="setColumnNumber(2)")
+      .photo__title-column-long
+      .photo__title-column-long
 
+    .photo__title-column( :class="{'active': getColumnNumber === 3}", @click="setColumnNumber(3)")
+      .photo__title-column-short
+      .photo__title-column-short
+      .photo__title-column-short
+
+  .photos__list(v-el:photos-list)
     template(v-for="product in object_list")
-      component(:is="component", :product="product")
+      photo-item(:product="product")
 
   .photos__more-wrap(v-if="showMoreWrapper")
     .photos__more._active(
@@ -29,11 +31,12 @@
 
 <script type="text/babel">
     import listen from 'event-listener';
-
+    import photoItem from './photo-item.vue';
     import {
       getPartProducts,
       getMoreProducts,
       enableInfinityProducts,
+      setColumnNumber,
       } from 'vuex/actions';
     import {
       searchValue,
@@ -42,28 +45,30 @@
       isWaitReponseProducts,
       isInfinityProducts,
       chatNotifyCount,
+      getColumnNumber,
       } from 'vuex/getters';
 
-    import photoItemColumn3 from './photo-item-column-3.vue';
-    import photoItemColumn2 from './photo-item-column-2.vue';
-
-    var firstLoad =true;
+    var firstLoad =true; // Это нужно?
     const CACHE = {
       search: '',
       tag_list: [],
-      countColumn: document.body.offsetWidth < 751 ? 2 : 3,
     };
     const LIMIT_TOVAR = 12;
 
     export default {
+      ready(){
+        let columnNumber = 3;
+        if( (document.body.offsetWidth) <= 750) {
+          columnNumber = 2;
+        }
+        this.setColumnNumber(columnNumber);
+      },
       data: () => ({
-        countColumn: 3,
         showBillEmpty: false,
         showMoreWrapper: true,
         tag_list: [],
         need_clear_objects_list: false,
         search: '',
-
         scrollEvent: null,
       }),
 
@@ -77,20 +82,10 @@
         done();
       },
 
-      created() {
-        this.countColumn = CACHE.countColumn;
-      },
-
       beforeDestroy() {
         if (this.scrollEvent) {
           this.scrollEvent.remove();
         }
-      },
-
-      computed: {
-        component() {
-          return `photo-item-column${this.countColumn}`
-        },
       },
 
       vuex: {
@@ -101,14 +96,15 @@
           chatNotifyCount,
           isWaitReponseProducts,
           isInfinityProducts,
+          getColumnNumber,
         },
         actions: {
           getPartProducts,
           getMoreProducts,
+          setColumnNumber,
           // enableInfinityProducts,
         }
       },
-
       methods: {
         enableInfinityScroll(e, show_more) {
           var self = this;
@@ -123,7 +119,6 @@
             }
           });
         },
-
         showMore(callback = null, call) {
           let settings = {
             offset: this.$get('need_clear_objects_list') ? 0 : this.$get('object_list.length'),
@@ -131,16 +126,15 @@
             type: "more"
           };
 
-          mixpanel.track("Show More Products", {
+          mixpanel.track("Show More Products", { // mixpanel - не понимаю откуда это берётся.
             offset: settings.offset,
-            view: `${ this.countColumn }columns`,
-          });
+            view: `${ this.getColumnNumber }columns`,
+          }); //TODO Что это такое?
 
           Object.assign(settings, this.getSearchOptions());
 
           this.getMoreProducts(settings);
         },
-
         getSearchOptions() {
           let options = {};
           let q = this.searchValue.trim();
@@ -156,26 +150,20 @@
 
           return options;
         },
-
         loadProducts() {
           this.$nextTick(() => this.getPartProducts(this.getSearchOptions()))
         }
       },
-
       watch: {
         selectedTags() {
           this.loadProducts();
         },
-
         searchValue() {
           this.loadProducts();
         }
       },
-
       components: {
-        photoItemColumn3,
-        photoItemColumn2,
+        photoItem,
       }
     }
-
 </script>

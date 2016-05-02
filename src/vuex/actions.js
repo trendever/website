@@ -166,6 +166,10 @@ export const enableInfinityProducts = ({ dispatch }) => {
   dispatch(types.ENABLE_INFINITY_PRODUCTS);
 };
 
+export const setColumnNumber = ({ dispatch }, columnNumber) => {
+  dispatch(types.SET_COLUMN_NUMBER, columnNumber);
+};
+
 // Search
 
 export const setSearchValue = ({dispatch}, value) => {
