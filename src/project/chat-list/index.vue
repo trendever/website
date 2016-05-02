@@ -3,7 +3,7 @@
 div
   .chat-list-cnt
     header-component(:title="title", :left-btn-show="false")
-      .header__nav(slot="content" v-if="show !== 'all'")
+      .header__nav(slot="content" v-if="isTabs")
         .header__nav__i.header__text(
         :class="{_active: leadsTab==='buy'}", @click="leadsSetTab('buy')")
           | Покупаю
@@ -13,36 +13,28 @@ div
 
     .section.top.bottom
       .section__content
-        .chat-list
-          .chat-list_i(v-for="lead in object_list | orderBy '-chat.recent_message.created_at'", track-by="id",
-          v-link="{name: 'chat', params: {id: lead.id}}")
-
-            .chat-list_i_photo
-              img(:src="lead.products && lead.products[0].instagram_image_url")
-            .chat-list_i_body
-              .body_t {{ getTitle(lead) }}
-              .body_status ({{ getStatus(lead) | lowercase }})
-              .body_last-msg
-                | {{ getRecentMessage(lead) }}
-            .chat-list_i_date {{ getDatetime(lead) }}
-            .chat-list_i_notify(v-if="lead.chat.unread_count")
-              span {{ lead.chat.unread_count }}
+        .chat-list(v-el:chat-list)
+          template(v-for="lead in object_list")
+            chat-list-item(:lead="lead")
 
     navbar-component(current="chat")
 </template>
 
 <script type="text/babel">
-  import Vue from "vue";
+  import listen from 'event-listener';
+
   import {
-    getAllLeads,
+    getPartLeads,
+    getMoreLeads,
     getLead,
     leadsSetTab,
     readedAllChatNotify,
    } from 'vuex/actions';
   import {
-    leads,
-    userID,
-    leadsTab
+    leadsBuy,
+    leadsSell,
+    leadsTab,
+    isWaitReponseLeads,
     } from 'vuex/getters';
 
   import * as service from 'services/leads';
@@ -51,20 +43,24 @@ div
   import { formatDatetime } from 'project/chat/utils';
   import HeaderComponent from 'base/header/header.vue';
   import NavbarComponent from 'base/navbar/navbar.vue';
+  import ChatListItem from './chat-list-item.vue';
 
   export default {
     data: () => ({
       title: null,
+      scrollEvent: null,
     }),
 
     vuex: {
       getters: {
-        leads,
-        userID,
-        leadsTab
+        leadsBuy,
+        leadsSell,
+        leadsTab,
+        isWaitReponseLeads,
       },
       actions: {
-        getAllLeads,
+        getPartLeads,
+        getMoreLeads,
         getLead,
         leadsSetTab,
         readedAllChatNotify,
@@ -74,7 +70,7 @@ div
     route: {
       activate(transition) {
         this.readedAllChatNotify();
-        return this.getAllLeads();
+        return this.getPartLeads();
       },
     },
 
@@ -82,76 +78,70 @@ div
       messages.onMsg(this.onMsg);
     },
 
+    ready(){
+      this.enableInfinityScroll();
+    },
+
     beforeDestroy() {
       messages.removeListenerMsg(this.onMsg);
+      this.disableInfinityScroll();
     },
 
     computed: {
+      isTabs () {
+        return this.leadsBuy.length && this.leadsSell.length;
+      },
+
       show () {
-        if (this.buy_list.length && this.sell_list.length) {
+        if (this.isTabs) {
           return this.leadsTab;
+        } else if (this.leadsSell.length) {
+          return "sell";
         }
-        return 'all';
+        return "buy";
       },
       object_list () {
-        if (this.show === "all") {return this.leads};
-        if (this.show === "buy") {return this.buy_list;};
-        if (this.show === "sell") {return this.sell_list};
+        if (this.show === "buy") {return this.leadsBuy;}
+        if (this.show === "sell") {return this.leadsSell;}
       },
-      buy_list () {
-        return this.leads.filter(
-          obj =>  {
-            if ( obj.user_role === service.USER_ROLES.CUSTOMER.key
-              || obj.customer_id === this.userID ) { // if i'm superseller
-              return true;
-            }
-          });
-      },
-      sell_list () {
-        return this.leads.filter( obj => {
-          if ((obj.user_role === service.USER_ROLES.SELLER.key
-           || obj.user_role === service.USER_ROLES.SUPPLIER.key
-           || obj.user_role === service.USER_ROLES.SUPER_SELLER.key
-           || obj.user_role === service.USER_ROLES.UNKNOWN.key)
-           && obj.customer_id !== this.userID ) {
-            return true;
-          };
-        })
-      },
-      title () {
-        if (this.buy_list.length && this.sell_list.length) return;
 
-        if (this.buy_list.length && !this.sell_list.length) {
-          return "Шопинг-чаты";
-        } else if (!this.buy_list.length && this.sell_list.length) {
+      title () {
+        if (this.isTabs) {return;}
+
+        if (this.leadsSell.length) {
           return "Чаты с покупателями";
         }
+        return "Шопинг-чаты";
       },
     },
 
     methods: {
-      getStatus: function(lead) {
-        return service.getStatus(lead.status).name
+      enableInfinityScroll(e) {
+        var self = this;
+        // Add event for infinity scroll
+        this.scrollEvent = listen(window, 'scroll', function(){
+          var pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
+          var full_scroll = self.$els.chatList.offsetHeight;
+          var diff_scroll = full_scroll - pos_scroll;
+          console.log(diff_scroll);
+          if (diff_scroll < 800 && !self.isWaitReponseLeads && self.object_list.length >= 3) {
+              self.showMore();
+          }
+        });
       },
-      getTitle: function(lead) {
-        if (lead.user_role === service.USER_ROLES.CUSTOMER.key
-            || lead.user_role === service.USER_ROLES.SUPPLIER.key) {
-          return lead.shop.instagram_username
-        }
-        return `${lead.customer.instagram_username} (${lead.shop.instagram_username})`
-      },
-      getRecentMessage: function(lead) {
-        let msg = lead.chat.recent_message;
-        if (msg.parts[0].mime_type === 'text/plain') {
-          return msg.parts[0].content;
-        }
-        if (msg.parts[0].mime_type === 'text/json') {
-          let product = JSON.parse(msg.parts[0].content);
-          return `товар: ${product.Title}`;
+
+      disableInfinityScroll() {
+        if (this.scrollEvent) {
+          this.scrollEvent.remove();
         }
       },
-      getDatetime: function(lead) {
-        return formatDatetime(lead.chat.recent_message.created_at);
+
+      showMore(){
+        this.getMoreLeads().then( leads => {
+          if (!leads.length) {
+            this.disableInfinityScroll();
+          }
+        });
       },
 
       onMsg({response_map: {chat}}){
@@ -161,7 +151,8 @@ div
 
     components: {
       HeaderComponent,
-      NavbarComponent
+      NavbarComponent,
+      ChatListItem,
     }
   }
 </script>
