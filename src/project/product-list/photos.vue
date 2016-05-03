@@ -62,6 +62,7 @@
           columnNumber = 2;
         }
         this.setColumnNumber(columnNumber);
+        this.loadProducts();
       },
       data: () => ({
         showBillEmpty: false,

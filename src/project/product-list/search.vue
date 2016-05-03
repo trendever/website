@@ -2,7 +2,8 @@
 <template lang="jade">
 .search-placeholder
   #search
-    .search-input
+    .search-stub(v-if="searchGlued")
+    .search-input(:class="{'glued':searchGlued}")
       .search-input__container
         .search-input__search-btn(
           @click="search()")
@@ -45,7 +46,8 @@
   import {
     searchValue,
     tags,
-    selectedTags
+    selectedTags,
+    isAuth,
   } from 'vuex/getters';
 
   import {
@@ -55,22 +57,43 @@
     removeTag,
     clearSearch
   } from 'vuex/actions';
-
+  import listen from 'event-listener';
   export default {
     data(){
       return {
         showMoreTags: false,
-        showMoreButton: false
+        showMoreButton: false,
+        searchGlued: false,
       }
     },
-
+    ready(){
+        this.gluingSearch = listen( window, 'scroll', () => {
+          if ( this.isAuth ) {
+            let searchHeight = 50;
+            if ( window.matchMedia( "(max-width: 750px)" ).matches ) {
+              searchHeight = 100;
+            }
+            const scroll = window.scrollY || window.body.scrollTop;
+            if ( scroll > searchHeight ) {
+              this.$set( 'searchGlued', true );
+            } else {
+              this.$set( 'searchGlued', false );
+            }
+          }
+        } );
+    },
+    beforeDestroy(){
+      if ( this.isAuth ) {
+        this.gluingSearch.remove();
+      }
+    },
     vuex: {
       getters: {
         searchValue,
         tags,
-        selectedTags
+        selectedTags,
+        isAuth,
       },
-
       actions: {
         loadTags,
         setSearchValue,
@@ -79,11 +102,9 @@
         clearSearch
       }
     },
-
     created() {
       this.loadTags();
     },
-
     methods: {
       toggleShowMoreTags() {
         this.$els.tags.scrollTop = 0;
@@ -113,7 +134,6 @@
         this.showMoreTags = false;
       }
     },
-
     watch: {
       searchValue() {
         this.scrollToView();

@@ -1,5 +1,8 @@
 <!-- BEGIN hero -->
-.section.hero
+.section.smallHero(v-if="isAuth")
+	.smallHero__logo.ic-logo
+	.smallHero__logo-apostrophe
+.section.hero(v-if="!isAuth")
 	.section__content.hero__content
 		.hero__content__img
 		<!-- BEGIN profile-header -->
@@ -23,5 +26,4 @@
 
 		.hero__content__logo.ic-logo
 		.hero__content__description Шопинг в Instagram стал проще
-
 <!-- END hero -->

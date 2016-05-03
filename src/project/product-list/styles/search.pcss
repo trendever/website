@@ -68,13 +68,33 @@ $count-tags-open: 13;
     @media (max-width: 750px) { top: $height__mobile; }
   }
 }
-
+.search-stub{
+  height: 50px;
+  width:1050px;
+  @media (--mobile) {
+    height: 100px;
+    width: 750px;
+  }
+}
 .search-input {
   height: $height__desktop;
 
   border-bottom: 1px solid $color__gray;
 
-  @media (--mobile) { height: $height__mobile; }
+  &.glued{
+    position: fixed;
+    z-index: 1;
+    width: 1050px;
+    background-color: white;
+    top:-2px;
+    @media (--mobile) {
+      width: 750px;
+    }
+  }
+
+  @media (--mobile) {
+    height: $height__mobile;
+  }
   &__container {
     position: relative;
     z-index: 1;

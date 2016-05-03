@@ -87,7 +87,7 @@
           display: block;
         }
       }
-      @media handheld {
+      @media (--mobile) {
         &link{
           line-height: 100px;
         }
