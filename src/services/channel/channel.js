@@ -62,9 +62,6 @@ var channel = {};
     _channel.controller.removeRoute(action_str, data_type, handler_func);
   };
 
-  // ToDo: delete it after refactoring API to new API
-  // Legacy interface.
-  window.channel = _channel;
 })();
 
 export default channel;
