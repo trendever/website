@@ -52,7 +52,7 @@ $count-tags-open: 13;
   position: relative;
   z-index: 10;
 
-  width: 1050px;
+  max-width: 1050px;
   margin-bottom: 20px;
 
   background-color: #fff;
@@ -70,7 +70,7 @@ $count-tags-open: 13;
 }
 .search-stub{
   height: 50px;
-  width:1050px;
+  max-width:1050px;
   @media (--mobile) {
     height: 100px;
     width: 750px;
@@ -84,7 +84,8 @@ $count-tags-open: 13;
   &.glued{
     position: fixed;
     z-index: 1;
-    width: 1050px;
+    width: 100%;
+    max-width: 1050px;
     background-color: white;
     top:-2px;
     @media (--mobile) {

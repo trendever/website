@@ -104,12 +104,12 @@
         text-decoration: none;
 
         color: white;
-        background: color(black a(.5));
+        background: color(black a(.75));
         border-bottom: 1px solid color(white a(.5));
 
         &.active{
           border-bottom-width: 0;
-          background: color(black a(.75));
+          background: color(black a(.9));
         }
         &:last-of-type{
           border-bottom-width: 0;

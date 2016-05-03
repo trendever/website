@@ -21,6 +21,7 @@
       }
     ],
     computed: {
+
       classForColumn() {
         switch(this.count){
           case 2: return 'photo__container-two';

@@ -5,7 +5,9 @@
     &container {
 
       margin-bottom: 5px;
-
+      @media handheld {
+        margin-bottom: 0;
+      }
       &-three{
         width: 33%
       }
@@ -25,16 +27,22 @@
       align-content: center;
       justify-content: space-between;
       padding: 15px 10px;
+      @media handheld {
+        display: none;
+      }
     }
     &summ{
       flex-grow: 0.8;
       flex-shrink: 0;
       text-align: right;
+      span{
+        margin-right: 5px;
+      }
     }
     &title{
       flex-grow: 2;
       padding-right: 5px;
-      line-height: 25px;
+      line-height: 21px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
