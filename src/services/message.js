@@ -1,4 +1,4 @@
-import channel from "services/channel/channel.js";
+import channel from 'services/channel/channel.js';
 
 export const ERROR_CODES = {
     NOT_EXISTS: 1,
@@ -37,25 +37,48 @@ export const ERROR_CODES = {
  * REJECT (one of ERROR_CODES) {NOT_EXISTS, UNATHORIZED}
  */
 
-export function find({ conversation_id, from_message_id, limit }) {
+export const find = (function() {
 
-  return new Promise( (resolve, reject) => {
+  const memoizeConversation = new Map();
 
-    channel.req("search", "message", { conversation_id, from_message_id, limit })
-    .then( data => {
-      if (!data.response_map.error) {
-        resolve(data.response_map.messages);
-      } else if (data.response_map.error.code === ERROR_CODES.FORBIDDEN) {
-        reject(data.response_map.error);
+  return function( { conversation_id, from_message_id, limit, direction = false } ) {
+
+    return new Promise( ( resolve, reject ) => {
+
+      if ( memoizeConversation.has( conversation_id ) ) {
+
+        console.log( memoizeConversation.get( conversation_id ) );
+
       }
-    }).catch( error => {
-      if (error.log_map.code_key === '403') {
-        reject(ERROR_CODES.UNATHORIZED);
-      }
+
+      channel.req( "search", "message", { conversation_id, from_message_id, limit, direction } )
+             .then( data => {
+               if ( !data.response_map.error ) {
+
+                 if (!memoizeConversation.has(conversation_id)) {
+
+                   memoizeConversation.set(conversation_id,  {
+                     messages: data.response_map.messages,
+                     from_message_id
+                   });
+
+                 }
+
+                 resolve( data.response_map.messages );
+
+               } else if ( data.response_map.error.code === ERROR_CODES.FORBIDDEN ) {
+                 reject( data.response_map.error );
+               }
+             } ).catch( error => {
+        if ( error.log_map.code_key === '403' ) {
+          reject( ERROR_CODES.UNATHORIZED );
+        }
+      } );
     });
 
-  });
-}
+  };
+
+})();
 
 
 /**
@@ -101,7 +124,7 @@ export function find({ conversation_id, from_message_id, limit }) {
  *
  * REJECT (one of ERROR_CODES) {UNATHORIZED, NOT_EXISTS}
  */
-export function create(conversation_id, text, mime_type) {
+export function create( conversation_id, text, mime_type = 'text/plain' ) {
 
   return new Promise( (resolve, reject) => {
     channel.req("create", "message", { conversation_id, text, mime_type })
@@ -138,8 +161,7 @@ export function update(conversation_id, message_id) {
       } else {
         return data.response_map.status === 'ok';
       }
-    })
-    .catch(err => {
+    } ).catch( err => {
       if (err.log_map.code_key === '403') {
         throw ERROR_CODES.UNATHORIZED;
       } else if (err.log_map.code_key === '400') {
@@ -156,14 +178,14 @@ export function onMsg(handler) {
   channel.on('RETRIEVED', 'message', handler);
 }
 
-export function removeListenerMsg(handler) {
-  channel.removeListener('RETRIEVED', 'message', handler);
+export function offMsg( handler ) {
+  channel.off( 'RETRIEVED', 'message', handler );
 }
 
 export function onMsgRead(handler) {
   channel.on('READED', 'message', handler);
 }
 
-export function removeListenerMsgRead(handler) {
-  channel.on('READED', 'message', handler);
+export function offMsgRead( handler ) {
+  channel.off( 'READED', 'message', handler );
 }

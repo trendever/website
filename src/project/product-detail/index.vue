@@ -28,7 +28,6 @@ div
   import FooterComponent from 'base/footer/footer.vue';
 
   import * as products from 'services/products.js';
-  import { getFromCache } from 'services/actions';
 
   export default {
     data(){

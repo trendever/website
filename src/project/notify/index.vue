@@ -4,11 +4,10 @@
 
 <script type="text/babel">
   import {
-    receiveChatNotify,
     receiveChangedStatusNotify,
     getAllLeads,
   } from 'vuex/actions';
-
+  import { receiveChatNotify } from 'vuex/actions/chatActions.js'
   import {
     currentLead
   } from 'vuex/getters';

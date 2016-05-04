@@ -37,7 +37,6 @@ div
 </template>
 
 <script>
-  import { createQuestion } from 'services/actions'
   import mockup from 'services/mockups/modal-data'
   import trSpinner from 'base/spinner/spinner.vue'
 

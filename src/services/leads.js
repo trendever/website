@@ -152,7 +152,9 @@ export function find({ limit, from_lead_id, roles }) {
   return new Promise( (resolve, reject) => {
 
     channel.req("list", "lead", { limit, from_lead_id, roles }).then( data => {
+
       resolve(data.response_map);
+
     }).catch( error => {
       if (error.log_map.code_key === '403') {
         reject(ERROR_CODES.UNATHORIZED);
@@ -289,7 +291,6 @@ export function get({ lead_id, conversation_id }) {
   });
 }
 
-
 /**
  * Create lead
  * @param  {number} product_id
@@ -314,7 +315,6 @@ export function create(product_id) {
 
   });
 }
-
 
 /**
  * Change lead status
@@ -361,5 +361,5 @@ export function onChangeStatus(handler) {
 }
 
 export function removeStatusListener(handler) {
-  channel.removeListener('RETRIEVED', 'lead', handler);
+  channel.off('RETRIEVED', 'lead', handler);
 }

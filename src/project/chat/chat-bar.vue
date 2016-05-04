@@ -23,9 +23,9 @@ div
     currentChatMember,
   } from 'vuex/getters';
   import {
-    createChatMsg,
     setLeadStatus,
   } from "vuex/actions";
+  import { createChatMsg } from "vuex/actions/chatActions.js";
 
   import * as service from "services/message";
   import * as leads from "services/leads";

@@ -27,10 +27,9 @@ div
   import {
    // getChat,
     getLead,
-    setOpenedChat,
     //setMessageRead
   } from 'vuex/actions';
-
+  import { setOpenedChat } from 'vuex/actions/chatActions.js'
   import {
     currentChat,
    // currentChatMember,
@@ -52,9 +51,17 @@ div
     route: {
       data({to: {params: { id }}}) {
 
+        /**
+         * Ключевое знание какой диалог открыт (он получен после того как мы переши на этот URL)
+         * */
+
+        const conversation_id = +id;
+
+        console.log( conversation_id );
+
         // Вот первый метод получет чат я так понимаю
 
-        this.getLead({lead_id: +id}).then( ({lead}) => {
+        this.getLead( { lead_id: conversation_id } ).then( ( { lead } ) => {
 
             this.setOpenedChat(lead.chat.id);
 
@@ -106,8 +113,8 @@ div
     },
 
     beforeDestroy() {
-      messages.removeListenerMsg(this.onMsg);
-      messages.removeListenerMsgRead(this.onMsgRead);
+      messages.offMsg( this.onMsg );
+      messages.offMsgRead( this.onMsgRead );
       //this.scrollListener.remove();
     },
 

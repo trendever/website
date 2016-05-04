@@ -28,8 +28,8 @@ div
     getMoreLeads,
     getLead,
     leadsSetTab,
-    readedAllChatNotify,
    } from 'vuex/actions';
+  import { readedAllChatNotify } from 'vuex/actions/chatActions.js'
   import {
     leadsBuy,
     leadsSell,
@@ -83,7 +83,7 @@ div
     },
 
     beforeDestroy() {
-      messages.removeListenerMsg(this.onMsg);
+      messages.offMsg(this.onMsg);
       this.disableInfinityScroll();
     },
 

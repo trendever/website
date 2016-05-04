@@ -2,8 +2,7 @@ import * as types from './mutation-types';
 import * as auth from 'services/auth';
 import * as products from 'services/products.js';
 import * as leads from 'services/leads.js';
-import * as chats from 'services/chat.js';
-import * as messages from 'services/message.js';
+//import * as chats from 'services/chat.js';
 import * as profile from 'services/profile.js';
 import * as tagsService from 'services/tags';
 import * as utils from 'utils';
@@ -194,7 +193,6 @@ export const removeTag = (store, tag) => {
   loadTags(store);
 };
 
-
 export const clearSearch = (store) => {
   store.dispatch(types.CLEAR_SEARCH);
   loadTags(store);
@@ -277,45 +275,60 @@ export const getMoreLeads = ({ dispatch, state }) => {
 export const getLead = ({ dispatch, state }, { lead_id, conversation_id , without_cache}) => {
   return new Promise((resolve, reject) => {
     // dispatch(types.CLOSE_OPENED_CHAT);
-
-    if (!without_cache && state.leads.all.length) {
+/*    if (!without_cache && state.leads.all.length) {
       let lead = state.leads.all.find( lead => lead.id === lead_id || lead.chat.id === conversation_id);
       if (!lead) {
         return;
       }
       return resolve({lead});
-    }
+    }*/
 
     // Otherwise get from server
     function _getLead() {
+
       leads.get({ lead_id, conversation_id }).then( data => {
+        
         let role = data.lead.chat.members.find( obj =>  obj.user_id === state.user.id ).role;
+        
         if (role === leads.USER_ROLES.CUSTOMER.key) {
+          
           data.lead.type = 'buy';
+          
         } else {
+          
           data.lead.type='sell';
+          
         }
+        
         dispatch(types.RECEIVE_LEAD, data.lead);
 
         // Save chat
+        
         let _chat = {
           id: data.lead.chat.id,
           members: data.lead.chat.members,
           messages: data.messages,
         };
+        
         dispatch(types.RECEIVE_CHAT, _chat);
 
         resolve(data);
+        
       }).catch( error => {
-        if (error === leads.ERROR_CODES.FORBIDDEN) {
-          tryJoinToChat();
-        } else if (error === leads.ERROR_CODES.NOT_EXISTS) {
+
+        /*if (error === leads.ERROR_CODES.FORBIDDEN) {
+          //tryJoinToChat();
+        } else*/
+        
+        if (error === leads.ERROR_CODES.NOT_EXISTS) {
           reject(error);
         }
+
       });
+
     }
 
-    function tryJoinToChat() {
+/*    function tryJoinToChat() {
       chats.join({ lead_id, conversation_id }).then(() => {
         _getLead();
       }).catch( error => {
@@ -323,7 +336,7 @@ export const getLead = ({ dispatch, state }, { lead_id, conversation_id , withou
           reject(error);
         }
       });
-    }
+    }*/
 
     _getLead();
 
@@ -354,46 +367,6 @@ export const receiveChangedStatusNotify = ({ dispatch }, lead_id, status_key) =>
 export const leadsSetTab = ({ dispatch }, tab) => {
   dispatch(types.LEADS_SET_TAB, tab);
 };
-
-
-// Chat
-export const receiveChatNotify = ({ dispatch, state }, chatId, messages) => {
-  dispatch(types.RECEIVE_CHAT_MSG, chatId, messages[0]);
-
-  if (state.chat.opened_id !== chatId) {
-    dispatch(types.INCREMENT_CHAT_NOTIFY_COUNT);
-  }
-};
-
-export const readedAllChatNotify = ({ dispatch }) => {
-  dispatch(types.CLEAR_CHAT_NOTIFY_COUNT);
-};
-
-export const setOpenedChat = ({ dispatch, state }, chat_id) => {
-  // let chat = state.chat.all.find(obj => obj.id === chat_id);
-  // if (!chat) {return;}
-  dispatch(types.OPEN_CHAT, chat_id);
-};
-
-/**
- * Create message in chat
- * @param  {number} conversation_id  chat_id
- * @param  {string} text             text of message
- * @param  {string} mime_type        type of message (text/plain, text/json)
- */
-export const createChatMsg = ({ dispatch, state }, conversation_id, text, mime_type) => {
-  return new Promise((resolve, reject) => {
-
-    messages.create(conversation_id, text, mime_type).then( data => {
-      resolve(data.chat.id, data.messages[0]);
-    }).catch( error => {
-      reject(error);
-    });
-
-  });
-};
-
-export const setMessageRead = ({dispatch}, {id, members}) => dispatch(types.UPDATE_CHAT_MEMBERS, id, members);
 
 // Popups
 
