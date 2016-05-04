@@ -1,7 +1,7 @@
 import {
-  RECEIVE_CHAT,
-  OPEN_CHAT,
-  CLOSE_OPENED_CHAT,
+  SET_CONVERSATION,
+  LOAD_MESSAGE,
+  CLOSE_CONVERSATION,
   INCREMENT_CHAT_NOTIFY_COUNT,
   CLEAR_CHAT_NOTIFY_COUNT,
   RECEIVE_CHAT_MSG,
@@ -10,31 +10,32 @@ import {
 
 // initial state
 const state = {
-  all: [
-  /* {
-        id: 0,
-        members: [],
-        messages: [],
-   } */
-  ],
-  opened_id: null,
+  id: null,
+  members: null,
+  messages: null,
+  current_member_id: null,
   notify_count: null,
 };
 
 // mutations
 const mutations = {
-  [OPEN_CHAT] (state, chat_id) {
-    state.opened_id = chat_id;
+  [SET_CONVERSATION] ( state, id, members, messages ) {
+    state.id       = id;
+    state.members  = members;
+    state.messages = messages;
   },
-  [MESSAGE_LOAD] (state) {
-    
+  [LOAD_MESSAGE] ( state, messages ) {
+    // TODO подумать как упорядочить без чего то сложного.
+    state.messages = state.messages.concat( messages );
   },
-  [RECEIVE_CHAT] (state, chat) {
-    state.all.push(chat);
-  },
-
-  [CLOSE_OPENED_CHAT] (state) {
-    state.opened_id = null;
+  [CLOSE_CONVERSATION] ( state ) {
+    state = {
+      id: null,
+      members: null,
+      messages: null,
+      current_member_id: null,
+      notify_count: null,
+    };
   },
   [INCREMENT_CHAT_NOTIFY_COUNT] (state) {
     state.notify_count += 1;
@@ -42,19 +43,12 @@ const mutations = {
   [CLEAR_CHAT_NOTIFY_COUNT] (state) {
     state.notify_count = 0;
   },
-  [RECEIVE_CHAT_MSG](state, chat_id, msg) {
-    let chat = state.all.find( chat => chat.id === chat_id);
-    
-    if(chat) {
-      chat.messages.push(msg);
-    }
+  [RECEIVE_CHAT_MSG]( state, message ) {
+    // TODO подумать как упорядочить без чего то сложного.
+    state.messages.push( message );
   },
-  [UPDATE_CHAT_MEMBERS] (state, chat_id, members) {
-    let chat = state.all.find(chat => chat.id === chat_id);
-
-    if(chat) {
-      Object.assign(chat, {members});
-    }
+  [UPDATE_CHAT_MEMBERS] (state, members) {
+    state.members = members;
   },
 };
 

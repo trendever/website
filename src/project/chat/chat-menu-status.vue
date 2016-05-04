@@ -28,8 +28,9 @@ menu-component
   import * as leads from 'services/leads';
 
   export default{
-    data: () => ({
-    }),
+    data(){
+      return {};
+    },
 
     props: {
       statusMenuActive: {

@@ -25,10 +25,7 @@ div
 
 <script type="text/babel">
   import listen from 'event-listener';
-  import {
-          setConversationId,
-          messageLoad
-  } from 'vuex/actions/chatActions.js'
+  import { setConversation, messageLoad } from 'vuex/actions/chatActions.js';
   //import {  } from "vuex/getters";
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgDate from './chat-msg-date.vue';
@@ -43,12 +40,12 @@ div
     route: {
       data({to: {params: { id }}}) {
         const conversation_id = +id;
-        this.setConversationId( conversation_id );
+        this.setConversation( conversation_id );
       },
     },
     vuex: {
       actions: {
-        setConversationId,
+        setConversation,
         messageLoad,
       },
       getters: {},
@@ -56,6 +53,7 @@ div
     computed: {
     },
     beforeDestroy() {
+      this.scrollListener.remove();
     },
     methods: {
       onScroll(){
