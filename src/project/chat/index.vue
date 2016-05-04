@@ -24,23 +24,12 @@ div
 </template>
 
 <script type="text/babel">
-  import {
-   // getChat,
-    getLead,
-    //setMessageRead
-  } from 'vuex/actions';
-  import { setOpenedChat } from 'vuex/actions/chatActions.js'
-  import {
-    currentChat,
-   // currentChatMember,
-    chatNotifyCount,
-  } from "vuex/getters";
-
-  //import store from 'vuex/store';
-  //import * as service from 'services/chat';
-  import * as messages from 'services/message';
   import listen from 'event-listener';
-
+  import {
+          setConversationId,
+          messageLoad
+  } from 'vuex/actions/chatActions.js'
+  //import {  } from "vuex/getters";
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgDate from './chat-msg-date.vue';
   import ChatMsg from './chat-msg.vue';
@@ -48,116 +37,52 @@ div
   import ChatHeader from './chat-header.vue';
 
   export default {
+    ready(){
+      this.onScroll();
+    },
     route: {
       data({to: {params: { id }}}) {
-
-        /**
-         * Ключевое знание какой диалог открыт (он получен после того как мы переши на этот URL)
-         * */
-
         const conversation_id = +id;
-
-        console.log( conversation_id );
-
-        // Вот первый метод получет чат я так понимаю
-
-        this.getLead( { lead_id: conversation_id } ).then( ( { lead } ) => {
-
-            this.setOpenedChat(lead.chat.id);
-
-           // this.updateLastMessageId();
-            //this.$nextTick(this.goToBottom);
-         // this.scrollListener = listen( window, 'scroll', this.scrollHandler );
-        }).catch( error => {
-          console.log('errr', error);
-            this.$router.go({name: '404'});
-        } );
-
+        this.setConversationId( conversation_id );
       },
     },
-
     vuex: {
       actions: {
-     //   getChat,
-        getLead,
-        setOpenedChat,
-       // setMessageRead
+        setConversationId,
+        messageLoad,
       },
-      getters: {
-        currentChat,
-       // currentChatMember,
-        chatNotifyCount,
-      }
+      getters: {},
     },
-
-/*    created() {
-      messages.onMsg(this.onMsg);
-      messages.onMsgRead(this.onMsgRead);
-    },*/
-
     computed: {
-      messages() {
-        return this.currentChat ? this.currentChat.messages : [];
-      },
-
-/*      lastReadMessageId() {
-        let ids = this.currentChat.members
-          .filter(member => member.user_id !== this.currentChatMember.user_id)
-          .map(member => member.last_message_id)
-          .sort((a, b) => b - a);
-
-        // max last message id of all members except current,
-        // i.e. if someone except current user read message it'll marked as read
-        return ids[0];
-      }*/
     },
-
     beforeDestroy() {
-      messages.offMsg( this.onMsg );
-      messages.offMsgRead( this.onMsgRead );
-      //this.scrollListener.remove();
     },
-
     methods: {
-
-/*      scrollHandler(){
-        if ( window.scrollY <= 300 ) {
-          console.log('Нужно загрузить новые данные.');
+      onScroll(){
+        this.scrollListener = listen( window, 'scroll', this.scrollHandler.bind( this ) );
+      },
+      offScroll(){
+        this.scrollListener.remove();
+      },
+      scrollHandler(){
+        let needUpdate = false;
+        if ( !needUpdate ) {
+          if ( window.scrollY <= 300 ) {
+            needUpdate = true;
+            this.messageLoad();
+          }
         }
-      },*/
-
+        if (needUpdate) {
+          this.offScroll();
+          setTimeout( () => {
+            needUpdate = false;
+            this.onScroll();
+          }, 500 );
+        }
+      },
       goToBottom(){
         window.scrollTo(0, document.body.scrollHeight);
       },
-
-/*      onMsg({response_map: {chat}}){
-        let isCurrentChat = this.currentChat && chat.id === this.currentChat.id;
-
-        if (isCurrentChat) {
-          this.$nextTick(this.goToBottom);
-        }
-      },*/
-
-  /*    onMsgRead({response_map: {chat, user_id}}) {
-        let isCurrentChat = this.currentChat && chat.id === this.currentChat.id;
-        let isNotCurrentUser = user_id !== this.currentChatMember.user_id;
-
-        if (isCurrentChat && isNotCurrentUser) {
-          const { id, members } = chat;
-          this.setMessageRead({id, members});
-        }
-      },
-*/
-/*      updateLastMessageId() {
-        const count = this.messages.length;
-        if ( count > 0 ) {
-          let msg = this.messages[count - 1];
-          let isNotLastMessage = this.currentChatMember.last_message_id !== msg.id;
-          if(isNotLastMessage) {
-            messages.update(msg.conversation_id, msg.id);
-          }
-        }
-      }*/
     },
 
     components: {
@@ -167,11 +92,5 @@ div
       ChatMsgProduct,
       ChatMsgDate,
     },
-
-/*    watch: {
-      messages() {
-        this.updateLastMessageId();
-      }
-    }*/
   }
 </script>

@@ -23,12 +23,16 @@ const state = {
 
 // mutations
 const mutations = {
-  [RECEIVE_CHAT] (state, chat) {
-    state.all.push(chat);
-  },
   [OPEN_CHAT] (state, chat_id) {
     state.opened_id = chat_id;
   },
+  [MESSAGE_LOAD] (state) {
+    
+  },
+  [RECEIVE_CHAT] (state, chat) {
+    state.all.push(chat);
+  },
+
   [CLOSE_OPENED_CHAT] (state) {
     state.opened_id = null;
   },

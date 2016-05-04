@@ -1,6 +1,13 @@
 import * as types from '../mutation-types';
 import * as messages from 'services/message.js';
 
+
+export const setConversationId = ({ dispatch }, conversation_id) => {
+	dispatch(types.OPEN_CHAT, conversation_id);
+};
+export const messageLoad = ({ dispatch }) => {
+	dispatch(types.MESSAGE_LOAD);
+};
 export const receiveChatNotify = ({ dispatch, state }, chatId, messages) => {
 
 	dispatch(types.RECEIVE_CHAT_MSG, chatId, messages[0]);
@@ -12,10 +19,6 @@ export const receiveChatNotify = ({ dispatch, state }, chatId, messages) => {
 
 export const readedAllChatNotify = ({ dispatch }) => {
 	dispatch(types.CLEAR_CHAT_NOTIFY_COUNT);
-};
-
-export const setOpenedChat = ({ dispatch }, conversation_id) => {
-	dispatch(types.OPEN_CHAT, conversation_id);
 };
 
 /**
