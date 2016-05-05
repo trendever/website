@@ -15,9 +15,7 @@
 </template>
 
 <script type="text/babel">
-  import { currentLead } from 'vuex/getters';
-  import { getCurrentMember } from 'vuex/getters/chatGetters.js';
-
+  import { getCurrentMember, getLead } from 'vuex/getters/chatGetters.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
   import { formatTime } from './utils';
@@ -33,7 +31,7 @@
 
     vuex: {
       getters: {
-        currentLead,
+        getLead,
         getCurrentMember,
       }
     },
@@ -48,10 +46,10 @@
           return `<b>${this.msg.user.name}</b>`
         }
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
-          return `<b>${this.currentLead.shop.instagram_username}</b>`
+          return `<b>${this.getLead.shop.instagram_username}</b>`
         }
 
-        return `<b>${this.currentLead.shop.instagram_username}</b> (продавец ${this.msg.user.name})`
+        return `<b>${this.getLead.shop.instagram_username}</b> (продавец ${this.msg.user.name})`
       },
 
       isOwnMessage() {

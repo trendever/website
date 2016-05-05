@@ -1,7 +1,7 @@
 
 export const getConversationId = ({conversation}) => conversation.id;
-export const getMembers = ({conversation}) => conversation.members;
 export const getMessages = ({conversation}) => conversation.messages;
+export const getLead = ({conversation}) => conversation.lead;
 export const getCurrentMember = ({conversation, user}) => {
 	if(conversation.members === undefined || conversation.members === null){
 		return null;

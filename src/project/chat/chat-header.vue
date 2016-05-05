@@ -20,8 +20,7 @@ div
 </template>
 
 <script type="text/babel">
-  import { currentLead } from 'vuex/getters';
-  import { conversationNotifyCount } from 'vuex/getters/chatGetters.js';
+  import { conversationNotifyCount, getLead } from 'vuex/getters/chatGetters.js';
 
   import * as leads from 'services/leads';
   import HeaderComponent from 'base/header/header.vue';
@@ -33,29 +32,29 @@ div
     vuex: {
       getters: {
         conversationNotifyCount,
-        currentLead,
+        getLead,
       }
     },
 
     computed: {
       id() {
-        if (this.currentLead) {
-          return this.currentLead.id
+        if (this.getLead) {
+          return this.getLead.id
         }
       },
       shopName() {
-        if (this.currentLead) {
-          return this.currentLead.shop.instagram_username;
+        if (this.getLead) {
+          return this.getLead.shop.instagram_username;
         }
       },
       shopPhoto() {
-        if (this.currentLead) {
-          return this.currentLead.shop.instagram_avatar_url;
+        if (this.getLead) {
+          return this.getLead.shop.instagram_avatar_url;
         }
       },
       status() {
-        if (this.currentLead) {
-          return leads.getStatus(this.currentLead.status).name;
+        if (this.getLead) {
+          return leads.getStatus(this.getLead.status).name;
         }
       },
     },

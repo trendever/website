@@ -19,7 +19,7 @@
 
 <script type="text/babel">
   import { formatDatetime } from './utils';
-
+  import { getCurrentMember } from 'vuex/getters/chatGetters.js';
   export default{
     props: {
       msg: {
@@ -28,7 +28,11 @@
       },
       lastReadMessageId: Number
     },
-
+    vuex:{
+      getters:{
+        getCurrentMember
+      }
+    },
     computed: {
       product() {
         return JSON.parse(this.msg.parts[0].content);
@@ -38,10 +42,10 @@
         return this.product.Items.reduce(function(desc, item, i, arr) {
           desc += `${item.Name} `;
 
-          if (item.DiscountPrice) {
-            desc += `${item.DiscountPrice} <i class="ic-currency-rub"</i>`
-          } else if (item.Price) {
-            desc += `${item.Price} <i class="ic-currency-rub"</i>`
+          if (item.discountPrice) {
+            desc += `${item.discountPrice} <i class="ic-currency-rub"</i>`
+          } else if (item.price) {
+            desc += `${item.price} <i class="ic-currency-rub"</i>`
           } else {
             desc += `цена по запросу`
           }
@@ -55,7 +59,7 @@
       },
 
       isOwnMessage() {
-        return this.currentMember.user_id === this.msg.user.user_id
+        return this.getCurrentMember.user_id === this.msg.user.user_id
       },
 
       isSent() {
@@ -67,7 +71,7 @@
       },
 
       getSide(){
-        if(!this.msg.user || !this.currentMember) {
+        if(!this.msg.user || !this.getCurrentMember) {
           return '__center';
         }
 

@@ -99,7 +99,6 @@ export function find( conversation_id, from_message_id, limit = 12, direction = 
  * REJECT (one of ERROR_CODES) {UNATHORIZED, NOT_EXISTS}
  */
 export function create( conversation_id, text, mime_type = 'text/plain' ) {
-
   return new Promise( (resolve, reject) => {
     channel.req("create", "message", { conversation_id, text, mime_type })
     .then( data => {
@@ -116,7 +115,6 @@ export function create( conversation_id, text, mime_type = 'text/plain' ) {
         reject(ERROR_CODES.NOT_EXISTS);
       }
     });
-
   });
 }
 

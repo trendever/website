@@ -1,6 +1,5 @@
 <style src="./styles/chat-bar.pcss"></style>
 <template lang="jade">
-
 div
   menu-component(v-if="menuActive && !statusMenuActive")
     div(slot="items")
@@ -30,15 +29,12 @@ div
   chat-menu-status(
   v-if="statusMenuActive",
   :status-menu-active.sync="statusMenuActive")
-
 </template>
 
 <script>
   import {
-    currentLead,
-  } from 'vuex/getters';
-  import {
-    getCurrentMember
+    getCurrentMember,
+    getLead
   } from 'vuex/getters/chatGetters.js'
   import * as leads from 'services/leads';
   import * as service from 'services/chat';
@@ -62,17 +58,17 @@ div
     vuex: {
       getters: {
         getCurrentMember,
-        currentLead,
+        getLead,
       }
     },
 
     methods: {
       callCustomer: function() {
-        service.callCustomer(this.currentLead.id);
+        service.callCustomer(this.getLead.id);
         this.menuActive = false;
       },
       callSupplier: function() {
-        service.callSupplier(this.currentLead.id);
+        service.callSupplier(this.getLead.id);
         this.menuActive = false;
       },
     },

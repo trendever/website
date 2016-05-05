@@ -15,9 +15,7 @@ menu-component
 </template>
 
 <script>
-  import {
-    currentLead,
-  } from 'vuex/getters';
+  import { getLead } from 'vuex/getters/chatGetters.js';
 
   import {
     setLeadStatus,
@@ -40,7 +38,7 @@ menu-component
 
     vuex: {
       getters: {
-        currentLead,
+        getLead,
       },
       actions: {
         setLeadStatus,
@@ -50,15 +48,17 @@ menu-component
     methods: {
       setStatus: function(event){
         this.statusMenuActive = false;
-        this.setLeadStatus(this.currentLead.id, event);
+        this.setLeadStatus(this.getLead.id, event);
       }
     },
 
     computed: {
       status: function() {
-        return this.currentLead.status
+        return this.getLead.status
       },
-      statuses: () => leads.STATUSES,
+      statuses(){
+        return leads.STATUSES;
+      },
     },
 
     components: {

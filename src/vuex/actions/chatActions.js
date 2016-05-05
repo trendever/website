@@ -12,8 +12,8 @@ export const setConversation = ( { dispatch }, id ) => {
 			lead_id: id
 		}
 	);
-	promise.then( ( { messages, lead: {id, chat: { members } } } ) => {
-		dispatch( types.SET_CONVERSATION, id, members, messages );
+	promise.then( ( { messages, lead } ) => {
+		dispatch( types.SET_CONVERSATION, lead.id, lead.chat.members, messages, lead );
 	} );
 	promise.catch( (error) => {
 		console.log("Set conversation error:", error);
@@ -22,8 +22,6 @@ export const setConversation = ( { dispatch }, id ) => {
 };
 
 export const loadMessage = ( { dispatch, state:{ conversation:{ id, messages } } } ) => {
-
-	console.log(id, messages[ 0 ].id);
 
 	const promise = messageService.find( id, messages[ 0 ].id );
 
@@ -47,37 +45,40 @@ export const loadMessage = ( { dispatch, state:{ conversation:{ id, messages } }
  * @param  {string} text             text of message
  * @param  {string} mime_type        type of message (text/plain, text/json)
  */
-export const createChatMsg = ( { dispatch, state }, conversation_id, text, mime_type ) => {
-	return new Promise( ( resolve, reject ) => {
-		const promise = messages.create( conversation_id, text, mime_type );
-		promise.then( data => {
-			resolve( data.chat.id, data.messages[ 0 ] );
-		} );
-		promise.catch( error => {
-			reject( error );
-		} );
+export const createMessage = ( { dispatch }, conversation_id, text, mime_type ) => {
+	const promise = messageService.create( conversation_id, text, mime_type );
+	promise.then( data => {
+		dispatch(types.CREATE_MESSAGE, data.messages);
 	} );
+	promise.catch( error => {
+		console.log(error);
+	} );
+	return promise;
 };
 
-export const receiveChatNotify = ({ dispatch, state }, chatId, messages) => {
+export const receiveMessage = ({ dispatch }, message) => {
+	dispatch(types.RECEIVE_CHAT_MSG, message);
+};
 
-	// TODO с этим можно разбираться когда будет сделана мемоизация и загрузка сообщений.
+export const receiveChatNotify = ({ dispatch, state }, conversation_id, messages) => {
 
-	dispatch(types.RECEIVE_CHAT_MSG, chatId, messages[0]);
+	dispatch(types.RECEIVE_CHAT_MSG, messages[0]);
 
-	if (state.chat.opened_id !== chatId) {
+	if (state.conversation.id !== conversation_id) {
 		dispatch(types.INCREMENT_CHAT_NOTIFY_COUNT);
 	}
 
 };
 
 export const readedAllChatNotify = ({ dispatch }) => {
-	// TODO с этим можно разбираться когда будет сделана мемоизация и загрузка сообщений.
 	dispatch(types.CLEAR_CHAT_NOTIFY_COUNT);
 };
 
-export const setMessageRead = ( { dispatch }, { id, members } ) => dispatch( types.UPDATE_CHAT_MEMBERS, id, members );
-
+export const setMessageRead = ( { dispatch },  id, members  ) => {
+	
+	dispatch( types.UPDATE_CHAT_MEMBERS, id, members );
+	
+};
 
 
 

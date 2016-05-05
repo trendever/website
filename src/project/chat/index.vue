@@ -2,11 +2,11 @@
 <template lang="jade">
 div
   .chat-cnt
-    chat-header(:notify-count='conversationNotifyCount')
+    chat-header(:notify-count='23')
     .section.top.bottom
       .chat.section__content(v-el:message-list)
         .chat_messages
-          template(v-for="msg in getMessages")
+          template(v-for="msg in getMessages", track-by="$index")
 
             //- chat-msg-date
 
@@ -27,12 +27,16 @@ div
   import listen from 'event-listener';
   import {
           setConversation,
-          loadMessage
+          loadMessage,
+          receiveMessage
   } from 'vuex/actions/chatActions.js';
   import {
           getMessages,
-          conversationNotifyCount
+          conversationNotifyCount,
+          getConversationId,
+          getCurrentMember
   } from "vuex/getters/chatGetters.js";
+  import * as messages from 'services/message';
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgDate from './chat-msg-date.vue';
   import ChatMsg from './chat-msg.vue';
@@ -40,8 +44,17 @@ div
   import ChatHeader from './chat-header.vue';
 
   export default {
+    created() {
+      messages.onMsg(this.onMessage);
+      messages.onMsgRead(this.onMessageReaded);
+    },
     ready(){
       this.onScroll();
+    },
+    beforeDestroy() {
+      this.offScroll();
+      messages.offMsg(this.onMessage);
+      messages.offMsgRead(this.onMessageReaded);
     },
     route: {
       data({to: {params: { id }}}) {
@@ -55,16 +68,16 @@ div
       actions: {
         setConversation,
         loadMessage,
+        receiveMessage
       },
       getters: {
         getMessages,
         conversationNotifyCount,
+        getConversationId,
+        getCurrentMember,
       },
     },
     computed: {
-    },
-    beforeDestroy() {
-      this.scrollListener.remove();
     },
     methods: {
       onScroll(){
@@ -72,6 +85,19 @@ div
       },
       offScroll(){
         this.scrollListener.remove();
+      },
+      onMessage({response_map: {chat, messages}}){
+        if (chat.id === this.getConversationId) {
+          this.receiveMessage(messages[0]);
+          this.$nextTick(this.goToBottom);
+        }
+      },
+      onMessageReaded({response_map: {chat, message_id, user_id}}){
+        let isCurrentChat = chat.id === this.getConversationId;
+        let isNotCurrentUser = user_id !== this.getCurrentMember.user_id;
+        if (isCurrentChat && isNotCurrentUser) {
+          this.setMessageRead(message_id, chat.members.find(member => member.user_id === user_id));
+        }
       },
       scrollHandler(){
         let needUpdate = false;
@@ -98,7 +124,6 @@ div
         }
       },
       goToBottom(){
-        console.info(this.$els.messageList.scrollHeight);
         window.scrollTo(0, this.$els.messageList.scrollHeight);
       },
     },
@@ -108,6 +133,6 @@ div
       ChatMsg,
       ChatMsgProduct,
       ChatMsgDate,
-    },
+    }
   }
 </script>

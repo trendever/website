@@ -1,6 +1,5 @@
 <style src="./styles/chat-bar.pcss"></style>
 <template lang="jade">
-
 div
   .chat-bar.section__content
     .chat-bar_menu-btn(v-if="isAdmin", @click="menuActive=true")
@@ -13,19 +12,18 @@ div
       i.ic-send-plane
 
   chat-menu(v-if="isAdmin", :menu-active.sync="menuActive")
-
 </template>
 
 <script type="text/babel">
-  import { currentLead } from 'vuex/getters';
   import {
     getConversationId,
-    getCurrentMember
+    getCurrentMember,
+    getLead
   } from 'vuex/getters/chatGetters.js'
   import {
     setLeadStatus,
   } from "vuex/actions";
-  import { createChatMsg } from "vuex/actions/chatActions.js";
+  import { createMessage } from "vuex/actions/chatActions.js";
 
   import * as service from "services/message";
   import * as leads from "services/leads";
@@ -33,19 +31,19 @@ div
   import ChatMenu from './chat-menu.vue';
 
   export default{
-    data: () => ({
-      menuActive: false,
-      txtMsg: "",
-      saveScrollPos: 0,
-    }),
-
+    data(){
+      return {
+        menuActive: false,
+        txtMsg: "",
+      };
+    },
     vuex: {
       actions: {
-        createChatMsg,
+        createMessage,
         setLeadStatus,
       },
       getters: {
-        currentLead,
+        getLead,
         getConversationId,
         getCurrentMember,
       }
@@ -66,30 +64,31 @@ div
     },
 
     methods: {
-      send (event) {
+      send ( event ) {
         this.$els.inputMsg.focus();
         event.preventDefault();
 
         var _txtMsg = this.txtMsg.trim();
         this.txtMsg = "";
-        if (!_txtMsg.length) return;
+        if ( !_txtMsg.length ) return;
 
-        this.createChatMsg(getConversationId, _txtMsg, "text/plain")
-        .then( () => {
+        const promise = this.createMessage( this.getConversationId, _txtMsg, "text/plain" );
 
-          this.$nextTick(this.goToBottom);
-
-          if (this.currentLead.status === leads.STATUSES.NEW.key
-            && this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key) {
-            this.setLeadStatus(this.currentLead.id, 'PROGRESS');
+        promise.then( () => {
+          this.$nextTick( this.goToBottom );
+          if ( this.getLead.status === leads.STATUSES.NEW.key
+                  && this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key ) {
+            this.setLeadStatus( this.getLead.id, 'PROGRESS' );
           }
+        } );
 
-        }).catch( error => {
-          alert(error)
-        });
+        promise.catch( error => {
+          console.log( error );
+        } );
+
       },
       goToBottom (){
-        window.scrollTo(0, document.body.scrollHeight);
+        window.scrollTo( 0, document.body.scrollHeight );
       },
     },
 
@@ -99,7 +98,6 @@ div
           let inputMsg = this.$els.inputMsg;
           inputMsg.style.height = (msg ? inputMsg.scrollHeight : 53)  + 'px';
         });
-
       }
     },
 
