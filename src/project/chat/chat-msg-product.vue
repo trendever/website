@@ -42,10 +42,10 @@
         return this.product.Items.reduce(function(desc, item, i, arr) {
           desc += `${item.Name} `;
 
-          if (item.discountPrice) {
-            desc += `${item.discountPrice} <i class="ic-currency-rub"</i>`
-          } else if (item.price) {
-            desc += `${item.price} <i class="ic-currency-rub"</i>`
+          if (item.DiscountPrice) {
+            desc += `${item.DiscountPrice} <i class="ic-currency-rub"</i>`
+          } else if (item.Price) {
+            desc += `${item.Price} <i class="ic-currency-rub"</i>`
           } else {
             desc += `цена по запросу`
           }

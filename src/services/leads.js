@@ -152,9 +152,7 @@ export function find({ limit, from_lead_id, roles }) {
   return new Promise( (resolve, reject) => {
 
     channel.req("list", "lead", { limit, from_lead_id, roles }).then( data => {
-
       resolve(data.response_map);
-
     }).catch( error => {
       if (error.log_map.code_key === '403') {
         reject(ERROR_CODES.UNATHORIZED);
@@ -278,19 +276,19 @@ export function get({ lead_id, conversation_id }) {
     .then( data => {
       resolve(data.response_map);
     }).catch( error => {
-      switch(error.log_map.code_key){
-        case '403': reject(ERROR_CODES.UNATHORIZED);
-          break;
-        case '404': reject(ERROR_CODES.OBJECT_NOT_EXIST);
-          break;
-        case '400': reject(ERROR_CODES.FORBIDDEN);
-          break;
+      if (error.log_map.code_key === '403') {
+        reject(ERROR_CODES.UNATHORIZED);
+      } else if (error.log_map.code_key === '404') {
+        reject(ERROR_CODES.OBJECT_NOT_EXIST);
+      } else if (error.log_map.code_key === '400') {
+        reject(ERROR_CODES.FORBIDDEN);
       }
       console.log("Lead retrieve err:", error);
     });
 
   });
 }
+
 
 /**
  * Create lead
@@ -316,6 +314,7 @@ export function create(product_id) {
 
   });
 }
+
 
 /**
  * Change lead status

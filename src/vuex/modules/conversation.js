@@ -1,11 +1,12 @@
 import {
   SET_CONVERSATION,
   RECEIVE_MESSAGE,
-  CREATE_MESSAGE,
+  LOAD_MESSAGE,
+  CHANGED_LEAD_STATUS,
+//  CREATE_MESSAGE,
   CLOSE_CONVERSATION,
   INCREMENT_CHAT_NOTIFY_COUNT,
   CLEAR_CHAT_NOTIFY_COUNT,
-  RECEIVE_CHAT_MSG,
   UPDATE_CHAT_MEMBERS
 } from '../mutation-types';
 
@@ -16,7 +17,6 @@ const state = {
   members: null,
   messages: null,
   lead: null,
-  last_message_id:null,
   notify_count: null,
 };
 
@@ -28,33 +28,35 @@ const mutations = {
     state.messages = messages;
     state.lead = lead;
   },
-  [RECEIVE_MESSAGE] ( state, messages ) {
-    console.log( `[${RECEIVE_MESSAGE}]:`, messages );
+  [LOAD_MESSAGE] ( state, messages ) {
     state.messages = messages.concat( state.messages );
   },
-  [CREATE_MESSAGE] ( state, messages ) {
-    console.log( `[${CREATE_MESSAGE}]:`, messages );
+  [RECEIVE_MESSAGE] ( state, messages ) {
     state.messages = state.messages.concat( messages );
   },
+  [CHANGED_LEAD_STATUS] ( state, status ) {
+    state.lead.status = status;
+  },
+/*  [CREATE_MESSAGE] ( state, messages ) {
+    state.messages = state.messages.concat( messages );
+  },*/
   [CLOSE_CONVERSATION] ( state ) {
     state = {
       id: null,
       members: null,
       messages: null,
       notify_count: null,
+      lead: null,
     };
+  },
+  [UPDATE_CHAT_MEMBERS] (state, members) {
+    state.members = members;
   },
   [INCREMENT_CHAT_NOTIFY_COUNT] (state) {
     state.notify_count += 1;
   },
   [CLEAR_CHAT_NOTIFY_COUNT] (state) {
     state.notify_count = 0;
-  },
-  [RECEIVE_CHAT_MSG]( state, message ) {
-    state.messages.push( message );
-  },
-  [UPDATE_CHAT_MEMBERS] (state, members) {
-    state.members = members;
   },
 };
 

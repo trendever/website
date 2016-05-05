@@ -29,6 +29,7 @@ div
   chat-menu-status(
   v-if="statusMenuActive",
   :status-menu-active.sync="statusMenuActive")
+
 </template>
 
 <script>

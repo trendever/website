@@ -17,9 +17,7 @@ menu-component
 <script>
   import { getLead } from 'vuex/getters/chatGetters.js';
 
-  import {
-    setLeadStatus,
-  } from 'vuex/actions';
+  import { setLeadStatus } from 'vuex/actions/chatActions.js';
 
   import MenuComponent from 'base/menu/menu.vue';
   import * as leads from 'services/leads';
@@ -48,7 +46,7 @@ menu-component
     methods: {
       setStatus: function(event){
         this.statusMenuActive = false;
-        this.setLeadStatus(this.getLead.id, event);
+        this.setLeadStatus(event);
       }
     },
 

@@ -7,7 +7,7 @@
     receiveChangedStatusNotify,
     getAllLeads,
   } from 'vuex/actions';
-  import { receiveChatNotify } from 'vuex/actions/chatActions.js'
+  import { receiveChatNotify, setLeadStatus } from 'vuex/actions/chatActions.js'
   import * as messages from 'services/message';
   import * as leads from 'services/leads';
 
@@ -16,16 +16,19 @@
 /*      // Listen server direct notify globally
       messages.onMsg(({response_map: {chat, messages}}) => {
         this.receiveChatNotify(chat.id, messages)
-      });
+      });*/
 
       leads.onChangeStatus(({response_map: {lead}}) => {
-        this.receiveChangedStatusNotify(lead.id, lead.status)
-      });*/
+        this.receiveChangedStatusNotify(lead.status);
+        this.setLeadStatus(lead.status);
+      });
+
     },
     vuex: {
       actions: {
         receiveChatNotify,
         receiveChangedStatusNotify,
+        setLeadStatus
       },
       getters: {}
     },

@@ -37,22 +37,25 @@ export const ERROR_CODES = {
  * REJECT (one of ERROR_CODES) {NOT_EXISTS, UNATHORIZED}
  */
 
-export function find( conversation_id, from_message_id, limit = 12, direction = false ) {
-  return new Promise( ( resolve, reject ) => {
-    channel.req( "search", "message", { conversation_id, from_message_id, limit, direction } )
-           .then( data => {
-             if ( !data.response_map.error ) {
-               resolve( data.response_map.messages );
-             } else if ( data.response_map.error.code === ERROR_CODES.FORBIDDEN ) {
-               reject( data.response_map.error );
-             }
-           } ).catch( error => {
-      if ( error.log_map.code_key === '403' ) {
-        reject( ERROR_CODES.UNATHORIZED );
+export function find( conversation_id, from_message_id, limit = 12) {
+
+  return new Promise( (resolve, reject) => {
+
+    channel.req("search", "message", { conversation_id, from_message_id, limit })
+    .then( data => {
+      if (!data.response_map.error) {
+        resolve(data.response_map.messages);
+      } else if (data.response_map.error.code === ERROR_CODES.FORBIDDEN) {
+        reject(data.response_map.error);
       }
-    } );
+    }).catch( error => {
+      if (error.log_map.code_key === '403') {
+        reject(ERROR_CODES.UNATHORIZED);
+      }
+    });
+
   });
-};
+}
 
 
 /**
@@ -98,7 +101,8 @@ export function find( conversation_id, from_message_id, limit = 12, direction = 
  *
  * REJECT (one of ERROR_CODES) {UNATHORIZED, NOT_EXISTS}
  */
-export function create( conversation_id, text, mime_type = 'text/plain' ) {
+export function create(conversation_id, text, mime_type = 'text/plain') {
+
   return new Promise( (resolve, reject) => {
     channel.req("create", "message", { conversation_id, text, mime_type })
     .then( data => {
@@ -115,6 +119,7 @@ export function create( conversation_id, text, mime_type = 'text/plain' ) {
         reject(ERROR_CODES.NOT_EXISTS);
       }
     });
+
   });
 }
 
@@ -133,7 +138,8 @@ export function update(conversation_id, message_id) {
       } else {
         return data.response_map.status === 'ok';
       }
-    } ).catch( err => {
+    })
+    .catch(err => {
       if (err.log_map.code_key === '403') {
         throw ERROR_CODES.UNATHORIZED;
       } else if (err.log_map.code_key === '400') {

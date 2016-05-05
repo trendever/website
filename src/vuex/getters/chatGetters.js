@@ -2,6 +2,13 @@
 export const getConversationId = ({conversation}) => conversation.id;
 export const getMessages = ({conversation}) => conversation.messages;
 export const getLead = ({conversation}) => conversation.lead;
+export const getLastMessageId = ({conversation, user}) => {
+	const {user_id} = getCurrentMember({conversation, user});
+	return conversation.members
+	     .filter(member => member.user_id !== user_id)
+	     .map(member => member.last_message_id)
+	     .sort((a, b) => b - a)[0];
+};
 export const getCurrentMember = ({conversation, user}) => {
 	if(conversation.members === undefined || conversation.members === null){
 		return null;

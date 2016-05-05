@@ -15,7 +15,7 @@
 </template>
 
 <script type="text/babel">
-  import { getCurrentMember, getLead } from 'vuex/getters/chatGetters.js';
+  import { getCurrentMember, getLead, getLastMessageId } from 'vuex/getters/chatGetters.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
   import { formatTime } from './utils';
@@ -33,6 +33,7 @@
       getters: {
         getLead,
         getCurrentMember,
+        getLastMessageId,
       }
     },
 
@@ -61,7 +62,7 @@
       },
 
       isRead() {
-        return this.lastReadMessageId >= this.msg.id
+        return this.getLastMessageId >= this.msg.id
       },
 
       getSide(){
