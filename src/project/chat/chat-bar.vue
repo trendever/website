@@ -17,11 +17,11 @@ div
 </template>
 
 <script type="text/babel">
+  import { currentLead } from 'vuex/getters';
   import {
-    currentLead,
-    currentChat,
-    currentChatMember,
-  } from 'vuex/getters';
+    getConversationId,
+    getCurrentMember
+  } from 'vuex/getters/chatGetters.js'
   import {
     setLeadStatus,
   } from "vuex/actions";
@@ -46,19 +46,19 @@ div
       },
       getters: {
         currentLead,
-        currentChat,
-        currentChatMember,
+        getConversationId,
+        getCurrentMember,
       }
     },
 
     computed: {
-      isAdmin: function() {
-        if (!this.currentChatMember) {
+      isAdmin() {
+        if (!this.getCurrentMember) {
           return false;
         }
-        if (this.currentChatMember.role === leads.USER_ROLES.SUPPLIER.key
-          || this.currentChatMember.role === leads.USER_ROLES.SELLER.key
-          || this.currentChatMember.role === leads.USER_ROLES.SUPER_SELLER.key) {
+        if (this.getCurrentMember.role === leads.USER_ROLES.SUPPLIER.key
+                || this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
+                || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key) {
           return true;
         }
         return false;
@@ -74,13 +74,13 @@ div
         this.txtMsg = "";
         if (!_txtMsg.length) return;
 
-        this.createChatMsg(this.currentChat.id, _txtMsg, "text/plain")
+        this.createChatMsg(getConversationId, _txtMsg, "text/plain")
         .then( () => {
 
           this.$nextTick(this.goToBottom);
 
           if (this.currentLead.status === leads.STATUSES.NEW.key
-            && this.currentChatMember.role === leads.USER_ROLES.CUSTOMER.key) {
+            && this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key) {
             this.setLeadStatus(this.currentLead.id, 'PROGRESS');
           }
 

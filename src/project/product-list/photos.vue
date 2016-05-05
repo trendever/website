@@ -44,7 +44,6 @@
       products,
       isWaitReponseProducts,
       isInfinityProducts,
-      chatNotifyCount,
       getColumnNumber,
       } from 'vuex/getters';
 
@@ -94,7 +93,6 @@
           searchValue,
           selectedTags,
           object_list: products,
-          chatNotifyCount,
           isWaitReponseProducts,
           isInfinityProducts,
           getColumnNumber,

@@ -1,16 +1,13 @@
-export const getConversationId = state => state.id;
-export const getMembers = state => state.members;
-export const getMessages = state => state.messages;
-export const getCurrentMember = state => state.members[state.current_member_id];
 
-export const chatNotifyCount = state => state.chat.notify_count;
-
-export const currentChat = state => {
-	return state.chat.all.find( obj => obj.id === state.chat.opened_id );
+export const getConversationId = ({conversation}) => conversation.id;
+export const getMembers = ({conversation}) => conversation.members;
+export const getMessages = ({conversation}) => conversation.messages;
+export const getCurrentMember = ({conversation, user}) => {
+	if(conversation.members === undefined || conversation.members === null){
+		return null;
+	}
+	return conversation.members.find(({user_id}) => {
+		return user_id === user.id;
+	});
 };
-
-export const currentChatMember = state => {
-	let curChat = currentChat(state);
-	if (!curChat) {return;}
-	return curChat.members.find( obj =>  obj.user_id === state.user.id );
-};
+export const conversationNotifyCount = state => state.notify_count;

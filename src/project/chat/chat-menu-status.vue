@@ -16,7 +16,6 @@ menu-component
 
 <script>
   import {
-    currentChatMember,
     currentLead,
   } from 'vuex/getters';
 
@@ -42,7 +41,6 @@ menu-component
     vuex: {
       getters: {
         currentLead,
-        currentMember: currentChatMember,
       },
       actions: {
         setLeadStatus,

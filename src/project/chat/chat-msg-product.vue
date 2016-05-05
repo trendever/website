@@ -18,10 +18,6 @@
 </template>
 
 <script type="text/babel">
-import {
-    currentChatMember
-  } from 'vuex/getters';
-
   import { formatDatetime } from './utils';
 
   export default{
@@ -78,12 +74,5 @@ import {
         return this.isOwnMessage ? '__right' : '__left';
       },
     },
-
-    vuex: {
-      getters: {
-        currentMember: currentChatMember
-      }
-    },
-
   }
 </script>

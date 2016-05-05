@@ -15,11 +15,8 @@
 </template>
 
 <script type="text/babel">
-  import {
-    currentChatMember,
-    currentChat,
-    currentLead,
-  } from 'vuex/getters';
+  import { currentLead } from 'vuex/getters';
+  import { getCurrentMember } from 'vuex/getters/chatGetters.js';
 
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
@@ -37,7 +34,7 @@
     vuex: {
       getters: {
         currentLead,
-        currentMember: currentChatMember,
+        getCurrentMember,
       }
     },
 
@@ -58,7 +55,7 @@
       },
 
       isOwnMessage() {
-        return this.currentMember.user_id === this.msg.user.user_id
+        return this.getCurrentMember.user_id === this.msg.user.user_id
       },
 
       isSent() {

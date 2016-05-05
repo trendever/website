@@ -1,5 +1,5 @@
 import * as types from '../mutation-types';
-import * as messages from 'services/message.js';
+import * as messageService from 'services/message.js';
 import * as leads from 'services/leads.js';
 
 /**
@@ -18,10 +18,27 @@ export const setConversation = ( { dispatch }, id ) => {
 	promise.catch( (error) => {
 		console.log("Set conversation error:", error);
 	} );
+	return promise;
 };
 
-export const messageLoad = ({ dispatch }) => {
-	dispatch( types.LOAD_MESSAGE, [] );
+export const loadMessage = ( { dispatch, state:{ conversation:{ id, messages } } } ) => {
+
+	console.log(id, messages[ 0 ].id);
+
+	const promise = messageService.find( id, messages[ 0 ].id );
+
+	promise.then( ( messages ) => {
+		if(messages !== null){
+			dispatch( types.RECEIVE_MESSAGE, messages );
+		}
+	} );
+
+	promise.catch( ( error ) => {
+		console.log( error );
+	} );
+
+	return promise;
+
 };
 
 /**

@@ -37,48 +37,22 @@ export const ERROR_CODES = {
  * REJECT (one of ERROR_CODES) {NOT_EXISTS, UNATHORIZED}
  */
 
-export const find = (function() {
-
-  const memoizeConversation = new Map();
-
-  return function( { conversation_id, from_message_id, limit, direction = false } ) {
-
-    return new Promise( ( resolve, reject ) => {
-
-      if ( memoizeConversation.has( conversation_id ) ) {
-
-        console.log( memoizeConversation.get( conversation_id ) );
-
+export function find( conversation_id, from_message_id, limit = 12, direction = false ) {
+  return new Promise( ( resolve, reject ) => {
+    channel.req( "search", "message", { conversation_id, from_message_id, limit, direction } )
+           .then( data => {
+             if ( !data.response_map.error ) {
+               resolve( data.response_map.messages );
+             } else if ( data.response_map.error.code === ERROR_CODES.FORBIDDEN ) {
+               reject( data.response_map.error );
+             }
+           } ).catch( error => {
+      if ( error.log_map.code_key === '403' ) {
+        reject( ERROR_CODES.UNATHORIZED );
       }
-
-      channel.req( "search", "message", { conversation_id, from_message_id, limit, direction } )
-             .then( data => {
-               if ( !data.response_map.error ) {
-
-                 if (!memoizeConversation.has(conversation_id)) {
-
-                   memoizeConversation.set(conversation_id,  {
-                     messages: data.response_map.messages,
-                     from_message_id
-                   });
-
-                 }
-
-                 resolve( data.response_map.messages );
-
-               } else if ( data.response_map.error.code === ERROR_CODES.FORBIDDEN ) {
-                 reject( data.response_map.error );
-               }
-             } ).catch( error => {
-        if ( error.log_map.code_key === '403' ) {
-          reject( ERROR_CODES.UNATHORIZED );
-        }
-      } );
-    });
-
-  };
-
-})();
+    } );
+  });
+};
 
 
 /**

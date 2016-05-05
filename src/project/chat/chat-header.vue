@@ -1,7 +1,7 @@
 <style src="./styles/chat-header.pcss"></style>
 <template lang="jade">
 div
-  header-component(:notify-count='chatNotifyCount',
+  header-component(:notify-count='conversationNotifyCount',
   :back-link="{name: 'chat_list'}")
 
     .chat-header(slot="content")
@@ -20,11 +20,8 @@ div
 </template>
 
 <script type="text/babel">
-import {
-    chatNotifyCount,
-    currentChatMember,
-    currentLead,
-  } from 'vuex/getters';
+  import { currentLead } from 'vuex/getters';
+  import { conversationNotifyCount } from 'vuex/getters/chatGetters.js';
 
   import * as leads from 'services/leads';
   import HeaderComponent from 'base/header/header.vue';
@@ -35,7 +32,7 @@ import {
 
     vuex: {
       getters: {
-        chatNotifyCount,
+        conversationNotifyCount,
         currentLead,
       }
     },

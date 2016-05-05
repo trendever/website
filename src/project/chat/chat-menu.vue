@@ -35,9 +35,11 @@ div
 
 <script>
   import {
-    currentChatMember,
     currentLead,
   } from 'vuex/getters';
+  import {
+    getCurrentMember
+  } from 'vuex/getters/chatGetters.js'
   import * as leads from 'services/leads';
   import * as service from 'services/chat';
 
@@ -45,10 +47,11 @@ div
   import ChatMenuStatus from './chat-menu-status.vue';
 
   export default{
-    data: () => ({
-      statusMenuActive: false,
-    }),
-
+    data() {
+      return {
+        statusMenuActive: false,
+      };
+    },
     props: {
       menuActive: {
         type: Boolean,
@@ -58,7 +61,7 @@ div
 
     vuex: {
       getters: {
-        currentChatMember,
+        getCurrentMember,
         currentLead,
       }
     },
@@ -76,16 +79,16 @@ div
 
     computed: {
       isAdmin: function() {
-        if (this.currentChatMember.role === leads.USER_ROLES.SUPPLIER.key
-          || this.currentChatMember.role === leads.USER_ROLES.SELLER.key
-          || this.currentChatMember.role === leads.USER_ROLES.SUPER_SELLER.key) {
+        if (this.getCurrentMember.role === leads.USER_ROLES.SUPPLIER.key
+          || this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
+          || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key) {
           return true;
         }
         return false;
       },
       canCallSupplier: function() {
-        if (this.currentChatMember.role === leads.USER_ROLES.SELLER.key
-          || this.currentChatMember.role === leads.USER_ROLES.SUPER_SELLER.key) {
+        if (this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
+          || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key) {
           return true;
         }
         return false;

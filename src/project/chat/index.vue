@@ -2,11 +2,11 @@
 <template lang="jade">
 div
   .chat-cnt
-    chat-header(:notify-count='chatNotifyCount')
+    chat-header(:notify-count='conversationNotifyCount')
     .section.top.bottom
-      .chat.section__content
+      .chat.section__content(v-el:message-list)
         .chat_messages
-          template(v-for="msg in messages")
+          template(v-for="msg in getMessages")
 
             //- chat-msg-date
 
@@ -25,8 +25,14 @@ div
 
 <script type="text/babel">
   import listen from 'event-listener';
-  import { setConversation, messageLoad } from 'vuex/actions/chatActions.js';
-  //import {  } from "vuex/getters";
+  import {
+          setConversation,
+          loadMessage
+  } from 'vuex/actions/chatActions.js';
+  import {
+          getMessages,
+          conversationNotifyCount
+  } from "vuex/getters/chatGetters.js";
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgDate from './chat-msg-date.vue';
   import ChatMsg from './chat-msg.vue';
@@ -40,15 +46,20 @@ div
     route: {
       data({to: {params: { id }}}) {
         const conversation_id = +id;
-        this.setConversation( conversation_id );
+        this.setConversation( conversation_id ).then(() => {
+          this.$nextTick(this.goToBottom);
+        });
       },
     },
     vuex: {
       actions: {
         setConversation,
-        messageLoad,
+        loadMessage,
       },
-      getters: {},
+      getters: {
+        getMessages,
+        conversationNotifyCount,
+      },
     },
     computed: {
     },
@@ -65,24 +76,32 @@ div
       scrollHandler(){
         let needUpdate = false;
         if ( !needUpdate ) {
-          if ( window.scrollY <= 300 ) {
-            needUpdate = true;
-            this.messageLoad();
+          if ( window.scrollY <= 50 ) {
+            needUpdate         = true;
+            const listElement  = this.$els.messageList;
+            const heightBefore = listElement.scrollHeight;
+            this.loadMessage().then( ( messages ) => {
+              this.$nextTick( () => {
+                if ( messages !== null ) {
+                  window.scrollTo( 0, listElement.scrollHeight - heightBefore );
+                }
+              } );
+            } );
           }
         }
-        if (needUpdate) {
+        if ( needUpdate ) {
           this.offScroll();
           setTimeout( () => {
             needUpdate = false;
             this.onScroll();
-          }, 500 );
+          }, 100 );
         }
       },
       goToBottom(){
-        window.scrollTo(0, document.body.scrollHeight);
+        console.info(this.$els.messageList.scrollHeight);
+        window.scrollTo(0, this.$els.messageList.scrollHeight);
       },
     },
-
     components: {
       ChatHeader,
       ChatBar,
