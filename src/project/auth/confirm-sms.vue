@@ -4,34 +4,35 @@ div
     .info__close.__hello(@click="closePage"): i.ic-close
     .section
       h1 Подтвердите номер телефона
-      .middle-container
-        template(v-if="isCompleted")
-          h1 Спасибо!
-        template(v-else)
-          p(v-if="!isCompleted",
-            :class="{ error: errorCode }") {{ text_header }}
-          .input-container
-            .input.confirm-input
-              input(type="tel",
-                @keyup="onInput",
-                @focus="onFocus",
-                @keydown.enter="onButton()",
-                v-el:confirm-field,
-                v-model="code",
-                placeholder="9999")
+      .container
+        .middle-container
+          template(v-if="isCompleted")
+            h1 Спасибо!
+          template(v-else)
+            p(v-if="!isCompleted",
+              :class="{ error: errorCode }") {{ text_header }}
+            .input-container
+              .input.confirm-input
+                input(type="tel",
+                  @keyup="onInput",
+                  @focus="onFocus",
+                  @keydown.enter="onButton()",
+                  v-el:confirm-field,
+                  v-model="code",
+                  placeholder="9999")
 
-      .bottom-container.__fixed-width
-        .btn-container
-          button.btn.btn_primary.__orange.__xl.fast__big__btn(
-            :disabled="isDisabled",
-            v-el:confirm-btn,
-            @keydown.enter="onButton()",
-            @click="onButton") {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
-          .link-container
-            a.link-bottom(href="#",
-              v-if="!isCompleted",
-              v-show="needNewSMS"
-              @click.prevent="sendSMS") Отправить новый код
+        .bottom-container.__fixed-width
+          .btn-container
+            button.btn.btn_primary.__orange.__xl.fast__big__btn(
+              :disabled="isDisabled",
+              v-el:confirm-btn,
+              @keydown.enter="onButton()",
+              @click="onButton") {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
+            .link-container
+              a.link-bottom(href="#",
+                v-if="!isCompleted",
+                v-show="needNewSMS"
+                @click.prevent="sendSMS") Отправить новый код
 </template>
 
 <script>
@@ -62,9 +63,9 @@ div
 
     route: {
       canActivate({abort}){
-        if (!authData(store.state).phone && !authData(store.state).username) {
-          abort();
-        }
+        // if (!authData(store.state).phone && !authData(store.state).username) {
+          // abort();
+        // }
         return true;
       }
     },

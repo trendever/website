@@ -44,7 +44,6 @@
 
     text-align: left;
 
-    /*margin-bottom: 50px;*/
     font-size: 40px;
 
     @media(--mobile) {
@@ -93,7 +92,7 @@
   &.confirm .bottom-container {
     position: auto;
 
-    width: auto;
+    width: 100%;
     padding-top: 60px;
     padding-bottom: 0;
 
@@ -194,7 +193,9 @@
   padding-top: 60px;
 
   text-align: center;
+}
 
+.confirm .container {
   @media(--mobile) {
     position: absolute;
     top: 50%; right: 0; left: 0;
@@ -202,6 +203,7 @@
     padding-top: 0;
 
     transform: translateY(-50%);
+    text-align: center;
   }
 }
 
