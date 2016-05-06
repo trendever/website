@@ -4,24 +4,23 @@ div
     .info__close.__hello(@click="closePage"): i.ic-close
     .section
       h1 Подтвердите номер телефона
-      .container
-        .middle-container
-          template(v-if="isCompleted")
-            h1 Спасибо!
-          template(v-else)
-            p(v-if="!isCompleted",
-              :class="{ error: errorCode }") {{ text_header }}
-            .input-container
-              .input.confirm-input
-                input(type="tel",
-                  @keyup="onInput",
-                  @focus="onFocus",
-                  @keydown.enter="onButton()",
-                  v-el:confirm-field,
-                  v-model="code",
-                  placeholder="9999")
+      .middle-container
+        template(v-if="isCompleted")
+          h1 Спасибо!
+        template(v-else)
+          p(v-if="!isCompleted",
+            :class="{ error: errorCode }") {{ text_header }}
+          .input-container
+            .input.confirm-input
+              input(type="tel",
+                @keyup="onInput",
+                @focus="onFocus",
+                @keydown.enter="onButton()",
+                v-el:confirm-field,
+                v-model="code",
+                placeholder="9999")
 
-        .bottom-container.__fixed-width
+      .bottom-container.__fixed-width
           .btn-container
             button.btn.btn_primary.__orange.__xl.fast__big__btn(
               :disabled="isDisabled",
