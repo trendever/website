@@ -20,7 +20,7 @@
 
       leads.onChangeStatus(({response_map: {lead}}) => {
         this.receiveChangedStatusNotify(lead.status);
-        this.setLeadStatus(lead.status);
+        //this.setLeadStatus(lead.status);
       });
 
     },

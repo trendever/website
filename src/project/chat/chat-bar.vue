@@ -18,7 +18,7 @@ div
 
 <script type="text/babel">
   import {
-    getConversationId,
+          getId,
     getCurrentMember,
     getStatus,
     getShowMenu
@@ -48,7 +48,7 @@ div
         setStatus,
       },
       getters: {
-        getConversationId,
+        getId,
         getCurrentMember,
         getShowMenu,
         getStatus
@@ -77,7 +77,7 @@ div
 
         if ( !txtMsg.length ) return;
 
-        const promise = this.createMessage( this.getConversationId, txtMsg, "text/plain" );
+        const promise = this.createMessage( this.getId, txtMsg, "text/plain" );
 
         promise.then( () => {
           if (

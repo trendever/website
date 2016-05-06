@@ -25,8 +25,7 @@
       msg: {
         type: Object,
         required: true
-      },
-      lastReadMessageId: Number
+      }
     },
 
     vuex: {

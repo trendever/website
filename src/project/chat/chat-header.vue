@@ -5,17 +5,17 @@ div
   :back-link="{name: 'chat_list'}")
 
     .chat-header(slot="content")
-      .chat-header_cnt(v-show="getConversationName")
-        .chat-header_cnt_t {{ getConversationName }}
+      .chat-header_cnt(v-show="getShopName")
+        .chat-header_cnt_t {{ getShopName }}
         .chat-header_cnt_info
           span #
-          | {{ getConversationId }},
+          | {{ getId }},
           span  {{ getStatusName }}
 
 
 
       .chat-header_photo
-        img(:src="getConversationPhoto | url_thumbnail 150",
+        img(:src="getPhoto | url_thumbnail 150",
         onerror="this.error=null;this.src='/static/img/favicon.png'",)
 </template>
 
@@ -23,9 +23,9 @@ div
   import {
     conversationNotifyCount,
     getStatusName,
-    getConversationId,
-    getConversationName,
-    getConversationPhoto
+    getId,
+    getShopName,
+    getPhoto
   } from 'vuex/getters/chatGetters.js';
 
   import HeaderComponent from 'base/header/header.vue';
@@ -34,10 +34,10 @@ div
     vuex: {
       getters: {
         conversationNotifyCount,
-        getConversationId,
+        getId,
         getStatusName,
-        getConversationName,
-        getConversationPhoto
+        getShopName,
+        getPhoto
       }
     },
     components: {

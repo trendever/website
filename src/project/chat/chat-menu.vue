@@ -30,7 +30,7 @@ div
 <script>
   import {
     getCurrentMember,
-    getConversationId,
+    getId,
     getShowMenu,
     getShowStatusMenu,
   } from 'vuex/getters/chatGetters.js';
@@ -52,7 +52,7 @@ div
       },
       getters: {
         getCurrentMember,
-        getConversationId,
+        getId,
         getShowMenu,
         getShowStatusMenu,
       }
@@ -60,11 +60,11 @@ div
 
     methods: {
       callCustomer() {
-        service.callCustomer(this.getConversationId);
+        service.callCustomer(this.getId);
         this.setShowMenu(false);
       },
       callSupplier() {
-        service.callSupplier(this.getConversationId);
+        service.callSupplier(this.getId);
         this.setShowMenu(false);
       },
     },

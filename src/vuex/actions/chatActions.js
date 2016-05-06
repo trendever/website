@@ -1,7 +1,7 @@
 import * as types from '../mutation-types';
 import * as messageService from 'services/message.js';
 import * as leads from 'services/leads.js';
-import { getCurrentMember, getConversationId, getLastMessageId } from 'vuex/getters/chatGetters.js';
+import { getCurrentMember, getId, getLastMessageId } from 'vuex/getters/chatGetters.js';
 
 export const setConversation = ( { dispatch }, id ) => {
 
@@ -85,7 +85,7 @@ export const receiveMessage = ( { dispatch, state }, chat, messages ) => {
 
 export const updateMembers = ( { dispatch, state }, user_id, chat ) => {
 
-	let isCurrentChat    = chat.id === getConversationId( state );
+	let isCurrentChat    = chat.id === getId( state );
 	let isNotCurrentUser = user_id !== getCurrentMember( state ).user_id;
 	if ( isCurrentChat && isNotCurrentUser ) {
 		dispatch( types.UPDATE_CHAT_MEMBERS, chat.members );
@@ -93,8 +93,23 @@ export const updateMembers = ( { dispatch, state }, user_id, chat ) => {
 
 };
 
-export const setStatus = ( { dispatch }, status ) => {
-	dispatch(types.CHANGED_LEAD_STATUS, status);
+export const setStatus = ( { dispatch, state:{conversation:{lead:{id}}} }, status ) => {
+
+	return new Promise((resolve, reject) => {
+
+		leads.setEvent(id, status).then( (lead) => {
+
+			dispatch(types.CHANGED_LEAD_STATUS, lead.status);
+			resolve(lead.status);
+
+		}).catch( error => {
+
+			reject(error);
+
+		});
+
+	});
+	
 };
 
 export const setShowMenu = ( { dispatch }, showMenu ) => {

@@ -32,7 +32,7 @@ div
   import {
           getMessages,
           conversationNotifyCount,
-          getConversationId,
+          getId,
           getCurrentMember,
   } from 'vuex/getters/chatGetters.js';
   import * as messages from 'services/message';
@@ -74,7 +74,7 @@ div
       getters: {
         getMessages,
         conversationNotifyCount,
-        getConversationId,
+        getId,
         getCurrentMember,
       },
     },
