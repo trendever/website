@@ -3,7 +3,7 @@
 
 div
   .chat-bar.section__content
-    .chat-bar_menu-btn(v-if="isAdmin", @click="menuActive=true")
+    .chat-bar_menu-btn(v-if="isAdmin", @click="setShowMenu(true)")
       i.ic-menu-light
     .chat-bar_input
       textarea(placeholder="Введите сообщение",
@@ -12,7 +12,7 @@ div
     .chat-bar_send-btn(@click.prevent="send($event)", :class="{'__active': !!txtMsg}")
       i.ic-send-plane
 
-  chat-menu(v-if="isAdmin", :menu-active.sync="menuActive")
+  chat-menu(v-if="isAdmin")
 
 </template>
 
@@ -20,12 +20,16 @@ div
   import {
     getConversationId,
     getCurrentMember,
-    getLead
-  } from 'vuex/getters/chatGetters.js'
+    getStatus,
+    getShowMenu
+  } from 'vuex/getters/chatGetters.js';
+
   import {
-    setLeadStatus,
-  } from "vuex/actions";
-  import { createMessage } from "vuex/actions/chatActions.js";
+    createMessage,
+    setShowMenu,
+    setStatus
+  } from "vuex/actions/chatActions.js";
+
   import * as service from "services/message";
   import * as leads from "services/leads";
 
@@ -34,19 +38,20 @@ div
   export default{
     data(){
       return {
-        menuActive: false,
         txtMsg: "",
       };
     },
     vuex: {
       actions: {
         createMessage,
-        setLeadStatus,
+        setShowMenu,
+        setStatus,
       },
       getters: {
-        getLead,
         getConversationId,
         getCurrentMember,
+        getShowMenu,
+        getStatus
       }
     },
 
@@ -55,35 +60,39 @@ div
         if (!this.getCurrentMember) {
           return false;
         }
-        if (this.getCurrentMember.role === leads.USER_ROLES.SUPPLIER.key
-                || this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
-                || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key) {
-          return true;
-        }
-        return false;
+        return !!(this.getCurrentMember.role === leads.USER_ROLES.SUPPLIER.key
+        || this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
+        || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key);
+
       },
     },
 
     methods: {
       send ( event ) {
-        this.$els.inputMsg.focus();
-        event.preventDefault();
 
-        var _txtMsg = this.txtMsg.trim();
-        this.txtMsg = "";
-        if ( !_txtMsg.length ) return;
-        const promise = this.createMessage( this.getConversationId, _txtMsg, "text/plain" );
+        this.$els.inputMsg.focus();
+        //event.preventDefault(); ??? Вроде как @keydown.enter.prevent
+
+        const txtMsg = this.txtMsg.trim();
+
+        if ( !txtMsg.length ) return;
+
+        const promise = this.createMessage( this.getConversationId, txtMsg, "text/plain" );
+
         promise.then( () => {
           if (
-            this.getLead.status === leads.STATUSES.NEW.key &&
+            this.getStatus === leads.STATUSES.NEW.key &&
             this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key
           ) {
-            this.setLeadStatus( this.getLead.id, 'PROGRESS' );
+            this.setStatus( 'PROGRESS' );
           }
+          this.txtMsg = "";
         } );
+
         promise.catch( error => {
           console.log( error );
         } );
+
       }
     },
 

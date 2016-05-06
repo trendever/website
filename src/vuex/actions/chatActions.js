@@ -93,8 +93,16 @@ export const updateMembers = ( { dispatch, state }, user_id, chat ) => {
 
 };
 
-export const setLeadStatus = ( { dispatch }, status ) => {
+export const setStatus = ( { dispatch }, status ) => {
 	dispatch(types.CHANGED_LEAD_STATUS, status);
+};
+
+export const setShowMenu = ( { dispatch }, showMenu ) => {
+	dispatch(types.SET_SHOW_MENU, showMenu);
+};
+
+export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
+	dispatch(types.SET_SHOW_STATUS_MENU, showStatusMenu);
 };
 
 export const receiveChatNotify = ( { dispatch, state }, conversation_id, messages ) => {
