@@ -15,7 +15,7 @@
 </template>
 
 <script type="text/babel">
-  import { getCurrentMember, getLead, getLastMessageId } from 'vuex/getters/chatGetters.js';
+  import { getCurrentMember, getShopName, getLastMessageId } from 'vuex/getters/chatGetters.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
   import { formatTime } from './utils';
@@ -31,7 +31,7 @@
 
     vuex: {
       getters: {
-        getLead,
+        getShopName,
         getCurrentMember,
         getLastMessageId,
       }
@@ -41,30 +41,24 @@
       datetime () {
         return formatTime(this.msg.created_at);
       },
-
       getUsername () {
         if (this.msg.user.role === leads.USER_ROLES.CUSTOMER.key) {
           return `<b>${this.msg.user.name}</b>`
         }
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
-          return `<b>${this.getLead.shop.instagram_username}</b>`
+          return `<b>${this.getShopName}</b>`
         }
-
-        return `<b>${this.getLead.shop.instagram_username}</b> (продавец ${this.msg.user.name})`
+        return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`
       },
-
       isOwnMessage() {
         return this.getCurrentMember.user_id === this.msg.user.user_id
       },
-
       isSent() {
         return !this.isRead
       },
-
       isRead() {
         return this.getLastMessageId >= this.msg.id
       },
-
       getSide(){
         return this.isOwnMessage ? '__right' : '__left';
       },

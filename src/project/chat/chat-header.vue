@@ -5,60 +5,41 @@ div
   :back-link="{name: 'chat_list'}")
 
     .chat-header(slot="content")
-      .chat-header_cnt(v-show="shopName")
-        .chat-header_cnt_t {{ shopName }}
+      .chat-header_cnt(v-show="getConversationName")
+        .chat-header_cnt_t {{ getConversationName }}
         .chat-header_cnt_info
           span #
-          | {{ id }},
-          span  {{ status }}
+          | {{ getConversationId }},
+          span  {{ getStatusName }}
 
 
 
       .chat-header_photo
-        img(:src="shopPhoto | url_thumbnail 150",
+        img(:src="getConversationPhoto | url_thumbnail 150",
         onerror="this.error=null;this.src='/static/img/favicon.png'",)
 </template>
 
 <script type="text/babel">
-  import { conversationNotifyCount, getLead } from 'vuex/getters/chatGetters.js';
+  import {
+    conversationNotifyCount,
+    getStatusName,
+    getConversationId,
+    getConversationName,
+    getConversationPhoto
+  } from 'vuex/getters/chatGetters.js';
 
-  import * as leads from 'services/leads';
   import HeaderComponent from 'base/header/header.vue';
 
-  export default{
-    data: () => ({
-    }),
-
+  export default {
     vuex: {
       getters: {
         conversationNotifyCount,
-        getLead,
+        getConversationId,
+        getStatusName,
+        getConversationName,
+        getConversationPhoto
       }
     },
-
-    computed: {
-      id() {
-        if (this.getLead) {
-          return this.getLead.id
-        }
-      },
-      shopName() {
-        if (this.getLead) {
-          return this.getLead.shop.instagram_username;
-        }
-      },
-      shopPhoto() {
-        if (this.getLead) {
-          return this.getLead.shop.instagram_avatar_url;
-        }
-      },
-      status() {
-        if (this.getLead) {
-          return leads.getStatus(this.getLead.status).name;
-        }
-      },
-    },
-
     components: {
       HeaderComponent,
     }
