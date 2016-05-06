@@ -130,7 +130,9 @@ export const receiveChatNotify = ( { dispatch, state }, conversation_id, message
 export const readedAllChatNotify = ({ dispatch }) => {
 	dispatch(types.CLEAR_CHAT_NOTIFY_COUNT);
 };
-
+export const closeConversation = ({ dispatch }) => {
+	dispatch(types.CLOSE_CONVERSATION);
+};
 
 
 

@@ -2,14 +2,14 @@ import {
   SET_CONVERSATION,
   RECEIVE_MESSAGE,
   LOAD_MESSAGE,
+  UPDATE_CHAT_MEMBERS,
   CHANGED_LEAD_STATUS,
-//  CREATE_MESSAGE,
-  CLOSE_CONVERSATION,
   SET_SHOW_STATUS_MENU,
   SET_SHOW_MENU,
   INCREMENT_CHAT_NOTIFY_COUNT,
   CLEAR_CHAT_NOTIFY_COUNT,
-  UPDATE_CHAT_MEMBERS
+  CLOSE_CONVERSATION
+  //  CREATE_MESSAGE,
 } from '../mutation-types';
 
 // initial state
@@ -32,23 +32,11 @@ const mutations = {
     state.messages = messages;
     state.lead = lead;
   },
-  [LOAD_MESSAGE] ( state, messages ) {
-    state.messages = messages.concat( state.messages );
-  },
   [RECEIVE_MESSAGE] ( state, messages ) {
     state.messages = state.messages.concat( messages );
   },
-/*  [CREATE_MESSAGE] ( state, messages ) {
-    state.messages = state.messages.concat( messages );
-  },*/
-  [CLOSE_CONVERSATION] ( state ) {
-    state = {
-      id: null,
-      members: null,
-      messages: null,
-      notify_count: null,
-      lead: null,
-    };
+  [LOAD_MESSAGE] ( state, messages ) {
+    state.messages = messages.concat( state.messages );
   },
   [UPDATE_CHAT_MEMBERS] (state, members) {
     state.members = members;
@@ -64,14 +52,24 @@ const mutations = {
     state.showMenu = showMenu;
     state.showStatusMenu = false;
   },
-  // TODO Подумать на этим.
   [INCREMENT_CHAT_NOTIFY_COUNT] (state) {
     state.notify_count += 1;
   },
   [CLEAR_CHAT_NOTIFY_COUNT] (state) {
     state.notify_count = 0;
   },
-
+  [CLOSE_CONVERSATION] ( state ) {
+    state.id= null;
+    state.members= null;
+    state.messages= null;
+    state.notify_count= null;
+    state.lead= null;
+    state.showMenu= false;
+    state.showStatusMenu= false;
+  },
+  /*  [CREATE_MESSAGE] ( state, messages ) {
+   state.messages = state.messages.concat( messages );
+   },*/
 };
 
 export default {

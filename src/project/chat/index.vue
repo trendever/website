@@ -27,7 +27,8 @@ div
           setConversation,
           loadMessage,
           receiveMessage,
-          updateMembers
+          updateMembers,
+          closeConversation
   } from 'vuex/actions/chatActions.js';
   import {
           getMessages,
@@ -55,6 +56,7 @@ div
       this.offScroll();
       messages.offMsg(this.onMessage);
       messages.offMsgRead(this.onMessageReaded);
+      this.closeConversation();
     },
     route: {
       data({to: {params: { id }}}) {
@@ -69,7 +71,8 @@ div
         setConversation,
         loadMessage,
         receiveMessage,
-        updateMembers
+        updateMembers,
+        closeConversation
       },
       getters: {
         getMessages,
