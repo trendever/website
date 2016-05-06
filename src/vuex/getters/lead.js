@@ -8,16 +8,15 @@ export const getLeads     = ( state ) => {
 
 };
 export const getIsTab     = ( { leads } ) => (leads.seller.length + leads.customer.length) > 0;
+
 export const getOlderLead = ( { leads:{tab,  seller, customer } } ) => {
 	const times = [];
 
 	const leads = { seller, customer }[tab];
-	console.log(leads);
 	for ( let i = leads.length; i; i-- ) {
 		times.push( leads[ i - 1 ].updated_at );
 	}
-	console.log(times);
-	return Math.max.apply( Math, times );
+	return Math.min.apply( Math, times );
 };
 export const getTitle     = ( state ) => {
 	if ( getIsTab( state ) ) {

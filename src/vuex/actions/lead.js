@@ -19,7 +19,7 @@ export const loadLeads = ( { dispatch, state:{ leads:{ tab, seller, customer } }
 
 	if ( (seller.length + customer.length) === 0 ) {
 
-		return leads.find( 2, 0 ).then(
+		return leads.find( 6, 0 ).then(
 			( { customer, seller } ) => {
 				dispatch( types.RECEIVE, { customer, seller } );
 			},
@@ -30,7 +30,7 @@ export const loadLeads = ( { dispatch, state:{ leads:{ tab, seller, customer } }
 
 	} else {
 
-		return leads.find( 1, getOlderLead( state ), tab ).then(
+		return leads.find( 6, getOlderLead( state ), tab ).then(
 			( { leads } ) => {
 				dispatch( types.RECEIVE, { [tab]: leads } );
 			},
