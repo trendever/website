@@ -60,8 +60,7 @@ div
     },
     route: {
       data({to: {params: { id }}}) {
-        const conversation_id = +id;
-        this.setConversation( conversation_id ).then(() => {
+        this.setConversation( +id ).then(() => {
           this.$nextTick(this.goToBottom);
         });
       },

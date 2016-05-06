@@ -1,17 +1,29 @@
 import * as types from '../mutation-types';
 import * as messageService from 'services/message.js';
 import * as leads from 'services/leads.js';
+import * as chat from 'services/chat.js';
 import { getCurrentMember, getId, getLastMessageId } from 'vuex/getters/chatGetters.js';
 
 export const setConversation = ( { dispatch }, id ) => {
 
-	const promise = leads.get(
-		{
-			lead_id: id
-		}
-	);
+	const promise = leads.get( { lead_id: id } );
 
-	promise.then( ( { messages, lead } ) => {
+	promise.then( ( { messages, lead, error } ) => {
+
+		if (error !== null) {
+			
+			if (error.code === leads.ERROR_CODES.FORBIDDEN) {
+
+				return chat.join( { lead_id: id } ).then(() => {
+
+					return setConversation({ dispatch }, id);
+
+				});
+
+			}
+			
+		}
+
 		dispatch(
 			types.SET_CONVERSATION,
 			lead.id,
@@ -20,6 +32,7 @@ export const setConversation = ( { dispatch }, id ) => {
 			lead,
 			messages[ messages.length - 1 ].id
 		);
+
 	} );
 
 	promise.catch( (error) => {
