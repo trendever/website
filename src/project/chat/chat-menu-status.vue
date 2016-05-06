@@ -15,7 +15,7 @@ menu-component
 </template>
 
 <script>
-  import { setStatus, setShowStatusMenu } from 'vuex/actions/chatActions.js';
+  import { setStatus, setShowStatusMenu } from 'vuex/actions/chat.js';
 
   import MenuComponent from 'base/menu/menu.vue';
   import * as leads from 'services/leads';

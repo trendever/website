@@ -19,7 +19,7 @@
 
 <script type="text/babel">
   import { formatDatetime } from './utils';
-  import { getCurrentMember, getLastMessageId } from 'vuex/getters/chatGetters.js';
+  import { getCurrentMember, getLastMessageId } from 'vuex/getters/chat.js';
   export default{
     props: {
       msg: {

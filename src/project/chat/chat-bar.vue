@@ -22,13 +22,13 @@ div
     getCurrentMember,
     getStatus,
     getShowMenu
-  } from 'vuex/getters/chatGetters.js';
+  } from 'vuex/getters/chat.js';
 
   import {
     createMessage,
     setShowMenu,
     setStatus
-  } from "vuex/actions/chatActions.js";
+  } from "vuex/actions/chat.js";
 
   import * as service from "services/message";
   import * as leads from "services/leads";

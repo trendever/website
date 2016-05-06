@@ -1,8 +1,21 @@
-import * as types from '../mutation-types';
+import {
+	RECEIVE_MESSAGE,
+	LOAD_MESSAGE,
+	SET_CONVERSATION,
+	UPDATE_CHAT_MEMBERS,
+	SET_SHOW_MENU,
+	SET_SHOW_STATUS_MENU,
+	INCREMENT_CHAT_NOTIFY_COUNT,
+	CLEAR_CHAT_NOTIFY_COUNT,
+	CLOSE_CONVERSATION
+} from '../mutation-types';
+
+import { SET_STATUS } from '../mutationTypes/lead';
+
 import * as messageService from 'services/message.js';
 import * as leads from 'services/leads.js';
 import * as chat from 'services/chat.js';
-import { getCurrentMember, getId, getLastMessageId } from 'vuex/getters/chatGetters.js';
+import { getCurrentMember, getId, getLastMessageId } from 'vuex/getters/chat.js';
 
 export const setConversation = ( { dispatch }, id ) => {
 
@@ -25,7 +38,7 @@ export const setConversation = ( { dispatch }, id ) => {
 		}
 
 		dispatch(
-			types.SET_CONVERSATION,
+			SET_CONVERSATION,
 			lead.id,
 			lead.chat.members,
 			messages,
@@ -48,7 +61,7 @@ export const loadMessage = ( { dispatch, state:{ conversation:{ id, messages } }
 
 	promise.then( ( messages ) => {
 		if ( messages !== null ) {
-			dispatch( types.LOAD_MESSAGE, messages );
+			dispatch( LOAD_MESSAGE, messages );
 		}
 	} );
 
@@ -85,7 +98,7 @@ export const receiveMessage = ( { dispatch, state }, chat, messages ) => {
 
 			if(isNotLastMessage) {
 				messageService.update(msg.conversation_id, msg.id).then(() => {
-					dispatch( types.RECEIVE_MESSAGE, messages );
+					dispatch( RECEIVE_MESSAGE, messages );
 					resolve();
 				}, reject);
 			}
@@ -101,50 +114,46 @@ export const updateMembers = ( { dispatch, state }, user_id, chat ) => {
 	let isCurrentChat    = chat.id === getId( state );
 	let isNotCurrentUser = user_id !== getCurrentMember( state ).user_id;
 	if ( isCurrentChat && isNotCurrentUser ) {
-		dispatch( types.UPDATE_CHAT_MEMBERS, chat.members );
+		dispatch( UPDATE_CHAT_MEMBERS, chat.members );
 	}
 
 };
 
+export const applyStatus = ({ dispatch }, status) => {
+	dispatch(SET_STATUS, status);
+};
+
 export const setStatus = ( { dispatch, state:{conversation:{lead:{id}}} }, status ) => {
-
 	return new Promise((resolve, reject) => {
-
-		leads.setEvent(id, status).then( (lead) => {
-
-			dispatch(types.CHANGED_LEAD_STATUS, lead.status);
-			resolve(lead.status);
-
+		leads.setEvent(id, status).then( ({status}) => {
+			dispatch(SET_STATUS, status);
+			resolve(status);
 		}).catch( error => {
-
 			reject(error);
-
 		});
-
 	});
-	
 };
 
 export const setShowMenu = ( { dispatch }, showMenu ) => {
-	dispatch(types.SET_SHOW_MENU, showMenu);
+	dispatch(SET_SHOW_MENU, showMenu);
 };
 
 export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
-	dispatch(types.SET_SHOW_STATUS_MENU, showStatusMenu);
+	dispatch(SET_SHOW_STATUS_MENU, showStatusMenu);
 };
 
 export const receiveChatNotify = ( { dispatch, state }, conversation_id, messages ) => {
-	dispatch( types.RECEIVE_MESSAGE, messages );
+	dispatch( RECEIVE_MESSAGE, messages );
 	if (state.conversation.id !== conversation_id) {
-		dispatch(types.INCREMENT_CHAT_NOTIFY_COUNT);
+		dispatch(INCREMENT_CHAT_NOTIFY_COUNT);
 	}
 };
 
 export const readedAllChatNotify = ({ dispatch }) => {
-	dispatch(types.CLEAR_CHAT_NOTIFY_COUNT);
+	dispatch(CLEAR_CHAT_NOTIFY_COUNT);
 };
 export const closeConversation = ({ dispatch }) => {
-	dispatch(types.CLOSE_CONVERSATION);
+	dispatch(CLOSE_CONVERSATION);
 };
 
 

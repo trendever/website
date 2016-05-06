@@ -147,11 +147,11 @@ export const STATUS_EVENTS = [
 
  * REJECT (one of ERROR_CODES) {UNATHORIZED}
  */
-export function find({ limit, from_lead_id, roles }) {
+export function find( limit, from_updated_at, roles ) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("list", "lead", { limit, from_lead_id, roles }).then( data => {
+    channel.req("list", "lead", { limit, from_updated_at, roles }).then( data => {
       resolve(data.response_map);
     }).catch( error => {
       if (error.log_map.code_key === '403') {

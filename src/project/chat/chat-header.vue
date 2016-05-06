@@ -25,7 +25,7 @@ div
     getId,
     getShopName,
     getPhoto
-  } from 'vuex/getters/chatGetters.js';
+  } from 'vuex/getters/chat.js';
 
   import HeaderComponent from 'base/header/header.vue';
 

@@ -28,15 +28,19 @@ div
           loadMessage,
           receiveMessage,
           updateMembers,
-          closeConversation
-  } from 'vuex/actions/chatActions.js';
+          closeConversation,
+          setStatus,
+          applyStatus
+  } from 'vuex/actions/chat.js';
   import {
           getMessages,
           conversationNotifyCount,
           getId,
           getCurrentMember,
-  } from 'vuex/getters/chatGetters.js';
+  } from 'vuex/getters/chat.js';
+
   import * as messages from 'services/message';
+  import * as leads from 'services/leads';
 
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgDate from './chat-msg-date.vue';
@@ -50,9 +54,12 @@ div
       messages.onMsgRead(this.onMessageReaded);
     },
     ready(){
+      this.onStatus = this.onStatus.bind(this);
+      leads.onChangeStatus(this.onStatus);
       this.onScroll();
     },
     beforeDestroy() {
+      leads.removeStatusListener(this.onStatus);
       this.offScroll();
       messages.offMsg(this.onMessage);
       messages.offMsgRead(this.onMessageReaded);
@@ -71,7 +78,9 @@ div
         loadMessage,
         receiveMessage,
         updateMembers,
-        closeConversation
+        closeConversation,
+        setStatus,
+        applyStatus
       },
       getters: {
         getMessages,
@@ -81,6 +90,9 @@ div
       },
     },
     methods: {
+      onStatus({response_map: {lead}})  {
+        this.applyStatus(lead.status);
+      },
       onScroll(){
         this.scrollListener = listen( window, 'scroll', this.scrollHandler.bind( this ) );
       },

@@ -1,56 +1,49 @@
-import {
-  RECEIVE_LEADS,
-  RECEIVE_MORE_LEADS,
-  WAIT_LEADS_RESPONSE,
-  RECEIVE_LEADS_RESPONSE,
-  RECEIVE_LEAD,
-  LEADS_SET_TAB,
-  CHANGED_LEAD_STATUS,
-} from '../mutation-types';
+import { RECEIVE, SET_TAB, APPLY_STATUS, PENDING } from '../mutationTypes/lead';
 
 // initial state
 const state = {
-  all: [],
-  tab: "buy",
-  isWaitResponse: false,
+  seller: [],
+  customer: [],
+  tab: "customer",
+  pending: false,
 };
 
 // mutations
 const mutations = {
-  [RECEIVE_LEADS] (state, leads) {
-    state.all = leads;
-  },
-  [RECEIVE_MORE_LEADS] (state, leads) {
-    state.all = state.all.concat(leads);
-  },
-  [WAIT_LEADS_RESPONSE] (state) {
-    state.isWaitResponse = true;
-  },
-  [RECEIVE_LEADS_RESPONSE] (state) {
-    state.isWaitResponse = false;
-  },
-  [RECEIVE_LEAD] (state, lead) {
-    let updated = false;
-    state.all.forEach( (obj, i) => {
-      if (obj.id === lead.id) {
-        state.all.$set(i, lead);
-        updated = true;
-      }
-    });
-    if (!updated) {
-      state.all.push(lead);
+  [RECEIVE] ( state, { seller, customer } ) {
+    console.log({ seller, customer });
+    if(seller !== undefined){
+      state.seller   = state.seller.concat( seller );
+    }
+    if(customer !== undefined){
+      state.customer = state.customer.concat( customer );
     }
   },
-  [LEADS_SET_TAB] (state, tab) {
+  [SET_TAB] ( state, tab = 'customer' ) {
     state.tab = tab;
   },
-  [CHANGED_LEAD_STATUS] (state, lead_id, status_key) {
-    state.all.map( lead => {
-      if (lead.id === lead_id) {
-        lead.status = status_key;
+  [APPLY_STATUS] ( { seller, customer }, lead_id, status_key = 0 ) {
+    const leads = { seller, customer };
+    let kik = false;
+    for ( const key in leads ) {
+      if ( leads.hasOwnProperty( key ) ) {
+        if (kik) {
+          break;
+        }
+        for ( let i = leads[key].length; i; i-- ) {
+          const lead = leads[key][ i - 1 ];
+          if ( lead.id === lead_id ) {
+            lead.status = status_key;
+            kik = true;
+            break;
+          }
+        }
       }
-    });
-  }
+    }
+  },
+  [PENDING] ( state, pending = false ) {
+    state.pending = pending;
+  },
 };
 
 export default {

@@ -35,7 +35,7 @@
 
 <script>
   import { isAuth } from 'vuex/getters';
-  import { conversationNotifyCount } from 'vuex/getters/chatGetters.js';
+  import { conversationNotifyCount } from 'vuex/getters/chat.js';
 
   export default{
     data() {

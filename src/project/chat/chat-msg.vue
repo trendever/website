@@ -15,7 +15,7 @@
 </template>
 
 <script type="text/babel">
-  import { getCurrentMember, getShopName, getLastMessageId } from 'vuex/getters/chatGetters.js';
+  import { getCurrentMember, getShopName, getLastMessageId } from 'vuex/getters/chat.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
   import { formatTime } from './utils';

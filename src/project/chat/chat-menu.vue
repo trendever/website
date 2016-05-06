@@ -33,11 +33,11 @@ div
     getId,
     getShowMenu,
     getShowStatusMenu,
-  } from 'vuex/getters/chatGetters.js';
+  } from 'vuex/getters/chat.js';
   import {
     setShowMenu,
     setShowStatusMenu
-  } from 'vuex/actions/chatActions.js';
+  } from 'vuex/actions/chat.js';
   import * as leads from 'services/leads';
   import * as service from 'services/chat';
 

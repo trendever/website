@@ -60,20 +60,20 @@ article.product-post
 </template>
 
 <script>
-  import { urlThumbnail } from 'utils'
-  import { createLead, getLead } from 'vuex/actions';
+  import { urlThumbnail } from 'utils';
+  import { createLead } from 'vuex/actions/lead.js';
   import { openedProduct, isAuth } from 'vuex/getters';
   import * as leads from 'services/leads';
 
   export default {
-    data: () => ({
-      IgImageUrl: "",
-    }),
-
+    data(){
+      return {
+        IgImageUrl: "",
+      };
+    },
     vuex: {
       actions: {
         createLead,
-        getLead,
       },
       getters: {
         openedProduct,
@@ -99,7 +99,6 @@ article.product-post
           this.$router.go({ name: 'signup' });
         } else {
           this.createLead(this.openedProduct.product.id).then( lead => {
-            console.log(lead);
             this.$router.go({ name: 'chat', params: {id: lead.id} });
           }).catch( error => {
             if (error === leads.ERROR_CODES.UNATHORIZED) {

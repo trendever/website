@@ -23,18 +23,6 @@ export const isWaitReponseProducts = state => state.products.isWaitResponse;
 export const isInfinityProducts = state => state.products.isInfinity;
 export const getColumnNumber = state => state.products.columnNumber;
 
-// Leads
-export const leads = state => state.leads.all;
-export const leadsBuy = state => state.leads.all.filter(obj => obj.type === 'buy');
-export const leadsSell = state => state.leads.all.filter(obj => obj.type === 'sell');
-export const leadsTab = state => state.leads.tab;
-export const isWaitReponseLeads = state => state.leads.isWaitResponse;
-export const currentLead = state => {
-  return state.leads.all.find(
-    obj => obj.chat.id === state.chat.opened_id
-  );
-};
-
 // Search
 export const searchValue = state => state.search.value;
 export const tags = state => state.search.tags;
