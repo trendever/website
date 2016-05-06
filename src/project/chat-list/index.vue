@@ -46,10 +46,12 @@ div
   import ChatListItem from './chat-list-item.vue';
 
   export default {
-    data: () => ({
-      title: null,
-      scrollEvent: null,
-    }),
+    data(){
+      return {
+        title: null,
+        scrollEvent: null,
+      };
+    },
 
     vuex: {
       getters: {

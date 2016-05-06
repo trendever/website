@@ -19,29 +19,29 @@
   import * as service from 'services/leads';
 
   export default {
-    data: () => ({
-      title: null,
-    }),
-
+    data(){
+      return {
+        title: null,
+      };
+    },
     props: {
       lead: {
         type: Object,
         required: true
       }
     },
-
     methods: {
-      getStatus: function() {
+      getStatus() {
         return service.getStatus(this.lead.status).name
       },
-      getTitle: function() {
+      getTitle() {
         if (this.lead.user_role === service.USER_ROLES.CUSTOMER.key
             || this.lead.user_role === service.USER_ROLES.SUPPLIER.key) {
           return this.lead.shop.instagram_username
         }
-        return `${this.lead.customer.instagram_username} (${this.lead.shop.instagram_username})`
+        return `${this.lead.chat.members.find(({user_id}) => this.lead.customer.id === user_id).name} (${this.lead.shop.instagram_username})`
       },
-      getRecentMessage: function() {
+      getRecentMessage() {
         let msg = this.lead.chat.recent_message;
         if (msg.parts[0].mime_type === 'text/plain') {
           return msg.parts[0].content;
@@ -51,11 +51,9 @@
           return `товар: ${product.Title}`;
         }
       },
-      getDatetime: function() {
+      getDatetime() {
         return formatDatetime(this.lead.chat.recent_message.created_at);
       },
-
     },
-
   }
 </script>
