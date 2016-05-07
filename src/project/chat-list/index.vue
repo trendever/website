@@ -65,13 +65,6 @@ div
         readedAllChatNotify,
       }
     },
-
-/*    route: {
-      activate (transition) {
-       // this.readedAllChatNotify();
-      },
-    },*/
-
     created() {
       this.onStatus = this.onStatus.bind(this);
       leads.onChangeStatus(this.onStatus);
@@ -81,14 +74,12 @@ div
     ready(){
       this.loadLeads();
       this.onScroll();
-      //this.enableInfinityScroll();
     },
 
     beforeDestroy() {
       leads.removeStatusListener(this.onStatus);
       messages.offMsg(this.onMsg);
       this.offScroll();
-     // this.disableInfinityScroll();
     },
 
     methods: {
@@ -103,7 +94,7 @@ div
       },
       scrollHandler(){
         let needUpdate = false;
-        const scrollEnd = document.body.scrollHeight - document.body.offsetHeight;
+        const scrollEnd = document.body.scrollHeight - document.body.offsetHeight - 50;
         if ( !needUpdate ) {
           if ( window.scrollY === scrollEnd ) {
             needUpdate         = true;
@@ -118,34 +109,6 @@ div
           }, 100 );
         }
       },
-/*      enableInfinityScroll(e) {
-        var self = this;
-        // Add event for infinity scroll
-        this.scrollEvent = listen(window, 'scroll', function(){
-          var pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
-          var full_scroll = self.$els.chatList.offsetHeight;
-          var diff_scroll = full_scroll - pos_scroll;
-          console.log(diff_scroll);
-          if (diff_scroll < 800 && !self.isWaitReponseLeads && self.object_list.length >= 3) {
-              self.showMore();
-          }
-        });
-      },*/
-
-/*      disableInfinityScroll() {
-        if (this.scrollEvent) {
-          this.scrollEvent.remove();
-        }
-      },
-
-      showMore(){
-        this.getMoreLeads().then( leads => {
-          if (!leads.length) {
-            this.disableInfinityScroll();
-          }
-        });
-      },*/
-
       onMsg({response_map: {chat}}){
         //this.getLead({conversation_id: chat.id, without_cache: true})
       },

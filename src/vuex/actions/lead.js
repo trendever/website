@@ -6,6 +6,7 @@ export const createLead = ( { dispatch }, product_id ) => {
 	return leads.create( product_id ).then(
 		( lead ) => {
 			dispatch( types.RECEIVE, [ lead ] );
+			return lead;
 		},
 		( error ) => {
 			if ( error === leads.ERROR_CODES.UNATHORIZED ) {
