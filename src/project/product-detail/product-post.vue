@@ -95,7 +95,7 @@ article.product-post
       },
 
       onBuy() {
-        if ( !isAuth ) {
+        if ( !this.isAuth ) {
 
           this.$router.go( { name: 'signup' } );
 
