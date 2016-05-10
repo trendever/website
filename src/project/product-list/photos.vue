@@ -47,20 +47,17 @@
       getColumnNumber,
       } from 'vuex/getters';
 
-    var firstLoad =true; // Это нужно?
-    const CACHE = {
-      search: '',
-      tag_list: [],
-    };
     const LIMIT_TOVAR = 12;
 
     export default {
       ready(){
-        let columnNumber = 3;
-        if( (document.body.offsetWidth) <= 750) {
-          columnNumber = 2;
+        if (this.getColumnNumber === 0) {
+          let columnNumber = 3;
+          if( document.body.offsetWidth <= 750) {
+            columnNumber = 2;
+          }
+          this.setColumnNumber(columnNumber);
         }
-        this.setColumnNumber(columnNumber);
         this.loadProducts();
       },
       data: () => ({
