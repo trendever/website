@@ -7,8 +7,14 @@ export const ERROR_CODES = {
 
 /**
  * List of products
+ * @param {number} options.offset  !(Deprecated) count products of top of list
  * @param {number} options.limit  limit list (default: 9)
- * @param {number} options.offset count products of top of list
+ * @param {number} options.from_id  product id for offset
+ * @param {number} options.direction  sorting direction (true=asc, false=desc)
+ * @param {number} options.user_id  user mentioned or liked products
+ * @param {string} options.user_instagram_name  user mentioned or liked products
+ * @param {number} options.shop_id  shop products
+ * @param {string} options.shop_instagram_name  shop products
  * @param {string} options.q      search in title of products.items
  * @param {number|array} options.tags   products which have tags ids
  *
@@ -56,11 +62,17 @@ export const ERROR_CODES = {
  *
  * REJECT (one of ERROR_CODES)
  */
-export function find({ limit, offset, q, tags }) {
+export function find({ limit, offset, from_id, direction,
+                       q, tags,
+                       user_id, user_instagram_name,
+                       shop_id, shop_instagram_name }) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("search", "product", {limit, offset, q, tags})
+    channel.req("search", "product", { limit, offset, from_id, direction,
+                                       q, tags,
+                                       user_id, user_instagram_name,
+                                       shop_id, shop_instagram_name })
     .then( data => {
 
         resolve(data.response_map);
