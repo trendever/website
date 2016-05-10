@@ -67,10 +67,15 @@ div
     },
     route: {
       data({to: {params: { id }}}) {
-        this.setConversation( +id ).then(() => {
-          this.clearNotify( +id );
-          this.$nextTick( this.goToBottom );
-        });
+        this.setConversation( +id ).then(
+          () => {
+            this.clearNotify( +id );
+            this.$nextTick( this.goToBottom );
+          },
+          () => {
+            this.$router.go( { name: 'home' } );
+          }
+        );
       },
     },
     vuex: {

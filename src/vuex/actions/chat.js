@@ -24,11 +24,16 @@ export const setConversation = ( { dispatch }, id ) => {
 			
 			if (error.code === leads.ERROR_CODES.FORBIDDEN) {
 
-				return chat.join( { lead_id: id } ).then(() => {
+				return chat.join( { lead_id: id } ).then(
+					() => {
 
 					return setConversation({ dispatch }, id);
 
-				});
+					},
+					( error ) => {
+						console.log( `Join to chat error: ${(leads.ERROR_CODES.FORBIDDEN === error) ? '[ FOBIDDEN ]' : ''}` );
+					}
+				);
 
 			}
 			
@@ -43,7 +48,7 @@ export const setConversation = ( { dispatch }, id ) => {
 	} );
 
 	promise.catch( (error) => {
-		console.log("Set conversation error:", error);
+		console.log( `Set conversation error: ${(leads.ERROR_CODES.FORBIDDEN === error) ? '[ FOBIDDEN ]' : ''}` );
 	} );
 
 	return promise;
@@ -143,7 +148,3 @@ export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
 export const closeConversation = ({ dispatch }) => {
 	dispatch(CLOSE_CONVERSATION);
 };
-
-
-
-
