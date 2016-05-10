@@ -108,10 +108,16 @@ export const getPartProducts = ({ dispatch }, { limit, offset, q, tags }) => {
  * @param  {string} options.q              search in title
  * @param  {number|array} options.tags     products have tags
  */
-export const getMoreProducts = ({ dispatch }, { limit, offset, q, tags }) => {
+export const getMoreProducts = ({ dispatch }, { limit, offset, from_id, direction,
+                                                q, tags,
+                                                user_id, user_instagram_name,
+                                                shop_id, shop_instagram_name }) => {
   dispatch(types.WAIT_PRODUCTS_RESPONSE);
 
-  products.find({limit, offset, q, tags})
+  products.find({ limit, offset, from_id, direction,
+                  q, tags,
+                  user_id, user_instagram_name,
+                  shop_id, shop_instagram_name })
   .then( data => {
     dispatch(types.RECEIVE_PRODUCTS_RESPONSE);
     dispatch(types.RECEIVE_MORE_PRODUCTS, data.object_list);

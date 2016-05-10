@@ -94,8 +94,7 @@ export default {
     leftBtnAction() {
       if (this.show_on_elem) {
         let scrollY = window.pageYOffset || document.documentElement.scrollTop;
-        let elemY = this.showOnEl.offsetTop;
-        if (scrollY - elemY >= 0) {
+        if (scrollY - this.showOnEl.offsetTop >= 0) {
 
           if (this.scrollToElement) {
             window.body.scrollTop = document.getElementById(this.scrollToElement).offsetTop;
