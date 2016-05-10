@@ -11,7 +11,9 @@ export const ERROR_CODES = {
 
 /**
  * History messages of chat
- * @param  {number} product_id
+ * @param  {number} conversation_id
+ * @param  {number} from_message_id
+ * @param  {number} limit
  *
  * RESOLVE
  * [

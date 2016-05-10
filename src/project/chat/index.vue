@@ -68,7 +68,7 @@ div
     route: {
       data({to: {params: { id }}}) {
         this.setConversation( +id ).then(() => {
-          this.$nextTick(this.goToBottom);
+          this.$nextTick( this.goToBottom );
         });
       },
     },

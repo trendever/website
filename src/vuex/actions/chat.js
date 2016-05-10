@@ -37,14 +37,18 @@ export const setConversation = ( { dispatch }, id ) => {
 			
 		}
 
+		const lastMessageId = messages[ messages.length - 1 ].id;
+		
 		dispatch(
 			SET_CONVERSATION,
 			lead.id,
 			lead.chat.members,
 			messages,
 			lead,
-			messages[ messages.length - 1 ].id
+			lastMessageId
 		);
+
+		return messageService.update(id, lastMessageId);
 
 	} );
 
@@ -89,18 +93,27 @@ export const receiveMessage = ( { dispatch, state }, chat, messages ) => {
 
 	return new Promise( ( resolve, reject ) => {
 
-		let count = state.conversation.messages.length;
+		let count = messages.length;
 
 		if(count > 0) {
 
-			const msg = state.conversation.messages[count - 1];
+			const msg = messages[count - 1];
 			const isNotLastMessage = getLastMessageId(state) !== msg.id;
 
 			if(isNotLastMessage) {
+
 				messageService.update(msg.conversation_id, msg.id).then(() => {
+
 					dispatch( RECEIVE_MESSAGE, messages );
+
 					resolve();
+
 				}, reject);
+
+			} else {
+
+				resolve();
+
 			}
 
 		}
@@ -113,8 +126,11 @@ export const updateMembers = ( { dispatch, state }, user_id, chat ) => {
 
 	let isCurrentChat    = chat.id === getId( state );
 	let isNotCurrentUser = user_id !== getCurrentMember( state ).user_id;
+
 	if ( isCurrentChat && isNotCurrentUser ) {
+
 		dispatch( UPDATE_CHAT_MEMBERS, chat.members );
+
 	}
 
 };
@@ -152,6 +168,7 @@ export const receiveChatNotify = ( { dispatch, state }, conversation_id, message
 export const readedAllChatNotify = ({ dispatch }) => {
 	dispatch(CLEAR_CHAT_NOTIFY_COUNT);
 };
+
 export const closeConversation = ({ dispatch }) => {
 	dispatch(CLOSE_CONVERSATION);
 };
