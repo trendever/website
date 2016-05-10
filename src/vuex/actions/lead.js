@@ -1,5 +1,7 @@
 import * as leads from 'services/leads.js';
 import * as types from '../mutationTypes/lead';
+import * as message from 'services/message';
+
 import { getOlderLead } from '../getters/lead';
 
 export const createLead = ( { dispatch }, product_id ) => {
@@ -49,4 +51,26 @@ export const setTab = ( { dispatch }, tab ) => {
 
 export const applyStatus = ( { dispatch }, lead_id, status_key ) => {
 	dispatch( types.APPLY_STATUS, lead_id, status_key );
+};
+
+
+export const initGlobalNotify = ( { dispatch } ) => {
+	return message.getCountUnread().then(
+		( count ) => {
+			dispatch( types.INIT_GLOBAL_NOTIFY, count );
+		},
+		( error ) => {
+			console.log( error );
+		}
+	);
+};
+
+export const incNotify = ( { dispatch, state }, lead_id ) => {
+	if ( state.conversation.id !== lead_id ) {
+		dispatch( types.INC_NOTIFY, lead_id );
+	}
+};
+
+export const clearNotify = ( { dispatch }, lead_id ) => {
+	dispatch( types.CLEAR_NOTIFY, lead_id );
 };

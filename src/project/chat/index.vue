@@ -29,7 +29,6 @@ div
           receiveMessage,
           updateMembers,
           closeConversation,
-          setStatus,
           applyStatus
   } from 'vuex/actions/chat.js';
   import {
@@ -38,6 +37,7 @@ div
           getId,
           getCurrentMember,
   } from 'vuex/getters/chat.js';
+  import { clearNotify } from 'vuex/actions/lead.js';
 
   import * as messages from 'services/message';
   import * as leads from 'services/leads';
@@ -53,7 +53,7 @@ div
       messages.onMsg(this.onMessage);
       messages.onMsgRead(this.onMessageReaded);
     },
-    ready(){
+    ready() {
       this.onStatus = this.onStatus.bind(this);
       leads.onChangeStatus(this.onStatus);
       this.onScroll();
@@ -68,6 +68,7 @@ div
     route: {
       data({to: {params: { id }}}) {
         this.setConversation( +id ).then(() => {
+          this.clearNotify( +id );
           this.$nextTick( this.goToBottom );
         });
       },
@@ -79,8 +80,8 @@ div
         receiveMessage,
         updateMembers,
         closeConversation,
-        setStatus,
-        applyStatus
+        applyStatus,
+        clearNotify
       },
       getters: {
         getMessages,

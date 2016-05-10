@@ -7,6 +7,7 @@ export const getLeads     = ( state ) => {
 	return state.leads[ state.leads.tab ];
 
 };
+
 export const getIsTab     = ( { leads } ) => (leads.seller.length + leads.customer.length) > 0;
 
 export const getOlderLead = ( { leads:{tab,  seller, customer } } ) => {
@@ -33,3 +34,5 @@ export const getTitle     = ( state ) => {
 };
 export const getTab       = state => state.leads.tab;
 export const getPending   = state => state.leads.pending;
+export const getGlobalNotifyCount   = state => state.leads.global_notify_count;
+export const getNotifyCountList   = state => state.leads.notify_count;

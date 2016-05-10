@@ -150,6 +150,25 @@ export function update(conversation_id, message_id) {
     });
 }
 
+export function getCountUnread() {
+  return channel
+    .req('count_unread', 'message')
+    .then(data => {
+      if (data.error && data.error.code === ERROR_CODES.NOT_EXISTS) {
+        throw ERROR_CODES.NOT_EXISTS;
+      } else {
+        return data.response_map.count;
+      }
+    })
+    .catch(err => {
+      if (err.log_map.code_key === '403') {
+        throw ERROR_CODES.UNATHORIZED;
+      } else if (err.log_map.code_key === '400') {
+        throw ERROR_CODES.NOT_EXISTS;
+      }
+    });
+}
+
 /**
  * Listen when msg notify received
  * @param  {function} handler    call it func when fired event

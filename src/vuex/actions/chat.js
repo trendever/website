@@ -5,12 +5,9 @@ import {
 	UPDATE_CHAT_MEMBERS,
 	SET_SHOW_MENU,
 	SET_SHOW_STATUS_MENU,
-	INCREMENT_CHAT_NOTIFY_COUNT,
-	CLEAR_CHAT_NOTIFY_COUNT,
-	CLOSE_CONVERSATION
-} from '../mutation-types';
-
-import { SET_STATUS } from '../mutationTypes/lead';
+	CLOSE_CONVERSATION,
+	SET_STATUS
+} from '../mutationTypes/conversation';
 
 import * as messageService from 'services/message.js';
 import * as leads from 'services/leads.js';
@@ -37,19 +34,12 @@ export const setConversation = ( { dispatch }, id ) => {
 			
 		}
 
-		const lastMessageId = messages[ messages.length - 1 ].id;
-		
-		dispatch(
-			SET_CONVERSATION,
-			lead.id,
-			lead.chat.members,
-			messages,
-			lead,
-			lastMessageId
-		);
-
-		return messageService.update(id, lastMessageId);
-
+		if (messages !== null) {
+			const lastMessageId = messages[ messages.length - 1 ].id;
+			dispatch( SET_CONVERSATION, lead.id, lead.chat.members, messages, lead, lastMessageId );
+			return messageService.update(id, lastMessageId);
+		}
+		dispatch( SET_CONVERSATION, lead.id, [], [], lead, null );
 	} );
 
 	promise.catch( (error) => {
@@ -77,16 +67,8 @@ export const loadMessage = ( { dispatch, state:{ conversation:{ id, messages } }
 
 };
 
-export const createMessage = ( { dispatch }, conversation_id, text, mime_type ) => {
+export const createMessage = ( store, conversation_id, text, mime_type ) => {
 	return messageService.create( conversation_id, text, mime_type );
-	/*	const promise = messageService.create( conversation_id, text, mime_type );
-	promise.then( data => {
-		dispatch(types.CREATE_MESSAGE, data.messages);
-	} );
-	promise.catch( error => {
-		console.log(error);
-	} );
-	 return promise;*/
 };
 
 export const receiveMessage = ( { dispatch, state }, chat, messages ) => {
@@ -156,17 +138,6 @@ export const setShowMenu = ( { dispatch }, showMenu ) => {
 
 export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
 	dispatch(SET_SHOW_STATUS_MENU, showStatusMenu);
-};
-
-export const receiveChatNotify = ( { dispatch, state }, conversation_id, messages ) => {
-	dispatch( RECEIVE_MESSAGE, messages );
-	if (state.conversation.id !== conversation_id) {
-		dispatch(INCREMENT_CHAT_NOTIFY_COUNT);
-	}
-};
-
-export const readedAllChatNotify = ({ dispatch }) => {
-	dispatch(CLEAR_CHAT_NOTIFY_COUNT);
 };
 
 export const closeConversation = ({ dispatch }) => {

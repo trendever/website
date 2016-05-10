@@ -22,8 +22,8 @@
         img.navbar_i_wrap_ic(src=chat, v-show="current!='chat'")
         img.navbar_i_wrap_ic(src=chat_active, v-show="current=='chat'")
         .navbar_i_wrap_t(:class="{'active': current=='chat'}") Шопинг-чаты
-        .navbar_i_wrap_notify(v-show="conversationNotifyCount")
-          span {{ conversationNotifyCount }}
+        .navbar_i_wrap_notify(v-show="getGlobalNotifyCount")
+          span {{ getGlobalNotifyCount }}
 
     .navbar_i(v-if="false", :class="{'__active': current=='profile'}", @click="current='profile'")
       .navbar_i_wrap
@@ -35,7 +35,7 @@
 
 <script>
   import { isAuth } from 'vuex/getters';
-  import { conversationNotifyCount } from 'vuex/getters/chat.js';
+  import { getGlobalNotifyCount } from 'vuex/getters/lead.js';
 
   export default{
     data() {
@@ -50,7 +50,7 @@
     vuex: {
       getters: {
         isAuth,
-        conversationNotifyCount,
+        getGlobalNotifyCount,
       },
     },
   };

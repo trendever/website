@@ -39,8 +39,6 @@ div
     loadLeads
   } from 'vuex/actions/lead.js';
 
-  import { readedAllChatNotify } from 'vuex/actions/chat.js'
-
   import * as leads from 'services/leads';
   import * as messages from 'services/message';
 
@@ -56,13 +54,12 @@ div
         getTab,
         getPending,
         getIsTab,
-        getTitle
+        getTitle,
       },
       actions: {
         applyStatus,
         setTab,
-        loadLeads,
-        readedAllChatNotify,
+        loadLeads
       }
     },
     created() {
@@ -93,11 +90,12 @@ div
         this.scrollListener.remove();
       },
       scrollHandler(){
-        let needUpdate = false;
-        const scrollEnd = document.body.scrollHeight - document.body.offsetHeight - 50;
+        let needUpdate     = false;
+        const marginBottom = 100;
+        const scrollEnd    = document.body.scrollHeight - document.body.offsetHeight - marginBottom;
         if ( !needUpdate ) {
-          if ( window.scrollY === scrollEnd ) {
-            needUpdate         = true;
+          if ( window.scrollY >= scrollEnd ) {
+            needUpdate = true;
             this.loadLeads();
           }
         }

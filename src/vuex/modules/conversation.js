@@ -5,22 +5,16 @@ import {
   UPDATE_CHAT_MEMBERS,
   SET_SHOW_STATUS_MENU,
   SET_SHOW_MENU,
-  INCREMENT_CHAT_NOTIFY_COUNT,
-  CLEAR_CHAT_NOTIFY_COUNT,
-  CLOSE_CONVERSATION
-  //  CREATE_MESSAGE,
-} from '../mutation-types';
-import {
+  CLOSE_CONVERSATION,
   SET_STATUS
-} from '../mutationTypes/lead';
+} from '../mutationTypes/conversation';
+
 // initial state
 const state = {
-  notice: {},
   id: null,
   members: null,
   messages: null,
   lead: null,
-  notify_count: null,
   showMenu: false,
   showStatusMenu: false,
 };
@@ -49,17 +43,10 @@ const mutations = {
     state.showMenu = showMenu;
     state.showStatusMenu = false;
   },
-  [INCREMENT_CHAT_NOTIFY_COUNT] (state) {
-    state.notify_count += 1;
-  },
-  [CLEAR_CHAT_NOTIFY_COUNT] (state) {
-    state.notify_count = 0;
-  },
   [CLOSE_CONVERSATION] ( state ) {
     state.id= null;
     state.members= null;
     state.messages= null;
-    state.notify_count= null;
     state.lead= null;
     state.showMenu= false;
     state.showStatusMenu= false;
@@ -73,9 +60,7 @@ const mutations = {
     state.lead.status = status;
     state.showStatusMenu = false;
   },
-  /*  [CREATE_MESSAGE] ( state, messages ) {
-   state.messages = state.messages.concat( messages );
-   },*/
+
 };
 
 export default {

@@ -3,20 +3,28 @@
 </template>
 
 <script type="text/babel">
-  import { receiveChatNotify } from 'vuex/actions/chat.js'
 
   import * as messages from 'services/message';
+  import { initGlobalNotify, incNotify } from 'vuex/actions/lead.js';
 
   export default {
     ready() {
-/*      // Listen server direct notify globally
-      messages.onMsg(({response_map: {chat, messages}}) => {
-        this.receiveChatNotify(chat.id, messages)
-      });*/
+      this.initGlobalNotify().then(() => {
+        messages.onMsg( this.onMessage.bind( this ) );
+      });
+    },
+    beforeDestroy(){
+      messages.offMsg( this.onMessage.bind( this ) );
+    },
+    methods: {
+      onMessage( { response_map: { chat } } )  {
+        this.incNotify( chat.id );
+      },
     },
     vuex: {
       actions: {
-        receiveChatNotify,
+        incNotify,
+        initGlobalNotify,
       }
     },
   }

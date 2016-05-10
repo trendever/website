@@ -158,7 +158,6 @@ export const openProduct = ({ dispatch, state }, id) => {
   });
 };
 
-
 export const enableInfinityProducts = ({ dispatch }) => {
   dispatch(types.ENABLE_INFINITY_PRODUCTS);
 };
@@ -190,7 +189,6 @@ export const removeTag = (store, tag) => {
   store.dispatch(types.REMOVE_TAG, tag);
   loadTags(store);
 };
-
 
 export const clearSearch = (store) => {
   store.dispatch(types.CLEAR_SEARCH);
