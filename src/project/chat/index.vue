@@ -120,7 +120,8 @@ div
       scrollHandler(){
         let needUpdate = false;
         if ( !needUpdate ) {
-          if ( window.scrollY <= 50 ) {
+          const marginTop = 50;
+          if ( window.scrollY <= marginTop ) {
             needUpdate         = true;
             const listElement  = this.$els.messageList;
             const heightBefore = listElement.scrollHeight;
@@ -138,7 +139,7 @@ div
           setTimeout( () => {
             needUpdate = false;
             this.onScroll();
-          }, 100 );
+          }, 300 );
         }
       },
       goToBottom(){

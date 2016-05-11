@@ -12,6 +12,7 @@ import {
 import * as messageService from 'services/message.js';
 import * as leads from 'services/leads.js';
 import * as chat from 'services/chat.js';
+import messageCache from 'cache/message';
 import { getCurrentMember, getId, getLastMessageId } from 'vuex/getters/chat.js';
 
 export const setConversation = ( { dispatch }, id ) => {
@@ -40,9 +41,15 @@ export const setConversation = ( { dispatch }, id ) => {
 		}
 
 		if (messages !== null) {
+
 			const lastMessageId = messages[ messages.length - 1 ].id;
+
+			messageCache.init( lead.id, messages );
+
 			dispatch( SET_CONVERSATION, lead.id, lead.chat.members, messages, lead, lastMessageId );
+
 			return messageService.update(id, lastMessageId);
+
 		}
 		dispatch( SET_CONVERSATION, lead.id, [], [], lead, null );
 	} );
@@ -90,6 +97,8 @@ export const receiveMessage = ( { dispatch, state }, chat, messages ) => {
 			if(isNotLastMessage) {
 
 				messageService.update(msg.conversation_id, msg.id).then(() => {
+
+					messageCache.addReceiveMessage( msg.conversation_id, messages );
 
 					dispatch( RECEIVE_MESSAGE, messages );
 

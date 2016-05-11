@@ -1,4 +1,5 @@
 import channel from 'services/channel/channel.js';
+import cache from 'cache/message.js';
 
 export const ERROR_CODES = {
     NOT_EXISTS: 1,
@@ -41,12 +42,22 @@ export const ERROR_CODES = {
 
 export function find( conversation_id, from_message_id, limit = 12) {
 
+  if ( cache.has( conversation_id, from_message_id ) ) {
+
+    return cache.find( conversation_id, from_message_id, limit );
+    
+  }
+  
   return new Promise( (resolve, reject) => {
 
     channel.req("search", "message", { conversation_id, from_message_id, limit })
     .then( data => {
       if (!data.response_map.error) {
+
         resolve(data.response_map.messages);
+
+        cache.addOldMessage(conversation_id, data.response_map.messages);
+        
       } else if (data.response_map.error.code === ERROR_CODES.FORBIDDEN) {
         reject(data.response_map.error);
       }
