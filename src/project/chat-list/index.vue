@@ -36,7 +36,8 @@ div
     getMoreLeads,
     applyStatus,
     setTab,
-    loadLeads
+    loadLeads,
+    setLastMessages
   } from 'vuex/actions/lead.js';
 
   import * as leads from 'services/leads';
@@ -59,7 +60,8 @@ div
       actions: {
         applyStatus,
         setTab,
-        loadLeads
+        loadLeads,
+        setLastMessages
       }
     },
     created() {
@@ -107,8 +109,8 @@ div
           }, 100 );
         }
       },
-      onMsg({response_map: {chat}}){
-        //this.getLead({conversation_id: chat.id, without_cache: true})
+      onMsg({response_map: {chat, messages}}){
+        this.setLastMessages(chat, messages);
       },
     },
 

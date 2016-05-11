@@ -5,7 +5,8 @@ import {
   PENDING,
   INIT_GLOBAL_NOTIFY,
   INC_NOTIFY,
-  CLEAR_NOTIFY
+  CLEAR_NOTIFY,
+  SET_LAST_MESSAGE
 } from '../mutationTypes/lead';
 
 // initial state
@@ -84,6 +85,11 @@ const mutations = {
       state.global_notify_count -= state.notify_count[ lead_id ];
     }
     state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 0 } );
+  },
+  [SET_LAST_MESSAGE] ( state, conversation, messages ) {
+    const lead = state[state.tab].find(({id}) => id === conversation.id );
+    //Такие длинные пути мне не нравятся( 
+    lead.chat.recent_message.parts = messages[0].parts;
   }
 };
 

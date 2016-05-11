@@ -14,6 +14,9 @@ export const createLead = ( { dispatch }, product_id ) => {
 			if ( error === leads.ERROR_CODES.UNATHORIZED ) {
 				console.log( '[ UNATHORIZED ]: ', error );
 			}
+			if ( error === leads.ERROR_CODES.OBJECT_NOT_EXIST ) {
+				console.log( '[ OBJECT_NOT_EXIST ]: ', error );
+			}
 			console.log( error );
 		} );
 };
@@ -73,4 +76,8 @@ export const incNotify = ( { dispatch, state }, lead_id ) => {
 
 export const clearNotify = ( { dispatch }, lead_id ) => {
 	dispatch( types.CLEAR_NOTIFY, lead_id );
+};
+
+export const setLastMessages = ( { dispatch }, chat, messages ) => {
+	dispatch(types.SET_LAST_MESSAGE, chat, messages);
 };

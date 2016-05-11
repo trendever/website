@@ -105,7 +105,9 @@ article.product-post
 
           promise.then(
             ( lead ) => {
-              this.$router.go( { name: 'chat', params: { id: lead.id } } );
+              if(lead !== undefined && lead !== null){
+                this.$router.go( { name: 'chat', params: { id: lead.id } } );
+              }
             },
             ( error ) => {
               if ( error === leads.ERROR_CODES.UNATHORIZED ) {

@@ -36,3 +36,25 @@ export const getTab       = state => state.leads.tab;
 export const getPending   = state => state.leads.pending;
 export const getGlobalNotifyCount   = state => state.leads.global_notify_count;
 export const getNotifyCountList   = state => state.leads.notify_count;
+export const getLastMessage = ( state ) => {
+
+	const messages = {};
+	const leads = getLeads(state);
+
+	for (let i = leads.length; i; i--) {
+		const {id, chat:{recent_message:{parts}}} = leads[i - 1];
+		const mime = parts[ 0 ].mime_type;
+		const data = parts[ 0 ].content;
+
+		if (mime === 'text/plain') {
+			messages[id] = data;
+		}
+		if (mime === 'text/json') {
+			messages[id] = `товар: ${JSON.parse(data).Title}`;
+		}
+
+	}
+
+	return messages;
+
+};
