@@ -88,7 +88,7 @@ export default {
     // Because function work only in motion.
     this.toggleHeaderOnScroll();
 
-    this.scrollEvent = listen(window, 'scroll', this.toggleHeaderOnScroll.bind(this))
+    this.scrollEvent = listen(window, 'optimizedScroll', this.toggleHeaderOnScroll.bind(this))
   },
   methods: {
     leftBtnAction() {

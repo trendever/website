@@ -11,26 +11,21 @@
       .photo__title-column-short
       .photo__title-column-short
 
-  .photos__list(v-el:photos-list)
+  .photos__list(v-el:photos-list, v-if="object_list")
     template(v-for="product in object_list")
       photo-item(:product="product")
 
-  .photos__more-wrap
-    //.photos__more._active(
+  .photos__more-wrap(v-if="object_list")
+    .photos__more(
        :class="{'_active': isWaitReponseProducts}",
        @click="enableInfinityScroll(event, true)")
         .photos__more__base-ic: span еще
         .photos__more__anim-ic: i.ic-update
-    .photos__more(
-       :class="{'_active': isWaitReponseProducts}",
-       @click="showMore()")
-        .photos__more__base-ic: span еще
-        .photos__more__anim-ic: i.ic-update
 
-  .photos__no-more-wrap(v-if="showBillEmpty")
+  .photos__no-more-wrap(v-if="!object_list")
     .photos__no-goods Товаров не найдено
     .main__bottom.__no-goods: a.main__link(
-      @click.prevent.stop="onDropList",
+      @click.prevent.stop="clearSearch()",
       href="#") Сбросить поиск
 </template>
 
@@ -42,6 +37,7 @@
       getPartProducts,
       getMoreProducts,
       setColumnNumber,
+      clearSearch,
       } from 'vuex/actions';
     import {
       searchValue,
@@ -74,11 +70,9 @@
       activate(done) {
         if (this.isInfinityProducts) {
           this.enableInfinityScroll();
-          // done();
         }
-        // window.body.scrollTop = 1000;
         if (!this.object_list.length) {
-          this.getPartProducts({limit: PRODUCTS_PER_PAGE});
+          this.loadProducts();
         }
         done();
       },
@@ -102,6 +96,7 @@
           getPartProducts,
           getMoreProducts,
           setColumnNumber,
+          clearSearch,
         }
       },
       methods: {
@@ -123,21 +118,20 @@
 
           let settings = {
             from_id: last_product ? last_product.id : null,
-            limit: PRODUCTS_PER_PAGE,
             type: "more"
           };
 
-          // mixpanel.track("Show More Products", {
-          //   offset: settings.offset,
-          //   view: `${ this.getColumnNumber }columns`,
-          // });
+          mixpanel.track("Show More Products", {
+            offset: this.object_list.length,
+            view: `${ this.getColumnNumber }columns`,
+          });
 
           Object.assign(settings, this.getSearchOptions());
 
           this.getMoreProducts(settings);
         },
         getSearchOptions() {
-          let options = {};
+          let options = {limit: PRODUCTS_PER_PAGE};
           let q = this.searchValue.trim();
           let tags = this.selectedTags.map(tag => tag.id);
 
@@ -152,7 +146,7 @@
           return options;
         },
         loadProducts() {
-          // this.$nextTick(() => this.getPartProducts(this.getSearchOptions()))
+          this.$nextTick(() => this.getPartProducts(this.getSearchOptions()))
         }
       },
       watch: {
