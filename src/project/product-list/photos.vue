@@ -74,9 +74,9 @@
       activate(done) {
         if (this.isInfinityProducts) {
           this.enableInfinityScroll();
-          done();
+          // done();
         }
-        window.body.scrollTop = 1000;
+        // window.body.scrollTop = 1000;
         if (!this.object_list.length) {
           this.getPartProducts({limit: PRODUCTS_PER_PAGE});
         }
@@ -108,13 +108,13 @@
         enableInfinityScroll(e, show_more) {
           var self = this;
           // Add event for infinity scroll
-          this.scrollEvent = listen(window, 'scroll', function(){
+          this.scrollEvent = listen(window, 'optimizedScroll', function(){
             var pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
             var full_scroll = self.$els.photosList.offsetHeight;
             var diff_scroll = full_scroll - pos_scroll;
 
             if (diff_scroll < 2500 && !self.isWaitReponseProducts) {
-                self.showMore()
+              self.showMore()
             }
           });
         },

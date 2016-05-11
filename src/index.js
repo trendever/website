@@ -2,7 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueValidator from 'vue-validator';
 import FastClick from 'fastclick';
-import config from '../config.js';
+import config from '../config';
+import { throttleEvent } from 'utils';
 import { configRouter } from './route-config';
 import InitFilters from './filters';
 import InitValidators from './validators';
@@ -38,3 +39,6 @@ window.router = router;
 
 // Init FastClick
 FastClick.attach(document.body, {});
+
+// Throttled events
+throttleEvent("scroll", "optimizedScroll");
