@@ -3,8 +3,8 @@
 div
   .chat-cnt
     chat-header(:notify-count='conversationNotifyCount')
-    .section.top.bottom
-      .chat.section__content(v-el:message-list)
+    .section.top.bottom(v-el:message-list)
+      .chat.section__content
         .chat_messages
           template(v-for="msg in getMessages", track-by="$index")
 
@@ -119,27 +119,31 @@ div
       },
       scrollHandler(){
         let needUpdate = false;
+
         if ( !needUpdate ) {
-          const marginTop = 50;
-          if ( window.scrollY <= marginTop ) {
-            needUpdate         = true;
-            const listElement  = this.$els.messageList;
-            const heightBefore = listElement.scrollHeight;
+
+          const pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
+
+          if ( pos_scroll < 1500 ) {
+
+            needUpdate = true;
+            this.offScroll();
+
+            const heightBefore = this.$els.messageList.offsetHeight;
+
             this.loadMessage().then( ( messages ) => {
               this.$nextTick( () => {
+
+                const heightAfter = this.$els.messageList.offsetHeight;
+
                 if ( messages !== null ) {
-                  window.scrollTo( 0, listElement.scrollHeight - heightBefore );
+                  needUpdate = false;
+                  window.scrollTo( 0, heightAfter - heightBefore + pos_scroll );
+                  this.onScroll();
                 }
               } );
             } );
           }
-        }
-        if ( needUpdate ) {
-          this.offScroll();
-          setTimeout( () => {
-            needUpdate = false;
-            this.onScroll();
-          }, 300 );
         }
       },
       goToBottom(){

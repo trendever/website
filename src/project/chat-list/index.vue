@@ -48,7 +48,6 @@ div
   import ChatListItem from './chat-list-item.vue';
 
   export default {
-
     vuex: {
       getters: {
         getLeads,
@@ -69,18 +68,15 @@ div
       leads.onChangeStatus(this.onStatus);
       messages.onMsg(this.onMsg);
     },
-
     ready(){
       this.loadLeads();
       this.onScroll();
     },
-
     beforeDestroy() {
       leads.removeStatusListener(this.onStatus);
       messages.offMsg(this.onMsg);
       this.offScroll();
     },
-
     methods: {
       onStatus({response_map: {lead}}) {
         this.applyStatus(lead.id, lead.status);
@@ -93,27 +89,24 @@ div
       },
       scrollHandler(){
         let needUpdate     = false;
-        const marginBottom = 100;
-        const scrollEnd    = document.body.scrollHeight - document.body.offsetHeight - marginBottom;
         if ( !needUpdate ) {
-          if ( window.scrollY >= scrollEnd ) {
+          const pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
+          const full_scroll = this.$els.chatList.offsetHeight;
+          const diff_scroll = full_scroll - pos_scroll;
+          if ( diff_scroll < 2500 ) {
             needUpdate = true;
-            this.loadLeads();
+            this.offScroll();
+            this.loadLeads().then(() => {
+              needUpdate = false;
+              this.onScroll();
+            });
           }
-        }
-        if ( needUpdate ) {
-          this.offScroll();
-          setTimeout( () => {
-            needUpdate = false;
-            this.onScroll();
-          }, 100 );
         }
       },
       onMsg({response_map: {chat, messages}}){
         this.setLastMessages(chat, messages);
       },
     },
-
     components: {
       HeaderComponent,
       NavbarComponent,

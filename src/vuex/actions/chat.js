@@ -8,16 +8,15 @@ import {
 	CLOSE_CONVERSATION,
 	SET_STATUS
 } from '../mutationTypes/conversation';
-
 import * as messageService from 'services/message.js';
 import * as leads from 'services/leads.js';
 import * as chat from 'services/chat.js';
 import messageCache from 'cache/message';
 import { getCurrentMember, getId, getLastMessageId } from 'vuex/getters/chat.js';
 
-export const setConversation = ( { dispatch }, id ) => {
+export const setConversation = ( { dispatch }, lead_id ) => {
 
-	const promise = leads.get( { lead_id: id } );
+	const promise = leads.get( { lead_id } );
 
 	promise.then( ( { messages, lead, error } ) => {
 
@@ -25,11 +24,9 @@ export const setConversation = ( { dispatch }, id ) => {
 			
 			if (error.code === leads.ERROR_CODES.FORBIDDEN) {
 
-				return chat.join( { lead_id: id } ).then(
+				return chat.join( { lead_id } ).then(
 					() => {
-
-					return setConversation({ dispatch }, id);
-
+						return setConversation( { dispatch }, lead_id );
 					},
 					( error ) => {
 						console.log( `Join to chat error: ${(leads.ERROR_CODES.FORBIDDEN === error) ? '[ FOBIDDEN ]' : ''}` );
@@ -40,18 +37,19 @@ export const setConversation = ( { dispatch }, id ) => {
 			
 		}
 
-		if (messages !== null) {
-
-			const lastMessageId = messages[ messages.length - 1 ].id;
-
-			messageCache.init( lead.id, messages );
-
-			dispatch( SET_CONVERSATION, lead.id, lead.chat.members, messages, lead, lastMessageId );
-
-			return messageService.update(id, lastMessageId);
-
+		if ( messages === null ) {
+			throw new Error( 'При получении лида/диалога messages не должнобыть null.' );
 		}
-		dispatch( SET_CONVERSATION, lead.id, [], [], lead, null );
+
+		const lastMessageId = messages[ messages.length - 1 ].id;
+		const {chat:{id:conversation_id, members}} = lead;
+
+		messageCache.init( conversation_id, messages );
+		
+		dispatch( SET_CONVERSATION, conversation_id, members, messages, lead );
+
+			return messageService.update(conversation_id, lastMessageId);
+
 	} );
 
 	promise.catch( (error) => {
@@ -59,6 +57,7 @@ export const setConversation = ( { dispatch }, id ) => {
 	} );
 
 	return promise;
+
 };
 
 export const loadMessage = ( { dispatch, state:{ conversation:{ id, messages } } } ) => {

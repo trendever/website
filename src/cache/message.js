@@ -111,7 +111,7 @@ class MessageCache {
 			conversations[ conversation_id ] = conversations[ conversation_id ].concat( messages );
 
 		}
-		
+
 		this.commit( conversation_id );
 
 	}
@@ -119,16 +119,20 @@ class MessageCache {
 	commit( conversation_id ) {
 		
 		const conversations = Private.get( this );
-		
+
 		if ( conversations.hasOwnProperty( conversation_id ) ) {
-			
+
 			const data  = conversations[ conversation_id ];
 			const end   = data.length - initMessageCount;
 			const begin = ((end - availableForSave) < 0) ? 0 : end - availableForSave;
 			const gap   = data.slice( begin, end + 1 );
 
-			localStorage.setItem( `conversation_${conversation_id}`, JSON.stringify( gap ) );
-			
+			if (gap.length > 0) {
+
+				localStorage.setItem( `conversation_${conversation_id}`, JSON.stringify( gap ) );
+
+			}
+
 			return data;
 			
 		}
@@ -145,19 +149,33 @@ class MessageCache {
 		conversations[ conversation_id ] = messages;
 
 		if ( rowData !== null ) {
+
 			const oldMessage = JSON.parse( rowData );
 
-			if(messages[0].id !== oldMessage[oldMessage.length - 1].id){
+			if( Array.isArray(oldMessage) ) {
 
-				localStorage.removeItem(`conversation_${conversation_id}`);
+				if(oldMessage.length > 0){
+
+					if(messages[0].id !== oldMessage[oldMessage.length - 1].id){
+
+						localStorage.removeItem(`conversation_${conversation_id}`);
+
+						return true;
+
+					}
+
+				}
+
+				conversations[ conversation_id ] = oldMessage.concat( conversations[ conversation_id ] );
 
 			} else {
 
-				conversations[ conversation_id ] = oldMessage.concat( conversations[ conversation_id ] );
+				throw new Error('oldMessage - должен быть массив.');
 
 			}
 
 		}
+
 
 	}
 	

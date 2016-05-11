@@ -73,12 +73,17 @@ const mutations = {
     state.global_notify_count = count;
   },
   [INC_NOTIFY] ( state, lead_id ) {
-    if ( !state.notify_count.hasOwnProperty( lead_id ) ) {
-      state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 1 } );
-    } else {
-      state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: state.notify_count[ lead_id ] + 1 } );
+
+    if ( lead_id !== null ) {
+      if ( !state.notify_count.hasOwnProperty( lead_id ) ) {
+        state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 1 } );
+      } else {
+        state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: state.notify_count[ lead_id ] + 1 } );
+      }
     }
+
     state.global_notify_count++;
+
   },
   [CLEAR_NOTIFY] ( state, lead_id ) {
     if ( state.notify_count.hasOwnProperty( lead_id ) ) {
@@ -87,9 +92,18 @@ const mutations = {
     state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 0 } );
   },
   [SET_LAST_MESSAGE] ( state, conversation, messages ) {
-    const lead = state[state.tab].find(({id}) => id === conversation.id );
-    //Такие длинные пути мне не нравятся( 
-    lead.chat.recent_message.parts = messages[0].parts;
+    const lead = state[ state.tab ].find( ( { chat } ) => {
+
+      if(chat !== null){
+        return chat.id === conversation.id;
+      }
+
+    } );
+    if ( lead !== undefined ) {
+      if ( lead.chat !== null ) {
+        lead.chat.recent_message.parts = messages[ 0 ].parts;
+      }
+    }
   }
 };
 
