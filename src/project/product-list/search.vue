@@ -67,7 +67,7 @@
       }
     },
     ready(){
-        this.gluingSearch = listen( window, 'scroll', () => {
+        this.gluingSearch = listen( window, 'optimizedScroll', () => {
           if ( this.isAuth ) {
             let searchHeight = 50;
             if ( window.matchMedia( "(max-width: 750px)" ).matches ) {
