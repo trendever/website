@@ -10,60 +10,25 @@ menu-component
       .menu_i_t.__txt-white Подтвержден
     .menu_i.__bg-red(@click="setStatus('CANCEL')")
       .menu_i_t.__txt-white Отменен
-    .menu_i(@click="statusMenuActive=false")
+    .menu_i(@click="setShowStatusMenu(false);")
       .menu_i_t.__txt-green Назад
 </template>
 
 <script>
-  import {
-    currentChatMember,
-    currentLead,
-  } from 'vuex/getters';
-
-  import {
-    setLeadStatus,
-  } from 'vuex/actions';
+  import { setStatus, setShowStatusMenu } from 'vuex/actions/chat.js';
 
   import MenuComponent from 'base/menu/menu.vue';
   import * as leads from 'services/leads';
 
   export default{
-    data: () => ({
-    }),
-
-    props: {
-      statusMenuActive: {
-        type: Boolean,
-        required: true,
-      }
-    },
-
     vuex: {
-      getters: {
-        currentLead,
-        currentMember: currentChatMember,
-      },
       actions: {
-        setLeadStatus,
+        setStatus,
+        setShowStatusMenu,
       }
     },
-
-    methods: {
-      setStatus: function(event){
-        this.statusMenuActive = false;
-        this.setLeadStatus(this.currentLead.id, event);
-      }
-    },
-
-    computed: {
-      status: function() {
-        return this.currentLead.status
-      },
-      statuses: () => leads.STATUSES,
-    },
-
     components: {
       MenuComponent
-    }
+    },
   }
 </script>

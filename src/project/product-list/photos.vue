@@ -1,39 +1,43 @@
 <style src="./styles/photos.pcss"></style>
 <template lang="jade">
 .photos
-  .photos__list(v-el:photos-list)
-    .photo__title-row
-      .photo__title-column(
-        :class="{'active': countColumn == 2}",
-        @click="countColumn = 2") 2 колонки
-      .photo__title-column(
-        :class="{'active': countColumn == 3}",
-        @click="countColumn = 3") 3 колонки
+  .photo__title-row
+    .photo__title-column( :class="{'active': getColumnNumber === 2}", @click="setColumnNumber(2)")
+      .photo__title-column-long
+      .photo__title-column-long
 
+    .photo__title-column( :class="{'active': getColumnNumber === 3}", @click="setColumnNumber(3)")
+      .photo__title-column-short
+      .photo__title-column-short
+      .photo__title-column-short
+
+  .photos__list(v-el:photos-list, v-if="object_list")
     template(v-for="product in object_list")
-      component(:is="component", :product="product")
+      photo-item(:product="product")
 
-  .photos__more-wrap(v-if="showMoreWrapper")
-    .photos__more._active(
+  .photos__more-wrap(v-if="object_list")
+    .photos__more(
        :class="{'_active': isWaitReponseProducts}",
        @click="enableInfinityScroll(event, true)")
         .photos__more__base-ic: span еще
         .photos__more__anim-ic: i.ic-update
 
-  .photos__no-more-wrap(v-if="showBillEmpty")
+  .photos__no-more-wrap(v-if="!object_list")
     .photos__no-goods Товаров не найдено
     .main__bottom.__no-goods: a.main__link(
-      @click.prevent.stop="onDropList",
+      @click.prevent.stop="clearSearch()",
       href="#") Сбросить поиск
 </template>
 
 <script type="text/babel">
     import listen from 'event-listener';
-
+    import store from 'vuex/store';
+    import photoItem from './photo-item.vue';
     import {
       getPartProducts,
       getMoreProducts,
-      enableInfinityProducts,
+      setColumnNumber,
+      clearSearch,
       } from 'vuex/actions';
     import {
       searchValue,
@@ -41,44 +45,36 @@
       products,
       isWaitReponseProducts,
       isInfinityProducts,
-      chatNotifyCount,
+      getColumnNumber,
       } from 'vuex/getters';
 
-    import photoItemColumn3 from './photo-item-column-3.vue';
-    import photoItemColumn2 from './photo-item-column-2.vue';
-
-    var firstLoad =true;
-    const CACHE = {
-      search: '',
-      tag_list: [],
-      countColumn: document.body.offsetWidth < 751 ? 2 : 3,
-    };
-    const LIMIT_TOVAR = 12;
+    const PRODUCTS_PER_PAGE = 9;
 
     export default {
+      ready(){
+        if (!this.getColumnNumber) {
+          let columnNumber = 3;
+          if( document.body.offsetWidth <= 750) {
+            columnNumber = 2;
+          }
+          this.setColumnNumber(columnNumber);
+        }
+      },
       data: () => ({
-        countColumn: 3,
         showBillEmpty: false,
-        showMoreWrapper: true,
         tag_list: [],
-        need_clear_objects_list: false,
         search: '',
-
         scrollEvent: null,
       }),
 
       activate(done) {
         if (this.isInfinityProducts) {
           this.enableInfinityScroll();
-          done();
-          return;
         }
-        this.getPartProducts({});
+        if (!this.object_list.length) {
+          this.loadProducts();
+        }
         done();
-      },
-
-      created() {
-        this.countColumn = CACHE.countColumn;
       },
 
       beforeDestroy() {
@@ -87,62 +83,55 @@
         }
       },
 
-      computed: {
-        component() {
-          return `photo-item-column${this.countColumn}`
-        },
-      },
-
       vuex: {
         getters: {
           searchValue,
           selectedTags,
           object_list: products,
-          chatNotifyCount,
           isWaitReponseProducts,
           isInfinityProducts,
+          getColumnNumber,
         },
         actions: {
           getPartProducts,
           getMoreProducts,
-          // enableInfinityProducts,
+          setColumnNumber,
+          clearSearch,
         }
       },
-
       methods: {
         enableInfinityScroll(e, show_more) {
           var self = this;
           // Add event for infinity scroll
-          this.scrollEvent = listen(window, 'scroll', function(){
+          this.scrollEvent = listen(window, 'optimizedScroll', function(){
             var pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
             var full_scroll = self.$els.photosList.offsetHeight;
             var diff_scroll = full_scroll - pos_scroll;
 
-            if (diff_scroll < 1500 && !self.isWaitReponseProducts) {
-                self.showMore()
+            if (diff_scroll < 2500 && !self.isWaitReponseProducts) {
+              self.showMore()
             }
           });
         },
+        showMore() {
+          let last_product = this.object_list[this.object_list.length-1];
 
-        showMore(callback = null, call) {
           let settings = {
-            offset: this.$get('need_clear_objects_list') ? 0 : this.$get('object_list.length'),
-            limit: LIMIT_TOVAR,
+            from_id: last_product ? last_product.id : null,
             type: "more"
           };
 
           mixpanel.track("Show More Products", {
-            offset: settings.offset,
-            view: `${ this.countColumn }columns`,
+            offset: this.object_list.length,
+            view: `${ this.getColumnNumber }columns`,
           });
 
           Object.assign(settings, this.getSearchOptions());
 
           this.getMoreProducts(settings);
         },
-
         getSearchOptions() {
-          let options = {};
+          let options = {limit: PRODUCTS_PER_PAGE};
           let q = this.searchValue.trim();
           let tags = this.selectedTags.map(tag => tag.id);
 
@@ -156,26 +145,20 @@
 
           return options;
         },
-
         loadProducts() {
           this.$nextTick(() => this.getPartProducts(this.getSearchOptions()))
         }
       },
-
       watch: {
         selectedTags() {
           this.loadProducts();
         },
-
         searchValue() {
           this.loadProducts();
         }
       },
-
       components: {
-        photoItemColumn3,
-        photoItemColumn2,
+        photoItem,
       }
     }
-
 </script>

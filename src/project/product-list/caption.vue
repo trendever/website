@@ -1,16 +1,20 @@
 <style src="./styles/caption.pcss"></style>
 <template lang="jade">
-.caption
-  | Ежедневные шопинг-тренды
-  br
-  | от&nbsp;модниц&nbsp;инстаграма.
-  br
-  | Покупайте&nbsp;в ленте Trendever #[.emoji.emoji_down]
+.caption(v-if="!isAuth") Как это работает?
+  .caption__play
+  .caption__description (смотрите видео)
+  .caption__subtitle Ежедневные шопинг тренды
 </template>
-
-
 <script>
+  import { isAuth } from 'vuex/getters';
   export default {
-    data: () => ({}),
-  }
+    data(){
+      return {};
+    },
+    vuex: {
+      getters: {
+        isAuth,
+      },
+    },
+  };
 </script>

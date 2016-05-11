@@ -50,7 +50,6 @@ div
 
 <script>
   import profile,  { setSubscribeEmail } from 'services/profile'
-  import { createQuestion } from 'services/actions'
   import trSpinner from 'base/spinner/spinner.vue'
 
   export default {

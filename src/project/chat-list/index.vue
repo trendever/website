@@ -2,151 +2,122 @@
 <template lang="jade">
 div
   .chat-list-cnt
-    header-component(:title="title", :left-btn-show="false")
-      .header__nav(slot="content" v-if="show !== 'all'")
+    header-component(:title="getTitle", :left-btn-show="false")
+      .header__nav(slot="content" v-if="getIsTab")
         .header__nav__i.header__text(
-        :class="{_active: leadsTab==='buy'}", @click="leadsSetTab('buy')")
+        :class="{_active: getTab === 'customer'}", @click="setTab('customer')")
           | Покупаю
         .header__nav__i.header__text(
-        :class="{_active: leadsTab==='sell'}", @click="leadsSetTab('sell')")
+        :class="{_active: getTab === 'seller'}", @click="setTab('seller')")
           | Продаю
 
     .section.top.bottom
       .section__content
-        .chat-list
-          .chat-list_i(v-for="lead in object_list | orderBy '-chat.recent_message.created_at'", track-by="id",
-          v-link="{name: 'chat', params: {id: lead.id}}")
-
-            .chat-list_i_photo
-              img(:src="lead.products && lead.products[0].instagram_image_url")
-            .chat-list_i_body
-              .body_t {{ getTitle(lead) }}
-              .body_status ({{ getStatus(lead) | lowercase }})
-              .body_last-msg
-                | {{ getRecentMessage(lead) }}
-            .chat-list_i_date {{ getDatetime(lead) }}
-            .chat-list_i_notify(v-if="lead.chat.unread_count")
-              span {{ lead.chat.unread_count }}
+        .chat-list(v-el:chat-list)
+          template(v-for="lead in getLeads")
+            chat-list-item(:lead="lead")
 
     navbar-component(current="chat")
 </template>
 
 <script type="text/babel">
-  import Vue from "vue";
-  import {
-    getAllLeads,
-    leadsSetTab,
-    readedAllChatNotify,
-   } from 'vuex/actions';
-  import {
-    leads,
-    userID,
-    leadsTab
-    } from 'vuex/getters';
+  import listen from 'event-listener';
 
-  import * as service from 'services/leads';
+  import {
+    getLeads,
+    getTab,
+    getPending,
+    getIsTab,
+    getTitle,
+  } from 'vuex/getters/lead.js';
 
-  import { formatDatetime } from 'project/chat/utils';
+  import {
+    getPartLeads,
+    getMoreLeads,
+    applyStatus,
+    setTab,
+    loadLeads,
+    setLastMessages
+  } from 'vuex/actions/lead.js';
+
+  import * as leads from 'services/leads';
+  import * as messages from 'services/message';
+
   import HeaderComponent from 'base/header/header.vue';
   import NavbarComponent from 'base/navbar/navbar.vue';
+  import ChatListItem from './chat-list-item.vue';
 
   export default {
-    data: () => ({
-      title: null,
-    }),
 
     vuex: {
       getters: {
-        leads,
-        userID,
-        leadsTab
+        getLeads,
+        getTab,
+        getPending,
+        getIsTab,
+        getTitle,
       },
       actions: {
-        getAllLeads,
-        leadsSetTab,
-        readedAllChatNotify,
+        applyStatus,
+        setTab,
+        loadLeads,
+        setLastMessages
       }
     },
-
-    route: {
-      activate(transition) {
-        this.readedAllChatNotify();
-        return this.getAllLeads();
-      },
+    created() {
+      this.onStatus = this.onStatus.bind(this);
+      leads.onChangeStatus(this.onStatus);
+      messages.onMsg(this.onMsg);
     },
 
-    computed: {
-      show () {
-        if (this.buy_list.length && this.sell_list.length) {
-          return this.leadsTab;
-        }
-        return 'all';
-      },
-      object_list () {
-        if (this.show === "all") {return this.leads};
-        if (this.show === "buy") {return this.buy_list;};
-        if (this.show === "sell") {return this.sell_list};
-      },
-      buy_list () {
-        return this.leads.filter(
-          obj =>  {
-            if ( obj.user_role === service.USER_ROLES.CUSTOMER.key
-              || obj.customer_id === this.userID ) { // if i'm superseller
-              return true;
-            }
-          });
-      },
-      sell_list () {
-        return this.leads.filter( obj => {
-          if ((obj.user_role === service.USER_ROLES.SELLER.key
-           || obj.user_role === service.USER_ROLES.SUPPLIER.key
-           || obj.user_role === service.USER_ROLES.SUPER_SELLER.key
-           || obj.user_role === service.USER_ROLES.UNKNOWN.key)
-           && obj.customer_id !== this.userID ) {
-            return true;
-          };
-        })
-      },
-      title () {
-        if (this.buy_list.length && this.sell_list.length) return;
+    ready(){
+      this.loadLeads();
+      this.onScroll();
+    },
 
-        if (this.buy_list.length && !this.sell_list.length) {
-          return "Шопинг-чаты";
-        } else if (!this.buy_list.length && this.sell_list.length) {
-          return "Чаты с покупателями";
-        }
-      },
+    beforeDestroy() {
+      leads.removeStatusListener(this.onStatus);
+      messages.offMsg(this.onMsg);
+      this.offScroll();
     },
 
     methods: {
-      getStatus: function(lead) {
-        return service.getStatus(lead.status).name
+      onStatus({response_map: {lead}}) {
+        this.applyStatus(lead.id, lead.status);
       },
-      getTitle: function(lead) {
-        if (lead.user_role === service.USER_ROLES.CUSTOMER.key
-            || lead.user_role === service.USER_ROLES.SUPPLIER.key) {
-          return lead.shop.instagram_username
-        }
-        return `${lead.customer.instagram_username} (${lead.shop.instagram_username})`
+      onScroll(){
+        this.scrollListener = listen( window, 'scroll', this.scrollHandler.bind( this ) );
       },
-      getRecentMessage: function(lead) {
-        let msg = lead.chat.recent_message;
-        if (msg.parts[0].mime_type === 'text/plain') {
-          return msg.parts[0].content;
+      offScroll(){
+        this.scrollListener.remove();
+      },
+      scrollHandler(){
+        let needUpdate     = false;
+        const marginBottom = 100;
+        const scrollEnd    = document.body.scrollHeight - document.body.offsetHeight - marginBottom;
+        if ( !needUpdate ) {
+          if ( window.scrollY >= scrollEnd ) {
+            needUpdate = true;
+            this.loadLeads();
+          }
         }
-        if (msg.parts[0].mime_type === 'text/json') {
-          let product = JSON.parse(msg.parts[0].content);
-          return `товар: ${product.Title}`;
+        if ( needUpdate ) {
+          this.offScroll();
+          setTimeout( () => {
+            needUpdate = false;
+            this.onScroll();
+          }, 100 );
         }
       },
-      getDatetime: function(lead) {
-        return formatDatetime(lead.chat.recent_message.created_at);
+      onMsg({response_map: {chat, messages}}){
+        this.setLastMessages(chat, messages);
       },
     },
 
     components: {
       HeaderComponent,
-      NavbarComponent
+      NavbarComponent,
+      ChatListItem,
     }
   }
 </script>

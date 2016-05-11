@@ -21,17 +21,17 @@ div
                 placeholder="9999")
 
       .bottom-container.__fixed-width
-        .btn-container
-          button.btn.btn_primary.__orange.__xl.fast__big__btn(
-            :disabled="isDisabled",
-            v-el:confirm-btn,
-            @keydown.enter="onButton()",
-            @click="onButton") {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
-          .link-container
-            a.link-bottom(href="#",
-              v-if="!isCompleted",
-              v-show="needNewSMS"
-              @click.prevent="sendSMS") Отправить новый код
+          .btn-container
+            button.btn.btn_primary.__orange.__xl.fast__big__btn(
+              :disabled="isDisabled",
+              v-el:confirm-btn,
+              @keydown.enter="onButton()",
+              @click="onButton") {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
+            .link-container
+              a.link-bottom(href="#",
+                v-if="!isCompleted",
+                v-show="needNewSMS"
+                @click.prevent="sendSMS") Отправить новый код
 </template>
 
 <script>
@@ -62,9 +62,9 @@ div
 
     route: {
       canActivate({abort}){
-        if (!authData(store.state).phone && !authData(store.state).username) {
-          abort();
-        }
+        // if (!authData(store.state).phone && !authData(store.state).username) {
+          // abort();
+        // }
         return true;
       }
     },

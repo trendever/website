@@ -7,7 +7,7 @@ import config from '../../config';
 import auth from './modules/auth';
 import user from './modules/user';
 import leads from './modules/leads';
-import chat from './modules/chat';
+import conversation from './modules/conversation';
 import products from './modules/products';
 import search from './modules/search';
 import popups from './modules/popups';
@@ -22,7 +22,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     user,
-    chat,
+    conversation,
     leads,
     products,
     search,

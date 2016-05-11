@@ -1,67 +1,43 @@
 <style src="./styles/chat-header.pcss"></style>
 <template lang="jade">
-header-component(:notify-count='chatNotifyCount',
-:back-link="{name: 'chat_list'}")
+div
+  header-component(:notify-count='getGlobalNotifyCount', :back-link="{name: 'chat_list'}")
 
-  .chat-header(slot="content")
-    .chat-header_cnt
-      .chat-header_cnt_t {{ shopName }}
-      .chat-header_cnt_info
-        span #
-        | {{ id }},
-        span  {{ status }}
+    .chat-header(slot="content")
+      .chat-header_cnt(v-show="getShopName")
+        .chat-header_cnt_t {{ getShopName }}
+        .chat-header_cnt_info
+          span #
+          | {{ getId }},
+          span  {{ getStatusName }}
 
 
 
-    .chat-header_photo
-      img(:src="shopPhoto | url_thumbnail 150",
-      onerror="this.error=null;this.src='/static/img/favicon.png'",)
+      .chat-header_photo
+        img(:src="getPhoto | url_thumbnail 150",
+        onerror="this.error=null;this.src='/static/img/favicon.png'",)
 </template>
 
-<script>
-import {
-    chatNotifyCount,
-    currentChatMember,
-    currentLead,
-  } from 'vuex/getters';
-
-  import * as leads from 'services/leads';
+<script type="text/babel">
+  import {
+    getStatusName,
+    getId,
+    getShopName,
+    getPhoto
+  } from 'vuex/getters/chat.js';
+  import { getGlobalNotifyCount } from 'vuex/getters/lead.js';
   import HeaderComponent from 'base/header/header.vue';
 
-  export default{
-    data: () => ({
-    }),
-
+  export default {
     vuex: {
       getters: {
-        chatNotifyCount,
-        currentLead,
+        getId,
+        getStatusName,
+        getShopName,
+        getPhoto,
+        getGlobalNotifyCount
       }
     },
-
-    computed: {
-      id() {
-        if (this.currentLead) {
-          return this.currentLead.id
-        }
-      },
-      shopName() {
-        if (this.currentLead) {
-          return this.currentLead.shop.instagram_username;
-        }
-      },
-      shopPhoto() {
-        if (this.currentLead) {
-          return this.currentLead.shop.instagram_avatar_url;
-        }
-      },
-      status() {
-        if (this.currentLead) {
-          return leads.getStatus(this.currentLead.status).name;
-        }
-      },
-    },
-
     components: {
       HeaderComponent,
     }

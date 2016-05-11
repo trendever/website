@@ -59,11 +59,11 @@
     }
 
   }
-
-  @keyframes sk-circleFadeDelay {
-    0%, 39%, 100% { opacity: 0 }
-    40% { opacity: 1 }
-  }
+  // ToDo conflict with ShowMore btn in product-list
+  // @keyframes sk-circleFadeDelay {
+  //   0%, 39%, 100% { opacity: 0 }
+  //   40% { opacity: 1 }
+  // }
 </style>
 
 <script>

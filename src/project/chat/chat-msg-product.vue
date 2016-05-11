@@ -18,72 +18,57 @@
 </template>
 
 <script type="text/babel">
-import {
-    currentChatMember
-  } from 'vuex/getters';
-
   import { formatDatetime } from './utils';
-
+  import { getCurrentMember, getLastMessageId } from 'vuex/getters/chat.js';
   export default{
     props: {
       msg: {
         type: Object,
         required: true
-      },
-      lastReadMessageId: Number
+      }
     },
-
+    vuex:{
+      getters:{
+        getCurrentMember,
+        getLastMessageId,
+      }
+    },
     computed: {
       product() {
         return JSON.parse(this.msg.parts[0].content);
       },
-
       description() {
         return this.product.Items.reduce(function(desc, item, i, arr) {
           desc += `${item.Name} `;
 
           if (item.DiscountPrice) {
-            desc += `${item.DiscountPrice} <i class="ic-currency-rub"</i>`
+            desc += `${item.DiscountPrice} <i class="ic-currency-rub"</i>`;
           } else if (item.Price) {
-            desc += `${item.Price} <i class="ic-currency-rub"</i>`
+            desc += `${item.Price} <i class="ic-currency-rub"</i>`;
           } else {
-            desc += `цена по запросу`
+            desc += `цена по запросу`;
           }
-
           if (i < arr.length -1) {
-            desc += ', '
+            desc += ', ';
           }
-
-          return desc
+          return desc;
         }, '')
       },
-
       isOwnMessage() {
-        return this.currentMember.user_id === this.msg.user.user_id
+        return this.getCurrentMember.user_id === this.msg.user.user_id;
       },
-
       isSent() {
-        return !this.isRead
+        return !this.isRead;
       },
-
       isRead() {
-        return this.lastReadMessageId >= this.msg.id
+        return this.getLastMessageId >= this.msg.id;
       },
-
       getSide(){
-        if(!this.msg.user || !this.currentMember) {
+        if(!this.msg.user || !this.getCurrentMember) {
           return '__center';
         }
-
         return this.isOwnMessage ? '__right' : '__left';
       },
     },
-
-    vuex: {
-      getters: {
-        currentMember: currentChatMember
-      }
-    },
-
   }
 </script>

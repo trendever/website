@@ -10,11 +10,14 @@
 
     display: flex;
 
-    height: 100%;
-    height: 90px;
+    height: 50px;
 
+    border-top:1px solid $color__gray;
     background: white;
 
+    @media(--mobile){
+      height: 90px;
+    }
     align-items: center;
     &_i {
       width: 100%;
@@ -28,49 +31,65 @@
         display: inline-block;
 
         &_ic {
+          margin-top: 2px;
+
           size: 21px;
           @media(--mobile){
             size: 38px;
           }
-          margin-top: 2px;
         }
         &_t {
-          padding-top: 6px;
-          color: #b2b2b2;
-          font-size: 12px;
+          transition: $btn-transition;
+
+          color: $color__gray;
+
+          font-size: 14px;
+
           @media(--mobile){
+            padding-top: 6px;
+
             font-size: $font__size;
-          }
-          .navbar_i.__active & {
-            color: #399;
           }
         }
         &_notify {
           position: absolute;
-          size: 20px;
-          top: -6px;
-          right: 6px;
-          @media(--mobile){
-            size: 30px;
-            right: 0px;
-          }
+          top: -1px;
+          right: 16px;
 
           display: flex;
 
           border-radius: 15px;
           background: #399;
 
+          font-size: 10px;
+
+          size: 16px;
           align-items: center;
           justify-content: center;
-          span {
-            margin-top: 2px;
+          @media(--mobile){
+            top: -6px;
+            right: 0px;
 
+            font-size: 16px;
+
+            size: 30px;
+          }
+          span {
             color: white;
           }
         }
       }
+      &:hover {
+        .navbar_i_wrap_t {
+          color: $color__green;
+        }
+      }
       &.__active {
         cursor: default;
+
+        .navbar_i_wrap_t {
+          color: $color__green;
+        }
       }
     }
   }

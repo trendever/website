@@ -18,7 +18,7 @@
     justify-content: center;
 
     &__ic {
-      padding: 30px;
+      padding: 30px 10px;
 
       font-size: 40px;
       color: $color__white;
@@ -36,7 +36,7 @@
   &__menu {
     position: absolute;
     right: 0;
-    top: 0;
+    top: 0px;
     height: 100px;
     width: 250px;
 
@@ -46,6 +46,7 @@
         display: block;
         cursor: pointer;
         text-align: right;
+        margin-top: 30px;
         //justify-content: flex-end;
 
         &-label {
@@ -78,7 +79,7 @@
       }
 
       &links {
-        position: absolute 100% 0 * *;
+        position: absolute 0 0 * *;
 
         display: none;
 
@@ -86,30 +87,34 @@
           display: block;
         }
       }
-
+      @media (--mobile) {
+        &link{
+          line-height: 100px;
+        }
+      }
       &link {
         display: block;
 
-        box-sizing: border-box;
-        width: 250px;
+        width: 750px;
         padding: 0 30px;
 
         font-size: 31px;
-        line-height: 100px;
-        text-align: right;
+        line-height: 50px;
+        text-align: center;
         text-decoration: none;
 
         color: white;
-        background: color(black a(.5));
+        background: color(black a(.75));
+        border-bottom: 1px solid color(white a(.5));
 
-        &:nth-child(2n) {
-          background: color(black a(.75));
+        &.active{
+          border-bottom-width: 0;
+          background: color(black a(.9));
+        }
+        &:last-of-type{
+          border-bottom-width: 0;
         }
       }
-    }
-
-    &:hover {
-      background: color(black a(.5));
     }
   }
 }

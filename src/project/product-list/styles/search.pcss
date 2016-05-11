@@ -28,14 +28,14 @@ $count-tags-open: 13;
   background-color: $color__green;
 
   font-size: 24px;
-  line-height: 40px;
+  line-height: 34px;
 
-   @media (max-width: 750px) {
+   @media (--mobile) {
     width: 50px;
     height: 50px;
 
     font-size: 36px;
-    line-height: 60px;
+    line-height: 50px;
    }
 }
 
@@ -52,7 +52,7 @@ $count-tags-open: 13;
   position: relative;
   z-index: 10;
 
-  width: 750px;
+  max-width: 1050px;
   margin-bottom: 20px;
 
   background-color: #fff;
@@ -64,22 +64,50 @@ $count-tags-open: 13;
     @media (max-width: 750px) { top: $height__mobile; }
   }
 }
+.search-stub{
+  max-width:1050px;
+  height: 50px;
 
+  @media (--mobile) {
+    width: 750px;
+    height: 100px;
+  }
+}
 .search-input {
   height: $height__desktop;
 
-  border-top: 1px solid $color__gray;
   border-bottom: 1px solid $color__gray;
 
-  @media (max-width: 750px) { height: $height__mobile; }
+  &.glued{
+    position: fixed;
+    z-index: 1;
+    top:-2px;
+
+    width: 100%;
+    max-width: 1050px;
+
+    background-color: white;
+
+    @media (--mobile) {
+      width: 750px;
+    }
+  }
+  @media (--mobile) {
+    height: $height__mobile;
+  }
   &__container {
     position: relative;
     z-index: 1;
 
     height: 100%;
     margin-bottom: 10px;
+    padding-left: 160px;
 
     color: $color__gray;
+
+    @media (--mobile){
+      padding-left: 0;
+    }
   }
   &__input {
     display: inline-block;
@@ -90,7 +118,7 @@ $count-tags-open: 13;
     padding: 0 0 0 87px;
     padding-top: 2.5px;
 
-    color: #595959;
+    color: $color__gray-dark;
     border: none;
 
     font-family: $font__family;
@@ -131,13 +159,14 @@ $count-tags-open: 13;
     @media (max-width: 750px) { font-size: 36px; }
   }
   &__search-btn {
-   left: 0;
-
    padding: 0 30px;
 
+    @media (--mobile){
+      left: 0;
+    }
    // padding-top: 8px;
    &:hover {
-    color: #595959;
+    color: $color__gray-dark;
    }
   }
   .close {
@@ -157,8 +186,7 @@ $count-tags-open: 13;
   overflow: hidden;
 
   width: 100%;
-  padding: 20px 20px $height-tag-button 20px;
-  padding-top: 2px;
+  padding: 30px 20px $height-tag-button 20px;
 
   user-select: none;
 
@@ -174,7 +202,6 @@ $count-tags-open: 13;
   &__selected {
     overflow: hidden;
 
-    height: auto;
     height: 124px;
 
     word-wrap: break-word;
@@ -204,7 +231,7 @@ $count-tags-open: 13;
     // height: $height-tag-item;
     display: inline-block;
 
-    margin: 0 12px;
+    margin: 0 5px;
     margin-bottom: 10px;
 
     cursor: pointer;
@@ -220,7 +247,6 @@ $count-tags-open: 13;
     }
    &__item__selected {
     padding: 0;
-    padding-right: 1.5rem;
 
     cursor: default;
 

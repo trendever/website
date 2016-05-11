@@ -3,29 +3,32 @@
 
 div
   .chat-bar.section__content
-    .chat-bar_menu-btn(v-if="isAdmin", @click="menuActive=true")
-      i.ic-menu_light
+    .chat-bar_menu-btn(v-if="isAdmin", @click="setShowMenu(true)")
+      i.ic-menu-light
     .chat-bar_input
       textarea(placeholder="Введите сообщение",
-      rows=1, v-model="txtMsg", v-el:input-msg
+      v-model="txtMsg", v-el:input-msg
       @keydown.enter.prevent="send($event)")
-    .chat-bar_send-btn(@click.prevent="send($event)")
-      i.ic-send
+    .chat-bar_send-btn(@click.prevent="send($event)", :class="{'__active': !!txtMsg}")
+      i.ic-send-plane
 
-  chat-menu(v-if="isAdmin", :menu-active.sync="menuActive")
+  chat-menu(v-if="isAdmin")
 
 </template>
 
-<script>
+<script type="text/babel">
   import {
-    currentLead,
-    currentChat,
-    currentChatMember,
-  } from 'vuex/getters';
+          getId,
+    getCurrentMember,
+    getStatus,
+    getShowMenu
+  } from 'vuex/getters/chat.js';
+
   import {
-    createChatMsg,
-    setLeadStatus,
-  } from "vuex/actions";
+    createMessage,
+    setShowMenu,
+    setStatus
+  } from "vuex/actions/chat.js";
 
   import * as service from "services/message";
   import * as leads from "services/leads";
@@ -33,64 +36,74 @@ div
   import ChatMenu from './chat-menu.vue';
 
   export default{
-    data: () => ({
-      menuActive: false,
-      txtMsg: "",
-      saveScrollPos: 0,
-    }),
-
+    data(){
+      return {
+        txtMsg: "",
+      };
+    },
     vuex: {
       actions: {
-        createChatMsg,
-        setLeadStatus,
+        createMessage,
+        setShowMenu,
+        setStatus,
       },
       getters: {
-        currentLead,
-        currentChat,
-        currentChatMember,
+        getId,
+        getCurrentMember,
+        getShowMenu,
+        getStatus
       }
     },
 
     computed: {
-      isAdmin: function() {
-        if (!this.currentChatMember) {
+      isAdmin() {
+        if (!this.getCurrentMember) {
           return false;
         }
-        if (this.currentChatMember.role === leads.USER_ROLES.SUPPLIER.key
-          || this.currentChatMember.role === leads.USER_ROLES.SELLER.key
-          || this.currentChatMember.role === leads.USER_ROLES.SUPER_SELLER.key) {
-          return true;
-        }
-        return false;
+        return !!(this.getCurrentMember.role === leads.USER_ROLES.SUPPLIER.key
+        || this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
+        || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key);
+
       },
     },
 
     methods: {
-      send (event) {
+      send ( event ) {
+
         this.$els.inputMsg.focus();
-        event.preventDefault();
+        //event.preventDefault(); ??? Вроде как @keydown.enter.prevent
 
-        var _txtMsg = this.txtMsg.trim();
-        this.txtMsg = "";
-        if (!_txtMsg.length) return;
+        const txtMsg = this.txtMsg.trim();
 
-        this.createChatMsg(this.currentChat.id, _txtMsg, "text/plain")
-        .then( () => {
+        if ( !txtMsg.length ) return;
 
-          this.$nextTick(this.goToBottom);
+        const promise = this.createMessage( this.getId, txtMsg, "text/plain" );
 
-          if (this.currentLead.status === leads.STATUSES.NEW.key
-            && this.currentChatMember.role === leads.USER_ROLES.CUSTOMER.key) {
-            this.setLeadStatus(this.currentLead.id, 'PROGRESS');
+        promise.then( () => {
+          if (
+            this.getStatus === leads.STATUSES.NEW.key &&
+            this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key
+          ) {
+            this.setStatus( 'PROGRESS' );
           }
+          this.txtMsg = "";
+        } );
 
-        }).catch( error => {
-          alert(error)
+        promise.catch( error => {
+          console.log( error );
+        } );
+
+      }
+    },
+
+    watch: {
+      txtMsg(msg) {
+        this.$nextTick(() => {
+          let inputMsg = this.$els.inputMsg;
+          inputMsg.style.height = (msg ? inputMsg.scrollHeight : 53)  + 'px';
         });
-      },
-      goToBottom (){
-        window.scrollTo(0, document.body.scrollHeight);
-      },
+
+      }
     },
 
     components: {

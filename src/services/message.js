@@ -1,11 +1,74 @@
-import channel from "services/channel/channel.js";
+import channel from 'services/channel/channel.js';
+import cache from 'cache/message.js';
 
 export const ERROR_CODES = {
     NOT_EXISTS: 1,
+    FORBIDDEN: 2,
 
     // Local
     UNATHORIZED: 10
 };
+
+
+/**
+ * History messages of chat
+ * @param  {number} conversation_id
+ * @param  {number} from_message_id
+ * @param  {number} limit
+ *
+ * RESOLVE
+ * [
+ *   {
+ *     "conversation_id": 1,
+ *     "user_id": 1379,
+ *     "parts": [
+ *       {
+ *         "content": "Товар в наличии?",
+ *         "mime_type": "text/plain"
+ *       }
+ *     ],
+ *     "user": {
+ *        "id": 6,
+ *        "user_id": 1379,
+ *        "name": "happierall"
+ *      }
+ *     "created_at": 1460910536,
+ *     "id": 2
+ *   },
+ * ]
+ *
+ * REJECT (one of ERROR_CODES) {NOT_EXISTS, UNATHORIZED}
+ */
+
+export function find( conversation_id, from_message_id, limit = 12) {
+
+  if ( cache.has( conversation_id, from_message_id ) ) {
+
+    return cache.find( conversation_id, from_message_id, limit );
+    
+  }
+  
+  return new Promise( (resolve, reject) => {
+
+    channel.req("search", "message", { conversation_id, from_message_id, limit })
+    .then( data => {
+      if (!data.response_map.error) {
+
+        resolve(data.response_map.messages);
+
+        cache.addOldMessage(conversation_id, data.response_map.messages);
+        
+      } else if (data.response_map.error.code === ERROR_CODES.FORBIDDEN) {
+        reject(data.response_map.error);
+      }
+    }).catch( error => {
+      if (error.log_map.code_key === '403') {
+        reject(ERROR_CODES.UNATHORIZED);
+      }
+    });
+
+  });
+}
 
 
 /**
@@ -51,7 +114,7 @@ export const ERROR_CODES = {
  *
  * REJECT (one of ERROR_CODES) {UNATHORIZED, NOT_EXISTS}
  */
-export function create(conversation_id, text, mime_type) {
+export function create(conversation_id, text, mime_type = 'text/plain') {
 
   return new Promise( (resolve, reject) => {
     channel.req("create", "message", { conversation_id, text, mime_type })
@@ -98,6 +161,25 @@ export function update(conversation_id, message_id) {
     });
 }
 
+export function getCountUnread() {
+  return channel
+    .req('count_unread', 'message')
+    .then(data => {
+      if (data.error && data.error.code === ERROR_CODES.NOT_EXISTS) {
+        throw ERROR_CODES.NOT_EXISTS;
+      } else {
+        return data.response_map.count;
+      }
+    })
+    .catch(err => {
+      if (err.log_map.code_key === '403') {
+        throw ERROR_CODES.UNATHORIZED;
+      } else if (err.log_map.code_key === '400') {
+        throw ERROR_CODES.NOT_EXISTS;
+      }
+    });
+}
+
 /**
  * Listen when msg notify received
  * @param  {function} handler    call it func when fired event
@@ -106,14 +188,14 @@ export function onMsg(handler) {
   channel.on('RETRIEVED', 'message', handler);
 }
 
-export function removeListenerMsg(handler) {
-  channel.removeListener('RETRIEVED', 'message', handler);
+export function offMsg( handler ) {
+  channel.off( 'RETRIEVED', 'message', handler );
 }
 
 export function onMsgRead(handler) {
-  channel.on('READED', 'message', handler)
+  channel.on('READED', 'message', handler);
 }
 
-export function removeListenerMsgRead(handler) {
-  channel.on('READED', 'message', handler)
+export function offMsgRead( handler ) {
+  channel.off( 'READED', 'message', handler );
 }

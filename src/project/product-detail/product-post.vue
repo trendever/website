@@ -59,21 +59,21 @@ article.product-post
     .product-post__text {{{ openedProduct.product.instagram_image_caption }}}
 </template>
 
-<script>
-  import { urlThumbnail } from 'utils'
-  import { createLead, getLead } from 'vuex/actions';
+<script type="text/babel">
+  import { urlThumbnail } from 'utils';
+  import { createLead } from 'vuex/actions/lead.js';
   import { openedProduct, isAuth } from 'vuex/getters';
   import * as leads from 'services/leads';
 
   export default {
-    data: () => ({
-      IgImageUrl: "",
-    }),
-
+    data(){
+      return {
+        IgImageUrl: "",
+      };
+    },
     vuex: {
       actions: {
         createLead,
-        getLead,
       },
       getters: {
         openedProduct,
@@ -95,17 +95,27 @@ article.product-post
       },
 
       onBuy() {
-        if (!isAuth) {
-          this.$router.go({ name: 'signup' });
+        if ( !this.isAuth ) {
+
+          this.$router.go( { name: 'signup' } );
+
         } else {
-          this.createLead(this.openedProduct.product.id).then( lead => {
-            console.log(lead);
-            this.$router.go({ name: 'chat', params: {id: lead.id} });
-          }).catch( error => {
-            if (error === leads.ERROR_CODES.UNATHORIZED) {
-              this.$router.go({ name: 'signup' });
+
+          const promise = this.createLead( this.openedProduct.product.id );
+
+          promise.then(
+            ( lead ) => {
+              if(lead !== undefined && lead !== null){
+                this.$router.go( { name: 'chat', params: { id: lead.id } } );
+              }
+            },
+            ( error ) => {
+              if ( error === leads.ERROR_CODES.UNATHORIZED ) {
+                this.$router.go( { name: 'signup' } );
+              }
             }
-          })
+          );
+
         }
       },
 

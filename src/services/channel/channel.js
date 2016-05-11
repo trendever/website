@@ -14,57 +14,59 @@ const error_codes = {
   "service/debug": 7
 };
 
-var channel = {};
+const Private = new WeakMap();
 
-(function init() {
-  var _channel = {};
-  _channel.store = new Store();
-  _channel.model = new Model(_channel.store);
-  _channel.controller = new Controller(_channel.model, _channel.store);
+class Channel {
+  constructor() {
 
-  // New channel short interface
-  channel.req = function(action_str, data_type,
-    request_map, trans_map) {
+    const store      = new Store();
+    const model      = new Model( store );
+    const controller = new Controller( model, store );
 
-    if (!request_map) {
-      request_map = {};
-    }
-    if (!trans_map) {
-      trans_map = {};
-    }
-    if (store.state.user.isAuth) {
+    Private.set( this, { model, controller } );
+
+    this.req = this.req.bind( this );
+    this.on  = this.on.bind( this );
+    this.off = this.off.bind( this );
+
+  }
+
+  req( action_str, data_type, request_map = {}, trans_map = {} ) {
+    const { model } = Private.get( this );
+    if ( store.state.user.isAuth ) {
       trans_map.token = store.state.user.token;
     }
-
-    return new Promise((resolve, reject) => {
-      _channel.model.request(
-        action_str, data_type, [],
-        request_map, trans_map,
-        function(data) {
-          // ToDo: update if after refactoring protocol
-          if (!data.log_list[0]) {
-            alert("Please return log_list with 1 log");
+    return new Promise( ( resolve, reject ) => {
+        model.request(
+          action_str,
+          data_type,
+          [],
+          request_map,
+          trans_map,
+          function( data ) {
+            // ToDo: update if after refactoring protocol
+            if ( !data.log_list[ 0 ] ) {
+              alert( "Please return log_list with 1 log" );
+            }
+            data.log_map = data.log_list[ 0 ];
+            if ( data.log_map.level_int === error_codes.err ) {
+              reject( data );
+            } else {
+              resolve( data );
+            }
           }
-          data.log_map = data.log_list[0];
-          if (data.log_map.level_int === error_codes.err) {
-            reject(data);
-          } else {
-            resolve(data);
-          }
-        });
-    });
-  };
-  channel.on = function(action_str, data_type, handler_func) {
-    _channel.controller.addRoute(action_str, data_type, handler_func);
-  };
+        );
+      }
+    );
+  }
+  on( action_str, data_type, handler_func ) {
+    Private.get( this ).controller.addRoute( action_str, data_type, handler_func );
+  }
+  off( action_str, data_type, handler_func ) {
+    Private.get( this ).controller.removeRoute( action_str, data_type, handler_func );
+  }
+}
 
-  channel.removeListener = function(action_str, data_type, handler_func) {
-    _channel.controller.removeRoute(action_str, data_type, handler_func);
-  };
-
-  // ToDo: delete it after refactoring API to new API
-  // Legacy interface.
-  window.channel = _channel;
+export default (function init() {
+  return new Channel();
 })();
-
-export default channel;

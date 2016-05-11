@@ -1,43 +1,43 @@
 <style src="./styles/chat-bar.pcss"></style>
 <template lang="jade">
-
 div
-  menu-component(v-if="menuActive && !statusMenuActive")
+  menu-component(v-if="getShowMenu && !getShowStatusMenu")
     div(slot="items")
       //-.menu_i
         .menu_i_t Отправить условия доставки
       //-.menu_i
         .menu_i_t Отправить условия оплаты
 
-      .menu_i(v-if="isAdmin",
-              @click="callCustomer()")
+      .menu_i(v-if="isAdmin", @click="callCustomer()")
         .menu_i_t Позвать покупателя в чат
 
-      .menu_i(v-if="canCallSupplier",
-              @click="callSupplier()")
+      .menu_i(v-if="canCallSupplier", @click="callSupplier()")
         .menu_i_t Позвать магазин в чат
 
-      .menu_i(v-if="isAdmin",
-              @click="statusMenuActive=true")
+      .menu_i(v-if="isAdmin", @click="setShowStatusMenu(true)")
         .menu_i_t Изменить статус заказа
 
       //-.menu_i
         .menu_i_t Отправить фото
 
-      .menu_i(@click="menuActive=false")
+      .menu_i(@click="setShowMenu(false)")
         .menu_i_t.__txt-green Отмена
 
-  chat-menu-status(
-  v-if="statusMenuActive",
-  :status-menu-active.sync="statusMenuActive")
+  chat-menu-status( v-if="getShowStatusMenu")
 
 </template>
 
 <script>
   import {
-    currentChatMember,
-    currentLead,
-  } from 'vuex/getters';
+    getCurrentMember,
+    getId,
+    getShowMenu,
+    getShowStatusMenu,
+  } from 'vuex/getters/chat.js';
+  import {
+    setShowMenu,
+    setShowStatusMenu
+  } from 'vuex/actions/chat.js';
   import * as leads from 'services/leads';
   import * as service from 'services/chat';
 
@@ -45,50 +45,41 @@ div
   import ChatMenuStatus from './chat-menu-status.vue';
 
   export default{
-    data: () => ({
-      statusMenuActive: false,
-    }),
-
-    props: {
-      menuActive: {
-        type: Boolean,
-        required: true,
-      }
-    },
-
     vuex: {
+      actions: {
+        setShowMenu,
+        setShowStatusMenu,
+      },
       getters: {
-        currentChatMember,
-        currentLead,
+        getCurrentMember,
+        getId,
+        getShowMenu,
+        getShowStatusMenu,
       }
     },
 
     methods: {
-      callCustomer: function() {
-        service.callCustomer(this.currentLead.id);
-        this.menuActive = false;
+      callCustomer() {
+        service.callCustomer(this.getId);
+        this.setShowMenu(false);
       },
-      callSupplier: function() {
-        service.callSupplier(this.currentLead.id);
-        this.menuActive = false;
+      callSupplier() {
+        service.callSupplier(this.getId);
+        this.setShowMenu(false);
       },
     },
 
     computed: {
-      isAdmin: function() {
-        if (this.currentChatMember.role === leads.USER_ROLES.SUPPLIER.key
-          || this.currentChatMember.role === leads.USER_ROLES.SELLER.key
-          || this.currentChatMember.role === leads.USER_ROLES.SUPER_SELLER.key) {
-          return true;
-        }
-        return false;
+      isAdmin() {
+        return !!(this.getCurrentMember.role === leads.USER_ROLES.SUPPLIER.key
+        || this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
+        || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key);
+
       },
-      canCallSupplier: function() {
-        if (this.currentChatMember.role === leads.USER_ROLES.SELLER.key
-          || this.currentChatMember.role === leads.USER_ROLES.SUPER_SELLER.key) {
-          return true;
-        }
-        return false;
+      canCallSupplier() {
+        return !!(this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
+        || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key);
+
       }
     },
 

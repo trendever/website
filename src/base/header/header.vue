@@ -1,6 +1,6 @@
 <style src="./header.pcss"></style>
 <template lang="jade">
-.section.header.u-fixed(v-if="is_visible")
+.section.header.u-fixed(v-show="is_visible")
   .section__content.header__content
     .header__arrow(@click="leftBtnAction" v-if="leftBtnShow")
       i.header__arrow__ic.ic-arrow-left(
@@ -20,7 +20,7 @@
         a.header__menu-link(href="#") Выйти
 </template>
 
-<script>
+<script type="text/babel">
 import listen from 'event-listener';
 
 export default {
@@ -88,14 +88,13 @@ export default {
     // Because function work only in motion.
     this.toggleHeaderOnScroll();
 
-    this.scrollEvent = listen(window, 'scroll', this.toggleHeaderOnScroll.bind(this))
+    this.scrollEvent = listen(window, 'optimizedScroll', this.toggleHeaderOnScroll.bind(this))
   },
   methods: {
     leftBtnAction() {
       if (this.show_on_elem) {
         let scrollY = window.pageYOffset || document.documentElement.scrollTop;
-        let elemY = this.showOnEl.offsetTop;
-        if (scrollY - elemY >= 0) {
+        if (scrollY - this.showOnEl.offsetTop >= 0) {
 
           if (this.scrollToElement) {
             window.body.scrollTop = document.getElementById(this.scrollToElement).offsetTop;

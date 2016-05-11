@@ -2,44 +2,45 @@
 <template lang="jade">
 div
   .chat-cnt
-    chat-header(:notify-count='chatNotifyCount')
+    chat-header(:notify-count='conversationNotifyCount')
     .section.top.bottom
-      .chat.section__content
+      .chat.section__content(v-el:message-list)
         .chat_messages
-          template(v-for="msg in messages")
+          template(v-for="msg in getMessages", track-by="$index")
 
             //- chat-msg-date
 
             chat-msg-product(
               v-if="msg.parts[0].mime_type === 'text/json'",
-              :msg="msg",
-              :last-read-message-id="lastReadMessageId")
+              :msg="msg")
 
             chat-msg(
               v-if="msg.parts[0].mime_type === 'text/plain'",
-              :msg="msg",
-              :last-read-message-id="lastReadMessageId")
+              :msg="msg")
 
       chat-bar
 </template>
 
 <script type="text/babel">
+  import listen from 'event-listener';
   import {
-    getChat,
-    getLead,
-    setOpenedChat,
-    setMessageRead
-  } from 'vuex/actions';
-
+          setConversation,
+          loadMessage,
+          receiveMessage,
+          updateMembers,
+          closeConversation,
+          applyStatus
+  } from 'vuex/actions/chat.js';
   import {
-    currentChat,
-    currentChatMember,
-    chatNotifyCount,
-  } from "vuex/getters";
+          getMessages,
+          conversationNotifyCount,
+          getId,
+          getCurrentMember,
+  } from 'vuex/getters/chat.js';
+  import { clearNotify } from 'vuex/actions/lead.js';
 
-  import store from 'vuex/store';
-  import * as service from 'services/chat';
   import * as messages from 'services/message';
+  import * as leads from 'services/leads';
 
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgDate from './chat-msg-date.vue';
@@ -48,121 +49,109 @@ div
   import ChatHeader from './chat-header.vue';
 
   export default {
+    created() {
+      messages.onMsg(this.onMessage);
+      messages.onMsgRead(this.onMessageReaded);
+    },
+    ready() {
+      this.onStatus = this.onStatus.bind(this);
+      leads.onChangeStatus(this.onStatus);
+      this.onScroll();
+    },
+    beforeDestroy() {
+      leads.removeStatusListener(this.onStatus);
+      this.offScroll();
+      messages.offMsg(this.onMessage);
+      messages.offMsgRead(this.onMessageReaded);
+      this.closeConversation();
+    },
     route: {
-      // ToDo temp getting chat by lead. Igor will add get chat by lead_id
       data({to: {params: { id }}}) {
-
-        this.getLead({lead_id: +id}).then( lead => {
-
-          this.getChat(lead.chat.id).then( () => {
-            this.setOpenedChat(lead.chat.id);
-            this.updateLastMessageId();
-            this.$nextTick(this.goToBottom);
-          }).catch( error => {
-            this.$router.go({name: '404'});
-          });
-
-        });
-
+        this.setConversation( +id ).then(
+          () => {
+            this.clearNotify( +id );
+            this.$nextTick( this.goToBottom );
+          },
+          () => {
+            this.$router.go( { name: 'home' } );
+          }
+        );
       },
     },
-
     vuex: {
       actions: {
-        getChat,
-        getLead,
-        setOpenedChat,
-        setMessageRead
+        setConversation,
+        loadMessage,
+        receiveMessage,
+        updateMembers,
+        closeConversation,
+        applyStatus,
+        clearNotify
       },
-
       getters: {
-        currentChat,
-        currentChatMember,
-        chatNotifyCount,
-      }
-    },
-
-    created() {
-      messages.onMsg(this.onMsg);
-      messages.onMsgRead(this.onMsgRead);
-    },
-
-    computed: {
-      messages() {
-        return this.currentChat ? this.currentChat.messages : [];
+        getMessages,
+        conversationNotifyCount,
+        getId,
+        getCurrentMember,
       },
-
-      lastReadMessageId() {
-        let ids = this.currentChat.members
-          .filter(member => member.user_id !== this.currentChatMember.user_id)
-          .map(member => member.last_message_id)
-          .sort((a, b) => b - a);
-
-        // max last message id of all members except current,
-        // i.e. if someone except current user read message it'll marked as read
-        return ids[0]
-      }
     },
-
-    beforeDestroy() {
-      messages.removeListenerMsg(this.onMsg);
-      messages.removeListenerMsgRead(this.onMsgRead);
-    },
-
     methods: {
-      goToBottom(){
-        window.scrollTo(0, document.body.scrollHeight);
+      onStatus({response_map: {lead}})  {
+        this.applyStatus(lead.status);
       },
-
-      onMsg({response_map: {chat}}){
-        let isCurrentChat = this.currentChat && chat.id === this.currentChat.id;
-
-        if (isCurrentChat) {
-          this.$nextTick(this.goToBottom);
-        }
+      onScroll(){
+        this.scrollListener = listen( window, 'scroll', this.scrollHandler.bind( this ) );
       },
-
-      onMsgRead({response_map: {chat, message_id, user_id}}) {
-        let isCurrentChat = this.currentChat && chat.id === this.currentChat.id;
-        let isNotCurrentUser = user_id !== this.currentChatMember.user_id;
-
-        if (isCurrentChat && isNotCurrentUser) {
-          let {id, members} = chat;
-          let member = members.find(member => member.user_id === user_id);
-
-          member.last_message_id = message_id; // fix not updated last_message_id
-
-          this.setMessageRead({id, members});
-        }
+      offScroll(){
+        this.scrollListener.remove();
       },
-
-      updateLastMessageId() {
-        let count = this.messages.length;
-
-        if(count) {
-          let msg = this.messages[count - 1];
-          let isNotCurrentUserMessage = this.currentChatMember.user_id !== msg.user.user_id;
-          let isNotLastMessage = this.currentChatMember.last_message_id !== msg.id;
-
-          if(isNotCurrentUserMessage && isNotLastMessage) {
-            messages.update(msg.conversation_id, msg.id);
+      onMessage( { response_map: { chat, messages } } ){
+        const promise = this.receiveMessage( chat, messages );
+        promise.then( () => {
+          this.$nextTick( this.goToBottom );
+        } );
+        promise.catch( ( error ) => {
+          console.log( error );
+        } );
+      },
+      onMessageReaded({response_map: {chat, user_id}}){
+        this.updateMembers(user_id, chat);
+      },
+      scrollHandler(){
+        let needUpdate = false;
+        if ( !needUpdate ) {
+          const marginTop = 50;
+          if ( window.scrollY <= marginTop ) {
+            needUpdate         = true;
+            const listElement  = this.$els.messageList;
+            const heightBefore = listElement.scrollHeight;
+            this.loadMessage().then( ( messages ) => {
+              this.$nextTick( () => {
+                if ( messages !== null ) {
+                  window.scrollTo( 0, listElement.scrollHeight - heightBefore );
+                }
+              } );
+            } );
           }
         }
-      }
+        if ( needUpdate ) {
+          this.offScroll();
+          setTimeout( () => {
+            needUpdate = false;
+            this.onScroll();
+          }, 300 );
+        }
+      },
+      goToBottom(){
+        window.scrollTo(0, this.$els.messageList.scrollHeight);
+      },
     },
-
     components: {
       ChatHeader,
       ChatBar,
       ChatMsg,
       ChatMsgProduct,
       ChatMsgDate,
-    },
-
-    watch: {
-      messages() {
-        this.updateLastMessageId()
-      }
     }
   }
 </script>
