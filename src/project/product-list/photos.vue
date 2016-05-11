@@ -15,10 +15,15 @@
     template(v-for="product in object_list")
       photo-item(:product="product")
 
-  .photos__more-wrap(v-if="showMoreWrapper")
-    .photos__more._active(
+  .photos__more-wrap
+    //.photos__more._active(
        :class="{'_active': isWaitReponseProducts}",
        @click="enableInfinityScroll(event, true)")
+        .photos__more__base-ic: span еще
+        .photos__more__anim-ic: i.ic-update
+    .photos__more(
+       :class="{'_active': isWaitReponseProducts}",
+       @click="showMore()")
         .photos__more__base-ic: span еще
         .photos__more__anim-ic: i.ic-update
 
@@ -31,11 +36,11 @@
 
 <script type="text/babel">
     import listen from 'event-listener';
+    import store from 'vuex/store';
     import photoItem from './photo-item.vue';
     import {
       getPartProducts,
       getMoreProducts,
-      enableInfinityProducts,
       setColumnNumber,
       } from 'vuex/actions';
     import {
@@ -47,24 +52,21 @@
       getColumnNumber,
       } from 'vuex/getters';
 
-    const LIMIT_TOVAR = 12;
+    const PRODUCTS_PER_PAGE = 9;
 
     export default {
       ready(){
-        if (this.getColumnNumber === 0) {
+        if (!this.getColumnNumber) {
           let columnNumber = 3;
           if( document.body.offsetWidth <= 750) {
             columnNumber = 2;
           }
           this.setColumnNumber(columnNumber);
         }
-        this.loadProducts();
       },
       data: () => ({
         showBillEmpty: false,
-        showMoreWrapper: true,
         tag_list: [],
-        need_clear_objects_list: false,
         search: '',
         scrollEvent: null,
       }),
@@ -72,10 +74,12 @@
       activate(done) {
         if (this.isInfinityProducts) {
           this.enableInfinityScroll();
-          done();
-          return;
+          // done();
         }
-        this.getPartProducts({});
+        // window.body.scrollTop = 1000;
+        if (!this.object_list.length) {
+          this.getPartProducts({limit: PRODUCTS_PER_PAGE});
+        }
         done();
       },
 
@@ -98,34 +102,35 @@
           getPartProducts,
           getMoreProducts,
           setColumnNumber,
-          // enableInfinityProducts,
         }
       },
       methods: {
         enableInfinityScroll(e, show_more) {
           var self = this;
           // Add event for infinity scroll
-          this.scrollEvent = listen(window, 'scroll', function(){
+          this.scrollEvent = listen(window, 'optimizedScroll', function(){
             var pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
             var full_scroll = self.$els.photosList.offsetHeight;
             var diff_scroll = full_scroll - pos_scroll;
 
-            if (diff_scroll < 1500 && !self.isWaitReponseProducts) {
-                self.showMore()
+            if (diff_scroll < 2500 && !self.isWaitReponseProducts) {
+              self.showMore()
             }
           });
         },
-        showMore(callback = null, call) {
+        showMore() {
+          let last_product = this.object_list[this.object_list.length-1];
+
           let settings = {
-            offset: this.$get('need_clear_objects_list') ? 0 : this.$get('object_list.length'),
-            limit: LIMIT_TOVAR,
+            from_id: last_product ? last_product.id : null,
+            limit: PRODUCTS_PER_PAGE,
             type: "more"
           };
 
-          mixpanel.track("Show More Products", { // mixpanel - не понимаю откуда это берётся.
-            offset: settings.offset,
-            view: `${ this.getColumnNumber }columns`,
-          }); //TODO Что это такое?
+          // mixpanel.track("Show More Products", {
+          //   offset: settings.offset,
+          //   view: `${ this.getColumnNumber }columns`,
+          // });
 
           Object.assign(settings, this.getSearchOptions());
 
@@ -147,7 +152,7 @@
           return options;
         },
         loadProducts() {
-          this.$nextTick(() => this.getPartProducts(this.getSearchOptions()))
+          // this.$nextTick(() => this.getPartProducts(this.getSearchOptions()))
         }
       },
       watch: {

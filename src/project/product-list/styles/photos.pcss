@@ -11,7 +11,6 @@
       padding-bottom: 46px;
 
       flex-wrap: wrap;
-      justify-content: space-between;
     }
     &link {
       display: inline-block;
@@ -39,8 +38,6 @@
 
         display: flex;
 
-        transition: $btn-transition;
-
         color: $color__green;
 
         justify-content: center;
@@ -59,7 +56,7 @@
 
         display: flex;
 
-        transition: $btn-transition;
+        padding-left: 14px;
 
         color: $color__green;
 
@@ -74,7 +71,7 @@
       }
       // mods
       &._active &__anim-ic {
-        animation-name: rotate;
+        animation-name: rotate_anim_icon;
         animation-duration: 2s;
         animation-timing-function: linear;
         animation-iteration-count: infinite;
@@ -115,14 +112,18 @@
 
 .photo__title-column {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
+
   width: 50%;
   height: 40px;
+
   cursor: pointer;
+
   color: $color__gray-light;
+
   font-size: 36px;
 
+  align-items: center;
+  justify-content: center;
   &.active {
     .photo__title-column-long{
       background-color: $color__gray-dark;
@@ -131,22 +132,24 @@
       background-color: $color__gray-dark;
     }
   }
-
   &-long{
     width: 40px;
     height: 20px;
     margin-right: 10px;
+
     background-color: $color__gray-light;
   }
   &-short {
-    size: 20px;
     margin-right: 10px;
+
     background-color: $color__gray-light;
+
+    size: 20px;
   }
 
 }
 
-@keyframes rotate {
+@keyframes rotate_anim_icon {
   from {
     transform: rotate(0deg);
   }
