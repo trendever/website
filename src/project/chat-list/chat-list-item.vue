@@ -4,11 +4,11 @@
   .chat-list_i_photo
     img(:src="lead.products && lead.products[0].instagram_image_url")
   .chat-list_i_body
-    .body_t {{ getTitle() }}
-    .body_status ({{ getStatus() | lowercase }})
+    .body_t {{ title }}
+    .body_status ({{ status | lowercase }})
     .body_last-msg
       | {{ recentMessage }}
-  .chat-list_i_date {{ getDatetime() }}
+  .chat-list_i_date {{ dataTime }}
   .chat-list_i_notify(v-if="unreadCount")
     span {{ unreadCount }}
 
@@ -42,14 +42,18 @@
         return this.getNotifyCountList[ this.lead.id ];
       },
       recentMessage(){
+
         return this.getLastMessage[ this.lead.id ];
-      }
-    },
-    methods: {
-      getStatus() {
+      },
+      status(){
         return service.getStatus(this.lead.status).name
       },
-      getTitle() {
+      dataTime(){
+        if(this.lead.chat !== null){
+          return formatDatetime(this.lead.chat.recent_message.created_at);
+        }
+      },
+      title(){
         if(this.lead.chat !== null){
           if (this.lead.user_role === service.USER_ROLES.CUSTOMER.key
                   || this.lead.user_role === service.USER_ROLES.SUPPLIER.key) {
@@ -57,12 +61,7 @@
           }
           return `${this.lead.chat.members.find(({user_id}) => this.lead.customer.id === user_id).name} (${this.lead.shop.instagram_username})`
         }
-     },
-      getDatetime() {
-        if(this.lead.chat !== null){
-          return formatDatetime(this.lead.chat.recent_message.created_at);
-        }
-      },
+      }
     },
   }
 </script>

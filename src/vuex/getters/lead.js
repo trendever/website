@@ -42,17 +42,24 @@ export const getLastMessage = ( state ) => {
 	const leads = getLeads(state);
 
 	for (let i = leads.length; i; i--) {
-		const {id, chat:{recent_message:{parts}}} = leads[i - 1];
-		const mime = parts[ 0 ].mime_type;
-		const data = parts[ 0 ].content;
-
-		if (mime === 'text/plain') {
-			messages[id] = data;
+		const { id, chat } = leads[ i - 1 ];
+		
+		if ( chat !== null ) {
+			
+			const mime = chat.recent_message.parts[ 0 ].mime_type;
+			const data = chat.recent_message.parts[ 0 ].content;
+			
+			if ( mime === 'text/plain' ) {
+				messages[ id ] = data;
+			}
+			if ( mime === 'text/json' ) {
+				messages[ id ] = `товар: ${JSON.parse( data ).Title}`;
+			}
+			
+		} else {
+			messages[ id ] = '';
 		}
-		if (mime === 'text/json') {
-			messages[id] = `товар: ${JSON.parse(data).Title}`;
-		}
-
+		
 	}
 
 	return messages;

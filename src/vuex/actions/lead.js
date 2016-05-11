@@ -1,8 +1,7 @@
 import * as leads from 'services/leads.js';
 import * as types from '../mutationTypes/lead';
 import * as message from 'services/message';
-
-import { getOlderLead } from '../getters/lead';
+import { getOlderLead, getLeads } from '../getters/lead';
 
 export const createLead = ( { dispatch }, product_id ) => {
 	return leads.create( product_id ).then(
@@ -56,6 +55,9 @@ export const applyStatus = ( { dispatch }, lead_id, status_key ) => {
 	dispatch( types.APPLY_STATUS, lead_id, status_key );
 };
 
+export const setLastMessages = ( { dispatch }, chat, messages ) => {
+	dispatch( types.SET_LAST_MESSAGE, chat, messages );
+};
 
 export const initGlobalNotify = ( { dispatch } ) => {
 	return message.getCountUnread().then(
@@ -68,16 +70,34 @@ export const initGlobalNotify = ( { dispatch } ) => {
 	);
 };
 
-export const incNotify = ( { dispatch, state }, lead_id ) => {
-	if ( state.conversation.id !== lead_id ) {
-		dispatch( types.INC_NOTIFY, lead_id );
+export const incNotify = ( { dispatch, state }, conversation_id ) => {
+
+	let lead = getLeads( state ).find( ( { chat } ) => {
+
+		if ( chat !== null ) {
+
+			return chat.id === conversation_id;
+			
+		}
+
+	} );
+
+	if ( state.conversation.lead !== null ) {
+
+		if ( state.conversation.id !== conversation_id ) {
+
+			dispatch( types.INC_NOTIFY, (lead !== undefined) ? lead.id : null );
+
+		}
+
+	} else {
+
+		dispatch( types.INC_NOTIFY, (lead !== undefined) ? lead.id : null );
+
 	}
+
 };
 
 export const clearNotify = ( { dispatch }, lead_id ) => {
 	dispatch( types.CLEAR_NOTIFY, lead_id );
-};
-
-export const setLastMessages = ( { dispatch }, chat, messages ) => {
-	dispatch(types.SET_LAST_MESSAGE, chat, messages);
 };
