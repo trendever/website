@@ -16,8 +16,21 @@ const state = {
   tab: "customer",
   pending: false,
   notify_count: {},
-  global_notify_count: 0
+  global_notify_count: 0,
 };
+
+function checkUnreadMessage( items ) {
+  for ( let i = items.length; i; i-- ) {
+    const { chat, id } = items[ i - 1 ];
+    if ( chat !== null ) {
+      if ( chat.hasOwnProperty( 'unread_count' ) ) {
+        state.notify_count[ id ] = chat.unread_count;
+      } else {
+        state.notify_count[ id ] = 0;
+      }
+    }
+  }
+}
 
 // mutations
 const mutations = {
@@ -31,23 +44,17 @@ const mutations = {
       state.customer = state.customer.concat( customer );
       checkUnreadMessage( customer );
     }
-    function checkUnreadMessage( items ) {
-      for ( let i = items.length; i; i-- ) {
-        const { chat, id } = items[ i - 1 ];
-        if ( chat !== null ) {
-          if ( chat.hasOwnProperty( 'unread_count' ) ) {
-            state.notify_count[ id ] = chat.unread_count;
-          } else {
-            state.notify_count[ id ] = 0;
-          }
-        }
-      }
+  },
+  [SET_TAB] ( state, tab = 'customer', leads ) {
+    state.tab          = tab;
+    state.notify_count = {};
+    
+    if ( leads !== undefined ) {
+      state[ tab ] = leads;
+      checkUnreadMessage( leads );
     }
   },
-  [SET_TAB] ( state, tab = 'customer' ) {
-    state.tab = tab;
-  },
-  [APPLY_STATUS] ( { seller, customer }, lead_id, status_key = 0 ) {
+  [APPLY_STATUS] ( { seller, customer }, lead, status_key = 0 ) {
     const leads = { seller, customer };
     let kik = false;
     for ( const key in leads ) {
@@ -56,9 +63,10 @@ const mutations = {
           break;
         }
         for ( let i = leads[key].length; i; i-- ) {
-          const lead = leads[key][ i - 1 ];
-          if ( lead.id === lead_id ) {
-            lead.status = status_key;
+          const oldLead = leads[ key ][ i - 1 ];
+          if ( oldLead.id === lead.id ) {
+            oldLead.status     = status_key;
+            oldLead.updated_at = lead.updated_at;
             kik = true;
             break;
           }
@@ -92,18 +100,22 @@ const mutations = {
     state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 0 } );
   },
   [SET_LAST_MESSAGE] ( state, conversation, messages ) {
-    const lead = state[ state.tab ].find( ( { chat } ) => {
 
-      if(chat !== null){
-        return chat.id === conversation.id;
+    state[ state.tab ].forEach( ( lead, index ) => {
+
+      if ( lead.chat !== null ) {
+
+        if ( conversation.id === lead.chat.id ) {
+
+          lead.chat.recent_message.parts = messages[ 0 ].parts;
+          lead.updated_at                = messages[ 0 ].created_at * 1e9;
+          state[ state.tab ].$set( index, lead );
+
+        }
+
       }
 
     } );
-    if ( lead !== undefined ) {
-      if ( lead.chat !== null ) {
-        lead.chat.recent_message.parts = messages[ 0 ].parts;
-      }
-    }
   }
 };
 

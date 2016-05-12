@@ -24,7 +24,7 @@ export const loadLeads = ( { dispatch, state:{ leads:{ tab, seller, customer } }
 
 	if ( (seller.length + customer.length) === 0 ) {
 
-		return leads.find( 6, 0 ).then(
+		return leads.find( 12 ).then(
 			( { customer, seller } ) => {
 				dispatch( types.RECEIVE, { customer, seller } );
 			},
@@ -48,11 +48,22 @@ export const loadLeads = ( { dispatch, state:{ leads:{ tab, seller, customer } }
 };
 
 export const setTab = ( { dispatch }, tab ) => {
-	dispatch( types.SET_TAB, tab );
+	
+	return leads.find( 12, null, tab ).then(
+		( {leads} ) => {
+						
+			dispatch( types.SET_TAB, tab, leads );
+			
+		},
+		( error ) => {
+			console.log( error );
+		}
+	);
+	
 };
 
-export const applyStatus = ( { dispatch }, lead_id, status_key ) => {
-	dispatch( types.APPLY_STATUS, lead_id, status_key );
+export const applyStatus = ( { dispatch }, lead, status_key ) => {
+	dispatch( types.APPLY_STATUS, lead, status_key );
 };
 
 export const setLastMessages = ( { dispatch }, chat, messages ) => {
