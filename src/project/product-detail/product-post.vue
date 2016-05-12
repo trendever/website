@@ -13,8 +13,7 @@ article.product-post
         span.product-post__user-name {{ openedProduct.product.mentioned.instagram_username}}
   main.product-post__body
     img.product-post__image(
-      :src="IgImageUrl",
-      width="750px")
+      :src="IgImageUrl")
   section.product-post__bottom-photo(v-for="item in openedProduct.product.items")
     .product-post__price-container
       template(v-if="item.discount_price")
@@ -112,7 +111,7 @@ article.product-post
         if (!this.openedProduct.cachedImages) return false
         var url = this.openedProduct.product.instagram_image_url;
         // load thumbnail first. Because it's caching 80% of cases
-        this.IgImageUrl = urlThumbnail(url, 306);
+        this.IgImageUrl = urlThumbnail(url, 480);
 
         this.loadFullImage();
       },
@@ -120,8 +119,9 @@ article.product-post
       loadFullImage() {
         // Load and set full image.
         var img = new Image();
-        img.load(this.openedProduct.product.instagram_image_url, null, null, () => {
-          this.IgImageUrl = urlThumbnail(this.openedProduct.product.instagram_image_url);
+        var url = this.openedProduct.product.instagram_image_url;
+        img.load(urlThumbnail(url), null, null, () => {
+          this.IgImageUrl = urlThumbnail(url);
         });
       }
     },
