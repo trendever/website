@@ -1,119 +1,126 @@
 .profile-header {
   position: relative;
+
   height: 130px;
+
   text-align: left;
 
   &__logo {
     position: absolute 30px * * 30px;
 
     &__img {
-      size: 80px;
       cursor: pointer;
+
       border-radius: 50%;
+
+      size: 80px;
     }
   }
-
   &__center {
     display: flex;
-    justify-content: center;
 
+    justify-content: center;
     &__ic {
       padding: 30px 10px;
 
-      font-size: 40px;
+      transition: $btn-transition;
+      text-decoration: none;
+
       color: $color__white;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 
-      transition: $btn-transition;
+      font-size: 40px;
 
       &:hover {
         cursor: pointer;
+
         color: color($color__white shade(20%));
       }
     }
   }
-
   &__menu {
     position: absolute;
-    right: 0;
     top: 0px;
-    height: 100px;
+    right: 0;
+
     width: 250px;
+    height: 100px;
 
-    &- {
+    &-btn {
+      display: block;
 
-      &btn {
-        display: block;
-        cursor: pointer;
+      margin-top: 30px;
+
+      cursor: pointer;
+      text-align: right;
+
+      //justify-content: flex-end;
+      &-label {
+        display: inline-block;
+
         text-align: right;
-        margin-top: 30px;
-        //justify-content: flex-end;
-
-        &-label {
-          display: inline-block;
-
-          font-size: 31px;
-          line-height: 100px;
-          text-align: right;
-          text-decoration: none;
-
-          color: white;
-        }
-        &-icon {
-          display: inline-block;
-          padding: 0 30px;
-
-          &:before {
-            content: '';
-            display: block;
-
-            size: 30px 4px;
-            padding: 5px 0;
-            border-top: 4px solid white;
-            border-bottom: 4px solid white;
-
-            background: white;
-            background-clip: content-box;
-          }
-        }
-      }
-
-      &links {
-        position: absolute 0 0 * *;
-
-        display: none;
-
-        .profile-header__menu:hover & {
-          display: block;
-        }
-      }
-      @media (--mobile) {
-        &link{
-          line-height: 100px;
-        }
-      }
-      &link {
-        display: block;
-
-        width: 750px;
-        padding: 0 30px;
-
-        font-size: 31px;
-        line-height: 50px;
-        text-align: center;
         text-decoration: none;
 
         color: white;
-        background: color(black a(.75));
-        border-bottom: 1px solid color(white a(.5));
 
-        &.active{
-          border-bottom-width: 0;
-          background: color(black a(.9));
+        font-size: 31px;
+        line-height: 100px;
+      }
+      &-icon {
+        display: inline-block;
+
+        padding: 0 30px;
+
+        &:before {
+          display: block;
+
+          padding: 5px 0;
+
+          content: '';
+
+          border-top: 4px solid white;
+          border-bottom: 4px solid white;
+          background: white;
+          background-clip: content-box;
+
+          size: 30px 4px;
         }
-        &:last-of-type{
-          border-bottom-width: 0;
-        }
+      }
+    }
+    &-links {
+      position: absolute 0 0 * *;
+
+      display: none;
+
+      .profile-header__menu:hover & {
+        display: block;
+      }
+    }
+    &-link {
+      display: block;
+
+      width: 750px;
+      padding: 0 30px;
+
+      text-align: center;
+      text-decoration: none;
+
+      color: white;
+      border-bottom: 1px solid color(white a(.2));
+      background: color(black a(.75));
+
+      font-size: 24px;
+      line-height: 50px;
+
+      @media (--mobile) {
+        font-size: 31px;
+        line-height: 100px;
+      }
+      &:hover {
+        background: color(black a(.9));
+      }
+      &:last-of-type {
+        border-bottom-width: 0;
       }
     }
   }

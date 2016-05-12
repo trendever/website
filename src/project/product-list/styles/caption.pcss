@@ -1,6 +1,9 @@
 @import "base/vars/vars.pcss";
 
 .caption {
+  display: flex;
+  flex-direction: column;
+
   margin: 50px 40px 50px;
 
   text-align: center;
@@ -9,30 +12,42 @@
 
   font-size: $font__title;
 
-  display: flex;
-  flex-direction: column;
   align-items: center;
-
   &__play{
-    size: 150px;
-    border: 2px solid $color__green;
-    border-radius: 150px;
+    display: flex;
+
     margin-top: 40px;
     margin-bottom: 20px;
-    display: flex;
+
+    transition: $btn-transition;
+
+    border: 2px solid $color__green;
+    border-radius: 150px;
+
+    size: 150px;
     align-items: center;
     justify-content: center;
     &:after{
-      border: 22px solid transparent;
-      border-left: 40px solid #399;
-      content: "";
       margin-right: -30px;
 
+      content: "";
+      transition: $btn-transition;
+
+      border: 22px solid transparent;
+      border-left: 40px solid #399;
+    }
+    &:hover {
+      border-color: $color__gray-dark;
+
+      &:after {
+        border-left-color: $color__gray-dark;
+      }
     }
   }
   &__description{
-    font-size: $font__subtitle;
     color: $color__gray;
+
+    font-size: $font__subtitle;
   }
   &__subtitle{
     margin-top: 40px;

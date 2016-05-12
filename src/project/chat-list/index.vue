@@ -5,16 +5,16 @@ div
     header-component(:title="getTitle", :left-btn-show="false")
       .header__nav(slot="content" v-if="getIsTab")
         .header__nav__i.header__text(
-        :class="{_active: getTab === 'customer'}", @click="setTab('customer')")
+        :class="{_active: getTab === 'customer'}", @click="setTab('customer');")
           | Покупаю
         .header__nav__i.header__text(
-        :class="{_active: getTab === 'seller'}", @click="setTab('seller')")
+        :class="{_active: getTab === 'seller'}", @click="setTab('seller');")
           | Продаю
 
     .section.top.bottom
       .section__content
         .chat-list(v-el:chat-list)
-          template(v-for="lead in getLeads")
+          template(v-for="lead in getLeads| orderBy 'updated_at' -1")
             chat-list-item(:lead="lead")
 
     navbar-component(current="chat")
@@ -63,7 +63,7 @@ div
         setLastMessages
       }
     },
-    created() {
+    created(){
       this.onStatus = this.onStatus.bind(this);
       leads.onChangeStatus(this.onStatus);
       messages.onMsg(this.onMsg);
@@ -72,14 +72,14 @@ div
       this.loadLeads();
       this.onScroll();
     },
-    beforeDestroy() {
+    beforeDestroy(){
       leads.removeStatusListener(this.onStatus);
       messages.offMsg(this.onMsg);
       this.offScroll();
     },
     methods: {
-      onStatus({response_map: {lead}}) {
-        this.applyStatus(lead.id, lead.status);
+      onStatus({response_map: {lead}}){
+        this.applyStatus(lead, lead.status);
       },
       onScroll(){
         this.scrollListener = listen( window, 'scroll', this.scrollHandler.bind( this ) );
@@ -97,8 +97,10 @@ div
             needUpdate = true;
             this.offScroll();
             this.loadLeads().then(() => {
-              needUpdate = false;
-              this.onScroll();
+              setTimeout(() => {
+                needUpdate = false;
+                this.onScroll();
+              }, 500);
             });
           }
         }
@@ -106,6 +108,11 @@ div
       onMsg({response_map: {chat, messages}}){
         this.setLastMessages(chat, messages);
       },
+    },
+    watch:{
+      getTab(){
+        window.scrollTo(0, 0);
+      }
     },
     components: {
       HeaderComponent,

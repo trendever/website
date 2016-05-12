@@ -6,12 +6,15 @@
 
   import * as messages from 'services/message';
   import { initGlobalNotify, incNotify } from 'vuex/actions/lead.js';
+  import { isAuth } from 'vuex/getters';
 
   export default {
     ready() {
-      this.initGlobalNotify().then(() => {
-        messages.onMsg( this.onMessage.bind( this ) );
-      });
+      if (this.isAuth) {
+        this.initGlobalNotify().then(() => {
+          messages.onMsg( this.onMessage.bind( this ) );
+        });
+      }
     },
     beforeDestroy(){
       messages.offMsg( this.onMessage.bind( this ) );
@@ -25,6 +28,9 @@
       actions: {
         incNotify,
         initGlobalNotify,
+      },
+      getters: {
+        isAuth,
       }
     },
   }

@@ -91,13 +91,20 @@ export const loadUser = ({ dispatch }) => {
  * @param  {string} options.q              search in title
  * @param  {number|array} options.tags     products have tags
  */
-export const getPartProducts = ({ dispatch }, { limit, offset, q, tags }) => {
+export const getPartProducts = ({ dispatch, state }, { limit, offset, q, tags }) => {
   dispatch(types.WAIT_PRODUCTS_RESPONSE);
 
   products.find({ limit, offset, q, tags })
   .then( data => {
     dispatch(types.RECEIVE_PRODUCTS_RESPONSE);
     dispatch(types.RECEIVE_PRODUCTS, data.object_list);
+    if (data.object_list) {
+      if (!state.products.hasMore) {
+        dispatch(types.ENABLE_HAS_MORE_PRODUCTS);
+      }
+    } else {
+      dispatch(types.DISABLE_HAS_MORE_PRODUCTS);
+    }
   });
 };
 
@@ -108,10 +115,10 @@ export const getPartProducts = ({ dispatch }, { limit, offset, q, tags }) => {
  * @param  {string} options.q              search in title
  * @param  {number|array} options.tags     products have tags
  */
-export const getMoreProducts = ({ dispatch }, { limit, offset, from_id, direction,
-                                                q, tags,
-                                                user_id, user_instagram_name,
-                                                shop_id, shop_instagram_name }) => {
+export const getMoreProducts = ({ dispatch, state }, { limit, offset, from_id, direction,
+                                                       q, tags,
+                                                       user_id, user_instagram_name,
+                                                       shop_id, shop_instagram_name }) => {
   dispatch(types.WAIT_PRODUCTS_RESPONSE);
 
   products.find({ limit, offset, from_id, direction,
@@ -120,10 +127,17 @@ export const getMoreProducts = ({ dispatch }, { limit, offset, from_id, directio
                   shop_id, shop_instagram_name })
   .then( data => {
     dispatch(types.RECEIVE_PRODUCTS_RESPONSE);
-    dispatch(types.RECEIVE_MORE_PRODUCTS, data.object_list);
+    if (data.object_list) {
+      dispatch(types.RECEIVE_MORE_PRODUCTS, data.object_list);
+
+      if (!state.products.hasMore) {
+        dispatch(types.ENABLE_HAS_MORE_PRODUCTS);
+      }
+    } else {
+      dispatch(types.DISABLE_HAS_MORE_PRODUCTS);
+    }
   });
 };
-
 
 /**
  * Open product by id
@@ -180,10 +194,10 @@ export const setSearchValue = ({dispatch}, value) => {
 
 export const loadTags = ({dispatch, state}) => {
   let tags = state.search.selectedTags.map(tag => tag.id);
-
+  dispatch(types.RECEIVE_TAGS, []);
   tagsService
     .find({tags})
-    .then(tags => dispatch('RECEIVE_TAGS', tags));
+    .then(tags => dispatch(types.RECEIVE_TAGS, tags));
 };
 
 export const selectTag = (store, tag) => {

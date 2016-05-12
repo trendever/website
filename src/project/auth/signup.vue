@@ -98,9 +98,9 @@ div
 
     route: {
       canActivate({abort}){
-        if (isAuth(store.state)) {
-          abort();
-        }
+        // if (isAuth(store.state)) {
+        //   abort();
+        // }
         return true;
       }
     },

@@ -65,7 +65,7 @@ export function getStorage() {
 export function CookieStorage() {
   this.setItem = (name, value) => setCookie(`${prefix}${name}`, value, 1095);
   this.getItem = (name) => getCookie(`${prefix}${name}`);
-  this.removeItem = removeCookie;
+  this.removeItem = (name) => removeCookie(`${prefix}${name}`);
 }
 
 export function setSubscribeEmail(flag) {
@@ -105,6 +105,12 @@ export function saveToken(token) {
  */
 export function saveUser(data) {
   Storage.setItem('user', data);
+  return getProfile(true);
+}
+
+export function removeToken() {
+  Storage.removeItem('token');
+  Storage.removeItem('user');
   return getProfile(true);
 }
 

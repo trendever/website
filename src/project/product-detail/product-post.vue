@@ -8,22 +8,21 @@ article.product-post
      width="72" height="72")
 
     .product-post__info
-      .product-post__title {{ openedProduct.product.supplier.instagram_username }}
+      .product-post__info__supplier {{ openedProduct.product.supplier.instagram_username }}
       .product-post__added добавлено&nbsp;
         span.product-post__user-name {{ openedProduct.product.mentioned.instagram_username}}
   main.product-post__body
     img.product-post__image(
-      :src="IgImageUrl",
-      width="750px",
-      height="750px")
+      :src="IgImageUrl")
   section.product-post__bottom-photo(v-for="item in openedProduct.product.items")
     .product-post__price-container
       template(v-if="item.discount_price")
+        .product-post__price-discount(v-if="item.price") {{ item.price | curency_spaces }}
         .product-post__price-main(v-if="item.discount_price") {{ item.discount_price | curency_spaces }} #[i.ic-currency-rub]
-        .product-post__price-discount(v-if="item.price") {{ item.price | curency_spaces }} #[i.ic-currency-rub]
       template(v-if="price(item)")
         .product-post__price-main(v-if="item.price") {{ item.price | curency_spaces }} #[i.ic-currency-rub]
-      template(v-if="zeroPrice(item)") цена по #[br] запросу
+      template(v-if="zeroPrice(item)")
+        .product-post__price-main ? #[i.ic-currency-rub]
     .product-post__title.__bottom {{{ item.name }}}
 
   footer.product-post__footer
@@ -45,17 +44,6 @@ article.product-post
 
 
   .product-post__description
-    .product-post__description-icon: .i-description
-
-    //- .product-post__tags
-      a.product-post__link(href="#") @happy
-      a.product-post__link(href="#") #beauty
-      a.product-post__link(href="#") #family
-      a.product-post__link(href="#") #счастье
-      a.product-post__link(href="#") #семья
-      a.product-post__link(href="#") #малыш
-      a.product-post__link(href="#") #путешествия
-
     .product-post__text {{{ openedProduct.product.instagram_image_caption }}}
 </template>
 
@@ -123,7 +111,7 @@ article.product-post
         if (!this.openedProduct.cachedImages) return false
         var url = this.openedProduct.product.instagram_image_url;
         // load thumbnail first. Because it's caching 80% of cases
-        this.IgImageUrl = urlThumbnail(url, 306);
+        this.IgImageUrl = urlThumbnail(url, 480);
 
         this.loadFullImage();
       },
@@ -131,8 +119,9 @@ article.product-post
       loadFullImage() {
         // Load and set full image.
         var img = new Image();
-        img.load(this.openedProduct.product.instagram_image_url, null, null, () => {
-          this.IgImageUrl = urlThumbnail(this.openedProduct.product.instagram_image_url);
+        var url = this.openedProduct.product.instagram_image_url;
+        img.load(urlThumbnail(url), null, null, () => {
+          this.IgImageUrl = urlThumbnail(url);
         });
       }
     },
