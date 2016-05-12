@@ -11,7 +11,7 @@
 
         input.search-input__input(
           v-el:input,
-          @keyup="search() | debounce 500",
+          @keydown="search()",
           :value='searchValue',
           @click="onFocusInput",
           type='text',
