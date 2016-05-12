@@ -15,7 +15,7 @@
     template(v-for="product in object_list")
       photo-item(:product="product")
 
-  .photos__more-wrap(v-if="object_list")
+  .photos__more-wrap(v-if="hasMoreProducts")
     .photos__more(
        :class="{'_active': isWaitReponseProducts}",
        @click="enableInfinityScroll(event, true)")
@@ -45,6 +45,7 @@
       products,
       isWaitReponseProducts,
       isInfinityProducts,
+      hasMoreProducts,
       getColumnNumber,
       } from 'vuex/getters';
 
@@ -90,6 +91,7 @@
           object_list: products,
           isWaitReponseProducts,
           isInfinityProducts,
+          hasMoreProducts,
           getColumnNumber,
         },
         actions: {
@@ -114,6 +116,8 @@
           });
         },
         showMore() {
+          if (!this.hasMoreProducts){ return; }
+
           let last_product = this.object_list[this.object_list.length-1];
 
           let settings = {

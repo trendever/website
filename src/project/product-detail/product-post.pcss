@@ -1,7 +1,7 @@
 @import "base/vars/vars.pcss";
 
 .product-post {
-  margin: 0 14px;
+  margin: 0 24px;
 
   // elements
   &__ {
@@ -25,10 +25,12 @@
 
       flex: 1;
       & > div {
-        height: 36px;
+        height: 31px;
 
-        line-height: 36px;
-        // margin-bottom: 5px;
+        line-height: 31px;
+      }
+      &__supplier {
+        color: #595959;
       }
     }
     &bottom-photo {
@@ -51,26 +53,26 @@
       display: inline-block;
       overflow: hidden;
 
-      width: 75%;
+      width: 71%;
 
       cursor: default;
 
       color: $color__gray-dark;
 
       font-size: 28px;
-      // -webkit-box-orient: vertical;
-      // display: -webkit-box;
-      // -webkit-line-clamp: 2;
     }
     &price-container {
+      display: flex;
       float: right;
 
       text-align: right;
+
+      align-items: flex-end;
     }
     &price-main {
       color: $color__gray-dark;
 
-      font-size: 120%;
+      font-size: 28px;
       line-height: 1;
 
       &.rub {
@@ -78,14 +80,18 @@
       }
     }
     &price-discount {
+      margin-right: 5px;
+
       text-decoration: line-through;
 
       color: $color__gray;
 
-      font-size: 80%;
+      font-size: 22px;
       line-height: 1;
 
-      &.rub {
+      i {
+        text-decoration: none;
+
         background-size: 16px;
       }
     }
@@ -101,8 +107,8 @@
     }
     // main
     &body {
-      margin-bottom: 13px;
-      margin-left: -14px;
+      margin-bottom: 16px;
+      margin-left: -24px;
     }
     &image {
       display: block;
@@ -154,15 +160,46 @@
     &description {
       position: relative;
 
-      padding: 22px;
+      padding: 16px 24px;
 
-      border: 1px solid #bfbfbf;
-      border-radius: 30px;
+      border-radius: 10px;
+      background: #f0f0f0;
 
       font-size: 28px;
 
-      &-icon {
-        position: absolute 4px * * -17px;
+      &:before {
+        position: absolute;
+        z-index: -1;
+        top: 3px;
+
+        height: 20px;
+
+        content: "";
+      }
+      &:after {
+        position: absolute;
+        z-index: -1;
+        top: -14px;
+
+        height: 20px;
+
+        content: "";
+      }
+      &:before {
+        left: -12px;
+
+        border-left: 13px solid #f0f0f0;
+        border-bottom-left-radius: 15px 20px;
+        background: #f0f0f0;
+      }
+      &:after {
+        left: -13px;
+
+        width: 14px;
+        height: 24px;
+
+        border-bottom-left-radius: 25px 20px;
+        background: white;
       }
     }
     &link {

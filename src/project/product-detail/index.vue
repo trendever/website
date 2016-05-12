@@ -7,7 +7,6 @@ div
         .wall__post
           post-component
       footer-component
-      navbar-component(current="feed")
 </template>
 
 <style>
@@ -23,7 +22,6 @@ div
   import {openedProduct} from 'vuex/getters';
 
   import HeaderComponent from 'base/header/header.vue';
-  import NavbarComponent from 'base/navbar/navbar.vue';
   import PostComponent from './product-post.vue';
   import FooterComponent from 'base/footer/footer.vue';
 
@@ -35,7 +33,7 @@ div
     },
     computed: {
      title(){
-       return "Код товара " + this.openedProduct.product.code
+       return "Тренд " + this.openedProduct.product.code
      }
     },
     vuex: {
@@ -55,7 +53,6 @@ div
     },
     components: {
       HeaderComponent,
-      NavbarComponent,
       PostComponent,
       FooterComponent
     }
