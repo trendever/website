@@ -1,7 +1,7 @@
 <style src="./styles/caption.pcss"></style>
 <template lang="jade">
 .caption(v-if="!isAuth") Как это работает?
-  .caption__play
+  a.caption__play(v-link="{name: 'why'}")
   .caption__description (смотрите видео)
   .caption__subtitle Ежедневные шопинг тренды
 </template>

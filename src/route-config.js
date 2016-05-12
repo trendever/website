@@ -75,6 +75,7 @@ export function configRouter(router) {
 
     '/logout': {
       name: 'logout',
+      auth: true,
       component: require('project/logout/index.vue')
     },
 
