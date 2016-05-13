@@ -1,7 +1,7 @@
-window.__debugMode = !/[a-z0-9_\-]+\.[a-z0-9_\-]+\.[a-z0-9_\-]+\.[a-z0-9_\-]+/i.test(location.host) || location.hostname === "localhost";
+window.__debugMode = /[a-z0-9_\-]*[\.]*[a-z0-9_\-]*\.[a-z0-9_\-]+\.[a-z0-9_\-]+/i.test(location.host) || location.hostname === "localhost";
 var _ua = navigator.userAgent.toLowerCase();
 
-var browser = {
+window.browser = {
     version: (_ua.match(/.+(?:me|ox|on|rv|it|era|opr|ie)[\/: ]([\d.]+)/) || [0, '0'])[1],
     opera: (/opera/i.test(_ua) || /opr/i.test(_ua)),
     msie: (/msie/i.test(_ua) && !/opera/i.test(_ua) || /trident\//i.test(_ua)),
