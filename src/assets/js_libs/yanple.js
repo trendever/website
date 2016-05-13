@@ -30,11 +30,11 @@ window.browser = {
 };
 
 function debugLog(msg) {
-    if (!__debugMode) {
+    if (!window.__debugMode) {
         return;
     }
     var args = Array.prototype.slice.call(arguments);
-    if (browser.msie || browser.mobile) {
+    if (window.browser.msie || window.browser.mobile) {
         console.log(args.join(' '));
     } else {
         console.log.apply(console, args);
