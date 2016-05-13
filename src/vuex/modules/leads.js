@@ -1,14 +1,14 @@
 import {
-  RECEIVE,
-  SET_TAB,
-  APPLY_STATUS,
-  PENDING,
-  INIT_GLOBAL_NOTIFY,
-  INC_NOTIFY,
-  CLEAR_NOTIFY,
-  SET_LAST_MESSAGE,
-  CLOSE_LIST
-} from '../mutationTypes/lead';
+  LEAD_RECEIVE,
+  LEAD_SET_TAB,
+  LEAD_APPLY_STATUS,
+  LEAD_PENDING,
+  LEAD_INIT_GLOBAL_NOTIFY,
+  LEAD_INC_NOTIFY,
+  LEAD_CLEAR_NOTIFY,
+  LEAD_SET_LAST_MESSAGE,
+  LEAD_CLOSE
+} from '../mutation-types';
 
 // initial state
 const state = {
@@ -36,7 +36,7 @@ function checkUnreadMessage( items ) {
 
 // mutations
 const mutations = {
-  [CLOSE_LIST] ( state ){
+  [LEAD_CLOSE] ( state ){
     state.seller              = [];
     state.customer            = [];
     state.tab                 = "customer";
@@ -45,7 +45,7 @@ const mutations = {
     state.global_notify_count = 0;
     state.done = false;
   },
-  [RECEIVE] ( state, { seller, customer } ) {
+  [LEAD_RECEIVE] ( state, { seller, customer } ) {
     if(seller !== undefined){
       state.seller   = state.seller.concat( seller );
       checkUnreadMessage( seller );
@@ -56,7 +56,7 @@ const mutations = {
     }
     state.done = true;
   },
-  [SET_TAB] ( state, tab = 'customer', leads ) {
+  [LEAD_SET_TAB] ( state, tab = 'customer', leads ) {
     state.tab          = tab;
     state.notify_count = {};
     
@@ -65,7 +65,7 @@ const mutations = {
       checkUnreadMessage( leads );
     }
   },
-  [APPLY_STATUS] ( { seller, customer }, lead, status_key = 0 ) {
+  [LEAD_APPLY_STATUS] ( { seller, customer }, lead, status_key = 0 ) {
     const leads = { seller, customer };
     let kik = false;
     for ( const key in leads ) {
@@ -85,13 +85,13 @@ const mutations = {
       }
     }
   },
-  [PENDING] ( state, pending = false ) {
+  [LEAD_PENDING] ( state, pending = false ) {
     state.pending = pending;
   },
-  [INIT_GLOBAL_NOTIFY] ( state, count ) {
+  [LEAD_INIT_GLOBAL_NOTIFY] ( state, count ) {
     state.global_notify_count = count;
   },
-  [INC_NOTIFY] ( state, lead_id ) {
+  [LEAD_INC_NOTIFY] ( state, lead_id ) {
 
     if ( lead_id !== null ) {
       if ( !state.notify_count.hasOwnProperty( lead_id ) ) {
@@ -104,13 +104,13 @@ const mutations = {
     state.global_notify_count++;
 
   },
-  [CLEAR_NOTIFY] ( state, lead_id ) {
+  [LEAD_CLEAR_NOTIFY] ( state, lead_id ) {
     if ( state.notify_count.hasOwnProperty( lead_id ) ) {
       state.global_notify_count -= state.notify_count[ lead_id ];
     }
     state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 0 } );
   },
-  [SET_LAST_MESSAGE] ( state, conversation, messages ) {
+  [LEAD_SET_LAST_MESSAGE] ( state, conversation, messages ) {
 
     state[ state.tab ].forEach( ( lead, index ) => {
 

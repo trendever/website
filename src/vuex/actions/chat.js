@@ -1,13 +1,13 @@
 import {
-	RECEIVE_MESSAGE,
-	LOAD_MESSAGE,
-	SET_CONVERSATION,
-	UPDATE_CHAT_MEMBERS,
-	SET_SHOW_MENU,
-	SET_SHOW_STATUS_MENU,
-	CLOSE_CONVERSATION,
-	SET_STATUS
-} from '../mutationTypes/conversation';
+	CONVERSATION_SET,
+	CONVERSATION_RECEIVE_MESSAGE,
+	CONVERSATION_LOAD_MESSAGE,
+	CONVERSATION_CLOSE,
+	CONVERSATION_UPDATE_MEMBERS,
+	CONVERSATION_SET_SHOW_MENU,
+	CONVERSATION_SET_SHOW_STATUS_MENU,
+	CONVERSATION_SET_STATUS
+} from '../mutation-types';
 import * as messageService from 'services/message.js';
 import * as leads from 'services/leads.js';
 import * as chat from 'services/chat.js';
@@ -46,7 +46,7 @@ export const setConversation = ( { dispatch }, lead_id ) => {
 
 		messageCache.init( conversation_id, messages );
 		
-		dispatch( SET_CONVERSATION, conversation_id, members, messages, lead );
+		dispatch( CONVERSATION_SET, conversation_id, members, messages, lead );
 
 		return messageService.update(conversation_id, lastMessageId);
 
@@ -72,7 +72,7 @@ export const loadMessage = ( { dispatch, state:{ conversation:{ id, messages } }
 
 				if ( messages !== null ) {
 
-					dispatch( LOAD_MESSAGE, messages );
+					dispatch( CONVERSATION_LOAD_MESSAGE, messages );
 
 					resolve( messages );
 
@@ -123,7 +123,7 @@ export const receiveMessage = ( { dispatch, state }, chat, messages ) => {
 
 					messageCache.addReceiveMessage( msg.conversation_id, messages );
 
-					dispatch( RECEIVE_MESSAGE, messages );
+					dispatch( CONVERSATION_RECEIVE_MESSAGE, messages );
 
 					resolve();
 
@@ -148,20 +148,20 @@ export const updateMembers = ( { dispatch, state }, user_id, chat ) => {
 
 	if ( isCurrentChat && isNotCurrentUser ) {
 
-		dispatch( UPDATE_CHAT_MEMBERS, chat.members );
+		dispatch( CONVERSATION_UPDATE_MEMBERS, chat.members );
 
 	}
 
 };
 
 export const applyStatus = ({ dispatch }, status) => {
-	dispatch(SET_STATUS, status);
+	dispatch(CONVERSATION_SET_STATUS, status);
 };
 
 export const setStatus = ( { dispatch, state:{conversation:{lead:{id}}} }, status ) => {
 	return new Promise((resolve, reject) => {
 		leads.setEvent(id, status).then( ({status}) => {
-			dispatch(SET_STATUS, status);
+			dispatch(CONVERSATION_SET_STATUS, status);
 			resolve(status);
 		}).catch( error => {
 			reject(error);
@@ -170,13 +170,13 @@ export const setStatus = ( { dispatch, state:{conversation:{lead:{id}}} }, statu
 };
 
 export const setShowMenu = ( { dispatch }, showMenu ) => {
-	dispatch(SET_SHOW_MENU, showMenu);
+	dispatch(CONVERSATION_SET_SHOW_MENU, showMenu);
 };
 
 export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
-	dispatch(SET_SHOW_STATUS_MENU, showStatusMenu);
+	dispatch(CONVERSATION_SET_SHOW_STATUS_MENU, showStatusMenu);
 };
 
 export const closeConversation = ({ dispatch }) => {
-	dispatch(CLOSE_CONVERSATION);
+	dispatch(CONVERSATION_CLOSE);
 };

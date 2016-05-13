@@ -1,13 +1,13 @@
 import {
-  SET_CONVERSATION,
-  RECEIVE_MESSAGE,
-  LOAD_MESSAGE,
-  UPDATE_CHAT_MEMBERS,
-  SET_SHOW_STATUS_MENU,
-  SET_SHOW_MENU,
-  CLOSE_CONVERSATION,
-  SET_STATUS
-} from '../mutationTypes/conversation';
+  CONVERSATION_SET,
+  CONVERSATION_RECEIVE_MESSAGE,
+  CONVERSATION_LOAD_MESSAGE,
+  CONVERSATION_CLOSE,
+  CONVERSATION_UPDATE_MEMBERS,
+  CONVERSATION_SET_SHOW_MENU,
+  CONVERSATION_SET_SHOW_STATUS_MENU,
+  CONVERSATION_SET_STATUS
+} from '../mutation-types';
 
 // initial state
 const state = {
@@ -21,29 +21,29 @@ const state = {
 
 // mutations
 const mutations = {
-  [SET_CONVERSATION] ( state, id, members, messages, lead ) {
+  [CONVERSATION_SET] ( state, id, members, messages, lead ) {
     state.id       = id;
     state.members  = members;
     state.messages = messages;
     state.lead = lead;
   },
-  [RECEIVE_MESSAGE] ( state, messages ) {
+  [CONVERSATION_RECEIVE_MESSAGE] ( state, messages ) {
     state.messages = state.messages.concat( messages );
   },
-  [LOAD_MESSAGE] ( state, messages ) {
+  [CONVERSATION_LOAD_MESSAGE] ( state, messages ) {
     state.messages = messages.concat( state.messages );
   },
-  [UPDATE_CHAT_MEMBERS] (state, members) {
+  [CONVERSATION_UPDATE_MEMBERS] (state, members) {
     state.members = members;
   },
-  [SET_SHOW_STATUS_MENU] ( state, showStatusMenu ) {
+  [CONVERSATION_SET_SHOW_STATUS_MENU] ( state, showStatusMenu ) {
     state.showStatusMenu = showStatusMenu;
   },
-  [SET_SHOW_MENU] ( state, showMenu ) {
+  [CONVERSATION_SET_SHOW_MENU] ( state, showMenu ) {
     state.showMenu = showMenu;
     state.showStatusMenu = false;
   },
-  [CLOSE_CONVERSATION] ( state ) {
+  [CONVERSATION_CLOSE] ( state ) {
     state.id= null;
     state.members= null;
     state.messages= null;
@@ -56,7 +56,7 @@ const mutations = {
    * по этому используется одна переменная для описания обоих мутаций.
    * Мутации разные в диалоге лид это объект, а в списке лидов/диалогов это массив.
    * */
-  [SET_STATUS] ( state, status ) {
+  [CONVERSATION_SET_STATUS] ( state, status ) {
     state.lead.status = status;
     state.showStatusMenu = false;
   },

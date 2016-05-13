@@ -74,7 +74,6 @@ export default class {
   // }
 
   onMessage(ctx) {
-    console.log(ctx);
 
     if (__debugMode && ctx.trans_map.trans_id) {
       var createdAt = ctx.trans_map.createdAt;
