@@ -93,6 +93,12 @@ class LeadCache {
 
 		}
 
+		if ( limit !== null && role === null && from_updated_at === null ) {
+
+			return this._findLimit( limit );
+
+		}
+
 		if ( role === null && limit === null && from_updated_at === null ) {
 			
 			return this._findAll();
@@ -196,6 +202,33 @@ class LeadCache {
 			return {
 				leads: result
 			};
+
+		}
+
+		return null;
+
+	}
+
+	_findLimit( limit ) {
+
+		const result = {
+			seller: [],
+			customer: [],
+		};
+
+		this._iterator( ( lead, key ) => {
+
+			if ( result[ key ].length < limit ) {
+
+				result[ key ].push( lead );
+
+			}
+
+		} );
+
+		if ( result.seller.length > 0 || result.customer.length > 0 ) {
+
+			return result;
 
 		}
 

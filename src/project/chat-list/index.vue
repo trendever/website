@@ -37,7 +37,8 @@ div
     applyStatus,
     setTab,
     loadLeads,
-    setLastMessages
+    setLastMessages,
+    closedList
   } from 'vuex/actions/lead.js';
 
   import * as leads from 'services/leads';
@@ -60,7 +61,8 @@ div
         applyStatus,
         setTab,
         loadLeads,
-        setLastMessages
+        setLastMessages,
+        closedList
       }
     },
     created(){
@@ -76,6 +78,7 @@ div
       leads.removeStatusListener(this.onStatus);
       messages.offMsg(this.onMsg);
       this.offScroll();
+      this.closedList();
     },
     methods: {
       onStatus({response_map: {lead}}){

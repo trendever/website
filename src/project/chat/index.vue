@@ -49,15 +49,6 @@ div
   import ChatHeader from './chat-header.vue';
 
   export default {
-    created() {
-      messages.onMsg(this.onMessage);
-      messages.onMsgRead(this.onMessageReaded);
-    },
-    ready() {
-      this.onStatus = this.onStatus.bind(this);
-      leads.onChangeStatus(this.onStatus);
-      this.onScroll();
-    },
     beforeDestroy() {
       leads.removeStatusListener(this.onStatus);
       this.offScroll();
@@ -70,7 +61,14 @@ div
         this.setConversation( +id ).then(
           () => {
             this.clearNotify( +id );
-            this.$nextTick( this.goToBottom );
+            this.$nextTick( () => {
+              this.onStatus = this.onStatus.bind(this);
+              leads.onChangeStatus(this.onStatus);
+              this.onScroll();
+              this.goToBottom();
+              messages.onMsg(this.onMessage);
+              messages.onMsgRead(this.onMessageReaded);
+            } );
           },
           () => {
             this.$router.go( { name: 'home' } );
@@ -118,6 +116,7 @@ div
         this.updateMembers(user_id, chat);
       },
       scrollHandler(){
+
         let needUpdate = false;
 
         if ( !needUpdate ) {

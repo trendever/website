@@ -48,7 +48,7 @@ export const setConversation = ( { dispatch }, lead_id ) => {
 		
 		dispatch( SET_CONVERSATION, conversation_id, members, messages, lead );
 
-			return messageService.update(conversation_id, lastMessageId);
+		return messageService.update(conversation_id, lastMessageId);
 
 	} );
 
@@ -62,19 +62,43 @@ export const setConversation = ( { dispatch }, lead_id ) => {
 
 export const loadMessage = ( { dispatch, state:{ conversation:{ id, messages } } } ) => {
 
-	const promise = messageService.find( id, messages[ 0 ].id );
+	return new Promise( ( resolve, reject ) => {
 
-	promise.then( ( messages ) => {
 		if ( messages !== null ) {
-			dispatch( LOAD_MESSAGE, messages );
+
+			const promise = messageService.find( id, messages[ 0 ].id );
+
+			promise.then( ( messages ) => {
+
+				if ( messages !== null ) {
+
+					dispatch( LOAD_MESSAGE, messages );
+
+					resolve( messages );
+
+				}
+
+			} );
+
+			promise.catch( ( error ) => {
+
+				console.warn( error );
+
+				reject( error );
+
+			} );
+
+		} else {
+
+			const error = `[ WARN ]: message can't be null`;
+
+			console.warn( error );
+
+			reject( error );
+
 		}
-	} );
 
-	promise.catch( ( error ) => {
-		console.log( error );
 	} );
-
-	return promise;
 
 };
 

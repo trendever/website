@@ -6,7 +6,8 @@ import {
   INIT_GLOBAL_NOTIFY,
   INC_NOTIFY,
   CLEAR_NOTIFY,
-  SET_LAST_MESSAGE
+  SET_LAST_MESSAGE,
+  CLOSE_LIST
 } from '../mutationTypes/lead';
 
 // initial state
@@ -34,8 +35,15 @@ function checkUnreadMessage( items ) {
 
 // mutations
 const mutations = {
+  [CLOSE_LIST] ( state ){
+    state.seller              = [];
+    state.customer            = [];
+    state.tab                 = "customer";
+    state.pending             = false;
+    state.notify_count        = {};
+    state.global_notify_count = 0;
+  },
   [RECEIVE] ( state, { seller, customer } ) {
-
     if(seller !== undefined){
       state.seller   = state.seller.concat( seller );
       checkUnreadMessage( seller );
