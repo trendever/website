@@ -40,6 +40,8 @@ if (getArg('build')) {
 }
 
 module.exports = {
+  devtool: getArg('build') ? '#source-map' : false,
+
   entry: {
     app_1: ['./src/index.js']
   },
