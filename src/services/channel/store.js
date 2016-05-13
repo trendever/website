@@ -4,7 +4,7 @@ export default class {
   constructor() {
     var yan = window.yan;
     this.sock = null;
-    this.echo_url = "http://" + yan.channel.host + ":" + yan.channel.port + "/channel";
+    this.echo_url = "https://" + yan.channel.host + "/channel";
     this.connected = false;
     this.cache = {
       requests: []

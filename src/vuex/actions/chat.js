@@ -38,7 +38,7 @@ export const setConversation = ( { dispatch }, lead_id ) => {
 		}
 
 		if ( messages === null ) {
-			throw new Error( 'При получении лида/диалога messages не должнобыть null.' );
+			Raven.captureException( new Error( 'При получении лида/диалога messages не должнобыть null.' ) );
 		}
 
 		const lastMessageId = messages[ messages.length - 1 ].id;
