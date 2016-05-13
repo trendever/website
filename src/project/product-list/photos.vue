@@ -106,8 +106,8 @@
           var self = this;
           // Add event for infinity scroll
           this.scrollEvent = listen(window, 'optimizedScroll', function(){
-            var pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
-            var full_scroll = self.$els.photosList.offsetHeight;
+            var pos_scroll  = window.pageYOffset || document.documentElement.scrollTop;
+            var full_scroll = (self.$els.photosList !== null) ? self.$els.photosList.offsetHeight : 0;
             var diff_scroll = full_scroll - pos_scroll;
 
             if (diff_scroll < 2500 && !self.isWaitReponseProducts) {

@@ -46,3 +46,10 @@ export const getLastMessageId = ({conversation, user}) => {
 	                   .sort((a, b) => b - a)[0];
 };
 export const conversationNotifyCount = state => state.notify_count;
+
+export const getInviteShop           = ( { conversation:{ lead } } ) => {
+	return lead.shop.supplier.has_email || lead.shop.supplier.has_phone;
+};
+export const getInviteCustomer       = ( { conversation:{ lead } } ) => {
+	return lead.customer.has_phone;
+};

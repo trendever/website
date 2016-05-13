@@ -8,7 +8,7 @@ div
       //-.menu_i
         .menu_i_t Отправить условия оплаты
 
-      .menu_i(v-if="isAdmin", @click="callCustomer()")
+      .menu_i(v-if="canCallCustomer", @click="callCustomer()")
         .menu_i_t Позвать покупателя в чат
 
       .menu_i(v-if="canCallSupplier", @click="callSupplier()")
@@ -33,6 +33,8 @@ div
     getId,
     getShowMenu,
     getShowStatusMenu,
+    getInviteShop,
+    getInviteCustomer,
   } from 'vuex/getters/chat.js';
   import {
     setShowMenu,
@@ -55,6 +57,8 @@ div
         getId,
         getShowMenu,
         getShowStatusMenu,
+        getInviteShop,
+        getInviteCustomer,
       }
     },
 
@@ -76,9 +80,13 @@ div
         || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key);
 
       },
+      canCallCustomer(){
+        return this.isAdmin && this.getInviteCustomer;
+      },
       canCallSupplier() {
-        return !!(this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
-        || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key);
+        return  !!(this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
+                || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key)
+                && this.getInviteShop;
 
       }
     },

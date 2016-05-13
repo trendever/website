@@ -20,6 +20,10 @@ export const createLead = ( { dispatch }, product_id ) => {
 		} );
 };
 
+export const closedList = ({dispatch}) => {
+		dispatch(types.CLOSE_LIST);
+};
+
 export const loadLeads = ( { dispatch, state:{ leads:{ tab, seller, customer } }, state } ) => {
 
 	if ( (seller.length + customer.length) === 0 ) {
