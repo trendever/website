@@ -28,6 +28,12 @@ export const isEmptyLeads = ( state ) => {
 
 };
 
+export const isDone = ( state ) => {
+	
+	return state.leads.done;
+	
+};
+
 export const getOlderLead = ( { leads:{tab,  seller, customer } } ) => {
 	const times = [];
 

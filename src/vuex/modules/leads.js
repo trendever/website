@@ -18,6 +18,7 @@ const state = {
   pending: false,
   notify_count: {},
   global_notify_count: 0,
+  done: false,
 };
 
 function checkUnreadMessage( items ) {
@@ -42,6 +43,7 @@ const mutations = {
     state.pending             = false;
     state.notify_count        = {};
     state.global_notify_count = 0;
+    state.done = false;
   },
   [RECEIVE] ( state, { seller, customer } ) {
     if(seller !== undefined){
@@ -52,6 +54,7 @@ const mutations = {
       state.customer = state.customer.concat( customer );
       checkUnreadMessage( customer );
     }
+    state.done = true;
   },
   [SET_TAB] ( state, tab = 'customer', leads ) {
     state.tab          = tab;

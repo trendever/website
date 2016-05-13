@@ -1,7 +1,7 @@
 <style src="./style.pcss"></style>
 <template lang="jade">
 div
-  .chat-list-cnt
+  .chat-list-cnt(v-if="isDone")
     header-component(:title="getTitle", :left-btn-show="false")
       .header__nav(slot="content" v-if="getIsTab")
         .header__nav__i.header__text(
@@ -30,6 +30,7 @@ div
     getIsTab,
     getTitle,
     isEmptyLeads,
+    isDone,
   } from 'vuex/getters/lead.js';
 
   import {
@@ -58,6 +59,7 @@ div
         getIsTab,
         getTitle,
         isEmptyLeads,
+        isDone,
       },
       actions: {
         applyStatus,
