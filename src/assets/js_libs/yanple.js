@@ -1,4 +1,4 @@
-var __debugMode = !/[a-z0-9_\-]+\.[a-z0-9_\-]+\.[a-z0-9_\-]+\.[a-z0-9_\-]+/i.test(location.host) || location.hostname === "localhost";
+window.__debugMode = !/[a-z0-9_\-]+\.[a-z0-9_\-]+\.[a-z0-9_\-]+\.[a-z0-9_\-]+/i.test(location.host) || location.hostname === "localhost";
 var _ua = navigator.userAgent.toLowerCase();
 
 var browser = {

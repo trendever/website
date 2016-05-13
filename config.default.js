@@ -18,6 +18,11 @@ var config = {
     open: true,
   },
 
+  raven: {
+    enabled: true,
+    url: "",
+  },
+
   /**
    * Mixpanel analytics
    * @token string - if empty, then mixpanel will disabled.
