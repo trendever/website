@@ -1,3 +1,4 @@
+/* global Raven */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueValidator from 'vue-validator';
@@ -8,6 +9,15 @@ import { configRouter } from './route-config';
 import InitFilters from './filters';
 import InitValidators from './validators';
 require('es6-promise').polyfill();
+
+// Log errors
+if (config.raven.enabled) {
+  Raven.config(config.raven.url).install();
+  window.onerror = (errorMsg, url, lineNumber, colno, error) => {
+    Raven.captureException(error);
+  };
+}
+
 
 Vue.config.debug = config.debug;
 
@@ -43,3 +53,4 @@ FastClick.attach(document.body, {});
 // Throttled events
 throttleEvent("scroll", "optimizedScroll");
 //throttleEvent("resize", "optimizedResize");
+//
