@@ -1,7 +1,15 @@
 export const getLeads     = ( state ) => {
 
-	if ( !state.leads.hasOwnProperty( state.leads.tab ) ) {
-		throw new Error( `${state.leads.tab} - Такого типа LEAD не существует.` );
+	if ( !getIsTab( state ) ) {
+
+		if ( state.leads.seller.length > 0 ) {
+
+			return state.leads.seller;
+
+		}
+
+		return state.leads.customer;
+
 	}
 
 	return state.leads[ state.leads.tab ];
@@ -9,8 +17,8 @@ export const getLeads     = ( state ) => {
 };
 
 export const getIsTab     = ( { leads } ) => {
-
-	return leads.seller.length > 0 && leads.customer.length > 0;
+	
+	return (leads.seller.length > 0) && (leads.customer.length > 0);
 
 };
 
@@ -27,10 +35,9 @@ export const getTitle     = ( state ) => {
 	if ( getIsTab( state ) ) {
 		return;
 	}
-	if ( state.leads.tab === 'seller' ) {
-		if ( getLeads( state ).length > 0 ) {
-			return "Чаты с покупателями";
-		}
+
+	if ( state.leads.seller.length > 0 ) {
+		return "Чаты с покупателями";
 	}
 
 	return "Шопинг-чаты";
