@@ -16,7 +16,7 @@ div
         .chat-list(v-el:chat-list)
           template(v-for="lead in getLeads| orderBy 'updated_at' -1")
             chat-list-item(:lead="lead")
-
+    .chat-list-cnt-is-empty(v-if="isEmptyLeads") У вас нет шопинг-чатов
     navbar-component(current="chat")
 </template>
 
@@ -29,6 +29,7 @@ div
     getPending,
     getIsTab,
     getTitle,
+    isEmptyLeads,
   } from 'vuex/getters/lead.js';
 
   import {
@@ -56,6 +57,7 @@ div
         getPending,
         getIsTab,
         getTitle,
+        isEmptyLeads,
       },
       actions: {
         applyStatus,
