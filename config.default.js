@@ -6,7 +6,7 @@ var config = {
    *
    */
   socket_server: {
-    hostname: "dev.trendever.com"
+    url: "https://dev.trendever.com/channel"
   },
   /**
    * Webserver config.
