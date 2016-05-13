@@ -1,12 +1,23 @@
+import {
+	LEAD_RECEIVE,
+	LEAD_SET_TAB,
+	LEAD_APPLY_STATUS,
+	LEAD_INIT_GLOBAL_NOTIFY,
+	LEAD_INC_NOTIFY,
+	LEAD_CLEAR_NOTIFY,
+	LEAD_SET_LAST_MESSAGE,
+	LEAD_CLOSE
+} from '../mutation-types';
+
 import * as leads from 'services/leads.js';
-import * as types from '../mutationTypes/lead';
 import * as message from 'services/message';
 import { getOlderLead, getLeads } from '../getters/lead';
 
 export const createLead = ( { dispatch }, product_id ) => {
+
 	return leads.create( product_id ).then(
 		( lead ) => {
-			dispatch( types.RECEIVE, [ lead ] );
+			dispatch( LEAD_RECEIVE, [ lead ] );
 			return lead;
 		},
 		( error ) => {
@@ -18,10 +29,11 @@ export const createLead = ( { dispatch }, product_id ) => {
 			}
 			console.log( error );
 		} );
+
 };
 
 export const closedList = ({dispatch}) => {
-		dispatch(types.CLOSE_LIST);
+		dispatch(LEAD_CLOSE);
 };
 
 export const loadLeads = ( { dispatch, state:{ leads:{ tab, seller, customer } }, state } ) => {
@@ -30,7 +42,7 @@ export const loadLeads = ( { dispatch, state:{ leads:{ tab, seller, customer } }
 
 		return leads.find( 12 ).then(
 			( { customer, seller } ) => {
-				dispatch( types.RECEIVE, { customer, seller } );
+				dispatch( LEAD_RECEIVE, { customer, seller } );
 			},
 			( error ) => {
 				console.log( error );
@@ -41,7 +53,7 @@ export const loadLeads = ( { dispatch, state:{ leads:{ tab, seller, customer } }
 
 		return leads.find( 6, getOlderLead( state ), tab ).then(
 			( { leads } ) => {
-				dispatch( types.RECEIVE, { [tab]: leads } );
+				dispatch( LEAD_RECEIVE, { [tab]: leads } );
 			},
 			( error ) => {
 				console.log( error );
@@ -56,7 +68,7 @@ export const setTab = ( { dispatch }, tab ) => {
 	return leads.find( 12, null, tab ).then(
 		( {leads} ) => {
 						
-			dispatch( types.SET_TAB, tab, leads );
+			dispatch( LEAD_SET_TAB, tab, leads );
 			
 		},
 		( error ) => {
@@ -67,17 +79,17 @@ export const setTab = ( { dispatch }, tab ) => {
 };
 
 export const applyStatus = ( { dispatch }, lead, status_key ) => {
-	dispatch( types.APPLY_STATUS, lead, status_key );
+	dispatch( LEAD_APPLY_STATUS, lead, status_key );
 };
 
 export const setLastMessages = ( { dispatch }, chat, messages ) => {
-	dispatch( types.SET_LAST_MESSAGE, chat, messages );
+	dispatch( LEAD_SET_LAST_MESSAGE, chat, messages );
 };
 
 export const initGlobalNotify = ( { dispatch } ) => {
 	return message.getCountUnread().then(
 		( count ) => {
-			dispatch( types.INIT_GLOBAL_NOTIFY, count );
+			dispatch( LEAD_INIT_GLOBAL_NOTIFY, count );
 		},
 		( error ) => {
 			console.log( error );
@@ -101,18 +113,18 @@ export const incNotify = ( { dispatch, state }, conversation_id ) => {
 
 		if ( state.conversation.id !== conversation_id ) {
 
-			dispatch( types.INC_NOTIFY, (lead !== undefined) ? lead.id : null );
+			dispatch( LEAD_INC_NOTIFY, (lead !== undefined) ? lead.id : null );
 
 		}
 
 	} else {
 
-		dispatch( types.INC_NOTIFY, (lead !== undefined) ? lead.id : null );
+		dispatch( LEAD_INC_NOTIFY, (lead !== undefined) ? lead.id : null );
 
 	}
 
 };
 
 export const clearNotify = ( { dispatch }, lead_id ) => {
-	dispatch( types.CLEAR_NOTIFY, lead_id );
+	dispatch( LEAD_CLEAR_NOTIFY, lead_id );
 };

@@ -34,9 +34,7 @@ class LeadCache {
 					if ( Array.isArray( leads[ key ] ) ) {
 
 						if ( leads[ key ].length > 0 ) {
-
-							console.log(leads, role);
-
+							
 							cache[ key ] = cache[ key ].concat( leads[ key ] );
 
 						}
@@ -52,8 +50,6 @@ class LeadCache {
 			if ( Array.isArray( leads.leads ) ) {
 
 				if ( leads.leads.length > 0 ) {
-
-					console.log(leads, role);
 
 					cache[ role ] = cache[ role ].concat( leads.leads );
 
