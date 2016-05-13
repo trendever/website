@@ -22,9 +22,9 @@ export const getIsTab     = ( { leads } ) => {
 
 };
 
-export const isEmptyLeads = ( state ) => {
+export const isEmptyLeads = ( { leads } ) => {
 
-	return !getIsTab( state );
+	return (leads.seller.length === 0) && (leads.customer.length === 0);
 
 };
 
