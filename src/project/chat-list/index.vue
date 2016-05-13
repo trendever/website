@@ -1,7 +1,7 @@
 <style src="./style.pcss"></style>
 <template lang="jade">
 div
-  .chat-list-cnt
+  .chat-list-cnt(v-if="isDone")
     header-component(:title="getTitle", :left-btn-show="false")
       .header__nav(slot="content" v-if="getIsTab")
         .header__nav__i.header__text(
@@ -16,7 +16,7 @@ div
         .chat-list(v-el:chat-list)
           template(v-for="lead in getLeads| orderBy 'updated_at' -1")
             chat-list-item(:lead="lead")
-
+    .chat-list-cnt-is-empty(v-if="isEmptyLeads") У вас нет шопинг-чатов
     navbar-component(current="chat")
 </template>
 
@@ -29,6 +29,8 @@ div
     getPending,
     getIsTab,
     getTitle,
+    isEmptyLeads,
+    isDone,
   } from 'vuex/getters/lead.js';
 
   import {
@@ -56,6 +58,8 @@ div
         getPending,
         getIsTab,
         getTitle,
+        isEmptyLeads,
+        isDone,
       },
       actions: {
         applyStatus,

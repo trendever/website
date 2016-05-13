@@ -1,6 +1,15 @@
 @import "base/vars/vars.pcss";
 
 .chat-list-cnt {
+  &-is-empty{
+    font-size: $font__main_text;
+    position: absolute;
+    top:50%;
+    left:50%;
+    color:$color__gray;
+    margin-left: -212px;
+    margin-top: -22px;
+  }
   .chat-list {
     &_i {
       position: relative;

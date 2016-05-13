@@ -22,6 +22,18 @@ export const getIsTab     = ( { leads } ) => {
 
 };
 
+export const isEmptyLeads = ( { leads } ) => {
+
+	return (leads.seller.length === 0) && (leads.customer.length === 0);
+
+};
+
+export const isDone = ( state ) => {
+	
+	return state.leads.done;
+	
+};
+
 export const getOlderLead = ( { leads:{tab,  seller, customer } } ) => {
 	const times = [];
 
