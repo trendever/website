@@ -8,7 +8,11 @@ export const getLeads     = ( state ) => {
 
 };
 
-export const getIsTab     = ( { leads } ) => (leads.seller.length + leads.customer.length) > 0;
+export const getIsTab     = ( { leads } ) => {
+
+	return leads.seller.length > 0 && leads.customer.length > 0;
+
+};
 
 export const getOlderLead = ( { leads:{tab,  seller, customer } } ) => {
 	const times = [];
