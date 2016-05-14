@@ -44,7 +44,7 @@ export const urlThumbnail = (url, size = null, originalWidth = null, originalHei
         source_path[2] = "s" + size + "x" + size;
       }
     }
-    return parser.protocol + "//" + parser.host + source_path.join("/");
+    return "https:" + "//" + parser.host + source_path.join("/");
 };
 
 
