@@ -1,3 +1,4 @@
+/*
 import { onMsg } from 'services/message';
 import { onChangeStatus } from 'services/leads';
 
@@ -343,3 +344,4 @@ class LeadCache {
 }
 
 export default new LeadCache();
+*/

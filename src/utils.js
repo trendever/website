@@ -22,7 +22,7 @@ export const formatPhone = (phonenum, simpleOut) => {
   }
 };
 
-export const urlThumbnail = (url, size = null) => {
+export const urlThumbnail = (url, size = null, originalWidth = null, originalHeight = null) => {
     /**
      *  Changed instagram photo url, for crop image.
      *  Supports sizes: 150, 306, 480, 640 (width=height)
@@ -30,17 +30,21 @@ export const urlThumbnail = (url, size = null) => {
      * @type {string} url
      * @type {number} size
      */
-    var parser = document.createElement('a');
+    let parser = document.createElement('a');
     parser.href = url;
 
     var source_path = parser.pathname.split('/');
     if (!size) {
       source_path.splice(2, 1);
     } else {
-      source_path[2] = "s" + size + "x" + size;
+      if (originalWidth && originalHeight) {
+        let minSide = Math.min(originalWidth, originalHeight);
+        source_path[2] = `s${size}x${size}/e35/c0.0.${minSide}.${minSide}`;
+      } else {
+        source_path[2] = "s" + size + "x" + size;
+      }
     }
-    var path = source_path.join("/");
-    return parser.protocol + "//" + parser.host + path;
+    return "https:" + "//" + parser.host + source_path.join("/");
 };
 
 

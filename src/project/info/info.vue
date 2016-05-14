@@ -41,15 +41,17 @@ div
   import trSpinner from 'base/spinner/spinner.vue'
 
   export default {
-    data: () => ({
-      showQuestion: true,
-      showThanks: false,
-      showSpinner: false,
-      mockup: '',
-      type: '',
-      email: '',
-      comment: '',
-    }),
+    data(){
+      return {
+        showQuestion: true,
+        showThanks: false,
+        showSpinner: false,
+        mockup: '',
+        type: '',
+        email: '',
+        comment: '',
+      }
+    },
     route: {
       activate() {
         var type = this.$route.params.type;
@@ -78,10 +80,9 @@ div
         var email = this.$get('email');
         var comment = this.$get('comment');
 
-        mixpanel.track("Create Question",
-                {type: type, email:email, comment:comment});
+        mixpanel.track("Create Question", {type: type, email:email, comment:comment});
 
-        createQuestion.call(this, {type, email, comment});
+        ///createQuestion.call(this, {type, email, comment});
       },
     },
     events: {

@@ -2,7 +2,7 @@
 .photo__container(class="{{ classForColumn }}")
   a.photo__link(
     v-link="{name: 'product_detail', params: {id: product.id}}")
-    img.photo__img(:src="product.instagram_image_url | url_thumbnail 480")
+    img.photo__img(:src="product.instagram_image_url | url_thumbnail 480 product.instagram_image_width product.instagram_image_height")
   .photo__description
     .photo__title {{title}}
     .photo__summ

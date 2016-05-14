@@ -1,66 +1,41 @@
-export const getLeads     = ( state ) => {
-
-	if ( !getIsTab( state ) ) {
-
-		if ( state.leads.seller.length > 0 ) {
-
-			return state.leads.seller;
-
-		}
-
-		return state.leads.customer;
-
+export const getTab = ( { leads } ) => {
+	if ( getIsTab( { leads } ) ) {
+		return leads.tab;
 	}
-
-	return state.leads[ state.leads.tab ];
-
+	if ( leads.seller.length > 0 ) {
+		return 'seller';
+	}
+	return 'customer';
 };
 
-export const getIsTab     = ( { leads } ) => {
-	
-	return (leads.seller.length > 0) && (leads.customer.length > 0);
-
+export const getLeads = ( { leads } ) => {
+	return leads[ getTab( { leads } ) ];
 };
 
-export const isEmptyLeads = ( { leads } ) => {
-
-	return (leads.seller.length === 0) && (leads.customer.length === 0);
-
-};
-
-export const isDone = ( state ) => {
-	
-	return state.leads.done;
-	
-};
-
-export const getOlderLead = ( { leads:{tab,  seller, customer } } ) => {
+export const getOlderLead = ( state ) => {
+	const leads  = getLeads( state );
 	const times = [];
-
-	const leads = { seller, customer }[tab];
 	for ( let i = leads.length; i; i-- ) {
 		times.push( leads[ i - 1 ].updated_at );
 	}
 	return Math.min.apply( Math, times );
 };
-export const getTitle     = ( state ) => {
+
+export const getIsTab = ( { leads } ) => {
+	return (leads.seller.length > 0) && (leads.customer.length > 0);
+};
+
+export const getTitle = ( state ) => {
 	if ( getIsTab( state ) ) {
 		return;
 	}
-
-	if ( state.leads.seller.length > 0 ) {
-		return "Чаты с покупателями";
-	}
-
-	return "Шопинг-чаты";
-
+	return {
+		seller: 'Чаты с покупателями',
+		customer: 'Шопинг-чаты'
+	}[getTab(state)];
 };
-export const getTab       = state => state.leads.tab;
-export const getPending   = state => state.leads.pending;
-export const getGlobalNotifyCount   = state => state.leads.global_notify_count;
-export const getNotifyCountList   = state => state.leads.notify_count;
-export const getLastMessage = ( state ) => {
 
+export const getLastMessage       = ( state ) => {
 	const messages = {};
 	const leads = getLeads(state);
 
@@ -86,5 +61,15 @@ export const getLastMessage = ( state ) => {
 	}
 
 	return messages;
+};
 
+export const getGlobalNotifyCount = state => state.leads.global_notify_count;
+export const getNotifyCountList   = state => state.leads.notify_count;
+
+export const isEmptyLeads = ( { leads } ) => {
+	return (leads.seller.length === 0) && (leads.customer.length === 0);
+};
+
+export const isDone = ( state ) => {
+	return state.leads.done;
 };

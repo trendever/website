@@ -5,7 +5,7 @@
   .bubble
     a.chat-msg-photo-txt(v-link="{name: 'product_detail', params: {id: product.ID}}")
       .chat-msg-photo-txt_photo
-        img(:src="product.InstagramImageURL")
+        img(:src="photo")
 
       .chat-msg-photo-txt_txt
         |{{{ description }}}
@@ -18,7 +18,7 @@
 </template>
 
 <script type="text/babel">
-  import { formatDatetime } from './utils';
+  import { formatDatetime, urlThumbnail } from 'utils';
   import { getCurrentMember, getLastMessageId } from 'vuex/getters/chat.js';
   export default{
     props: {
@@ -36,6 +36,9 @@
     computed: {
       product() {
         return JSON.parse(this.msg.parts[0].content);
+      },
+      photo() {
+        return urlThumbnail(this.product.InstagramImageURL, 480)
       },
       description() {
         return this.product.Items.reduce(function(desc, item, i, arr) {

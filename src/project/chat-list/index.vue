@@ -5,7 +5,8 @@ div
     header-component(:title="getTitle", :left-btn-show="false")
       .header__nav(slot="content" v-if="getIsTab")
         .header__nav__i.header__text(
-        :class="{_active: getTab === 'customer'}", @click="setTab('customer');")
+        :class="{_active: getTab === 'customer'}", @click="setTab('customer');",
+        @touch="setTab('customer');")
           | Покупаю
         .header__nav__i.header__text(
         :class="{_active: getTab === 'seller'}", @click="setTab('seller');")
@@ -13,7 +14,7 @@ div
 
     .section.top.bottom
       .section__content
-        .chat-list(v-el:chat-list)
+        .chat-list
           template(v-for="lead in getLeads| orderBy 'updated_at' -1")
             chat-list-item(:lead="lead")
     .chat-list-cnt-is-empty(v-if="isEmptyLeads") У вас нет шопинг-чатов
@@ -26,7 +27,6 @@ div
   import {
     getLeads,
     getTab,
-    getPending,
     getIsTab,
     getTitle,
     isEmptyLeads,
@@ -55,7 +55,6 @@ div
       getters: {
         getLeads,
         getTab,
-        getPending,
         getIsTab,
         getTitle,
         isEmptyLeads,
@@ -75,8 +74,9 @@ div
       messages.onMsg(this.onMsg);
     },
     ready(){
-      this.loadLeads();
-      this.onScroll();
+      this.loadLeads().then(()=>{
+        this.onScroll();
+      });
     },
     beforeDestroy(){
       leads.removeStatusListener(this.onStatus);
@@ -98,7 +98,7 @@ div
         let needUpdate     = false;
         if ( !needUpdate ) {
           const pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
-          const full_scroll = this.$els.chatList.offsetHeight;
+          const full_scroll = document.body.scrollHeight;
           const diff_scroll = full_scroll - pos_scroll;
           if ( diff_scroll < 2500 ) {
             needUpdate = true;
