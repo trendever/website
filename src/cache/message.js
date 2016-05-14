@@ -1,5 +1,5 @@
 const Private          = new WeakMap();
-const availableForSave = 60;
+const availableForSave = 120;
 const initMessageCount = 12;
 class MessageCache {
 	

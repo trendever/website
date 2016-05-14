@@ -3,7 +3,7 @@
 div
   .chat-cnt
     chat-header(:notify-count='conversationNotifyCount')
-    .section.top.bottom(v-el:message-list)
+    .section.top.bottom
       .chat.section__content
         .chat_messages
           template(v-for="msg in getMessages", track-by="$index")
@@ -128,12 +128,12 @@ div
             needUpdate = true;
             this.offScroll();
 
-            const heightBefore = this.$els.messageList.offsetHeight;
+            const heightBefore = document.body.scrollHeight;
 
             this.loadMessage().then( ( messages ) => {
               this.$nextTick( () => {
 
-                const heightAfter = this.$els.messageList.offsetHeight;
+                const heightAfter = document.body.scrollHeight;
 
                 if ( messages !== null ) {
                   needUpdate = false;
@@ -146,7 +146,7 @@ div
         }
       },
       goToBottom(){
-        window.scrollTo(0, this.$els.messageList.scrollHeight);
+        window.scrollTo(0, document.body.scrollHeight);
       },
     },
     components: {

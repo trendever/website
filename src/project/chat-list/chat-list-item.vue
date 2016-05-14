@@ -59,7 +59,7 @@
                   || this.lead.user_role === service.USER_ROLES.SUPPLIER.key) {
             return this.lead.shop.instagram_username
           }
-          return `${this.lead.chat.members.find(({user_id}) => this.lead.customer.id === user_id).name} (${this.lead.shop.instagram_username})`
+          return `${this.lead.chat.members.find(({user_id}) => this.lead.customer_id === user_id).name} (${this.lead.shop.instagram_username})`
         }
       }
     },

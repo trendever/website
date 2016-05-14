@@ -13,7 +13,7 @@ div
 
     .section.top.bottom
       .section__content
-        .chat-list(v-el:chat-list)
+        .chat-list
           template(v-for="lead in getLeads| orderBy 'updated_at' -1")
             chat-list-item(:lead="lead")
     .chat-list-cnt-is-empty(v-if="isEmptyLeads") У вас нет шопинг-чатов
@@ -75,8 +75,9 @@ div
       messages.onMsg(this.onMsg);
     },
     ready(){
-      this.loadLeads();
-      this.onScroll();
+      this.loadLeads().then(()=>{
+        this.onScroll();
+      });
     },
     beforeDestroy(){
       leads.removeStatusListener(this.onStatus);
@@ -98,7 +99,7 @@ div
         let needUpdate     = false;
         if ( !needUpdate ) {
           const pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
-          const full_scroll = this.$els.chatList.offsetHeight;
+          const full_scroll = document.body.scrollHeight;
           const diff_scroll = full_scroll - pos_scroll;
           if ( diff_scroll < 2500 ) {
             needUpdate = true;

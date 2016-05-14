@@ -2,7 +2,6 @@ import {
   LEAD_RECEIVE,
   LEAD_SET_TAB,
   LEAD_APPLY_STATUS,
-  LEAD_PENDING,
   LEAD_INIT_GLOBAL_NOTIFY,
   LEAD_INC_NOTIFY,
   LEAD_CLEAR_NOTIFY,
@@ -15,7 +14,6 @@ const state = {
   seller: [],
   customer: [],
   tab: "customer",
-  pending: false,
   notify_count: {},
   global_notify_count: 0,
   done: false,
@@ -37,20 +35,14 @@ function checkUnreadMessage( items ) {
 // mutations
 const mutations = {
   [LEAD_CLOSE] ( state ){
-    state.seller              = [];
-    state.customer            = [];
-    state.tab                 = "customer";
-    state.pending             = false;
-    state.notify_count        = {};
-    state.global_notify_count = 0;
     state.done = false;
   },
   [LEAD_RECEIVE] ( state, { seller, customer } ) {
-    if(seller !== undefined){
-      state.seller   = state.seller.concat( seller );
+    if ( seller !== undefined ) {
+      state.seller = state.seller.concat( seller );
       checkUnreadMessage( seller );
     }
-    if(customer !== undefined){
+    if ( customer !== undefined ) {
       state.customer = state.customer.concat( customer );
       checkUnreadMessage( customer );
     }
@@ -67,32 +59,29 @@ const mutations = {
   },
   [LEAD_APPLY_STATUS] ( { seller, customer }, lead, status_key = 0 ) {
     const leads = { seller, customer };
-    let kik = false;
+    let kik     = false;
     for ( const key in leads ) {
       if ( leads.hasOwnProperty( key ) ) {
-        if (kik) {
+        if ( kik ) {
           break;
         }
-        for ( let i = leads[key].length; i; i-- ) {
+        for ( let i = leads[ key ].length; i; i-- ) {
           const oldLead = leads[ key ][ i - 1 ];
           if ( oldLead.id === lead.id ) {
             oldLead.status     = status_key;
             oldLead.updated_at = lead.updated_at;
-            kik = true;
+            kik                = true;
             break;
           }
         }
       }
     }
   },
-  [LEAD_PENDING] ( state, pending = false ) {
-    state.pending = pending;
-  },
   [LEAD_INIT_GLOBAL_NOTIFY] ( state, count ) {
     state.global_notify_count = count;
   },
   [LEAD_INC_NOTIFY] ( state, lead_id ) {
-
+    
     if ( lead_id !== null ) {
       if ( !state.notify_count.hasOwnProperty( lead_id ) ) {
         state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 1 } );
@@ -100,9 +89,9 @@ const mutations = {
         state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: state.notify_count[ lead_id ] + 1 } );
       }
     }
-
+    
     state.global_notify_count++;
-
+    
   },
   [LEAD_CLEAR_NOTIFY] ( state, lead_id ) {
     if ( state.notify_count.hasOwnProperty( lead_id ) ) {
@@ -111,21 +100,21 @@ const mutations = {
     state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 0 } );
   },
   [LEAD_SET_LAST_MESSAGE] ( state, conversation, messages ) {
-
+    
     state[ state.tab ].forEach( ( lead, index ) => {
-
+      
       if ( lead.chat !== null ) {
-
+        
         if ( conversation.id === lead.chat.id ) {
-
+          
           lead.chat.recent_message.parts = messages[ 0 ].parts;
           lead.updated_at                = messages[ 0 ].created_at * 1e9;
           state[ state.tab ].$set( index, lead );
-
+          
         }
-
+        
       }
-
+      
     } );
   }
 };
