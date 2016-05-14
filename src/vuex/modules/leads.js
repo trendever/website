@@ -34,9 +34,6 @@ function checkUnreadMessage( items ) {
 
 // mutations
 const mutations = {
-  [LEAD_CLOSE] ( state ){
-    state.done = false;
-  },
   [LEAD_RECEIVE] ( state, { seller, customer } ) {
     if ( seller !== undefined ) {
       state.seller = state.seller.concat( seller );
@@ -56,6 +53,24 @@ const mutations = {
       state[ tab ] = leads;
       checkUnreadMessage( leads );
     }
+  },
+  [LEAD_SET_LAST_MESSAGE] ( state, conversation, messages ) {
+    
+    state[ state.tab ].forEach( ( lead, index ) => {
+      
+      if ( lead.chat !== null ) {
+        
+        if ( conversation.id === lead.chat.id ) {
+          
+          lead.chat.recent_message.parts = messages[ 0 ].parts;
+          lead.updated_at                = messages[ 0 ].created_at * 1e9;
+          state[ state.tab ].$set( index, lead );
+          
+        }
+        
+      }
+      
+    } );
   },
   [LEAD_APPLY_STATUS] ( { seller, customer }, lead, status_key = 0 ) {
     const leads = { seller, customer };
@@ -99,24 +114,9 @@ const mutations = {
     }
     state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 0 } );
   },
-  [LEAD_SET_LAST_MESSAGE] ( state, conversation, messages ) {
-    
-    state[ state.tab ].forEach( ( lead, index ) => {
-      
-      if ( lead.chat !== null ) {
-        
-        if ( conversation.id === lead.chat.id ) {
-          
-          lead.chat.recent_message.parts = messages[ 0 ].parts;
-          lead.updated_at                = messages[ 0 ].created_at * 1e9;
-          state[ state.tab ].$set( index, lead );
-          
-        }
-        
-      }
-      
-    } );
-  }
+  [LEAD_CLOSE] ( state ){
+    state.done = false;
+  },
 };
 
 export default {

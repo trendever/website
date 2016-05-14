@@ -11,7 +11,8 @@ import {
 
 import * as leads from 'services/leads.js';
 import * as message from 'services/message';
-import { getOlderLead, getLeads } from '../getters/lead';
+
+import { getOlderLead, getLeads, getTab, isEmptyLeads } from '../getters/lead';
 
 export const createLead = ( { dispatch }, product_id ) => {
 
@@ -32,13 +33,9 @@ export const createLead = ( { dispatch }, product_id ) => {
 
 };
 
-export const closedList = ({dispatch}) => {
-		dispatch(LEAD_CLOSE);
-};
+export const loadLeads = ( { dispatch, state } ) => {
 
-export const loadLeads = ( { dispatch, state:{ leads:{ tab, seller, customer } }, state } ) => {
-
-	if ( (seller.length + customer.length) === 0 ) {
+	if ( isEmptyLeads( state ) ) {
 
 		return leads.find( 12 ).then(
 			( { customer, seller } ) => {
@@ -50,7 +47,9 @@ export const loadLeads = ( { dispatch, state:{ leads:{ tab, seller, customer } }
 		);
 
 	} else {
-
+		
+		const tab = getTab( state );
+		
 		return leads.find( 6, getOlderLead( state ), tab ).then(
 			( { leads } ) => {
 				dispatch( LEAD_RECEIVE, { [tab]: leads } );
@@ -67,9 +66,7 @@ export const setTab = ( { dispatch }, tab ) => {
 	
 	return leads.find( 12, null, tab ).then(
 		( {leads} ) => {
-						
 			dispatch( LEAD_SET_TAB, tab, leads );
-			
 		},
 		( error ) => {
 			console.log( error );
@@ -98,33 +95,24 @@ export const initGlobalNotify = ( { dispatch } ) => {
 };
 
 export const incNotify = ( { dispatch, state }, conversation_id ) => {
-
 	let lead = getLeads( state ).find( ( { chat } ) => {
-
 		if ( chat !== null ) {
-
 			return chat.id === conversation_id;
-			
 		}
-
 	} );
-
 	if ( state.conversation.lead !== null ) {
-
 		if ( state.conversation.id !== conversation_id ) {
-
 			dispatch( LEAD_INC_NOTIFY, (lead !== undefined) ? lead.id : null );
-
 		}
-
 	} else {
-
 		dispatch( LEAD_INC_NOTIFY, (lead !== undefined) ? lead.id : null );
-
 	}
-
 };
 
 export const clearNotify = ( { dispatch }, lead_id ) => {
 	dispatch( LEAD_CLEAR_NOTIFY, lead_id );
+};
+
+export const closedList = ( { dispatch } ) => {
+	dispatch( LEAD_CLOSE );
 };

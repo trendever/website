@@ -1,5 +1,5 @@
 import channel from 'services/channel/channel.js';
-import leadsCache from 'cache/leads';
+//import leadsCache from 'cache/leads';
 
 export const ERROR_CODES = {
   NOT_EXISTS: 1,
@@ -150,17 +150,17 @@ export const STATUS_EVENTS = [
  */
 export function find( limit, from_updated_at, roles, direction = false ) {
 
-  const cacheData = leadsCache.find( limit, from_updated_at, roles );
+  //const cacheData = leadsCache.find( limit, from_updated_at, roles );
     
   return new Promise( (resolve, reject) => {
     
-    if ( cacheData !== null ) {
+/*    if ( cacheData !== null ) {
       return resolve(cacheData);
-    }
+    }*/
     channel.req("list", "lead", { limit, from_updated_at, roles, direction }).then( data => {
-      if ( cacheData === null ) {
+/*      if ( cacheData === null ) {
         leadsCache.addItem(data.response_map, roles);
-      }
+      }*/
       resolve(data.response_map);
 
     }).catch( error => {
