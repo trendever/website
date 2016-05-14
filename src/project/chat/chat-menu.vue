@@ -17,8 +17,8 @@ div
       .menu_i(v-if="isAdmin", @click="setShowStatusMenu(true)")
         .menu_i_t Изменить статус заказа
 
-      //-.menu_i
-        .menu_i_t Отправить фото
+      label(class="menu_i menu_i-send-file") Отправить фото
+        input(type="file", hidden, id="imageSend")
 
       .menu_i(@click="setShowMenu(false)")
         .menu_i_t.__txt-green Отмена

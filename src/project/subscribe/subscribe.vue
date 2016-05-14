@@ -88,7 +88,7 @@ div
         var type = 'subscribe';
         var email = this.$get('email');
         mixpanel.track("Subscribed", {email: email});
-        createQuestion.call(this, {type, email});
+       // createQuestion.call(this, {type, email});
         setSubscribeEmail(true);
       },
       closePage() {

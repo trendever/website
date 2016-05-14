@@ -26,7 +26,6 @@ div
   import {
     getLeads,
     getTab,
-    getPending,
     getIsTab,
     getTitle,
     isEmptyLeads,
@@ -55,7 +54,6 @@ div
       getters: {
         getLeads,
         getTab,
-        getPending,
         getIsTab,
         getTitle,
         isEmptyLeads,
