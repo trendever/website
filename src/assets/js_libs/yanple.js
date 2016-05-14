@@ -1,7 +1,7 @@
-window.__debugMode = !/[a-z0-9_\-]+\.[a-z0-9_\-]+\.[a-z0-9_\-]+\.[a-z0-9_\-]+/i.test(location.host) || location.hostname === "localhost";
+window.__debugMode = /[a-z0-9_\-]*[\.]*[a-z0-9_\-]*\.[a-z0-9_\-]+\.[a-z0-9_\-]+/i.test(location.host) || location.hostname === "localhost";
 var _ua = navigator.userAgent.toLowerCase();
 
-var browser = {
+window.browser = {
     version: (_ua.match(/.+(?:me|ox|on|rv|it|era|opr|ie)[\/: ]([\d.]+)/) || [0, '0'])[1],
     opera: (/opera/i.test(_ua) || /opr/i.test(_ua)),
     msie: (/msie/i.test(_ua) && !/opera/i.test(_ua) || /trident\//i.test(_ua)),
@@ -30,11 +30,11 @@ var browser = {
 };
 
 function debugLog(msg) {
-    if (!__debugMode) {
+    if (!window.__debugMode) {
         return;
     }
     var args = Array.prototype.slice.call(arguments);
-    if (browser.msie || browser.mobile) {
+    if (window.browser.msie || window.browser.mobile) {
         console.log(args.join(' '));
     } else {
         console.log.apply(console, args);

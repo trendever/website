@@ -36,10 +36,12 @@ if (getArg('build')) {
   plugins = plugins.concat([
     new ExtractTextPlugin("static/css/style_vue.css")
   ]);
-  vue_loaders["css"] = ExtractTextPlugin.extract("css");
+  vue_loaders["css"] = ExtractTextPlugin.extract("css?sourceMap");
 }
 
 module.exports = {
+  devtool: getArg('build') ? '#source-map' : false,
+
   entry: {
     app_1: ['./src/index.js']
   },
@@ -48,7 +50,8 @@ module.exports = {
     path: require("path").resolve("./build/"),
     publicPath: "/",
     library: '[name]',
-    filename: "static/js/[name].js"
+    filename: "static/js/[name].js",
+    sourceMapFilename: "[file].map",
   },
 
   watch: !getArg('build'),
