@@ -64,10 +64,10 @@ div
             this.$nextTick( () => {
               this.onStatus = this.onStatus.bind(this);
               leads.onChangeStatus(this.onStatus);
-              this.onScroll();
-              this.goToBottom();
               messages.onMsg(this.onMessage);
               messages.onMsgRead(this.onMessageReaded);
+              this.onScroll();
+              this.goToBottom();
             } );
           },
           () => {
@@ -136,10 +136,13 @@ div
                 const heightAfter = document.body.scrollHeight;
 
                 if ( messages !== null ) {
+
                   needUpdate = false;
                   window.scrollTo( 0, heightAfter - heightBefore + pos_scroll );
                   this.onScroll();
+
                 }
+
               } );
             } );
           }

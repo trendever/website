@@ -100,7 +100,9 @@ div
       txtMsg(msg) {
         this.$nextTick(() => {
           let inputMsg = this.$els.inputMsg;
-          inputMsg.style.height = (msg ? inputMsg.scrollHeight : 53)  + 'px';
+          const textHeight = 58;
+          const inpHeight = inputMsg.scrollHeight;
+          inputMsg.style.height = (msg ? (inpHeight <= textHeight)? textHeight: inpHeight : textHeight)  + 'px';
         });
 
       }

@@ -35,11 +35,7 @@ export const getTitle = ( state ) => {
 	}[getTab(state)];
 };
 
-export const getPending           = state => state.leads.pending;
-export const getGlobalNotifyCount = state => state.leads.global_notify_count;
-export const getNotifyCountList   = state => state.leads.notify_count;
 export const getLastMessage       = ( state ) => {
-
 	const messages = {};
 	const leads = getLeads(state);
 
@@ -65,8 +61,10 @@ export const getLastMessage       = ( state ) => {
 	}
 
 	return messages;
-
 };
+
+export const getGlobalNotifyCount = state => state.leads.global_notify_count;
+export const getNotifyCountList   = state => state.leads.notify_count;
 
 export const isEmptyLeads = ( { leads } ) => {
 	return (leads.seller.length === 0) && (leads.customer.length === 0);
