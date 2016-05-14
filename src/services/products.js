@@ -29,6 +29,8 @@ export const ERROR_CODES = {
  *          "instagram_image_caption": "Последний цветочный топ джерси размер М. Доставка по МСК бесплатная.  #maybe#maybespace#maybesale",
  *          "instagram_image_id": "1220922723815723851",
  *          "instagram_image_url": "https://scontent.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/12383420_977019085721689_1440543230_n.jpg?ig_cache_key=MTIyMDkyMjcyMzgxNTcyMzg1MQ%3D%3D.2",
+ *          "instagram_image_width": 1080,
+ *          "instagram_image_height": 780,
  *          "instagram_link": "https://www.instagram.com/p/BDxlr-jPRNL/",
  *          "instagram_published_at": -62135596800,
  *          "supplier": {},

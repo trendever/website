@@ -1,14 +1,13 @@
 @import "base/vars/vars.pcss";
 
 .product-post {
-  margin: 0 24px;
-
   // elements
   &__ {
     // header
     &header {
       display: flex;
 
+      margin: 0 24px;
       padding: 14px 0;
 
       //background: white;
@@ -38,6 +37,7 @@
 
       overflow: hidden;
 
+      margin: 0 24px;
       padding: 10px 0 13px;
 
       font-size: 28px;
@@ -108,19 +108,21 @@
     // main
     &body {
       margin-bottom: 16px;
-      margin-left: -24px;
     }
     &image {
       display: block;
 
-      width: calc(100% + 24px);
+      width: 100%;
+      max-width: 750px;
       margin: 0 auto;
+
+      transition: width 500ms ease-in-out;
     }
     // footer
     &footer {
       display: flex;
 
-      margin: 15px 0;
+      margin: 15px 24px;
 
       align-items: flex-end;
       justify-content: space-between;
@@ -161,6 +163,7 @@
     &description {
       position: relative;
 
+      margin: 0 24px;
       padding: 16px 24px;
 
       border-radius: 10px;
