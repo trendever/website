@@ -13,7 +13,8 @@ article.product-post
         span.product-post__user-name {{ openedProduct.product.mentioned.instagram_username}}
   main.product-post__body
     img.product-post__image(
-      :src="IgImageUrl")
+      :src="IgImageUrl",
+      :width="obj.instagram_image_width")
   section.product-post__bottom-photo(v-for="item in openedProduct.product.items")
     .product-post__price-container
       template(v-if="item.discount_price")
@@ -48,6 +49,7 @@ article.product-post
 </template>
 
 <script type="text/babel">
+  import listen from 'event-listener';
   import { urlThumbnail } from 'utils';
   import { createLead } from 'vuex/actions/lead.js';
   import { openedProduct, isAuth } from 'vuex/getters';
@@ -57,6 +59,9 @@ article.product-post
     data(){
       return {
         IgImageUrl: "",
+        width: "",
+        height: "",
+        Mobile: window.browser.mobile,
       };
     },
     vuex: {
@@ -69,11 +74,20 @@ article.product-post
       },
     },
 
+    computed: {
+      obj() {
+        return this.openedProduct.product;
+      },
+    },
+
     ready: function() {
-      if (!this.tryLoadCachedImage()) {this.loadFullImage()};
+      if (!this.tryLoadCachedImage()) {
+        this.loadFullImage();
+      };
     },
 
     methods: {
+
       price (item) {
         return (item.price && !item.discount_price);
       },
@@ -108,27 +122,24 @@ article.product-post
       },
 
       tryLoadCachedImage() {
-        if (!this.openedProduct.cachedImages) return false
-        var url = this.openedProduct.product.instagram_image_url;
-        // load thumbnail first. Because it's caching 80% of cases
-        this.IgImageUrl = urlThumbnail(url, 480);
+        if (!this.openedProduct.cachedImages) {
+          return false;
+        }
+        let obj = this.openedProduct.product;
+
+        // load thumbnail first.
+        this.IgImageUrl = urlThumbnail(obj.instagram_image_url, 150);
 
         this.loadFullImage();
       },
 
       loadFullImage() {
         // Load and set full image.
-        var img = new Image();
-        var url = this.openedProduct.product.instagram_image_url;
-        img.load(urlThumbnail(url), null, null, () => {
-          this.IgImageUrl = urlThumbnail(url);
+        let img = new Image();
+        let obj = this.openedProduct.product;
+        img.load(urlThumbnail(obj.instagram_image_url), null, null, () => {
+          this.IgImageUrl = urlThumbnail(obj.instagram_image_url);
         });
-      }
-    },
-
-    computed: {
-      Mobile() {
-        return window.browser.mobile;
       }
     },
   }

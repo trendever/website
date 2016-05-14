@@ -2,7 +2,7 @@
 .chat-list_i(v-link="{name: 'chat', params: {id: lead.id}}", track-by="id")
 
   .chat-list_i_photo
-    img(:src="lead.products && lead.products[0].instagram_image_url")
+    img(:src="getPhoto(lead.products[0])")
   .chat-list_i_body
     .body_t {{ title }}
     .body_status ({{ status | lowercase }})
@@ -15,6 +15,7 @@
 </template>
 
 <script type="text/babel">
+  import { urlThumbnail } from 'utils'
   import { formatDatetime } from 'project/chat/utils';
   import * as service from 'services/leads';
   import { getNotifyCountList, getLastMessage } from 'vuex/getters/lead.js';
@@ -35,6 +36,13 @@
       getters: {
         getNotifyCountList,
         getLastMessage
+      }
+    },
+    methods: {
+      getPhoto(obj) {
+        if (this.lead.products) {
+          return urlThumbnail(obj.instagram_image_url, 306, obj.instagram_image_width, obj.instagram_image_height)
+        }
       }
     },
     computed: {

@@ -3,7 +3,7 @@ import { urlThumbnail } from './utils';
 
 export default function() {
 
-  Vue.filter('url_thumbnail', function(url, size = null) {
+  Vue.filter('url_thumbnail', function(url, size = null, originalWidth = null, originalHeight = null) {
     /**
      *  Changed instagram photo url, for crop image.
      *  Supports sizes: 150, 306, 480, 640 (width=height)
@@ -11,7 +11,7 @@ export default function() {
      * @type {string} url
      * @type {number} size
      */
-    return urlThumbnail(url, size);
+    return urlThumbnail(url, size, originalWidth, originalHeight);
 
   });
 
