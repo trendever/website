@@ -6,7 +6,7 @@
   .chat-msg.bubble
     .chat-msg_t(v-if="!isOwnMessage")
       | {{{ getUsername }}}
-    img(:src="getImg", class="chat-msg-img")
+    img(:src="getImg", class="chat-msg-img", v-bind:class="{'chat-msg-img-opacity':!isLoaded }")
     .bubble_info
       .bubble_info_status(v-if="isOwnMessage")
         i(:class="{'ic-check': isSent, 'ic-check-double': isRead}")
@@ -36,8 +36,17 @@
     },
 
     computed: {
+      isLoaded(){
+        if( 'loaded' in this.msg){
+          return this.msg.loaded;
+        }
+        return true;
+      },
       getImg(){
-        return JSON.parse(this.msg.parts[0].content).link;
+        if ( this.msg.parts[ 0 ].mime_type === 'image/json' ) {
+          return JSON.parse( this.msg.parts[ 0 ].content ).link;
+        }
+        return this.msg.parts[ 0 ].content.link;
       },
       datetime() {
         return formatTime(this.msg.created_at);

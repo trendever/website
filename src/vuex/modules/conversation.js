@@ -6,7 +6,8 @@ import {
   CONVERSATION_UPDATE_MEMBERS,
   CONVERSATION_SET_SHOW_MENU,
   CONVERSATION_SET_SHOW_STATUS_MENU,
-  CONVERSATION_SET_STATUS
+  CONVERSATION_SET_STATUS,
+  CONVERSATION_AFTER_LOAD_IMG
 } from '../mutation-types';
 
 // initial state
@@ -28,10 +29,40 @@ const mutations = {
     state.lead = lead;
   },
   [CONVERSATION_RECEIVE_MESSAGE] ( state, messages ) {
+
+    for ( let i = state.messages.length; i; i-- ) {
+      if ( state.messages[ i - 1 ].id === messages[ 0 ].id ) {
+        return;
+      }
+    }
+
     state.messages = state.messages.concat( messages );
+
   },
   [CONVERSATION_LOAD_MESSAGE] ( state, messages ) {
     state.messages = messages.concat( state.messages );
+  },
+  [CONVERSATION_AFTER_LOAD_IMG] ( state, beforeLoadId, newMessage ) {
+    state.messages.forEach( ( message ) => {
+
+      if ( 'beforeLoadId' in message ) {
+
+        if ( beforeLoadId === message.beforeLoadId ) {
+
+          message.loaded           = true;
+          message.conversation_id  = newMessage.conversation_id;
+          message.user_id          = newMessage.user_id;
+          message.created_at       = newMessage.created_at;
+          message.id               = newMessage.id;
+          message.user             = newMessage.user;
+          message.parts.id         = newMessage.parts.id;
+          message.parts.created_at = newMessage.parts.created_at;
+
+        }
+
+      }
+
+    } );
   },
   [CONVERSATION_UPDATE_MEMBERS] (state, members) {
     state.members = members;

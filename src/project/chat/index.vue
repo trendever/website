@@ -19,7 +19,7 @@ div
               :msg="msg")
 
             chat-msg-img(
-              v-if="msg.parts[0].mime_type === 'image/json'",
+              v-if="msg.parts[0].mime_type === 'image/json' || msg.parts[0].mime_type === 'image/base64'",
               :msg="msg")
 
       chat-bar
