@@ -38,9 +38,12 @@
       display: flex;
 
       &_time {
+        display: inline-block;
+        min-width: 50px;
         margin: auto 20px 43px;
         color: #91A6A2;
         font-size: 24px;
+        flex-shrink: 0;
       }
       &_status {
         margin-left: 10px;
@@ -60,6 +63,12 @@
   &.__right {
     justify-content: flex-end;
     color: #333;
+
+    .chat-msg-photo-txt_txt {
+      height: calc(10em);
+      -webkit-line-clamp: 7;
+    }
+
     .bubble {
       margin-right: 30px;
 
@@ -84,9 +93,23 @@
     }
   }
   &.__left {
+
     flex-direction: row-reverse;
     justify-content: flex-end;
     color: $color__gray-dark;
+
+    .chat-msg-photo-txt_txt {
+      height: calc(6.5em);
+      -webkit-line-clamp: 5;
+      padding: 0 20px 0;
+    }
+    .chat-msg-product-wrap {
+      flex-direction: row-reverse;
+    }
+    .chat-msg-photo-txt_photo{
+      border-radius: 0 12px 12px 0;
+    }
+
     .bubble {
       margin-left: 30px;
 

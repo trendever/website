@@ -2,7 +2,7 @@
 <template lang="jade">
 
 .chat-row(:class="getSide")
-  .bubble_info_time {{ datetime }}
+  span(class="bubble_info_time") {{ datetime }}
   .chat-msg.bubble
     .chat-msg_t(v-if="!isOwnMessage")
       | {{{ getUsername }}}
