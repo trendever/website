@@ -36,9 +36,10 @@ div
       tr-spinner(v-if="showSpinner" color="white" size=60)
 </template>
 
-<script>
-  import mockup from 'services/mockups/modal-data'
-  import trSpinner from 'base/spinner/spinner.vue'
+<script type="text/babel">
+  import mockup from 'services/mockups/modal-data';
+  import trSpinner from 'base/spinner/spinner.vue';
+  import * as question from 'services/email';
 
   export default {
     data(){
@@ -61,7 +62,6 @@ div
     },
     ready() {
       // TODO handler fo resize
-      console.log(this.$els.info.scrollHeight)
       var height = window.innerHeight > 1.2 * this.$els.info.scrollHeight
         ? window.innerHeight : 1.2 * this.$els.info.scrollHeight
       this.$set('height',  `${ height }px`);
@@ -82,7 +82,18 @@ div
 
         mixpanel.track("Create Question", {type: type, email:email, comment:comment});
 
-        ///createQuestion.call(this, {type, email, comment});
+        this.$emit('hide:question');
+
+        question.create( email, type, comment ).then(() => {
+
+          this.$emit('show:thanks');
+
+        }, ()=>{
+
+          this.$emit('show:error');
+
+        });
+
       },
     },
     events: {
