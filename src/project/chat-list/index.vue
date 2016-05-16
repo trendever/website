@@ -5,7 +5,8 @@ div
     header-component(:title="getTitle", :left-btn-show="false")
       .header__nav(slot="content" v-if="getIsTab")
         .header__nav__i.header__text(
-        :class="{_active: getTab === 'customer'}", @click="setTab('customer');")
+        :class="{_active: getTab === 'customer'}", @click="setTab('customer');",
+        @touch="setTab('customer');")
           | Покупаю
         .header__nav__i.header__text(
         :class="{_active: getTab === 'seller'}", @click="setTab('seller');")
