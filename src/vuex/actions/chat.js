@@ -23,7 +23,7 @@ export const setConversation = ( { dispatch }, lead_id ) => {
 	promise.then( ( { messages, lead, error } ) => {
 
 		if (error !== null) {
-			
+
 			if (error.code === leads.ERROR_CODES.FORBIDDEN) {
 
 				return chat.join( { lead_id } ).then(
@@ -36,7 +36,7 @@ export const setConversation = ( { dispatch }, lead_id ) => {
 				);
 
 			}
-			
+
 		}
 
 		if ( messages === null ) {
@@ -47,7 +47,7 @@ export const setConversation = ( { dispatch }, lead_id ) => {
 		const {chat:{id:conversation_id, members}} = lead;
 
 		messageCache.init( conversation_id, messages );
-		
+
 		dispatch( CONVERSATION_SET, conversation_id, members, messages, lead );
 
 		return messageService.update(conversation_id, lastMessageId);
@@ -125,7 +125,14 @@ export const receiveMessage = ( { dispatch, state }, chat, messages ) => {
 
 					messageCache.addReceiveMessage( msg.conversation_id, messages );
 
-					dispatch( CONVERSATION_RECEIVE_MESSAGE, messages );
+					// ToDo not optimal code. Dmitry refactor this.
+					if (msg.conversation_id === state.conversation.id) {
+
+						dispatch( CONVERSATION_RECEIVE_MESSAGE, messages );
+
+					} else {
+						reject('Receive msg from to other chat.');
+					}
 
 					resolve();
 
@@ -184,9 +191,9 @@ export const closeConversation = ({ dispatch }) => {
 };
 
 export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix, MIME ) => {
-	
+
 	const beforeLoadId = Math.random();
-	
+
 	const preLoadMessage = {
 		beforeLoadId,
 		loaded: false,
@@ -205,11 +212,11 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 			}
 		]
 	};
-	
+
 	dispatch( CONVERSATION_RECEIVE_MESSAGE, [ preLoadMessage ] );
 
 	messageService.create( getId( state ), base64, MIME ).then( ( {messages} ) => {
-		
+
 		dispatch( CONVERSATION_AFTER_LOAD_IMG, beforeLoadId, messages[0] );
 
 	}, ( error ) => {
@@ -217,5 +224,5 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 		console.log( error );
 
 	} );
-	
+
 };
