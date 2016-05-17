@@ -20,27 +20,23 @@
     margin-bottom: 20px;
 
     transition: $btn-transition;
+    text-decoration: none;
 
-    border: 2px solid $color__green;
     border-radius: 150px;
 
     size: 150px;
     align-items: center;
     justify-content: center;
-    &:after{
-      margin-right: -30px;
-
-      content: "";
+    i {
       transition: $btn-transition;
 
-      border: 22px solid transparent;
-      border-left: 40px solid #399;
+      color: $color__green;
+
+      font-size: 150px;
     }
     &:hover {
-      border-color: $color__gray-dark;
-
-      &:after {
-        border-left-color: $color__gray-dark;
+      i {
+        color: $color__gray-dark;
       }
     }
   }

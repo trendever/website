@@ -70,7 +70,7 @@
 
       activate(done) {
         if (this.isInfinityProducts) {
-          this.enableInfinityScroll();
+          // this.enableInfinityScroll();
         }
         if (!this.object_list.length) {
           this.loadProducts();

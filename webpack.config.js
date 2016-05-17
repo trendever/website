@@ -10,7 +10,7 @@ function getArg(key) {
 }
 
 var plugins = [];
-var vue_loaders = {};
+var css_loaders = {};
 
 if (!config.debug) {
   plugins = plugins.concat([
@@ -36,7 +36,7 @@ if (getArg('build')) {
   plugins = plugins.concat([
     new ExtractTextPlugin("static/css/style_vue.css")
   ]);
-  vue_loaders["css"] = ExtractTextPlugin.extract("css?sourceMap");
+  css_loaders.css = ExtractTextPlugin.extract("css?sourceMap");
 }
 
 module.exports = {
@@ -86,6 +86,14 @@ module.exports = {
         test:   /\.pcss$/,
         loader: "style-loader!css-loader!postcss-loader"
       },
+      {
+        test: /\.font\.(js|json)$/,
+        loader: getArg('build') ? ExtractTextPlugin.extract(["css", "fontgen"]) : "style-loader!css-loader!fontgen-loader",
+      },
+      {
+        test: /\.(woff|eot|ttf|svg)$/,
+        loader: "url",
+      }
     ]
   },
 
@@ -134,7 +142,7 @@ module.exports = {
         require("postcss-reporter")(),
       ];
     },
-    loaders: vue_loaders,
+    loaders: css_loaders,
     // disable vue-loader autoprefixing.
     // this is a good idea since cssnext comes with it too.
     autoprefixer: false
@@ -152,7 +160,7 @@ module.exports = {
   resolve: {
     root: path.resolve('./src'),
     extensions: ['', '.js', '.vue', '.pcss'],
-    modulesDirectories: ['node_modules']
+    modulesDirectories: ['node_modules'],
   },
 
   plugins: plugins

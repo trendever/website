@@ -14,6 +14,7 @@ div
 </template>
 
 <script type="text/babel">
+  import font from 'base/fonts/trendever-icons/trendever-icons.font';
   import store from 'vuex/store';
   import {
     loadUser,
