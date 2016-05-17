@@ -1,8 +1,8 @@
 <style src="./styles/hero.pcss"></style>
 <template lang="jade">
 .section.smallHero(v-if="isAuth")
-  .smallHero__logo.ic-logo
-  .smallHero__logo-apostrophe
+  i.smallHero__logo.ic-logo
+    i.smallHero__logo-apostrophe
 .section.hero(v-if="!isAuth")
   .section__content.hero__content
     .hero__content__img

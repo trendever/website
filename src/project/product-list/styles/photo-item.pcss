@@ -5,9 +5,6 @@
     &container {
       margin-bottom: 5px;
 
-      @media handheld {
-        margin-bottom: 0;
-      }
       &-three{
         width: calc(33.333% - 2px);
         margin-right: 3px;
@@ -15,11 +12,21 @@
         &:nth-child(3n+3) {
           margin-right: 0;
         }
+        @media (--mobile) {
+          margin-bottom: 0;
+
+          .photo__description {
+            display: none;
+          }
+        }
+
       }
       &-two{
         width: calc(50% - 1.5px);
         margin-right: 3px;
+
         font-size: 20px;
+
         &:nth-child(2n+2) {
           margin-right: 0;
         }
@@ -40,9 +47,6 @@
 
       align-content: center;
       justify-content: space-between;
-      @media handheld {
-        display: none;
-      }
     }
     &summ{
       text-align: right;
