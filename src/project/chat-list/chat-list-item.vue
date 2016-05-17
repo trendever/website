@@ -7,7 +7,7 @@
     .body_t {{ title }}
     .body_status ({{ status | lowercase }})
     .body_last-msg
-      | {{ recentMessage }}
+      | {{{ recentMessage }}}
   .chat-list_i_date {{ dataTime }}
   .chat-list_i_notify(v-if="unreadCount")
     span {{ unreadCount }}

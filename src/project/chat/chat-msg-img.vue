@@ -43,21 +43,32 @@
         return true;
       },
       getImg(){
+        let cnt = this.msg.parts[ 0 ].content;
+
         if ( this.msg.parts[ 0 ].mime_type === 'image/json' ) {
 
-          return JSON.parse( this.msg.parts[ 0 ].content ).link;
+          let img = JSON.parse( cnt );
+          if (img.thumbs.big) {
+            return img.thumbs.big;
+          }
+          return img.link;
+        }
+
+        if ( typeof cnt === 'string' ) {
+
+          return `data:${this.msg.parts[ 0 ].mime_type};base64,${cnt}`;
 
         }
 
-        if ( typeof this.msg.parts[ 0 ].content === 'string' ) {
+        if ( cnt.thumbs && cnt.thumbs.big ) {
 
-          return `data:${this.msg.parts[ 0 ].mime_type};base64,${this.msg.parts[ 0 ].content}`;
+          return cnt.thumbs.bog
 
         }
 
-        if ( 'link' in this.msg.parts[ 0 ].content ) {
+        if ( 'link' in cnt ) {
 
-          return this.msg.parts[ 0 ].content.link;
+          return cnt.link;
 
         }
 
