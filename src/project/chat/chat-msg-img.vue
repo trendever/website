@@ -44,9 +44,23 @@
       },
       getImg(){
         if ( this.msg.parts[ 0 ].mime_type === 'image/json' ) {
+
           return JSON.parse( this.msg.parts[ 0 ].content ).link;
+
         }
-        return this.msg.parts[ 0 ].content.link;
+
+        if ( typeof this.msg.parts[ 0 ].content === 'string' ) {
+
+          return `data:${this.msg.parts[ 0 ].mime_type};base64,${this.msg.parts[ 0 ].content}`;
+
+        }
+
+        if ( 'link' in this.msg.parts[ 0 ].content ) {
+
+          return this.msg.parts[ 0 ].content.link;
+
+        }
+
       },
       datetime() {
         return formatTime(this.msg.created_at);

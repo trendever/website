@@ -3,7 +3,7 @@
 
 div
   .chat-bar.section__content
-    .chat-bar_menu-btn(v-if="isAdmin", @click="setShowMenu(true)")
+    .chat-bar_menu-btn(@click="setShowMenu(true)")
       i.ic-menu-light
     .chat-bar_input
       textarea(placeholder="Введите сообщение",
@@ -12,7 +12,7 @@ div
     .chat-bar_send-btn(@click.prevent="send($event)", :class="{'__active': !!txtMsg}")
       i.ic-send-plane
 
-  chat-menu(v-if="isAdmin")
+  chat-menu
 
 </template>
 
@@ -53,18 +53,6 @@ div
         getShowMenu,
         getStatus
       }
-    },
-
-    computed: {
-      isAdmin() {
-        if (!this.getCurrentMember) {
-          return false;
-        }
-        return !!(this.getCurrentMember.role === leads.USER_ROLES.SUPPLIER.key
-        || this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
-        || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key);
-
-      },
     },
 
     methods: {

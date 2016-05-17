@@ -67,31 +67,35 @@ div
     methods: {
       selectedFile( { target } ){
 
-        const reader = new FileReader();
+        const MIME = target.files[ 0 ].type;
 
-        reader.addEventListener( 'loadend', () => {
+        if ( MIME in { 'image/png': true, 'image/gif': true, 'image/jpg': true, 'image/jpeg': true } ) {
 
-          let base64Prefix = 'data:image/jpeg;base64,';
+          const reader = new FileReader();
 
-          if ( reader.result.indexOf( 'image/png' ) !== -1 ) {
+          reader.addEventListener( 'loadend', () => {
 
-            base64Prefix = 'data:image/png;base64,';
+             let base64Prefix = `data:${MIME};base64,`;
 
-          }
+             this.addPreLoadMessage( reader.result.substr( base64Prefix.length, reader.result.length ), reader.result, MIME );
 
-          this.addPreLoadMessage( reader.result.substr( base64Prefix.length, reader.result.length ), reader.result );
+            this.setShowMenu( false );
 
-          this.setShowMenu( false );
+            this.$nextTick( () => {
 
-          this.$nextTick( ()=> {
+              window.scrollTo( 0, document.body.scrollHeight );
 
-            window.scrollTo( 0, document.body.scrollHeight );
+            } );
 
           } );
 
-        } );
+          reader.readAsDataURL( target.files[ 0 ] );
 
-        reader.readAsDataURL( target.files[ 0 ] );
+        } else {
+
+          alert(`Выберите картинку с разрешением: .png, .git, .jpg, .jpeg`);
+
+        }
 
       },
       callCustomer() {

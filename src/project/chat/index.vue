@@ -19,7 +19,7 @@ div
               :msg="msg")
 
             chat-msg-img(
-              v-if="msg.parts[0].mime_type === 'image/json' || msg.parts[0].mime_type === 'image/base64'",
+              v-if="isImage(msg.parts[0].mime_type)",
               :msg="msg")
 
       chat-bar
@@ -99,6 +99,9 @@ div
       },
     },
     methods: {
+      isImage(mime){
+        return mime.indexOf('image') !== -1;
+       },
       onStatus({response_map: {lead}})  {
         this.applyStatus(lead.status);
       },

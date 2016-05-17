@@ -183,7 +183,7 @@ export const closeConversation = ({ dispatch }) => {
 	dispatch(CONVERSATION_CLOSE);
 };
 
-export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix ) => {
+export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix, MIME ) => {
 	
 	const beforeLoadId = Math.random();
 	
@@ -208,7 +208,7 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 	
 	dispatch( CONVERSATION_RECEIVE_MESSAGE, [ preLoadMessage ] );
 
-	messageService.create( getId( state ), base64, 'image/base64' ).then( ( {messages} ) => {
+	messageService.create( getId( state ), base64, MIME ).then( ( {messages} ) => {
 		
 		dispatch( CONVERSATION_AFTER_LOAD_IMG, beforeLoadId, messages[0] );
 
