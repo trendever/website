@@ -56,7 +56,8 @@
         return JSON.parse(this.msg.parts[0].content);
       },
       photo() {
-        return urlThumbnail(this.product.InstagramImageURL, 480)
+        const {InstagramImageURL, InstagramImageHeight, InstagramImageWidth} = this.product;
+        return urlThumbnail(InstagramImageURL, 306, InstagramImageWidth, InstagramImageHeight)
       },
       description() {
         return this.product.Items.reduce(function(desc, item, i, arr) {
@@ -84,7 +85,7 @@
       isRead() {
         return this.getLastMessageId >= this.msg.id;
       },
-      getSide(){
+      getSide() {
         if(!this.msg.user || !this.getCurrentMember) {
           return '__center';
         }

@@ -7,7 +7,7 @@
     .chat-msg_t(v-if="!isOwnMessage")
       | {{{ getUsername }}}
     .chat-msg_txt
-      | {{ msg.parts[0].content }}
+      | {{{ msg.parts[0].content }}}
     .bubble_info
       .bubble_info_status(v-if="isOwnMessage")
         i(:class="{'ic-check': isSent, 'ic-check-double': isRead}")

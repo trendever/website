@@ -6,9 +6,7 @@ div
     .chat-bar_menu-btn(@click="setShowMenu(true)")
       i.ic-menu-light
     .chat-bar_input
-      textarea(placeholder="Введите сообщение",
-      v-model="txtMsg", v-el:input-msg
-      @keydown.enter.prevent="send($event)")
+      textarea(placeholder="Введите сообщение", v-model="txtMsg", v-el:input-msg)
     .chat-bar_send-btn(@click.prevent="send($event)", :class="{'__active': !!txtMsg}")
       i.ic-send-plane
 
@@ -39,6 +37,7 @@ div
     data(){
       return {
         txtMsg: "",
+        stringWillSend: "",
       };
     },
     vuex: {
@@ -56,17 +55,23 @@ div
     },
 
     methods: {
-      send ( event ) {
-
+      addNewLine(){
+        this.stringWillSend = this.txtMsg.trim().split( '\n' ).reduce( ( prevValue, item ) => {
+          return prevValue + `${item}<br>`
+        }, '' );
+        this.stringWillSend = `<p>${this.stringWillSend}</p>`.trim();
+      },
+      send () {
         this.$els.inputMsg.focus();
-        //event.preventDefault(); ??? Вроде как @keydown.enter.prevent
-
         const txtMsg = this.txtMsg.trim();
-
-        if ( !txtMsg.length ) return;
-
-        const promise = this.createMessage( this.getId, txtMsg, "text/plain" );
-
+        this.addNewLine();
+        if ( !txtMsg.length ) {
+          return;
+        }
+        if ( this.stringWillSend.length <= 0 ) {
+          this.stringWillSend = txtMsg;
+        }
+        const promise = this.createMessage( this.getId, this.stringWillSend, "text/plain" );
         promise.then( () => {
           if (
             this.getStatus === leads.STATUSES.NEW.key &&
@@ -74,13 +79,12 @@ div
           ) {
             this.setStatus( 'PROGRESS' );
           }
-          this.txtMsg = "";
+          this.txtMsg         = "";
+          this.stringWillSend = "";
         } );
-
         promise.catch( error => {
           console.log( error );
         } );
-
       }
     },
 
