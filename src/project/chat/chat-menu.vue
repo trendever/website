@@ -77,7 +77,7 @@ div
 
              let base64Prefix = `data:${MIME};base64,`;
 
-             this.addPreLoadMessage( reader.result.substr( base64Prefix.length, reader.result.length ), reader.result, MIME );
+             this.addPreLoadMessage( reader.result.substr( base64Prefix.length, reader.result.length ), reader.result, 'image/base64' );
 
             this.setShowMenu( false );
 
