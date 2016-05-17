@@ -1,6 +1,6 @@
 @import "base/vars/vars.pcss";
 .chat-msg {
-  padding: 20px;
+  padding: 14px;
 
   &_t {
     overflow: hidden;
@@ -12,13 +12,44 @@
 
     color: $color__red__light;
 
-    font-size: 28px;
+    @media(--mobile) {
+      font-size: 28px;
+      line-height: 36px;
+    }
+    font-size: 16px;
+    line-height: 20px;
 
     b {
       font-weight: bold;
     }
   }
   &_txt {
-    font-size: 28px 37px;
+
+    @media(--mobile) {
+      font-size: 28px;
+      line-height: 36px;
+      min-height: 39.35px;
+    }
+    min-height: 18.6px;
+    font-size: 16px;
+    line-height: 20px;
   }
+  &-img{
+    margin-top: 5px;
+    @media(--mobile){
+      max-width: 560px;
+    }
+    max-width: 600px;
+    min-height: 350px;
+  }
+}
+
+.chat-msg-product-wrap{
+  display: flex;
+  .chat-msg_t{
+    padding: 25px 20px 0;
+  }
+}
+.chat-msg-img-opacity{
+  opacity: 0.5;
 }

@@ -6,13 +6,15 @@ import {
 	CONVERSATION_UPDATE_MEMBERS,
 	CONVERSATION_SET_SHOW_MENU,
 	CONVERSATION_SET_SHOW_STATUS_MENU,
-	CONVERSATION_SET_STATUS
+	CONVERSATION_SET_STATUS,
+	CONVERSATION_AFTER_LOAD_IMG
 } from '../mutation-types';
 import * as messageService from 'services/message.js';
 import * as leads from 'services/leads.js';
 import * as chat from 'services/chat.js';
 import messageCache from 'cache/message';
 import { getCurrentMember, getId, getLastMessageId } from 'vuex/getters/chat.js';
+import { userID } from 'vuex/getters';
 
 export const setConversation = ( { dispatch }, lead_id ) => {
 
@@ -179,4 +181,41 @@ export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
 
 export const closeConversation = ({ dispatch }) => {
 	dispatch(CONVERSATION_CLOSE);
+};
+
+export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix, MIME ) => {
+	
+	const beforeLoadId = Math.random();
+	
+	const preLoadMessage = {
+		beforeLoadId,
+		loaded: false,
+		conversation_id: getId( state ),
+		created_at: Date.now(),
+		user_id: userID( state ),
+		user: {
+			user_id: userID( state ),
+		},
+		parts: [
+			{
+				content: {
+					link: base64WithPrefix,
+				},
+				mime_type: 'image/base64',
+			}
+		]
+	};
+	
+	dispatch( CONVERSATION_RECEIVE_MESSAGE, [ preLoadMessage ] );
+
+	messageService.create( getId( state ), base64, MIME ).then( ( {messages} ) => {
+		
+		dispatch( CONVERSATION_AFTER_LOAD_IMG, beforeLoadId, messages[0] );
+
+	}, ( error ) => {
+
+		console.log( error );
+
+	} );
+	
 };

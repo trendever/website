@@ -18,6 +18,10 @@ div
               v-if="msg.parts[0].mime_type === 'text/plain'",
               :msg="msg")
 
+            chat-msg-img(
+              v-if="isImage(msg.parts[0].mime_type)",
+              :msg="msg")
+
       chat-bar
 </template>
 
@@ -45,6 +49,7 @@ div
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgDate from './chat-msg-date.vue';
   import ChatMsg from './chat-msg.vue';
+  import ChatMsgImg from './chat-msg-img.vue';
   import ChatBar from './chat-bar.vue';
   import ChatHeader from './chat-header.vue';
 
@@ -94,6 +99,9 @@ div
       },
     },
     methods: {
+      isImage(mime){
+        return mime.indexOf('image') !== -1;
+       },
       onStatus({response_map: {lead}})  {
         this.applyStatus(lead.status);
       },
@@ -158,6 +166,7 @@ div
       ChatMsg,
       ChatMsgProduct,
       ChatMsgDate,
+      ChatMsgImg
     }
   }
 </script>

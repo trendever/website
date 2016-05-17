@@ -2,12 +2,12 @@
 <template lang="jade">
 
 .chat-row(:class="getSide")
-  .bubble_info_time {{ datetime }}
+  span(class="bubble_info_time") {{ datetime }}
   .chat-msg.bubble
     .chat-msg_t(v-if="!isOwnMessage")
       | {{{ getUsername }}}
     .chat-msg_txt
-      | {{ msg.parts[0].content }}
+      | {{{ msg.parts[0].content }}}
     .bubble_info
       .bubble_info_status(v-if="isOwnMessage")
         i(:class="{'ic-check': isSent, 'ic-check-double': isRead}")
@@ -37,10 +37,10 @@
     },
 
     computed: {
-      datetime () {
+      datetime() {
         return formatTime(this.msg.created_at);
       },
-      getUsername () {
+      getUsername() {
         if (this.msg.user.role === leads.USER_ROLES.CUSTOMER.key) {
           return `<b>${this.msg.user.name}</b>`
         }
@@ -58,7 +58,7 @@
       isRead() {
         return this.getLastMessageId >= this.msg.id
       },
-      getSide(){
+      getSide() {
         return this.isOwnMessage ? '__right' : '__left';
       },
     },
