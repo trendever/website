@@ -1,4 +1,5 @@
 import store from 'vuex/store';
+import { getProfile, removeToken } from 'services/profile';
 import Store from './store';
 import Model from './model';
 import Controller from './controller';
@@ -19,9 +20,9 @@ const Private = new WeakMap();
 class Channel {
   constructor() {
 
-    const store      = new Store();
-    const model      = new Model( store );
-    const controller = new Controller( model, store );
+    const storage      = new Store();
+    const model      = new Model( storage );
+    const controller = new Controller( model, storage );
 
     Private.set( this, { model, controller } );
 
@@ -50,6 +51,13 @@ class Channel {
             }
             data.log_map = data.log_list[ 0 ];
             if ( data.log_map.level_int === error_codes.err ) {
+
+              if (data.log_map.code_key === '401' && getProfile().token) {
+                // Token has expired. Remove it
+                removeToken();
+                window.location.reload();
+              }
+
               reject( data );
             } else {
               resolve( data );
