@@ -17,7 +17,7 @@ div(style="width: 750px; margin: 0 auto;")
 
   .section.top
     .section__content
-      iframe(style="margin-left: -150px;", width="1050", height="590", src="https://www.youtube.com/embed/5a8LO7fptys?autoplay=1", frameborder="0", autoplay="true", allowfullscreen)
+      iframe(class="why-video", src="https://www.youtube.com/embed/5a8LO7fptys?autoplay=1", frameborder="0", autoplay="true", allowfullscreen)
   .section.available#headerAnchor
     .section__content
       .available__title.green Почему мы это делаем?
