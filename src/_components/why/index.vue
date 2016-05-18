@@ -105,7 +105,8 @@ div(style="width: 750px; margin: 0 auto;")
           href="#") Присоединяйтесь
       .__text-center
         a.together__tomain.main__link(v-link="{name: 'home'}")
-          button(class="btn btn_primary __orange __xl hello__btn fast__big__btn")На главную
+          button(class="btn btn_primary __orange __xl hello__btn fast__big__btn") На главную
+
 </template>
 
 <script>

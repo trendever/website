@@ -5,7 +5,7 @@ div
       v-if="isShowPopupSignup")
 
     popup-fast-signup(
-      v-if="isShowPopupFastSignup")
+      v-if="isShowPopupFastSignup && isNotWhy")
 
   router-view
 
@@ -75,7 +75,11 @@ div
       // }
 
     },
-
+    computed:{
+      isNotWhy(){
+        return this.$route.name !== 'why';
+      }
+    },
     components: {
       NotifyComponent,
       PopupFastSignup,
