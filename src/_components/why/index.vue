@@ -8,37 +8,16 @@
   all_shops = '/static/img/all_shops.jpg'
   focus = '/static/img/focus.jpg'
   earth = '/static/img/earth.png'
-div
+div(style="width: 750px; margin: 0 auto;")
   header-component(
     title='Почему Trendever?',
     show_on_elem="headerAnchor",
     :back-link="{name: 'home'}")
 
+
   .section.top
     .section__content
-      .available__title.green(style='padding-top: 40px') Почему шопинг #[br] в&nbsp;Instagram стал проще? #[br] Две причины #[.emoji.emoji_fing]
-
-    .section__content
-      .available__subtitle
-        span.green Первая.&nbsp;
-        span.free Все шопинг-тренды инстаграма в&nbsp;одном месте.
-      .available__text.free(style="margin-bottom: 0") Инста-модницы и блогеры ежедневно отбирают для вас новые товары. Следите за последними тенденциями в реальном времени и покупайте на #[a.main__link.green(v-link="{name: 'home'}") главной странице].
-
-    .section__content(style="position: relative; bottom: -60px;")
-      .available__subtitle
-        span.green Вторая.&nbsp;
-        span.free Покупать можно прямо в приложении Instagram.
-      .available__text.free.__last Следите за последними шопинг-трендами по тегу #[a.main__link.green(v-link="{name: 'guide'}") #trendever] и подписывайтесь на блогеров-партнеров Trendever. Любой товар можно купить, отметив в комментарии #[a.main__link.green(v-link="{name: 'guide'}") @wantit.]
-
-  .section
-    .section__content.intro-hero
-      .intro-hero__text.buy__text Покупайте прямо в инстаграме #[br] по отметке #[a.main__link.intro-hero__tag(v-link="{name: 'guide'}") @wantit]
-      img.intro-hero__img.cat(src=rocket_cat alt="")
-
-  .section.__text-center
-    a.btn.btn_primary.__inverse.__xl(
-      v-link="{name: 'guide'}") Узнайте как
-
+      iframe(class="why-video", width="750", height="420", src="https://www.youtube.com/embed/5a8LO7fptys?autoplay=1", frameborder="0", autoplay="true", allowfullscreen)
   .section.available#headerAnchor
     .section__content
       .available__title.green Почему мы это делаем?
@@ -104,8 +83,9 @@ div
       .available__text.__last Мы помогаем инстаграм-магазинам найти больше клиентов.
 
   .section.available.__text-center
-    a.btn.btn_primary.__inverse.__xl(
-      v-link="{name: 'info', params: {type: 'for_shop'}}") Оставьте заявку
+    a(
+      v-link="{name: 'info', params: {type: 'for_shop'}}")
+        button(class="btn btn_primary __orange __xl hello__btn fast__big__btn") Оставьте заявку
 
   .section.focus
     .section__content
@@ -124,7 +104,9 @@ div
         a.btn.btn_primary.__inverse.__xl(
           href="#") Присоединяйтесь
       .__text-center
-        a.together__tomain.main__link(v-link="{name: 'home'}") На главную
+        a.together__tomain.main__link(v-link="{name: 'home'}")
+          button(class="btn btn_primary __orange __xl hello__btn fast__big__btn") На главную
+
 </template>
 
 <script>
@@ -133,6 +115,9 @@ div
   var w = window;
 
   export default {
+    ready(){
+      window.scrollTo(0, 0);
+    },
     components: {
       HeaderComponent
     }

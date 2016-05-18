@@ -35,4 +35,14 @@
 			}
 		}
 	}
+	&-video{
+		margin-left: -150px;
+		width: 1050px;
+		height: 590px;
+		@media(--mobile){
+			width: 750px;
+			height: 420px;
+			margin-left: 0;
+		}
+	}
 }

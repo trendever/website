@@ -7,9 +7,9 @@ div
       .chat-header_cnt(v-show="getShopName")
         .chat-header_cnt_t {{ getShopName }}
         .chat-header_cnt_info
-          span #
+          span.chat-header_cnt_info-text
           | {{ getId }},
-          span  {{ getStatusName }}
+          span  {{ getStatusName.toLowerCase() }}
 
 
 
