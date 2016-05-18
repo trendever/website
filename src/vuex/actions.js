@@ -25,18 +25,14 @@ export const saveAuthData = ({ dispatch }, { phone, username, instagram }) => {
  */
 export const signup = ({ dispatch, state }) => {
   return new Promise((resolve, reject) => {
-    let _data = {
-      phone: state.auth.phone,
-      username: state.auth.username,
-      instagram: state.auth.instagram,
-    };
 
-    auth.signup(_data).then( () => {
+    auth.signup(state.auth.phone, state.auth.username, state.auth.instagram)
+    .then( () => {
       resolve(true);
     }).catch( error => {
       if (error === auth.ERROR_CODES.USER_ALREADY_EXISTS) {
 
-        return auth.sendPassword({phone: state.auth.phone}).then( () => {
+        return auth.sendPassword(state.auth.phone).then( () => {
             resolve(true);
         }).catch( error => {
           console.log(error);

@@ -62,9 +62,9 @@ div
 
     route: {
       canActivate({abort}){
-        // if (!authData(store.state).phone && !authData(store.state).username) {
-          // abort();
-        // }
+        if (!authData(store.state).phone && !authData(store.state).username) {
+          abort();
+        }
         return true;
       }
     },
@@ -117,8 +117,8 @@ div
       },
 
       onConfirm() {
-        var config = { code: this.code };
-        auth.confirmByCode(config).then( ({ user, token }) => {
+        auth.confirmByCode( this.authData.phone, this.code)
+        .then( ({ user, token }) => {
           this.onComplete(user, token);
         }).catch( error => {
           if (error === auth.ERROR_CODES.WRONG_CREDENTIALS) {
@@ -134,6 +134,7 @@ div
       },
 
       onErrorCode() {
+        console.log("on error");
         this.$set('errorCode', true);
         this.$set('text_header', TEXT_HEADER.ERROR);
         this.$set('code', '');
@@ -152,7 +153,7 @@ div
         this.$set('needNewSMS', false);
         setTimeout( () => this.$set('needNewSMS', true), 7000);
 
-        auth.sendPassword(config.phone).then( data => {
+        auth.sendPassword(this.authData.phone).then( data => {
           this.$router.go({ name: 'comfirm-sms' })
         })
 
