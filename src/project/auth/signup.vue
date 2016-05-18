@@ -157,7 +157,6 @@ div
           this.$router.go({ name: 'comfirm-sms' });
         }).catch( (error) => {
           this.onErrorPhone();
-          console.log(error);
         })
       },
 

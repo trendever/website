@@ -5,12 +5,7 @@ export const ERROR_CODES = {
       USER_NOT_EXISTS: 1,
       USER_ALREADY_EXISTS: 2,
       WRONG_CREDENTIALS: 3,
-      INCORRECT_PHONE_FORMAT: 6,
-};
-
-// private
-var CONFIG = {
-  phone: '',
+      INCORRECT_PHONE_FORMAT: 6
 };
 
 /**
@@ -19,16 +14,16 @@ var CONFIG = {
  * @param  {Object} config
  * @return {Promise<bool>}       true if send or code error
  */
-export function signup(config) {
+export function signup(phone, username, instagram) {
   // this for resend SMS (save locally params)
-  CONFIG = config ? config : CONFIG;
+  // CONFIG = config ? config : CONFIG;
 
   return new Promise( (resolve, reject) => {
-    let request = {phone: CONFIG.phone};
-    if (CONFIG.instagram) {
-      request.instagram_username = CONFIG.username;
+    let request = { phone };
+    if (instagram) {
+      request.instagram_username = username;
     } else {
-      request.username = CONFIG.username;
+      request.username = username;
     }
 
     channel.req("register", "auth", request).then( data => {
@@ -46,16 +41,14 @@ export function signup(config) {
 
 /**
  * Send password manually (to phone)
- * @param  {Object} config       object with data
- * @param  {string} config.phone user phone (formated +79990000000)
+ * @param  {string} phone user phone (formated +79990000000)
  * @return {Promise<bool>}       true if send or code error
  */
-export function sendPassword(config) {
-  var _config = config ? config : CONFIG;
+export function sendPassword(phone) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("send_password", "auth", {phone: _config.phone})
+    channel.req("send_password", "auth", {phone: phone})
     .then( data => {
       if (data.response_map.ErrorCode === ERROR_CODES.NO_ERRORS) {
         resolve(true);
@@ -71,8 +64,8 @@ export function sendPassword(config) {
 
 /**
  * Confirm by code from sms and get token with user data
- * @param  {Object} config       object with data
- * @param  {code}   config.code  code from sms
+ * @param  {string}   phone
+ * @param  {string}   code      code from sms
  *
  * RESOLVE
  * {
@@ -92,12 +85,12 @@ export function sendPassword(config) {
  *
  * REJECT ERROR_CODES {WRONG_CREDENTIALS, INCORRECT_PHONE_FORMAT}
  */
-export function confirmByCode(config) {
+export function confirmByCode(phone, code) {
 
   return new Promise( (resolve, reject) => {
 
     channel.req("login", "auth", {
-      phone: CONFIG.phone, password: config.code
+      phone: phone, password: code
     }).then( data => {
       if (!data.response_map.ErrorCode) {
         resolve(data.response_map);
@@ -105,7 +98,11 @@ export function confirmByCode(config) {
         reject(data.response_map.ErrorCode);
       }
     }).catch( error => {
-      console.error("confirmPhone", error);
+      if (!error.response_map || !error.response_map.ErrorCode) {
+        console.error("confirmPhone", error);
+        return;
+      }
+      reject(error.response_map.ErrorCode);
     });
 
   });
