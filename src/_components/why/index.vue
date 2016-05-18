@@ -17,7 +17,7 @@ div(style="width: 750px; margin: 0 auto;")
 
   .section.top
     .section__content
-      iframe(class="why-video", src="https://www.youtube.com/embed/5a8LO7fptys?autoplay=1", frameborder="0", autoplay="true", allowfullscreen)
+      iframe(class="why-video", width="750", height="420", src="https://www.youtube.com/embed/5a8LO7fptys?autoplay=1", frameborder="0", autoplay="true", allowfullscreen)
   .section.available#headerAnchor
     .section__content
       .available__title.green Почему мы это делаем?
@@ -114,6 +114,9 @@ div(style="width: 750px; margin: 0 auto;")
   var w = window;
 
   export default {
+    ready(){
+      window.scrollTo(0, 0);
+    },
     components: {
       HeaderComponent
     }
