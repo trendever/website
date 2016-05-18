@@ -10,7 +10,7 @@
       | {{{ msg.parts[0].content }}}
     .bubble_info
       .bubble_info_status(v-if="isOwnMessage")
-        i(:class="{'ic-check': isSent, 'ic-check-double': isRead}")
+        i(:class="{'ic-check': isSent, 'ic-check-double': isRead, 'ic-clock': isSending}")
 
 </template>
 
@@ -51,6 +51,9 @@
       },
       isOwnMessage() {
         return this.getCurrentMember.user_id === this.msg.user.user_id
+      },
+      isSending(){
+        return false;
       },
       isSent() {
         return !this.isRead

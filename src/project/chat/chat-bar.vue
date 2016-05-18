@@ -92,7 +92,7 @@ div
       txtMsg(msg) {
         this.$nextTick(() => {
           let inputMsg = this.$els.inputMsg;
-          const textHeight = 58;
+          const textHeight = window.matchMedia("(max-width: 750px)").matches ? 58: 32;
           const inpHeight = inputMsg.scrollHeight;
           inputMsg.style.height = (msg ? (inpHeight <= textHeight)? textHeight: inpHeight : textHeight)  + 'px';
         });

@@ -2,40 +2,43 @@
 .chat-header {
   &_cnt {
     color: white;
-
     &_t {
-      font-size: calc(36px / 2);
-
+      font-size: 26px;
+      line-height: 31.2px;
       @media(--mobile) {
         font-size: 36px;
+        line-height: 42px;
       }
     }
     &_info {
-      margin-top: 2px;
-
-      font-size: calc(28px / 2);
-
+      font-size: 16px;
+      line-height: 19.2px;
+      margin-top: -4px;
       @media(--mobile) {
-        margin-top: 4px;
-
         font-size: 28px;
+        line-height: 33.6px;
+        margin-top: 4px;
+        &-text:after{
+          content:'#';
+          margin-right: 0;
+        }
+      }
+      &-text:after{
+        margin-right: 5px;
+        content:'Заказ'
       }
     }
   }
   &_photo {
     position: absolute 7px 30px 0 *;
-
     overflow: hidden;
-
     border-radius: 50%;
-
     size: calc(70px / 2);
     img {
       width: 100%;
     }
     @media(--mobile) {
       top: 16px;
-
       size: 70px;
     }
   }
