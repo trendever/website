@@ -1,8 +1,9 @@
 <style src="./styles/hero.pcss"></style>
 <template lang="jade">
 .section.smallHero(v-if="isAuth")
-  i.smallHero__logo.ic-logo
-    i.smallHero__logo-apostrophe
+  a(v-link="{ path: '/why' }")
+    i.smallHero__logo.ic-logo
+        i.smallHero__logo-apostrophe
 .section.hero(v-if="!isAuth")
   .section__content.hero__content
     .hero__content__img
@@ -34,7 +35,6 @@
 
     .hero__content__logo.ic-logo
     .hero__content__description Шопинг в Instagram стал проще
-
 </template>
 <script type="text/babel">
     import { isAuth } from 'vuex/getters';
