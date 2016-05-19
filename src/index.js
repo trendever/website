@@ -14,7 +14,7 @@ require('es6-promise').polyfill();
 // Log errors
 if (config.raven.enabled) {
   Raven.config(config.raven.url).install();
-  window.s = store;
+
   window.onerror = (errorMsg, url, lineNumber, colno, error) => {
     Raven.captureException(error, {extra: {
       user: store.state.user,
