@@ -93,7 +93,7 @@ div
       focusInput(){
         if (window.browser.iphone) {
           this.normalizeScroll();
-          this.scrollEvent = listen(window, 'scroll', self.normalizeScroll.bind(this));
+          this.scrollEvent = listen(window, 'scroll', this.normalizeScroll.bind(this));
         }
       },
 
