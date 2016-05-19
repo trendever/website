@@ -74,10 +74,10 @@ div.scroll-cnt
       messages.onMsg(this.onMsg);
     },
     ready(){
+      this.scrollCnt = document.querySelector(".scroll-cnt");
       this.loadLeads().then(()=>{
         this.onScroll();
       });
-      this.scrollCnt = document.querySelector(".scroll-cnt");
     },
     beforeDestroy(){
       leads.removeStatusListener(this.onStatus);
@@ -93,7 +93,9 @@ div.scroll-cnt
         this.scrollListener = listen( this.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
       },
       offScroll(){
-        this.scrollListener.remove();
+        if (this.scrollListener) {
+          this.scrollListener.remove();
+        }
       },
       scrollHandler(){
         let needUpdate     = false;

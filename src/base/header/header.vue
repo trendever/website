@@ -77,7 +77,9 @@ export default {
     }
   },
   beforeDestroy() {
-    this.scrollEvent.remove();
+    if (this.scrollEvent) {
+      this.scrollEvent.remove();
+    }
   },
   ready() {
     this.scrollCnt = document.querySelector(".scroll-cnt");

@@ -46,8 +46,13 @@ div.scroll-cnt
     },
     route: {
       activate({to: {params: { id }}}) {
-        return this.openProduct(+id).catch( error => {
-          this.$route.router.go({name: '404'});
+        let self = this;
+
+        return this.openProduct(+id).catch( (error) => {
+          Raven.captureException(new Error("Product doesn't exists or error"), {
+            extra: {errorData: error.response, id: id}
+          });
+          self.$router.go({name: '404'});
         })
       },
     },
