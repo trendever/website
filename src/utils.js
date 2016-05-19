@@ -25,7 +25,7 @@ export const formatPhone = (phonenum, simpleOut) => {
 export const urlThumbnail = (url, size = null, originalWidth = null, originalHeight = null) => {
     /**
      *  Changed instagram photo url, for crop image.
-     *  Supports sizes: 150, 306, 480, 640 (width=height)
+     *  Supports sizes: 150, 306, 480, 640, 750 (width=height)
      *  if width and height not size, then will get original
      * @type {string} url
      * @type {number} size
@@ -45,6 +45,23 @@ export const urlThumbnail = (url, size = null, originalWidth = null, originalHei
       }
     }
     return "https:" + "//" + parser.host + source_path.join("/");
+};
+
+ /**
+  * Conserve aspect ratio of the orignal region. Useful when shrinking/enlarging
+  * images to fit into a certain area.
+  *
+  * @param {Number} srcWidth Source area width
+  * @param {Number} srcHeight Source area height
+  * @param {Number} maxWidth Fittable area maximum available width
+  * @param {Number} maxHeight Fittable area maximum available height
+  * @return {Object} { width, heigth }
+  */
+export const ratioFit = function(srcWidth, srcHeight, maxWidth, maxHeight) {
+
+    var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+
+    return { width: srcWidth*ratio, height: srcHeight*ratio };
 };
 
 

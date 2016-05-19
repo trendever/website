@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="scroll-cnt">
     <header-component
             title="Условия использования"
             show_on_elem="headerAnchor"></header-component>

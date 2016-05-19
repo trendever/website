@@ -13,7 +13,7 @@
 
   .photos__list(v-el:photos-list, v-if="object_list")
     template(v-for="product in object_list")
-      photo-item(:product="product")
+      photo-item(:product="product", :animate="animateShow")
 
   .photos__more-wrap(v-if="hasMoreProducts")
     .photos__more(
@@ -50,9 +50,13 @@
       } from 'vuex/getters';
 
     const PRODUCTS_PER_PAGE = 9;
+    var scrollY = 0;
 
     export default {
       ready(){
+        this.scrollCnt = document.querySelector(".scroll-cnt");
+        this.scrollCnt.scrollTop = scrollY;
+
         if (!this.getColumnNumber) {
           let columnNumber = 3;
           if( document.body.offsetWidth <= 750) {
@@ -60,20 +64,24 @@
           }
           this.setColumnNumber(columnNumber);
         }
+        if (this.isInfinityProducts) {
+          this.enableInfinityScroll();
+        }
       },
       data: () => ({
         showBillEmpty: false,
         tag_list: [],
         search: '',
         scrollEvent: null,
+        animateShow: true,
       }),
 
       activate(done) {
-        if (this.isInfinityProducts) {
-          this.enableInfinityScroll();
-        }
+
         if (!this.object_list.length) {
           this.loadProducts();
+        } else {
+          this.animateShow = false;
         }
         done();
       },
@@ -105,10 +113,13 @@
         enableInfinityScroll(e, show_more) {
           var self = this;
           // Add event for infinity scroll
-          this.scrollEvent = listen(window, 'optimizedScroll', function(){
-            var pos_scroll  = window.pageYOffset || document.documentElement.scrollTop;
+
+          self.scrollEvent = listen(self.scrollCnt, 'scroll', function(){
+            scrollY = self.scrollCnt.scrollTop;
+
             var full_scroll = (self.$els.photosList !== null) ? self.$els.photosList.offsetHeight : 0;
-            var diff_scroll = full_scroll - pos_scroll;
+            var diff_scroll = full_scroll - self.scrollCnt.scrollTop;
+
 
             if (diff_scroll < 2500 && !self.isWaitReponseProducts) {
               self.showMore()
@@ -117,6 +128,7 @@
         },
         showMore() {
           if (!this.hasMoreProducts){ return; }
+          this.animateShow = true;
 
           let last_product = this.object_list[this.object_list.length-1];
 
@@ -150,7 +162,10 @@
           return options;
         },
         loadProducts() {
-          this.$nextTick(() => this.getPartProducts(this.getSearchOptions()))
+          this.$nextTick(() => {
+            this.getPartProducts(this.getSearchOptions());
+            this.animateShow = true;
+          })
         }
       },
       watch: {

@@ -1,11 +1,10 @@
 @import "base/vars/vars.pcss";
-
 .photo {
   &__ {
     &container {
       margin-bottom: 5px;
 
-      &-three{
+      &-three {
         width: calc(33.333% - 2px);
         margin-right: 3px;
 
@@ -13,15 +12,14 @@
           margin-right: 0;
         }
         @media (--mobile) {
-          margin-bottom: 0;
+          margin-bottom: 2px;
 
           .photo__description {
             display: none;
           }
         }
-
       }
-      &-two{
+      &-two {
         width: calc(50% - 1.5px);
         margin-right: 3px;
 
@@ -31,13 +29,28 @@
           margin-right: 0;
         }
       }
-
     }
     &link {
+      position: relative;
+
       display: block;
+
+      width: 100%;
+      padding-bottom: 100%;
+
+      background: whitesmoke;
+
+      div.animate {
+        transition: opacity 500ms ease-in-out;
+      }
     }
     &img {
+      position: absolute;
+
+      display: block;
+
       width: 100%;
+      height: 100%;
     }
     &description {
       display: flex;
@@ -48,16 +61,16 @@
       align-content: center;
       justify-content: space-between;
     }
-    &summ{
+    &summ {
       text-align: right;
 
       flex-grow: 0.8;
       flex-shrink: 0;
-      span{
+      span {
         margin-right: 5px;
       }
     }
-    &title{
+    &title {
       overflow: hidden;
 
       padding-right: 5px;

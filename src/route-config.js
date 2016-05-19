@@ -106,7 +106,7 @@ export function configRouter(router) {
   });
 
   router.afterEach(function(transition) {
-    window.body.scrollTop = 0;
+    // window.body.scrollTop = 0;
 
     // Mixpanel
     var data = {

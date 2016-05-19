@@ -1,27 +1,26 @@
 <style src="./styles/chat.pcss"></style>
 <template lang="jade">
-div
-  .chat-cnt
-    chat-header(:notify-count='conversationNotifyCount')
-    .section.top.bottom
-      .chat.section__content
-        .chat_messages
-          //- chat-msg-date
-          template(v-for="msg in getMessages", track-by="$index")
+.chat-cnt.scroll-cnt
+  chat-header(:notify-count='conversationNotifyCount')
+  .section.top.bottom
+    .chat.section__content
+      .chat_messages
+        //- chat-msg-date
+        template(v-for="msg in getMessages", track-by="$index")
 
-            chat-msg-product(
-              v-if="msg.parts[0].mime_type === 'text/json'",
-              :msg="msg")
+          chat-msg-product(
+            v-if="msg.parts[0].mime_type === 'text/json'",
+            :msg="msg")
 
-            chat-msg(
-              v-if="msg.parts[0].mime_type === 'text/plain'",
-              :msg="msg")
+          chat-msg(
+            v-if="msg.parts[0].mime_type === 'text/plain'",
+            :msg="msg")
 
-            chat-msg-img(
-              v-if="isImage(msg.parts[0].mime_type)",
-              :msg="msg")
+          chat-msg-img(
+            v-if="isImage(msg.parts[0].mime_type)",
+            :msg="msg")
 
-      chat-bar
+    chat-bar
 </template>
 
 <script type="text/babel">
@@ -80,6 +79,9 @@ div
         );
       },
     },
+    ready(){
+      this.scrollCnt = document.querySelector(".scroll-cnt");
+    },
     vuex: {
       actions: {
         setConversation,
@@ -105,7 +107,7 @@ div
         this.applyStatus(lead.status);
       },
       onScroll(){
-        this.scrollListener = listen( window, 'scroll', this.scrollHandler.bind( this ) );
+        this.scrollListener = listen( this.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
       },
       offScroll(){
         this.scrollListener.remove();
@@ -125,28 +127,29 @@ div
       scrollHandler(){
 
         let needUpdate = false;
+        var self = this;
 
         if ( !needUpdate ) {
 
-          const pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
+          const pos_scroll = this.scrollCnt.scrollTop;
 
           if ( pos_scroll < 1500 ) {
 
             needUpdate = true;
             this.offScroll();
 
-            const heightBefore = document.body.scrollHeight;
+            const heightBefore = this.scrollCnt.scrollHeight;
 
             this.loadMessage().then( ( messages ) => {
               this.$nextTick( () => {
 
-                const heightAfter = document.body.scrollHeight;
+                const heightAfter = self.scrollCnt.scrollHeight;
 
                 if ( messages !== null ) {
 
                   needUpdate = false;
-                  window.scrollTo( 0, heightAfter - heightBefore + pos_scroll );
-                  this.onScroll();
+                  self.scrollCnt.scrollTop = heightAfter - heightBefore + pos_scroll;
+                  self.onScroll();
 
                 }
 
@@ -156,7 +159,7 @@ div
         }
       },
       goToBottom(){
-        window.scrollTo(0, document.body.scrollHeight);
+        this.scrollCnt.scrollTop = this.scrollCnt.scrollHeight;
       },
     },
     components: {

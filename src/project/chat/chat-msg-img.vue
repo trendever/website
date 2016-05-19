@@ -3,7 +3,7 @@
 
 .chat-row(:class="getSide")
   span(class="bubble_info_time") {{ datetime }}
-  .chat-msg.bubble
+  a.chat-msg.bubble(:href="getImg", target="_blank")
     .chat-msg_t(v-if="!isOwnMessage")
       | {{{ getUsername }}}
     img(:src="getImg", class="chat-msg-img", v-bind:class="{'chat-msg-img-opacity':!isLoaded }")
@@ -62,7 +62,7 @@
 
         if ( cnt.thumbs && cnt.thumbs.big ) {
 
-          return cnt.thumbs.bog
+          return cnt.thumbs.big
 
         }
 
