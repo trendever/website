@@ -11,10 +11,12 @@ article.product-post
       .product-post__info__supplier {{ openedProduct.product.supplier.instagram_username }}
       .product-post__added добавлено&nbsp;
         span.product-post__user-name {{ openedProduct.product.mentioned.instagram_username}}
-  main.product-post__body
+  main.product-post__body(v-el:image-body)
     img.product-post__image(
       :src="IgImageUrl",
-      :width="obj.instagram_image_width")
+      :width="width",
+      :height="height",
+      )
   section.product-post__bottom-photo(v-for="item in openedProduct.product.items")
     .product-post__price-container
       template(v-if="item.discount_price")
@@ -50,7 +52,7 @@ article.product-post
 
 <script type="text/babel">
   import listen from 'event-listener';
-  import { urlThumbnail } from 'utils';
+  import { urlThumbnail, ratioFit } from 'utils';
   import { createLead } from 'vuex/actions/lead.js';
   import { openedProduct, isAuth } from 'vuex/getters';
   import * as leads from 'services/leads';
@@ -58,12 +60,20 @@ article.product-post
   export default {
     data(){
       return {
-        IgImageUrl: "",
+        IgImageUrl: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7", // transparent (for remove browser borders)
         width: "",
         height: "",
+
         Mobile: window.browser.mobile,
       };
     },
+
+    beforeDestroy() {
+      if (this.resizeEvent) {
+        this.resizeEvent.remove();
+      }
+    },
+
     vuex: {
       actions: {
         createLead,
@@ -81,12 +91,23 @@ article.product-post
     },
 
     ready: function() {
-      if (!this.tryLoadCachedImage()) {
-        this.loadFullImage();
-      };
+      this.loadFullImage();
+
+      this.updateImageSize();
+
+      this.resizeEvent = listen(window, 'optimizedResize', this.updateImageSize.bind( this ))
     },
 
     methods: {
+
+      updateImageSize(){
+        let sizes = ratioFit(this.obj.instagram_image_width,
+                            this.obj.instagram_image_height,
+                            this.$els.imageBody.offsetWidth,
+                            this.obj.instagram_image_height);
+        this.width = sizes.width;
+        this.height = sizes.height;
+      },
 
       price (item) {
         return (item.price && !item.discount_price);
@@ -121,24 +142,14 @@ article.product-post
         }
       },
 
-      tryLoadCachedImage() {
-        if (!this.openedProduct.cachedImages) {
-          return false;
-        }
-        let obj = this.openedProduct.product;
-
-        // load thumbnail first.
-        this.IgImageUrl = urlThumbnail(obj.instagram_image_url, 150);
-
-        this.loadFullImage();
-      },
 
       loadFullImage() {
         // Load and set full image.
         let img = new Image();
         let obj = this.openedProduct.product;
-        img.load(urlThumbnail(obj.instagram_image_url), null, null, () => {
-          this.IgImageUrl = urlThumbnail(obj.instagram_image_url);
+        let url = urlThumbnail(obj.instagram_image_url, 750);
+        img.load(url, null, null, () => {
+          this.IgImageUrl = url;
         });
       }
     },

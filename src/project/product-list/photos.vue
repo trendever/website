@@ -13,7 +13,7 @@
 
   .photos__list(v-el:photos-list, v-if="object_list")
     template(v-for="product in object_list")
-      photo-item(:product="product")
+      photo-item(:product="product", :animate="animateShow")
 
   .photos__more-wrap(v-if="hasMoreProducts")
     .photos__more(
@@ -73,12 +73,15 @@
         tag_list: [],
         search: '',
         scrollEvent: null,
+        animateShow: true,
       }),
 
       activate(done) {
 
         if (!this.object_list.length) {
           this.loadProducts();
+        } else {
+          this.animateShow = false;
         }
         done();
       },
@@ -125,6 +128,7 @@
         },
         showMore() {
           if (!this.hasMoreProducts){ return; }
+          this.animateShow = true;
 
           let last_product = this.object_list[this.object_list.length-1];
 
@@ -158,7 +162,10 @@
           return options;
         },
         loadProducts() {
-          this.$nextTick(() => this.getPartProducts(this.getSearchOptions()))
+          this.$nextTick(() => {
+            this.getPartProducts(this.getSearchOptions());
+            this.animateShow = true;
+          })
         }
       },
       watch: {
