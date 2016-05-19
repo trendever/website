@@ -8,13 +8,19 @@ import { throttleEvent } from 'utils';
 import { configRouter } from './route-config';
 import InitFilters from './filters';
 import InitValidators from './validators';
+import store from 'vuex/store';
 require('es6-promise').polyfill();
 
 // Log errors
 if (config.raven.enabled) {
   Raven.config(config.raven.url).install();
+  window.s = store;
   window.onerror = (errorMsg, url, lineNumber, colno, error) => {
-    Raven.captureException(error);
+    Raven.captureException(error, {extra: {
+      user: store.state.user,
+      converstation_id: store.state.converstation ? store.state.converstation.id : null,
+      auth: store.state.auth,
+    }});
   };
 }
 
@@ -51,5 +57,5 @@ window.router = router;
 FastClick.attach(document.body, {});
 
 // Throttled events
-throttleEvent("scroll", "optimizedScroll");
+// throttleEvent("scroll", "optimizedScroll");
 throttleEvent("resize", "optimizedResize");

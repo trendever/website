@@ -1,3 +1,4 @@
+/* globals Raven */
 import * as types from './mutation-types';
 import * as auth from 'services/auth';
 import * as products from 'services/products.js';
@@ -167,7 +168,7 @@ export const openProduct = ({ dispatch, state }, id) => {
       resolve({product, cachedImages: false});
       return;
     })
-    .catch( error => {
+    .catch( (error) => {
       reject(error);
     });
 

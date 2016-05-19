@@ -1,3 +1,4 @@
+/* global Raven */
 import store from 'vuex/store';
 import { getProfile, removeToken } from 'services/profile';
 import Store from './store';
@@ -20,7 +21,7 @@ const Private = new WeakMap();
 class Channel {
   constructor() {
 
-    const storage      = new Store();
+    const storage    = new Store();
     const model      = new Model( storage );
     const controller = new Controller( model, storage );
 
@@ -47,7 +48,10 @@ class Channel {
           function( data ) {
             // ToDo: update if after refactoring protocol
             if ( !data.log_list[ 0 ] ) {
-              alert( "Please return log_list with 1 log" );
+              Raven.captureException(new Error("Product doesn't exists or error"), {
+                extra: {errorData: data},
+                level: "fatal"
+              });
             }
             data.log_map = data.log_list[ 0 ];
             if ( data.log_map.level_int === error_codes.err ) {
