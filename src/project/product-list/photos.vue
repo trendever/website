@@ -50,15 +50,22 @@
       } from 'vuex/getters';
 
     const PRODUCTS_PER_PAGE = 9;
+    var scrollY = 0;
 
     export default {
       ready(){
+        this.scrollCnt = document.querySelector(".scroll-cnt");
+        this.scrollCnt.scrollTop = scrollY;
+
         if (!this.getColumnNumber) {
           let columnNumber = 3;
           if( document.body.offsetWidth <= 750) {
             columnNumber = 2;
           }
           this.setColumnNumber(columnNumber);
+        }
+        if (this.isInfinityProducts) {
+          this.enableInfinityScroll();
         }
       },
       data: () => ({
@@ -69,9 +76,7 @@
       }),
 
       activate(done) {
-        if (this.isInfinityProducts) {
-          this.enableInfinityScroll();
-        }
+
         if (!this.object_list.length) {
           this.loadProducts();
         }
@@ -105,10 +110,13 @@
         enableInfinityScroll(e, show_more) {
           var self = this;
           // Add event for infinity scroll
-          this.scrollEvent = listen(window, 'optimizedScroll', function(){
-            var pos_scroll  = window.pageYOffset || document.documentElement.scrollTop;
+
+          self.scrollEvent = listen(self.scrollCnt, 'scroll', function(){
+            scrollY = self.scrollCnt.scrollTop;
+
             var full_scroll = (self.$els.photosList !== null) ? self.$els.photosList.offsetHeight : 0;
-            var diff_scroll = full_scroll - pos_scroll;
+            var diff_scroll = full_scroll - self.scrollCnt.scrollTop;
+
 
             if (diff_scroll < 2500 && !self.isWaitReponseProducts) {
               self.showMore()

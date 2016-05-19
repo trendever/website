@@ -1,6 +1,6 @@
 <style src="./style.pcss"></style>
 <template lang="jade">
-div
+div.scroll-cnt
   .chat-list-cnt(v-if="isDone")
     header-component(:title="getTitle", :left-btn-show="false")
       .header__nav(slot="content" v-if="getIsTab")
@@ -77,6 +77,7 @@ div
       this.loadLeads().then(()=>{
         this.onScroll();
       });
+      this.scrollCnt = document.querySelector(".scroll-cnt");
     },
     beforeDestroy(){
       leads.removeStatusListener(this.onStatus);
@@ -89,7 +90,7 @@ div
         this.applyStatus(lead, lead.status);
       },
       onScroll(){
-        this.scrollListener = listen( window, 'scroll', this.scrollHandler.bind( this ) );
+        this.scrollListener = listen( this.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
       },
       offScroll(){
         this.scrollListener.remove();
@@ -97,9 +98,8 @@ div
       scrollHandler(){
         let needUpdate     = false;
         if ( !needUpdate ) {
-          const pos_scroll = window.pageYOffset || document.documentElement.scrollTop;
-          const full_scroll = document.body.scrollHeight;
-          const diff_scroll = full_scroll - pos_scroll;
+          const full_scroll = this.scrollCnt.scrollHeight;
+          const diff_scroll = full_scroll - this.scrollCnt.scrollTop;
           if ( diff_scroll < 2500 ) {
             needUpdate = true;
             this.offScroll();
@@ -118,7 +118,7 @@ div
     },
     watch:{
       getTab(){
-        window.scrollTo(0, 0);
+        this.scrollCnt.scrollTop = 0;
       }
     },
     components: {

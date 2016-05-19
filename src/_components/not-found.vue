@@ -1,5 +1,5 @@
 <template lang="jade">
-div
+.scroll-cnt
   header-component(title="Страница не существует")
   .section.main(style="margin-top: 140px")
     .section__content(style="text-align:center;")

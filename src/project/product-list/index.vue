@@ -1,17 +1,18 @@
 <template lang="jade">
 // header-component( title="Новые тренды", show_on_elem="headerAnchor", :is_secondary="true", scroll-to-element='tags')
 
-hero-component
-caption-component
+.scroll-cnt
+  hero-component
+  caption-component
 
-.section.main
-  .section__content
-    // register-offer
-    // tags-component
-    search-component
-    photos-component(id="headerAnchor")
-    footer-component
-    navbar-component(current="feed")
+  .section.main
+    .section__content
+      // register-offer
+      // tags-component
+      search-component
+      photos-component(id="headerAnchor")
+      footer-component
+      navbar-component(current="feed")
 </template>
 
 <script type="text/babel">

@@ -67,20 +67,22 @@
       }
     },
     ready(){
-        this.gluingSearch = listen( window, 'optimizedScroll', () => {
-          if ( this.isAuth ) {
-            let searchHeight = 50;
-            if ( window.matchMedia( "(max-width: 750px)" ).matches ) {
-              searchHeight = 100;
-            }
-            const scroll = window.scrollY || window.body.scrollTop;
-            if ( scroll > searchHeight ) {
-              this.$set( 'searchGlued', true );
-            } else {
-              this.$set( 'searchGlued', false );
-            }
+      this.scrollCnt = document.querySelector(".scroll-cnt");
+
+      this.gluingSearch = listen( this.scrollCnt, 'scroll', () => {
+        if ( this.isAuth ) {
+          let searchHeight = 50;
+          if ( window.matchMedia( "(max-width: 750px)" ).matches ) {
+            searchHeight = 100;
           }
-        } );
+
+          if ( this.scrollCnt.scrollTop > searchHeight ) {
+            this.$set( 'searchGlued', true );
+          } else {
+            this.$set( 'searchGlued', false );
+          }
+        }
+      } );
     },
     beforeDestroy(){
       if ( this.isAuth ) {

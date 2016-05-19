@@ -6,8 +6,14 @@ div
     .chat-bar_menu-btn(@click="setShowMenu(true)")
       i.ic-menu-light
     .chat-bar_input
-      textarea(placeholder="Введите сообщение", v-model="txtMsg", v-el:input-msg)
-    .chat-bar_send-btn(@click.prevent="send($event)", :class="{'__active': !!txtMsg}")
+      textarea(placeholder="Введите сообщение",
+               v-model="txtMsg",
+               v-el:input-msg,
+               @focus="focusInput",
+               @blur="blurInput($event)")
+    .chat-bar_send-btn(v-on:mousedown="send($event)",
+                       v-on:touchstart="send($event)",
+                       :class="{'__active': !!txtMsg}")
       i.ic-send-plane
 
   chat-menu
@@ -15,8 +21,10 @@ div
 </template>
 
 <script type="text/babel">
+  import listen from 'event-listener';
+
   import {
-          getId,
+    getId,
     getCurrentMember,
     getStatus,
     getShowMenu
@@ -40,6 +48,13 @@ div
         stringWillSend: "",
       };
     },
+
+    beforeDestroy() {
+      if (this.scrollEvent) {
+        this.scrollEvent.remove();
+      }
+    },
+
     vuex: {
       actions: {
         createMessage,
@@ -55,14 +70,44 @@ div
     },
 
     methods: {
+      normalizeScroll() {
+        // Hard hack for ios jumping, why open keyboard
+        if (window.browser.iphone) {
+          console.log(window.scrollY);
+          if (window.scrollY === 446) {
+             window.scrollTo(0, 427);
+          } else if (window.scrollY === 510) {
+            window.scrollTo(0, 491);
+          }
+        }
+      },
+
+      blurInput(event){
+        if (window.browser.iphone) {
+          if (this.scrollEvent) {
+            this.scrollEvent.remove();
+          }
+        }
+      },
+
+      focusInput(){
+        if (window.browser.iphone) {
+          this.normalizeScroll();
+          this.scrollEvent = listen(window, 'scroll', function() {
+            self.normalizeScroll();
+          });
+        }
+      },
+
       addNewLine(){
         this.stringWillSend = this.txtMsg.trim().split( '\n' ).reduce( ( prevValue, item ) => {
           return prevValue + `${item}<br>`
         }, '' );
         this.stringWillSend = `<p>${this.stringWillSend}</p>`.trim();
       },
-      send () {
-        this.$els.inputMsg.focus();
+      send (e) {
+        e.stopPropagation();
+
         const txtMsg = this.txtMsg.trim();
         this.addNewLine();
         if ( !txtMsg.length ) {

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="scroll-cnt">
     <header-component
             title='Instagram + Trendever = <i class="ic-heart red"></i>'
             show_on_elem="headerAnchor"></header-component>

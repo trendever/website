@@ -1,5 +1,5 @@
 <template lang="jade">
-div
+.scroll-cnt
   header-component(title="Токен авторизации")
   .section.main(style="margin-top: 110px")
     .section__content(style="text-align:center;")

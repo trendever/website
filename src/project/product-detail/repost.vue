@@ -1,6 +1,6 @@
 <style src="./repost.pcss"></style>
 <template lang="jade">
-div
+.scroll-cnt
   .repost(:style="{height: height}")
     .info__close(@click="back"): i.ic-close
     .crop
