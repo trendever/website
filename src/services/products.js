@@ -131,7 +131,7 @@ export function find({ limit, offset, from_id, direction,
  *     ]
  *   }
  *
- * REJECT (one of ERROR_CODES)
+ * REJECT (one of ERROR_CODES, response)
  */
 export function get(id) {
 
@@ -143,13 +143,12 @@ export function get(id) {
         if (data.response_map.count > 0) {
           resolve(data.response_map.object_list[0]);
         } else {
-          reject(ERROR_CODES.NOT_FOUND);
+          reject(ERROR_CODES.NOT_FOUND, data);
         }
 
     }).catch( error => {
 
-      console.error("products Get", error);
-      reject(ERROR_CODES.SERVER_ERROR);
+      reject({ code: ERROR_CODES.SERVER_ERROR, response: error });
 
     });
 

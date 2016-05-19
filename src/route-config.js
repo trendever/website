@@ -91,6 +91,10 @@ export function configRouter(router) {
 
     // not found handler
     '*': {
+      component: require('_components/not-found.vue')
+    },
+
+    '/404': {
       name: '404',
       component: require('_components/not-found.vue')
     }
@@ -106,7 +110,6 @@ export function configRouter(router) {
   });
 
   router.afterEach(function(transition) {
-    // window.body.scrollTop = 0;
 
     // Mixpanel
     var data = {
