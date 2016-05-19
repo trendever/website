@@ -12,11 +12,13 @@ article.product-post
       .product-post__added добавлено&nbsp;
         span.product-post__user-name {{ openedProduct.product.mentioned.instagram_username}}
   main.product-post__body(v-el:image-body)
-    img.product-post__image(
-      :src="IgImageUrl",
-      :width="width",
-      :height="height",
-      )
+    div(v-bind:style="{ opacity: imageOpacity }",
+        :class="{'__animate': animate}")
+      img.product-post__image(
+        :src="IgImageUrl",
+        :width="width",
+        :height="height",
+        )
   section.product-post__bottom-photo(v-for="item in openedProduct.product.items")
     .product-post__price-container
       template(v-if="item.discount_price")
@@ -63,7 +65,9 @@ article.product-post
         IgImageUrl: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7", // transparent (for remove browser borders)
         width: "",
         height: "",
+        imageOpacity: 0,
 
+        animate: true,
         Mobile: window.browser.mobile,
       };
     },
@@ -142,7 +146,6 @@ article.product-post
         }
       },
 
-
       loadFullImage() {
         // Load and set full image.
         let img = new Image();
@@ -150,6 +153,7 @@ article.product-post
         let url = urlThumbnail(obj.instagram_image_url, 750);
         img.load(url, null, null, () => {
           this.IgImageUrl = url;
+          this.imageOpacity = 1;
         });
       }
     },
