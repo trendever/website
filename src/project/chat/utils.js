@@ -10,6 +10,7 @@ export const formatTime = unixtime => formatDatetime(unixtime).split(' ')[1];
 export const formatPastTime = ( unixtime ) => {
   const dateLast = new Date( unixtime * 1000 );
   const dateNow  = new Date( Date.now() );
+  const seconds = dateNow.getSeconds() - dateLast.getSeconds();
   const minutes = dateNow.getMinutes() - dateLast.getMinutes();
   const hours   = dateNow.getHours() - dateLast.getHours();
   const days    = dateNow.getDay() - dateLast.getDay();
@@ -54,4 +55,41 @@ export const formatPastTime = ( unixtime ) => {
   if ( minutes > 0 ) {
     return `${minutes} мин`;
   }
+
+  return `${seconds} сек`;
+};
+
+export const formatMonth = ( unixtime ) => {
+  const date = new Date( unixtime * 1000 );
+  return `${date.getDay()} ${
+    {
+      '1': 'января',
+      '2': 'февраля',
+      '3': 'марта',
+      '4': 'апреля',
+      '5': 'мая',
+      '6': 'июня',
+      '7': 'июля',
+      '8': 'августа',
+      '9': 'сентября',
+      '10': 'октября',
+      '11': 'ноября',
+      '12': 'декабря'
+    }[ date.getMonth() ]
+    }`;
+};
+
+export const escapeHtml = ( string ) => {
+  return String( string ).replace( /[&<>"'`=\/]/g, function fromEntityMap( s ) {
+    return {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+      '/': '&#x2F;',
+      '`': '&#x60;',
+      '=': '&#x3D;'
+    }[ s ];
+  } );
 };

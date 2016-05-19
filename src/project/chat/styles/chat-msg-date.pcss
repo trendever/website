@@ -1,8 +1,8 @@
 @import "base/vars/vars.pcss";
 .chat-msg-date {
   display: inline-block;
-  margin-bottom: 20px;
-  padding: 2px 34px;
+  margin-bottom: 10px;
+  text-align: center;
   border-radius: 20px;
   background: rgba(0, 0, 0, 0.3);
 
@@ -10,6 +10,15 @@
     display: block;
     margin-top: 4px;
     color: white;
-    font-size: 28px;
+    @media(--mobile){
+      width: 182px;
+      height: 40px;
+      font-size: 28px;
+      line-height: 33.6px;
+    }
+    width: 136.5px;
+    height: 30px;
+    font-size: 20px;
+    line-height: 24px;
   }
 }

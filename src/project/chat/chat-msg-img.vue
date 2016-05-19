@@ -1,4 +1,4 @@
-<style src="./styles/chat-msg.pcss"></style>
+<style src="./styles/chat-msg-img.pcss"></style>
 <template lang="jade">
 
 .chat-row(:class="getSide")

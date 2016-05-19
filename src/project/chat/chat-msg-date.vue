@@ -2,11 +2,17 @@
 <template lang="jade">
 .chat-row.__center
   .chat-msg-date
-    span 22 апреля
+    span {{getCreateData}}
 
 </template>
 
 <script>
+  import {getCreateData} from 'vuex/getters/chat.js'
   export default{
+    vuex:{
+      getters:{
+        getCreateData
+      }
+    }
   }
 </script>

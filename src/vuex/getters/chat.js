@@ -1,4 +1,5 @@
 import * as leads from 'services/leads';
+import {formatMonth} from 'project/chat/utils';
 
 export const getId = ({conversation}) => conversation.id;
 export const getMessages = ({conversation}) => conversation.messages;
@@ -52,4 +53,7 @@ export const getInviteShop           = ( { conversation:{ lead } } ) => {
 };
 export const getInviteCustomer       = ( { conversation:{ lead } } ) => {
 	return lead.customer.has_phone;
+};
+export const getCreateData = ({ conversation:{ lead } }) => {
+	return formatMonth(lead.chat.recent_message.created_at);
 };

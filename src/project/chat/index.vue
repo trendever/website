@@ -6,9 +6,8 @@ div
     .section.top.bottom
       .chat.section__content
         .chat_messages
+          //- chat-msg-date
           template(v-for="msg in getMessages", track-by="$index")
-
-            //- chat-msg-date
 
             chat-msg-product(
               v-if="msg.parts[0].mime_type === 'text/json'",
