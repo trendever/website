@@ -47,7 +47,6 @@ div.scroll-cnt
     route: {
       activate({to: {params: { id }}}) {
         let self = this;
-        sdf
 
         return this.openProduct(+id).catch( (error) => {
           Raven.captureException(new Error("Product doesn't exists or error"), {
