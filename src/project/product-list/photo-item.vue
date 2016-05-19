@@ -1,8 +1,12 @@
 <template lang="jade">
-.photo__container(class="{{ classForColumn }}")
+.photo__container(class="{{ classForColumn }}", v-if="!error")
   a.photo__link(
     v-link="{name: 'product_detail', params: {id: product.id}}")
-    img.photo__img(:src="product.instagram_image_url | url_thumbnail 480 product.instagram_image_width product.instagram_image_height")
+    div(v-bind:style="{ opacity: imageOpacity }",
+        :class="{'animate': animate}")
+      img.photo__img(:src="thumb",
+       v-on:load="showImage",
+       v-on:error="loadError")
   .photo__description
     .photo__title {{title}}
     .photo__summ
@@ -12,15 +16,42 @@
 
 <script type="text/ecmascript-6">
   import pluralize from 'pluralize-ru';
+  import { urlThumbnail } from 'utils';
   import { getColumnNumber } from 'vuex/getters';
   export default {
+    data(){
+      return {
+        imageOpacity: 0,
+        error: false,
+      };
+    },
+
     props: [
       {
         name: 'product',
         required: true
+      },
+      {
+        name: 'animate',
+        default: true
       }
     ],
+
+    methods: {
+      showImage(){
+        this.imageOpacity = 1;
+      },
+      loadError(){
+        this.error = true;
+      }
+    },
+
     computed: {
+      thumb() {
+        return urlThumbnail(this.product.instagram_image_url, 480,
+                               this.product.instagram_image_width,
+                               this.product.instagram_image_height)
+      },
       classForColumn() {
         switch(this.count){
           case 2: return 'photo__container-two';
@@ -52,6 +83,7 @@
         return items[0].name
       }
     },
+
     vuex: {
       getters: {
         count: getColumnNumber,
