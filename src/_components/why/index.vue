@@ -18,7 +18,8 @@
 
     .section.top
       .section__content
-        iframe(class="why-video", width="750", height="420", src="https://www.youtube.com/embed/5a8LO7fptys?autoplay=1", frameborder="0", autoplay="true", allowfullscreen)
+        //- iframe(class="why-video", width="750", height="420", src="https://www.youtube.com/embed/5a8LO7fptys?autoplay=1", frameborder="0", autoplay="true", allowfullscreen)
+        iframe(src="https://player.vimeo.com/video/167123446?autoplay=1", width="750", height="420", frameborder="0", webkitallowfullscreen, mozallowfullscreen, allowfullscreen)
     .section.available#headerAnchor
       .section__content
         .available__title.green Почему мы это делаем?
