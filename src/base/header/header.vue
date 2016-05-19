@@ -80,6 +80,8 @@ export default {
     this.scrollEvent.remove();
   },
   ready() {
+    this.scrollCnt = document.querySelector(".scroll-cnt");
+
     if (this.show_on_elem) {
       this.showOnEl = document.getElementById(this.show_on_elem);
     }
@@ -88,18 +90,17 @@ export default {
     // Because function work only in motion.
     this.toggleHeaderOnScroll();
 
-    this.scrollEvent = listen(window, 'optimizedScroll', this.toggleHeaderOnScroll.bind(this))
+    this.scrollEvent = listen(this.scrollCnt, 'scroll', this.toggleHeaderOnScroll.bind(this))
   },
   methods: {
     leftBtnAction() {
       if (this.show_on_elem) {
-        let scrollY = window.pageYOffset || document.documentElement.scrollTop;
-        if (scrollY - this.showOnEl.offsetTop >= 0) {
+        if (this.scrollCnt.scrollTop - this.showOnEl.offsetTop >= 0) {
 
           if (this.scrollToElement) {
-            window.body.scrollTop = document.getElementById(this.scrollToElement).offsetTop;
+            this.scrollCnt.scrollTop = document.getElementById(this.scrollToElement).offsetTop;
           } else {
-            window.body.scrollTop = 0;
+            this.scrollCnt.scrollTop = 0;
           }
           return;
         }
@@ -117,6 +118,7 @@ export default {
       }
     },
     toggleHeaderOnScroll() {
+
       if (this.show_on_elem) {
         // If show_on_elem not exists, then wait when render it.
         // Be careful, it's may cycling as
@@ -127,10 +129,7 @@ export default {
         }
 
         // Show header, if show_on_elem scrollY is 0 or smaller
-        let scrollY = window.pageYOffset || document.documentElement.scrollTop;
-        let elemY = this.showOnEl.offsetTop;
-
-        if (scrollY - elemY >= 0) {
+        if (this.scrollCnt.scrollTop - this.showOnEl.offsetTop >= 0) {
           this.$set('is_visible', true);
 
           // Left btn now work as ScrollToTop

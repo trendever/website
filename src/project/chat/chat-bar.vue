@@ -6,8 +6,14 @@ div
     .chat-bar_menu-btn(@click="setShowMenu(true)")
       i.ic-menu-light
     .chat-bar_input
-      textarea(placeholder="Введите сообщение", v-model="txtMsg", v-el:input-msg)
-    .chat-bar_send-btn(@click.prevent="send($event)", :class="{'__active': !!txtMsg}")
+      textarea(placeholder="Введите сообщение",
+               v-model="txtMsg",
+               v-el:input-msg,
+               @focus="focusInput",
+               @blur="blurInput($event)")
+    .chat-bar_send-btn(v-on:mousedown="send($event)",
+                       v-on:touchstart="send($event)",
+                       :class="{'__active': !!txtMsg}")
       i.ic-send-plane
 
   chat-menu
@@ -15,8 +21,10 @@ div
 </template>
 
 <script type="text/babel">
+  import listen from 'event-listener';
+
   import {
-          getId,
+    getId,
     getCurrentMember,
     getStatus,
     getShowMenu
@@ -40,6 +48,13 @@ div
         stringWillSend: "",
       };
     },
+
+    beforeDestroy() {
+      if (this.scrollEvent) {
+        this.scrollEvent.remove();
+      }
+    },
+
     vuex: {
       actions: {
         createMessage,
@@ -55,14 +70,70 @@ div
     },
 
     methods: {
+      normalizeScroll() {
+        // Hard hack for ios jumping, why open keyboard
+        if (window.scrollY === 0) {
+          return;
+        }
+
+        if (this.windowScrollY
+          && this.windowScrollY.min !== window.scrollY
+          && this.windowScrollY.msx !== window.scrollY) {
+          return window.scrollTo(0, this.windowScrollY.last);
+        }
+
+        // Magic numbers
+        var devices = [
+          {min:446, max:510, diff:19}, // iphone 6 plus, 6s plus
+          {min:470, max:536, diff:20}, // iphone 6, 6s
+          {min:548, max:616, diff:24}, // iphone 5, 4s
+        ]
+        if (window.browser.iphone) {
+
+          for (var item of devices) {
+            if (window.scrollY === item.min) {
+
+              item.last = item.min - item.diff
+              this.windowScrollY = item;
+              return window.scrollTo(0, item.last);
+
+            } else if (window.scrollY === item.max) {
+
+              item.last = item.max - item.diff
+              this.windowScrollY = item;
+              return window.scrollTo(0, item.last);
+
+            }
+          }
+
+        }
+      },
+
+      blurInput(event){
+        if (window.browser.iphone) {
+          if (this.scrollEvent) {
+            this.scrollEvent.remove();
+          }
+        }
+      },
+
+      focusInput(){
+        if (window.browser.iphone) {
+          this.normalizeScroll();
+          this.scrollEvent = listen(window, 'scroll', this.normalizeScroll.bind(this));
+        }
+      },
+
       addNewLine(){
         this.stringWillSend = this.txtMsg.trim().split( '\n' ).reduce( ( prevValue, item ) => {
           return prevValue + `${item}<br>`
         }, '' );
         this.stringWillSend = `<p>${this.stringWillSend}</p>`.trim();
       },
-      send () {
-        this.$els.inputMsg.focus();
+      send (e) {
+        e.stopPropagation();
+        e.preventDefault();
+
         const txtMsg = this.txtMsg.trim();
         this.addNewLine();
         if ( !txtMsg.length ) {

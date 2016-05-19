@@ -1,5 +1,5 @@
 <template lang="jade">
-div
+div.scroll-cnt
   header-component(:title="title")
   .section.main.top
     .section__content#headerAnchor

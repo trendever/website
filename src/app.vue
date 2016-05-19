@@ -1,3 +1,5 @@
+<style src="project/app/style.pcss"></style>
+
 <template lang="jade">
 div
   div(:class="{popup: isShowPopupFastSignup}")

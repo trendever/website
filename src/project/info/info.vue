@@ -1,6 +1,6 @@
 <style src="./info.pcss"></style>
 <template lang="jade">
-div
+.scroll-cnt
   .section__content.info
     .info__container(:style="{minHeight: height}")
       .info__close(@click="back"): i.ic-close
