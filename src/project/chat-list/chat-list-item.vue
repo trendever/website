@@ -1,6 +1,5 @@
 <template lang="jade">
 .chat-list_i(v-link="{name: 'chat', params: {id: lead.id}}", track-by="id")
-
   .chat-list_i_photo
     img(:src="getPhoto(lead.products[0])")
   .chat-list_i_body
@@ -8,15 +7,15 @@
     .body_status ({{ status | lowercase }})
     .body_last-msg
       | {{{ recentMessage }}}
-  .chat-list_i_date {{ dataTime }}
-  .chat-list_i_notify(v-if="unreadCount")
-    span {{ unreadCount }}
-
+  .chat-list_i_info
+    .chat-list_i_info_date {{ dataTime }}
+    .chat-list_i_info_notify(v-if="unreadCount")
+      span {{ unreadCount }}
 </template>
 
 <script type="text/babel">
   import { urlThumbnail } from 'utils'
-  import { formatDatetime } from 'project/chat/utils';
+  import { formatPastTime } from 'project/chat/utils';
   import * as service from 'services/leads';
   import { getNotifyCountList, getLastMessage } from 'vuex/getters/lead.js';
 
@@ -58,7 +57,7 @@
       },
       dataTime(){
         if(this.lead.chat !== null){
-          return formatDatetime(this.lead.chat.recent_message.created_at);
+          return formatPastTime(this.lead.chat.recent_message.created_at);
         }
       },
       title(){

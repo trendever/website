@@ -16,7 +16,7 @@ div
 
 <script type="text/babel">
   import {
-          getId,
+    getId,
     getCurrentMember,
     getStatus,
     getShowMenu
@@ -53,25 +53,14 @@ div
         getStatus
       }
     },
-
     methods: {
-      addNewLine(){
-        this.stringWillSend = this.txtMsg.trim().split( '\n' ).reduce( ( prevValue, item ) => {
-          return prevValue + `${item}<br>`
-        }, '' );
-        this.stringWillSend = `<p>${this.stringWillSend}</p>`.trim();
-      },
       send () {
         this.$els.inputMsg.focus();
         const txtMsg = this.txtMsg.trim();
-        this.addNewLine();
         if ( !txtMsg.length ) {
           return;
         }
-        if ( this.stringWillSend.length <= 0 ) {
-          this.stringWillSend = txtMsg;
-        }
-        const promise = this.createMessage( this.getId, this.stringWillSend, "text/plain" );
+        const promise = this.createMessage( this.getId, txtMsg, "text/plain" );
         promise.then( () => {
           if (
             this.getStatus === leads.STATUSES.NEW.key &&

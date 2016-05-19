@@ -3,19 +3,6 @@
 
 .chat {}
 
-.ic-clock{
-
-  font-size: 13px;
-  display: block;
-
-  @media(--mobile){
-    margin-left: 5px;
-    margin-top: 2px;
-    font-size: 20px;
-  }
-
-}
-
 .chat_messages {
   padding-top: 20px;
 
@@ -50,6 +37,19 @@
       content: "";
     }
     &_info {
+
+      .ic-clock{
+
+        font-size: 13px;
+        display: block;
+
+        @media(--mobile){
+          margin-left: 5px;
+          margin-top: 4px;
+          font-size: 20px;
+        }
+
+      }
 
       @media(--mobile) {
         position: absolute * * 24px -30px;

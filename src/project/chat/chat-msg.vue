@@ -7,7 +7,7 @@
     .chat-msg_t(v-if="!isOwnMessage")
       | {{{ getUsername }}}
     .chat-msg_txt
-      | {{{ msg.parts[0].content }}}
+      | {{{ getMessage }}}
     .bubble_info
       .bubble_info_status(v-if="isOwnMessage")
         i(:class="{'ic-check': isSent, 'ic-check-double': isRead, 'ic-clock': isSending}")
@@ -27,7 +27,6 @@
         required: true
       }
     },
-
     vuex: {
       getters: {
         getShopName,
@@ -35,8 +34,10 @@
         getLastMessageId,
       }
     },
-
     computed: {
+      getMessage() {
+        return this.msg.parts[0].content.replace(/\n/g, "<br />");
+      },
       datetime() {
         return formatTime(this.msg.created_at);
       },
@@ -52,7 +53,7 @@
       isOwnMessage() {
         return this.getCurrentMember.user_id === this.msg.user.user_id
       },
-      isSending(){
+      isSending() {
         return false;
       },
       isSent() {

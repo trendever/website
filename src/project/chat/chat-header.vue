@@ -9,7 +9,7 @@ div
         .chat-header_cnt_info
           span.chat-header_cnt_info-text
           | {{ getId }},
-          span  {{ getStatusName.toLowerCase() }}
+          span  {{ getStatus }}
 
 
 
@@ -36,6 +36,13 @@ div
         getShopName,
         getPhoto,
         getGlobalNotifyCount
+      }
+    },
+    computed: {
+      getStatus(){
+        if ( this.getStatusName !== null ) {
+          return this.getStatusName.toLowerCase();
+        }
       }
     },
     components: {
