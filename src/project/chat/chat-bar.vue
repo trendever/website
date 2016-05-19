@@ -72,13 +72,40 @@ div
     methods: {
       normalizeScroll() {
         // Hard hack for ios jumping, why open keyboard
+        if (window.scrollY === 0) {
+          return;
+        }
+
+        if (this.windowScrollY
+          && this.windowScrollY.min !== window.scrollY
+          && this.windowScrollY.msx !== window.scrollY) {
+          return window.scrollTo(0, this.windowScrollY.last);
+        }
+
+        // Magic numbers
+        var devices = [
+          {min:446, max:510, diff:19}, // iphone 6 plus, 6s plus
+          {min:470, max:536, diff:20}, // iphone 6, 6s
+          {min:548, max:616, diff:24}, // iphone 5, 4s
+        ]
         if (window.browser.iphone) {
-          console.log(window.scrollY);
-          if (window.scrollY === 446) {
-             window.scrollTo(0, 427);
-          } else if (window.scrollY === 510) {
-            window.scrollTo(0, 491);
+
+          for (var item of devices) {
+            if (window.scrollY === item.min) {
+
+              item.last = item.min - item.diff
+              this.windowScrollY = item;
+              return window.scrollTo(0, item.last);
+
+            } else if (window.scrollY === item.max) {
+
+              item.last = item.max - item.diff
+              this.windowScrollY = item;
+              return window.scrollTo(0, item.last);
+
+            }
           }
+
         }
       },
 
@@ -105,6 +132,7 @@ div
       },
       send (e) {
         e.stopPropagation();
+        e.preventDefault();
 
         const txtMsg = this.txtMsg.trim();
         this.addNewLine();
