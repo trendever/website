@@ -42,7 +42,7 @@ article.product-post
 
     .u-fill
 
-    a.product-post__action(v-link="{name: 'product_repost', params: {id: obj.id}}" v-if="!Mobile")
+    a.product-post__action(v-link="{name: 'product_repost', params: {id: obj.id}}" v-if="Mobile")
       .product-post__trend: i.ic-instagram-icon
       .product-post__action-title пост
 
