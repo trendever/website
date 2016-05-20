@@ -30,7 +30,7 @@ div
 <script type="text/babel">
   import {
     getCurrentMember,
-    getId,
+    getLeadId,
     getShowMenu,
     getShowStatusMenu,
     getInviteShop,
@@ -56,7 +56,7 @@ div
       },
       getters: {
         getCurrentMember,
-        getId,
+        getLeadId,
         getShowMenu,
         getShowStatusMenu,
         getInviteShop,
@@ -99,11 +99,13 @@ div
 
       },
       callCustomer() {
-        service.callCustomer(this.getId);
+        console.log(this.getLeadId);
+        service.callCustomer(this.getLeadId);
         this.setShowMenu(false);
       },
       callSupplier() {
-        service.callSupplier(this.getId);
+        console.log(this.getLeadId);
+        service.callSupplier(this.getLeadId);
         this.setShowMenu(false);
       },
     },

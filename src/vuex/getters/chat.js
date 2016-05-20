@@ -1,7 +1,9 @@
 import * as leads from 'services/leads';
-import {formatMonth} from 'project/chat/utils';
+import { formatMonth } from 'project/chat/utils';
+import { userID } from 'vuex/getters';
 
 export const getId = ({conversation}) => conversation.id;
+export const getLeadId = ({conversation}) => conversation.lead.id;
 export const getMessages = ({conversation}) => conversation.messages;
 export const getShowMenu = ({conversation}) => conversation.showMenu;
 export const getShowStatusMenu = ({conversation}) => conversation.showStatusMenu;
@@ -48,12 +50,27 @@ export const getLastMessageId = ({conversation, user}) => {
 };
 export const conversationNotifyCount = state => state.notify_count;
 
-export const getInviteShop           = ( { conversation:{ lead } } ) => {
+export const getInviteShop     = ( { conversation:{ lead } } ) => {
 	return lead.shop.supplier.has_email || lead.shop.supplier.has_phone;
 };
-export const getInviteCustomer       = ( { conversation:{ lead } } ) => {
+export const getInviteCustomer = ( { conversation:{ lead } } ) => {
 	return lead.customer.has_phone;
 };
-export const getCreateData = ({ conversation:{ lead } }) => {
+export const getCreateData     = ( { conversation:{ lead } } ) => {
 	return formatMonth(lead.chat.recent_message.created_at);
+};
+export const isJoined          = ( state, lead ) => {
+	if ( lead ) {
+		if ( lead.chat ) {
+			const { members } = lead.chat;
+			const currentUserId = userID( state );
+			for ( let i = members.length; i; i-- ) {
+				const { user_id } = members[ i - 1 ];
+				if ( user_id === currentUserId ) {
+					return true;
+				}
+			}
+		}
+	}
+	return false;
 };
