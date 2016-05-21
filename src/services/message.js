@@ -45,9 +45,9 @@ export function find( conversation_id, from_message_id, limit = 12) {
   if ( cache.has( conversation_id, from_message_id ) ) {
 
     return cache.find( conversation_id, from_message_id, limit );
-    
+
   }
-  
+
   return new Promise( (resolve, reject) => {
 
     channel.req("search", "message", { conversation_id, from_message_id, limit })
@@ -57,7 +57,7 @@ export function find( conversation_id, from_message_id, limit = 12) {
         resolve(data.response_map.messages);
 
         cache.addOldMessage(conversation_id, data.response_map.messages);
-        
+
       } else if (data.response_map.error.code === ERROR_CODES.FORBIDDEN) {
         reject(data.response_map.error);
       }
@@ -117,19 +117,21 @@ export function find( conversation_id, from_message_id, limit = 12) {
 export function create(conversation_id, text, mime_type = 'text/plain') {
 
   return new Promise( (resolve, reject) => {
+
     channel.req("create", "message", { conversation_id, text, mime_type })
     .then( data => {
+
       if (data.error && data.error.code === ERROR_CODES.NOT_EXISTS) {
         // ToDo temp, Igor must add 400 error to log, then delete it
-        reject(ERROR_CODES.NOT_EXISTS);
+        reject({code: ERROR_CODES.NOT_EXISTS, errData: data});
       } else {
         resolve(data.response_map);
       }
     }).catch( error => {
       if (error.log_map.code_key === '403') {
-        reject(ERROR_CODES.UNATHORIZED);
+        reject({code: ERROR_CODES.UNATHORIZED, errData: error});
       } else if (error.log_map.code_key === '400') {
-        reject(ERROR_CODES.NOT_EXISTS);
+        reject({code: ERROR_CODES.NOT_EXISTS, errData: error});
       }
     });
 

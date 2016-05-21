@@ -57,7 +57,7 @@
       },
       dataTime(){
         if(this.lead.chat !== null){
-          return formatPastTime(this.lead.chat.recent_message.created_at);
+          return formatPastTime(this.lead.updated_at / 1e9);
         }
       },
       title(){

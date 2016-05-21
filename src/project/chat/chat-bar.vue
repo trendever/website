@@ -23,6 +23,7 @@ div
 <script type="text/babel">
   import listen from 'event-listener';
 
+  import store from 'vuex/store';
   import {
     getId,
     getCurrentMember,
@@ -45,7 +46,6 @@ div
     data(){
       return {
         txtMsg: "",
-        stringWillSend: "",
       };
     },
 
@@ -123,6 +123,7 @@ div
           this.scrollEvent = listen(window, 'scroll', this.normalizeScroll.bind(this));
         }
       },
+
       send (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -131,6 +132,9 @@ div
         if ( !txtMsg.length ) {
           return;
         }
+
+        this.txtMsg = "";
+
         const promise = this.createMessage( this.getId, txtMsg, "text/plain" );
         promise.then( () => {
           if (
@@ -139,11 +143,20 @@ div
           ) {
             this.setStatus( 'PROGRESS' );
           }
-          this.txtMsg         = "";
-          this.stringWillSend = "";
         } );
-        promise.catch( error => {
-          console.log( error );
+
+        promise.catch( ({ code, errData }) => {
+          this.txtMsg = txtMsg;
+          console.error( errData );
+
+          // ToDo надо отображать, что сообщение не отправлено значком в сообщении
+          alert('Ошибка. Сообщение не отправлено. Может нет интернета?')
+
+          Raven.captureException(new Error("Problem to send message"), {extra: {
+            errorMsg: errData,
+            user: store.state.user,
+          }});
+
         } );
       }
     },
