@@ -22,8 +22,8 @@ const state = {
 // mutations
 const mutations = {
   [USER_AUTHENTICATED] (state, token) {
-    // state.isAuth = true;
-    // state.token = token;
+    state.isAuth = true;
+    state.token = token;
   },
   [RECEIVE_USER] (state, user) {
     state.id = user.id;
