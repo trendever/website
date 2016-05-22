@@ -101,7 +101,6 @@
     "fastclick": "^1.0.6",
     "jwt-decode": "^2.0.1",
     "pluralize-ru": "^1.0.1",
-    "mixpanel-browser": "^2.7.2",
     "raven-js": "^3.0.4",
     "sockjs-client": "^1.1.1",
     "vue": "^1.0.24",
