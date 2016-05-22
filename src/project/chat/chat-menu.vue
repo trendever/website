@@ -1,33 +1,33 @@
-<style src="./styles/chat-bar.pcss"></style>
+<style src='./styles/chat-bar.pcss'></style>
 <template lang="jade">
 div
-  menu-component(v-if="getShowMenu && !getShowStatusMenu")
-    div(slot="items")
+  menu-component(v-if='getShowMenu && !getShowStatusMenu')
+    div(slot='items')
       //-.menu_i
         .menu_i_t Отправить условия доставки
       //-.menu_i
         .menu_i_t Отправить условия оплаты
 
-      .menu_i(v-if="canCallCustomer", @click="callCustomer()")
+      .menu_i(v-if='canCallCustomer', @click='callCustomer()')
         .menu_i_t Позвать покупателя в чат
 
-      .menu_i(v-if="canCallSupplier", @click="callSupplier()")
+      .menu_i(v-if='canCallSupplier', @click='callSupplier()')
         .menu_i_t Позвать магазин в чат
 
-      .menu_i(v-if="isAdmin", @click="setShowStatusMenu(true)")
+      .menu_i(v-if='isAdmin', @click='setShowStatusMenu(true)')
         .menu_i_t Изменить статус заказа
 
-      label(class="menu_i menu_i-send-file") Отправить фото
-        input(type="file", hidden, @change="selectedFile")
+      label(class='menu_i menu_i-send-file') Отправить фото
+        input(type='file', hidden, @change='selectedFile')
 
-      .menu_i(@click="setShowMenu(false)")
+      .menu_i(@click='setShowMenu(false)')
         .menu_i_t.__txt-green Отмена
 
-  chat-menu-status( v-if="getShowStatusMenu")
+  chat-menu-status( v-if='getShowStatusMenu')
 
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
   import {
     getCurrentMember,
     getLeadId,

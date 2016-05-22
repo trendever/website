@@ -41,7 +41,7 @@ export default class {
       this._addCallback(trans_id, callback);
     }
     if (__debugMode) {
-      console.trace("request trace", request_map);
+      console.trace('request trace', request_map);
     }
 
     this.store.send(data);

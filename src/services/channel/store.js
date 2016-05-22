@@ -1,10 +1,8 @@
-/* globals SockJS */
+import SockJS from 'sockjs-client'
 
 export default class {
   constructor() {
-    var yan = window.yan;
     this.sock = null;
-    this.echo_url = yan.channel.url;
     this.connected = false;
     this.cache = {
       requests: []
@@ -15,7 +13,7 @@ export default class {
   init(onOpen, onMessage) {
     var self = this;
 
-    self.sock = new SockJS(self.echo_url);
+    self.sock = new SockJS(window.socket_url);
     self.sock.onmessage = function(data) {
         var ctx = JSON.parse(data.data);
         if (!ctx) {
@@ -31,7 +29,7 @@ export default class {
         self.connected = false;
 
         setTimeout(function () {
-          console.log("try recconect");
+          console.log('try recconect');
           self.init.call(self, onOpen, onMessage);
         }, 1000);
       });

@@ -1,20 +1,20 @@
-<style src="./styles/chat-msg.pcss"></style>
+<style src='./styles/chat-msg.pcss'></style>
 <template lang="jade">
 
-.chat-row(:class="getSide")
-  span(class="bubble_info_time") {{ datetime }}
+.chat-row(:class='getSide')
+  span(class='bubble_info_time') {{ datetime }}
   .chat-msg.bubble
-    .chat-msg_t(v-if="!isOwnMessage")
+    .chat-msg_t(v-if='!isOwnMessage')
       | {{{ getUsername }}}
     .chat-msg_txt
       | {{{ getMessage }}}
     .bubble_info
-      .bubble_info_status(v-if="isOwnMessage")
-        i(:class="{'ic-check': isSent, 'ic-check-double': isRead, 'ic-clock': isSending}")
+      .bubble_info_status(v-if='isOwnMessage')
+        i(:class='{"ic-check": isSent, "ic-check-double": isRead, "ic-clock": isSending}')
 
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
   import { getCurrentMember, getShopName, getLastMessageId } from 'vuex/getters/chat.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
@@ -36,7 +36,7 @@
     },
     computed: {
       getMessage() {
-       return escapeHtml(this.msg.parts[0].content).replace(/\n/g, "<br />");
+       return escapeHtml(this.msg.parts[0].content).replace(/\n/g, '<br />');
       },
       datetime() {
         return formatTime(this.msg.created_at);

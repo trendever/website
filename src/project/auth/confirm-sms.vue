@@ -1,40 +1,41 @@
 <template lang="jade">
 div
-  .signup.confirm(:style="{ height: height }")
-    .info__close.__hello(@click="closePage"): i.ic-close
+  .signup.confirm(:style='{ height: height }')
+    .info__close.__hello(@click='closePage'): i.ic-close
     .section
       h1 Подтвердите номер телефона
       .middle-container
-        template(v-if="isCompleted")
+        template(v-if='isCompleted')
           h1 Спасибо!
         template(v-else)
-          p(v-if="!isCompleted",
-            :class="{ error: errorCode }") {{ text_header }}
+          p(v-if='!isCompleted',
+            :class='{ error: errorCode }') {{ text_header }}
           .input-container
             .input.confirm-input
-              input(type="tel",
-                @keyup="onInput",
-                @focus="onFocus",
-                @keydown.enter="onButton()",
+              input(type='tel',
+                @keyup='onInput',
+                @focus='onFocus',
+                @keydown.enter='onButton()',
                 v-el:confirm-field,
-                v-model="code",
-                placeholder="9999")
+                v-model='code',
+                placeholder='9999')
 
       .bottom-container.__fixed-width
           .btn-container
             button.btn.btn_primary.__orange.__xl.fast__big__btn(
-              :disabled="isDisabled",
+              :disabled='isDisabled',
               v-el:confirm-btn,
-              @keydown.enter="onButton()",
-              @click="onButton") {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
+              @keydown.enter='onButton()',
+              @click='onButton') {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
             .link-container
-              a.link-bottom(href="#",
-                v-if="!isCompleted",
-                v-show="needNewSMS"
-                @click.prevent="sendSMS") Отправить новый код
+              a.link-bottom(href='#',
+                v-if='!isCompleted',
+                v-show='needNewSMS'
+                @click.prevent='sendSMS') Отправить новый код
 </template>
 
 <script>
+  import mixpanel from 'mixpanel-browser'
   import {
     hidePopupFastSignup,
     authenticateUser,
@@ -134,7 +135,7 @@ div
       },
 
       onErrorCode() {
-        console.log("on error");
+        console.log('on error');
         this.$set('errorCode', true);
         this.$set('text_header', TEXT_HEADER.ERROR);
         this.$set('code', '');
@@ -160,7 +161,7 @@ div
       },
 
       closePage() {
-        mixpanel.track("Close confirm-sms Page");
+        mixpanel.track('Close confirm-sms Page');
 
         if (window.history.length > 2) {
           this.$router.go(window.history.back(2));

@@ -1,5 +1,4 @@
-@import "base/vars/vars.pcss";
-
+@import 'base/vars/vars.pcss';
 .navbar-cnt {
   .navbar {
     position: fixed;
@@ -12,10 +11,10 @@
 
     height: 50px;
 
-    border-top:1px solid $color__gray;
+    border-top: 1px solid $color__gray;
     background: white;
 
-    @media(--mobile){
+    @media(--mobile) {
       height: 90px;
     }
     align-items: center;
@@ -31,10 +30,16 @@
         display: inline-block;
 
         &_ic {
-          margin-top: 2px;
+          display: inline-block;
+
+          margin-bottom: 2px;
+
+          color: #b2b2b2;
+
+          font-size: 21px;
 
           size: 21px;
-          @media(--mobile){
+          @media(--mobile) {
             size: 38px;
           }
         }
@@ -45,7 +50,7 @@
 
           font-size: 14px;
 
-          @media(--mobile){
+          @media(--mobile) {
             padding-top: 6px;
 
             font-size: 20.02px;
@@ -69,7 +74,7 @@
 
           align-items: center;
           justify-content: center;
-          @media(--mobile){
+          @media(--mobile) {
             top: -6px;
             left: 83px;
 
@@ -92,6 +97,25 @@
       &.__active {
         cursor: default;
 
+        .navbar_i_wrap_ic {
+          color: $color__green;
+
+          &.__chat_ic {
+            display: inline-block;
+
+            vertical-align: middle;
+
+            background: url('../../base/img/logo.png');
+            background-size: 100%;
+
+            size: 21px;
+            &:before {
+              display: none;
+
+              content: '';
+            }
+          }
+        }
         .navbar_i_wrap_t {
           color: $color__green;
         }

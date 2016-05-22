@@ -1,4 +1,4 @@
-import channel from "services/channel/channel.js";
+import channel from 'services/channel/channel.js';
 
 export const MEMBER_ROLES = {
     CUSTOMER: 0,
@@ -24,40 +24,40 @@ export const ERROR_CODES = {
  * @param {number} object.conversation_id
  *
  * RESOLVE
- *  "chat": {
- *    "id": 88,
- *    "members": [
+ *  'chat': {
+ *    'id': 88,
+ *    'members': [
  *      {
- *        "id": 127,
- *        "user_id": 1379,
- *        "role": 1,
- *        "name": "happierall"
+ *        'id': 127,
+ *        'user_id': 1379,
+ *        'role': 1,
+ *        'name': 'happierall'
  *      }
  *    ],
- *    "recent_message": {
- *      "conversation_id": 88,
- *      "user_id": 127,
- *      "parts": [
+ *    'recent_message': {
+ *      'conversation_id': 88,
+ *      'user_id': 127,
+ *      'parts': [
  *        {
- *          "content": "Все работает",
- *          "mime_type": "text/plain"
+ *          'content': 'Все работает',
+ *          'mime_type': 'text/plain'
  *        }
  *      ],
- *      "created_at": 1461845250,
- *      "id": 663,
- *      "user": {
- *        "id": 127,
- *        "user_id": 1379,
- *        "role": 1,
- *        "name": "happierall"
+ *      'created_at': 1461845250,
+ *      'id': 663,
+ *      'user': {
+ *        'id': 127,
+ *        'user_id': 1379,
+ *        'role': 1,
+ *        'name': 'happierall'
  *      }
  *    }
  *  },
- *  "member": {
- *    "id": 127,
- *    "user_id": 1379,
- *    "role": 1,
- *    "name": "happierall"
+ *  'member': {
+ *    'id': 127,
+ *    'user_id': 1379,
+ *    'role': 1,
+ *    'name': 'happierall'
  *  }
  *
  * REJECT (one of ERROR_CODES) {UNATHORIZED, NOT_EXISTS}
@@ -66,7 +66,7 @@ export function join({ lead_id, conversation_id }) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("join", "chat", { lead_id, conversation_id }).then( data => {
+    channel.req('join', 'chat', { lead_id, conversation_id }).then( data => {
       resolve(data.response_map);
     }).catch( error => {
       if (error.log_map.code_key === '403') {
@@ -89,7 +89,7 @@ export function callCustomer(lead_id) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("call_customer", "chat", { lead_id }).then( data => {
+    channel.req('call_customer', 'chat', { lead_id }).then( data => {
       resolve(data.response_map.status);
     }).catch( error => {
       if (error.log_map.code_key === '403') {
@@ -111,7 +111,7 @@ export function callSupplier(lead_id) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("call_supplier", "chat", { lead_id }).then( data => {
+    channel.req('call_supplier', 'chat', { lead_id }).then( data => {
       resolve(data.response_map.status);
     }).catch( error => {
       if (error.log_map.code_key === '403') {

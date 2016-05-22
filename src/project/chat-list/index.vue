@@ -1,27 +1,27 @@
-<style src="./style.pcss"></style>
+<style src='./style.pcss'></style>
 <template lang="jade">
 div.scroll-cnt
-  .chat-list-cnt(v-if="isDone")
-    header-component(:title="getTitle", :left-btn-show="false")
-      .header__nav(slot="content" v-if="getIsTab")
+  .chat-list-cnt(v-if='isDone')
+    header-component(:title='getTitle', :left-btn-show='false')
+      .header__nav(slot='content' v-if='getIsTab')
         .header__nav__i.header__text(
-        :class="{_active: getTab === 'customer'}", @click="setTab('customer');",
-        @touch="setTab('customer');")
+        :class='{_active: getTab === "customer"}', @click='setTab("customer");',
+        @touch='setTab("customer");')
           | Покупаю
         .header__nav__i.header__text(
-        :class="{_active: getTab === 'seller'}", @click="setTab('seller');")
+        :class='{_active: getTab === "seller"}', @click='setTab("seller");')
           | Продаю
 
     .section.top.bottom
       .section__content
         .chat-list
-          template(v-for="lead in getLeads| orderBy 'updated_at' -1")
-            chat-list-item(:lead="lead")
-    .chat-list-cnt-is-empty(v-if="isEmptyLeads") У вас нет шопинг-чатов
-    navbar-component(current="chat")
+          template(v-for='lead in getLeads| orderBy "updated_at" -1')
+            chat-list-item(:lead='lead')
+    .chat-list-cnt-is-empty(v-if='isEmptyLeads') У вас нет шопинг-чатов
+    navbar-component(current='chat')
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
   import listen from 'event-listener';
 
   import {
@@ -74,7 +74,7 @@ div.scroll-cnt
       messages.onMsg(this.onMsg);
     },
     ready(){
-      this.scrollCnt = document.querySelector(".scroll-cnt");
+      this.scrollCnt = document.querySelector('.scroll-cnt');
       this.loadLeads().then(()=>{
         this.onScroll();
       });

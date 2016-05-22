@@ -1,14 +1,15 @@
 <template lang="jade">
 .scroll-cnt
-  header-component(title="Настройка отслеживания")
-  .section.main(style="margin-top: 140px")
-    .section__content(style="text-align:center;")
-      h1(style="font-size:32px;")
+  header-component(title='Настройка отслеживания')
+  .section.main(style='margin-top: 140px')
+    .section__content(style='text-align:center;')
+      h1(style='font-size:32px;')
         | Отслеживание статистики отключено
 
 </template>
 
-<script type="text/ecmascript-6">
+<script type='text/ecmascript-6'>
+import mixpanel from 'mixpanel-browser'
 import HeaderComponent from 'base/header/header.vue'
 import profile from 'services/profile'
 
@@ -17,7 +18,7 @@ export default {
     data: () => ({
     }),
     ready: function () {
-        window.mixpanel.register({"$ignore": "true"});
+        window.mixpanel.register({'$ignore': 'true'});
     },
     components: {
         HeaderComponent,

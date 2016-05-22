@@ -1,7 +1,7 @@
 <template lang="jade">
-.chat-list_i(v-link="{name: 'chat', params: {id: lead.id}}", track-by="id")
+.chat-list_i(v-link='{name: "chat", params: {id: lead.id}}', track-by='id')
   .chat-list_i_photo
-    img(:src="getPhoto(lead.products[0])")
+    img(:src='getPhoto(lead.products[0])')
   .chat-list_i_body
     .body_t {{ title }}
     .body_status ({{ status | lowercase }})
@@ -9,11 +9,11 @@
       | {{{ recentMessage }}}
   .chat-list_i_info
     .chat-list_i_info_date {{ dataTime }}
-    .chat-list_i_info_notify(v-if="unreadCount")
+    .chat-list_i_info_notify(v-if='unreadCount')
       span {{ unreadCount }}
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
   import { urlThumbnail } from 'utils'
   import { formatPastTime } from 'project/chat/utils';
   import * as service from 'services/leads';

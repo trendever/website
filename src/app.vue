@@ -2,12 +2,12 @@
 
 <template lang="jade">
 div
-  div(:class="{popup: isShowPopupFastSignup}")
+  div(:class='{popup: isShowPopupFastSignup}')
     popup-signup(
-      v-if="isShowPopupSignup")
+      v-if='isShowPopupSignup')
 
     popup-fast-signup(
-      v-if="isShowPopupFastSignup && isNotWhy")
+      v-if='isShowPopupFastSignup && isNotWhy')
 
   router-view
 
@@ -15,7 +15,8 @@ div
 
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
+  import mixpanel from 'mixpanel-browser'
   import font from 'base/fonts/trendever-icons/trendever-icons.font';
   import store from 'vuex/store';
   import {
@@ -75,7 +76,7 @@ div
       //     }
       //   }, 30*1000);
       // }
-      mixpanel.track("App Open");
+      mixpanel.track('App Open');
 
     },
     computed:{

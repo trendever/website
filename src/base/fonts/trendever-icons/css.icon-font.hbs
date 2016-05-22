@@ -1,6 +1,6 @@
 
 @font-face {
-  font-family: "{{fontName}}";
+  font-family: '{{fontName}}';
   font-weight: normal;
   font-style: normal;
   src: {{{src}}};
@@ -24,7 +24,7 @@
 
 {{#each codepoints}}
 .{{../classPrefix}}{{@key}}:before {
-  content: "\\{{this}}";
+  content: '\\{{this}}';
 }
 {{/each}}
 

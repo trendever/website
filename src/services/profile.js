@@ -83,7 +83,7 @@ export function saveToken(token) {
 
   } catch (err) {
     // incorrect token
-    console.warn("WARNING: incorrect token");
+    console.warn('WARNING: incorrect token');
     return false;
   }
 }
@@ -92,15 +92,15 @@ export function saveToken(token) {
  * Save user data
  * @param {object} data see below
  * {
- *  "id": 1379,
- *  "name": "Покупатель #1",
- *  "email": "happierall@gmail.com",
- *  "phone": "+79388708611",
- *  "instagram_id": 1482392154,
- *  "instagram_username": "happierall",
- *  "instagram_fullname": "Руслан Янбердин",
- *  "instagram_avatar_url": "https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg",
- *  "instagram_caption": "Hi all"
+ *  'id': 1379,
+ *  'name': 'Покупатель #1',
+ *  'email': 'happierall@gmail.com',
+ *  'phone': '+79388708611',
+ *  'instagram_id': 1482392154,
+ *  'instagram_username': 'happierall',
+ *  'instagram_fullname': 'Руслан Янбердин',
+ *  'instagram_avatar_url': 'https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg',
+ *  'instagram_caption': 'Hi all'
  * }
  */
 export function saveUser(data) {

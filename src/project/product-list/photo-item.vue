@@ -1,12 +1,12 @@
 <template lang="jade">
-.photo__container(class="{{ classForColumn }}", v-if="!error")
+.photo__container(class='{{ classForColumn }}', v-if='!error')
   a.photo__link(
-    v-link="{name: 'product_detail', params: {id: product.id}}")
-    div(v-bind:style="{ opacity: imageOpacity }",
-        :class="{'animate': animate}")
-      img.photo__img(:src="thumb",
-       v-on:load="showImage",
-       v-on:error="loadError")
+    v-link='{name: "product_detail", params: {id: product.id}}')
+    div(v-bind:style='{ opacity: imageOpacity }',
+        :class='{"animate": animate}')
+      img.photo__img(:src='thumb',
+       v-on:load='showImage',
+       v-on:error='loadError')
   .photo__description
     .photo__title {{title}}
     .photo__summ
@@ -14,7 +14,7 @@
       i.ic-currency-rub
 </template>
 
-<script type="text/ecmascript-6">
+<script type='text/ecmascript-6'>
   import pluralize from 'pluralize-ru';
   import { urlThumbnail } from 'utils';
   import { getColumnNumber } from 'vuex/getters';

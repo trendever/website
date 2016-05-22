@@ -1,13 +1,13 @@
-<style src="./wrapper.pcss"></style>
+<style src='./wrapper.pcss'></style>
 <template lang="jade">
 .popup-wrapper(
-  @click.stop.prevent="missClick",
-  @touchstart="missClick")
-  //- .info__close(@click="onClose"): i.ic-close
+  @click.stop.prevent='missClick',
+  @touchstart='missClick')
+  //- .info__close(@click='onClose'): i.ic-close
   slot
 </template>
 
-<script type="text/ecmascript-6">
+<script type='text/ecmascript-6'>
 export default {
   props: [
     { name: 'show', required: true },

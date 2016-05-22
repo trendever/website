@@ -1,38 +1,38 @@
-<style src="./swipe.pcss"></style>
+<style src='./swipe.pcss'></style>
 <template lang="jade">
 .swipe
   .swipe-item-container(
-    v-el:swipe, @click="swipe(1)", :style="style")
+    v-el:swipe, @click='swipe(1)', :style='style')
     .swipe-item.slide.slide-4
       p ...сохранять товары инста-шопов#[br]в свою ленту трендов.
-      img(src="/static/img/auth-slide-4.svg")
-      p.hide-desktop(style="margin-top: 0px")
+      img(src='img/auth-slide-4.png')
+      p.hide-desktop(style='margin-top: 0px')
         | Поэтому укажите инста-логин #[i.emoji.emoji_down]
     .swipe-item.slide.slide-1
       p ...искать и покупать в живой ленте#[br]товаров от трендскаутов.
-      img(src="/static/img/auth-slide-1.svg")
+      img(src='img/auth-slide-1.png')
     .swipe-item.slide.slide-2
       p ...покупать в приложении Instagram#[br]по комментарию @wantit.
-      img(src="/static/img/auth-slide-2.svg")
-      p.hide-desktop(style="margin-top: -10px")
+      img(src='img/auth-slide-2.png')
+      p.hide-desktop(style='margin-top: -10px')
         | Поэтому укажите инста-логин #[i.emoji.emoji_down]
     .swipe-item.slide.slide-3
       p  ...общаться с магазинами#[br]и заказывать в привычном чате.
-      img(src="/static/img/auth-slide-3.svg")
+      img(src='img/auth-slide-3.png')
     .swipe-item.slide.slide-4
       p ...сохранять товары инста-шопов#[br]в свою ленту трендов.
-      img(src="/static/img/auth-slide-4.svg")
-      p.hide-desktop(style="margin-top: 0px")
+      img(src='img/auth-slide-4.png')
+      p.hide-desktop(style='margin-top: 0px')
         | Поэтому укажите инста-логин #[i.emoji.emoji_down]
     .swipe-item.slide.slide-1
       p ...искать и покупать в живой ленте#[br]товаров от трендскаутов.
-      img(src="/static/img/auth-slide-1.svg")
+      img(src='img/auth-slide-1.png')
   .swipe-navigation
-    .swipe-prev(@click="swipe(-1)"): i.ic-swipe-left
-    .swipe-next(@click="swipe(1)"): i.ic-swipe-right
+    .swipe-prev(@click='swipe(-1)'): i.ic-swipe-left
+    .swipe-next(@click='swipe(1)'): i.ic-swipe-right
 </template>
 
-<script type="text/ecmascript-6">
+<script type='text/ecmascript-6'>
   const TIMEOUT_SLIDER = 7000;
 
   export default {

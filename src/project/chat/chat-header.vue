@@ -1,10 +1,10 @@
-<style src="./styles/chat-header.pcss"></style>
+<style src='./styles/chat-header.pcss'></style>
 <template lang="jade">
 div
-  header-component(:notify-count='getGlobalNotifyCount', :back-link="{name: 'chat_list'}")
+  header-component(:notify-count='getGlobalNotifyCount', :back-link='{name: "chat_list"}')
 
-    .chat-header(slot="content")
-      .chat-header_cnt(v-show="getShopName")
+    .chat-header(slot='content')
+      .chat-header_cnt(v-show='getShopName')
         .chat-header_cnt_t {{ getShopName }}
         .chat-header_cnt_info
           span.chat-header_cnt_info-text
@@ -14,11 +14,11 @@ div
 
 
       .chat-header_photo
-        img(:src="getPhoto | url_thumbnail 150",
-        onerror="this.error=null;this.src='/static/img/favicon.png'",)
+        img(:src='getPhoto | url_thumbnail 150',
+        onerror='this.error=null;this.src="/static/img/favicon.png"',)
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
   import {
     getStatusName,
     getId,

@@ -1,4 +1,4 @@
-<style src="./styles/chat.pcss"></style>
+<style src='./styles/chat.pcss'></style>
 <template lang="jade">
 .chat-cnt.scroll-cnt
   chat-header(:notify-count='conversationNotifyCount')
@@ -6,24 +6,24 @@
     .chat.section__content
       .chat_messages
         //- chat-msg-date
-        template(v-for="msg in getMessages", track-by="$index")
+        template(v-for='msg in getMessages', track-by='$index')
 
           chat-msg-product(
-            v-if="msg.parts[0].mime_type === 'text/json'",
-            :msg="msg")
+            v-if='msg.parts[0].mime_type === "text/json"',
+            :msg='msg')
 
           chat-msg(
-            v-if="msg.parts[0].mime_type === 'text/plain'",
-            :msg="msg")
+            v-if='msg.parts[0].mime_type === "text/plain"',
+            :msg='msg')
 
           chat-msg-img(
-            v-if="isImage(msg.parts[0].mime_type)",
-            :msg="msg")
+            v-if='isImage(msg.parts[0].mime_type)',
+            :msg='msg')
 
     chat-bar
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
   import listen from 'event-listener';
   import {
           setConversation,
@@ -80,7 +80,7 @@
       },
     },
     ready(){
-      this.scrollCnt = document.querySelector(".scroll-cnt");
+      this.scrollCnt = document.querySelector('.scroll-cnt');
     },
     vuex: {
       actions: {

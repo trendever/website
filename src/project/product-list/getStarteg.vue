@@ -1,5 +1,5 @@
 <template lang="jade">
-    popup-wrapper(:show="isShowPopupSignup", :close="onClose")
+    popup-wrapper(:show='isShowPopupSignup', :close='onClose')
 </template>
 <style>
 

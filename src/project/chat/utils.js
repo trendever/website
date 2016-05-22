@@ -1,6 +1,6 @@
 export const formatDatetime = unixtime => {
   let date = new Date(unixtime * 1000);
-  let minutes = "0" + date.getMinutes();
+  let minutes = '0' + date.getMinutes();
 
   return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${minutes.substr(-2)}`;
 };
@@ -80,13 +80,13 @@ export const formatMonth = ( unixtime ) => {
 };
 
 export const escapeHtml = ( string ) => {
-  return String( string ).replace( /[&<>"'`=\/]/g, function fromEntityMap( s ) {
+  return String( string ).replace( /[&<>''`=\/]/g, function fromEntityMap( s ) {
     return {
       '&': '&amp;',
       '<': '&lt;',
       '>': '&gt;',
       '"': '&quot;',
-      "'": '&#39;',
+      '"': '&#39;',
       '/': '&#x2F;',
       '`': '&#x60;',
       '=': '&#x3D;'

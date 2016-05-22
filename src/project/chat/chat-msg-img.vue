@@ -1,19 +1,19 @@
-<style src="./styles/chat-msg-img.pcss"></style>
+<style src='./styles/chat-msg-img.pcss'></style>
 <template lang="jade">
 
-.chat-row(:class="getSide")
-  span(class="bubble_info_time") {{ datetime }}
-  a.chat-msg.bubble(:href="getImg", target="_blank")
-    .chat-msg_t(v-if="!isOwnMessage")
+.chat-row(:class='getSide')
+  span(class='bubble_info_time') {{ datetime }}
+  a.chat-msg.bubble(:href='getImg', target='_blank')
+    .chat-msg_t(v-if='!isOwnMessage')
       | {{{ getUsername }}}
-    img(:src="getImg", class="chat-msg-img", v-bind:class="{'chat-msg-img-opacity':!isLoaded }")
+    img(:src='getImg', class='chat-msg-img', v-bind:class='{"chat-msg-img-opacity":!isLoaded }')
     .bubble_info
-      .bubble_info_status(v-if="isOwnMessage")
-        i(:class="{'ic-check': isSent, 'ic-check-double': isRead}")
+      .bubble_info_status(v-if='isOwnMessage')
+        i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
 
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
   import { getCurrentMember, getShopName, getLastMessageId } from 'vuex/getters/chat.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';

@@ -1,26 +1,26 @@
-<style src="./header.pcss"></style>
+<style src='./header.pcss'></style>
 <template lang="jade">
-.section.header.u-fixed(v-show="is_visible")
+.section.header.u-fixed(v-show='is_visible')
   .section__content.header__content
-    .header__arrow(@click="leftBtnAction" v-if="leftBtnShow")
+    .header__arrow(@click='leftBtnAction' v-if='leftBtnShow')
       i.header__arrow__ic.ic-arrow-left(
-        :class="{'_up': is_action_up}")
+        :class='{"_up": is_action_up}')
 
-    .header__notify-count(v-if="notifyCount")
+    .header__notify-count(v-if='notifyCount')
       span {{ notifyCount }}
 
     .header__center
       .header__text {{{ title }}}
-      slot(name="content")
+      slot(name='content')
 
     //- .header__menu
       .header__menu-icon
       .header__menu-links
-        a.header__menu-link(href="#") Настройки
-        a.header__menu-link(href="#") Выйти
+        a.header__menu-link(href='#') Настройки
+        a.header__menu-link(href='#') Выйти
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
 import listen from 'event-listener';
 
 export default {
@@ -82,7 +82,7 @@ export default {
     }
   },
   ready() {
-    this.scrollCnt = document.querySelector(".scroll-cnt");
+    this.scrollCnt = document.querySelector('.scroll-cnt');
 
     if (this.show_on_elem) {
       this.showOnEl = document.getElementById(this.show_on_elem);

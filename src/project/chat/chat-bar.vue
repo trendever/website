@@ -1,26 +1,26 @@
-<style src="./styles/chat-bar.pcss"></style>
+<style src='./styles/chat-bar.pcss'></style>
 <template lang="jade">
 
 div
   .chat-bar.section__content
-    .chat-bar_menu-btn(@click="setShowMenu(true)")
+    .chat-bar_menu-btn(@click='setShowMenu(true)')
       i.ic-menu-light
     .chat-bar_input
-      textarea(placeholder="Введите сообщение",
-               v-model="txtMsg",
+      textarea(placeholder='Введите сообщение',
+               v-model='txtMsg',
                v-el:input-msg,
-               @focus="focusInput",
-               @blur="blurInput($event)")
-    .chat-bar_send-btn(v-on:mousedown="send($event)",
-                       v-on:touchstart="send($event)",
-                       :class="{'__active': !!txtMsg}")
+               @focus='focusInput',
+               @blur='blurInput($event)')
+    .chat-bar_send-btn(v-on:mousedown='send($event)',
+                       v-on:touchstart='send($event)',
+                       :class='{"__active": !!txtMsg}')
       i.ic-send-plane
 
   chat-menu
 
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
   import listen from 'event-listener';
 
   import store from 'vuex/store';
@@ -35,17 +35,17 @@ div
     createMessage,
     setShowMenu,
     setStatus
-  } from "vuex/actions/chat.js";
+  } from 'vuex/actions/chat.js';
 
-  import * as service from "services/message";
-  import * as leads from "services/leads";
+  import * as service from 'services/message';
+  import * as leads from 'services/leads';
 
   import ChatMenu from './chat-menu.vue';
 
   export default{
     data(){
       return {
-        txtMsg: "",
+        txtMsg: '',
       };
     },
 
@@ -133,9 +133,9 @@ div
           return;
         }
 
-        this.txtMsg = "";
+        this.txtMsg = '';
 
-        const promise = this.createMessage( this.getId, txtMsg, "text/plain" );
+        const promise = this.createMessage( this.getId, txtMsg, 'text/plain' );
         promise.then( () => {
           if (
             this.getStatus === leads.STATUSES.NEW.key &&
@@ -152,7 +152,7 @@ div
           // ToDo надо отображать, что сообщение не отправлено значком в сообщении
           alert('Ошибка. Сообщение не отправлено. Может нет интернета?')
 
-          Raven.captureException(new Error("Problem to send message"), {extra: {
+          Raven.captureException(new Error('Problem to send message'), {extra: {
             errorMsg: errData,
             user: store.state.user,
           }});
@@ -165,7 +165,7 @@ div
       txtMsg(msg) {
         this.$nextTick(() => {
           let inputMsg = this.$els.inputMsg;
-          const textHeight = window.matchMedia("(max-width: 750px)").matches ? 58: 32;
+          const textHeight = window.matchMedia('(max-width: 750px)').matches ? 58: 32;
           const inpHeight = inputMsg.scrollHeight;
           inputMsg.style.height = (msg ? (inpHeight <= textHeight)? textHeight: inpHeight : textHeight)  + 'px';
         });

@@ -11,11 +11,11 @@ export const ERROR_CODES = {
 };
 
 export const USER_ROLES = {
-  UNKNOWN: {name: "НЛО", key: 0},
-  CUSTOMER: {name: "Покупатель", key: 1},
-  SUPPLIER: {name: "Поставщик", key: 2},
-  SELLER: {name: "Продавец", key: 3},
-  SUPER_SELLER: {name: "Супер продавец", key: 4},
+  UNKNOWN: {name: 'НЛО', key: 0},
+  CUSTOMER: {name: 'Покупатель', key: 1},
+  SUPPLIER: {name: 'Поставщик', key: 2},
+  SELLER: {name: 'Продавец', key: 3},
+  SUPER_SELLER: {name: 'Супер продавец', key: 4},
 };
 
 export const getRole = key => {
@@ -29,13 +29,13 @@ export const getRole = key => {
 export const STATUSES = {
   //this status means we created a lead in db,
   // but did not perform any predefined actions
-  EMPTY: {name: "Пустой", key: 0},
-  NEW: {name: "Новый", key: 1},
-  IN_PROGRESS: {name: "В процессе", key: 2},
-  SUBMITTED: {name: "Подтвержден", key: 3},
-  ON_DELIVERY: {name: "На доставке", key: 4},
-  COMPLETED: {name: "Выполнен", key: 5},
-  CANCELLED: {name: "Отменен", key: 6},
+  EMPTY: {name: 'Пустой', key: 0},
+  NEW: {name: 'Новый', key: 1},
+  IN_PROGRESS: {name: 'В процессе', key: 2},
+  SUBMITTED: {name: 'Подтвержден', key: 3},
+  ON_DELIVERY: {name: 'На доставке', key: 4},
+  COMPLETED: {name: 'Выполнен', key: 5},
+  CANCELLED: {name: 'Отменен', key: 6},
 };
 
 export const getStatus = key => {
@@ -47,12 +47,12 @@ export const getStatus = key => {
 };
 
 export const STATUS_EVENTS = [
-  {name: "Новый", key:"CREATE"},
-  {name: "В процессе", key:"PROGRESS"},
-  {name: "Подтвержден", key:"SUBMIT"},
-  {name: "На доставке", key:"DELIVERY"},
-  {name: "Выполнен", key:"COMPLETE"},
-  {name: "Отменен", key:"CANCEL"},
+  {name: 'Новый', key:'CREATE'},
+  {name: 'В процессе', key:'PROGRESS'},
+  {name: 'Подтвержден', key:'SUBMIT'},
+  {name: 'На доставке', key:'DELIVERY'},
+  {name: 'Выполнен', key:'COMPLETE'},
+  {name: 'Отменен', key:'CANCEL'},
 ];
 
 
@@ -64,85 +64,85 @@ export const STATUS_EVENTS = [
  * @param  {string} options.roles   list with comma
  *
  * RESOLVE
- *  "customer": [
+ *  'customer': [
  *      {
- *        "id": 91,
- *        "source": "website",
- *        "customer_id": 1379,
- *        "products": [
+ *        'id': 91,
+ *        'source': 'website',
+ *        'customer_id': 1379,
+ *        'products': [
  *          {
- *            "id": 17639,
- *            "code": "tf9761",
- *            "instagram_image_caption": "Кроссовки Asics gel lite 3, за 7500 руб",
- *            "instagram_image_id": "1226621682111654014_3108795937",
- *            "instagram_image_url": "http://scontent-amt2-1.cdninstagram.com/t51.2885-15/e35/12976548_1777021972528091_1983540821_n.jpg?se=8&ig_cache_key=MTIyNjYyMTY4MjExMTY1NDAxNA%3D%3D.2",
- *            "instagram_link": "https://www.instagram.com/p/BEF1evEDqh-/",
- *            "instagram_published_at": 1460444700,
- *            "supplier_id": 3603,
- *            "supplier": {},
- *            "mentioned_id": 3655,
- *            "mentioned": {},
- *            "isSale": true,
- *            "items": [
+ *            'id': 17639,
+ *            'code': 'tf9761',
+ *            'instagram_image_caption': 'Кроссовки Asics gel lite 3, за 7500 руб',
+ *            'instagram_image_id': '1226621682111654014_3108795937',
+ *            'instagram_image_url': 'http://scontent-amt2-1.cdninstagram.com/t51.2885-15/e35/12976548_1777021972528091_1983540821_n.jpg?se=8&ig_cache_key=MTIyNjYyMTY4MjExMTY1NDAxNA%3D%3D.2',
+ *            'instagram_link': 'https://www.instagram.com/p/BEF1evEDqh-/',
+ *            'instagram_published_at': 1460444700,
+ *            'supplier_id': 3603,
+ *            'supplier': {},
+ *            'mentioned_id': 3655,
+ *            'mentioned': {},
+ *            'isSale': true,
+ *            'items': [
  *              {
- *                "name": "Кросовки",
- *                "price": 7500
+ *                'name': 'Кросовки',
+ *                'price': 7500
  *              }
  *            ]
  *          }
  *        ],
- *        "customer": {
- *          "id": 1379,
- *          "instagram_id": 1482392154,
- *          "instagram_username": "happierall",
- *          "instagram_fullname": "Руслан Янбердин",
- *          "instagram_avatar_url": "https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg",
- *          "instagram_caption": "Hi all"
+ *        'customer': {
+ *          'id': 1379,
+ *          'instagram_id': 1482392154,
+ *          'instagram_username': 'happierall',
+ *          'instagram_fullname': 'Руслан Янбердин',
+ *          'instagram_avatar_url': 'https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg',
+ *          'instagram_caption': 'Hi all'
  *        },
- *        "status": 1,
- *        "user_role": 1,
- *        "shop": {
- *          "id": 3603,
- *          "instagram_id": 3108795937,
- *          "instagram_username": "dev_supplier",
- *          "instagram_fullname": "Dev Shop",
- *          "instagram_avatar_url": "http://scontent-amt2-1.cdninstagram.com/t51.2885-19/s150x150/12677376_196270977423905_1508709347_a.jpg"
+ *        'status': 1,
+ *        'user_role': 1,
+ *        'shop': {
+ *          'id': 3603,
+ *          'instagram_id': 3108795937,
+ *          'instagram_username': 'dev_supplier',
+ *          'instagram_fullname': 'Dev Shop',
+ *          'instagram_avatar_url': 'http://scontent-amt2-1.cdninstagram.com/t51.2885-19/s150x150/12677376_196270977423905_1508709347_a.jpg'
  *        },
- *        "chat": {
- *          "id": 91,
- *          "members": [
+ *        'chat': {
+ *          'id': 91,
+ *          'members': [
  *            {
- *              "id": 131,
- *              "user_id": 3653,
- *              "role": 3,
- *              "name": "seller_1",
- *              "last_message_id": 722
+ *              'id': 131,
+ *              'user_id': 3653,
+ *              'role': 3,
+ *              'name': 'seller_1',
+ *              'last_message_id': 722
  *            },
  *          ],
- *          "unread_count": 2,
- *          "recent_message": {
- *            "conversation_id": 91,
- *            "user_id": 130,
- *            "parts": [
+ *          'unread_count': 2,
+ *          'recent_message': {
+ *            'conversation_id': 91,
+ *            'user_id': 130,
+ *            'parts': [
  *              {
- *                "content": "test",
- *                "mime_type": "text/plain"
+ *                'content': 'test',
+ *                'mime_type': 'text/plain'
  *              }
  *            ],
- *            "created_at": 1461907197,
- *            "id": 722,
- *            "user": {
- *              "id": 130,
- *              "user_id": 1379,
- *              "role": 1,
- *              "name": "happierall",
- *              "last_message_id": 698
+ *            'created_at': 1461907197,
+ *            'id': 722,
+ *            'user': {
+ *              'id': 130,
+ *              'user_id': 1379,
+ *              'role': 1,
+ *              'name': 'happierall',
+ *              'last_message_id': 698
  *            }
  *          }
  *        }
  *      }
  *    ],
- *    "seller": []
+ *    'seller': []
  *  }
 
 
@@ -151,13 +151,13 @@ export const STATUS_EVENTS = [
 export function find( limit, from_updated_at, roles, direction = false ) {
 
   //const cacheData = leadsCache.find( limit, from_updated_at, roles );
-    
+
   return new Promise( (resolve, reject) => {
-    
+
 /*    if ( cacheData !== null ) {
       return resolve(cacheData);
     }*/
-    channel.req("list", "lead", { limit, from_updated_at, roles, direction }).then( data => {
+    channel.req('list', 'lead', { limit, from_updated_at, roles, direction }).then( data => {
 /*      if ( cacheData === null ) {
         leadsCache.addItem(data.response_map, roles);
       }*/
@@ -167,7 +167,7 @@ export function find( limit, from_updated_at, roles, direction = false ) {
       if (error.log_map.code_key === '403') {
         reject(ERROR_CODES.UNATHORIZED);
       }
-      console.log("Lead list err:", error);
+      console.log('Lead list err:', error);
     });
 
   });
@@ -179,76 +179,76 @@ export function find( limit, from_updated_at, roles, direction = false ) {
  * @param  {number} options.conversation_id
  * RESOLVE
  *  lead: {
- *      "id": 1,
- *      "source": "website",
- *      "customer_id": 1379,
- *      "status": 3,
- *      "user_role": 1,
- *      "conversation_id": 1,
- *      "products": [
+ *      'id': 1,
+ *      'source': 'website',
+ *      'customer_id': 1379,
+ *      'status': 3,
+ *      'user_role': 1,
+ *      'conversation_id': 1,
+ *      'products': [
  *        {
- *          "id": 17622,
- *          "title": "Тестовый товар #2 (17622)",
- *          "code": "tf9744",
- *          "instagram_image_caption": "Минимализм в лучшем виде 💗✌️Этот комбинезон вы сможете найти по ссылке в профиле 😊 RG: @syanafromparis",
- *          "instagram_image_id": "1223302707884078653",
- *          "instagram_image_url": "https://scontent.cdninstagram.com/l/t51.2885-15/s480x480/e35/12965842_803674876433752_380340161_n.jpg?ig_cache_key=MTIyMzMwMjcwNzg4NDA3ODY1Mw%3D%3D.2",
- *          "instagram_link": "https://www.instagram.com/p/BD6C1TcNDY9/",
- *          "instagram_published_at": -62135596800,
- *          "supplier_id": 129,
- *          "supplier": {},
- *          "mentioned_id": 1996,
- *          "mentioned": {},
- *          "isSale": true,
- *          "items": [
+ *          'id': 17622,
+ *          'title': 'Тестовый товар #2 (17622)',
+ *          'code': 'tf9744',
+ *          'instagram_image_caption': 'Минимализм в лучшем виде 💗✌️Этот комбинезон вы сможете найти по ссылке в профиле 😊 RG: @syanafromparis',
+ *          'instagram_image_id': '1223302707884078653',
+ *          'instagram_image_url': 'https://scontent.cdninstagram.com/l/t51.2885-15/s480x480/e35/12965842_803674876433752_380340161_n.jpg?ig_cache_key=MTIyMzMwMjcwNzg4NDA3ODY1Mw%3D%3D.2',
+ *          'instagram_link': 'https://www.instagram.com/p/BD6C1TcNDY9/',
+ *          'instagram_published_at': -62135596800,
+ *          'supplier_id': 129,
+ *          'supplier': {},
+ *          'mentioned_id': 1996,
+ *          'mentioned': {},
+ *          'isSale': true,
+ *          'items': [
  *            {
- *              "name": "Ветровка"
+ *              'name': 'Ветровка'
  *            },
  *          ]
  *        },
  *      ],
- *      "customer": {
- *        "id": 1379,
- *        "instagram_id": 1482392154,
- *        "instagram_username": "happierall",
- *        "instagram_fullname": "Руслан Янбердин",
- *        "instagram_avatar_url": "https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg",
- *        "instagram_caption": "Hi all"
+ *      'customer': {
+ *        'id': 1379,
+ *        'instagram_id': 1482392154,
+ *        'instagram_username': 'happierall',
+ *        'instagram_fullname': 'Руслан Янбердин',
+ *        'instagram_avatar_url': 'https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg',
+ *        'instagram_caption': 'Hi all'
  *      },
- *      "shop": {
- *        "id": 129,
- *        "instagram_id": 1552963340,
- *        "instagram_username": "asos_ru",
- *        "instagram_fullname": "(TEST 1) ASOS Russia",
- *        "instagram_avatar_url": "https://scontent.cdninstagram.com/t51.2885-19/s150x150/11262572_227962937541098_815996954_a.jpg",
- *        "instagram_caption": "Добро пожаловать на официальную страницу ASOS Russia, где вы откроете для себя мир моды онлайн. Присоединяйтесь!"
+ *      'shop': {
+ *        'id': 129,
+ *        'instagram_id': 1552963340,
+ *        'instagram_username': 'asos_ru',
+ *        'instagram_fullname': '(TEST 1) ASOS Russia',
+ *        'instagram_avatar_url': 'https://scontent.cdninstagram.com/t51.2885-19/s150x150/11262572_227962937541098_815996954_a.jpg',
+ *        'instagram_caption': 'Добро пожаловать на официальную страницу ASOS Russia, где вы откроете для себя мир моды онлайн. Присоединяйтесь!'
  *      },
- *      "chat": {
- *        "id": 7,
- *        "members": [
+ *      'chat': {
+ *        'id': 7,
+ *        'members': [
  *          {
- *            "id": 11,
- *            "user_id": 1379,
- *            "role": 1,
- *            "name": "happierall"
+ *            'id': 11,
+ *            'user_id': 1379,
+ *            'role': 1,
+ *            'name': 'happierall'
  *          }
  *        ],
- *        "unread_count": 4,
- *        "recent_message": {
- *          "conversation_id": 7,
- *          "user_id": 12,
- *          "parts": [
+ *        'unread_count': 4,
+ *        'recent_message': {
+ *          'conversation_id': 7,
+ *          'user_id': 12,
+ *          'parts': [
  *            {
- *              "content": "Hello world",
- *              "mime_type": "text/plain"
+ *              'content': 'Hello world',
+ *              'mime_type': 'text/plain'
  *            }
  *          ],
- *          "created_at": 1461110215,
- *          "id": 147,
- *          "user": {
- *            "id": 12,
- *            "user_id": 3653,
- *            "role": 3
+ *          'created_at': 1461110215,
+ *          'id': 147,
+ *          'user': {
+ *            'id': 12,
+ *            'user_id': 3653,
+ *            'role': 3
  *          }
  *        }
  *      }
@@ -256,22 +256,22 @@ export function find( limit, from_updated_at, roles, direction = false ) {
  *
  *    messages: [
  *      {
- *        "conversation_id": 89,
- *        "user_id": 128,
- *        "parts": [
+ *        'conversation_id': 89,
+ *        'user_id': 128,
+ *        'parts': [
  *          {
- *            "content": "Hi all",
- *            "mime_type": "text/plain"
+ *            'content': 'Hi all',
+ *            'mime_type': 'text/plain'
  *          }
  *        ],
- *        "created_at": 1461939232,
- *        "id": 738,
- *        "user": {
- *          "id": 128,
- *          "user_id": 1379,
- *          "role": 1,
- *          "name": "happierall",
- *          "last_message_id": 693
+ *        'created_at': 1461939232,
+ *        'id': 738,
+ *        'user': {
+ *          'id': 128,
+ *          'user_id': 1379,
+ *          'role': 1,
+ *          'name': 'happierall',
+ *          'last_message_id': 693
  *        }
  *      }
  *    ]
@@ -282,7 +282,7 @@ export function get({ lead_id, conversation_id }) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("retrieve", "lead", { lead_id, conversation_id })
+    channel.req('retrieve', 'lead', { lead_id, conversation_id })
     .then( data => {
       resolve(data.response_map);
     }).catch( error => {
@@ -293,7 +293,7 @@ export function get({ lead_id, conversation_id }) {
       } else if (error.log_map.code_key === '400') {
         reject(ERROR_CODES.FORBIDDEN);
       }
-      console.log("Lead retrieve err:", error);
+      console.log('Lead retrieve err:', error);
     });
 
   });
@@ -311,7 +311,7 @@ export function create(product_id) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("create", "lead", {id: product_id})
+    channel.req('create', 'lead', {id: product_id})
     .then( data => {
       resolve(data.response_map.lead);
     }).catch( error => {
@@ -347,7 +347,7 @@ export function setEvent(lead_id, event) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("event", "lead", {lead_id, event})
+    channel.req('event', 'lead', {lead_id, event})
     .then( data => {
       resolve(data.response_map.lead);
     }).catch( error => {

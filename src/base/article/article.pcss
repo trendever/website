@@ -1,0 +1,71 @@
+ @import 'base/vars/vars.pcss';
+
+.article{
+  padding: 0 30px;
+
+  color: #808080;
+
+  // elements
+  p{
+    &:not(:first-child){
+      margin-top: 30px;
+    }
+  }
+  h1, h2, h3, h4, h5, h6{
+    color: black;
+
+    &:not(:first-child){
+      margin: 30px 0;
+    }
+  }
+  a:not([class]){
+    text-decoration: none;
+
+    color: inherit;
+
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+  li{
+    position: relative;
+
+    margin: 30px 0;
+    padding: 0 0 0 20px;
+
+    &:before{
+      position: absolute * * * 0;
+
+      content: '-';
+    }
+    &:after{
+      content: ';';
+    }
+  }
+  &__{
+    &header{
+      padding: 26px 0;
+
+      text-align: center;
+    }
+    &content{
+      font-size: 22px;
+    }
+    &footer{
+      margin: 70px 0 35px 0;
+
+      text-align: center;
+
+      font-size: 1.875em;
+    }
+    &back{
+      text-decoration: none;
+      text-decoration: none;
+
+      color: $color__green;
+      border-bottom: 1px solid #dee4e4;
+
+      font-size: 46px;
+    }
+  }
+}

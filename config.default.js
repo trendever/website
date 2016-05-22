@@ -1,20 +1,15 @@
 var config = {
-  debug: true,
-
   /**
    * Connection to remote server config.
-   *
    */
   socket_server: {
     url: "https://dev.trendever.com/channel"
   },
   /**
    * Webserver config.
-   *
    */
   webserver: {
-    port: 3002,
-    open: true,
+    port: 3000
   },
 
   raven: {
@@ -24,7 +19,6 @@ var config = {
 
   /**
    * Mixpanel analytics
-   * @token string - if empty, then mixpanel will disabled.
    */
   mixpanel: {
     token: ""

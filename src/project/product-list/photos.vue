@@ -1,35 +1,36 @@
-<style src="./styles/photos.pcss"></style>
+<style src='./styles/photos.pcss'></style>
 <template lang="jade">
 .photos
   .photo__title-row
-    .photo__title-column( :class="{'active': getColumnNumber === 2}", @click="setColumnNumber(2)")
+    .photo__title-column( :class='{"active": getColumnNumber === 2}', @click='setColumnNumber(2)')
       .photo__title-column-long
       .photo__title-column-long
 
-    .photo__title-column( :class="{'active': getColumnNumber === 3}", @click="setColumnNumber(3)")
+    .photo__title-column( :class='{"active": getColumnNumber === 3}', @click='setColumnNumber(3)')
       .photo__title-column-short
       .photo__title-column-short
       .photo__title-column-short
 
-  .photos__list(v-el:photos-list, v-if="object_list")
-    template(v-for="product in object_list")
-      photo-item(:product="product", :animate="animateShow")
+  .photos__list(v-el:photos-list, v-if='object_list')
+    template(v-for='product in object_list')
+      photo-item(:product='product', :animate='animateShow')
 
-  .photos__more-wrap(v-if="hasMoreProducts")
+  .photos__more-wrap(v-if='hasMoreProducts')
     .photos__more(
-       :class="{'_active': isWaitReponseProducts}",
-       @click="enableInfinityScroll(event, true)")
+       :class='{"_active": isWaitReponseProducts}',
+       @click='enableInfinityScroll(event, true)')
         .photos__more__base-ic: span еще
         .photos__more__anim-ic: i.ic-update
 
-  .photos__no-more-wrap(v-if="!object_list")
+  .photos__no-more-wrap(v-if='!object_list')
     .photos__no-goods Товаров не найдено
-    .main__bottom.__no-goods: a.main__link(
-      @click.prevent.stop="clearSearch()",
-      href="#") Сбросить поиск
+    .main__bottom.__no-goods: a.link.link_primary(
+      @click.prevent.stop='clearSearch()',
+      href='#') Сбросить поиск
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
+    import mixpanel from 'mixpanel-browser'
     import listen from 'event-listener';
     import store from 'vuex/store';
     import photoItem from './photo-item.vue';
@@ -54,7 +55,7 @@
 
     export default {
       ready(){
-        this.scrollCnt = document.querySelector(".scroll-cnt");
+        this.scrollCnt = document.querySelector('.scroll-cnt');
         this.scrollCnt.scrollTop = scrollY;
 
         if (!this.getColumnNumber) {
@@ -134,10 +135,10 @@
 
           let settings = {
             from_id: last_product ? last_product.id : null,
-            type: "more"
+            type: 'more'
           };
 
-          mixpanel.track("Show More Products", {
+          mixpanel.track('Show More Products', {
             offset: this.object_list.length,
             view: `${ this.getColumnNumber }columns`,
           });

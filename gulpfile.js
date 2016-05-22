@@ -38,8 +38,5 @@ gulp.task('watch', tasks.watch);
 // Build
 gulp.task('build', ['template', 'img', 'css', 'webpack_build', 'copy:static']);
 
-// Modernizr
-gulp.task('modernizr', tasks.modernizr);
-
 // Use default task.
 gulp.task('default', ['dev']);

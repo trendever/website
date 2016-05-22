@@ -1,4 +1,4 @@
-<style src="./footer.pcss"></style>
+<style src='./footer.pcss'></style>
 <template lang="jade">
 footer.section.footer
   .section__content.footer__content
@@ -6,13 +6,13 @@ footer.section.footer
     // BEGIN footer__content__links
     .footer__content__links
       a.footer__content__link.link(
-        v-link="'for_blogger' | linkToInfo") Блогерам
+        v-link='"for_blogger" | linkToInfo') Блогерам
       a.footer__content__link.link(
-        v-link="'for_customer' | linkToInfo") Покупателям
+        v-link='"for_customer" | linkToInfo') Покупателям
       a.footer__content__link.link(
-        v-link="'for_shop' | linkToInfo") Магазинам
+        v-link='"for_shop" | linkToInfo') Магазинам
       a.footer__content__link.link(
-        v-link="{name: 'agreement'}") Условия
+        v-link='{name: "agreement"}') Условия
     // END footer__content__links
 
     .footer__content__copyright © Trendever {{ year }}

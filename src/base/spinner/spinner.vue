@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<style lang="sass">
+<style lang='sass'>
   // http://tobiasahlin.com/spinkit/
 
   $spinkit-size: 40px !default;

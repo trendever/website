@@ -1,4 +1,8 @@
-@import "base/vars/vars.pcss";
+@import 'cosmetic/reset.pcss';
+@import 'base/fonts/comfortaa/style.pcss';
+@import 'base/vars/vars.pcss';
+@import 'base/btn/style.pcss';
+@import 'cosmetic/style.pcss';
 
 html,
 body {
@@ -11,6 +15,7 @@ body {
   height: 100% !important;
   margin: 0;
 
+  color: #808080;
   background: #fff;
 
   font: 400 16px $font__family;
@@ -24,4 +29,34 @@ body {
   overflow-y: auto;
 
   height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.section {
+  &__content {
+    box-sizing: border-box;
+    max-width: 1050px;
+    margin: 0 auto;
+
+    @media(--mobile) {
+      max-width: 750px;
+    }
+  }
+  &.top {
+    padding-top: 50px;
+
+    @media(--mobile) {
+      padding-top: 102px;
+    }
+  }
+  &.bottom {
+    padding-bottom: 110px;
+
+    @media(--mobile) {
+      padding-bottom: 110px;
+    }
+  }
 }

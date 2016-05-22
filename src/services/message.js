@@ -19,21 +19,21 @@ export const ERROR_CODES = {
  * RESOLVE
  * [
  *   {
- *     "conversation_id": 1,
- *     "user_id": 1379,
- *     "parts": [
+ *     'conversation_id': 1,
+ *     'user_id': 1379,
+ *     'parts': [
  *       {
- *         "content": "Товар в наличии?",
- *         "mime_type": "text/plain"
+ *         'content': 'Товар в наличии?',
+ *         'mime_type': 'text/plain'
  *       }
  *     ],
- *     "user": {
- *        "id": 6,
- *        "user_id": 1379,
- *        "name": "happierall"
+ *     'user': {
+ *        'id': 6,
+ *        'user_id': 1379,
+ *        'name': 'happierall'
  *      }
- *     "created_at": 1460910536,
- *     "id": 2
+ *     'created_at': 1460910536,
+ *     'id': 2
  *   },
  * ]
  *
@@ -50,7 +50,7 @@ export function find( conversation_id, from_message_id, limit = 12) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("search", "message", { conversation_id, from_message_id, limit })
+    channel.req('search', 'message', { conversation_id, from_message_id, limit })
     .then( data => {
       if (!data.response_map.error) {
 
@@ -80,34 +80,34 @@ export function find( conversation_id, from_message_id, limit = 12) {
  *
  * RESOLVE
  * {
- *   "chat": {
- *     "id": 5,
- *     "members": [
+ *   'chat': {
+ *     'id': 5,
+ *     'members': [
  *       {
- *         "id": 8,
- *         "user_id": 1379,
- *         "name": "happierall"
+ *         'id': 8,
+ *         'user_id': 1379,
+ *         'name': 'happierall'
  *       },
  *       {
- *         "id": 9,
- *         "user_id": 3653,
- *         "role": 2
+ *         'id': 9,
+ *         'user_id': 3653,
+ *         'role': 2
  *       }
  *     ]
  *   },
- *   "error": null,
- *   "messages": [
+ *   'error': null,
+ *   'messages': [
  *     {
- *       "conversation_id": 5,
- *       "user_id": 1379,
- *       "parts": [
+ *       'conversation_id': 5,
+ *       'user_id': 1379,
+ *       'parts': [
  *         {
- *           "content": "Йо нига",
- *           "mime_type": "text/plain"
+ *           'content': 'Йо нига',
+ *           'mime_type': 'text/plain'
  *         }
  *       ],
- *       "created_at": 1461074705,
- *       "id": 24
+ *       'created_at': 1461074705,
+ *       'id': 24
  *     }
  *   ]
  * }
@@ -118,7 +118,7 @@ export function create(conversation_id, text, mime_type = 'text/plain') {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("create", "message", { conversation_id, text, mime_type })
+    channel.req('create', 'message', { conversation_id, text, mime_type })
     .then( data => {
 
       if (data.error && data.error.code === ERROR_CODES.NOT_EXISTS) {

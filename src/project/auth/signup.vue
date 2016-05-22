@@ -1,8 +1,8 @@
-<style src="./style.pcss"></style>
+<style src='./style.pcss'></style>
 <template lang="jade">
 div
-  .signup(:style="{ height: height }")
-    .info__close.__hello(@click="closePage"): i.ic-close
+  .signup(:style='{ height: height }')
+    .info__close.__hello(@click='closePage'): i.ic-close
     .section
       .column-desktop-50.header
         h1 Войдите и сможете...
@@ -10,39 +10,39 @@ div
         slider
       .column-desktop-50
         .bottom-container
-          validator(name="signup")
+          validator(name='signup')
             .input-container
               .input
-                input(type="text",
-                  :class=" {error: errorLogin} ",
-                  @focus="onFocusLogin",
-                  @keydown.enter="sendSMS()",
-                  v-validate:login="[ 'required' ]",
-                  v-model="login",
-                  :placeholder="placeholder")
+                input(type='text',
+                  :class=' {error: errorLogin} ',
+                  @focus='onFocusLogin',
+                  @keydown.enter='sendSMS()',
+                  v-validate:login='[ "required" ]',
+                  v-model='login',
+                  :placeholder='placeholder')
                 .input__clear-btn(
-                  v-if="login",
-                  @click="login = ''")
+                  v-if='login',
+                  @click='login = ""')
                   i.ic-close
               .input
-                input(type="tel",
-                  :class=" {error: errorPhone} ",
-                  @focus="onFocusPhone",
-                  @keydown.enter="sendSMS()",
-                  v-validate:phone="[ 'phone', 'required' ]",
-                  v-model="phone",
-                  placeholder="Введите номер телефона")
+                input(type='tel',
+                  :class=' {error: errorPhone} ',
+                  @focus='onFocusPhone',
+                  @keydown.enter='sendSMS()',
+                  v-validate:phone='[ "phone", "required" ]',
+                  v-model='phone',
+                  placeholder='Введите номер телефона')
                 .input__clear-btn(
-                  v-if="phone",
-                  @click="phone = ''")
+                  v-if='phone',
+                  @click='phone = ""')
                   i.ic-close
           .btn-container
             button.btn.btn_primary.__orange.__xl.fast__big__btn(
-              :disabled="!$signup.valid",
-              @click="sendSMS") Отправить sms-код
+              :disabled='!$signup.valid',
+              @click='sendSMS') Отправить sms-код
             .link-container
-              a.link-bottom(href="#",
-                @click.prevent="onClickLink")
+              a.link-bottom(href='#',
+                @click.prevent='onClickLink')
                 | {{{ textLink }}}
 </template>
 
@@ -52,7 +52,8 @@ div
   }
 </style>
 
-<script type="text/ecmascript-6">
+<script type='text/ecmascript-6'>
+  import mixpanel from 'mixpanel-browser'
   import {
     saveAuthData,
     signup,
@@ -128,7 +129,7 @@ div
 
     methods: {
       closePage() {
-        mixpanel.track("Close Signup Page");
+        mixpanel.track('Close Signup Page');
         this.save();
         this.showPopupFastSignup();
 

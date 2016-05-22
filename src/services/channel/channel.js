@@ -13,7 +13,7 @@ const error_codes = {
   warn: 4,
   notice: 5,
   info: 6,
-  "service/debug": 7
+  'service/debug': 7
 };
 
 const Private = new WeakMap();
@@ -48,9 +48,9 @@ class Channel {
           function( data ) {
             // ToDo: update if after refactoring protocol
             if ( !data.log_list[ 0 ] ) {
-              Raven.captureException(new Error("Product doesn't exists or error"), {
+              Raven.captureException(new Error('Product doesn"t exists or error'), {
                 extra: {errorData: data},
-                level: "fatal"
+                level: 'fatal'
               });
             }
             data.log_map = data.log_list[ 0 ];
