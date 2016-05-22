@@ -30,6 +30,9 @@
 ###dev
   Run dev server on address: localhost:3000.
 
+###build
+  Build project in folder: build/
+
 
 ##Postcss
 ###css syntax

@@ -4,7 +4,7 @@ import VueValidator from 'vue-validator';
 import FastClick from 'fastclick';
 import mixpanel from 'mixpanel-browser';
 import config from '../config';
-import { throttleEvent } from 'utils';
+import { throttleEvent, isDebug } from 'utils';
 import { configRouter } from './route-config';
 import InitFilters from './filters';
 import InitValidators from './validators';
@@ -36,15 +36,10 @@ if (config.raven.enabled && window.location.protocol !== "https:") {
 
 // Init analytics
 mixpanel.init(config.mixpanel.token);
-mixpanel.disable();
-
 
 window.socket_url = config.socket_server.url;
 
-
-
-
-Vue.config.debug = config.debug;
+Vue.config.debug = isDebug;
 
 Vue.use(VueValidator);
 
