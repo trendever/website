@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueValidator from 'vue-validator';
 import FastClick from 'fastclick';
-import Raven from 'raven-js';
 import mixpanel from 'mixpanel-browser';
 import config from '../config';
 import { throttleEvent } from 'utils';
@@ -13,7 +12,8 @@ import store from 'vuex/store';
 require('es6-promise').polyfill();
 
 // Log errors
-if (config.raven.enabled) {
+if (config.raven.enabled && window.location.protocol !== "https:") {
+  var Raven = require('raven-js');
   Raven.config(config.raven.url, {
     maxMessageLength: 1000,
   }).install();
