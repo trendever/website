@@ -32,10 +32,12 @@ if (config.raven.enabled && window.location.protocol !== "https:") {
       auth: store.state.auth,
     }});
   };
-
-  // Init analytics
-  mixpanel.init(config.mixpanel.token);
 }
+
+// Init analytics
+mixpanel.init(config.mixpanel.token);
+mixpanel.disable();
+
 
 window.socket_url = config.socket_server.url;
 
