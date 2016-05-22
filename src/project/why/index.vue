@@ -1,6 +1,5 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-
 -
   global_brands = 'img/global_brands.jpg'
   free_shopping = 'img/free_shopping.jpg'
@@ -9,6 +8,7 @@
   all_shops = 'img/all_shops.jpg'
   focus = 'img/focus.jpg'
   earth = 'img/earth.png'
+
 .scroll-cnt
     header-component(
       title='Почему Trendever?',

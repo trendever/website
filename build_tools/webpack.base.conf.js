@@ -96,14 +96,12 @@ module.exports = {
         require('postcss-short-size'),
         require('postcss-short-position'),
 
-        require("postcss-cssnext")(),
-
         // optimizations
         require('postcss-comment/hookRequire')(),
         // require('postcss-discard-empty')(),
         require('postcss-calc')(),
         require('postcss-normalize-url')(),
-        require('postcss-minify-selectors')(),
+        // require('postcss-minify-selectors')(),
         require('postcss-merge-longhand')(),
         // require('postcss-font-family')(),
         require('postcss-convert-values')({
@@ -111,12 +109,13 @@ module.exports = {
             angle: false
         }),
         require('postcss-colormin')(),
-        require('postcss-merge-rules')(),
-        require('postcss-discard-unused')(),
-        require('postcss-discard-duplicates')(),
+        // require('postcss-merge-rules')(),
+        // require('postcss-discard-unused')(),
+        // require('postcss-discard-duplicates')(),
         require('postcss-zindex')(),
         require('postcss-reduce-idents')(),
         require('css-mqpacker')(),
+        // require("cssnano")(),
         // require('csswring')(), // minify css
 
         require("postcss-reporter")(),

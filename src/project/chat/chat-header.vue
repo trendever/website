@@ -14,8 +14,8 @@ div
 
 
       .chat-header_photo
-        img(:src='getPhoto | url_thumbnail 150',
-        onerror='this.error=null;this.src="/static/img/favicon.png"',)
+        img(:src='userImage',
+        v-on:error='onUserImageError',)
 </template>
 
 <script type='text/babel'>
@@ -25,10 +25,29 @@ div
     getShopName,
     getPhoto
   } from 'vuex/getters/chat.js';
-  import { getGlobalNotifyCount } from 'vuex/getters/lead.js';
-  import HeaderComponent from 'base/header/header.vue';
+  import { urlThumbnail } from 'utils'
+  import { getGlobalNotifyCount } from 'vuex/getters/lead.js'
+  import HeaderComponent from 'base/header/header.vue'
 
   export default {
+    data(){
+      return {
+        userImage: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+      }
+    },
+
+    ready(){
+      this.userImage = urlThumbnail(this.getPhoto, 150);
+    },
+
+    methods: {
+       onUserImageError(e){
+        console.warn(`Load user photo has failed. Chat id: ${this.getId}`);
+
+        this.userImage = require('base/img/logo.png');
+      }
+    },
+
     vuex: {
       getters: {
         getId,

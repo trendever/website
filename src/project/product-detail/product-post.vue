@@ -161,7 +161,6 @@ article.product-post
       },
 
       onUserImageError(e){
-        console.log(this.obj);
         console.warn(`Load user photo has failed. Product id: ${this.obj.id}`);
 
         this.userImage = require('base/img/logo.png');

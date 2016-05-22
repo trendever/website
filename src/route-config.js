@@ -32,70 +32,54 @@ export function configRouter(router) {
 
     '/why': {
       name: 'why',
-      component: function(resolve) {
-        require(['project/why/index.vue'], resolve);
-      }
+      component: require('project/why/index.vue'),
     },
 
     '/agreement': {
       name: 'agreement',
-      component: function(resolve) {
-        require(['project/agreement/index.vue'], resolve);
-      }
+      component: require('project/agreement/index.vue'),
     },
 
     '/info/:type': {
       name: 'info',
-      component: function(resolve) {
-        require(['project/info/info.vue'], resolve);
-      }
+      component: require('project/info/info.vue'),
     },
 
     '/settings/tracking': {
       name: 'settings-tracking',
-      component: function(resolve) {
-        require(['project/settings-tracking/index.vue'], resolve);
-      }
+      component: require('project/settings-tracking/index.vue'),
     },
 
     '/settings/token': {
       name: 'settings-token',
       auth: true,
-      component: function(resolve) {
-        require(['project/settings-token/index.vue'], resolve);
-      }
+      component: require('project/settings-token/index.vue'),
     },
 
     '/logout': {
       name: 'logout',
       auth: true,
-      component: function(resolve) {
-        require(['project/logout/index.vue'], resolve);
-      }
+      component: require('project/logout/index.vue'),
     },
 
     '/signup': {
       name: 'signup',
-      component: require('project/auth/signup.vue')
+      component: require('project/auth/signup.vue'),
     },
 
     '/confirm-sms': {
       name: 'comfirm-sms',
-      component: require('project/auth/confirm-sms.vue')
+      component: require('project/auth/confirm-sms.vue'),
     },
 
     // not found handler
     '*': {
-      component: function(resolve) {
-        require(['project/not-found/index.vue'], resolve);
-      }
+      component: require('project/not-found/index.vue'),
     },
 
     '/404': {
       name: '404',
-      component: function(resolve) {
-        require(['project/not-found/index.vue'], resolve);
-      }
+      component: require('project/not-found/index.vue'),
     }
 
   });
