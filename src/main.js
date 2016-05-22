@@ -32,11 +32,14 @@ if (config.raven.enabled && window.location.protocol !== "https:") {
       auth: store.state.auth,
     }});
   };
+
+  // Init analytics
+  mixpanel.init(config.mixpanel.token);
 }
 
 window.socket_url = config.socket_server.url;
 
-mixpanel.init(config.mixpanel.token);
+
 
 
 Vue.config.debug = config.debug;
