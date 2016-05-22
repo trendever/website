@@ -4,7 +4,7 @@
   .section.main(style='margin-top: 140px')
     .section__content(style='text-align:center;')
       h1(style='font-size:32px;')
-        | Возможно вы попали сюда случайно, либо страницы и правда не существует.
+        | Возможно вы попали сюда случайно, либо страница и правда не существует.
 
 </template>
 

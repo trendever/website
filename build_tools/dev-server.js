@@ -10,7 +10,7 @@ var webpackConfig = require('./webpack.dev.conf')
 var webpackDevServer = require('webpack-dev-server')
 
 var assetsPath = path.join(settings.build.assetsRoot, settings.build.assetsSubDirectory)
-rm('-rf', assetsPath)
+rm('-rf', settings.build.assetsRoot)
 mkdir('-p', assetsPath)
 
 var spinner = ora('dev server working...')

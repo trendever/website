@@ -17,7 +17,7 @@ var spinner = ora('building for production...')
 spinner.start()
 
 var assetsPath = path.join(settings.build.assetsRoot, settings.build.assetsSubDirectory)
-rm('-rf', assetsPath)
+rm('-rf', settings.build.assetsRoot)
 mkdir('-p', assetsPath)
 
 webpack(webpackConfig, function (err, stats) {

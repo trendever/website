@@ -12,7 +12,7 @@ import store from 'vuex/store';
 require('es6-promise').polyfill();
 
 // Log errors
-if (config.raven.enabled && window.location.protocol !== "https:") {
+if (config.raven.enabled) {
   var Raven = require('raven-js');
   Raven.config(config.raven.url, {
     maxMessageLength: 1000,
