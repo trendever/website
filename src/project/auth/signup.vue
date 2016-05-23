@@ -117,7 +117,11 @@ div
       this.login = this.authData.username;
       this.instagram = this.authData.instagram;
       const onResize = () => {
-        this.$set('height', `${ document.body.scrollHeight }px`);
+        if ( document.body.scrollHeight < 900 ) {
+          this.$set( 'height', `615px` );
+        } else {
+          this.$set( 'height', `${document.body.scrollHeight}px` );
+        }
         this.$set('showTitleSlider', document.body.scrollHeight > 900);
       };
       this.resize = listen( window, 'resize', onResize );
