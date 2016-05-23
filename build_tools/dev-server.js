@@ -1,29 +1,48 @@
+/* globals env */
 // https://github.com/shelljs/shelljs
 require('shelljs/global')
 env.NODE_ENV = 'dev'
 
-var path = require('path')
+var webpackDevMiddleware = require('webpack-dev-middleware')
+var webpackHotMiddleware = require('webpack-hot-middleware')
+var webpackConfig = require('./webpack.dev.conf')
+var browserSync = require('browser-sync')
 var settings = require('../settings')
 var webpack = require('webpack')
-var ora = require('ora')
-var webpackConfig = require('./webpack.dev.conf')
-var webpackDevServer = require('webpack-dev-server')
+var bundler = webpack(webpackConfig);
 
-var assetsPath = path.join(settings.build.assetsRoot, settings.build.assetsSubDirectory)
-rm('-rf', settings.build.assetsRoot)
-mkdir('-p', assetsPath)
+/**
+ * Run Browsersync and use middleware for Hot Module Replacement
+ */
+browserSync({
+  port: settings.dev.port,
 
-var spinner = ora('dev server working...')
-spinner.start()
+  server: {
+    baseDir: 'src',
 
-webpackConfig.entry.trendever.unshift(`webpack-dev-server/client?http://localhost:${settings.dev.port}/`, "webpack/hot/dev-server");
-var compiler = webpack(webpackConfig);
-var server = new webpackDevServer(compiler, {
-  hot: true,
-  inline: true,
-  historyApiFallback: true,
-  noInfo: true,
-  quiet: false,
-  stats: { colors: true }
+    middleware: [
+      webpackDevMiddleware(bundler, {
+        publicPath: webpackConfig.output.publicPath,
+        hot: true,
+        inline: true,
+        historyApiFallback: true,
+        noInfo: true,
+        quiet: false,
+        stats: { colors: true },
+
+        // for other settings see
+        // http://webpack.github.io/docs/webpack-dev-middleware.html
+      }),
+
+      // bundler should be the same as above
+      webpackHotMiddleware(bundler)
+    ]
+  },
+
+  // no need to watch '*.js' here, webpack will take care of it for us,
+  // including full page reloads if HMR won't work
+  files: [
+    // 'src/*.css',
+    'src/index.html'
+  ]
 });
-server.listen(settings.dev.port);

@@ -55,7 +55,7 @@ module.exports = {
       },
       {
         test:   /\.pcss$/,
-        loaders: "style-loader!css-loader!postcss-loader"
+        loaders: "style-loader!css-loader!postcss-loader?sourceMap"
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -99,37 +99,28 @@ module.exports = {
 
         // optimizations
         require('postcss-comment/hookRequire')(),
-        // require('postcss-discard-empty')(),
         require('postcss-calc')(),
         require('postcss-normalize-url')(),
-        // require('postcss-minify-selectors')(),
         require('postcss-merge-longhand')(),
-        // require('postcss-font-family')(),
         require('postcss-convert-values')({
             length: false,
             angle: false
         }),
         require('postcss-colormin')(),
-        // require('postcss-merge-rules')(),
+        require('postcss-merge-rules')(),
         // require('postcss-discard-unused')(),
-        // require('postcss-discard-duplicates')(),
+        require('postcss-discard-duplicates')(),
         require('postcss-zindex')(),
         require('postcss-reduce-idents')(),
         require('css-mqpacker')(),
-        // require("cssnano")(),
-        // require('csswring')(), // minify css
 
         require("postcss-reporter")(),
       ];
     },
 
-    loaders: {
-      css: ExtractTextPlugin.extract("css?sourceMap"),
-    },
+    loaders: process.env.NODE_ENV === "production" ? {css: ExtractTextPlugin.extract("css?sourceMap")}: {},
 
-    // disable vue-loader autoprefixing.
-    // this is a good idea since cssnext comes with it too.
-    autoprefixer: false
+    autoprefixer: true
   },
 
 };

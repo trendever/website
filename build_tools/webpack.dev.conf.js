@@ -5,11 +5,21 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
 var HtmlWebpackPlugin = require('html-webpack-plugin')
-var env = settings.build.env;
+var env = settings.dev.env;
 
 module.exports = merge(baseWebpackConfig, {
   devtool: '#eval-source-map',
   watch: true,
+
+  entry: {
+    trendever: [
+      'webpack/hot/dev-server',
+      'webpack-hot-middleware/client',
+      `webpack-dev-server/client?http://localhost:${settings.dev.port}/`,
+
+      './src/main.js',
+    ]
+  },
 
   module: {
     loaders: [{

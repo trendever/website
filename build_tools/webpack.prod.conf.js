@@ -8,8 +8,6 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin")
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var env = settings.build.env;
 
-baseWebpackConfig.vue.loaders.css = ExtractTextPlugin.extract("css?sourceMap");
-
 module.exports = merge(baseWebpackConfig, {
   output: {
     path: settings.build.assetsRoot,

@@ -1,3 +1,4 @@
+/* globals env, rm, mkdir */
 // https://github.com/shelljs/shelljs
 require('shelljs/global')
 env.NODE_ENV = 'production'
@@ -11,7 +12,8 @@ var webpackConfig = require('./webpack.prod.conf')
 console.log(
   '  Tip:\n' +
   '  Built files are meant to be served over an HTTP server.\n' +
-  '  Opening index.html over file:// won\'t work.\n'
+  '  Opening index.html over file:// won\'t work.\n' +
+  '  But you can test build with: cd build && python -m SimpleHTTPServer 3001 \n'
 )
 var spinner = ora('building for production...')
 spinner.start()
@@ -22,7 +24,7 @@ mkdir('-p', assetsPath)
 
 webpack(webpackConfig, function (err, stats) {
   spinner.stop()
-  if (err) throw err
+  if (err) {throw err}
   process.stdout.write(stats.toString({
     colors: true,
     modules: false,
