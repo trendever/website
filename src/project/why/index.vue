@@ -17,7 +17,10 @@
 
     .section.top
       .section__content(v-el:main-video-cnt)
-        iframe(src='https://player.vimeo.com/video/167123446?autoplay=1', :width='mainVideoWidth', :height='mainVideoHeight', frameborder='0', webkitallowfullscreen, mozallowfullscreen, allowfullscreen)
+        iframe(src='https://player.vimeo.com/video/167123446?autoplay=1&title=0&byline=0&portrait=0',
+              :width='mainVideoWidth', :height='mainVideoHeight',
+              frameborder='0', webkitallowfullscreen,
+              mozallowfullscreen, allowfullscreen)
 
     div.why(style='width: 750px; margin: 0 auto;')
       .section.available#headerAnchor

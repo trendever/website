@@ -81,6 +81,7 @@ node_modules
 TR.exvim
 
 build/
+dist/
 
 # Website config.
 config.js
