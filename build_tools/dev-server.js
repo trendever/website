@@ -3,7 +3,6 @@
 require('shelljs/global')
 env.NODE_ENV = 'dev'
 
-var historyApiFallback = require('connect-history-api-fallback')
 var webpackDevMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware = require('webpack-hot-middleware')
 var webpackConfig = require('./webpack.dev.conf')
@@ -12,9 +11,12 @@ var settings = require('../settings')
 var webpack = require('webpack')
 var bundler = webpack(webpackConfig);
 
+var modRewrite  = require('connect-modrewrite');
+
 /**
  * Run Browsersync and use middleware for Hot Module Replacement
  */
+
 browserSync({
   port: settings.dev.port,
 
@@ -22,12 +24,15 @@ browserSync({
     baseDir: 'src',
 
     middleware: [
-      historyApiFallback(),
+      modRewrite([
+          '!\\.\\w+$ / [L]'
+      ]),
+
       webpackDevMiddleware(bundler, {
         publicPath: webpackConfig.output.publicPath,
         hot: true,
         inline: true,
-        historyApiFallback: true,
+        // historyApiFallback: true,
         noInfo: true,
         quiet: false,
         stats: { colors: true },
@@ -37,7 +42,9 @@ browserSync({
       }),
 
       // bundler should be the same as above
-      webpackHotMiddleware(bundler)
+      webpackHotMiddleware(bundler),
+      // historyFallback(),
+
     ]
   },
 
