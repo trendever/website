@@ -34,7 +34,7 @@
   Build project in folder: build/
 
 
-###Куда и что и как:
+##Куда и что и как:
 Главный принцип: все необходимое лежит рядом с компонентом. Разве что компонент может переиспользоваться.
 
 Например верстаем страницу src/project/why:
@@ -53,8 +53,8 @@
 
 
 
-##Postcss
-###css syntax
+###Postcss
+####css syntax
 
   + postcss-color-function
   + postcss-colormin
