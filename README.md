@@ -49,6 +49,8 @@
 
  - Emoje иконки (png) - src/base/emoji/img кладешь туда emoji такого же размера (если хватит, иначе пометь размером например emoji_angel_64). Так же добавь в стиль путь до нее src/base/emoji/emoji.pcss
 
+ - [https://operatino.github.io/MCSS/](Почитать про методологию)
+
 
 
 ##Postcss
