@@ -3,6 +3,7 @@
 require('shelljs/global')
 env.NODE_ENV = 'dev'
 
+var historyApiFallback = require('connect-history-api-fallback')
 var webpackDevMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware = require('webpack-hot-middleware')
 var webpackConfig = require('./webpack.dev.conf')
@@ -21,6 +22,7 @@ browserSync({
     baseDir: 'src',
 
     middleware: [
+      historyApiFallback(),
       webpackDevMiddleware(bundler, {
         publicPath: webpackConfig.output.publicPath,
         hot: true,
