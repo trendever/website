@@ -40,6 +40,8 @@ $count-tags-open: 13;
 }
 
 .search-placeholder {
+  z-index: 10;
+
   height: calc($height__desktop + 135px + $height-tag-button);
   margin-bottom: 20px;
 
@@ -50,7 +52,6 @@ $count-tags-open: 13;
 
 #search {
   position: relative;
-  z-index: 10;
 
   max-width: 1050px;
   margin-bottom: 20px;
@@ -80,7 +81,7 @@ $count-tags-open: 13;
 
   &.glued{
     position: fixed;
-    z-index: 1;
+    z-index: 100;
     top:-2px;
 
     width: 100%;
@@ -97,7 +98,6 @@ $count-tags-open: 13;
   }
   &__container {
     position: relative;
-    z-index: 1;
 
     display: flex;
 
