@@ -34,6 +34,23 @@
   Build project in folder: build/
 
 
+###Куда и что и как:
+Главный принцип: все необходимое лежит рядом с компонентом. Разве что компонент может переиспользоваться.
+
+Например верстаем страницу src/project/why:
+
+ - HTML/JADE -  src/project/why/index.vue - там кладешь html (jade). Но если jade напрягает можешь прям html туда засунуть, убрав lang=“jade”.
+
+ - CSS/PCSS - src/project/why/style.pcss - там все стили для этой страницы
+
+ - Картинки (jpg, png) - src/project/why/img/ - кладешь картинку в эту папку и в  html или css указываешь относительный путь. Например: ./img/magic.png
+
+ - Монохромные иконки (SVG) - src/base/fonts/trendever-icons/icons - кладешь сюда svg иконку с нормальным именем через дефис. Она тут же появится в шрифте и будет доступна через класс ic-filename. Например <i class=“ic-magic”></i>
+
+ - Emoje иконки (png) - src/base/emoji/img кладешь туда emoji такого же размера (если хватит, иначе пометь размером например emoji_angel_64). Так же добавь в стиль путь до нее src/base/emoji/emoji.pcss
+
+
+
 ##Postcss
 ###css syntax
 
