@@ -4,12 +4,12 @@ div
   .signup(:style='{ height: height }')
     .info__close.__hello(@click='closePage'): i.ic-close
     .section
-      .column-desktop-50.header
+      .column-desktop-50.header(v-if="showTitleSlider")
         h1 Войдите и сможете...
-      .column-desktop-50.column-desktop-right
+      .column-desktop-50.column-desktop-right(v-if="showTitleSlider")
         slider
       .column-desktop-50
-        .bottom-container
+        .bottom-container(:class='{"opened-key-board":!showTitleSlider}')
           validator(name='signup')
             .input-container
               .input
@@ -53,7 +53,8 @@ div
 </style>
 
 <script type='text/ecmascript-6'>
-  import mixpanel from 'mixpanel-browser'
+  import mixpanel from 'mixpanel-browser';
+  import listen from 'event-listener';
   import {
     saveAuthData,
     signup,
@@ -86,16 +87,19 @@ div
   }
 
   export default {
-    data: () => ({
-      login: '',
-      phone: '',
-      errorLogin: false,
-      errorPhone: false,
-      height: 'static',
-      textLink: TEXT_LINK.instagramMode,
-      placeholder: PLACEHOLDER.instagramMode,
-      instagram: true
-    }),
+    data(){
+      return {
+        login: '',
+        phone: '',
+        errorLogin: false,
+        errorPhone: false,
+        height: 'static',
+        textLink: TEXT_LINK.instagramMode,
+        placeholder: PLACEHOLDER.instagramMode,
+        instagram: true,
+        showTitleSlider: true
+      }
+    },
 
     route: {
       canActivate({abort}){
@@ -112,8 +116,14 @@ div
       this.phone = this.authData.phone;
       this.login = this.authData.username;
       this.instagram = this.authData.instagram;
+      this.resize = listen( window, 'resize', () => {
+        this.$set('height', `${ document.body.scrollHeight }px`);
+        this.$set('showTitleSlider', document.body.scrollHeight > 900);
+      } );
     },
-
+    beforeDestroy(){
+      this.resize.remove();
+    },
     vuex: {
       actions: {
         saveAuthData,
