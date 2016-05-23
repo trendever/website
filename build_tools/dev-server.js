@@ -3,55 +3,42 @@
 require('shelljs/global')
 env.NODE_ENV = 'dev'
 
-var webpackDevMiddleware = require('webpack-dev-middleware')
-var webpackHotMiddleware = require('webpack-hot-middleware')
 var webpackConfig = require('./webpack.dev.conf')
-var browserSync = require('browser-sync')
 var settings = require('../settings')
+var config = require('../config')
 var webpack = require('webpack')
-var bundler = webpack(webpackConfig);
+var bundler = webpack(webpackConfig)
 
-var modRewrite  = require('connect-modrewrite');
+var webpackDevServer = require('webpack-dev-server')
 
-/**
- * Run Browsersync and use middleware for Hot Module Replacement
- */
+if (config.webserver.public) {
+  var localtunnel = require('localtunnel');
+  var lt = localtunnel(settings.dev.port, function(err, tunnel) {
+    if (err) {
+      console.log(err)
+    }
+    // the assigned public url for your tunnel
+    // i.e. https://abcdefgjhij.localtunnel.me
+    console.log("  Public url:", tunnel.url)
+  });
+  lt.on('close', function() {
+    console.log('tunel err')
+  })
+}
 
-browserSync({
-  port: settings.dev.port,
+var spinner = require('ora')('dev server working...')
+spinner.start()
 
-  server: {
-    baseDir: 'src',
+require('dns').lookup(require('os').hostname(), function(err, add) {
+  console.log('  Serve on address: ' + add + ":" + settings.dev.port);
+})
 
-    middleware: [
-      modRewrite([
-          '!\\.\\w+$ / [L]'
-      ]),
-
-      webpackDevMiddleware(bundler, {
-        publicPath: webpackConfig.output.publicPath,
-        hot: true,
-        inline: true,
-        // historyApiFallback: true,
-        noInfo: true,
-        quiet: false,
-        stats: { colors: true },
-
-        // for other settings see
-        // http://webpack.github.io/docs/webpack-dev-middleware.html
-      }),
-
-      // bundler should be the same as above
-      webpackHotMiddleware(bundler),
-      // historyFallback(),
-
-    ]
-  },
-
-  // no need to watch '*.js' here, webpack will take care of it for us,
-  // including full page reloads if HMR won't work
-  files: [
-    // 'src/*.css',
-    'src/index.html'
-  ]
+var server = new webpackDevServer(bundler, {
+  hot: true,
+  inline: true,
+  historyApiFallback: true,
+  noInfo: true,
+  quiet: false,
+  stats: { colors: true },
 });
+server.listen(settings.dev.port, "0.0.0.0");

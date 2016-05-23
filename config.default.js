@@ -9,7 +9,8 @@ var config = {
    * Webserver config.
    */
   webserver: {
-    port: 3000
+    port: 3000,
+    public: true,
   },
 
   raven: {

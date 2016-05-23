@@ -15,7 +15,7 @@ module.exports = merge(baseWebpackConfig, {
     trendever: [
       'webpack/hot/dev-server',
       'webpack-hot-middleware/client',
-      `webpack-dev-server/client?http://localhost:${settings.dev.port}/`,
+      `webpack-dev-server/client?http://0.0.0.0:${settings.dev.port}/`,
 
       './src/main.js',
     ]
