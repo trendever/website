@@ -93,8 +93,9 @@ module.exports = {
         require('postcss-simple-vars')(),
         require('postcss-custom-selectors')(),
         require('postcss-short-font-size')(),
-        require('postcss-short-size'),
-        require('postcss-short-position'),
+        require('postcss-short-size')(),
+        require("postcss-color-function")(),
+        require('postcss-short-position')(),
 
         // optimizations
         require('postcss-comment/hookRequire')(),
