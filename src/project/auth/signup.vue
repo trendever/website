@@ -116,10 +116,12 @@ div
       this.phone = this.authData.phone;
       this.login = this.authData.username;
       this.instagram = this.authData.instagram;
-      this.resize = listen( window, 'resize', () => {
+      const onResize = () => {
         this.$set('height', `${ document.body.scrollHeight }px`);
         this.$set('showTitleSlider', document.body.scrollHeight > 900);
-      } );
+      };
+      this.resize = listen( window, 'resize', onResize );
+      onResize();
     },
     beforeDestroy(){
       this.resize.remove();
