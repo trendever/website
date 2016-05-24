@@ -76,7 +76,7 @@ div
       //     }
       //   }, 30*1000);
       // }
-      window.mixpanel.track('App Open');
+      mixpanel.track('App Open');
 
     },
     computed:{
