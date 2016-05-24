@@ -78,7 +78,6 @@
     },
     beforeDestroy() {
       leads.removeStatusListener( this.onStatus );
-      this.offScroll();
       messages.offMsg( this.onMessage );
       messages.offMsgRead( this.onMessageReaded );
       this.scrollListener.remove();
