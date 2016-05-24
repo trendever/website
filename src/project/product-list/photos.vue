@@ -1,6 +1,6 @@
 <style src='./styles/photos.pcss'></style>
 <template lang="jade">
-.photos
+//- .photos
   .photo__title-row
     .photo__title-column( :class='{"active": getColumnNumber === 2}', @click='setColumnNumber(2)')
       .photo__title-column-long
