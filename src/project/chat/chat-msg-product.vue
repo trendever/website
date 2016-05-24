@@ -1,19 +1,23 @@
-<style src='./styles/chat-msg-photo-txt.pcss'></style>
+<style src="./styles/chat-msg-product.pcss"></style>
 <template lang="jade">
 
 .chat-row(:class='getSide')
   .bubble_info_time {{ datetime }}
   .bubble
     .chat-msg-product-wrap
-      a.chat-msg-photo-txt(v-link='{name: "product_detail", params: {id: product.ID}}')
-        .chat-msg-photo-txt_photo
-          img(:src='photo')
+      a.chat-msg-product(v-link="{name: 'product_detail', params: {id: product.ID}}")
+        .chat-msg-product-photo
+          img(:src="photo")
       .chat-msg-description
         .chat-msg_t(v-if='!isOwnMessage')
           | {{{ getUsername }}}
-        a.chat-msg-photo-txt(v-link='{name: "product_detail", params: {id: product.ID}}')
-          .chat-msg-photo-txt_txt
-            |{{{ description }}}
+        .chat-msg-product(v-link='{name: "product_detail", params: {id: product.ID}}')
+          .chat-msg-product-txt
+            a(v-link='{name: "product_detail", params: {id: product.ID}}')
+              |{{{ titles }}}
+            br
+            span
+              |{{{ description }}}
         .bubble_info
           .bubble_info_status(v-if='isOwnMessage')
             i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
@@ -59,19 +63,18 @@
         const {InstagramImageURL, InstagramImageHeight, InstagramImageWidth} = this.product;
         return urlThumbnail(InstagramImageURL, 306, InstagramImageWidth, InstagramImageHeight)
       },
-      description() {
+      description(){
+        return this.product.InstagramImageCaption;
+      },
+      titles() {
         return this.product.Items.reduce(function(desc, item, i, arr) {
           desc += `${item.Name} `;
-
           if (item.DiscountPrice) {
-            desc += `${item.DiscountPrice} <i class='ic-currency-rub'</i>`;
+            desc += `, ${item.DiscountPrice} <i class="ic-currency-rub"</i>`;
           } else if (item.Price) {
-            desc += `${item.Price} <i class='ic-currency-rub'</i>`;
+            desc += `, ${item.Price} <i class="ic-currency-rub"</i>`;
           } else {
-            desc += `цена по запросу`;
-          }
-          if (i < arr.length -1) {
-            desc += ', ';
+            desc += `, цена по запросу`;
           }
           return desc;
         }, '')

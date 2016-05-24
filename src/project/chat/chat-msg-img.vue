@@ -6,7 +6,7 @@
   a.chat-msg.bubble(:href='getImg', target='_blank')
     .chat-msg_t(v-if='!isOwnMessage')
       | {{{ getUsername }}}
-    img(:src='getImg', class='chat-msg-img', v-bind:class='{"chat-msg-img-opacity":!isLoaded }')
+    img(:src='getImg', class='chat-msg-img', v-bind:class='{"chat-msg-img-opacity":!isLoaded }', v-bind:style="imgStyle")
     .bubble_info
       .bubble_info_status(v-if='isOwnMessage')
         i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
@@ -18,6 +18,7 @@
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
   import { formatTime } from './utils';
+  import { ratioFit } from 'utils';
 
   export default{
     props: {
@@ -35,6 +36,15 @@
       }
     },
 
+    data(){
+      return {
+        imgStyle:{
+          maxWidth: `600px`,
+          maxHeight: `400px`
+        }
+      }
+    },
+
     computed: {
       isLoaded(){
         if( 'loaded' in this.msg){
@@ -43,11 +53,17 @@
         return true;
       },
       getImg(){
-        let cnt = this.msg.parts[ 0 ].content;
+        const cnt = this.msg.parts[ 0 ].content;
 
         if ( this.msg.parts[ 0 ].mime_type === 'image/json' ) {
 
           let img = JSON.parse( cnt );
+          const maxWidth = (window.matchMedia("(max-width:750px)").matches)? 570 : 600;
+          const {width, height} = ratioFit(img.width, img.height, maxWidth, img.height);
+
+          this.$set('imgStyle.width', `${width}px`);
+          this.$set('imgStyle.height', `${height}px`);
+
           if (img.thumbs.big) {
             return img.thumbs.big;
           }
@@ -67,6 +83,9 @@
         }
 
         if ( 'link' in cnt ) {
+
+          this.$set('imgStyle.width', `${cnt.width}px`);
+          this.$set('imgStyle.height', `${cnt.height}px`);
 
           return cnt.link;
 

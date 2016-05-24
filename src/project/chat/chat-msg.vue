@@ -18,7 +18,7 @@
   import { getCurrentMember, getShopName, getLastMessageId } from 'vuex/getters/chat.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
-  import { formatTime, escapeHtml } from './utils';
+  import { formatTime, escapeHtml, wrapLink } from './utils';
 
   export default{
     props: {
@@ -36,7 +36,7 @@
     },
     computed: {
       getMessage() {
-       return escapeHtml(this.msg.parts[0].content).replace(/\n/g, '<br />');
+       return wrapLink(escapeHtml(this.msg.parts[0].content).replace(/\n/g, '<br />'));
       },
       datetime() {
         return formatTime(this.msg.created_at);
