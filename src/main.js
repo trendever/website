@@ -8,6 +8,7 @@ import { configRouter } from './route-config';
 import InitFilters from './filters';
 import InitValidators from './validators';
 import store from 'vuex/store';
+
 require('es6-promise').polyfill();
 
 // Log errors
