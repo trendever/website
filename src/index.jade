@@ -11,21 +11,21 @@ html(lang='ru', data-framework='javascript')
 
     title Trendever.com - шопинг в Instagram стал проще
     meta(name='keywords', content='Инстаграм, instagram, шопинг, товары, trendever, wantit, модницы, блогеры, инста-шопы, тренды, оригинальный, купить, дизайнерский, одежда, обувь, мебель, интерьер, подарки, цветы, торты')
-
     meta(name='description', content='Покупайте трендовые товары инстаграма, отобранные модницами и блогерами из лучших инста-шопов')
 
-    //- link(rel='icon', type='image/png', href='./base/img/favicons/favicon-16x16.png', sizes='16x16')
-    //- link(rel='icon', type='image/png', href='base/img/favicons/favicon-32x32.png', sizes='32x32')
-    //- link(rel='icon', type='image/png', href='base/img/favicons/favicon-96x96.png', sizes='96x96')
-    //- link(rel='apple-touch-icon', sizes='57x57', href='base/img/favicons/apple-touch-icon-57x57.png')
-    //- link(rel='apple-touch-icon', sizes='60x60', href='base/img/favicons/apple-touch-icon-60x60.png')
-    //- link(rel='apple-touch-icon', sizes='72x72', href='base/img/favicons/apple-touch-icon-72x72.png')
-    //- link(rel='apple-touch-icon', sizes='76x76', href='base/img/favicons/apple-touch-icon-76x76.png')
-    //- link(rel='apple-touch-icon', sizes='114x114', href='base/img/favicons/apple-touch-icon-114x114.png')
-    //- link(rel='apple-touch-icon', sizes='120x120', href='base/img/favicons/apple-touch-icon-120x120.png')
-    //- link(rel='apple-touch-icon', sizes='144x144', href='base/img/favicons/apple-touch-icon-144x144.png')
-    //- link(rel='apple-touch-icon', sizes='152x152', href='base/img/favicons/apple-touch-icon-152x152.png')
-    //- link(rel='apple-touch-icon', sizes='180x180', href='base/img/favicons/apple-touch-icon-180x180.png')
+    link(rel='icon', type='image/png', href='#{ require("./base/img/favicons/favicon-16x16.png") }', sizes='16x16')
+    link(rel='icon', type='image/png', href='#{ require("./base/img/favicons/favicon-32x32.png") }', sizes='32x32')
+    link(rel='icon', type='image/png', href='#{ require("./base/img/favicons/favicon-96x96.png") }', sizes='96x96')
+
+    link(rel='apple-touch-icon', href='#{ require("./base/img/favicons/apple-touch-icon-57x57.png") }',   sizes='57x57')
+    link(rel='apple-touch-icon', href='#{ require("./base/img/favicons/apple-touch-icon-60x60.png") }',   sizes='60x60')
+    link(rel='apple-touch-icon', href='#{ require("./base/img/favicons/apple-touch-icon-72x72.png") }',   sizes='72x72')
+    link(rel='apple-touch-icon', href='#{ require("./base/img/favicons/apple-touch-icon-76x76.png") }',   sizes='76x76')
+    link(rel='apple-touch-icon', href='#{ require("./base/img/favicons/apple-touch-icon-114x114.png") }', sizes='114x114')
+    link(rel='apple-touch-icon', href='#{ require("./base/img/favicons/apple-touch-icon-120x120.png") }', sizes='120x120')
+    link(rel='apple-touch-icon', href='#{ require("./base/img/favicons/apple-touch-icon-144x144.png") }', sizes='144x144')
+    link(rel='apple-touch-icon', href='#{ require("./base/img/favicons/apple-touch-icon-152x152.png") }', sizes='152x152')
+    link(rel='apple-touch-icon', href='#{ require("./base/img/favicons/apple-touch-icon-180x180.png") }', sizes='180x180')
 
     // start Mixpanel
     script(type='text/javascript').
@@ -33,7 +33,7 @@ html(lang='ru', data-framework='javascript')
       for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);
     // end Mixpanel
 
-  body#bod
+  body#body
     #app.app
 
     // Yandex.Metrika counter
