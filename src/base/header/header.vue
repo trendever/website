@@ -24,12 +24,14 @@
 import listen from 'event-listener';
 
 export default {
-  data: () => ({
-    is_visible: false,
-    is_action_up: false,
-    scrollEvent: null,
-    showOnEl: null,
-  }),
+  data(){
+    return {
+      is_visible: false,
+      is_action_up: false,
+      scrollEvent: null,
+      showOnEl: null,
+    }
+  },
   props: {
     // Title of header
     title: {
@@ -109,15 +111,12 @@ export default {
       }
 
       var backLink = this.$get('backLink');
-      var path = this.$router._currentTransition.from.path;
-
       if (backLink) {
         this.$router.go(backLink);
-      } else if (path && path == '/') { // ToDo not optimal. Have bugs
-        this.$router.go(window.history.back());
       } else {
-        this.$router.go({ name: 'home' });
+       window.history.back();
       }
+
     },
     toggleHeaderOnScroll() {
 
