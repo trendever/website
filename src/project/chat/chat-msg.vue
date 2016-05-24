@@ -2,15 +2,14 @@
 <template lang="jade">
 
 .chat-row(:class='getSide')
-  span(class='bubble_info_time') {{ datetime }}
-  .chat-msg.bubble
-    .chat-msg_t(v-if='!isOwnMessage')
+  span(class='bubble_info bubble_info_time') {{ datetime }}
+  .bubble_info.bubble_info_status(v-if='isOwnMessage')
+    i(:class='{"ic-check": isSent, "ic-check-double": isRead, "ic-clock": isSending}')
+  .chat-msg.bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
+    .chat-msg_t(v-if='!isOwnMessage && !isClosest')
       | {{{ getUsername }}}
     .chat-msg_txt
       | {{{ getMessage }}}
-    .bubble_info
-      .bubble_info_status(v-if='isOwnMessage')
-        i(:class='{"ic-check": isSent, "ic-check-double": isRead, "ic-clock": isSending}')
 
 </template>
 
@@ -49,6 +48,9 @@
           return `<b>${this.getShopName}</b>`
         }
         return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`
+      },
+      isClosest(){
+        return this.msg.closestMessage;
       },
       isOwnMessage() {
         return this.getCurrentMember.user_id === this.msg.user.user_id

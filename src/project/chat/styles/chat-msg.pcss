@@ -2,6 +2,19 @@
 .chat-msg {
   padding: 14px;
 
+  &-closest {
+    &::before {
+      display: none;
+    }
+    &::after {
+      display: none;
+    }
+  }
+
+  &-not-closest{
+    margin-top: 5px;
+  }
+
   &_t {
     overflow: hidden;
 

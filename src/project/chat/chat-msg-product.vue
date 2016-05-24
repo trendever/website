@@ -2,7 +2,9 @@
 <template lang="jade">
 
 .chat-row(:class='getSide')
-  .bubble_info_time {{ datetime }}
+  .bubble_info.bubble_info_time {{ datetime }}
+  .bubble_info.bubble_info_status(v-if='isOwnMessage')
+    i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
   .bubble
     .chat-msg-product-wrap
       a.chat-msg-product(v-link="{name: 'product_detail', params: {id: product.ID}}")
@@ -18,10 +20,6 @@
             br
             span
               |{{{ description }}}
-        .bubble_info
-          .bubble_info_status(v-if='isOwnMessage')
-            i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
-
 </template>
 
 <script type='text/babel'>
