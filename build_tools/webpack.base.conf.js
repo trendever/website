@@ -110,7 +110,7 @@ module.exports = {
         require('postcss-merge-rules')(),
         // require('postcss-discard-unused')(),
         require('postcss-discard-duplicates')(),
-        require('postcss-zindex')(),
+        // require('postcss-zindex')(),
         require('postcss-reduce-idents')(),
         require('css-mqpacker')(),
 
