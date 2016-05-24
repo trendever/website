@@ -30,7 +30,7 @@
 </template>
 
 <script type='text/babel'>
-    import mixpanel from 'mixpanel-browser'
+
     import listen from 'event-listener';
     import store from 'vuex/store';
     import photoItem from './photo-item.vue';

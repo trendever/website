@@ -35,7 +35,7 @@ div
 </template>
 
 <script>
-  import mixpanel from 'mixpanel-browser'
+
   import {
     hidePopupFastSignup,
     authenticateUser,

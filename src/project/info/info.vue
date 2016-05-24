@@ -37,7 +37,7 @@
 </template>
 
 <script type='text/babel'>
-  import mixpanel from 'mixpanel-browser'
+
   import mockup from 'services/mockups/modal-data';
   import trSpinner from 'base/spinner/spinner.vue';
   import * as question from 'services/email';

@@ -16,7 +16,7 @@ div
 </template>
 
 <script type='text/babel'>
-  import mixpanel from 'mixpanel-browser'
+
   import font from 'base/fonts/trendever-icons/trendever-icons.font';
   import store from 'vuex/store';
   import {

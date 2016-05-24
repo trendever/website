@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueValidator from 'vue-validator';
 import FastClick from 'fastclick';
-import mixpanel from 'mixpanel-browser';
 import config from '../config';
 import { throttleEvent, isDebug } from 'utils';
 import { configRouter } from './route-config';
@@ -34,9 +33,7 @@ if (config.raven.enabled) {
   };
 }
 
-// Init analytics
-mixpanel.init(config.mixpanel.token);
-
+window.mixpanel.init(config.mixpanel.token);
 window.socket_url = config.socket_server.url;
 
 Vue.config.debug = isDebug;

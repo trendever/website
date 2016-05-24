@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import mixpanel from 'mixpanel-browser'
+
   import { urlThumbnail } from 'utils'
   import { openedProduct } from 'vuex/getters';
   import { openProduct } from 'vuex/actions';

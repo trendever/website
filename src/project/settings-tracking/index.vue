@@ -9,7 +9,7 @@
 </template>
 
 <script type='text/ecmascript-6'>
-import mixpanel from 'mixpanel-browser'
+
 import HeaderComponent from 'base/header/header.vue'
 import profile from 'services/profile'
 
