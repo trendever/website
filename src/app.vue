@@ -1,22 +1,19 @@
 <style src="project/app/style.pcss"></style>
 
 <template lang="jade">
-div
-  div(:class='{popup: isShowPopupFastSignup}')
-    popup-signup(
-      v-if='isShowPopupSignup')
+div(:class='{popup: isShowPopupFastSignup}')
+  popup-signup(
+    v-if='isShowPopupSignup')
 
-    popup-fast-signup(
-      v-if='isShowPopupFastSignup && isNotWhy')
+  popup-fast-signup(
+    v-if='isShowPopupFastSignup && isNotWhy')
 
-  router-view
-
-  notify-component
+router-view
+notify-component
 
 </template>
 
 <script type='text/babel'>
-
   import font from 'base/fonts/trendever-icons/trendever-icons.font';
   import store from 'vuex/store';
   import {
@@ -39,8 +36,7 @@ div
   import NotifyComponent from 'project/notify/index.vue'
 
   export default {
-    data: () => ({
-    }),
+    data: () => ({}),
     init() {
       loadUser(store);
     },

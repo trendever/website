@@ -6,13 +6,14 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var env = settings.build.env;
 
 module.exports = merge(baseWebpackConfig, {
   output: {
     path: settings.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
+    filename: utils.assetsPath('js/[name].[chunkhash:7].js'),
+    chunkFilename: utils.assetsPath('js/[id].[chunkhash:7].js'),
   },
 
   devtool: settings.build.productionSourceMap ? '#source-map' : false,
@@ -20,7 +21,8 @@ module.exports = merge(baseWebpackConfig, {
   module: {
     loaders: [{
       test: /\.font\.(js|json)$/,
-      loader: ExtractTextPlugin.extract(["css", "fontgen"]),
+      loader: ExtractTextPlugin.extract(["css",
+        "fontgen?fileName=static/fonts/[fontname].[hash:7][ext]"]),
     }],
   },
 
@@ -39,7 +41,13 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.optimize.OccurenceOrderPlugin(),
 
     // extract css into its own file
-    new ExtractTextPlugin("static/css/[name].[contenthash].css"),
+    new ExtractTextPlugin("static/css/[name].[contenthash:7].css"),
+    new OptimizeCssAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano'),
+      cssProcessorOptions: { discardComments: {removeAll: true } },
+      canPrint: true
+    }),
 
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html

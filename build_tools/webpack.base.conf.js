@@ -106,12 +106,6 @@ module.exports = {
             length: false,
             angle: false
         }),
-        require('postcss-colormin')(),
-        require('postcss-merge-rules')(),
-        // require('postcss-discard-unused')(),
-        require('postcss-discard-duplicates')(),
-        // require('postcss-zindex')(),
-        require('postcss-reduce-idents')(),
         require('css-mqpacker')(),
 
         require("postcss-reporter")(),

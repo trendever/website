@@ -60,7 +60,7 @@ configRouter(router);
 
 // bootstrap the app
 const App = Vue.extend(require('./app.vue'));
-router.start(App, '#app');
+router.start(App, 'app');
 
 // just for debugging
 window.router = router;
