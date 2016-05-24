@@ -8,7 +8,7 @@
   .chat-msg.bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
     .chat-msg_t(v-if='!isOwnMessage && !isClosest')
       | {{{ getUsername }}}
-    .chat-msg_txt
+    p.chat-msg_txt
       | {{{ getMessage }}}
 
 </template>
