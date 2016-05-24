@@ -44,10 +44,7 @@
         if (this.msg.user.role === leads.USER_ROLES.CUSTOMER.key) {
           return `<b>${this.msg.user.name}</b>`
         }
-        if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
-          return `<b>${this.getShopName}</b>`
-        }
-        return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`
+        return `<b>${this.getShopName}</b>`
       },
       isClosest(){
         return this.msg.closestMessage;
