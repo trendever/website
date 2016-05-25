@@ -81,15 +81,26 @@ export const formatMonth = ( unixtime ) => {
 
 export const escapeHtml = ( string ) => {
   return String( string ).replace( /[&<>''`=\/]/g, function fromEntityMap( s ) {
-    return {
+
+    const map =  {
       '&': '&amp;',
       '<': '&lt;',
       '>': '&gt;',
       '"': '&quot;',
-      '"': '&#39;',
-      '/': '&#x2F;',
       '`': '&#x60;',
       '=': '&#x3D;'
-    }[ s ];
+    };
+    if(s in map){
+      return map[s]
+    }
+    return s;
   } );
+};
+
+export const wrapLink = (text) => {
+
+  const re = /([^\"=]{2}|^)((https?|ftp):\/\/\S+[^\s.,> )\];'\"!?])/;
+  const subst = '$1<a href="$2" target="_blank">$2</a>';
+  return text.replace(re, subst);
+
 };

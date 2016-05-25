@@ -2,15 +2,14 @@
 <template lang="jade">
 
 .chat-row(:class='getSide')
-  span(class='bubble_info_time') {{ datetime }}
-  .chat-msg.bubble
-    .chat-msg_t(v-if='!isOwnMessage')
+  span(class='bubble_info bubble_info_time') {{ datetime }}
+  .bubble_info.bubble_info_status(v-if='isOwnMessage')
+    i(:class='{"ic-check": isSent, "ic-check-double": isRead, "ic-clock": isSending}')
+  .chat-msg.bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
+    .chat-msg_t(v-if='!isOwnMessage && !isClosest')
       | {{{ getUsername }}}
-    .chat-msg_txt
+    p.chat-msg_txt
       | {{{ getMessage }}}
-    .bubble_info
-      .bubble_info_status(v-if='isOwnMessage')
-        i(:class='{"ic-check": isSent, "ic-check-double": isRead, "ic-clock": isSending}')
 
 </template>
 
@@ -18,7 +17,7 @@
   import { getCurrentMember, getShopName, getLastMessageId } from 'vuex/getters/chat.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
-  import { formatTime, escapeHtml } from './utils';
+  import { formatTime, escapeHtml, wrapLink } from './utils';
 
   export default{
     props: {
@@ -36,7 +35,7 @@
     },
     computed: {
       getMessage() {
-       return escapeHtml(this.msg.parts[0].content).replace(/\n/g, '<br />');
+       return wrapLink(escapeHtml(this.msg.parts[0].content).replace(/\n/g, '<br />'));
       },
       datetime() {
         return formatTime(this.msg.created_at);
@@ -45,10 +44,10 @@
         if (this.msg.user.role === leads.USER_ROLES.CUSTOMER.key) {
           return `<b>${this.msg.user.name}</b>`
         }
-        if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
-          return `<b>${this.getShopName}</b>`
-        }
-        return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`
+        return `<b>${this.getShopName}</b>`
+      },
+      isClosest(){
+        return this.msg.closestMessage;
       },
       isOwnMessage() {
         return this.getCurrentMember.user_id === this.msg.user.user_id

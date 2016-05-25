@@ -4,7 +4,34 @@ import { userID } from 'vuex/getters';
 
 export const getId = ({conversation}) => conversation.id;
 export const getLeadId = ({conversation}) => conversation.lead.id;
-export const getMessages = ({conversation}) => conversation.messages;
+export const getMessages = ({conversation}) => {
+
+  if(conversation.messages !== null){
+
+    let lastUserId = null;
+
+    return conversation.messages.map((message) => {
+
+      if(lastUserId === message.user.id){
+
+        message.closestMessage = true;
+
+      } else {
+
+        lastUserId = message.user.id;
+        message.closestMessage = false;
+
+      }
+
+      return message;
+
+    });
+
+  }
+
+  return conversation.messages;
+
+};
 export const getShowMenu = ({conversation}) => conversation.showMenu;
 export const getShowStatusMenu = ({conversation}) => conversation.showStatusMenu;
 export const getStatus = ({conversation:{lead}}) => {

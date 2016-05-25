@@ -24,7 +24,7 @@ module.exports = merge(baseWebpackConfig, {
   module: {
     loaders: [{
         test: /\.font\.(js|json)$/,
-        loader: 'style-loader!css-loader!fontgen-loader',
+        loader: 'style-loader!css-loader!fontgen-loader?fileName=static/fonts/[fontname].[hash:7][ext]',
       }],
   },
 

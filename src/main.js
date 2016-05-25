@@ -2,13 +2,13 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueValidator from 'vue-validator';
 import FastClick from 'fastclick';
-import mixpanel from 'mixpanel-browser';
 import config from '../config';
 import { throttleEvent, isDebug } from 'utils';
 import { configRouter } from './route-config';
 import InitFilters from './filters';
 import InitValidators from './validators';
 import store from 'vuex/store';
+
 require('es6-promise').polyfill();
 
 // Log errors
@@ -34,9 +34,7 @@ if (config.raven.enabled) {
   };
 }
 
-// Init analytics
-mixpanel.init(config.mixpanel.token);
-
+window.mixpanel.init(config.mixpanel.token);
 window.socket_url = config.socket_server.url;
 
 Vue.config.debug = isDebug;
@@ -62,7 +60,7 @@ configRouter(router);
 
 // bootstrap the app
 const App = Vue.extend(require('./app.vue'));
-router.start(App, '#app');
+router.start(App, 'app');
 
 // just for debugging
 window.router = router;

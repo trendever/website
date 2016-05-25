@@ -1,4 +1,4 @@
-import mixpanel from 'mixpanel-browser'
+/* globals mixpanel */
 import store from 'vuex/store'
 
 export function configRouter(router) {

@@ -9,8 +9,7 @@ var config = {
    * Webserver config.
    */
   webserver: {
-    port: 3000,
-    public: true,
+    port: 3000
   },
 
   raven: {
@@ -22,7 +21,7 @@ var config = {
    * Mixpanel analytics
    */
   mixpanel: {
-    token: ""
+    token: "28b7f9270a9a491f44167767767770c6"
   },
 };
 

@@ -2,6 +2,19 @@
 .chat-msg {
   padding: 14px;
 
+  &-closest {
+    &::before {
+      display: none;
+    }
+    &::after {
+      display: none;
+    }
+  }
+
+  &-not-closest{
+    margin-top: 5px;
+  }
+
   &_t {
     overflow: hidden;
 
@@ -24,16 +37,14 @@
     }
   }
   &_txt {
-    display: flex;
-
     min-height: 18.6px;
-
+    display: flex;
+    flex-shrink: 0;
     font-size: 16px;
     line-height: 20px;
 
     @media(--mobile) {
       min-height: 35.35px;
-
       font-size: 28px;
       line-height: 36px;
     }

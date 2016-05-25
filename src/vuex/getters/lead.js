@@ -35,32 +35,40 @@ export const getTitle = ( state ) => {
 	}[getTab(state)];
 };
 
-export const getLastMessage       = ( state ) => {
-	const messages = {};
+export const getLastMessage = ( state ) => {
+
+  const messages = {};
 	const leads = getLeads(state);
 
-	for (let i = leads.length; i; i--) {
-		const { id, chat } = leads[ i - 1 ];
-		
-		if ( chat !== null ) {
-			
-			const mime = chat.recent_message.parts[ 0 ].mime_type;
-			const data = chat.recent_message.parts[ 0 ].content;
-			
-			if ( mime === 'text/plain' ) {
-				messages[ id ] = data;
-			}
-			if ( mime === 'text/json' ) {
-				messages[ id ] = `товар: ${JSON.parse( data ).Title}`;
-			}
-			
-		} else {
-			messages[ id ] = '';
-		}
-		
-	}
+  leads.forEach( ( { id, chat } ) => {
+
+    if ( chat !== null ) {
+
+      if ( chat.hasOwnProperty( 'recent_message' ) ) {
+
+        const mime = chat.recent_message.parts[ 0 ].mime_type;
+        const data = chat.recent_message.parts[ 0 ].content;
+
+        if ( mime === 'text/plain' ) {
+          messages[ id ] = data;
+        }
+
+        if ( mime === 'text/json' ) {
+          messages[ id ] = `товар: ${JSON.parse( data ).Title}`;
+        }
+
+      }
+
+    } else {
+
+      messages[ id ] = '';
+
+    }
+
+  } );
 
 	return messages;
+
 };
 
 export const getGlobalNotifyCount = state => state.leads.global_notify_count;

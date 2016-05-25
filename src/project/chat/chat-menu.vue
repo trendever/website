@@ -43,6 +43,7 @@ div
   } from 'vuex/actions/chat.js';
   import * as leads from 'services/leads';
   import * as service from 'services/chat';
+  import { ratioFit } from 'utils';
 
   import MenuComponent from 'base/menu/menu.vue';
   import ChatMenuStatus from './chat-menu-status.vue';
@@ -68,28 +69,40 @@ div
       selectedFile( { target } ){
 
         const MIME = target.files[ 0 ].type;
-
+        const file = target.files[ 0 ];
         if ( MIME in { 'image/png': true, 'image/gif': true, 'image/jpg': true, 'image/jpeg': true } ) {
 
           const reader = new FileReader();
+          const image  = new Image();
 
           reader.addEventListener( 'loadend', () => {
 
-             let base64Prefix = `data:${MIME};base64,`;
+            image.addEventListener("load",() => {
 
-             this.addPreLoadMessage( reader.result.substr( base64Prefix.length, reader.result.length ), reader.result, 'image/base64' );
+              let base64Prefix = `data:${MIME};base64,`;
 
-            this.setShowMenu( false );
+              this.addPreLoadMessage(
+                reader.result.substr( base64Prefix.length, reader.result.length ),
+                reader.result,
+                'image/base64',
+                ratioFit(image.width, image.height, 600, image.height)
+              );
 
-            this.$nextTick( () => {
+              this.setShowMenu( false );
 
-              window.scrollTo( 0, document.body.scrollHeight );
+              this.$nextTick( () => {
 
-            } );
+                window.scrollTo( 0, document.body.scrollHeight );
+
+              } );
+
+            });
+
+            image.src = reader.result;
 
           } );
 
-          reader.readAsDataURL( target.files[ 0 ] );
+          reader.readAsDataURL( file );
 
         } else {
 

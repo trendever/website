@@ -49,7 +49,6 @@
         return this.getNotifyCountList[ this.lead.id ];
       },
       recentMessage(){
-
         return this.getLastMessage[ this.lead.id ];
       },
       status(){
