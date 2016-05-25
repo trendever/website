@@ -1,4 +1,4 @@
-<style src='./styles/hero.pcss' scoped></style>
+<style src='./styles/hero.pcss'></style>
 <template lang="jade">
 .section.smallHero(v-if='isAuth')
   a(v-link='{ path: "/why" }')

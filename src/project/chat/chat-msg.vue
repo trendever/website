@@ -40,11 +40,11 @@
       datetime() {
         return formatTime(this.msg.created_at);
       },
-      getUsername() {
-        if (this.msg.user.role === leads.USER_ROLES.CUSTOMER.key) {
-          return `<b>${this.msg.user.name}</b>`
+      getUsername () {
+        if (this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key) {
+          return `<b>${this.getShopName}</b>`
         }
-        return `<b>${this.getShopName}</b>`
+        return `<b>${this.getShopName}</b> <br/> (продавец ${this.msg.user.name})`
       },
       isClosest(){
         return this.msg.closestMessage;

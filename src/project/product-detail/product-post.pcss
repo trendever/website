@@ -127,16 +127,17 @@
     }
     // footer
     &footer {
-      display: flex;
+      position: relative;
 
       margin: 15px 24px;
-
-      align-items: flex-end;
     }
     &action {
+      display: inline-block;
+
       cursor: pointer;
       transition: $btn-transition;
       text-align: center;
+      vertical-align: bottom;
       text-decoration: none;
 
       color: $color__green;
@@ -154,6 +155,11 @@
       }
       &.__heart:hover {
         color: $color__red;
+      }
+      &.__right {
+        position: absolute;
+        right: 0;
+        bottom: 0;
       }
 
     }

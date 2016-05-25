@@ -39,19 +39,25 @@ export const setConversation = ( { dispatch }, lead_id ) => {
 
 		}
 
-		if ( messages === null ) {
-			Raven.captureException( new Error( 'При получении лида/диалога messages не должнобыть null.' ) );
-		}
-
-		const lastMessageId = messages[ messages.length - 1 ].id;
-		const {chat:{id:conversation_id, members}} = lead;
-
-		messageCache.init( conversation_id, messages );
-
-		dispatch( CONVERSATION_SET, conversation_id, members, messages, lead );
-
-		return messageService.update(conversation_id, lastMessageId);
-
+		if ( messages !== null ) {
+      
+      const lastMessageId = messages[ messages.length - 1 ].id;
+      const {chat:{id:conversation_id, members}} = lead;
+      
+      messageCache.init( conversation_id, messages );
+      
+      dispatch( CONVERSATION_SET, conversation_id, members, messages, lead );
+      
+      return messageService.update(conversation_id, lastMessageId);
+      
+    } else {
+      
+      const {chat:{id:conversation_id, members}} = lead;
+      
+      dispatch( CONVERSATION_SET, conversation_id, members, [], lead );
+      
+    }
+    
 	} );
 
 	promise.catch( (error) => {
