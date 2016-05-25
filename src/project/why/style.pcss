@@ -1,5 +1,7 @@
 @import 'base/emoji/emoji.pcss';
+@import 'base/vars/vars.pcss';
 .header{
+  padding-right:17px;
 
   &__logo{
     margin: 10px 0 7px 30px;
@@ -8,6 +10,11 @@
     img{
       width: 137px;
       height:29px;
+
+      @media(--mobile) {
+         width: 750px;
+         height: 420px;
+       }
     }
   }
 }
