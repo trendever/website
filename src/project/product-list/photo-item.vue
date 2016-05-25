@@ -8,7 +8,7 @@
        v-on:load='showImage',
        v-on:error='loadError')
   .photo__description
-    .photo__title {{title}}
+    .photo__title {{ title | truncate 45 }}
     .photo__summ
       span {{ discountPrice | curency_spaces }}
       i.ic-currency-rub
