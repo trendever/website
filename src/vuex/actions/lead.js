@@ -64,7 +64,7 @@ export const loadLeads = ( { dispatch, state } ) => {
 
 export const setTab = ( { dispatch }, tab ) => {
 
-	return leads.find( 6, null, tab ).then(
+	return leads.find( 12, null, tab ).then(
 		( {leads} ) => {
 			dispatch( LEAD_SET_TAB, tab, leads );
 		},
