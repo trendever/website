@@ -51,7 +51,7 @@
 
     data(){
       return {
-        needLoadMessage: false
+        needLoadMessage: true
       }
     },
     route: {
@@ -127,16 +127,16 @@
          * В вебограме тоже спинер.
          * */
         const SHAfter = this.$els.scrollCnt.scrollHeight;
-        if ( !this.needLoadMessage ) {
+        if ( this.needLoadMessage ) {
           if ( this.$els.scrollCnt.scrollTop  < 1500 /*=== 0 */) {
-            this.$set( 'needLoadMessage', true );
+            this.$set( 'needLoadMessage', false );
             this.loadMessage().then( ( messages ) => {
               this.$nextTick( () => {
                 if ( messages !== null ) {
                   const SHDelta = this.$els.scrollCnt.scrollHeight - SHAfter;
                   const percentTopOfHeight =  (this.$els.scrollCnt.scrollTop + SHDelta)  / this.$els.scrollCnt.scrollHeight;
                   this.$els.scrollCnt.scrollTop = percentTopOfHeight * this.$els.scrollCnt.scrollHeight;
-                  this.$set( 'needLoadMessage', false );
+                  this.$set( 'needLoadMessage', true );
                 }
               } );
             } );

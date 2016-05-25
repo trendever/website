@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-div.scroll-cnt
+div.scroll-cnt(v-el:scroll-cnt)
   .chat-list-cnt(v-if='isDone')
     header-component(:title='getTitle', :left-btn-show='false')
       .header__nav(slot='content' v-if='getIsTab')
@@ -68,48 +68,40 @@ div.scroll-cnt
         closedList
       }
     },
+    data(){
+      return {
+        needLoadLeads: true
+      }
+    },
     created(){
       this.onStatus = this.onStatus.bind(this);
       leads.onChangeStatus(this.onStatus);
       messages.onMsg(this.onMsg);
     },
     ready(){
-      this.scrollCnt = document.querySelector('.scroll-cnt');
       this.loadLeads().then(()=>{
-        this.onScroll();
+        this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
       });
     },
     beforeDestroy(){
       leads.removeStatusListener(this.onStatus);
       messages.offMsg(this.onMsg);
-      this.offScroll();
+      this.scrollListener.remove();
       this.closedList();
     },
     methods: {
       onStatus({response_map: {lead}}){
         this.applyStatus(lead, lead.status);
       },
-      onScroll(){
-        this.scrollListener = listen( this.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
-      },
-      offScroll(){
-        if (this.scrollListener) {
-          this.scrollListener.remove();
-        }
-      },
       scrollHandler(){
-        let needUpdate     = false;
-        if ( !needUpdate ) {
-          const full_scroll = this.scrollCnt.scrollHeight;
-          const diff_scroll = full_scroll - this.scrollCnt.scrollTop;
+        if ( this.needLoadLeads ) {
+          const full_scroll = this.$els.scrollCnt.scrollHeight;
+          const diff_scroll = full_scroll - this.$els.scrollCnt.scrollTop;
+          console.log(diff_scroll);
           if ( diff_scroll < 2500 ) {
-            needUpdate = true;
-            this.offScroll();
+            this.$set('needLoadLeads', false);
             this.loadLeads().then(() => {
-              setTimeout(() => {
-                needUpdate = false;
-                this.onScroll();
-              }, 500);
+              this.$set('needLoadLeads', true);
             });
           }
         }
@@ -120,7 +112,7 @@ div.scroll-cnt
     },
     watch:{
       getTab(){
-        this.scrollCnt.scrollTop = 0;
+        this.$els.scrollCnt.scrollTop = 0;
       }
     },
     components: {
