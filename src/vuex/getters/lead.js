@@ -11,6 +11,15 @@ export const getTab = ( { leads } ) => {
 export const getLeads = ( { leads } ) => {
 	return leads[ getTab( { leads } ) ];
 };
+export const getLeadById = (state, id) => {
+	const leads = getLeads(state);
+	for(let i = leads.length; i; i--){
+		if(leads[i - 1].id === id){
+			return leads[i - 1];
+		}
+	}
+	return null;
+};
 
 export const getOlderLead = ( state ) => {
 	const leads  = getLeads( state );

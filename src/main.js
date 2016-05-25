@@ -26,7 +26,7 @@ if (config.raven.enabled) {
     });
 
   window.onerror = (errorMsg, url, lineNumber, colno, error) => {
-    Raven.captureException(error, {extra: {
+    console.error(error, {extra: {
       user: store.state.user,
       converstation_id: store.state.converstation ? store.state.converstation.id : null,
       auth: store.state.auth,

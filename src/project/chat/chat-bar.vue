@@ -152,7 +152,7 @@ div
           // ToDo надо отображать, что сообщение не отправлено значком в сообщении
           alert('Ошибка. Сообщение не отправлено. Может нет интернета?')
 
-          Raven.captureException(new Error('Problem to send message'), {extra: {
+          console.error(new Error('Problem to send message'), {extra: {
             errorMsg: errData,
             user: store.state.user,
           }});
