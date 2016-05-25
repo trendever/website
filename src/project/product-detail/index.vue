@@ -49,7 +49,7 @@ div.scroll-cnt
         let self = this;
 
         return this.openProduct(+id).catch( (error) => {
-          Raven.captureException(new Error('Product doesn`t exists or error'), {
+            console.error( new Error( 'Product doesn`t exists or error' ), {
             extra: {errorData: error.response, id: id}
           });
           self.$router.go({name: '404'});
