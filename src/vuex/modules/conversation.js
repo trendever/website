@@ -12,6 +12,8 @@ import {
 
 // initial state
 const state = {
+  init: false,
+  done: false,
   id: null,
   members: null,
   messages: null,

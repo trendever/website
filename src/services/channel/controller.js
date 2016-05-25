@@ -6,6 +6,7 @@ export default class {
     this.store = store;
     this.routes = [];
     this.init();
+    this.hasRoute = this.hasRoute.bind( this );
   }
 
   init() {
@@ -15,12 +16,31 @@ export default class {
     );
   }
 
+  hasRoute( action_str, data_type, handler_func ) {
+    for ( let i = this.routes.length; i; i-- ) {
+      const route = this.routes[ i - 1 ];
+      if (
+        route.handler_func === handler_func &&
+        route.data_type === data_type &&
+        route.action_str === action_str
+      ) {
+        return true
+      }
+    }
+    return false;
+  }
+
   addRoute(action_str, data_type, handler_func) {
-    this.routes.push({
-      action_str: action_str,
-      data_type: data_type,
-      handler_func: handler_func
-    });
+    if(!this.hasRoute(action_str, data_type, handler_func)) {
+      this.routes.push({
+        action_str: action_str,
+        data_type: data_type,
+        handler_func: handler_func
+      });
+    } else {
+      console.error(new Error(`Нет необходимости добавлять два одинаковых обработчика
+       для действия ${action_str} и типа даннх ${data_type}`));
+    }
   }
 
   removeRoute(action_str, data_type, handler_func) {

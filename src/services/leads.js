@@ -373,3 +373,22 @@ export function onChangeStatus(handler) {
 export function removeStatusListener(handler) {
   channel.off('RETRIEVED', 'lead', handler);
 }
+
+export function sendError( errorCode, state = null ) {
+  switch ( errorCode ) {
+    case ERROR_CODES.FORBIDDEN:
+      console.error( new Error( `Lead error: [ FOBIDDEN ]` ), state );
+      break;
+    case ERROR_CODES.NOT_EXISTS:
+      console.error( new Error( `Lead error: [ NOT_EXISTS ]` ), state );
+      break;
+    case ERROR_CODES.UNATHORIZED:
+      console.error( new Error( `Lead error: [ UNATHORIZED ]` ), state );
+      break;
+    case ERROR_CODES.OBJECT_NOT_EXIST:
+      console.error( new Error( `Lead error: [ OBJECT_NOT_EXIST ]` ), state );
+      break;
+    default:
+      return true;
+  }
+}

@@ -1,18 +1,32 @@
 import {
-	LEAD_RECEIVE,
-	LEAD_SET_TAB,
-	LEAD_APPLY_STATUS,
-	LEAD_INIT_GLOBAL_NOTIFY,
-	LEAD_INC_NOTIFY,
-	LEAD_CLEAR_NOTIFY,
-	LEAD_SET_LAST_MESSAGE,
-	LEAD_CLOSE
+  LEAD_RECEIVE,
+  LEAD_SET_TAB,
+  LEAD_APPLY_STATUS,
+  LEAD_INIT_GLOBAL_NOTIFY,
+  LEAD_INC_NOTIFY,
+  LEAD_CLEAR_NOTIFY,
+  LEAD_SET_LAST_MESSAGE,
+  LEAD_CLOSE
 } from '../mutation-types';
-
 import * as leads from 'services/leads.js';
 import * as message from 'services/message';
-
 import { getOlderLead, getLeads, getTab, isEmptyLeads } from '../getters/lead';
+
+export const init = ( { dispatch, state:{ leads } } ) => {
+
+  return new Promise( ( resolve, reject ) => {
+
+    leads.find( 6 ).then(( { customer, seller } ) => {
+        dispatch( LEAD_RECEIVE, { customer, seller } );
+      },
+      ( error ) => {
+        console.log( error );
+      }
+    );
+
+  } );
+
+};
 
 export const createLead = ( { dispatch }, product_id ) => {
 
@@ -116,3 +130,4 @@ export const clearNotify = ( { dispatch }, lead_id ) => {
 export const closedList = ( { dispatch } ) => {
 	dispatch( LEAD_CLOSE );
 };
+

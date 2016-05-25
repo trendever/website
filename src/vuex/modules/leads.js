@@ -12,12 +12,13 @@ import {
 
 // initial state
 const state = {
+  init: false,
+  done: false,
   seller: [],
   customer: [],
   tab: 'customer',
   notify_count: {},
   global_notify_count: 0,
-  done: false,
 };
 
 function checkUnreadMessage( items ) {

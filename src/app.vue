@@ -9,7 +9,7 @@ div(:class='{popup: isShowPopupFastSignup}')
     v-if='isShowPopupFastSignup && isNotWhy')
 
 router-view
-notify-component
+listener-component
 
 </template>
 
@@ -33,7 +33,7 @@ notify-component
 
   import PopupFastSignup from 'project/auth-popup/fast-signup.vue'
   import PopupSignup from 'project/auth-popup/signup.vue'
-  import NotifyComponent from 'project/notify/index.vue'
+  import ListenerComponent from 'project/listener/index.vue'
 
   export default {
     data: () => ({}),
@@ -81,7 +81,7 @@ notify-component
       }
     },
     components: {
-      NotifyComponent,
+      ListenerComponent,
       PopupFastSignup,
       PopupSignup,
     },

@@ -1,64 +1,105 @@
 import {
-	CONVERSATION_SET,
-	CONVERSATION_RECEIVE_MESSAGE,
-	CONVERSATION_LOAD_MESSAGE,
-	CONVERSATION_CLOSE,
-	CONVERSATION_UPDATE_MEMBERS,
-	CONVERSATION_SET_SHOW_MENU,
-	CONVERSATION_SET_SHOW_STATUS_MENU,
-	CONVERSATION_SET_STATUS,
-	CONVERSATION_AFTER_LOAD_IMG
+  CONVERSATION_SET,
+  CONVERSATION_RECEIVE_MESSAGE,
+  CONVERSATION_LOAD_MESSAGE,
+  CONVERSATION_UPDATE_MEMBERS,
+  CONVERSATION_SET_SHOW_MENU,
+  CONVERSATION_SET_SHOW_STATUS_MENU,
+  CONVERSATION_SET_STATUS,
+  CONVERSATION_AFTER_LOAD_IMG,
+  LEAD_UPDATE_LEAD_ITEM
 } from '../mutation-types';
 import * as messageService from 'services/message.js';
 import * as leads from 'services/leads.js';
 import * as chat from 'services/chat.js';
-import messageCache from 'cache/message';
-import { getCurrentMember, getId, getLastMessageId } from 'vuex/getters/chat.js';
+import { getCurrentMember, getId, getLastMessageId, isJoined } from 'vuex/getters/chat.js';
+import { getLeadById } from 'vuex/getters/lead.js';
 import { userID } from 'vuex/getters';
 
-export const setConversation = ( { dispatch }, lead_id ) => {
+export const setConversation = ( { dispatch, state }, lead_id ) => {
 
-	const promise = leads.get( { lead_id } );
+  function chatJoin( lead_id, callBack ) {
 
-	promise.then( ( { messages, lead, error } ) => {
+    return chat.join( { lead_id } ).then( () => {
 
-		if (error !== null) {
+        return leads.get( { lead_id } ).then( ( { messages, lead, error } ) => {
 
-			if (error.code === leads.ERROR_CODES.FORBIDDEN) {
+          if ( leads.sendError( error, state ) ) {
 
-				return chat.join( { lead_id } ).then(
-					() => {
-						return setConversation( { dispatch }, lead_id );
-					},
-					( error ) => {
-						console.log( `Join to chat error: ${(leads.ERROR_CODES.FORBIDDEN === error) ? '[ FOBIDDEN ]' : ''}` );
+            return callBack( { messages, lead } );
+
 					}
-				);
 
+        } );
+
+      },
+      ( error ) => {
+        console.error( `[ chat.join ]: ${error}` );
 			}
+    );
+
+  }
+
+  const lead = getLeadById( state, lead_id );
+
+  if ( false ) {
+
+    if ( isJoined( state, lead ) ) {
+
+      console.log( lead );
+
+      debugger;
+
+    } else {
+
+      return chatJoin( lead_id, ( { member, chat } ) => {
+
+        dispatch( LEAD_UPDATE_LEAD_ITEM, lead );
+        return setConversation( { dispatch }, lead_id );
+
+      } );
 
 		}
 
-		if ( messages === null ) {
-			Raven.captureException( new Error( 'При получении лида/диалога messages не должнобыть null.' ) );
-		}
+  } else {
 
-		const lastMessageId = messages[ messages.length - 1 ].id;
-		const {chat:{id:conversation_id, members}} = lead;
+    const promise = leads.get( { lead_id } );
 
-		messageCache.init( conversation_id, messages );
+    promise.then( ( { messages, lead, error } ) => {
 
-		dispatch( CONVERSATION_SET, conversation_id, members, messages, lead );
+      if ( sendError( error ) ) {
 
-		return messageService.update(conversation_id, lastMessageId);
+        if ( !isJoined( state, lead ) ) {
 
-	} );
+          return chatJoin( lead_id, () => {
 
-	promise.catch( (error) => {
-		console.log( `Set conversation error: ${(leads.ERROR_CODES.FORBIDDEN === error) ? '[ FOBIDDEN ]' : ''}` );
-	} );
+            dispatch( LEAD_UPDATE_LEAD_ITEM, lead );
 
-	return promise;
+            return setConversation( { dispatch }, lead_id );
+
+          } );
+
+        }
+
+      }
+
+      if ( messages === null ) {
+        console.error( new Error( 'При получении лида/диалога messages не должнобыть null.' ) );
+      }
+
+      const lastMessageId = messages[ messages.length - 1 ].id;
+      const { chat:{ id:conversation_id, members } } = lead;
+
+      messageService.update( conversation_id, lastMessageId );
+      dispatch( CONVERSATION_SET, conversation_id, members, messages, lead );
+
+    } );
+
+    promise.catch( sendError );
+
+    return promise;
+
+  }
 
 };
 
@@ -121,9 +162,7 @@ export const receiveMessage = ( { dispatch, state }, chat, messages ) => {
 
 			if(isNotLastMessage) {
 
-				messageService.update(msg.conversation_id, msg.id).then(() => {
-
-					messageCache.addReceiveMessage( msg.conversation_id, messages );
+        messageService.update( msg.conversation_id, msg.id ).then( () => {
 
 					// ToDo not optimal code. Dmitry refactor this.
 					if (msg.conversation_id === state.conversation.id) {
@@ -186,11 +225,7 @@ export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
 	dispatch(CONVERSATION_SET_SHOW_STATUS_MENU, showStatusMenu);
 };
 
-export const closeConversation = ({ dispatch }) => {
-	dispatch(CONVERSATION_CLOSE);
-};
-
-export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix, MIME ) => {
+export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix, MIME, { width, height } ) => {
 
 	const beforeLoadId = Math.random();
 
@@ -207,6 +242,8 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 			{
 				content: {
 					link: base64WithPrefix,
+          width,
+          height
 				},
 				mime_type: 'image/base64',
 			}
