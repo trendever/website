@@ -3,18 +3,18 @@
 .search-placeholder
   #search
     .search-stub(v-if='searchGlued')
+
     .search-input(:class='{"glued":searchGlued}')
-      .search-input__container
-        .search-input__search-btn(
-          @click='search()')
+      .search-input__container(:class='{"__focused": inputFocused, "__active": searchValue.length || selectedTags.length}')
+        .search-input__search-btn(@click='search()')
           i.ic-search.__mirror
 
         input.search-input__input(
           v-el:input,
-          :class='{"__active": searchValue.length || selectedTags.length}',
           @keydown='search()',
           :value='searchValue',
-          @click='onFocusInput',
+          @focus='onFocusInput',
+          @blur='onBlurInput',
           type='text',
           placeholder='Ищите или фильтруйте...')
 
@@ -66,6 +66,7 @@
         showMoreTags: false,
         showMoreButton: false,
         searchGlued: false,
+        inputFocused: false,
       }
     },
     ready(){
@@ -136,6 +137,11 @@
 
       onFocusInput() {
         this.showMoreTags = false;
+        this.inputFocused = true;
+      },
+
+      onBlurInput() {
+        this.inputFocused = false;
       }
     },
     watch: {

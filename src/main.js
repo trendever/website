@@ -15,7 +15,7 @@ require('es6-promise').polyfill();
 if (config.raven.enabled) {
   var Raven = require('raven-js');
   Raven.config(config.raven.url, {
-    maxMessageLength: 1000,
+    maxMessageLength: 1000
   }).install();
 
   // Path console.debug, console.info, etc ...
@@ -29,7 +29,7 @@ if (config.raven.enabled) {
     Raven.captureException(error, {extra: {
       user: store.state.user,
       converstation_id: store.state.converstation ? store.state.converstation.id : null,
-      auth: store.state.auth,
+      auth: store.state.auth
     }});
   };
 }

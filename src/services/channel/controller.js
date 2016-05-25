@@ -75,7 +75,7 @@ export default class {
 
   onMessage(ctx) {
 
-    if (__debugMode && ctx.trans_map.trans_id) {
+    if (ctx.trans_map.trans_id) {
       var createdAt = ctx.trans_map.createdAt;
       var sendedAt = ctx.trans_map.sendedAt;
       var endTime = new Date().getTime();
@@ -86,7 +86,7 @@ export default class {
         color_code_key = 'color: #4CAF50';
       }
 
-      debugLog('[CHAN]' +
+      console.log('[CHAN]' +
        '%c ' + ctx.action_str +
        ' %c ' + ctx.data_type +
        ' %c ' + ctx.log_list[0].code_str +
@@ -98,7 +98,8 @@ export default class {
        'color: #FF9800',
        color_code_key,
        'color: #5E35B1',
-       'color: #2196F3'
+       'color: #2196F3',
+       {response: ctx}
        );
     }
 

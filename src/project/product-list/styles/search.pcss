@@ -9,31 +9,29 @@ $count-tags-close: 3;
 $count-tags-open: 13;
 
 .__mirror {
-  transform: scaleX(-1);
-
   font-weight: 600;
+  transform: scaleX(-1);
 }
 
 .badge {
-  right: 0;
-
+  left: -7px;
   display: inline-block;
-
-  // margin-top: 8px;
+  position: absolute;
+  top: 10px;
   width: 32px;
   height: 32px;
-
-  color: white;
   border-radius: 40px;
   background-color: $color__green;
-
+  color: white;
   font-size: 24px;
   line-height: 34px;
+  // margin-top: 8px;
 
    @media (--mobile) {
     width: 50px;
     height: 50px;
-
+    left: -30px;
+    top: 28px;
     font-size: 36px;
     line-height: 50px;
    }
@@ -41,9 +39,8 @@ $count-tags-open: 13;
 
 .search-placeholder {
   z-index: 10;
-
-  height: calc($height__desktop + 135px + $height-tag-button);
   margin-bottom: 20px;
+  height: calc($height__desktop + 135px + $height-tag-button);
 
   @media (max-width: 750px) {
     height: calc($height__mobile + 155px + $height-tag-button);
@@ -53,11 +50,9 @@ $count-tags-open: 13;
 #search {
   position: relative;
   z-index: 1;
-
-  max-width: 1050px;
   margin-bottom: 20px;
-
-  background-color: #fff;
+  max-width: 1050px;
+  background: white;
 
   &.fix-on-top {
     position: fixed;
@@ -77,106 +72,110 @@ $count-tags-open: 13;
 }
 .search-input {
   height: $height__desktop;
-
   border-bottom: 1px solid $color__gray;
+
+  @media (--mobile) {
+    height: $height__mobile;
+  }
 
   &.glued{
     position: fixed;
-    z-index: 100;
     top:-2px;
-
-    width: 100%;
+    z-index: 100;
     max-width: 1050px;
+    width: 100%;
 
     background-color: white;
-
     @media (--mobile) {
       width: 750px;
     }
   }
-  @media (--mobile) {
-    height: $height__mobile;
-  }
   &__container {
     position: relative;
-
-    display: flex;
-
     height: 100%;
-    margin-bottom: 10px;
-
+    width: 100%;
     color: $color__gray;
+    text-align: center;
 
-    justify-content: center;
+    &.__focused, &.__active {
+      display: table;
+
+      & .search-input__input {
+        width: 100%;
+        display: table-cell;
+        outline: none;
+        border-bottom: 1px solid transparent;
+
+        @media (--mobile) {
+          /* HACK: Не знаю почему, но рамка пропадает без этого */
+          border-bottom: 5px solid transparent;
+        }
+      }
+      & .search-input__clear-btn,
+      & .search-input__search-btn {
+        display: table-cell;
+        width: 100px;
+
+      }
+    }
+    @media (--mobile) {
+      display: table;
+    }
   }
   &__input {
     display: inline-block;
-
     box-sizing: border-box;
+    padding: 0;
     width: 326px;
     height: 100%;
-    padding: 0;
-    padding-top: 2.5px;
-
-    transition: width 0.25s ease-in-out;
-
-    color: $color__gray-dark;
     border: none;
-
-    font-family: $font__family;
-    font-size: 25px;
+    color: $color__gray-dark;
     font-weight: 400;
+    font-size: 25px;
+    font-family: $font__family;
 
-    @media (max-width: 750px) {
+    @media (--mobile) {
+      margin-top: 3.6px;
       width: 100%;
-      padding-top: 3.6px;
-
       font-size: 36px;
-    }
-    &:focus, &.__active {
-      width: 100%;
-
+      display: table-cell;
       outline: none;
+      /* HACK: Не знаю почему, но рамка пропадает без этого */
+      border-bottom: 5px solid transparent;
     }
   }
   &__search-btn,
   &__clear-btn {
-    display: flex;
-
+    display: inline-block;
     height: 100%;
-
-    cursor: pointer;
+    vertical-align: top;
     text-align: center;
-    text-align: center;
-    vertical-align: middle;
-
     font-size: 25px;
     line-height: $height__desktop;
+    cursor: pointer;
 
-    align-items: center;
-    @media (max-width: 750px) { line-height: $height__mobile; }
-    @media (max-width: 750px) { font-size: 36px; }
+    i {
+      vertical-align: middle !important;
+    }
+
+    @media (--mobile) {
+      line-height: $height__mobile;
+      display: table-cell;
+      width: 100px;
+      font-size: 36px;
+    }
   }
   &__search-btn {
    padding: 0 30px;
-
-    @media (--mobile){
-      left: 0;
-    }
-  }
-  .close {
-    width: 75px;
-    height: 100%;
-    padding-top: 3px;
-
-    @media (max-width: 750px) { padding-right: 15px; }
   }
   &__clear-btn {
+    position: absolute;
     right: 0;
-
+    top: 0;
+    width: 49px;
+    height: 100%;
     transition: $btn-transition;
 
-    // font-size: 20px;
     &:hover {
       color: $color__gray-dark;
     }
@@ -185,13 +184,10 @@ $count-tags-open: 13;
 
 .search-tags {
   overflow: hidden;
-
-  width: 100%;
   padding: 30px 20px $height-tag-button 20px;
-
-  user-select: none;
-
+  width: 100%;
   background-color: #fff;
+  user-select: none;
 
   &.__open {
     height: auto;
@@ -202,44 +198,36 @@ $count-tags-open: 13;
   &__container,
   &__selected {
     overflow: hidden;
-
     height: 124px;
-
     word-wrap: break-word;
-
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+
     @media (max-width: 750px) {
       height: 152px;
-
       -webkit-line-clamp: 13;
     }
+
     .__open & {
       overflow-y: auto;
-
-      height: auto;
       max-height: calc($count-tags-open * $height-tag-item);
+      height: auto;
     }
   }
   &__selected {
-    height: auto;
     margin-bottom: 10px;
+    height: auto;
   }
   &__item,
   &__item__selected {
     position: relative;
-
-    // height: $height-tag-item;
     display: inline-block;
-
     margin: 0 5px;
     margin-bottom: 10px;
-
-    cursor: pointer;
-
     color: $color__green;
-
     font-size: 28px;
+    cursor: pointer;
+    // height: $height-tag-item;
 
     @media(max-width: 750px) { font-size: 36px; }
   }
@@ -248,20 +236,18 @@ $count-tags-open: 13;
     }
    &__item__selected {
     padding: 0;
-
-    cursor: default;
-
     font-weight: 900;
+    cursor: default;
 
     &:hover {
       cursor: pointer;
     }
     .ic-close {
       padding-right: 0;
-
       font-size: 16px;
-
+      vertical-align: middle;
       // padding-top: 4px;
+
       @media(max-width: 750px) {
         font-size: 22px;
         // padding-top: 6px;
@@ -273,14 +259,10 @@ $count-tags-open: 13;
     right: 0;
     bottom: 0;
     left: 0;
-
     display: block;
-
-    text-align: center;
-
-    color: $color__gray-light;
     background-color: white;
-
+    color: $color__gray-light;
+    text-align: center;
     line-height: $height-tag-button;
 
     &:hover {
@@ -288,14 +270,11 @@ $count-tags-open: 13;
     }
     &:after {
       display: inline-block;
-
       width: 40px;
       height: 7px;
-
-      content: '';
-
       border-radius: 100px;
       background-color: $color__gray;
+      content: '';
 
       @media(--mobile) {
         width: 50px;
