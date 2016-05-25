@@ -67,7 +67,7 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
     promise.then( ( { messages, lead, error } ) => {
 
-      if ( sendError( error ) ) {
+      if ( leads.sendError( error ) ) {
 
         if ( !isJoined( state, lead ) ) {
 
@@ -95,7 +95,7 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
     } );
 
-    promise.catch( sendError );
+    promise.catch( leads.sendError );
 
     return promise;
 
@@ -262,4 +262,14 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 
 	} );
 
+};
+
+export const onStatus = () => {
+  
+};
+export const onMessages = () => {
+  
+};
+export const onMessageRead = () => {
+  
 };

@@ -6,8 +6,8 @@
 
   import * as messages from 'services/message';
   import * as leads from 'services/leads';
-  import { init } from 'vuex/actions/lead.js';
-  import * as actionsChat from 'vuex/actions/chat.js';
+  import * as lead from 'vuex/actions/lead.js';
+  import * as chat from 'vuex/actions/chat.js';
   import { isAuth } from 'vuex/getters';
 
   export default {
@@ -25,21 +25,24 @@
       this.off();
     },
     methods: {
-      onMessage( { response_map } ) {
-
+      onMessage( data ) {
+        this.onMessagesLead( data );
+        this.onMessagesChat( data );
       },
-      onMessageRead( { response_map } ) {
-
+      onMessageRead( data ) {
+        this.onMessageReadLead( data );
+        this.onMessageReadChat( data );
       },
-      onChangeStatus( { response_map } ) {
-
+      onChangeStatus( data ) {
+        this.onStatusLead( data );
+        this.onStatusChat( data );
       },
       on() {
-        this.init().then(() => {
+        this.init().then( () => {
           messages.onMsg( this.onMessage );
           messages.onMsgRead( this.onMessageRead );
           leads.onChangeStatus( this.onChangeStatus );
-        });
+        } );
       },
       off() {
         messages.offMsg( this.onMessage );
@@ -54,7 +57,13 @@
     },
     vuex: {
       actions: {
-        init,
+        init: lead.init,
+        onStatusLead: lead.onStatus,
+        onMessagesLead: lead.onMessages,
+        onMessageReadLead: lead.onMessageRead,
+        onStatusChat: chat.onStatus,
+        onMessagesChat: chat.onMessages,
+        onMessageReadChat: chat.onMessageRead,
       },
       getters: {
         isAuth,

@@ -4,16 +4,13 @@ import {
   LEAD_UPDATE_LEAD_ITEM,
   LEAD_SET_TAB,
   LEAD_APPLY_STATUS,
-  LEAD_INIT_GLOBAL_NOTIFY,
   LEAD_INC_NOTIFY,
   LEAD_CLEAR_NOTIFY,
-  LEAD_SET_LAST_MESSAGE,
-  LEAD_CLOSE
+  LEAD_SET_LAST_MESSAGE
 } from '../mutation-types';
 
 // initial state
 const state = {
-  init: false,
   done: false,
   seller: [],
   customer: [],
@@ -37,21 +34,20 @@ function checkUnreadMessage( items ) {
 
 // mutations
 const mutations = {
-  [LEAD_INIT]( state, { seller, customer } ) {
-
+  [LEAD_INIT]( state, { seller, customer, countUnread } ) {
+    state.seller              = seller;
+    state.customer            = customer;
+    state.done                = true;
+    state.global_notify_count = countUnread;
+    checkUnreadMessage( seller );
+    checkUnreadMessage( customer );
   },
-  [LEAD_RECEIVE] ( state, { seller, customer } ) {
-    if ( seller !== undefined ) {
-      state.seller = state.seller.concat( seller );
-      checkUnreadMessage( seller );
+  [LEAD_RECEIVE] ( state, leads, tab ) {
+    if ( !state.hasOwnProperty( tab ) ) {
+      console.error( `${LEAD_RECEIVE}: передан таб который не поддерживается : ${tab}`, state );
     }
-    if ( customer !== undefined ) {
-      state.customer = state.customer.concat( customer );
-      checkUnreadMessage( customer );
-    }
-    state.done = true;
+    state[ tab ] = state[ tab ].concat( leads );
   },
-
   [LEAD_UPDATE_LEAD_ITEM] ( state, newLead ) {
     let kik = false;
     [ state.seller, state.seller ].forEach( ( leads ) => {
@@ -67,14 +63,9 @@ const mutations = {
       }
     } );
   },
-  [LEAD_SET_TAB] ( state, tab = 'customer', leads ) {
-    state.tab          = tab;
-    state.notify_count = {};
 
-    if ( leads !== undefined ) {
-      state[ tab ] = leads;
-      checkUnreadMessage( leads );
-    }
+  [LEAD_SET_TAB] ( state, tab = 'customer' ) {
+    state.tab = tab;
   },
   [LEAD_SET_LAST_MESSAGE] ( state, conversation, messages ) {
 
@@ -114,9 +105,6 @@ const mutations = {
       }
     }
   },
-  [LEAD_INIT_GLOBAL_NOTIFY] ( state, count ) {
-    state.global_notify_count = count;
-  },
   [LEAD_INC_NOTIFY] ( state, lead_id ) {
 
     if ( lead_id !== null ) {
@@ -136,9 +124,6 @@ const mutations = {
 	    state.global_notify_count = globalCount >= 0 ? globalCount : 0;
     }
     state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 0 } );
-  },
-  [LEAD_CLOSE] ( state ){
-    state.done = false;
   },
 };
 

@@ -8,6 +8,22 @@ export const ERROR_CODES = {
     UNATHORIZED: 10
 };
 
+export function sendError( errorCode, state = null ) {
+  switch ( errorCode ) {
+    case ERROR_CODES.FORBIDDEN:
+      console.error( new Error( `Messages error: [ FOBIDDEN ]` ), state );
+      break;
+    case ERROR_CODES.NOT_EXISTS:
+      console.error( new Error( `Messages error: [ NOT_EXISTS ]` ), state );
+      break;
+    case ERROR_CODES.UNATHORIZED:
+      console.error( new Error( `Messages error: [ UNATHORIZED ]` ), state );
+      break;
+    default:
+      return true;
+  }
+}
+
 
 /**
  * History messages of chat
