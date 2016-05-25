@@ -37,7 +37,7 @@ export const loadLeads = ( { dispatch, state } ) => {
 
 	if ( isEmptyLeads( state ) ) {
 
-		return leads.find( 6 ).then(
+		return leads.find( 12 ).then(
 			( { customer, seller } ) => {
 				dispatch( LEAD_RECEIVE, { customer, seller } );
 			},
