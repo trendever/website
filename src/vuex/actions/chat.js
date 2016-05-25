@@ -264,12 +264,18 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 
 };
 
-export const onStatus = () => {
-  
+export const onStatus = ({ dispatch }, data) => {
+
+  console.log(data);
+
 };
-export const onMessages = () => {
-  
+export const onMessages = ({ dispatch }, data) => {
+
+  console.log(data);
+
 };
-export const onMessageRead = () => {
-  
+export const onMessageRead = ({ dispatch }, data) => {
+
+  console.log(data);
+
 };

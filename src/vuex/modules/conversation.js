@@ -12,12 +12,23 @@ import {
 
 // initial state
 const state = {
-  init: false,
   done: false,
-  id: null,
   members: null,
   messages: null,
   lead: null,
+
+  all:{
+    /**
+     * 1: {
+     *  done: false,
+     *  members:null,
+     *  messages:null,
+     *  lead:null
+     * }
+     * */
+  },
+
+  id: null,
   showMenu: false,
   showStatusMenu: false,
 };

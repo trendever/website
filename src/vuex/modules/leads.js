@@ -67,13 +67,13 @@ const mutations = {
   [LEAD_SET_TAB] ( state, tab = 'customer' ) {
     state.tab = tab;
   },
-  [LEAD_SET_LAST_MESSAGE] ( state, conversation, messages ) {
+  [LEAD_SET_LAST_MESSAGE] ( state, conversation_id, messages ) {
 
     state[ state.tab ].forEach( ( lead, index ) => {
 
       if ( lead.chat !== null ) {
 
-        if ( conversation.id === lead.chat.id ) {
+        if ( conversation_id === lead.chat.id ) {
 
           lead.chat.recent_message.parts = messages[ 0 ].parts;
           lead.updated_at                = messages[ 0 ].created_at * 1e9;
@@ -93,15 +93,18 @@ const mutations = {
         if ( kik ) {
           break;
         }
-        for ( let i = leads[ key ].length; i; i-- ) {
-          const oldLead = leads[ key ][ i - 1 ];
-          if ( oldLead.id === lead.id ) {
-            oldLead.status     = status_key;
-            oldLead.updated_at = lead.updated_at;
-            kik                = true;
-            break;
+
+        leads[ key ] = leads[ key ].map( ( _lead ) => {
+
+          if ( _lead.id === lead.id ) {
+            kik = true;
+            return lead;
           }
-        }
+
+          return _lead;
+
+        } );
+
       }
     }
   },
@@ -121,7 +124,7 @@ const mutations = {
   [LEAD_CLEAR_NOTIFY] ( state, lead_id ) {
     if ( state.notify_count.hasOwnProperty( lead_id ) ) {
       const globalCount         = state.global_notify_count - state.notify_count[ lead_id ];
-	    state.global_notify_count = globalCount >= 0 ? globalCount : 0;
+      state.global_notify_count = globalCount >= 0 ? globalCount : 0;
     }
     state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 0 } );
   },
