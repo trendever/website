@@ -3,18 +3,18 @@ export const formatPhone = (phonenum, simpleOut) => {
   var regexObj = /^(?:\+?7?8?[-. ]?)?(?:\(?([0-9]{3})\)?[-. ]?)?([0-9]{3})[-. ]?([0-9]{2})([0-9]{2})$/;
   if (regexObj.test(phonenum)) {
     var parts = phonenum.match(regexObj);
-    var phone = "";
+    var phone = '';
     if (simpleOut) {
       if (parts[1]) {
-        phone += "+7" + parts[1];
+        phone += '+7' + parts[1];
       }
       phone += parts[2] + parts[3] + parts[4];
       return phone;
     }
     if (parts[1]) {
-      phone += "+7 (" + parts[1] + ") ";
+      phone += '+7 (' + parts[1] + ') ';
     }
-    phone += parts[2] + "-" + parts[3] + "-" + parts[4];
+    phone += parts[2] + '-' + parts[3] + '-' + parts[4];
     return phone;
   } else {
     //invalid phone number
@@ -23,72 +23,72 @@ export const formatPhone = (phonenum, simpleOut) => {
 };
 
 export const urlThumbnail = (url, size = null, originalWidth = null, originalHeight = null) => {
-    /**
-     *  Changed instagram photo url, for crop image.
-     *  Supports sizes: 150, 306, 480, 640, 750 (width=height)
-     *  if width and height not size, then will get original
-     * @type {string} url
-     * @type {number} size
-     */
-    let parser = document.createElement('a');
-    parser.href = url;
+  /**
+   *  Changed instagram photo url, for crop image.
+   *  Supports sizes: 150, 306, 480, 640, 750 (width=height)
+   *  if width and height not size, then will get original
+   * @type {string} url
+   * @type {number} size
+   */
+  let parser = document.createElement('a');
+  parser.href = url;
 
-    var source_path = parser.pathname.split('/');
-    if (!size) {
-      source_path.splice(2, 1);
+  var source_path = parser.pathname.split('/');
+  if (!size) {
+    source_path.splice(2, 1);
+  } else {
+    if (originalWidth && originalHeight) {
+      let minSide = Math.min(originalWidth, originalHeight);
+      source_path[2] = `s${size}x${size}/e35/c0.0.${minSide}.${minSide}`;
     } else {
-      if (originalWidth && originalHeight) {
-        let minSide = Math.min(originalWidth, originalHeight);
-        source_path[2] = `s${size}x${size}/e35/c0.0.${minSide}.${minSide}`;
-      } else {
-        source_path[2] = "s" + size + "x" + size;
-      }
+      source_path[2] = 's' + size + 'x' + size;
     }
-    return "https:" + "//" + parser.host + source_path.join("/");
+  }
+  return 'https:' + '//' + parser.host + source_path.join('/');
 };
 
- /**
-  * Conserve aspect ratio of the orignal region. Useful when shrinking/enlarging
-  * images to fit into a certain area.
-  *
-  * @param {Number} srcWidth Source area width
-  * @param {Number} srcHeight Source area height
-  * @param {Number} maxWidth Fittable area maximum available width
-  * @param {Number} maxHeight Fittable area maximum available height
-  * @return {Object} { width, heigth }
-  */
+/**
+ * Conserve aspect ratio of the orignal region. Useful when shrinking/enlarging
+ * images to fit into a certain area.
+ *
+ * @param {Number} srcWidth Source area width
+ * @param {Number} srcHeight Source area height
+ * @param {Number} maxWidth Fittable area maximum available width
+ * @param {Number} maxHeight Fittable area maximum available height
+ * @return {Object} { width, heigth }
+ */
 export const ratioFit = function(srcWidth, srcHeight, maxWidth, maxHeight) {
 
-    var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+  var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
 
-    return { width: srcWidth*ratio, height: srcHeight*ratio };
+  return { width: srcWidth * ratio, height: srcHeight * ratio };
 };
 
 
 //
 // Cookies
 
-export const getCookie =  function(name) {
-  var nameEQ = name + "=",
+export const getCookie = function(name) {
+  var nameEQ = name + '=',
     ca = document.cookie.split(';'),
     value = '',
     firstChar = '',
-    parsed={};
+    parsed = {};
   for (var i = 0; i < ca.length; i++) {
     var c = ca[i];
     while (c.charAt(0) === ' ') c = c.substring(1, c.length);
     if (c.indexOf(nameEQ) === 0) {
       value = decodeURIComponent(c.substring(nameEQ.length, c.length));
       firstChar = value.substring(0, 1);
-      if(firstChar=="{"){
+      if (firstChar == '{') {
         try {
           parsed = JSON.parse(value);
-          if("v" in parsed) return parsed.v;
-        } catch(e) {
+          if ('v' in parsed) return parsed.v;
+        } catch (e) {
           return value;
         }
       }
-      if (value=="undefined") return undefined;
+      if (value == 'undefined') return undefined;
       return value;
     }
   }
@@ -100,26 +100,26 @@ export const setCookie = function(name, value, days, path, secure) {
     type = typeof(value),
     valueToUse = '',
     secureFlag = '';
-  path = path || "/";
+  path = path || '/';
   if (days) {
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    expires = "; expires=" + date.toUTCString();
+    expires = '; expires=' + date.toUTCString();
   }
-  if (type === "object"  && type !== "undefined") {
-    if(!("JSON" in window)) throw "Bummer, your browser doesn't support JSON parsing.";
-    valueToUse = encodeURIComponent(JSON.stringify({v:value}));
+  if (type === 'object' && type !== 'undefined') {
+    if (!('JSON' in window)) throw 'Bummer, your browser doesn`t support JSON parsing.';
+    valueToUse = encodeURIComponent(JSON.stringify({ v: value }));
   } else {
     valueToUse = encodeURIComponent(value);
   }
-  if (secure){
-    secureFlag = "; secure";
+  if (secure) {
+    secureFlag = '; secure';
   }
 
-  document.cookie = name + "=" + valueToUse + expires + "; path=" + path + secureFlag;
+  document.cookie = name + '=' + valueToUse + expires + '; path=' + path + secureFlag;
 };
 
-export const removeCookie = function (name) {
-  setCookie(name, "", -1);
+export const removeCookie = function(name) {
+  setCookie(name, '', -1);
 };
 
 
@@ -149,12 +149,93 @@ export const throttleEvent = function(type, name, obj) {
   obj = obj || window;
   var running = false;
   var func = function() {
-      if (running) { return; }
-      running = true;
-      requestAnimationFrame(function() {
-          obj.dispatchEvent(new CustomEvent(name));
-          running = false;
-      });
+    if (running) {
+      return; }
+    running = true;
+    requestAnimationFrame(function() {
+      obj.dispatchEvent(new CustomEvent(name));
+      running = false;
+    });
   };
   obj.addEventListener(type, func);
 };
+
+export var isDebug = window.__debugMode = /[a-z0-9_\-]*[\.]*[a-z0-9_\-]*\.[a-z0-9_\-]+\.[a-z0-9_\-]+/i.test(location.host) || location.hostname === 'localhost';
+
+var _ua = navigator.userAgent.toLowerCase();
+
+export const browser = {
+  version: (_ua.match(/.+(?:me|ox|on|rv|it|era|opr|ie)[\/: ]([\d.]+)/) || [0, '0'])[1],
+  opera: (/opera/i.test(_ua) || /opr/i.test(_ua)),
+  msie: (/msie/i.test(_ua) && !/opera/i.test(_ua) || /trident\//i.test(_ua)),
+  msie6: (/msie 6/i.test(_ua) && !/opera/i.test(_ua)),
+  msie7: (/msie 7/i.test(_ua) && !/opera/i.test(_ua)),
+  msie8: (/msie 8/i.test(_ua) && !/opera/i.test(_ua)),
+  msie9: (/msie 9/i.test(_ua) && !/opera/i.test(_ua)),
+  mozilla: /firefox/i.test(_ua),
+  chrome: /chrome/i.test(_ua),
+  chrome_mobile: /CriOS/i.test(_ua),
+  safari: (!(/chrome/i.test(_ua)) && /webkit|safari|khtml/i.test(_ua)),
+  iphone: /iphone/i.test(_ua),
+  ipod: /ipod/i.test(_ua),
+  iphone4: /iphone.*OS 4/i.test(_ua),
+  ipod4: /ipod.*OS 4/i.test(_ua),
+  ipad: /ipad/i.test(_ua),
+  android: /android/i.test(_ua),
+  bada: /bada/i.test(_ua),
+  mobile: /iphone|ipod|ipad|opera mini|opera mobi|iemobile|android/i.test(_ua),
+  msie_mobile: /iemobile/i.test(_ua),
+  safari_mobile: /iphone|ipod|ipad/i.test(_ua),
+  opera_mobile: /opera mini|opera mobi/i.test(_ua),
+  opera_mini: /opera mini/i.test(_ua),
+  mac: /mac/i.test(_ua),
+  search_bot: /(yandex|google|stackrambler|aport|slurp|msnbot|bingbot|twitterbot|ia_archiver|facebookexternalhit)/i.test(_ua)
+};
+// legacy support
+window.browser = browser;
+
+
+export const log = function() {
+  if (!window.__debugMode) {
+    return;
+  }
+  var args = Array.prototype.slice.call(arguments);
+  if (window.browser.msie || window.browser.mobile) {
+    console.log(args.join(' '));
+  } else {
+    console.log.apply(console, args);
+  }
+};
+// legacy support
+window.debugLog = log;
+
+window.Image.prototype.load = function(url, onprogress, onerror, onload) {
+  var thisImg = this;
+  var xmlHTTP = new XMLHttpRequest();
+  xmlHTTP.open('GET', url, true);
+  xmlHTTP.responseType = 'arraybuffer';
+  xmlHTTP.onload = function() {
+    var blob = new Blob([this.response]);
+    thisImg.src = window.URL.createObjectURL(blob);
+    if (onload) {
+      onload();
+    }
+  };
+  xmlHTTP.onerror = function(e) {
+    if (onerror) {
+      onerror(e);
+    }
+  };
+  xmlHTTP.onprogress = function(e) {
+    parseInt(thisImg.completedPercentage = (e.loaded / e.total) * 100);
+    if (onprogress) {
+      onprogress(thisImg.completedPercentage);
+    }
+  };
+  xmlHTTP.onloadstart = function() {
+    thisImg.completedPercentage = 0;
+  };
+  xmlHTTP.send();
+};
+
+window.Image.prototype.completedPercentage = 0;

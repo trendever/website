@@ -1,4 +1,4 @@
-import channel from "services/channel/channel.js";
+import channel from 'services/channel/channel.js';
 
 export const LIMIT = 40;
 

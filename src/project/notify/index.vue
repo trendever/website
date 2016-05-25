@@ -2,7 +2,7 @@
 
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
 
   import * as messages from 'services/message';
   import { initGlobalNotify, incNotify } from 'vuex/actions/lead.js';

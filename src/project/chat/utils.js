@@ -1,6 +1,6 @@
 export const formatDatetime = unixtime => {
   let date = new Date(unixtime * 1000);
-  let minutes = "0" + date.getMinutes();
+  let minutes = '0' + date.getMinutes();
 
   return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${minutes.substr(-2)}`;
 };
@@ -80,16 +80,27 @@ export const formatMonth = ( unixtime ) => {
 };
 
 export const escapeHtml = ( string ) => {
-  return String( string ).replace( /[&<>"'`=\/]/g, function fromEntityMap( s ) {
-    return {
+  return String( string ).replace( /[&<>''`=\/]/g, function fromEntityMap( s ) {
+
+    const map =  {
       '&': '&amp;',
       '<': '&lt;',
       '>': '&gt;',
       '"': '&quot;',
-      "'": '&#39;',
-      '/': '&#x2F;',
       '`': '&#x60;',
       '=': '&#x3D;'
-    }[ s ];
+    };
+    if(s in map){
+      return map[s]
+    }
+    return s;
   } );
+};
+
+export const wrapLink = (text) => {
+
+  const re = /([^\"=]{2}|^)((https?|ftp):\/\/\S+[^\s.,> )\];'\"!?])/;
+  const subst = '$1<a href="$2" target="_blank">$2</a>';
+  return text.replace(re, subst);
+
 };

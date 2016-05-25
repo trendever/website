@@ -46,7 +46,7 @@ export default class {
       }
     }
     if (!ctx.log_list.length) {
-      window.debugLog("[CHAN] log not exist, ctx:", ctx);
+      window.debugLog('[CHAN] log not exist, ctx:', ctx);
       return;
     }
 
@@ -57,17 +57,17 @@ export default class {
   //   if (ctx.log_list.length) {
   //     for (let log of ctx.log_list) {
   //       switch (log.level_str) {
-  //         case "emerg":
+  //         case 'emerg':
   //           // this.view.emergencyLog(log);
   //           break;
-  //         case "alert":
+  //         case 'alert':
   //           // this.view.alertLog(log);
   //           break;
-  //         case "crit":
+  //         case 'crit':
   //           // this.view.criticalLog(log);
   //           break;
   //         default:
-  //           // window.debugLog("[CHANNEL-LOG]", log);
+  //           // window.debugLog('[CHANNEL-LOG]', log);
   //       }
   //     }
   //   }
@@ -86,14 +86,14 @@ export default class {
         color_code_key = 'color: #4CAF50';
       }
 
-      debugLog("[CHAN]" +
-       "%c " + ctx.action_str +
-       " %c " + ctx.data_type +
-       " %c " + ctx.log_list[0].code_str +
-       " " + ctx.log_list[0].user_msg +
-       " " + ctx.log_list[0].level_str +
-       " %c " + (endTime - createdAt) + "ms" +
-       " %c clean(" + (endTime - sendedAt) + "ms)",
+      debugLog('[CHAN]' +
+       '%c ' + ctx.action_str +
+       ' %c ' + ctx.data_type +
+       ' %c ' + ctx.log_list[0].code_str +
+       ' ' + ctx.log_list[0].user_msg +
+       ' ' + ctx.log_list[0].level_str +
+       ' %c ' + (endTime - createdAt) + 'ms' +
+       ' %c clean(' + (endTime - sendedAt) + 'ms)',
        'color: #2196F3',
        'color: #FF9800',
        color_code_key,

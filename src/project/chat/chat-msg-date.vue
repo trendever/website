@@ -1,4 +1,4 @@
-<style src="./styles/chat-msg-date.pcss"></style>
+<style src='./styles/chat-msg-date.pcss'></style>
 <template lang="jade">
 .chat-row.__center
   .chat-msg-date

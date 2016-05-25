@@ -1,6 +1,19 @@
-@import "base/vars/vars.pcss";
+@import 'base/vars/vars.pcss';
 .chat-msg {
   padding: 14px;
+
+  &-closest {
+    &::before {
+      display: none;
+    }
+    &::after {
+      display: none;
+    }
+  }
+
+  &-not-closest{
+    margin-top: 5px;
+  }
 
   &_t {
     overflow: hidden;
@@ -12,32 +25,35 @@
 
     color: $color__red__light;
 
+    font-size: 16px;
+    line-height: 20px;
+
     @media(--mobile) {
       font-size: 28px;
       line-height: 36px;
     }
-    font-size: 16px;
-    line-height: 20px;
-
     b {
       font-weight: bold;
     }
   }
   &_txt {
-    display: flex;
-    @media(--mobile) {
-      font-size: 28px;
-      line-height: 36px;
-      min-height: 35.35px;
-    }
     min-height: 18.6px;
+    display: flex;
+    flex-shrink: 0;
     font-size: 16px;
     line-height: 20px;
+
+    @media(--mobile) {
+      min-height: 35.35px;
+      font-size: 28px;
+      line-height: 36px;
+    }
   }
 }
 
 .chat-msg-product-wrap{
   display: flex;
+
   .chat-msg_t{
     padding: 15px 20px 0;
   }

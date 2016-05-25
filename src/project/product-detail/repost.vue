@@ -1,10 +1,10 @@
-<style src="./repost.pcss"></style>
+<style src='./repost.pcss'></style>
 <template lang="jade">
 .scroll-cnt
-  .repost(:style="{height: height}")
-    .info__close(@click="back"): i.ic-close
+  .repost(:style='{min-height: height}')
+    .info__close(@click='back'): i.ic-close
     .crop
-      img(:src="igImageUrl")
+      img(:src='igImageUrl')
       .repost_header
         h1 Пост в Instagram
     .step.step_1
@@ -15,8 +15,8 @@
       .step_cnt
         .action
           .pict
-            img(:src="igImageUrl")
-          img.tap(src="/static/img/tap_white.png")
+            img(:src='igImageUrl')
+          img.tap(src='img/tap_white.png')
         p Нажмите на фото#[br] #[span.emoji.emoji_fingleft] здесь слева#[br]и удерживайте,#[br]чтобы сохранить
 
     .step.step_2
@@ -26,24 +26,24 @@
 
       .step_cnt
         .action
-          .pict(v-on:copy="addInfo")
+          .pict(v-on:copy='addInfo')
             span {{{ caption }}}
           .tail
-          img.tap(src="/static/img/tap_grey.png")
+          img.tap(src='img/tap_grey.png')
         p(
-          unselectable="on",
-          onselectstart="return false;",
-          onmousedown="return false;") Нажмите на текст #[br] #[span.emoji.emoji_fingleft] здесь слева#[br]и удерживайте,#[br] чтобы скопировать
+          unselectable='on',
+          onselectstart='return false;',
+          onmousedown='return false;') Нажмите на текст #[br] #[span.emoji.emoji_fingleft] здесь слева#[br]и удерживайте,#[br] чтобы скопировать
 
     .footer
-      p Нажмите "Продолжить",#[br]чтобы открыть Instagram#[br]и вставить фото с текстом
-      button(v-on:click="openInsta") Продолжить
+      p Нажмите 'Продолжить',#[br]чтобы открыть Instagram#[br]и вставить фото с текстом
+      button(v-on:click='openInsta', class='btn __primary __orange') Продолжить
         i.ic-instagram-icon
 </template>
 
 <script>
+
   import { urlThumbnail } from 'utils'
-//  import products_find from 'services/products/products'
   import { openedProduct } from 'vuex/getters';
   import { openProduct } from 'vuex/actions';
 
@@ -78,7 +78,7 @@
         source = source.replace(/([^0-9a-zа-я\s])/ig, ' ').replace(/\s{2,}/g, ' ');
         // need part of text for bubble
         source = source.slice(0, 80);
-        source = source.replace(/[.,\/#!\'\"$%+\s@\^☀️&\*;:{}=\-_`~()]/g, "<span class='whitespace'></span>");
+        source = source.replace(/[.,\/#!\'\"$%+\s@\^☀️&\*;:{}=\-_`~()]/g, '<span class="whitespace"></span>');
         return source + '...'
       },
       igImageUrl() {
@@ -87,7 +87,7 @@
     },
     methods: {
       back() {
-        mixpanel.track("Close Repost Page", {productId: this.openedProduct.product.id});
+        mixpanel.track('Close Repost Page', {productId: this.openedProduct.product.id});
 
         this.$route.router.go({
           name: 'product_detail',
@@ -95,7 +95,7 @@
         });
       },
       openInsta() {
-        window.open("instagram://camera", '_blank');
+        window.open('instagram://camera', '_blank');
       },
       addInfo() {
           //Get the selected text and append the extra info

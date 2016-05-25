@@ -1,48 +1,51 @@
-<style src="./styles/search.pcss"></style>
+<style src='./styles/search.pcss'></style>
 <template lang="jade">
 .search-placeholder
   #search
-    .search-stub(v-if="searchGlued")
-    .search-input(:class="{'glued':searchGlued}")
+    .search-stub(v-if='searchGlued')
+    .search-input(:class='{"glued":searchGlued}')
       .search-input__container
         .search-input__search-btn(
-          @click="search()")
+          @click='search()')
           i.ic-search.__mirror
 
         input.search-input__input(
           v-el:input,
-          @keydown="search()",
+          :class='{"__active": searchValue.length || selectedTags.length}',
+          @keydown='search()',
           :value='searchValue',
-          @click="onFocusInput",
+          @click='onFocusInput',
           type='text',
           placeholder='Ищите или фильтруйте...')
 
         .search-input__clear-btn
-          span.badge(v-if="selectedTags.length") {{ selectedTags.length }}
-          span.close(v-show="searchValue.length || selectedTags.length", @click="clearSearch"): i.ic-close
+          span.badge(v-if='selectedTags.length') {{ selectedTags.length }}
+          span.close(v-show='searchValue.length || selectedTags.length',
+                     @click='clearSearch'): i.ic-close
 
     .search-tags(
-      :class="{'__open': showMoreTags}")
+      :class='{"__open": showMoreTags}')
       ul.search-tags__container(v-el:tags)
 
         li.search-tags__item__selected(
-          v-for="tag in selectedTags | filterBy searchValue in 'name'",
-          @click="removeTag(tag, $index)",
-          @touch="removeTag(tag, $index)")
+          v-for='tag in selectedTags | filterBy searchValue in "name"',
+          @click='removeTag(tag, $index)',
+          @touch='removeTag(tag, $index)')
           span {{ tag.name }}&nbsp;
           i.ic-close
 
         li.search-tags__item.tag_list(
-          v-for="tag in tags | filterBy searchValue in 'name'",
-          @click="selectTag(tag)") {{ tag.name }}
+          v-for='tag in tags | filterBy searchValue in "name"',
+          @click='selectTag(tag)') {{ tag.name }}
 
       .search-tags__button(
-        v-if="showMoreButton",
-        @click="toggleShowMoreTags")
+        v-if='showMoreButton',
+        @click='toggleShowMoreTags')
 
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
+  import listen from 'event-listener';
   import {
     searchValue,
     tags,
@@ -57,7 +60,6 @@
     removeTag,
     clearSearch
   } from 'vuex/actions';
-  import listen from 'event-listener';
   export default {
     data(){
       return {
@@ -67,12 +69,12 @@
       }
     },
     ready(){
-      this.scrollCnt = document.querySelector(".scroll-cnt");
+      this.scrollCnt = document.querySelector('.scroll-cnt');
 
       this.gluingSearch = listen( this.scrollCnt, 'scroll', () => {
         if ( this.isAuth ) {
           let searchHeight = 50;
-          if ( window.matchMedia( "(max-width: 750px)" ).matches ) {
+          if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
             searchHeight = 100;
           }
 

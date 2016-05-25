@@ -1,48 +1,48 @@
-<style src="./style.pcss"></style>
+<style src='./style.pcss'></style>
 <template lang="jade">
 div
-  .signup(:style="{ height: height }")
-    .info__close.__hello(@click="closePage"): i.ic-close
+  .signup(:style='{ height: height }')
+    .info__close.__hello(@click='closePage'): i.ic-close
     .section
-      .column-desktop-50.header
+      .column-desktop-50.header(v-if="showTitleSlider")
         h1 Войдите и сможете...
-      .column-desktop-50.column-desktop-right
+      .column-desktop-50.column-desktop-right(v-if="showTitleSlider")
         slider
       .column-desktop-50
-        .bottom-container
-          validator(name="signup")
+        .bottom-container(:class='{"opened-key-board":!showTitleSlider}')
+          validator(name='signup')
             .input-container
               .input
-                input(type="text",
-                  :class=" {error: errorLogin} ",
-                  @focus="onFocusLogin",
-                  @keydown.enter="sendSMS()",
-                  v-validate:login="[ 'required' ]",
-                  v-model="login",
-                  :placeholder="placeholder")
+                input(type='text',
+                  :class=' {error: errorLogin} ',
+                  @focus='onFocusLogin',
+                  @keydown.enter='sendSMS()',
+                  v-validate:login='[ "required" ]',
+                  v-model='login',
+                  :placeholder='placeholder')
                 .input__clear-btn(
-                  v-if="login",
-                  @click="login = ''")
+                  v-if='login',
+                  @click='login = ""')
                   i.ic-close
               .input
-                input(type="tel",
-                  :class=" {error: errorPhone} ",
-                  @focus="onFocusPhone",
-                  @keydown.enter="sendSMS()",
-                  v-validate:phone="[ 'phone', 'required' ]",
-                  v-model="phone",
-                  placeholder="Введите номер телефона")
+                input(type='tel',
+                  :class=' {error: errorPhone} ',
+                  @focus='onFocusPhone',
+                  @keydown.enter='sendSMS()',
+                  v-validate:phone='[ "phone", "required" ]',
+                  v-model='phone',
+                  placeholder='Введите номер телефона')
                 .input__clear-btn(
-                  v-if="phone",
-                  @click="phone = ''")
+                  v-if='phone',
+                  @click='phone = ""')
                   i.ic-close
           .btn-container
             button.btn.btn_primary.__orange.__xl.fast__big__btn(
-              :disabled="!$signup.valid",
-              @click="sendSMS") Отправить sms-код
+              :disabled='!$signup.valid',
+              @click='sendSMS') Отправить sms-код
             .link-container
-              a.link-bottom(href="#",
-                @click.prevent="onClickLink")
+              a.link-bottom(href='#',
+                @click.prevent='onClickLink')
                 | {{{ textLink }}}
 </template>
 
@@ -52,7 +52,9 @@ div
   }
 </style>
 
-<script type="text/ecmascript-6">
+<script type='text/ecmascript-6'>
+  ;
+  import listen from 'event-listener';
   import {
     saveAuthData,
     signup,
@@ -85,16 +87,19 @@ div
   }
 
   export default {
-    data: () => ({
-      login: '',
-      phone: '',
-      errorLogin: false,
-      errorPhone: false,
-      height: 'static',
-      textLink: TEXT_LINK.instagramMode,
-      placeholder: PLACEHOLDER.instagramMode,
-      instagram: true
-    }),
+    data(){
+      return {
+        login: '',
+        phone: '',
+        errorLogin: false,
+        errorPhone: false,
+        height: 'static',
+        textLink: TEXT_LINK.instagramMode,
+        placeholder: PLACEHOLDER.instagramMode,
+        instagram: true,
+        showTitleSlider: true
+      }
+    },
 
     route: {
       canActivate({abort}){
@@ -111,8 +116,16 @@ div
       this.phone = this.authData.phone;
       this.login = this.authData.username;
       this.instagram = this.authData.instagram;
+      const onResize = () => {
+        this.$set('height', `${ document.body.scrollHeight }px`);
+        this.$set('showTitleSlider', document.body.scrollHeight > 900);
+      };
+      this.resize = listen( window, 'resize', onResize );
+      onResize();
     },
-
+    beforeDestroy(){
+      this.resize.remove();
+    },
     vuex: {
       actions: {
         saveAuthData,
@@ -128,7 +141,7 @@ div
 
     methods: {
       closePage() {
-        mixpanel.track("Close Signup Page");
+        mixpanel.track('Close Signup Page');
         this.save();
         this.showPopupFastSignup();
 

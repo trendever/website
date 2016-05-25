@@ -1,70 +1,69 @@
 #Trendever website
 ###How to install:
-  
+
   1. Clone project :
-  
-    + `git clone git@bitbucket.org:ifabru/trendever_website.git`
-    
-          
+
+    + `git clone git@github.com:trendever/website.git`
+
+
   2. Install npm :
-    
+
     + `Download and install from https://nodejs.org/en/download/`
     + `Set to system "PATH" variable "NODE_HOME" variable ("Users/%user%/AppData/Roaming/npm")`
     + `Set to system "PATH" variable "%NODE_HOME%\npm_modules" value`
-  
-  3. Install gulp globally :
-    
-    + `npm install gulp -g`
-    
-  4. Install webpack and webpack-dev-server globally:
-   
-    +  `npm install webpack webpack-dev-server -g`
-  
-  5. Install dependencies (run from "/trendever_website") :
-   
-    + `npm run init`
-  
+
+  4. Install webpack:
+
+    +  `npm i webpack -g`
+
+  5. Install dependencies (run from root project) :
+
+    + `npm install`
+
   6. Copy and Rename "config.default.js" file to "config.js".
-  
-  7. Run project (run from "/trendever_website") :
-  
+
+  7. Run project (run from root project) :
+
     + `npm run dev`
 
 
-##Gulp Commands
-###sprite
-Создает спрайт из изображений с префиксом i- из всех папок внутри css_modules.
-Созданный спрайт и стили копирует в папку i-icons
-
 ###dev
-Команда для dev разработки
-Минифицирует картинки, собирает спрайты, копирует картинки, запускает watch и webpack_dev_server
+  Run dev server on address: localhost:3000.
+
+###build
+  Build project in folder: build/
 
 
-##Postcss
-###css syntax
+##Куда и что и как:
+Главный принцип: все необходимое лежит рядом с компонентом. Разве что компонент может переиспользоваться.
 
-+ css variables https://github.com/MadLittleMods/postcss-css-variables
-+ media variables https://github.com/postcss/postcss-custom-media
-+ color funcion https://github.com/postcss/postcss-color-function
-+ not selector https://github.com/postcss/postcss-selector-not
+Например верстаем страницу src/project/why:
 
-###css shortcuts
+ - **HTML/JADE** -  src/project/why/index.vue - там кладешь html (jade). Но если jade напрягает можешь прям html туда засунуть, убрав lang=“jade”.
 
-+ nested https://github.com/postcss/postcss-nested
-+ short https://github.com/jonathantneal/postcss-short
+ - **CSS/PCSS** - src/project/why/style.pcss - там все стили для этой страницы
 
-##Dev
-По модулям следует раскладывать (src/css_modules/):
+ - **Картинки (jpg, png)** - src/project/why/img/ - кладешь картинку в эту папку и в  html или css указываешь относительный путь. Например: ./img/magic.png
 
-- Картинки {png,jpg,gif,svg}
+ - **Монохромные иконки (SVG)** - src/base/fonts/trendever-icons/icons - кладешь сюда svg иконку с нормальным именем через дефис. Она тут же появится в шрифте и будет доступна через класс ic-filename. Например <i class=“ic-magic”></i>
+
+ - **Emoje иконки (png)** - src/base/emoji/img кладешь туда emoji такого же размера (если хватит, иначе пометь размером например emoji_angel_64). Так же добавь в стиль путь до нее src/base/emoji/emoji.pcss
+
+ - [https://operatino.github.io/MCSS/](Почитать про методологию)
 
 
-##Куда класть остальную статику:
 
-- JavaScript библиотеки в src/js_libs или node_modules
-- Vue.js модули {vue,js,scss} в src/components
-- Шрифты в src/fonts
+###Postcss
+####css syntax
 
-        
- 
+  + postcss-color-function
+  + postcss-colormin
+  + postcss-cssnext
+  + postcss-short-size
+  + postcss-short-font-size
+  + postcss-simple-vars
+  + postcss-custom-media
+  + postcss-import
+  + postcss-nested
+
+

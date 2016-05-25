@@ -1,4 +1,4 @@
-import channel from "services/channel/channel.js";
+import channel from 'services/channel/channel.js';
 
 export const ERROR_CODES = {
       NO_ERRORS: 0,
@@ -26,14 +26,14 @@ export function signup(phone, username, instagram) {
       request.username = username;
     }
 
-    channel.req("register", "auth", request).then( data => {
+    channel.req('register', 'auth', request).then( data => {
       if (data.response_map.ErrorCode === ERROR_CODES.NO_ERRORS) {
         resolve(true);
       } else {
         reject(data.response_map.ErrorCode);
       }
     }).catch( error => {
-      console.error("signup", error);
+      console.error('signup', error);
     });
 
   });
@@ -48,7 +48,7 @@ export function sendPassword(phone) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("send_password", "auth", {phone: phone})
+    channel.req('send_password', 'auth', {phone: phone})
     .then( data => {
       if (data.response_map.ErrorCode === ERROR_CODES.NO_ERRORS) {
         resolve(true);
@@ -56,7 +56,7 @@ export function sendPassword(phone) {
         reject(data.response_map.ErrorCode);
       }
     }).catch( error => {
-      console.error("sendPassword", error);
+      console.error('sendPassword', error);
     });
 
   });
@@ -69,17 +69,17 @@ export function sendPassword(phone) {
  *
  * RESOLVE
  * {
- *  "token": "Strong.Happy.Token",
- *  "user": {
- *    "id": 1379,
- *    "name": "Покупатель #1",
- *    "email": "happierall@gmail.com",
- *    "phone": "+79388708600",
- *    "instagram_id": 1482392154,
- *    "instagram_username": "happierall",
- *    "instagram_fullname": "Руслан Янбердин",
- *    "instagram_avatar_url": "https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg",
- *    "instagram_caption": "Hi all"
+ *  'token': 'Strong.Happy.Token',
+ *  'user': {
+ *    'id': 1379,
+ *    'name': 'Покупатель #1',
+ *    'email': 'happierall@gmail.com',
+ *    'phone': '+79388708600',
+ *    'instagram_id': 1482392154,
+ *    'instagram_username': 'happierall',
+ *    'instagram_fullname': 'Руслан Янбердин',
+ *    'instagram_avatar_url': 'https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg',
+ *    'instagram_caption': 'Hi all'
  *   }
  * }
  *
@@ -89,7 +89,7 @@ export function confirmByCode(phone, code) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req("login", "auth", {
+    channel.req('login', 'auth', {
       phone: phone, password: code
     }).then( data => {
       if (!data.response_map.ErrorCode) {
@@ -99,7 +99,7 @@ export function confirmByCode(phone, code) {
       }
     }).catch( error => {
       if (!error.response_map || !error.response_map.ErrorCode) {
-        console.error("confirmPhone", error);
+        console.error('confirmPhone', error);
         return;
       }
       reject(error.response_map.ErrorCode);

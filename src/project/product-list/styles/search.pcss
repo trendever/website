@@ -1,4 +1,4 @@
-@import "base/vars/vars.pcss";
+@import 'base/vars/vars.pcss';
 
 $height__desktop: 50px;
 $height__mobile: 102px;
@@ -40,6 +40,8 @@ $count-tags-open: 13;
 }
 
 .search-placeholder {
+  z-index: 10;
+
   height: calc($height__desktop + 135px + $height-tag-button);
   margin-bottom: 20px;
 
@@ -50,7 +52,7 @@ $count-tags-open: 13;
 
 #search {
   position: relative;
-  z-index: 10;
+  z-index: 1;
 
   max-width: 1050px;
   margin-bottom: 20px;
@@ -80,7 +82,7 @@ $count-tags-open: 13;
 
   &.glued{
     position: fixed;
-    z-index: 1;
+    z-index: 100;
     top:-2px;
 
     width: 100%;
@@ -97,26 +99,26 @@ $count-tags-open: 13;
   }
   &__container {
     position: relative;
-    z-index: 1;
+
+    display: flex;
 
     height: 100%;
     margin-bottom: 10px;
-    padding-left: 160px;
 
     color: $color__gray;
 
-    @media (--mobile){
-      padding-left: 0;
-    }
+    justify-content: center;
   }
   &__input {
     display: inline-block;
 
     box-sizing: border-box;
-    width: calc(100% - 85px);
+    width: 326px;
     height: 100%;
-    padding: 0 0 0 87px;
+    padding: 0;
     padding-top: 2.5px;
+
+    transition: width 0.25s ease-in-out;
 
     color: $color__gray-dark;
     border: none;
@@ -126,22 +128,19 @@ $count-tags-open: 13;
     font-weight: 400;
 
     @media (max-width: 750px) {
-      width: calc(100% - 150px);
-      padding: 0 0 0 $height__mobile;
-    }
-    @media (max-width: 750px) {
+      width: 100%;
       padding-top: 3.6px;
 
       font-size: 36px;
     }
-    &:focus { outline: none }
+    &:focus, &.__active {
+      width: 100%;
+
+      outline: none;
+    }
   }
   &__search-btn,
   &__clear-btn {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-
     display: flex;
 
     height: 100%;
@@ -164,10 +163,6 @@ $count-tags-open: 13;
     @media (--mobile){
       left: 0;
     }
-   // padding-top: 8px;
-   &:hover {
-    color: $color__gray-dark;
-   }
   }
   .close {
     width: 75px;
@@ -178,7 +173,13 @@ $count-tags-open: 13;
   }
   &__clear-btn {
     right: 0;
+
+    transition: $btn-transition;
+
     // font-size: 20px;
+    &:hover {
+      color: $color__gray-dark;
+    }
   }
 }
 

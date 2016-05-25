@@ -1,0 +1,63 @@
+.input {
+  position: relative;
+
+  margin-top: 20px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, .5);
+
+  // elements
+  input {
+    width: 100%;
+    max-width: 100%;
+    height: $size-input;
+    padding: 0 25px 0 0;
+
+    color: #fff;
+    border: none;
+    background: transparent;
+
+    font-family: $font__family;
+    font-size: $font__main_text;
+    font-weight: 400;
+
+    // fix reb border in ff
+    &:invalid {
+      box-shadow: none;
+    }
+    @media(--mobile) {
+      font-size: $font__main_text__mobile;
+    }
+    &:focus {
+      outline: none;
+    }
+    &::placeholder {
+      opacity: 1;
+      color: rgba(255, 255, 255, .5);
+    }
+  }
+  &__clear-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    display: flex;
+
+    cursor: pointer;
+
+    size: $size-input;
+    align-items: center;
+    justify-content: flex-end;
+    i {
+      display: block;
+
+      transition: $btn-transition;
+
+      color: rgba(255, 255, 255, .5);
+
+      font-size: 1rem;
+    }
+    &:hover i {
+      color: rgba(255, 255, 255, 1);
+    }
+  }
+}

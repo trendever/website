@@ -1,69 +1,61 @@
 <template lang="jade">
-.sk-fading-circle(:style='style')
-  .sk-circle1.sk-circle
-  .sk-circle2.sk-circle
-  .sk-circle3.sk-circle
-  .sk-circle4.sk-circle
-  .sk-circle5.sk-circle
-  .sk-circle6.sk-circle
-  .sk-circle7.sk-circle
-  .sk-circle8.sk-circle
-  .sk-circle9.sk-circle
-  .sk-circle10.sk-circle
-  .sk-circle11.sk-circle
-  .sk-circle12.sk-circle
+.spinner
+  .dot1
+  .dot2
   </div>
 </template>
 
-<style lang="sass">
-  // http://tobiasahlin.com/spinkit/
+<style>
+ .spinner {
+  margin: 100px auto;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  text-align: center;
 
-  $spinkit-size: 40px !default;
+  animation: sk-rotate 2.0s infinite linear;
+}
 
-  .sk-fading-circle {
-    $circleCount: 12;
-    $animationDuration: 1.2s;
+.dot1, .dot2 {
+  width: 60%;
+  height: 60%;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  background-color: #333;
+  border-radius: 100%;
 
-    width: $spinkit-size;
-    height: $spinkit-size;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
 
-    .sk-circle {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
+.dot2 {
+  top: auto;
+  bottom: 0;
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
 
-    .sk-circle:before {
-      content: '';
-      display: block;
-      margin: 0 auto;
-      width: 15%;
-      height: 15%;
-      background-color: currentColor;
-      border-radius: 100%;
-      animation: sk-circleFadeDelay $animationDuration infinite ease-in-out both;
-    }
+@-webkit-keyframes sk-rotate { 100% {
+  -webkit-transform: rotate(360deg) }}
 
-    @for $i from 2 through $circleCount {
-      .sk-circle#{$i} { transform: rotate(360deg / $circleCount * ($i - 1)); }
-    }
+@keyframes sk-rotate { 100% {
+  transform: rotate(360deg);
+  -webkit-transform: rotate(360deg) }}
 
-    @for $i from 2 through $circleCount {
-      .sk-circle#{$i}:before { animation-delay: - $animationDuration + $animationDuration / $circleCount * ($i - 1); }
-    }
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
 
+@keyframes sk-bounce {
+  0%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
   }
-  // ToDo conflict with ShowMore btn in product-list
-  // @keyframes sk-circleFadeDelay {
-  //   0%, 39%, 100% { opacity: 0 }
-  //   40% { opacity: 1 }
-  // }
+}
 </style>
 
 <script>

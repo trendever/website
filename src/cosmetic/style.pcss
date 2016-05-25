@@ -1,0 +1,38 @@
+.u-fixed {
+  position: fixed;
+}
+.u-fill {
+  width: 100%;
+}
+
+.tx-center {
+  text-align: center;
+}
+
+.main__bottom {
+  margin-top: 70px;
+  margin-bottom: 70px;
+
+  text-align: center;
+
+  font-size: 1.875em;
+}
+
+.link {
+  cursor: pointer;
+  transition: $btn-transition;
+  text-decoration: none;
+
+  border-bottom: 1px solid color(black a(.15));
+
+  &_no-line {
+    border-bottom: none;
+  }
+  &_primary {
+    color: $color__green;
+
+    &:hover {
+      color: color($color__green shade(20%));
+    }
+  }
+}

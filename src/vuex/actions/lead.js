@@ -37,7 +37,7 @@ export const loadLeads = ( { dispatch, state } ) => {
 
 	if ( isEmptyLeads( state ) ) {
 
-		return leads.find( 6 ).then(
+		return leads.find( 12 ).then(
 			( { customer, seller } ) => {
 				dispatch( LEAD_RECEIVE, { customer, seller } );
 			},
@@ -64,7 +64,7 @@ export const loadLeads = ( { dispatch, state } ) => {
 
 export const setTab = ( { dispatch }, tab ) => {
 
-	return leads.find( 6, null, tab ).then(
+	return leads.find( 12, null, tab ).then(
 		( {leads} ) => {
 			dispatch( LEAD_SET_TAB, tab, leads );
 		},

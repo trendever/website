@@ -1,6 +1,6 @@
 <template lang="jade">
 div.scroll-cnt
-  header-component(:title="title")
+  header-component(:title='title')
   .section.main.top
     .section__content#headerAnchor
       .wall#PostsList
@@ -33,7 +33,7 @@ div.scroll-cnt
     },
     computed: {
      title(){
-       return "Тренд " + this.openedProduct.product.code
+       return 'Тренд ' + this.openedProduct.product.code
      }
     },
     vuex: {
@@ -49,7 +49,7 @@ div.scroll-cnt
         let self = this;
 
         return this.openProduct(+id).catch( (error) => {
-          Raven.captureException(new Error("Product doesn't exists or error"), {
+          Raven.captureException(new Error('Product doesn`t exists or error'), {
             extra: {errorData: error.response, id: id}
           });
           self.$router.go({name: '404'});

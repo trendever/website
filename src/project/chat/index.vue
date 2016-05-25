@@ -1,36 +1,32 @@
-<style src="./styles/chat.pcss"></style>
+<style src='./styles/chat.pcss'></style>
 <template lang="jade">
-.chat-cnt.scroll-cnt
-  chat-header(:notify-count='conversationNotifyCount')
-  .section.top.bottom
-    .chat.section__content
-      .chat_messages
-        //- chat-msg-date
-        template(v-for="msg in getMessages", track-by="$index")
-
-          chat-msg-product(
-            v-if="msg.parts[0].mime_type === 'text/json'",
-            :msg="msg")
-
-          chat-msg(
-            v-if="msg.parts[0].mime_type === 'text/plain'",
-            :msg="msg")
-
-          chat-msg-img(
-            v-if="isImage(msg.parts[0].mime_type)",
-            :msg="msg")
+  .chat-cnt.scroll-cnt(v-el:scroll-cnt)
+    chat-header(:notify-count='conversationNotifyCount')
+    .section.top.bottom
+      .chat.section__content
+        .chat_messages
+          //- chat-msg-date
+          template(v-for='msg in getMessages', track-by='$index')
+            chat-msg-product(
+              v-if='msg.parts[0].mime_type === "text/json"',
+              :msg='msg')
+            chat-msg(
+              v-if='msg.parts[0].mime_type === "text/plain"',
+              :msg='msg')
+            chat-msg-img(
+              v-if='isImage(msg.parts[0].mime_type)',
+              :msg='msg')
 
     chat-bar
 </template>
 
-<script type="text/babel">
+<script type='text/babel'>
   import listen from 'event-listener';
   import {
           setConversation,
           loadMessage,
           receiveMessage,
           updateMembers,
-          closeConversation,
           applyStatus
   } from 'vuex/actions/chat.js';
   import {
@@ -52,12 +48,11 @@
   import ChatHeader from './chat-header.vue';
 
   export default {
-    beforeDestroy() {
-      leads.removeStatusListener(this.onStatus);
-      this.offScroll();
-      messages.offMsg(this.onMessage);
-      messages.offMsgRead(this.onMessageReaded);
-      this.closeConversation();
+
+    data(){
+      return {
+        needLoadMessage: true
+      }
     },
     route: {
       data({to: {params: { id }}}) {
@@ -69,7 +64,6 @@
               leads.onChangeStatus(this.onStatus);
               messages.onMsg(this.onMessage);
               messages.onMsgRead(this.onMessageReaded);
-              this.onScroll();
               this.goToBottom();
             } );
           },
@@ -80,7 +74,13 @@
       },
     },
     ready(){
-      this.scrollCnt = document.querySelector(".scroll-cnt");
+      this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
+    },
+    beforeDestroy() {
+      leads.removeStatusListener( this.onStatus );
+      messages.offMsg( this.onMessage );
+      messages.offMsgRead( this.onMessageReaded );
+      this.scrollListener.remove();
     },
     vuex: {
       actions: {
@@ -88,7 +88,6 @@
         loadMessage,
         receiveMessage,
         updateMembers,
-        closeConversation,
         applyStatus,
         clearNotify
       },
@@ -106,12 +105,6 @@
       onStatus({response_map: {lead}})  {
         this.applyStatus(lead.status);
       },
-      onScroll(){
-        this.scrollListener = listen( this.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
-      },
-      offScroll(){
-        this.scrollListener.remove();
-      },
       onMessage( { response_map: { chat, messages } } ){
         const promise = this.receiveMessage( chat, messages );
         promise.then( () => {
@@ -125,41 +118,33 @@
         this.updateMembers(user_id, chat);
       },
       scrollHandler(){
-
-        let needUpdate = false;
-        var self = this;
-
-        if ( !needUpdate ) {
-
-          const pos_scroll = this.scrollCnt.scrollTop;
-
-          if ( pos_scroll < 1500 ) {
-
-            needUpdate = true;
-            this.offScroll();
-
-            const heightBefore = this.scrollCnt.scrollHeight;
-
+        /**
+         * TODO
+         * В https://web.whatsapp.com/, они выводят спинер когда долистали ровно до верха.
+         * Если делать с расстоянием от верха, то я пока что не понимаю как сделать нормально для телефона.
+         * Всё ровно если на телкфоне быстро промотать, то упираешься в верх и ждёшь без спинера, не очень.
+         * Я за спинер.
+         * В вебограме тоже спинер.
+         * */
+        const SHAfter = this.$els.scrollCnt.scrollHeight;
+        if ( this.needLoadMessage ) {
+          if ( this.$els.scrollCnt.scrollTop  < 1500 /*=== 0 */) {
+            this.$set( 'needLoadMessage', false );
             this.loadMessage().then( ( messages ) => {
               this.$nextTick( () => {
-
-                const heightAfter = self.scrollCnt.scrollHeight;
-
                 if ( messages !== null ) {
-
-                  needUpdate = false;
-                  self.scrollCnt.scrollTop = heightAfter - heightBefore + pos_scroll;
-                  self.onScroll();
-
+                  const SHDelta = this.$els.scrollCnt.scrollHeight - SHAfter;
+                  const percentTopOfHeight =  (this.$els.scrollCnt.scrollTop + SHDelta)  / this.$els.scrollCnt.scrollHeight;
+                  this.$els.scrollCnt.scrollTop = percentTopOfHeight * this.$els.scrollCnt.scrollHeight;
+                  this.$set( 'needLoadMessage', true );
                 }
-
               } );
             } );
           }
         }
       },
       goToBottom(){
-        this.scrollCnt.scrollTop = this.scrollCnt.scrollHeight;
+        this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
       },
     },
     components: {
@@ -169,6 +154,11 @@
       ChatMsgProduct,
       ChatMsgDate,
       ChatMsgImg
+    },
+    watch: {
+      getMessages(){
+        console.log( this );
+      }
     }
   }
 </script>

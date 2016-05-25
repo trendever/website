@@ -1,0 +1,264 @@
+ @import 'base/vars/vars.pcss';
+ .why {
+   color: #808080;
+
+   &__content {
+     padding: 0 0 0 64px;
+   }
+   &__title {
+     margin-bottom: 40px;
+
+     font-size: 3.625em;
+
+     &__inner {
+       color: #125688;
+     }
+   }
+   &__inner {
+     position: relative;
+
+     &__text {
+       position: absolute;
+       top: -30px;
+       left: 33%;
+
+       font-size: 3.625em;
+
+       &__item {
+         &_position {
+           &_one {}
+           &_two {
+             margin-left: 50px;
+           }
+           &_three {
+             margin-left: 105px;
+           }
+           &_four {
+             margin-left: 196px;
+           }
+         }
+       }
+     }
+   }
+   &-video {
+     width: 1050px;
+     height: 590px;
+     margin-left: -150px;
+
+     @media(--mobile) {
+       width: 750px;
+       height: 420px;
+       margin-left: 0;
+     }
+   }
+   .together {
+     padding: 70px 0;
+
+     color: #808080;
+     // padding-top: 200px;
+     background-image: url('img/earth_bgr.jpg');
+     background-position: center;
+     background-size: cover;
+
+     &__title {
+       text-align: center;
+
+       font-size: 2em;
+     }
+     &__img {
+       padding: 70px 0;
+
+       text-align: center;
+     }
+     &__text {
+       text-align: center;
+
+       font-size: 2em;
+     }
+     &__bottom {
+       text-align: center;
+     }
+     &__link {
+       display: inline-block;
+
+       margin-top: 60px;
+
+       font-size: 2.875em;
+     }
+     &__tomain {
+       display: inline-block;
+
+       margin-top: 60px;
+
+       font-size: 1.875em;
+     }
+   }
+   .available {
+     padding-top: 90px;
+
+     color: #808080;
+
+     &__title {
+       margin-bottom: 40px;
+
+       text-align: center;
+
+       font-size: 3.375em;
+     }
+     &__subtitle {
+       margin-bottom: 10px;
+       padding: 0 30px;
+
+       text-align: left;
+
+       font-size: 3.375em;
+     }
+     &__text {
+       margin-bottom: 70px;
+       padding: 0 30px;
+
+       font-size: 2em;
+
+       @media(--mobile) {
+         font-size: 1.5em;
+       }
+       &.__last {
+         margin-bottom: 0;
+       }
+     }
+     &__img {
+       margin-bottom: 70px;
+     }
+     &__bottom {
+       text-align: center;
+     }
+     &__link {
+       display: inline-block;
+
+       font-size: 2.875em;
+     }
+   }
+   .__text-center {
+     text-align: center;
+   }
+   .intro-hero {
+     position: relative;
+
+     width: 100%;
+     margin-top: 50px;
+
+     text-align: center;
+
+     @media(--mobile) {
+       // margin-top: 60px;
+     }
+     &__img {
+       width: 100%;
+       margin-top: 40px;
+     }
+     &__text {
+       color: #595959;
+
+       font-size: $font__big;
+     }
+     &__tag {
+       // font-size: 2rem;
+       @media(--mobile) {
+         // font-size: 1.5rem;
+         color: $color__green;
+       }
+     }
+   }
+   .buy__text {
+     position: absolute;
+     top: 500px;
+
+     width: 100%;
+   }
+   .cat {
+     position: relative;
+     z-index: -1;
+     left: -10%;
+
+     width: 120%;
+     margin-top: 0;
+   }
+   .intro {
+     position: relative;
+
+     overflow: hidden;
+
+     width: 100%;
+     height: 876px;
+     margin-top: -120px;
+
+     text-align: center;
+
+     @media(--mobile) {
+       margin-top: -100px;
+     }
+     &__img {
+       position: absolute;
+       top: 0;
+       left: 50%;
+
+       transform: translate(-52%, 0);
+     }
+   }
+   .focus {
+     padding-top: 90px;
+
+     color: #808080;
+
+     &__title {
+       margin-bottom: 70px;
+
+       text-align: center;
+
+       font-size: 3.625em;
+     }
+     &__text {
+       margin-bottom: 70px;
+       padding: 0 30px;
+
+       font-size: 2em;
+     }
+     &__img {
+       margin-bottom: 70px;
+
+       text-align: center;
+     }
+     &__bottom {
+       text-align: center;
+     }
+     &__link {
+       display: inline-block;
+
+       font-size: 2.875em;
+     }
+   }
+   .free {
+     color: #808080;
+
+     &__title {
+       margin-bottom: 55px;
+
+       text-align: center;
+
+       font-size: 3.375em;
+     }
+     &__text {
+       margin-bottom: 60px;
+       padding: 0 30px;
+
+       font-size: 2em;
+
+       @media(--mobile) {
+         font-size: 1.5em;
+       }
+     }
+     &__img {
+       text-align: center;
+     }
+   }
+ }
