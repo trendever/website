@@ -1,4 +1,5 @@
 import {
+  LEAD_INIT,
   LEAD_RECEIVE,
   LEAD_UPDATE_LEAD_ITEM,
   LEAD_SET_TAB,
@@ -36,6 +37,9 @@ function checkUnreadMessage( items ) {
 
 // mutations
 const mutations = {
+  [LEAD_INIT]( state, { seller, customer } ) {
+
+  },
   [LEAD_RECEIVE] ( state, { seller, customer } ) {
     if ( seller !== undefined ) {
       state.seller = state.seller.concat( seller );

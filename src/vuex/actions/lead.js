@@ -1,4 +1,5 @@
 import {
+  LEAD_INIT,
   LEAD_RECEIVE,
   LEAD_SET_TAB,
   LEAD_APPLY_STATUS,
@@ -12,17 +13,17 @@ import * as leads from 'services/leads.js';
 import * as message from 'services/message';
 import { getOlderLead, getLeads, getTab, isEmptyLeads } from '../getters/lead';
 
-export const init = ( { dispatch, state:{ leads } } ) => {
+export const init = ( { dispatch } ) => {
 
   return new Promise( ( resolve, reject ) => {
 
-    leads.find( 6 ).then(( { customer, seller } ) => {
-        dispatch( LEAD_RECEIVE, { customer, seller } );
-      },
-      ( error ) => {
-        console.log( error );
-      }
-    );
+    leads.find( 12 ).then( ( { customer, seller } ) => {
+      dispatch( LEAD_INIT, { customer, seller } );
+      resolve();
+    }, ( error ) => {
+      leads.sendError( error );
+      reject();
+    } );
 
   } );
 
