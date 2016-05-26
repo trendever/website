@@ -8,9 +8,50 @@ export const getTab = ( { leads } ) => {
 	return 'customer';
 };
 
+export const getLeadHeight = () => {
+
+  if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
+    return 230
+  }
+
+  return 134;
+
+};
+
+export const getLengthListOnBody = () => {
+
+  return Math.round( document.body.offsetHeight / getLeadHeight() );
+
+};
+
+export const getLengthList = ({ leads }) => {
+  return leads.lengthList;
+};
+
 export const getLeads = ( { leads } ) => {
 	return leads[ getTab( { leads } ) ];
 };
+
+export const getLeadByConversationId = ( state, conversation_id ) => {
+  const leadGroup = [ 'seller', 'customer' ];
+  const finder    = ( { chat } ) => {
+    if ( chat !== null ) {
+      return chat.id === conversation_id;
+    }
+  };
+
+  for ( let i = leadGroup.length; i; i-- ) {
+
+    const result = state.leads[ leadGroup[ i - 1 ] ].find( finder );
+
+    if ( result ) {
+      return result;
+    }
+
+  }
+
+};
+
 export const getLeadById = (state, id) => {
 	const leads = getLeads(state);
 	for(let i = leads.length; i; i--){
@@ -50,29 +91,38 @@ export const getLastMessage       = ( state ) => {
 
 	for (let i = leads.length; i; i--) {
 		const { id, chat } = leads[ i - 1 ];
-		
-		if ( chat !== null ) {
-			
-			const mime = chat.recent_message.parts[ 0 ].mime_type;
-			const data = chat.recent_message.parts[ 0 ].content;
-			
-			if ( mime === 'text/plain' ) {
-				messages[ id ] = data;
-			}
-			if ( mime === 'text/json' ) {
-				messages[ id ] = `товар: ${JSON.parse( data ).Title}`;
-			}
-			
-		} else {
+
+    if ( chat !== null ) {
+
+      if ( chat.hasOwnProperty( 'recent_message' ) ) {
+
+        if ( chat.recent_message.hasOwnProperty( 'parts' ) ) {
+
+          const mime = chat.recent_message.parts[ 0 ].mime_type;
+          const data = chat.recent_message.parts[ 0 ].content;
+
+          if ( mime === 'text/plain' ) {
+            messages[ id ] = data;
+          }
+          if ( mime === 'text/json' ) {
+            messages[ id ] = `товар: ${JSON.parse( data ).Title}`;
+          }
+
+        }
+
+      }
+
+    } else {
 			messages[ id ] = '';
 		}
-		
-	}
+
+  }
 
 	return messages;
 };
 
 export const getGlobalNotifyCount = state => state.leads.global_notify_count;
+
 export const getNotifyCountList   = state => state.leads.notify_count;
 
 export const isEmptyLeads = ( { leads } ) => {

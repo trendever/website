@@ -7,7 +7,8 @@ import {
   CONVERSATION_SET_SHOW_STATUS_MENU,
   CONVERSATION_SET_STATUS,
   CONVERSATION_AFTER_LOAD_IMG,
-  LEAD_UPDATE_LEAD_ITEM
+  LEAD_UPDATE_LEAD_ITEM,
+  CONVERSATION_CLOSE
 } from '../mutation-types';
 import * as messageService from 'services/message.js';
 import * as leads from 'services/leads.js';
@@ -264,11 +265,12 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 
 };
 
-export const onStatus = ({ dispatch }, data) => {
+export const closeConversation = ( { dispatch } ) => {
 
-  console.log(data);
+  dispatch( CONVERSATION_CLOSE );
 
 };
+
 export const onMessages = ({ dispatch }, data) => {
 
   console.log(data);

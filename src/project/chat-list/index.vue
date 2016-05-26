@@ -15,7 +15,7 @@ div.scroll-cnt(v-el:scroll-cnt)
     .section.top.bottom
       .section__content
         .chat-list
-          template(v-for='lead in getLeads| orderBy "updated_at" -1')
+          template(v-for='lead in getLeads | orderBy "updated_at" -1 | cutList')
             chat-list-item(:lead='lead')
     .chat-list-cnt-is-empty(v-if='isEmptyLeads') У вас нет шопинг-чатов
     navbar-component(current='chat')
@@ -31,6 +31,7 @@ div.scroll-cnt(v-el:scroll-cnt)
     getTitle,
     isEmptyLeads,
     isDone,
+    getLengthList,
   } from 'vuex/getters/lead.js';
 
   import {
@@ -50,6 +51,11 @@ div.scroll-cnt(v-el:scroll-cnt)
   import ChatListItem from './chat-list-item.vue';
 
   export default {
+    filters: {
+      cutList( leads ){
+        return leads.slice( 0, this.getLengthList );
+      }
+    },
     vuex: {
       getters: {
         getLeads,
@@ -58,6 +64,7 @@ div.scroll-cnt(v-el:scroll-cnt)
         getTitle,
         isEmptyLeads,
         isDone,
+        getLengthList
       },
       actions: {
         setTab,
@@ -78,17 +85,14 @@ div.scroll-cnt(v-el:scroll-cnt)
     methods: {
       scrollHandler(){
         if ( this.needLoadLeads ) {
-
           const full_scroll = this.$els.scrollCnt.scrollHeight;
           const diff_scroll = full_scroll - this.$els.scrollCnt.scrollTop;
-
           if ( diff_scroll < 2500 ) {
             this.$set( 'needLoadLeads', false );
             this.loadLeads().then(() => {
               this.$set( 'needLoadLeads', true );
             });
           }
-
         }
       },
     },

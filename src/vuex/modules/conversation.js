@@ -7,7 +7,8 @@ import {
   CONVERSATION_SET_SHOW_STATUS_MENU,
   CONVERSATION_SET_STATUS,
   CONVERSATION_AFTER_LOAD_IMG,
-  CONVERSATION_UPDATE_MESSAGE_BY_LEAD
+  CONVERSATION_UPDATE_MESSAGE_BY_LEAD,
+  CONVERSATION_CLOSE
 } from '../mutation-types';
 
 // initial state
@@ -19,12 +20,7 @@ const state = {
 
   all:{
     /**
-     * 1: {
-     *  done: false,
-     *  members:null,
-     *  messages:null,
-     *  lead:null
-     * }
+     * 1: messages
      * */
   },
 
@@ -41,6 +37,15 @@ const mutations = {
     state.messages = messages;
     state.lead = lead;
   },
+  /**
+   *
+   *   [CONVERSATION_SET] ( state, id, messages ) {
+    state.id = id;
+    if ( !state.all.hasOwnProperty( id ) ) {
+      state.all[ id ] = messages;
+    }
+  },
+   * */
   [CONVERSATION_RECEIVE_MESSAGE] ( state, messages ) {
     for ( let i = state.messages.length; i; i-- ) {
       if ( state.messages[ i - 1 ].id === messages[ 0 ].id ) {
@@ -96,7 +101,11 @@ const mutations = {
     state.showStatusMenu = false;
     state.showMenu = false;
   },
-
+  [CONVERSATION_CLOSE] ( state ){
+    state.id             = null;
+    state.showMenu       = false;
+    state.showStatusMenu = false;
+  }
 };
 
 export default {

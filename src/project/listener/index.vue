@@ -14,7 +14,6 @@
     ready() {
       this.onMessage      = this.onMessage.bind( this );
       this.onMessageRead  = this.onMessageRead.bind( this );
-      this.onChangeStatus = this.onChangeStatus.bind( this );
       this.on             = this.on.bind( this );
       this.off            = this.off.bind( this );
       if ( this.isAuth ) {
@@ -30,24 +29,18 @@
         this.onMessagesChat( data );
       },
       onMessageRead( data ) {
-        this.onMessageReadLead( data );
         this.onMessageReadChat( data );
       },
-      onChangeStatus( data ) {
-        this.onStatusLead( data );
-        this.onStatusChat( data );
-      },
       on() {
+
         this.init().then( () => {
           messages.onMsg( this.onMessage );
           messages.onMsgRead( this.onMessageRead );
-          leads.onChangeStatus( this.onChangeStatus );
         } );
       },
       off() {
         messages.offMsg( this.onMessage );
         messages.offMsgRead( this.onMessageRead );
-        leads.removeStatusListener( this.onChangeStatus );
       }
     },
     watch: {
@@ -58,10 +51,7 @@
     vuex: {
       actions: {
         init: lead.init,
-        onStatusLead: lead.onStatus,
         onMessagesLead: lead.onMessages,
-        onMessageReadLead: lead.onMessageRead,
-        onStatusChat: chat.onStatus,
         onMessagesChat: chat.onMessages,
         onMessageReadChat: chat.onMessageRead,
       },

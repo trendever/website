@@ -24,7 +24,8 @@
   import listen from 'event-listener';
   import {
     setConversation,
-    loadMessage
+    loadMessage,
+    closeConversation
   } from 'vuex/actions/chat.js';
   import {
     getMessages,
@@ -71,12 +72,14 @@
     },
     beforeDestroy() {
       this.scrollListener.remove();
+      this.closeConversation();
     },
     vuex: {
       actions: {
         setConversation,
         loadMessage,
-        clearNotify
+        clearNotify,
+        closeConversation
       },
       getters: {
         getMessages,

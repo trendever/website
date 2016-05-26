@@ -12,14 +12,18 @@ export const getMessages = ({conversation}) => {
 
     return conversation.messages.map((message) => {
 
-      if(lastUserId === message.user.id){
+      if ( message.parts[ 0 ].mime_type === 'text/plain' ) {
 
-        message.closestMessage = true;
+        if ( lastUserId === message.user.id ) {
 
-      } else {
+          message.closestMessage = true;
 
-        lastUserId = message.user.id;
-        message.closestMessage = false;
+        } else {
+
+          lastUserId             = message.user.id;
+          message.closestMessage = false;
+
+        }
 
       }
 

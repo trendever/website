@@ -2,8 +2,7 @@
 
 <template lang="jade">
 div(:class='{popup: isShowPopupFastSignup}')
-  popup-signup(
-    v-if='isShowPopupSignup')
+  popup-signup(v-if='isShowPopupSignup')
 
   popup-fast-signup(
     v-if='isShowPopupFastSignup && isNotWhy')
