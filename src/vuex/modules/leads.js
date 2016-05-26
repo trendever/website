@@ -1,14 +1,16 @@
 import {
   LEAD_INIT,
   LEAD_RECEIVE,
-  LEAD_UPDATE_LEAD_ITEM,
   LEAD_SET_TAB,
   LEAD_APPLY_STATUS,
   LEAD_INC_NOTIFY,
   LEAD_CLEAR_NOTIFY,
   LEAD_SET_LAST_MESSAGE,
-  LEAD_INC_LENGTH_LIST
+  LEAD_INC_LENGTH_LIST,
+  LEAD_UPDATE_MEMBERS,
+  LEAD_CLOSE
 } from '../mutation-types';
+import { getLengthListOnBody } from '../getters/lead.js';
 
 // initial state
 const state = {
@@ -46,8 +48,6 @@ const mutations = {
     checkUnreadMessage( customer );
   },
   [LEAD_RECEIVE] ( state, leads, tab ) {
-
-    console.time( 'LEAD_RECEIVE' );
 
     if ( !state.hasOwnProperty( tab ) ) {
       console.error( `${LEAD_RECEIVE}: передан таб который не поддерживается : ${tab}`, state );
@@ -102,23 +102,6 @@ const mutations = {
 
     }
 
-    console.timeEnd( 'LEAD_RECEIVE' );
-
-  },
-  [LEAD_UPDATE_LEAD_ITEM] ( state, newLead ) {
-    let kik = false;
-    [ state.seller, state.seller ].forEach( ( leads ) => {
-      if ( kik ) {
-        return;
-      }
-      for ( let i = leads.length; i; i-- ) {
-        if ( leads[ i - 1 ].id === newLead.id ) {
-          leads.$set( i - 1, newLead );
-          kik = true;
-          break;
-        }
-      }
-    } );
   },
   [LEAD_SET_TAB] ( state, tab = 'customer', lengthList = 12 ) {
     state.tab        = tab;
@@ -127,7 +110,32 @@ const mutations = {
   [LEAD_INC_LENGTH_LIST] ( state, lengthList = 6 ){
     state.lengthList += lengthList;
   },
-  [LEAD_SET_LAST_MESSAGE] ( state, conversation_id, messages ) {
+  [LEAD_UPDATE_MEMBERS] ( state, members, conversation ){
+
+    [ state.seller, state.customer ].forEach( ( leads, groupsIndex, groups ) => {
+
+      leads.forEach( ( lead, index ) => {
+
+          if ( lead.chat !== null ) {
+
+            if ( conversation.id === lead.chat.id ) {
+              debugger;
+  
+              lead.chat.members              = members;
+              lead.updated_at                = conversation.recent_message.created_at * 1e9;
+              lead.chat.recent_message.parts = conversation.recent_message.parts;
+              groups[ groupsIndex ].$set( index, lead );
+            }
+
+
+          }
+
+      } );
+
+    } );
+
+  },
+  [LEAD_SET_LAST_MESSAGE] ( state, conversation_id, messages, members ) {
 
     [ state.seller, state.customer ].forEach( ( leads, groupsIndex, groups ) => {
 
@@ -136,10 +144,12 @@ const mutations = {
         if ( lead.chat !== null ) {
 
           if ( conversation_id === lead.chat.id ) {
-
+            lead.chat.members              = members;
             lead.chat.recent_message.parts = messages[ 0 ].parts;
             lead.updated_at                = messages[ 0 ].created_at * 1e9;
             groups[ groupsIndex ].$set( index, lead );
+
+            console.log(groups[ groupsIndex ]);
 
           }
 
@@ -150,8 +160,25 @@ const mutations = {
     } );
   },
   [LEAD_APPLY_STATUS] ( state, conversation_id, statusCode, members, created_at ) {
-    const leads = { seller: state.seller, customer: state.customer };
-    let kik     = false;
+    const leads   = { seller: state.seller, customer: state.customer };
+    const handler = ( lead ) => {
+
+      if ( lead.chat !== null ) {
+        if ( lead.chat.id === conversation_id ) {
+          kik = true;
+
+          lead.status       = statusCode;
+          lead.chat.members = members;
+          lead.updated_at   = created_at * 1e9;
+
+          return lead;
+        }
+      }
+
+      return lead;
+
+    };
+    let kik       = false;
 
     for ( const key in leads ) {
 
@@ -161,23 +188,7 @@ const mutations = {
           break;
         }
 
-        leads[ key ] = leads[ key ].map( ( lead ) => {
-
-          if ( lead.chat !== null ) {
-            if ( lead.chat.id === conversation_id ) {
-              kik = true;
-
-              lead.status       = statusCode;
-              lead.chat.members = members;
-              lead.updated_at   = created_at * 1e9;
-
-              return lead;
-            }
-          }
-
-          return lead;
-
-        } );
+        leads[ key ] = leads[ key ].map( handler );
 
       }
       state = Object.assign( {}, leads );
@@ -185,22 +196,42 @@ const mutations = {
 
   },
   [LEAD_INC_NOTIFY] ( state, lead_id ) {
+
     if ( lead_id !== null ) {
+
       if ( !state.notify_count.hasOwnProperty( lead_id ) ) {
+
         state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 1 } );
+
       } else {
+
         state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: state.notify_count[ lead_id ] + 1 } );
+
       }
+
     }
+
     state.global_notify_count++;
+
   },
   [LEAD_CLEAR_NOTIFY] ( state, lead_id ) {
+
     if ( state.notify_count.hasOwnProperty( lead_id ) ) {
+
       const globalCount         = state.global_notify_count - state.notify_count[ lead_id ];
+
       state.global_notify_count = globalCount >= 0 ? globalCount : 0;
+
     }
+
     state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 0 } );
+
   },
+  [LEAD_CLOSE] ( state ) {
+
+    state.lengthList = getLengthListOnBody();
+
+  }
 };
 
 export default {

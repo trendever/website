@@ -33,6 +33,9 @@
     getId,
     getCurrentMember,
   } from 'vuex/getters/chat.js';
+  import {
+    getLeads
+  } from 'vuex/getters/lead.js';
   import { clearNotify } from 'vuex/actions/lead.js';
 
   import * as messages from 'services/message';
@@ -53,15 +56,16 @@
       }
     },
     route: {
-      data( { to: { params: { id } } } ) {
-        this.setConversation( +id ).then(
+      data( { to: { params: { id:lead_id } } } ) {
+        this.setConversation( +lead_id ).then(
           () => {
-            this.clearNotify( +id );
+            this.clearNotify( +lead_id );
             this.$nextTick( () => {
               this.goToBottom();
             } );
           },
-          () => {
+          ( error ) => {
+            console.error( error );
             this.$router.go( { name: 'home' } );
           }
         );
@@ -86,6 +90,7 @@
         conversationNotifyCount,
         getId,
         getCurrentMember,
+        getLeads
       },
     },
     methods: {
@@ -136,10 +141,5 @@
       ChatMsgDate,
       ChatMsgImg
     },
-    watch: {
-      getMessages(){
-        console.log( this );
-      }
-    }
   }
 </script>

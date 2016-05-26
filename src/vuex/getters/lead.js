@@ -1,3 +1,5 @@
+import { userID } from '../getters';
+
 export const getTab = ( { leads } ) => {
 	if ( getIsTab( { leads } ) ) {
 		return leads.tab;
@@ -32,25 +34,43 @@ export const getLeads = ( { leads } ) => {
 	return leads[ getTab( { leads } ) ];
 };
 
-export const getLeadByConversationId = ( state, conversation_id ) => {
-  const leadGroup = [ 'seller', 'customer' ];
-  const finder    = ( { chat } ) => {
-    if ( chat !== null ) {
-      return chat.id === conversation_id;
+export const getLeadByConversationId = (function() {
+
+  const memoize = {};
+
+  return ( state, conversation_id ) => {
+
+    if ( memoize.hasOwnProperty( conversation_id ) ) {
+
+      return memoize[ conversation_id ];
+
     }
-  };
 
-  for ( let i = leadGroup.length; i; i-- ) {
+    const leadGroup = [ 'seller', 'customer' ];
+    const finder    = ( { chat } ) => {
+      if ( chat !== null ) {
+        return chat.id === conversation_id;
+      }
+    };
 
-    const result = state.leads[ leadGroup[ i - 1 ] ].find( finder );
+    for ( let i = leadGroup.length; i; i-- ) {
 
-    if ( result ) {
-      return result;
+      const result = state.leads[ leadGroup[ i - 1 ] ].find( finder );
+
+      if ( result ) {
+
+        memoize[ conversation_id ] = result;
+        return result;
+
+      }
+
     }
+
+    return null;
 
   }
 
-};
+})();
 
 export const getLeadById = (state, id) => {
 	const leads = getLeads(state);
@@ -131,4 +151,10 @@ export const isEmptyLeads = ( { leads } ) => {
 
 export const isDone = ( state ) => {
 	return state.leads.done;
+};
+
+export const getGroup = ( state, lead ) => {
+
+  return lead.customer_id === userID( state ) ? 'customer' : 'seller';
+
 };

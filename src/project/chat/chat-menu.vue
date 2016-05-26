@@ -112,12 +112,10 @@ div
 
       },
       callCustomer() {
-        console.log(this.getLeadId);
         service.callCustomer(this.getLeadId);
         this.setShowMenu(false);
       },
       callSupplier() {
-        console.log(this.getLeadId);
         service.callSupplier(this.getLeadId);
         this.setShowMenu(false);
       },

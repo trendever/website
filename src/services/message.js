@@ -12,13 +12,13 @@ export function sendError( errorCode, state = null ) {
   switch ( errorCode ) {
     case ERROR_CODES.FORBIDDEN:
       console.error( new Error( `Messages error: [ FOBIDDEN ]` ), state );
-      break;
+      return false;
     case ERROR_CODES.NOT_EXISTS:
       console.error( new Error( `Messages error: [ NOT_EXISTS ]` ), state );
-      break;
+      return false;
     case ERROR_CODES.UNATHORIZED:
       console.error( new Error( `Messages error: [ UNATHORIZED ]` ), state );
-      break;
+      return false;
     default:
       return true;
   }

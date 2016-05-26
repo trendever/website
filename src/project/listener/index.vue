@@ -29,7 +29,7 @@
         this.onMessagesChat( data );
       },
       onMessageRead( data ) {
-        this.onMessageReadChat( data );
+        this.onMessageReadLead( data );
       },
       on() {
 
@@ -53,7 +53,7 @@
         init: lead.init,
         onMessagesLead: lead.onMessages,
         onMessagesChat: chat.onMessages,
-        onMessageReadChat: chat.onMessageRead,
+        onMessageReadLead: lead.onMessageRead,
       },
       getters: {
         isAuth,

@@ -35,12 +35,9 @@ div.scroll-cnt(v-el:scroll-cnt)
   } from 'vuex/getters/lead.js';
 
   import {
-    getPartLeads,
-    getMoreLeads,
-    applyStatus,
     setTab,
     loadLeads,
-    setLastMessages,
+    leadClose,
   } from 'vuex/actions/lead.js';
 
   import * as leads from 'services/leads';
@@ -68,7 +65,8 @@ div.scroll-cnt(v-el:scroll-cnt)
       },
       actions: {
         setTab,
-        loadLeads
+        loadLeads,
+        leadClose
       }
     },
     data(){
@@ -81,6 +79,7 @@ div.scroll-cnt(v-el:scroll-cnt)
     },
     beforeDestroy(){
       this.scrollListener.remove();
+      this.leadClose();
     },
     methods: {
       scrollHandler(){
