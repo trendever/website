@@ -43,8 +43,11 @@
     },
     computed: {
       getUsername () {
-        if (this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key) {
+        if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
           return `<b>${this.getShopName}</b>`
+        }
+        if (this.msg.user.role === leads.USER_ROLES.CUSTOMER.key) {
+          return `<b>${this.msg.user.name}</b>`
         }
         return `<b>${this.getShopName}</b> <br/> (продавец ${this.msg.user.name})`
       },
