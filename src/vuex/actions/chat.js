@@ -8,6 +8,7 @@ import {
   CONVERSATION_CLOSE,
   LEAD_RECEIVE,
   LEAD_UPDATE,
+  CONVERSATION_SEND_STATUS,
   CONVERSATION_INC_LENGTH_LIST
 } from '../mutation-types';
 import * as messageService from 'services/message.js';
@@ -22,7 +23,7 @@ import {
   getLastMessageId,
   getCountRowOnBody
 } from 'vuex/getters/chat.js';
-import { getLeadById, getGroup } from 'vuex/getters/lead.js';
+import { getLeadById, getGroup, getLeadByConversationId } from 'vuex/getters/lead.js';
 import { userID } from 'vuex/getters';
 
 export const setConversation = ( { dispatch, state }, lead_id ) => {
@@ -400,26 +401,27 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 
   }, ( error ) => {
 
-    console.log( error );
+    console.error( error );
 
   } );
 
 };
 
-export const setStatus = ( { dispatch, state:{ conversation:{ lead:{ id } } } }, status ) => {
+export const setStatus = ( { dispatch, state }, status ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  dispatch( CONVERSATION_SEND_STATUS );
 
   return new Promise( ( resolve, reject ) => {
-
-    leads.setEvent( id, status ).then( ( { status } ) => {
-
-      resolve( status );
-
-    } ).catch( error => {
-
-      reject( error );
-
-    } );
-
+    leads
+      .setEvent( lead.id, status )
+      .then( ( { status } ) => {
+        resolve( status );
+      } )
+      .catch( error => {
+        reject( error );
+      } );
   } );
 
 };
@@ -437,7 +439,13 @@ export const onMessages = ( { dispatch, state }, data ) => {
 
         if ( messages.length > 0 ) {
 
-          return receiveMessage( { dispatch, state }, conversation_id, messages );
+          if ( messages[ 0 ].parts[ 0 ].mime_type === 'text/plain' ) {
+
+            return receiveMessage( { dispatch, state }, conversation_id, messages );
+
+          }
+
+          return Promise.resolve();
 
         }
 

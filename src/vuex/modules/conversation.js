@@ -6,6 +6,7 @@ import {
   CONVERSATION_SET_SHOW_STATUS_MENU,
   CONVERSATION_AFTER_LOAD_IMG,
   CONVERSATION_CLOSE,
+  CONVERSATION_SEND_STATUS,
   CONVERSATION_INC_LENGTH_LIST
 } from '../mutation-types';
 
@@ -101,7 +102,7 @@ const mutations = {
   [CONVERSATION_INC_LENGTH_LIST] ( state, lengthList = 12 ) {
 
     state.lengthList = state.lengthList + lengthList;
-    
+
   },
 
   [CONVERSATION_AFTER_LOAD_IMG] ( state, beforeLoadId, newMessage ) {
@@ -128,6 +129,11 @@ const mutations = {
 
   [CONVERSATION_SET_SHOW_STATUS_MENU] ( state, showStatusMenu ) {
     state.showStatusMenu = showStatusMenu;
+  },
+
+  [CONVERSATION_SEND_STATUS] (state) {
+    state.showMenu       = false;
+    state.showStatusMenu = false;
   },
 
   [CONVERSATION_SET_SHOW_MENU] ( state, showMenu ) {
