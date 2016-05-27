@@ -4,10 +4,10 @@ import {
   CONVERSATION_LOAD_MESSAGE,
   CONVERSATION_SET_SHOW_MENU,
   CONVERSATION_SET_SHOW_STATUS_MENU,
-  CONVERSATION_AFTER_LOAD_IMG,
+  CONVERSATION_CONFIRM_MSG,
   CONVERSATION_CLOSE,
   CONVERSATION_SEND_STATUS,
-  CONVERSATION_INC_LENGTH_LIST
+  CONVERSATION_INC_LENGTH_LIST,
 } from '../mutation-types';
 
 // initial state
@@ -99,7 +99,7 @@ const mutations = {
 
   },
 
-  [CONVERSATION_AFTER_LOAD_IMG] ( state, beforeLoadId, newMessage, id ) {
+  [CONVERSATION_CONFIRM_MSG] ( state, beforeLoadId, newMessage, id ) {
 
     if ( state.all.hasOwnProperty( id ) ) {
 
@@ -125,7 +125,12 @@ const mutations = {
 
     } else {
 
-      console.warn('[ CONVERSATION_AFTER_LOAD_IMG ]: Нет такого объекта с сообщениями.');
+      console.warn( '[ CONVERSATION_CONFIRM_MSG ]: Нет такого объекта с сообщениями.', {
+        state,
+        beforeLoadId,
+        newMessage,
+        id
+      } );
 
     }
 

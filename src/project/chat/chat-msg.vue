@@ -4,7 +4,7 @@
 .chat-row(:class='getSide')
   span(class='bubble_info bubble_info_time') {{ datetime }}
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
-    i(:class='{"ic-check": isSent, "ic-check-double": isRead, "ic-clock": isSending}')
+    i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
   .chat-msg.bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
     .chat-msg_t(v-if='!isOwnMessage && !isClosest', :class='{"chat-msg_t-customer-color":isCustomer}')
       | {{{ getUsername }}}
@@ -34,6 +34,12 @@
       }
     },
     computed: {
+      isLoaded(){
+        if( 'loaded' in this.msg){
+          return this.msg.loaded;
+        }
+        return true;
+      },
       getMessage() {
        return wrapLink(escapeHtml(this.msg.parts[0].content).replace(/\n/g, '<br />'));
       },

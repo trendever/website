@@ -4,7 +4,7 @@ import {
   CONVERSATION_LOAD_MESSAGE,
   CONVERSATION_SET_SHOW_MENU,
   CONVERSATION_SET_SHOW_STATUS_MENU,
-  CONVERSATION_AFTER_LOAD_IMG,
+  CONVERSATION_CONFIRM_MSG,
   CONVERSATION_CLOSE,
   LEAD_RECEIVE,
   LEAD_UPDATE,
@@ -317,18 +317,51 @@ export const loadMessage = ( { dispatch, state } ) => {
 
 };
 
+
 export const createMessage = ( { dispatch, state }, conversation_id, text, mime_type ) => {
+
+  const beforeLoadId = Math.random();
+
+  const rowMessage = [
+    {
+      beforeLoadId,
+      loaded: false,
+      conversation_id: conversation_id,
+      user_id: userID( state ),
+      parts: [
+        {
+          content: text,
+          mime_type: mime_type
+        }
+      ],
+      created_at: Date.now(),
+      id: null,
+      user: {
+        user_id: userID( state )
+      }
+    }
+  ];
+
+  dispatch( CONVERSATION_RECEIVE_MESSAGE, rowMessage, conversation_id );
+
+  console.log(conversation_id, text, mime_type);
+
+  debugger;
 
   return messageService
     .create( conversation_id, text, mime_type )
     .then( ( { chat, messages, error } ) => {
 
-      dispatch( CONVERSATION_RECEIVE_MESSAGE, messages, conversation_id );
+      debugger;
 
-      // TODO Сделать сообщение помеченным как недоставленное на сервер.
+      dispatch( CONVERSATION_CONFIRM_MSG, beforeLoadId, messages, conversation_id );
 
     } )
     .catch( ( error ) => {
+
+      console.log(error);
+
+      debugger;
 
       messageService.sendError( error, state );
 
@@ -395,15 +428,13 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 
   dispatch( CONVERSATION_RECEIVE_MESSAGE, [ preLoadMessage ], getId( state ) );
 
+  console.log(getId( state ), base64, MIME);
+
   messageService.create( getId( state ), base64, MIME ).then( ( { messages } ) => {
 
-    dispatch( CONVERSATION_AFTER_LOAD_IMG, beforeLoadId, messages[ 0 ], getId( state ) );
+    dispatch( CONVERSATION_CONFIRM_MSG, beforeLoadId, messages[ 0 ], getId( state ) );
 
-  }, ( error ) => {
-
-    console.error( error );
-
-  } );
+  }, messageService.sendError );
 
 };
 
