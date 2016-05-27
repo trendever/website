@@ -41,8 +41,8 @@
     data(){
       return {
         imgStyle:{
-          maxWidth: `600px`,
-          maxHeight: `400px`
+          width: `600px`,
+          height: `600px`
         }
       }
     },

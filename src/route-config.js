@@ -30,6 +30,17 @@ export function configRouter(router) {
       component: require('project/chat/index.vue'),
     },
 
+    // '/profile': {
+    //   name: 'profile',
+    //   auth: true,
+    //   component: require('project/profile/index.vue')
+    // },
+    //
+    // '/u/:username': {
+    //   name: 'user',
+    //   component: require('project/profile/index.vue')
+    // },
+
     '/why': {
       name: 'why',
       component: require('project/why/index.vue'),

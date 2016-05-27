@@ -22,10 +22,10 @@
         .navbar_i_wrap_notify(v-show='getGlobalNotifyCount')
           span {{ getGlobalNotifyCount }}
 
-    .navbar_i(v-if='false', :class='{"__active": current=="profile"}')
-      .navbar_i_wrap
-        i.ic-profile.navbar_i_wrap_ic
-        .navbar_i_wrap_t Профиль
+    //- .navbar_i(:class='{"__active": current=="profile"}', v-link='{name: "profile"}')
+      //- .navbar_i_wrap
+      //-   i.ic-profile.navbar_i_wrap_ic
+      //-   .navbar_i_wrap_t Профиль
 
 </template>
 
