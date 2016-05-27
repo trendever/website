@@ -6,7 +6,7 @@ import {
   CONVERSATION_SET_SHOW_STATUS_MENU,
   CONVERSATION_AFTER_LOAD_IMG,
   CONVERSATION_CLOSE,
-  CONVERSATION_SET_LAST_MESSAGE
+  CONVERSATION_INC_LENGTH_LIST
 } from '../mutation-types';
 
 // initial state
@@ -18,29 +18,43 @@ const state = {
      * */
   },
 
+  allInit: {
+    /**
+     * 1: bool
+     * */
+  },
+
   id: null,
   done: false,
   showMenu: false,
   showStatusMenu: false,
+  lengthList: 12
 };
 
 // mutations
 const mutations = {
 
-  [CONVERSATION_SET] ( state, id, messages = null ) {
-
-    state.id   = id;
-    state.done = true;
+  [CONVERSATION_SET] ( state, id, messages = null, lengthList = 20 ) {
 
     if ( !state.all.hasOwnProperty( id ) ) {
+      state.all[ id ]     = [];
+      state.allInit[ id ] = false;
+    }
 
-      if ( Array.isArray( messages ) ) {
+    if ( Array.isArray( messages ) ) {
 
-        state.all[ id ] = messages;
+      state.all[ id ] = messages;
 
-      }
+    } else {
+
+      state.all[ id ] = [];
 
     }
+
+    state.allInit[ id ] = true;
+    state.id            = id;
+    state.done          = true;
+    state.lengthList    = lengthList;
 
   },
 
@@ -84,10 +98,12 @@ const mutations = {
 
   },
 
-/*  [CONVERSATION_SET_LAST_MESSAGE] (state, ) {
+  [CONVERSATION_INC_LENGTH_LIST] ( state, lengthList = 12 ) {
 
+    state.lengthList = state.lengthList + lengthList;
+    
   },
-  */
+
   [CONVERSATION_AFTER_LOAD_IMG] ( state, beforeLoadId, newMessage ) {
     state.messages.forEach( ( message ) => {
 
@@ -115,7 +131,7 @@ const mutations = {
   },
 
   [CONVERSATION_SET_SHOW_MENU] ( state, showMenu ) {
-    state.showMenu = showMenu;
+    state.showMenu       = showMenu;
     state.showStatusMenu = false;
   },
 

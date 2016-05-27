@@ -122,11 +122,11 @@ export const onMessages = (
         status: statusCode,
         updated_at: messages[ 0 ].created_at * 1e9
       } );
-      
+
     }
 
     if ( messages[ 0 ].parts[ 0 ].mime_type === "text/plain" ) {
-  
+
       dispatch( LEAD_UPDATE, {
         conversation_id,
         members,
@@ -151,7 +151,7 @@ export const onMessages = (
     handler( lead );
 
   } else {
-  
+
     leads
       .get( { conversation_id } )
       .then(
@@ -176,14 +176,18 @@ export const onMessageRead = ( { dispatch, state }, data ) => {
 
         const lead = getLeadByConversationId( state, data.response_map.chat.id );
 
-        if ( lead.chat ) {
+        if ( lead ) {
 
-          dispatch( LEAD_UPDATE, {
-            conversation_id: lead.chat.id,
-            members: data.response_map.chat.members,
-            updated_at: lead.chat.recent_message.created_at * 1e9
-          } );
-          
+          if ( lead.chat ) {
+
+            dispatch( LEAD_UPDATE, {
+              conversation_id: lead.chat.id,
+              members: data.response_map.chat.members,
+              updated_at: lead.chat.recent_message.created_at * 1e9
+            } );
+
+          }
+
         }
 
       }
@@ -191,7 +195,6 @@ export const onMessageRead = ( { dispatch, state }, data ) => {
   }
 
 };
-
 
 export const clearNotify = ( { dispatch }, lead_id ) => {
 

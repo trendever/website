@@ -70,6 +70,8 @@ const mutations = {
 
     if ( matchedId.length === 0 ) {
 
+      checkUnreadMessage( leads );
+
       state[ tab ] = state[ tab ].concat( leads );
 
     } else if ( matchedId.length !== leads.length ) {
@@ -96,6 +98,8 @@ const mutations = {
         }
 
       }
+
+      checkUnreadMessage( newLeads );
 
       state[ tab ] = state[ tab ].concat( newLeads );
 
@@ -124,7 +128,6 @@ const mutations = {
 
             if ( lead.chat !== null ) {
               if ( conversation_id === lead.chat.id ) {
-                debugger;
 
                 if ( members !== null ) {
                   lead.chat.members = members;

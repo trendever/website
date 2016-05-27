@@ -6,7 +6,7 @@
       .chat.section__content
         .chat_messages
           //- chat-msg-date
-          template(v-for='msg in getMessages', track-by='$index')
+          template(v-for='msg in getMessages | list', track-by='$index')
             chat-msg-product(
               v-if='msg.parts[0].mime_type === "text/json"',
               :msg='msg')
@@ -25,16 +25,17 @@
   import {
     setConversation,
     loadMessage,
-    closeConversation
+    closeConversation,
   } from 'vuex/actions/chat.js';
   import {
     getMessages,
     conversationNotifyCount,
     getId,
     getCurrentMember,
+    getLengthList
   } from 'vuex/getters/chat.js';
   import {
-    getLeads
+    isDone
   } from 'vuex/getters/lead.js';
   import { clearNotify } from 'vuex/actions/lead.js';
 
@@ -52,14 +53,66 @@
 
     data(){
       return {
-        needLoadMessage: true
+        needLoadMessage: true,
+        lead_id: null
+      }
+    },
+    watch: {
+      isDone( done ){
+        if ( done ) {
+          this.run();
+        }
       }
     },
     route: {
       data( { to: { params: { id:lead_id } } } ) {
-        this.setConversation( +lead_id ).then(
+        this.$set( 'lead_id', +lead_id );
+        if ( this.isDone ) {
+          this.run();
+        }
+      },
+    },
+    ready(){
+      this.onMessage      = this.onMessage.bind( this );
+      this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
+      messages.onMsg( this.onMessage );
+    },
+    beforeDestroy() {
+      this.scrollListener.remove();
+      this.closeConversation();
+      messages.offMsg( this.onMessage );
+    },
+    vuex: {
+      actions: {
+        setConversation,
+        loadMessage,
+        clearNotify,
+        closeConversation,
+      },
+      getters: {
+        isDone,
+        getMessages,
+        conversationNotifyCount,
+        getId,
+        getCurrentMember,
+        getLengthList
+      },
+    },
+
+    filters: {
+      list( value ){
+        const end = value.length;
+        const start = end - this.getLengthList;
+        return value.slice( (start <= 0) ? 0 : start, end - 1 );
+      }
+    },
+
+    methods: {
+
+      run(){
+        this.setConversation( this.lead_id ).then(
           () => {
-            this.clearNotify( +lead_id );
+            this.clearNotify( this.lead_id );
             this.$nextTick( () => {
               this.goToBottom();
             } );
@@ -70,30 +123,10 @@
           }
         );
       },
-    },
-    ready(){
-      this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
-    },
-    beforeDestroy() {
-      this.scrollListener.remove();
-      this.closeConversation();
-    },
-    vuex: {
-      actions: {
-        setConversation,
-        loadMessage,
-        clearNotify,
-        closeConversation
+
+      onMessage(){
+        this.$nextTick( this.goToBottom );
       },
-      getters: {
-        getMessages,
-        conversationNotifyCount,
-        getId,
-        getCurrentMember,
-        getLeads
-      },
-    },
-    methods: {
 
       isImage( mime ){
         return mime.indexOf( 'image' ) !== -1;

@@ -5,6 +5,8 @@ import { getLeadByConversationId } from '../getters/lead.js';
 
 export const getId = ( { conversation } ) => conversation.id;
 
+export const getLengthList = ({ conversation }) => conversation.lengthList;
+
 export const getLeadId = ( state ) => {
 
   const lead = getLeadByConversationId( state, state.conversation.id );
@@ -19,6 +21,26 @@ export const getLeadId = ( state ) => {
 
 };
 
+export const isInit = ( { conversation }, lead ) => {
+  
+  if ( lead.chat ) {
+    
+    if ( lead.chat.id ) {
+      
+      if ( conversation.allInit.hasOwnProperty( lead.chat.id ) ) {
+        
+        return conversation.allInit[ lead.chat.id ];
+        
+      }
+      
+    }
+    
+  }
+  
+  return false;
+  
+};
+
 export const isMessages = ( { conversation }, lead ) => {
 
   if ( lead.chat ) {
@@ -26,16 +48,26 @@ export const isMessages = ( { conversation }, lead ) => {
     if ( lead.chat.id ) {
 
       if ( conversation.all.hasOwnProperty( lead.chat.id ) ) {
-
-        return Array.isArray( conversation.all[ lead.chat.id ] );
+  
+        if ( Array.isArray( conversation.all[ lead.chat.id ] ) ) {
+    
+          return {
+            count: conversation.all[ lead.chat.id ].length,
+            messages: conversation.all[ lead.chat.id ]
+          };
+    
+        }
 
       }
 
     }
 
   }
-
-  return false;
+  
+  return {
+    count: 0,
+    messages: null
+  };
 
 };
 
@@ -171,7 +203,7 @@ export const getLastMessageId = ( state ) => {
   if ( lead.chat ) {
 
     if ( lead.chat.members ) {
-      
+
       return lead
         .chat
         .members
@@ -185,7 +217,7 @@ export const getLastMessageId = ( state ) => {
 
 };
 
-export const conversationNotifyCount = state => state.leads.notify_count;
+export const conversationNotifyCount = state => state.leads.global_notify_count;
 
 export const getInviteShop = ( state ) => {
 
@@ -251,7 +283,7 @@ export const getCreateData = ( state ) => {
 
 };
 
-export const isJoined          = ( state, lead ) => {
+export const isJoined = ( state, lead ) => {
 
   if ( lead ) {
 
@@ -279,3 +311,15 @@ export const isJoined          = ( state, lead ) => {
   return false;
 
 };
+
+export const getRowHeight = () => {
+  
+  if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
+    return 65
+  }
+  
+  return 50;
+  
+};
+
+export const getCountRowOnBody = () => Math.round( document.body.offsetHeight / getRowHeight() );

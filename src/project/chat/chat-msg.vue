@@ -53,7 +53,10 @@
         return this.msg.closestMessage;
       },
       isOwnMessage() {
-        return this.getCurrentMember.user_id === this.msg.user.user_id
+        if ( this.getCurrentMember !== null ) {
+          return this.getCurrentMember.user_id === this.msg.user.user_id;
+        }
+        return false;
       },
       isSending() {
         return false;
@@ -62,7 +65,6 @@
         return !this.isRead
       },
       isRead() {
-        console.log(this.getLastMessageId, this.msg.id);
         return this.getLastMessageId >= this.msg.id
       },
       getSide() {

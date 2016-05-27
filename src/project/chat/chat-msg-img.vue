@@ -110,7 +110,10 @@
         return this.msg.closestMessage;
       },
       isOwnMessage() {
-        return this.getCurrentMember.user_id === this.msg.user.user_id
+        if ( this.getCurrentMember !== null ) {
+          return this.getCurrentMember.user_id === this.msg.user.user_id;
+        }
+        return false;
       },
       isSent() {
         return !this.isRead

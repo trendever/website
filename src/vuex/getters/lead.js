@@ -10,28 +10,16 @@ export const getTab = ( { leads } ) => {
 	return 'customer';
 };
 
-export const getLeadHeight = () => {
-
-  if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
-    return 230
-  }
-
-  return 134;
-
-};
-
-export const getLengthListOnBody = () => {
-
-  return Math.round( document.body.offsetHeight / getLeadHeight() );
-
-};
-
 export const getLengthList = ({ leads }) => {
+
   return leads.lengthList;
+
 };
 
 export const getLeads = ( { leads } ) => {
+
 	return leads[ getTab( { leads } ) ];
+
 };
 
 export const getLeadByConversationId = (function() {
@@ -145,16 +133,20 @@ export const getGlobalNotifyCount = state => state.leads.global_notify_count;
 
 export const getNotifyCountList   = state => state.leads.notify_count;
 
-export const isEmptyLeads = ( { leads } ) => {
-	return (leads.seller.length === 0) && (leads.customer.length === 0);
+export const isEmptyLeads = ( { leads } ) => (leads.seller.length === 0) && (leads.customer.length === 0);
+
+export const isDone = ( state ) => state.leads.done;
+
+export const getGroup = ( state, lead ) => lead.customer_id === userID( state ) ? 'customer' : 'seller';
+
+export const getLeadHeight = () => {
+
+  if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
+    return 230
+  }
+
+  return 134;
+
 };
 
-export const isDone = ( state ) => {
-	return state.leads.done;
-};
-
-export const getGroup = ( state, lead ) => {
-
-  return lead.customer_id === userID( state ) ? 'customer' : 'seller';
-
-};
+export const getLengthListOnBody = () => Math.round( document.body.offsetHeight / getLeadHeight() );
