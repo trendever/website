@@ -132,11 +132,11 @@ export const wrapLink = (text) => {
   const re    = /([^\"=]{2}|^)((https?|ftp):\/\/\S+[^\s.,> )\];'\"!?])/;
   const subst = '$1<a class="link link_primary" href="$2" target="_blank">$2</a>';
 
-  if ( text.indexOf( 'http' ) === -1 && text.indexOf( 'https' ) === -1 ) {
+/*  if ( text.indexOf( 'http' ) === -1 && text.indexOf( 'https' ) === -1 ) {
 
     text = 'http://' + text;
 
-  }
+  }*/
 
   return text.replace( re, subst );
 
