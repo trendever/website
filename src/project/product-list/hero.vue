@@ -33,7 +33,7 @@
             v-link='{name: "agreement"}') Условия
           //- a(class='profile-header__menu-link', href='#') Отмена
 
-    .hero__content__logo.ic-logo
+    .hero__content__logo
     .hero__content__description Шопинг в Instagram стал проще
 </template>
 <script type='text/babel'>
