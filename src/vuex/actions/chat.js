@@ -335,7 +335,7 @@ export const createMessage = ( { dispatch, state }, conversation_id, text, mime_
         }
       ],
       created_at: Date.now(),
-      id: null,
+      id: Date.now() + beforeLoadId,
       user: {
         user_id: userID( state )
       }
@@ -344,24 +344,14 @@ export const createMessage = ( { dispatch, state }, conversation_id, text, mime_
 
   dispatch( CONVERSATION_RECEIVE_MESSAGE, rowMessage, conversation_id );
 
-  console.log(conversation_id, text, mime_type);
-
-  debugger;
-
   return messageService
     .create( conversation_id, text, mime_type )
     .then( ( { chat, messages, error } ) => {
 
-      debugger;
-
-      dispatch( CONVERSATION_CONFIRM_MSG, beforeLoadId, messages, conversation_id );
+      dispatch( CONVERSATION_CONFIRM_MSG, beforeLoadId, messages[ 0 ], conversation_id );
 
     } )
     .catch( ( error ) => {
-
-      console.log(error);
-
-      debugger;
 
       messageService.sendError( error, state );
 
@@ -406,6 +396,7 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
   const beforeLoadId = Math.random();
 
   const preLoadMessage = {
+    id: Date.now() + beforeLoadId,
     beforeLoadId,
     loaded: false,
     conversation_id: getId( state ),
