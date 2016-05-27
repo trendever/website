@@ -158,7 +158,7 @@
           .about-mobile__two-col__img
             .about-mobile__img-block
               img(src='img/iphone-1.png' alt='')
-              .video
+              .video.video-1
                 video
                   source(src="http://3wcode.com.ua/ostrog/video/main.mp4" type="video/mp4")
                   source(src="http://3wcode.com.ua/ostrog/video/main.ogv" type="video/ogg")
@@ -203,7 +203,7 @@
                 |  инстаграм-пост, оставив комментарий в ленте.
               div.about-mobile__two-col__at
                 span @wantit
-                | * 
+                | *
                 |  купить товар через наш шопинг-чат
               div.about-mobile__two-col__at
                 span @savetrend
@@ -213,7 +213,7 @@
           .about-mobile__two-col__img
             .about-mobile__img-block.about-mobile__img-block__right
               img(src='img/iphone-2.png' alt='')
-              .video
+              .video.video-2
                 video
                   source(src="http://3wcode.com.ua/ostrog/video/instagram.mp4" type="video/mp4")
                   source(src="http://3wcode.com.ua/ostrog/video/instagram.ogv" type="video/ogg")
@@ -262,6 +262,12 @@
       }
     },
 
+    ready(){
+      if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        document.querySelector('.video-1').classList.add('hidden');
+        document.querySelector('.video-2').classList.add('hidden');
+      }
+    },
 
     methods: {
       updateMainVideoSize(){
