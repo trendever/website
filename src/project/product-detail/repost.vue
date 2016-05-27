@@ -38,7 +38,6 @@
     .footer
       p Нажмите 'Продолжить',#[br]чтобы открыть Instagram#[br]и вставить фото с текстом
       button(v-on:click='openInsta', class='btn __primary __orange') Продолжить
-        i.ic-instagram-icon
 </template>
 
 <script>
@@ -82,7 +81,8 @@
         return source + '...'
       },
       igImageUrl() {
-        return urlThumbnail(this.openedProduct.product.instagram_image_url);
+        let obj = this.openedProduct.product
+        return obj.instagram_images.find((img) => img.name === "L").url
       }
     },
     methods: {
