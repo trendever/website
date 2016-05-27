@@ -8,6 +8,7 @@ export const authData = state => {
 
 // User
 export const isAuth = state => state.user.isAuth;
+export const user = state => state.user;
 export const userID = state => state.user.id;
 export const userName = state => {
   if (state.user.name) {
@@ -15,6 +16,7 @@ export const userName = state => {
   }
   return state.user.instagram_username;
 };
+export const openedUser = state => state.user.openedUser;
 
 // Products
 export const products = state => state.products.all;
