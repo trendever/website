@@ -11,7 +11,7 @@
         .chat-msg-product-photo
           img(:src="photo")
       .chat-msg-description
-        .chat-msg_t(v-if='!isOwnMessage')
+        .chat-msg_t(v-if='!isOwnMessage', :class='{"chat-msg_t-customer-color":isCustomer}')
           | {{{ getUsername }}}
         .chat-msg-product(v-link='{name: "product_detail", params: {id: product.ID}}')
           .chat-msg-product-txt
@@ -43,13 +43,16 @@
     },
     computed: {
       getUsername () {
+        if (this.isCustomer) {
+          return `<b>${this.msg.user.name}</b>`
+        }
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
           return `<b>${this.getShopName}</b>`
         }
-        if (this.msg.user.role === leads.USER_ROLES.CUSTOMER.key) {
-          return `<b>${this.msg.user.name}</b>`
-        }
         return `<b>${this.getShopName}</b> <br/> (продавец ${this.msg.user.name})`
+      },
+      isCustomer(){
+        return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
       },
       datetime () {
         return formatTime(this.msg.created_at);
@@ -78,7 +81,10 @@
         }, '')
       },
       isOwnMessage() {
-        return this.getCurrentMember.user_id === this.msg.user.user_id;
+        if ( this.getCurrentMember !== null ) {
+          return this.getCurrentMember.user_id === this.msg.user.user_id;
+        }
+        return false;
       },
       isSent() {
         return !this.isRead;

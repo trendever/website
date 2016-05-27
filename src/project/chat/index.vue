@@ -6,7 +6,7 @@
       .chat.section__content
         .chat_messages
           //- chat-msg-date
-          template(v-for='msg in getMessages', track-by='$index')
+          template(v-for='msg in getMessages | list', track-by='$index')
             chat-msg-product(
               v-if='msg.parts[0].mime_type === "text/json"',
               :msg='msg')
@@ -23,18 +23,20 @@
 <script type='text/babel'>
   import listen from 'event-listener';
   import {
-          setConversation,
-          loadMessage,
-          receiveMessage,
-          updateMembers,
-          applyStatus
+    setConversation,
+    loadMessage,
+    closeConversation,
   } from 'vuex/actions/chat.js';
   import {
-          getMessages,
-          conversationNotifyCount,
-          getId,
-          getCurrentMember,
+    getMessages,
+    conversationNotifyCount,
+    getId,
+    getCurrentMember,
+    getLengthList
   } from 'vuex/getters/chat.js';
+  import {
+    isDone
+  } from 'vuex/getters/lead.js';
   import { clearNotify } from 'vuex/actions/lead.js';
 
   import * as messages from 'services/message';
@@ -51,101 +53,118 @@
 
     data(){
       return {
-        needLoadMessage: true
+        needLoadMessage: true,
+        lead_id: null
+      }
+    },
+    watch: {
+      isDone( done ){
+        if ( done ) {
+          this.run();
+        }
       }
     },
     route: {
-      data({to: {params: { id }}}) {
-        this.setConversation( +id ).then(
-          () => {
-            this.clearNotify( +id );
-            this.$nextTick( () => {
-              this.onStatus = this.onStatus.bind(this);
-              leads.onChangeStatus(this.onStatus);
-              messages.onMsg(this.onMessage);
-              messages.onMsgRead(this.onMessageReaded);
-              this.goToBottom();
-            } );
-          },
-          () => {
-            this.$router.go( { name: 'home' } );
-          }
-        );
+      data( { to: { params: { id:lead_id } } } ) {
+        this.$set( 'lead_id', +lead_id );
+        if ( this.isDone ) {
+          this.run();
+        }
       },
     },
     ready(){
+      this.onMessage      = this.onMessage.bind( this );
       this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
+      messages.onMsg( this.onMessage );
     },
     beforeDestroy() {
-      leads.removeStatusListener( this.onStatus );
-      messages.offMsg( this.onMessage );
-      messages.offMsgRead( this.onMessageReaded );
       this.scrollListener.remove();
+      this.closeConversation();
+      messages.offMsg( this.onMessage );
     },
     vuex: {
       actions: {
         setConversation,
         loadMessage,
-        receiveMessage,
-        updateMembers,
-        applyStatus,
-        clearNotify
+        clearNotify,
+        closeConversation,
       },
       getters: {
+        isDone,
         getMessages,
         conversationNotifyCount,
         getId,
         getCurrentMember,
+        getLengthList
       },
     },
+
+    filters: {
+      list( value ){
+        const end = value.length;
+        const start = end - this.getLengthList;
+        return value.slice( (start <= 0) ? 0 : start, end);
+      }
+    },
+
     methods: {
-      isImage(mime){
-        return mime.indexOf('image') !== -1;
-       },
-      onStatus({response_map: {lead}})  {
-        this.applyStatus(lead.status);
+
+      run(){
+        this.setConversation( this.lead_id ).then(
+          () => {
+            this.clearNotify( this.lead_id );
+            this.$nextTick( () => {
+              this.goToBottom();
+            } );
+          },
+          ( error ) => {
+            console.error( `[ CONVERSATION_SET ERROR ]: `, error );
+            this.$router.go( { name: 'home' } );
+          }
+        );
       },
-      onMessage( { response_map: { chat, messages } } ){
-        const promise = this.receiveMessage( chat, messages );
-        promise.then( () => {
-          this.$nextTick( this.goToBottom );
-        } );
-        promise.catch( ( error ) => {
-          console.log( error );
-        } );
+
+      onMessage(){
+        this.$nextTick( this.goToBottom );
       },
-      onMessageReaded({response_map: {chat, user_id}}){
-        this.updateMembers(user_id, chat);
+
+      isImage( mime ){
+        return mime.indexOf( 'image' ) !== -1;
       },
+
       scrollHandler(){
-        /**
-         * TODO
-         * В https://web.whatsapp.com/, они выводят спинер когда долистали ровно до верха.
-         * Если делать с расстоянием от верха, то я пока что не понимаю как сделать нормально для телефона.
-         * Всё ровно если на телкфоне быстро промотать, то упираешься в верх и ждёшь без спинера, не очень.
-         * Я за спинер.
-         * В вебограме тоже спинер.
-         * */
+
         const SHAfter = this.$els.scrollCnt.scrollHeight;
+
         if ( this.needLoadMessage ) {
-          if ( this.$els.scrollCnt.scrollTop  < 1500 /*=== 0 */) {
+          if ( this.$els.scrollCnt.scrollTop < 1500 /*=== 0 */ ) {
+
             this.$set( 'needLoadMessage', false );
+
             this.loadMessage().then( ( messages ) => {
               this.$nextTick( () => {
+
                 if ( messages !== null ) {
-                  const SHDelta = this.$els.scrollCnt.scrollHeight - SHAfter;
-                  const percentTopOfHeight =  (this.$els.scrollCnt.scrollTop + SHDelta)  / this.$els.scrollCnt.scrollHeight;
+
+                  const SHDelta                 = this.$els.scrollCnt.scrollHeight - SHAfter;
+                  const percentTopOfHeight      = (this.$els.scrollCnt.scrollTop + SHDelta) / this.$els.scrollCnt.scrollHeight;
                   this.$els.scrollCnt.scrollTop = percentTopOfHeight * this.$els.scrollCnt.scrollHeight;
                   this.$set( 'needLoadMessage', true );
+
                 }
+
               } );
             } );
+
           }
         }
+
       },
+
       goToBottom(){
         this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
       },
+
     },
     components: {
       ChatHeader,
@@ -155,10 +174,5 @@
       ChatMsgDate,
       ChatMsgImg
     },
-    watch: {
-      getMessages(){
-        console.log( this );
-      }
-    }
   }
 </script>

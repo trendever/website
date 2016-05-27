@@ -15,7 +15,7 @@ div.scroll-cnt(v-el:scroll-cnt)
     .section.top.bottom
       .section__content
         .chat-list
-          template(v-for='lead in getLeads| orderBy "updated_at" -1')
+          template(v-for='lead in getLeads | orderBy "updated_at" -1 | cutList')
             chat-list-item(:lead='lead')
     .chat-list-cnt-is-empty(v-if='isEmptyLeads') У вас нет шопинг-чатов
     navbar-component(current='chat')
@@ -31,16 +31,13 @@ div.scroll-cnt(v-el:scroll-cnt)
     getTitle,
     isEmptyLeads,
     isDone,
+    getLengthList,
   } from 'vuex/getters/lead.js';
 
   import {
-    getPartLeads,
-    getMoreLeads,
-    applyStatus,
     setTab,
     loadLeads,
-    setLastMessages,
-    closedList
+    leadClose,
   } from 'vuex/actions/lead.js';
 
   import * as leads from 'services/leads';
@@ -51,6 +48,11 @@ div.scroll-cnt(v-el:scroll-cnt)
   import ChatListItem from './chat-list-item.vue';
 
   export default {
+    filters: {
+      cutList( leads ){
+        return leads.slice( 0, this.getLengthList );
+      }
+    },
     vuex: {
       getters: {
         getLeads,
@@ -59,13 +61,12 @@ div.scroll-cnt(v-el:scroll-cnt)
         getTitle,
         isEmptyLeads,
         isDone,
+        getLengthList
       },
       actions: {
-        applyStatus,
         setTab,
         loadLeads,
-        setLastMessages,
-        closedList
+        leadClose
       }
     },
     data(){
@@ -73,41 +74,25 @@ div.scroll-cnt(v-el:scroll-cnt)
         needLoadLeads: true
       }
     },
-    created(){
-      this.onStatus = this.onStatus.bind(this);
-      leads.onChangeStatus(this.onStatus);
-      messages.onMsg(this.onMsg);
-    },
     ready(){
-      this.loadLeads().then(()=>{
-        this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
-      });
+      this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
     },
     beforeDestroy(){
-      leads.removeStatusListener(this.onStatus);
-      messages.offMsg(this.onMsg);
       this.scrollListener.remove();
-      this.closedList();
+      this.leadClose();
     },
     methods: {
-      onStatus({response_map: {lead}}){
-        this.applyStatus(lead, lead.status);
-      },
       scrollHandler(){
         if ( this.needLoadLeads ) {
           const full_scroll = this.$els.scrollCnt.scrollHeight;
           const diff_scroll = full_scroll - this.$els.scrollCnt.scrollTop;
-          console.log(diff_scroll);
           if ( diff_scroll < 2500 ) {
-            this.$set('needLoadLeads', false);
+            this.$set( 'needLoadLeads', false );
             this.loadLeads().then(() => {
-              this.$set('needLoadLeads', true);
+              this.$set( 'needLoadLeads', true );
             });
           }
         }
-      },
-      onMsg({response_map: {chat, messages}}){
-        this.setLastMessages(chat, messages);
       },
     },
     watch:{

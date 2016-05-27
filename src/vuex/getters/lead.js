@@ -1,3 +1,5 @@
+import { userID } from '../getters';
+
 export const getTab = ( { leads } ) => {
 	if ( getIsTab( { leads } ) ) {
 		return leads.tab;
@@ -8,8 +10,64 @@ export const getTab = ( { leads } ) => {
 	return 'customer';
 };
 
+export const getLengthList = ({ leads }) => {
+
+  return leads.lengthList;
+
+};
+
 export const getLeads = ( { leads } ) => {
+
 	return leads[ getTab( { leads } ) ];
+
+};
+
+export const getLeadByConversationId = (function() {
+
+  const memoize = {};
+
+  return ( state, conversation_id ) => {
+
+    if ( memoize.hasOwnProperty( conversation_id ) ) {
+
+      return memoize[ conversation_id ];
+
+    }
+
+    const leadGroup = [ 'seller', 'customer' ];
+    const finder    = ( { chat } ) => {
+      if ( chat !== null ) {
+        return chat.id === conversation_id;
+      }
+    };
+
+    for ( let i = leadGroup.length; i; i-- ) {
+
+      const result = state.leads[ leadGroup[ i - 1 ] ].find( finder );
+
+      if ( result ) {
+
+        memoize[ conversation_id ] = result;
+        return result;
+
+      }
+
+    }
+
+    return null;
+
+  }
+
+})();
+
+export const getLeadById = (state, id) => {
+	const leads = getLeads(state);
+	for(let i = leads.length; i; i--){
+		if(leads[i - 1].id === id){
+			return leads[i - 1];
+		}
+	}
+	return null;
 };
 
 export const getOlderLead = ( state ) => {
@@ -35,49 +93,60 @@ export const getTitle = ( state ) => {
 	}[getTab(state)];
 };
 
-export const getLastMessage = ( state ) => {
-
-  const messages = {};
+export const getLastMessage       = ( state ) => {
+	const messages = {};
 	const leads = getLeads(state);
 
-  leads.forEach( ( { id, chat } ) => {
+	for (let i = leads.length; i; i--) {
+		const { id, chat } = leads[ i - 1 ];
 
     if ( chat !== null ) {
 
       if ( chat.hasOwnProperty( 'recent_message' ) ) {
 
-        const mime = chat.recent_message.parts[ 0 ].mime_type;
-        const data = chat.recent_message.parts[ 0 ].content;
+        if ( chat.recent_message.hasOwnProperty( 'parts' ) ) {
 
-        if ( mime === 'text/plain' ) {
-          messages[ id ] = data;
-        }
+          const mime = chat.recent_message.parts[ 0 ].mime_type;
+          const data = chat.recent_message.parts[ 0 ].content;
 
-        if ( mime === 'text/json' ) {
-          messages[ id ] = `товар: ${JSON.parse( data ).Title}`;
+          if ( mime === 'text/plain' ) {
+            messages[ id ] = data;
+          }
+          if ( mime === 'text/json' ) {
+            messages[ id ] = `товар: ${JSON.parse( data ).Title}`;
+          }
+
         }
 
       }
 
     } else {
+			messages[ id ] = '';
+		}
 
-      messages[ id ] = '';
-
-    }
-
-  } );
+  }
 
 	return messages;
-
 };
 
 export const getGlobalNotifyCount = state => state.leads.global_notify_count;
+
 export const getNotifyCountList   = state => state.leads.notify_count;
 
-export const isEmptyLeads = ( { leads } ) => {
-	return (leads.seller.length === 0) && (leads.customer.length === 0);
+export const isEmptyLeads = ( { leads } ) => (leads.seller.length === 0) && (leads.customer.length === 0);
+
+export const isDone = ( state ) => state.leads.done;
+
+export const getGroup = ( state, lead ) => lead.customer_id === userID( state ) ? 'customer' : 'seller';
+
+export const getLeadHeight = () => {
+
+  if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
+    return 230
+  }
+
+  return 134;
+
 };
 
-export const isDone = ( state ) => {
-	return state.leads.done;
-};
+export const getLengthListOnBody = () => Math.round( document.body.offsetHeight / getLeadHeight() );

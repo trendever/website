@@ -10,12 +10,37 @@ export const formatTime = unixtime => formatDatetime(unixtime).split(' ')[1];
 export const formatPastTime = ( unixtime ) => {
   const dateLast = new Date( unixtime * 1000 );
   const dateNow  = new Date( Date.now() );
-  const seconds = dateNow.getSeconds() - dateLast.getSeconds();
-  const minutes = dateNow.getMinutes() - dateLast.getMinutes();
-  const hours   = dateNow.getHours() - dateLast.getHours();
-  const days    = dateNow.getDay() - dateLast.getDay();
-  const month   = dateNow.getMonth() - dateLast.getMonth();
-  const year    = dateNow.getFullYear() - dateLast.getFullYear();
+
+  /**
+   * Позже сделаю как объект и проверять буду в цикле.
+   * */
+
+  let seconds = dateNow.getSeconds() - dateLast.getSeconds();
+  let minutes = dateNow.getMinutes() - dateLast.getMinutes();
+  let hours   = dateNow.getHours() - dateLast.getHours();
+  let days    = dateNow.getDay() - dateLast.getDay();
+  let month   = dateNow.getMonth() - dateLast.getMonth();
+  let year    = dateNow.getFullYear() - dateLast.getFullYear();
+
+  if ( seconds < 0 ) {
+    seconds = 0
+  }
+  if ( minutes < 0 ) {
+    minutes = 0
+  }
+  if ( hours < 0 ) {
+    hours = 0
+  }
+  if ( days < 0 ) {
+    days = 0
+  }
+  if ( month < 0 ) {
+    month = 0
+  }
+  if ( year < 0 ) {
+    year = 0
+  }
+
   if ( year > 0 ) {
     if ( year === 1 ) {
       return `${year} год`;
@@ -99,8 +124,26 @@ export const escapeHtml = ( string ) => {
 
 export const wrapLink = (text) => {
 
-  const re = /([^\"=]{2}|^)((https?|ftp):\/\/\S+[^\s.,> )\];'\"!?])/;
-  const subst = '$1<a href="$2" target="_blank">$2</a>';
-  return text.replace(re, subst);
+  /**
+   * Как разберусь с регулярками сделаю хорощий вариант
+   * Так вродк как работает.
+   * */
+
+  const re    = /([^\"=]{2}|^)((https?|ftp):\/\/\S+[^\s.,> )\];'\"!?])/;
+  const subst = '$1<a class="link link_primary" href="$2" target="_blank">$2</a>';
+
+/*  if ( text.indexOf( 'http' ) === -1 && text.indexOf( 'https' ) === -1 ) {
+
+    text = 'http://' + text;
+
+  }*/
+
+  return text.replace( re, subst );
+
+  /*  if ( result.indexOf( '</a>' ) === -1 ) {
+
+   return result.replace( /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/, subst );
+
+   }*/
 
 };

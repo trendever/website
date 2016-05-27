@@ -10,6 +10,25 @@ export const ERROR_CODES = {
   OBJECT_NOT_EXIST: 4,
 };
 
+export function sendError( errorCode, state = null ) {
+  switch ( errorCode ) {
+    case ERROR_CODES.FORBIDDEN:
+      console.error( new Error( `Lead error: [ FOBIDDEN ]` ), state );
+      return false;
+    case ERROR_CODES.NOT_EXISTS:
+      console.error( new Error( `Lead error: [ NOT_EXISTS ]` ), state );
+      return false;
+    case ERROR_CODES.UNATHORIZED:
+      console.error( new Error( `Lead error: [ UNATHORIZED ]` ), state );
+      return false;
+    case ERROR_CODES.OBJECT_NOT_EXIST:
+      console.error( new Error( `Lead error: [ OBJECT_NOT_EXIST ]` ), state );
+      return false;
+    default:
+      return true;
+  }
+}
+
 export const USER_ROLES = {
   UNKNOWN: {name: 'НЛО', key: 0},
   CUSTOMER: {name: 'Покупатель', key: 1},
@@ -46,6 +65,10 @@ export const getStatus = key => {
   }
 };
 
+export const getStatusCode = key => {
+  return STATUSES[ key ].key;
+};
+
 export const STATUS_EVENTS = [
   {name: 'Новый', key:'CREATE'},
   {name: 'В процессе', key:'PROGRESS'},
@@ -75,7 +98,8 @@ export const STATUS_EVENTS = [
  *            'code': 'tf9761',
  *            'instagram_image_caption': 'Кроссовки Asics gel lite 3, за 7500 руб',
  *            'instagram_image_id': '1226621682111654014_3108795937',
- *            'instagram_image_url': 'http://scontent-amt2-1.cdninstagram.com/t51.2885-15/e35/12976548_1777021972528091_1983540821_n.jpg?se=8&ig_cache_key=MTIyNjYyMTY4MjExMTY1NDAxNA%3D%3D.2',
+ *            'instagram_image_url':
+ *   'http://scontent-amt2-1.cdninstagram.com/t51.2885-15/e35/12976548_1777021972528091_1983540821_n.jpg?se=8&ig_cache_key=MTIyNjYyMTY4MjExMTY1NDAxNA%3D%3D.2',
  *            'instagram_link': 'https://www.instagram.com/p/BEF1evEDqh-/',
  *            'instagram_published_at': 1460444700,
  *            'supplier_id': 3603,
@@ -96,7 +120,8 @@ export const STATUS_EVENTS = [
  *          'instagram_id': 1482392154,
  *          'instagram_username': 'happierall',
  *          'instagram_fullname': 'Руслан Янбердин',
- *          'instagram_avatar_url': 'https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg',
+ *          'instagram_avatar_url':
+ *   'https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg',
  *          'instagram_caption': 'Hi all'
  *        },
  *        'status': 1,
@@ -106,7 +131,8 @@ export const STATUS_EVENTS = [
  *          'instagram_id': 3108795937,
  *          'instagram_username': 'dev_supplier',
  *          'instagram_fullname': 'Dev Shop',
- *          'instagram_avatar_url': 'http://scontent-amt2-1.cdninstagram.com/t51.2885-19/s150x150/12677376_196270977423905_1508709347_a.jpg'
+ *          'instagram_avatar_url':
+ *   'http://scontent-amt2-1.cdninstagram.com/t51.2885-19/s150x150/12677376_196270977423905_1508709347_a.jpg'
  *        },
  *        'chat': {
  *          'id': 91,
@@ -144,8 +170,6 @@ export const STATUS_EVENTS = [
  *    ],
  *    'seller': []
  *  }
-
-
  * REJECT (one of ERROR_CODES) {UNATHORIZED}
  */
 export function find( limit, from_updated_at, roles, direction = false ) {
@@ -190,9 +214,11 @@ export function find( limit, from_updated_at, roles, direction = false ) {
  *          'id': 17622,
  *          'title': 'Тестовый товар #2 (17622)',
  *          'code': 'tf9744',
- *          'instagram_image_caption': 'Минимализм в лучшем виде 💗✌️Этот комбинезон вы сможете найти по ссылке в профиле 😊 RG: @syanafromparis',
+ *          'instagram_image_caption': 'Минимализм в лучшем виде 💗✌️Этот комбинезон вы сможете найти по ссылке в
+ *   профиле 😊 RG: @syanafromparis',
  *          'instagram_image_id': '1223302707884078653',
- *          'instagram_image_url': 'https://scontent.cdninstagram.com/l/t51.2885-15/s480x480/e35/12965842_803674876433752_380340161_n.jpg?ig_cache_key=MTIyMzMwMjcwNzg4NDA3ODY1Mw%3D%3D.2',
+ *          'instagram_image_url':
+ *   'https://scontent.cdninstagram.com/l/t51.2885-15/s480x480/e35/12965842_803674876433752_380340161_n.jpg?ig_cache_key=MTIyMzMwMjcwNzg4NDA3ODY1Mw%3D%3D.2',
  *          'instagram_link': 'https://www.instagram.com/p/BD6C1TcNDY9/',
  *          'instagram_published_at': -62135596800,
  *          'supplier_id': 129,
@@ -212,7 +238,8 @@ export function find( limit, from_updated_at, roles, direction = false ) {
  *        'instagram_id': 1482392154,
  *        'instagram_username': 'happierall',
  *        'instagram_fullname': 'Руслан Янбердин',
- *        'instagram_avatar_url': 'https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg',
+ *        'instagram_avatar_url':
+ *   'https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg',
  *        'instagram_caption': 'Hi all'
  *      },
  *      'shop': {
@@ -220,8 +247,10 @@ export function find( limit, from_updated_at, roles, direction = false ) {
  *        'instagram_id': 1552963340,
  *        'instagram_username': 'asos_ru',
  *        'instagram_fullname': '(TEST 1) ASOS Russia',
- *        'instagram_avatar_url': 'https://scontent.cdninstagram.com/t51.2885-19/s150x150/11262572_227962937541098_815996954_a.jpg',
- *        'instagram_caption': 'Добро пожаловать на официальную страницу ASOS Russia, где вы откроете для себя мир моды онлайн. Присоединяйтесь!'
+ *        'instagram_avatar_url':
+ *   'https://scontent.cdninstagram.com/t51.2885-19/s150x150/11262572_227962937541098_815996954_a.jpg',
+ *        'instagram_caption': 'Добро пожаловать на официальную страницу ASOS Russia, где вы откроете для себя мир моды
+ *   онлайн. Присоединяйтесь!'
  *      },
  *      'chat': {
  *        'id': 7,
@@ -351,6 +380,7 @@ export function setEvent(lead_id, event) {
     .then( data => {
       resolve(data.response_map.lead);
     }).catch( error => {
+      
       if (error.log_map.code_key === '400') {
         // Not exists or forbiden
         reject(ERROR_CODES.FORBIDDEN);
@@ -366,6 +396,7 @@ export function setEvent(lead_id, event) {
  * Listen when status changed notify received
  * @param  {function} handler    call it func when fired event
  */
+/*
 export function onChangeStatus(handler) {
   channel.on('RETRIEVED', 'lead', handler);
 }
@@ -373,3 +404,4 @@ export function onChangeStatus(handler) {
 export function removeStatusListener(handler) {
   channel.off('RETRIEVED', 'lead', handler);
 }
+ */
