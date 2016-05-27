@@ -6,7 +6,8 @@ import {
   CONVERSATION_SET_SHOW_STATUS_MENU,
   CONVERSATION_AFTER_LOAD_IMG,
   CONVERSATION_CLOSE,
-  LEAD_RECEIVE
+  LEAD_RECEIVE,
+  LEAD_UPDATE
 } from '../mutation-types';
 import * as messageService from 'services/message.js';
 import * as leads from 'services/leads.js';
@@ -19,23 +20,22 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
   function chatJoin( lead_id, callBack ) {
 
-    return chat.join( { lead_id } ).then( () => {
+    return chat
+      .join( { lead_id } )
+      .then( () => {
+        return leads
+          .get( { lead_id } )
+          .then( ( { messages, lead, error } ) => {
+            return callBack( { messages, lead, error } );
+          } )
+          .catch( ( error ) => {
+            leads.sendError( error );
+          } );
 
-        return leads.get( { lead_id } ).then( ( { messages, lead, error } ) => {
-
-          if ( leads.sendError( error, state ) ) {
-
-            return callBack( { messages, lead } );
-
-          }
-
-        } );
-
-      },
-      ( error ) => {
-        console.error( `[ chat.join ]: ${error}` );
-      }
-    );
+      } )
+      .catch( ( error ) => {
+        chat.sendError( error );
+      } );
 
   }
 
@@ -51,7 +51,15 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
           if ( messages.length > 0 ) {
 
-            messageService.update( conversation_id, messages[ messages.length - 1 ].id );
+            messageService
+              .update( conversation_id, messages[ messages.length - 1 ].id )
+              .catch( ( error ) => {
+                messageService.sendError( error, {
+                  conversation_id,
+                  messages,
+                  lastMessageId: messages[ messages.length - 1 ].id
+                } )
+              } );
 
           }
 
@@ -69,54 +77,81 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
   if ( lead !== null ) {
 
-    return new Promise( ( resolve, reject ) => {
+    if ( isJoined( state, lead ) ) {
 
-      if ( !isMessages( state, lead ) ) {
+      return new Promise( ( resolve, reject ) => {
 
-        if ( lead.chat ) {
+        if ( !isMessages( state, lead ) ) {
 
-          if ( lead.chat.id ) {
+          if ( lead.chat ) {
 
-            messageService.find( lead.chat.id, null, 12 ).then(
-              ( messages = [] ) => {
-                run( messages, lead );
-                resolve();
-              },
-              ( error ) => {
-                messageService.sendError( error );
-                reject();
-              }
-            );
+            if ( lead.chat.id ) {
+
+              messageService
+                .find( lead.chat.id, null, 12 )
+                .then(
+                  ( messages = [] ) => {
+                    run( messages, lead );
+                    resolve();
+                  } )
+                .catch( ( error ) => {
+                  messageService.sendError( error, state );
+                  reject( error, state );
+                } );
+
+            }
 
           }
 
+        } else {
+
+          run( null, lead );
+          resolve();
+
         }
 
-      } else {
+      } );
 
-        run( null, lead );
-        resolve();
+    } else {
 
-      }
+      return chatJoin( lead.id, ( { lead } ) => {
 
-    } );
+        if ( lead.chat ) {
+
+          dispatch( LEAD_UPDATE, {
+            conversation_id: lead.chat.id,
+            members: lead.chat.members,
+            updated_at: lead.chat.recent_message.created_at * 1e9
+          } );
+
+          return setConversation( { dispatch, state }, lead_id );
+
+        }
+
+      } );
+
+    }
 
   } else {
 
-    return leads.get( { lead_id } ).then(
-      ( { messages = [], lead, error } ) => {
+    return leads
+      .get( { lead_id } )
+      .then(
+        ( { messages = [], lead, error } ) => {
 
-        if ( leads.sendError( error, state ) ) {
+          if ( error !== null ) {
 
-          if ( !isJoined( state, lead ) ) {
+            if ( error.code === 2 ) { // User in't a member it is mean that user need to join.
 
-            return chatJoin( lead_id, () => {
+              return chatJoin( lead_id, ( { lead } ) => {
 
-              dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) );
+                dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) );
 
-              return setConversation( { dispatch, state }, lead_id );
+                return setConversation( { dispatch, state }, lead_id );
 
-            } );
+              } );
+
+            }
 
           } else {
 
@@ -126,27 +161,13 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
           }
 
-        }
-
-      },
-      ( error ) => {
-        
-        if ( error === 2 ) {
-
-          return chatJoin( lead_id, () => {
-
-            dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) );
-
-            return setConversation( { dispatch, state }, lead_id );
-
-          } );
-
-        }
+        } )
+      .catch( ( error ) => {
 
         leads.sendError( error, state );
+        return error;
 
-      }
-    );
+      } );
 
   }
 
@@ -224,60 +245,60 @@ export const receiveMessage = ( { dispatch, state }, conversation_id, messages )
 
 };
 
-export const setStatus = ( { dispatch, state:{conversation:{lead:{id}}} }, status ) => {
-	return new Promise((resolve, reject) => {
-		leads.setEvent(id, status).then( ({status}) => {
-			resolve(status);
-		}).catch( error => {
-			reject(error);
-		});
-	});
+export const setStatus = ( { dispatch, state:{ conversation:{ lead:{ id } } } }, status ) => {
+  return new Promise( ( resolve, reject ) => {
+    leads.setEvent( id, status ).then( ( { status } ) => {
+      resolve( status );
+    } ).catch( error => {
+      reject( error );
+    } );
+  } );
 };
 
 export const setShowMenu = ( { dispatch }, showMenu ) => {
-	dispatch(CONVERSATION_SET_SHOW_MENU, showMenu);
+  dispatch( CONVERSATION_SET_SHOW_MENU, showMenu );
 };
 
 export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
-	dispatch(CONVERSATION_SET_SHOW_STATUS_MENU, showStatusMenu);
+  dispatch( CONVERSATION_SET_SHOW_STATUS_MENU, showStatusMenu );
 };
 
 export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix, MIME, { width, height } ) => {
 
-	const beforeLoadId = Math.random();
+  const beforeLoadId = Math.random();
 
-	const preLoadMessage = {
-		beforeLoadId,
-		loaded: false,
-		conversation_id: getId( state ),
-		created_at: Date.now(),
-		user_id: userID( state ),
-		user: {
-			user_id: userID( state ),
-		},
-		parts: [
-			{
-				content: {
-					link: base64WithPrefix,
+  const preLoadMessage = {
+    beforeLoadId,
+    loaded: false,
+    conversation_id: getId( state ),
+    created_at: Date.now(),
+    user_id: userID( state ),
+    user: {
+      user_id: userID( state ),
+    },
+    parts: [
+      {
+        content: {
+          link: base64WithPrefix,
           width,
           height
-				},
-				mime_type: 'image/base64',
-			}
-		]
-	};
+        },
+        mime_type: 'image/base64',
+      }
+    ]
+  };
 
-	dispatch( CONVERSATION_RECEIVE_MESSAGE, [ preLoadMessage ] );
+  dispatch( CONVERSATION_RECEIVE_MESSAGE, [ preLoadMessage ] );
 
-	messageService.create( getId( state ), base64, MIME ).then( ( {messages} ) => {
+  messageService.create( getId( state ), base64, MIME ).then( ( { messages } ) => {
 
-		dispatch( CONVERSATION_AFTER_LOAD_IMG, beforeLoadId, messages[0] );
+    dispatch( CONVERSATION_AFTER_LOAD_IMG, beforeLoadId, messages[ 0 ] );
 
-	}, ( error ) => {
+  }, ( error ) => {
 
-		console.log( error );
+    console.log( error );
 
-	} );
+  } );
 
 };
 

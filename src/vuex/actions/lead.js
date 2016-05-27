@@ -1,13 +1,11 @@
 import {
   LEAD_INIT,
   LEAD_RECEIVE,
+  LEAD_UPDATE,
   LEAD_SET_TAB,
   LEAD_CLEAR_NOTIFY,
-  LEAD_SET_LAST_MESSAGE,
   LEAD_INC_NOTIFY,
-  LEAD_APPLY_STATUS,
   LEAD_INC_LENGTH_LIST,
-  LEAD_UPDATE_MEMBERS,
   LEAD_CLOSE
 } from '../mutation-types';
 import * as leads from 'services/leads.js';
@@ -118,13 +116,23 @@ export const onMessages = (
 
       const statusCode = leads.getStatusCode( JSON.parse( messages[ 0 ].parts[ 0 ].content ).value );
 
-      dispatch( LEAD_APPLY_STATUS, conversation_id, statusCode, members, messages[ 0 ].created_at );
-
+      dispatch( LEAD_UPDATE, {
+        conversation_id,
+        members,
+        status: statusCode,
+        updated_at: messages[ 0 ].created_at * 1e9
+      } );
+      
     }
 
     if ( messages[ 0 ].parts[ 0 ].mime_type === "text/plain" ) {
-
-      dispatch( LEAD_SET_LAST_MESSAGE, conversation_id, messages, members );
+  
+      dispatch( LEAD_UPDATE, {
+        conversation_id,
+        members,
+        parts: messages[ 0 ].parts,
+        updated_at: messages[ 0 ].created_at * 1e9
+      } );
 
       if ( state.conversation.id !== conversation_id ) {
 
@@ -143,15 +151,18 @@ export const onMessages = (
     handler( lead );
 
   } else {
-
-    leads.get( { conversation_id } ).then(
+  
+    leads
+      .get( { conversation_id } )
+      .then(
       ( { lead } ) => {
         // TODO Спросить как можно определить, для текущего пользователя lead в покупаю || продаю.
         dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) );
         handler( lead );
-      },
-      leads.sendError
-    );
+      } )
+      .catch( ( error ) => {
+        leads.sendError( error, state );
+      } );
 
   }
 
@@ -166,9 +177,13 @@ export const onMessageRead = ( { dispatch, state }, data ) => {
         const lead = getLeadByConversationId( state, data.response_map.chat.id );
 
         if ( lead.chat ) {
-          
-          dispatch( LEAD_UPDATE_MEMBERS, data.response_map.chat.members, lead.chat );
 
+          dispatch( LEAD_UPDATE, {
+            conversation_id: lead.chat.id,
+            members: data.response_map.chat.members,
+            updated_at: lead.chat.recent_message.created_at * 1e9
+          } );
+          
         }
 
       }

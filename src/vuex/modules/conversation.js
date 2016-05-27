@@ -84,10 +84,10 @@ const mutations = {
 
   },
 
-  [CONVERSATION_SET_LAST_MESSAGE] (state, ) {
-    
+/*  [CONVERSATION_SET_LAST_MESSAGE] (state, ) {
+
   },
-  
+  */
   [CONVERSATION_AFTER_LOAD_IMG] ( state, beforeLoadId, newMessage ) {
     state.messages.forEach( ( message ) => {
 

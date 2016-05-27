@@ -65,7 +65,7 @@
             } );
           },
           ( error ) => {
-            console.error( error );
+            console.error( `[ CONVERSATION_SET ERROR ]: `, error );
             this.$router.go( { name: 'home' } );
           }
         );

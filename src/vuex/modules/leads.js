@@ -2,12 +2,10 @@ import {
   LEAD_INIT,
   LEAD_RECEIVE,
   LEAD_SET_TAB,
-  LEAD_APPLY_STATUS,
   LEAD_INC_NOTIFY,
   LEAD_CLEAR_NOTIFY,
-  LEAD_SET_LAST_MESSAGE,
   LEAD_INC_LENGTH_LIST,
-  LEAD_UPDATE_MEMBERS,
+  LEAD_UPDATE,
   LEAD_CLOSE
 } from '../mutation-types';
 import { getLengthListOnBody } from '../getters/lead.js';
@@ -47,6 +45,7 @@ const mutations = {
     checkUnreadMessage( seller );
     checkUnreadMessage( customer );
   },
+
   [LEAD_RECEIVE] ( state, leads, tab ) {
 
     if ( !state.hasOwnProperty( tab ) ) {
@@ -103,98 +102,57 @@ const mutations = {
     }
 
   },
+
   [LEAD_SET_TAB] ( state, tab = 'customer', lengthList = 12 ) {
     state.tab        = tab;
     state.lengthList = lengthList;
   },
+
   [LEAD_INC_LENGTH_LIST] ( state, lengthList = 6 ){
     state.lengthList += lengthList;
   },
-  [LEAD_UPDATE_MEMBERS] ( state, members, conversation ){
 
-    [ state.seller, state.customer ].forEach( ( leads, groupsIndex, groups ) => {
+  [LEAD_UPDATE] ( state, { conversation_id = null, members = null, parts = null, updated_at = null, status = null } ){
 
-      leads.forEach( ( lead, index ) => {
+    if ( conversation_id !== null ) {
 
-          if ( lead.chat !== null ) {
+      if ( members !== null || parts !== null || updated_at !== null || status !== null ) {
 
-            if ( conversation.id === lead.chat.id ) {
-              debugger;
-  
-              lead.chat.members              = members;
-              lead.updated_at                = conversation.recent_message.created_at * 1e9;
-              lead.chat.recent_message.parts = conversation.recent_message.parts;
-              groups[ groupsIndex ].$set( index, lead );
+        [ state.seller, state.customer ].forEach( ( leads, groupsIndex, groups ) => {
+
+          leads.forEach( ( lead, index ) => {
+
+            if ( lead.chat !== null ) {
+              if ( conversation_id === lead.chat.id ) {
+                debugger;
+
+                if ( members !== null ) {
+                  lead.chat.members = members;
+                }
+                if ( parts !== null ) {
+                  lead.chat.recent_message.parts = parts;
+                }
+                if ( updated_at !== null ) {
+                  lead.updated_at = updated_at;
+                }
+                if ( status !== null ) {
+                  lead.status = status;
+                }
+                groups[ groupsIndex ].$set( index, lead );
+              }
+
             }
 
+          } );
 
-          }
-
-      } );
-
-    } );
-
-  },
-  [LEAD_SET_LAST_MESSAGE] ( state, conversation_id, messages, members ) {
-
-    [ state.seller, state.customer ].forEach( ( leads, groupsIndex, groups ) => {
-
-      leads.forEach( ( lead, index ) => {
-
-        if ( lead.chat !== null ) {
-
-          if ( conversation_id === lead.chat.id ) {
-            lead.chat.members              = members;
-            lead.chat.recent_message.parts = messages[ 0 ].parts;
-            lead.updated_at                = messages[ 0 ].created_at * 1e9;
-            groups[ groupsIndex ].$set( index, lead );
-
-            console.log(groups[ groupsIndex ]);
-
-          }
-
-        }
-
-      } );
-
-    } );
-  },
-  [LEAD_APPLY_STATUS] ( state, conversation_id, statusCode, members, created_at ) {
-    const leads   = { seller: state.seller, customer: state.customer };
-    const handler = ( lead ) => {
-
-      if ( lead.chat !== null ) {
-        if ( lead.chat.id === conversation_id ) {
-          kik = true;
-
-          lead.status       = statusCode;
-          lead.chat.members = members;
-          lead.updated_at   = created_at * 1e9;
-
-          return lead;
-        }
-      }
-
-      return lead;
-
-    };
-    let kik       = false;
-
-    for ( const key in leads ) {
-
-      if ( leads.hasOwnProperty( key ) ) {
-
-        if ( kik ) {
-          break;
-        }
-
-        leads[ key ] = leads[ key ].map( handler );
+        } );
 
       }
-      state = Object.assign( {}, leads );
+
     }
 
   },
+
   [LEAD_INC_NOTIFY] ( state, lead_id ) {
 
     if ( lead_id !== null ) {
