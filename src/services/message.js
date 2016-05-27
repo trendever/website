@@ -1,5 +1,4 @@
 import channel from 'services/channel/channel.js';
-import cache from 'cache/message.js';
 
 export const ERROR_CODES = {
     NOT_EXISTS: 1,
@@ -8,6 +7,22 @@ export const ERROR_CODES = {
     // Local
     UNATHORIZED: 10
 };
+
+export function sendError( errorCode, state = null ) {
+  switch ( errorCode ) {
+    case ERROR_CODES.FORBIDDEN:
+      console.error( new Error( `Messages error: [ FOBIDDEN ]` ), state );
+      return false;
+    case ERROR_CODES.NOT_EXISTS:
+      console.error( new Error( `Messages error: [ NOT_EXISTS ]` ), state );
+      return false;
+    case ERROR_CODES.UNATHORIZED:
+      console.error( new Error( `Messages error: [ UNATHORIZED ]` ), state );
+      return false;
+    default:
+      return true;
+  }
+}
 
 
 /**
@@ -42,12 +57,6 @@ export const ERROR_CODES = {
 
 export function find( conversation_id, from_message_id, limit = 12) {
 
-  if ( cache.has( conversation_id, from_message_id ) ) {
-
-    return cache.find( conversation_id, from_message_id, limit );
-
-  }
-
   return new Promise( (resolve, reject) => {
 
     channel.req('search', 'message', { conversation_id, from_message_id, limit })
@@ -55,8 +64,6 @@ export function find( conversation_id, from_message_id, limit = 12) {
       if (!data.response_map.error) {
 
         resolve(data.response_map.messages);
-
-        cache.addOldMessage(conversation_id, data.response_map.messages);
 
       } else if (data.response_map.error.code === ERROR_CODES.FORBIDDEN) {
         reject(data.response_map.error);

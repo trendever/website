@@ -4,9 +4,9 @@
 .chat-row(:class='getSide')
   span(class='bubble_info bubble_info_time') {{ datetime }}
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
-    i(:class='{"ic-check": isSent, "ic-check-double": isRead, "ic-clock": isSending}')
+    i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
   .chat-msg.bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
-    .chat-msg_t(v-if='!isOwnMessage && !isClosest')
+    .chat-msg_t(v-if='!isOwnMessage && !isClosest', :class='{"chat-msg_t-customer-color":isCustomer}')
       | {{{ getUsername }}}
     .chat-msg-wrap
       p.chat-msg_txt
@@ -35,26 +35,38 @@
       }
     },
     computed: {
+      isLoaded(){
+        if( 'loaded' in this.msg){
+          return this.msg.loaded;
+        }
+        return true;
+      },
       getMessage() {
        return wrapLink(escapeHtml(this.msg.parts[0].content).replace(/\n/g, '<br />'));
       },
       datetime() {
         return formatTime(this.msg.created_at);
       },
-      getUsername () {
+      getUsername() {
+        if (this.isCustomer) {
+          return `<b>${this.msg.user.name}</b>`
+        }
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
           return `<b>${this.getShopName}</b>`
         }
-        if (this.msg.user.role === leads.USER_ROLES.CUSTOMER.key) {
-          return `<b>${this.msg.user.name}</b>`
-        }
-        return `<b>${this.getShopName}</b> <br/> (продавец ${this.msg.user.name})`
+        return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`
+      },
+      isCustomer(){
+        return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
       },
       isClosest(){
         return this.msg.closestMessage;
       },
       isOwnMessage() {
-        return this.getCurrentMember.user_id === this.msg.user.user_id
+        if ( this.getCurrentMember !== null ) {
+          return this.getCurrentMember.user_id === this.msg.user.user_id;
+        }
+        return false;
       },
       isSending() {
         return false;

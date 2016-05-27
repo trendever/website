@@ -1,22 +1,24 @@
 import {
+  LEAD_INIT,
   LEAD_RECEIVE,
   LEAD_SET_TAB,
-  LEAD_APPLY_STATUS,
-  LEAD_INIT_GLOBAL_NOTIFY,
   LEAD_INC_NOTIFY,
   LEAD_CLEAR_NOTIFY,
-  LEAD_SET_LAST_MESSAGE,
+  LEAD_INC_LENGTH_LIST,
+  LEAD_UPDATE,
   LEAD_CLOSE
 } from '../mutation-types';
+import { getLengthListOnBody } from '../getters/lead.js';
 
 // initial state
 const state = {
+  done: false,
   seller: [],
   customer: [],
   tab: 'customer',
   notify_count: {},
   global_notify_count: 0,
-  done: false,
+  lengthList: 12
 };
 
 function checkUnreadMessage( items ) {
@@ -34,89 +36,163 @@ function checkUnreadMessage( items ) {
 
 // mutations
 const mutations = {
-  [LEAD_RECEIVE] ( state, { seller, customer } ) {
-    if ( seller !== undefined ) {
-      state.seller = state.seller.concat( seller );
-      checkUnreadMessage( seller );
-    }
-    if ( customer !== undefined ) {
-      state.customer = state.customer.concat( customer );
-      checkUnreadMessage( customer );
-    }
-    state.done = true;
+  [LEAD_INIT]( state, { seller, customer, countUnread, lengthList } ) {
+    state.seller              = seller;
+    state.customer            = customer;
+    state.done                = true;
+    state.global_notify_count = countUnread;
+    state.lengthList          = lengthList;
+    checkUnreadMessage( seller );
+    checkUnreadMessage( customer );
   },
-  [LEAD_SET_TAB] ( state, tab = 'customer', leads ) {
-    state.tab          = tab;
-    state.notify_count = {};
 
-    if ( leads !== undefined ) {
-      state[ tab ] = leads;
+  [LEAD_RECEIVE] ( state, leads, tab ) {
+
+    if ( !state.hasOwnProperty( tab ) ) {
+      console.error( `${LEAD_RECEIVE}: передан таб который не поддерживается : ${tab}`, state );
+    }
+
+    const matchedId = [];
+
+    for ( let i = state[ tab ].length; i; i-- ) {
+
+      for ( let j = leads.length; j; j-- ) {
+
+        if ( state[ tab ][ i - 1 ].id === leads[ j - 1 ].id ) {
+
+          matchedId.push( leads[ j - 1 ].id );
+
+        }
+
+      }
+
+    }
+
+    if ( matchedId.length === 0 ) {
+
       checkUnreadMessage( leads );
-    }
-  },
-  [LEAD_SET_LAST_MESSAGE] ( state, conversation, messages ) {
 
-    state[ state.tab ].forEach( ( lead, index ) => {
+      state[ tab ] = state[ tab ].concat( leads );
 
-      if ( lead.chat !== null ) {
+    } else if ( matchedId.length !== leads.length ) {
 
-        if ( conversation.id === lead.chat.id ) {
+      const newLeads = [];
 
-          lead.chat.recent_message.parts = messages[ 0 ].parts;
-          lead.updated_at                = messages[ 0 ].created_at * 1e9;
-          state[ state.tab ].$set( index, lead );
+      for ( let i = leads.length; i; i-- ) {
 
-        }
+        let isNew = true;
 
-      }
+        for ( let j = matchedId.length; j; j-- ) {
 
-    } );
-  },
-  [LEAD_APPLY_STATUS] ( { seller, customer }, lead, status_key = 0 ) {
-    const leads = { seller, customer };
-    let kik     = false;
-    for ( const key in leads ) {
-      if ( leads.hasOwnProperty( key ) ) {
-        if ( kik ) {
-          break;
-        }
-        for ( let i = leads[ key ].length; i; i-- ) {
-          const oldLead = leads[ key ][ i - 1 ];
-          if ( oldLead.id === lead.id ) {
-            oldLead.status     = status_key;
-            oldLead.updated_at = lead.updated_at;
-            kik                = true;
+          if ( matchedId[ i - 1 ] === leads[ i - 1 ].id ) {
+
+            isNew = false;
             break;
+
           }
+
         }
+
+        if ( isNew ) {
+          newLeads.push( leads[ i - 1 ] );
+        }
+
       }
+
+      checkUnreadMessage( newLeads );
+
+      state[ tab ] = state[ tab ].concat( newLeads );
+
     }
+
   },
-  [LEAD_INIT_GLOBAL_NOTIFY] ( state, count ) {
-    state.global_notify_count = count;
+
+  [LEAD_SET_TAB] ( state, tab = 'customer', lengthList = 12 ) {
+    state.tab        = tab;
+    state.lengthList = lengthList;
   },
+
+  [LEAD_INC_LENGTH_LIST] ( state, lengthList = 6 ){
+    state.lengthList += lengthList;
+  },
+
+  [LEAD_UPDATE] ( state, { conversation_id = null, members = null, parts = null, updated_at = null, status = null } ){
+
+    if ( conversation_id !== null ) {
+
+      if ( members !== null || parts !== null || updated_at !== null || status !== null ) {
+
+        [ state.seller, state.customer ].forEach( ( leads, groupsIndex, groups ) => {
+
+          leads.forEach( ( lead, index ) => {
+
+            if ( lead.chat !== null ) {
+              if ( conversation_id === lead.chat.id ) {
+
+                if ( members !== null ) {
+                  lead.chat.members = members;
+                }
+                if ( parts !== null ) {
+                  lead.chat.recent_message.parts = parts;
+                }
+                if ( updated_at !== null ) {
+                  lead.updated_at = updated_at;
+                }
+                if ( status !== null ) {
+                  lead.status = status;
+                }
+                groups[ groupsIndex ].$set( index, lead );
+              }
+
+            }
+
+          } );
+
+        } );
+
+      }
+
+    }
+
+  },
+
   [LEAD_INC_NOTIFY] ( state, lead_id ) {
 
     if ( lead_id !== null ) {
+
       if ( !state.notify_count.hasOwnProperty( lead_id ) ) {
+
         state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 1 } );
+
       } else {
+
         state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: state.notify_count[ lead_id ] + 1 } );
+
       }
+
     }
 
     state.global_notify_count++;
 
   },
   [LEAD_CLEAR_NOTIFY] ( state, lead_id ) {
+
     if ( state.notify_count.hasOwnProperty( lead_id ) ) {
-      state.global_notify_count -= state.notify_count[ lead_id ];
+
+      const globalCount         = state.global_notify_count - state.notify_count[ lead_id ];
+
+      state.global_notify_count = globalCount >= 0 ? globalCount : 0;
+
     }
+
     state.notify_count = Object.assign( {}, state.notify_count, { [ lead_id ]: 0 } );
+
   },
-  [LEAD_CLOSE] ( state ){
-    state.done = false;
-  },
+  [LEAD_CLOSE] ( state ) {
+
+    state.lengthList = getLengthListOnBody();
+
+  }
 };
 
 export default {
