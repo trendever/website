@@ -4,7 +4,7 @@
 .chat-row(:class='getSide')
   span(class='bubble_info bubble_info_time') {{ datetime }}
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
-    i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
+    i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
   a.chat-msg.bubble(
     :href='getImg',
     target='_blank',

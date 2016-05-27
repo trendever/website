@@ -59,6 +59,24 @@ const mutations = {
 
   },
 
+  [CONVERSATION_LOAD_MESSAGE] ( state, messages ) {
+
+    const { id, all } = state;
+
+    if ( all.hasOwnProperty( id ) ) {
+
+      state.all = Object.assign( {}, all, { [id]: messages.concat( all[ id ] ) } );
+
+    } else {
+
+      state.all = Object.assign( {}, all, { [id]: messages } );
+
+      console.warn( 'При загрузке старых сообщений должены уже быть сообщения ', { id, all } );
+
+    }
+
+  },
+
   [CONVERSATION_RECEIVE_MESSAGE] ( state, messages, id ) {
 
     const { all } = state;
@@ -81,50 +99,40 @@ const mutations = {
 
   },
 
-  [CONVERSATION_LOAD_MESSAGE] ( state, messages ) {
+  [CONVERSATION_AFTER_LOAD_IMG] ( state, beforeLoadId, newMessage, id ) {
 
-    const { id, all } = state;
+    if ( state.all.hasOwnProperty( id ) ) {
 
-    if ( all.hasOwnProperty( id ) ) {
+      state.all[ id ].forEach( ( message ) => {
 
-      state.all = Object.assign( {}, all, { [id]: messages.concat( all[ id ] ) } );
+        if ( 'beforeLoadId' in message ) {
+
+          if ( beforeLoadId === message.beforeLoadId ) {
+
+            message.loaded          = true;
+            message.conversation_id = newMessage.conversation_id;
+            message.user_id         = newMessage.user_id;
+            message.created_at      = newMessage.created_at;
+            message.id              = newMessage.id;
+            message.user            = newMessage.user;
+            message.parts           = newMessage.parts;
+
+          }
+
+        }
+
+      } );
 
     } else {
 
-      state.all = Object.assign( {}, all, { [id]: messages } );
-
-      console.warn( 'При загрузке старых сообщений должены уже быть сообщения ', { id, all } );
+      console.warn('[ CONVERSATION_AFTER_LOAD_IMG ]: Нет такого объекта с сообщениями.');
 
     }
 
   },
 
   [CONVERSATION_INC_LENGTH_LIST] ( state, lengthList = 12 ) {
-
     state.lengthList = state.lengthList + lengthList;
-
-  },
-
-  [CONVERSATION_AFTER_LOAD_IMG] ( state, beforeLoadId, newMessage ) {
-    state.messages.forEach( ( message ) => {
-
-      if ( 'beforeLoadId' in message ) {
-
-        if ( beforeLoadId === message.beforeLoadId ) {
-
-          message.loaded          = true;
-          message.conversation_id = newMessage.conversation_id;
-          message.user_id         = newMessage.user_id;
-          message.created_at      = newMessage.created_at;
-          message.id              = newMessage.id;
-          message.user            = newMessage.user;
-          message.parts           = newMessage.parts;
-
-        }
-
-      }
-
-    } );
   },
 
   [CONVERSATION_SET_SHOW_STATUS_MENU] ( state, showStatusMenu ) {

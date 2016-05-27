@@ -393,11 +393,11 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
     ]
   };
 
-  dispatch( CONVERSATION_RECEIVE_MESSAGE, [ preLoadMessage ] );
+  dispatch( CONVERSATION_RECEIVE_MESSAGE, [ preLoadMessage ], getId( state ) );
 
   messageService.create( getId( state ), base64, MIME ).then( ( { messages } ) => {
 
-    dispatch( CONVERSATION_AFTER_LOAD_IMG, beforeLoadId, messages[ 0 ] );
+    dispatch( CONVERSATION_AFTER_LOAD_IMG, beforeLoadId, messages[ 0 ], getId( state ) );
 
   }, ( error ) => {
 
@@ -439,7 +439,9 @@ export const onMessages = ( { dispatch, state }, data ) => {
 
         if ( messages.length > 0 ) {
 
-          if ( messages[ 0 ].parts[ 0 ].mime_type === "text/plain" ) {
+          const MIME = messages[ 0 ].parts[ 0 ].mime_type;
+
+          if ( MIME === "text/plain" || MIME === "image/json") {
 
             return receiveMessage( { dispatch, state }, conversation_id, messages );
 
