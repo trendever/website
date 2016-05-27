@@ -103,7 +103,7 @@
       list( value ){
         const end = value.length;
         const start = end - this.getLengthList;
-        return value.slice( (start <= 0) ? 0 : start, end - 1 );
+        return value.slice( (start <= 0) ? 0 : start, end);
       }
     },
 

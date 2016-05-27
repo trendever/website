@@ -439,7 +439,7 @@ export const onMessages = ( { dispatch, state }, data ) => {
 
         if ( messages.length > 0 ) {
 
-          if ( messages[ 0 ].parts[ 0 ].mime_type === 'text/plain' ) {
+          if ( messages[ 0 ].parts[ 0 ].mime_type === "text/plain" ) {
 
             return receiveMessage( { dispatch, state }, conversation_id, messages );
 

@@ -9,7 +9,7 @@
     :href='getImg',
     target='_blank',
     :class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
-    .chat-msg_t(v-if='!isOwnMessage && !isClosest')
+    .chat-msg_t(v-if='!isOwnMessage && !isClosest', :class='{"chat-msg_t-customer-color":isCustomer}')
       | {{{ getUsername }}}
     img(:src='getImg', class='chat-msg-img', v-bind:class='{"chat-msg-img-opacity":!isLoaded }', v-bind:style="imgStyle")
 
@@ -98,7 +98,7 @@
         return formatTime(this.msg.created_at);
       },
       getUsername() {
-        if (this.msg.user.role === leads.USER_ROLES.CUSTOMER.key) {
+        if (this.isCustomer) {
           return `<b>${this.msg.user.name}</b>`
         }
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
@@ -108,6 +108,9 @@
       },
       isClosest(){
         return this.msg.closestMessage;
+      },
+      isCustomer(){
+        return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
       },
       isOwnMessage() {
         if ( this.getCurrentMember !== null ) {
