@@ -419,8 +419,6 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 
   dispatch( CONVERSATION_RECEIVE_MESSAGE, [ preLoadMessage ], getId( state ) );
 
-  console.log(getId( state ), base64, MIME);
-
   messageService.create( getId( state ), base64, MIME ).then( ( { messages } ) => {
 
     dispatch( CONVERSATION_CONFIRM_MSG, beforeLoadId, messages[ 0 ], getId( state ) );
