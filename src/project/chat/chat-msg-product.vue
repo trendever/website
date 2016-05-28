@@ -61,8 +61,8 @@
         return JSON.parse(this.msg.parts[0].content);
       },
       photo() {
-        const {InstagramImageURL, InstagramImageHeight, InstagramImageWidth} = this.product;
-        return urlThumbnail(InstagramImageURL, 306, InstagramImageWidth, InstagramImageHeight)
+        console.log(this.product);
+        this.product.InstagramImages.find((img) => img.Name === "S_square").url
       },
       description(){
         return this.product.InstagramImageCaption;
