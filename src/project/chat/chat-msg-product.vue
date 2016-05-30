@@ -61,8 +61,9 @@
         return JSON.parse(this.msg.parts[0].content);
       },
       photo() {
-        console.log(this.product);
-        this.product.InstagramImages.find((img) => img.Name === "S_square").url
+        if (Array.isArray(this.product.InstagramImages)) {
+          return this.product.InstagramImages.find((img) => img.Name === "S_square").url
+        }
       },
       description(){
         return this.product.InstagramImageCaption;
