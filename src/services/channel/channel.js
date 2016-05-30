@@ -48,7 +48,7 @@ class Channel {
           function( data ) {
             // ToDo: update if after refactoring protocol
             if ( !data.log_list[ 0 ] ) {
-              Raven.captureException(new Error('Product doesn"t exists or error'), {
+              console.error(new Error('Product doesn"t exists or error'), {
                 extra: {errorData: data},
                 level: 'fatal'
               });

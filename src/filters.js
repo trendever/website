@@ -18,4 +18,10 @@ export default function() {
   Vue.filter('curency_spaces', function(value) {
     return (value + '').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
   });
+
+  Vue.filter('truncate', function (text, stop, clamp) {
+    if (!text) {return ""}
+    return text.slice(0, stop) + (stop < text.length ? clamp || '...' : '')
+  });
+
 }

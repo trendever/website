@@ -6,6 +6,7 @@ export default class {
     this.store = store;
     this.routes = [];
     this.init();
+    this.hasRoute = this.hasRoute.bind( this );
   }
 
   init() {
@@ -15,12 +16,31 @@ export default class {
     );
   }
 
+  hasRoute( action_str, data_type, handler_func ) {
+    for ( let i = this.routes.length; i; i-- ) {
+      const route = this.routes[ i - 1 ];
+      if (
+        route.handler_func === handler_func &&
+        route.data_type === data_type &&
+        route.action_str === action_str
+      ) {
+        return true
+      }
+    }
+    return false;
+  }
+
   addRoute(action_str, data_type, handler_func) {
-    this.routes.push({
-      action_str: action_str,
-      data_type: data_type,
-      handler_func: handler_func
-    });
+    if(!this.hasRoute(action_str, data_type, handler_func)) {
+      this.routes.push({
+        action_str: action_str,
+        data_type: data_type,
+        handler_func: handler_func
+      });
+    } else {
+      console.error(new Error(`Нет необходимости добавлять два одинаковых обработчика
+       для действия ${action_str} и типа даннх ${data_type}`));
+    }
   }
 
   removeRoute(action_str, data_type, handler_func) {
@@ -75,7 +95,7 @@ export default class {
 
   onMessage(ctx) {
 
-    if (__debugMode && ctx.trans_map.trans_id) {
+    if (ctx.trans_map.trans_id) {
       var createdAt = ctx.trans_map.createdAt;
       var sendedAt = ctx.trans_map.sendedAt;
       var endTime = new Date().getTime();
@@ -86,7 +106,7 @@ export default class {
         color_code_key = 'color: #4CAF50';
       }
 
-      debugLog('[CHAN]' +
+      console.log('[CHAN]' +
        '%c ' + ctx.action_str +
        ' %c ' + ctx.data_type +
        ' %c ' + ctx.log_list[0].code_str +
@@ -98,7 +118,8 @@ export default class {
        'color: #FF9800',
        color_code_key,
        'color: #5E35B1',
-       'color: #2196F3'
+       'color: #2196F3',
+       {response: ctx}
        );
     }
 

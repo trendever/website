@@ -8,7 +8,7 @@ div
         .chat-header_cnt_t {{ getShopName }}
         .chat-header_cnt_info
           span.chat-header_cnt_info-text
-          | {{ getId }},
+          | {{ getLeadId }},
           span  {{ getStatus }}
 
 
@@ -22,6 +22,7 @@ div
   import {
     getStatusName,
     getId,
+    getLeadId,
     getShopName,
     getPhoto
   } from 'vuex/getters/chat.js';
@@ -51,6 +52,7 @@ div
     vuex: {
       getters: {
         getId,
+        getLeadId,
         getStatusName,
         getShopName,
         getPhoto,

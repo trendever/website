@@ -26,8 +26,6 @@ article.product-post
         .product-post__price-main(v-if='item.discount_price') {{ item.discount_price | curency_spaces }} #[i.ic-currency-rub]
       template(v-if='price(item)')
         .product-post__price-main(v-if='item.price') {{ item.price | curency_spaces }} #[i.ic-currency-rub]
-      template(v-if='zeroPrice(item)')
-        .product-post__price-main ? #[i.ic-currency-rub]
     .product-post__title.__bottom {{{ item.name }}}
 
   footer.product-post__footer
@@ -40,9 +38,7 @@ article.product-post
       .product-post__trend: i.ic-bag
       .product-post__action-title купить
 
-    .u-fill
-
-    a.product-post__action(v-link='{name:"product_repost", params: {id: obj.id}}' v-if='Mobile')
+    a.product-post__action.__right(v-link='{name:"product_repost", params: {id: obj.id}}' v-if='Mobile')
       .product-post__trend: i.ic-instagram-icon
       .product-post__action-title пост
 
@@ -153,7 +149,8 @@ article.product-post
         // Load and set full image.
         let img = new Image();
         let obj = this.openedProduct.product;
-        let url = urlThumbnail(obj.instagram_image_url, 750);
+        let url = obj.instagram_images.find((img) => img.name === "L").url
+
         img.load(url, null, null, () => {
           this.IgImageUrl = url;
           this.imageOpacity = 1;

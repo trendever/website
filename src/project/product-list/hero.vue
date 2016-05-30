@@ -1,4 +1,4 @@
-<style src='./styles/hero.pcss' scoped></style>
+<style src='./styles/hero.pcss'></style>
 <template lang="jade">
 .section.smallHero(v-if='isAuth')
   a(v-link='{ path: "/why" }')
@@ -33,7 +33,7 @@
             v-link='{name: "agreement"}') Условия
           //- a(class='profile-header__menu-link', href='#') Отмена
 
-    .hero__content__logo.ic-logo
+    .hero__content__logo
     .hero__content__description Шопинг в Instagram стал проще
 </template>
 <script type='text/babel'>

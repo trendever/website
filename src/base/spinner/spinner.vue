@@ -1,7 +1,7 @@
-<template lang="jade">
-.spinner
-  .dot1
-  .dot2
+<template>
+  <div class="spinner">
+    <div class="dot1"></div>
+    <div class="dot2"></div>
   </div>
 </template>
 

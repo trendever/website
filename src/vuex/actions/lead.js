@@ -1,118 +1,209 @@
 import {
-	LEAD_RECEIVE,
-	LEAD_SET_TAB,
-	LEAD_APPLY_STATUS,
-	LEAD_INIT_GLOBAL_NOTIFY,
-	LEAD_INC_NOTIFY,
-	LEAD_CLEAR_NOTIFY,
-	LEAD_SET_LAST_MESSAGE,
-	LEAD_CLOSE
+  LEAD_INIT,
+  LEAD_RECEIVE,
+  LEAD_UPDATE,
+  LEAD_SET_TAB,
+  LEAD_CLEAR_NOTIFY,
+  LEAD_INC_NOTIFY,
+  LEAD_INC_LENGTH_LIST,
+  LEAD_CLOSE
 } from '../mutation-types';
-
 import * as leads from 'services/leads.js';
 import * as message from 'services/message';
+import {
+  getOlderLead,
+  getLeadByConversationId,
+  getTab,
+  getLengthListOnBody,
+  getLeads,
+  getLengthList,
+  getGroup
+} from '../getters/lead';
 
-import { getOlderLead, getLeads, getTab, isEmptyLeads } from '../getters/lead';
+export const init = ( { dispatch } ) => {
 
-export const createLead = ( { dispatch }, product_id ) => {
+  return new Promise( ( resolve, reject ) => {
 
-	return leads.create( product_id ).then(
-		( lead ) => {
-			dispatch( LEAD_RECEIVE, [ lead ] );
-			return lead;
-		},
-		( error ) => {
-			if ( error === leads.ERROR_CODES.UNATHORIZED ) {
-				console.log( '[ UNATHORIZED ]: ', error );
-			}
-			if ( error === leads.ERROR_CODES.OBJECT_NOT_EXIST ) {
-				console.log( '[ OBJECT_NOT_EXIST ]: ', error );
-			}
-			console.log( error );
-		} );
+    Promise.all( [ message.getCountUnread(), leads.find( getLengthListOnBody() ) ] ).then(
+      ( [countUnread, { customer, seller }] ) => {
+        dispatch( LEAD_INIT, {
+          customer,
+          seller,
+          countUnread,
+          lengthList: getLengthListOnBody()
+        } );
+        resolve();
+      },
+      ( errors ) => {
+        message.sendError( errors[ 0 ] );
+        leads.sendError( errors[ 1 ] );
+        reject();
+      }
+    );
+
+  } );
 
 };
 
-export const loadLeads = ( { dispatch, state } ) => {
+export const incLengthList = ( { dispatch }, count = getLengthListOnBody() ) => {
 
-	if ( isEmptyLeads( state ) ) {
+  dispatch( LEAD_INC_LENGTH_LIST, count );
 
-		return leads.find( 12 ).then(
-			( { customer, seller } ) => {
-				dispatch( LEAD_RECEIVE, { customer, seller } );
-			},
-			( error ) => {
-				console.log( error );
-			}
-		);
+};
 
-	} else {
+export const loadLeads = ( { dispatch, state }, count = 6 ) => {
 
-		const tab = getTab( state );
+  return new Promise( ( resolve, reject ) => {
 
-		return leads.find( 6, getOlderLead( state ), tab ).then(
-			( { leads } ) => {
-				dispatch( LEAD_RECEIVE, { [tab]: leads } );
-			},
-			( error ) => {
-				console.log( error );
-			}
-		);
+    const tab = getTab( state );
 
-	}
+    if ( getLeads( state ).length > (getLengthList( state ) + count) ) {
+
+      incLengthList( { dispatch }, count );
+      resolve();
+
+    } else {
+
+      leads
+        .find( count, getOlderLead( state ), tab )
+        .then(
+          ( { leads } ) => {
+            incLengthList( { dispatch }, leads.length );
+            dispatch( LEAD_RECEIVE, leads, tab );
+            resolve();
+          },
+          (error) => {
+            leads.sendError( error );
+            reject();
+          }
+        );
+
+    }
+
+  } );
+
+};
+
+export const createLead = ( { dispatch }, product_id ) => {
+
+  return leads
+    .create( product_id )
+    .then(
+      ( lead ) => {
+        incLengthList( { dispatch }, 1 );
+        dispatch( LEAD_RECEIVE, [ lead ], 'customer' );
+        return lead;
+      },
+      leads.sendError
+    );
+
 };
 
 export const setTab = ( { dispatch }, tab ) => {
 
-	return leads.find( 12, null, tab ).then(
-		( {leads} ) => {
-			dispatch( LEAD_SET_TAB, tab, leads );
-		},
-		( error ) => {
-			console.log( error );
-		}
-	);
+  dispatch( LEAD_SET_TAB, tab, getLengthListOnBody() );
 
 };
 
-export const applyStatus = ( { dispatch }, lead, status_key ) => {
-	dispatch( LEAD_APPLY_STATUS, lead, status_key );
+export const onMessages = (
+  { dispatch, state },
+  { response_map:{ chat:{ id:conversation_id, members }, messages } }
+) => {
+
+  function handler( lead ) {
+
+    if ( messages[ 0 ].parts[ 0 ].mime_type === "json/status" ) {
+
+      const statusCode = leads.getStatusCode( JSON.parse( messages[ 0 ].parts[ 0 ].content ).value );
+
+      dispatch( LEAD_UPDATE, {
+        conversation_id,
+        members,
+        status: statusCode,
+        updated_at: messages[ 0 ].created_at * 1e9
+      } );
+
+    }
+
+    if ( messages[ 0 ].parts[ 0 ].mime_type === "text/plain" ) {
+
+      dispatch( LEAD_UPDATE, {
+        conversation_id,
+        members,
+        parts: messages[ 0 ].parts,
+        updated_at: messages[ 0 ].created_at * 1e9
+      } );
+
+      if ( state.conversation.id !== conversation_id ) {
+
+        dispatch( LEAD_INC_NOTIFY, (lead !== undefined) ? lead.id : null );
+
+      }
+
+    }
+
+  }
+
+  const lead = getLeadByConversationId( state, conversation_id );
+
+  if ( lead ) {
+
+    handler( lead );
+
+  } else {
+
+    leads
+      .get( { conversation_id } )
+      .then(
+      ( { lead } ) => {
+        // TODO Спросить как можно определить, для текущего пользователя lead в покупаю || продаю.
+        dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) );
+        handler( lead );
+      } )
+      .catch( ( error ) => {
+        leads.sendError( error, state );
+      } );
+
+  }
+
 };
 
-export const setLastMessages = ( { dispatch }, chat, messages ) => {
-	dispatch( LEAD_SET_LAST_MESSAGE, chat, messages );
-};
+export const onMessageRead = ( { dispatch, state }, data ) => {
 
-export const initGlobalNotify = ( { dispatch } ) => {
-	return message.getCountUnread().then(
-		( count ) => {
-			dispatch( LEAD_INIT_GLOBAL_NOTIFY, count );
-		},
-		( error ) => {
-			console.log( error );
-		}
-	);
-};
+  if ( data.response_map ) {
+    if ( data.response_map.chat ) {
+      if ( Array.isArray( data.response_map.chat.members ) ) {
 
-export const incNotify = ( { dispatch, state }, conversation_id ) => {
-	let lead = getLeads( state ).find( ( { chat } ) => {
-		if ( chat !== null ) {
-			return chat.id === conversation_id;
-		}
-	} );
-	if ( state.conversation.lead !== null ) {
-		if ( state.conversation.id !== conversation_id ) {
-			dispatch( LEAD_INC_NOTIFY, (lead !== undefined) ? lead.id : null );
-		}
-	} else {
-		dispatch( LEAD_INC_NOTIFY, (lead !== undefined) ? lead.id : null );
-	}
+        const lead = getLeadByConversationId( state, data.response_map.chat.id );
+
+        if ( lead ) {
+
+          if ( lead.chat ) {
+
+            dispatch( LEAD_UPDATE, {
+              conversation_id: lead.chat.id,
+              members: data.response_map.chat.members,
+              updated_at: lead.chat.recent_message.created_at * 1e9
+            } );
+
+          }
+
+        }
+
+      }
+    }
+  }
+
 };
 
 export const clearNotify = ( { dispatch }, lead_id ) => {
-	dispatch( LEAD_CLEAR_NOTIFY, lead_id );
+
+  dispatch( LEAD_CLEAR_NOTIFY, lead_id );
+
 };
 
-export const closedList = ( { dispatch } ) => {
-	dispatch( LEAD_CLOSE );
+export const leadClose = ( { dispatch } ) => {
+
+  dispatch( LEAD_CLOSE );
+
 };

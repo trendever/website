@@ -1,3 +1,4 @@
+<style src="./styles/photo-item.pcss"></style>
 <template lang="jade">
 .photo__container(class='{{ classForColumn }}', v-if='!error')
   a.photo__link(
@@ -8,8 +9,8 @@
        v-on:load='showImage',
        v-on:error='loadError')
   .photo__description
-    .photo__title {{title}}
-    .photo__summ
+    .photo__title {{ title | truncate 45 }}
+    .photo__summ(v-if="discountPrice")
       span {{ discountPrice | curency_spaces }}
       i.ic-currency-rub
 </template>
@@ -48,9 +49,11 @@
 
     computed: {
       thumb() {
-        return urlThumbnail(this.product.instagram_image_url, 480,
-                               this.product.instagram_image_width,
-                               this.product.instagram_image_height)
+        if (this.product && this.product.instagram_images) {
+          return this.product.instagram_images
+          .find((img) => img.name === "M_square").url
+        }
+        // return this.product.instagram_image_url
       },
       classForColumn() {
         switch(this.count){
@@ -64,14 +67,14 @@
       discountPrice() {
         const items = this.product.items;
         if (items.length === 0) {
-          return '?';
+          return
         }
         if (items[0].discount_price) {
           return items[0].discount_price;
         } else if (items[0].price) {
           return items[0].price
         }
-        return '?'
+        return
       },
       title() {
         const items = this.product.items;

@@ -23,6 +23,7 @@ export const formatPhone = (phonenum, simpleOut) => {
 };
 
 export const urlThumbnail = (url, size = null, originalWidth = null, originalHeight = null) => {
+  console.warn('Deprecated method, please use instagram_images in server response')
   /**
    *  Changed instagram photo url, for crop image.
    *  Supports sizes: 150, 306, 480, 640, 750 (width=height)

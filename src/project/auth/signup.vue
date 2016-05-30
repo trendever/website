@@ -118,7 +118,7 @@ div
       this.instagram = this.authData.instagram;
       const onResize = () => {
         this.$set('height', `${ document.body.scrollHeight }px`);
-        this.$set('showTitleSlider', document.body.scrollHeight > 900);
+        this.$set('showTitleSlider', document.body.scrollHeight >= 1000 || document.body.scrollWidth > 750);
       };
       this.resize = listen( window, 'resize', onResize );
       onResize();

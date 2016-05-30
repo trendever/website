@@ -1,16 +1,12 @@
 <style src="project/app/style.pcss"></style>
 
-<template lang="jade">
-div(:class='{popup: isShowPopupFastSignup}')
-  popup-signup(
-    v-if='isShowPopupSignup')
-
-  popup-fast-signup(
-    v-if='isShowPopupFastSignup && isNotWhy')
-
-router-view
-notify-component
-
+<template >
+  <div :class="{popup: isShowPopupFastSignup}">
+    <popup-signup v-if="isShowPopupSignup"></popup-signup>
+    <popup-fast-signup v-if="isShowPopupFastSignup && isNotWhy"></popup-fast-signup>
+  </div>
+  <router-view></router-view>
+  <listener-component></listener-component>
 </template>
 
 <script type='text/babel'>
@@ -33,7 +29,7 @@ notify-component
 
   import PopupFastSignup from 'project/auth-popup/fast-signup.vue'
   import PopupSignup from 'project/auth-popup/signup.vue'
-  import NotifyComponent from 'project/notify/index.vue'
+  import ListenerComponent from 'project/listener/index.vue'
 
   export default {
     data: () => ({}),
@@ -81,7 +77,7 @@ notify-component
       }
     },
     components: {
-      NotifyComponent,
+      ListenerComponent,
       PopupFastSignup,
       PopupSignup,
     },
