@@ -1,0 +1,51 @@
+@import 'base/vars/vars.pcss';
+
+.profile-cnt {
+  .profile {
+    &_info {
+      padding-top: 25px;
+      text-align: center;
+
+
+      &_count {
+        display: inline-block;
+        vertical-align: middle;
+        width: 240px;
+        color: $color__gray-dark;
+        font-size: 40px;
+
+        &_t {
+          margin-top: 7px;
+          font-size: 28px;
+          color: $color__gray;
+        }
+      }
+      &_img {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        overflow: hidden;
+        border-radius: 50%;
+        background: whitesmoke;
+        size: 190px;
+        margin: 0 10px;
+
+        img {
+          size: 100%;
+        }
+      }
+    }
+
+    &_desc {
+      color: $color__gray-dark;
+      font-size: 28px;
+      padding-top: 26px;
+      padding: 26px 30px 22px;
+      border-bottom: 1px solid $color__gray-light;
+
+      &_t {
+        font-weight: bold;
+      }
+    }
+  }
+}

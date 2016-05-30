@@ -15,6 +15,25 @@ export const ERROR_CODES = {
     // Local
     UNATHORIZED: 10
 };
+export function sendError( errorCode, state = null ) {
+  switch ( errorCode ) {
+    case ERROR_CODES.FORBIDDEN:
+      console.error( new Error( `Chat error: [ FOBIDDEN ]` ), state );
+      break;
+    case ERROR_CODES.NOT_EXISTS:
+      console.error( new Error( `Chat error: [ NOT_EXISTS ]` ), state );
+      break;
+    case ERROR_CODES.UNATHORIZED:
+      console.error( new Error( `Chat error: [ UNATHORIZED ]` ), state );
+      break;
+    case ERROR_CODES.NO_ERRORS:
+      console.error( new Error( `Chat error: [ NO_ERRORS ]` ), state );
+      break;
+    default:
+      return true;
+  }
+}
+
 /**
  * Подписыать сообщения вот так
  * Мои сообщения - (любого юзера) никак не помечаются.

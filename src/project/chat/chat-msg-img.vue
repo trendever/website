@@ -4,12 +4,12 @@
 .chat-row(:class='getSide')
   span(class='bubble_info bubble_info_time') {{ datetime }}
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
-    i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
+    i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
   a.chat-msg.bubble(
     :href='getImg',
     target='_blank',
     :class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
-    .chat-msg_t(v-if='!isOwnMessage && !isClosest')
+    .chat-msg_t(v-if='!isOwnMessage && !isClosest', :class='{"chat-msg_t-customer-color":isCustomer}')
       | {{{ getUsername }}}
     img(:src='getImg', class='chat-msg-img', v-bind:class='{"chat-msg-img-opacity":!isLoaded }', v-bind:style="imgStyle")
 
@@ -41,8 +41,8 @@
     data(){
       return {
         imgStyle:{
-          maxWidth: `600px`,
-          maxHeight: `400px`
+          width: `600px`,
+          height: `600px`
         }
       }
     },
@@ -97,20 +97,26 @@
       datetime() {
         return formatTime(this.msg.created_at);
       },
-      getUsername () {
+      getUsername() {
+        if (this.isCustomer) {
+          return `<b>${this.msg.user.name}</b>`
+        }
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
           return `<b>${this.getShopName}</b>`
         }
-        if (this.msg.user.role === leads.USER_ROLES.CUSTOMER.key) {
-          return `<b>${this.msg.user.name}</b>`
-        }
-        return `<b>${this.getShopName}</b> <br/> (продавец ${this.msg.user.name})`
+        return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`
       },
       isClosest(){
         return this.msg.closestMessage;
       },
+      isCustomer(){
+        return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
+      },
       isOwnMessage() {
-        return this.getCurrentMember.user_id === this.msg.user.user_id
+        if ( this.getCurrentMember !== null ) {
+          return this.getCurrentMember.user_id === this.msg.user.user_id;
+        }
+        return false;
       },
       isSent() {
         return !this.isRead

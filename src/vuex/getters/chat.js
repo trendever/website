@@ -1,103 +1,325 @@
 import * as leads from 'services/leads';
 import { formatMonth } from 'project/chat/utils';
 import { userID } from 'vuex/getters';
+import { getLeadByConversationId } from '../getters/lead.js';
 
-export const getId = ({conversation}) => conversation.id;
-export const getLeadId = ({conversation}) => conversation.lead.id;
-export const getMessages = ({conversation}) => {
+export const getId = ( { conversation } ) => conversation.id;
 
-  if(conversation.messages !== null){
+export const getLengthList = ({ conversation }) => conversation.lengthList;
+
+export const getLeadId = ( state ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead ) {
+
+    return lead.id;
+
+  }
+
+  return null;
+
+};
+
+export const isInit = ( { conversation }, lead ) => {
+  
+  if ( lead.chat ) {
+    
+    if ( lead.chat.id ) {
+      
+      if ( conversation.allInit.hasOwnProperty( lead.chat.id ) ) {
+        
+        return conversation.allInit[ lead.chat.id ];
+        
+      }
+      
+    }
+    
+  }
+  
+  return false;
+  
+};
+
+export const isMessages = ( { conversation }, lead ) => {
+
+  if ( lead.chat ) {
+
+    if ( lead.chat.id ) {
+
+      if ( conversation.all.hasOwnProperty( lead.chat.id ) ) {
+  
+        if ( Array.isArray( conversation.all[ lead.chat.id ] ) ) {
+    
+          return {
+            count: conversation.all[ lead.chat.id ].length,
+            messages: conversation.all[ lead.chat.id ]
+          };
+    
+        }
+
+      }
+
+    }
+
+  }
+  
+  return {
+    count: 0,
+    messages: null
+  };
+
+};
+
+export const getMessages = ( { conversation:{ id, all } } ) => {
+
+  const messages = all[ id ];
+
+  if ( Array.isArray( messages ) ) {
 
     let lastUserId = null;
 
-    return conversation.messages.map((message) => {
+    return messages.map( ( message ) => {
 
-      if(lastUserId === message.user.id){
+      if ( message.parts[ 0 ].mime_type === 'text/plain' ) {
 
-        message.closestMessage = true;
+        if ( lastUserId === message.user.id ) {
 
-      } else {
+          message.closestMessage = true;
 
-        lastUserId = message.user.id;
-        message.closestMessage = false;
+        } else {
+
+          lastUserId             = message.user.id;
+          message.closestMessage = false;
+
+        }
 
       }
 
       return message;
 
-    });
+    } );
 
   }
 
-  return conversation.messages;
+  return [];
 
 };
-export const getShowMenu = ({conversation}) => conversation.showMenu;
-export const getShowStatusMenu = ({conversation}) => conversation.showStatusMenu;
-export const getStatus = ({conversation:{lead}}) => {
-	if ( lead ) {
-		return lead.status;
-	}
-	return null;
-};
-export const getStatusName = ({conversation:{lead}}) =>{
-	if ( lead ) {
-		return leads.getStatus(lead.status).name;
-	}
-	return null;
-};
-export const getPhoto = ({conversation:{lead}}) => {
-	if ( lead ) {
-		return lead.shop.instagram_avatar_url;
-	}
-	return null;
-};
-export const getShopName = ({conversation:{lead}}) => {
-	if ( lead ) {
-		return  lead.shop.instagram_username;
-	}
-	return null;
+
+export const getShowMenu = ( { conversation } ) => conversation.showMenu;
+
+export const getShowStatusMenu = ( { conversation } ) => conversation.showStatusMenu;
+
+export const getStatus = ( state ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead !== null ) {
+
+    return lead.status;
+
+  }
+
+  return lead;
+
 };
 
-export const getCurrentMember = ({conversation, user}) => {
-	if (conversation.members === undefined || conversation.members === null) {
-		return null;
-	}
-	return conversation.members.find(({user_id}) => {
-		return user_id === user.id;
-	});
+export const getStatusName = ( state ) => {
+
+  const status = getStatus( state );
+
+  if ( status !== null ) {
+
+    return leads.getStatus( status ).name;
+
+  }
+
+  return status;
 };
 
-export const getLastMessageId = ({conversation, user}) => {
-	const {user_id} = getCurrentMember({conversation, user});
-	return conversation.members
-	                   .filter(member => member.user_id !== user_id)
-	                   .map(member => member.last_message_id)
-	                   .sort((a, b) => b - a)[0];
-};
-export const conversationNotifyCount = state => state.notify_count;
+export const getPhoto = ( state ) => {
 
-export const getInviteShop     = ( { conversation:{ lead } } ) => {
-	return lead.shop.supplier.has_email || lead.shop.supplier.has_phone;
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead !== null ) {
+
+    return lead.shop.instagram_avatar_url;
+
+  }
+
+  return null;
 };
-export const getInviteCustomer = ( { conversation:{ lead } } ) => {
-	return lead.customer.has_phone;
+
+export const getShopName = ( state ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead !== null ) {
+
+    return lead.shop.instagram_username;
+
+  }
+
+  return null;
+
 };
-export const getCreateData     = ( { conversation:{ lead } } ) => {
-	return formatMonth(lead.chat.recent_message.created_at);
+
+export const getCurrentMember = ( state ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead ) {
+
+    if ( lead.chat ) {
+
+      if ( lead.chat.members ) {
+
+        if ( Array.isArray( lead.chat.members ) ) {
+
+          return lead.chat.members.find( ( { user_id } ) => {
+
+            return user_id === state.user.id;
+
+          } );
+
+        }
+
+      }
+
+    }
+
+  }
+
+  return null;
+
 };
-export const isJoined          = ( state, lead ) => {
-	if ( lead ) {
-		if ( lead.chat ) {
-			const { members } = lead.chat;
-			const currentUserId = userID( state );
-			for ( let i = members.length; i; i-- ) {
-				const { user_id } = members[ i - 1 ];
-				if ( user_id === currentUserId ) {
-					return true;
-				}
-			}
-		}
-	}
-	return false;
+
+export const getLastMessageId = ( state ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  const { user_id } = getCurrentMember( state );
+
+  if ( lead.chat ) {
+
+    if ( lead.chat.members ) {
+
+      return lead
+        .chat
+        .members
+        .filter( member => member.user_id !== user_id )
+        .map( member => member.last_message_id )
+        .sort( ( a, b ) => b - a )[ 0 ];
+
+    }
+
+  }
+
 };
+
+export const conversationNotifyCount = state => state.leads.global_notify_count;
+
+export const getInviteShop = ( state ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead ) {
+
+    if ( lead.shop ) {
+
+      if ( lead.shop.supplier ) {
+
+        return lead.shop.supplier.has_email || lead.shop.supplier.has_phone;
+
+      }
+
+    }
+
+  }
+
+  console.warn( 'Нет лида или  магазина или поставщика', lead );
+
+  return false;
+
+};
+
+export const getInviteCustomer = ( state ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead ) {
+
+    if ( lead.customer ) {
+
+      return lead.customer.has_phone;
+
+    }
+
+  }
+
+  return false;
+
+};
+
+export const getCreateData = ( state ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead ) {
+
+    if ( lead.chat ) {
+
+      if ( lead.chat.recent_message ) {
+
+        return formatMonth( lead.chat.recent_message.created_at );
+
+      }
+
+    }
+
+  }
+
+  return null;
+
+};
+
+export const isJoined = ( state, lead ) => {
+
+  if ( lead ) {
+
+    if ( lead.chat ) {
+
+      const { members } = lead.chat;
+      const currentUserId = userID( state );
+
+      for ( let i = members.length; i; i-- ) {
+
+        const { user_id } = members[ i - 1 ];
+
+        if ( user_id === currentUserId ) {
+
+          return true;
+
+        }
+
+      }
+
+    }
+
+  }
+
+  return false;
+
+};
+
+export const getRowHeight = () => {
+  
+  if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
+    return 65
+  }
+  
+  return 50;
+  
+};
+
+export const getCountRowOnBody = () => Math.round( document.body.offsetHeight / getRowHeight() );

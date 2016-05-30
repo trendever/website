@@ -1,3 +1,4 @@
+<style src="./styles/photo-item.pcss"></style>
 <template lang="jade">
 .photo__container(class='{{ classForColumn }}', v-if='!error')
   a.photo__link(

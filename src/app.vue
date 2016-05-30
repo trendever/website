@@ -6,7 +6,7 @@
     <popup-fast-signup v-if="isShowPopupFastSignup && isNotWhy"></popup-fast-signup>
   </div>
   <router-view></router-view>
-  <notify-component></notify-component>
+  <listener-component></listener-component>
 </template>
 
 <script type='text/babel'>
@@ -29,7 +29,7 @@
 
   import PopupFastSignup from 'project/auth-popup/fast-signup.vue'
   import PopupSignup from 'project/auth-popup/signup.vue'
-  import NotifyComponent from 'project/notify/index.vue'
+  import ListenerComponent from 'project/listener/index.vue'
 
   export default {
     data: () => ({}),
@@ -41,7 +41,7 @@
       getters: {
         isAuth,
         isShowPopupSignup,
-        isShowPopupFastSignup
+        isShowPopupFastSignup,
       }
     },
 
@@ -77,7 +77,7 @@
       }
     },
     components: {
-      NotifyComponent,
+      ListenerComponent,
       PopupFastSignup,
       PopupSignup,
     },
