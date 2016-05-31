@@ -23,7 +23,7 @@
 </template>
 
 <script type='text/babel'>
-  import { formatDatetime, urlThumbnail } from 'utils';
+  import { formatDatetime } from 'utils';
   import { formatTime } from './utils';
   import { user } from 'vuex/getters';
   import * as leads from 'services/leads';
@@ -66,28 +66,27 @@
         return JSON.parse(this.msg.parts[0].content);
       },
       photo() {
-        if (Array.isArray(this.product.InstagramImages)) {
-          return this.product.InstagramImages.find((img) => img.Name === "S_square").url
+        if (Array.isArray(this.product.instagram_images)) {
+          return this.product.instagram_images.find((img) => img.name == "S_square").url
         }
       },
       description(){
-        return this.product.InstagramImageCaption;
+        return this.product.instagram_image_caption;
       },
       titles() {
+        if(Array.isArray(this.product.items)) {
 
-        if(Array.isArray(this.product.Items)){
-
-          return this.product.Items.reduce(function(desc, item, i, arr) {
-            desc += `${item.Name} `;
-            if (item.DiscountPrice) {
-              desc += `, ${item.DiscountPrice} <i class="ic-currency-rub"</i>`;
-            } else if (item.Price) {
-              desc += `, ${item.Price} <i class="ic-currency-rub"</i>`;
+          return this.product.items.reduce( function( desc, item, i, arr ) {
+            desc += `${item.name} `;
+            if ( item.discount_price ) {
+              desc += `, ${item.discount_price} <i class="ic-currency-rub"</i>`;
+            } else if ( item.price ) {
+              desc += `, ${item.price} <i class="ic-currency-rub"</i>`;
             } else {
               desc += `, цена по запросу`;
             }
             return desc;
-          }, '')
+          }, '' )
 
         }
 

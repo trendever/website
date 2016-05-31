@@ -46,8 +46,8 @@
     },
     methods: {
       getPhoto(obj) {
-        if (this.lead.products) {
-          return urlThumbnail(obj.instagram_image_url, 306, obj.instagram_image_width, obj.instagram_image_height)
+        if (this.lead.products && Array.isArray(obj.instagram_images)) {
+          return obj.instagram_images.find((img) => img.name == "S_square").url
         }
       }
     },

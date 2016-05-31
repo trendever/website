@@ -81,34 +81,52 @@ export const loadUser = ({ dispatch }) => {
 };
 
 /**
- * Open user
+ * Open user or shop profile
  * @param  {number} id
  * @param  {string} instagram_username
  * @return {object} user
  */
-export const openUser = ({ dispatch, state }, { user_id, instagram_name }) => {
+export const openProfile = ({ dispatch, state }, { user_id, instagram_name }) => {
   return new Promise((resolve, reject) => {
+    let openedProfile = state.user.openedProfile;
+
     if (!user_id && !instagram_name) {
       // Open profile current user
-      user_id = state.user.id
+      if (state.user.instagram_username) {
+        // instagram_name have more priority, for get shop if exist.
+        instagram_name = state.user.instagram_username
+      } else {
+        // get user only
+        user_id = state.user.id
+      }
     }
 
-    if (state.user.openedUser) {
-      if (user_id && state.user.openedUser.id === user_id) {
-        resolve(state.user.openedUser);
-        return;
-      } else if (instagram_username && state.user.openedUser.instagram_username === instagram_name) {
-        resolve(state.user.openedUser);
-        console.log("username");
-        return;
+    if (openedProfile) {
+      if (user_id && openedProfile.User) {
+        if (openedProfile.User.id === user_id) {
+          resolve(state.user.openedProfile);
+          return;
+        }
+      }
+      if (instagram_name && openedProfile.Shop) {
+        if (openedProfile.Shop.instagram_username === instagram_name) {
+          resolve(openedProfile);
+          return;
+        }
+      }
+      if (instagram_name && openedProfile.User) {
+        if (openedProfile.User.instagram_username === instagram_name) {
+          resolve(openedProfile);
+          return;
+        }
       }
     }
 
     // Otherwise get from server
     userService.get({ user_id, instagram_name })
-    .then( user => {
-      dispatch(types.RECEIVE_OPENED_USER, user);
-      resolve(user);
+    .then( data => {
+      dispatch(types.RECEIVE_OPENED_PROFILE, data);
+      resolve(data);
       return;
     })
     .catch( error => {
@@ -117,9 +135,9 @@ export const openUser = ({ dispatch, state }, { user_id, instagram_name }) => {
 
   });
 };
-export const closeUser = () => {
-  dispatch(types.CLEAR_OPENED_USER);
-};
+// export const closeUser = () => {
+//   dispatch(types.CLEAR_OPENED_USER);
+// };
 
 
 // Products
@@ -131,10 +149,10 @@ export const closeUser = () => {
  * @param  {string} options.q              search in title
  * @param  {number|array} options.tags     products have tags
  */
-export const getPartProducts = ({ dispatch, state }, { limit, offset, q, tags, user_instagram_name, user_id }) => {
+export const getPartProducts = ({ dispatch, state }, { limit, offset, q, tags, instagram_name }) => {
   dispatch(types.WAIT_PRODUCTS_RESPONSE);
 
-  products.find({ limit, offset, q, tags, user_instagram_name, user_id })
+  products.find({ limit, offset, q, tags, instagram_name })
   .then( data => {
     dispatch(types.RECEIVE_PRODUCTS_RESPONSE);
     dispatch(types.RECEIVE_PRODUCTS, data.object_list);
@@ -156,15 +174,11 @@ export const getPartProducts = ({ dispatch, state }, { limit, offset, q, tags, u
  * @param  {number|array} options.tags     products have tags
  */
 export const getMoreProducts = ({ dispatch, state }, { limit, offset, from_id, direction,
-                                                       q, tags,
-                                                       user_id, user_instagram_name,
-                                                       shop_id, shop_instagram_name }) => {
+                                                       q, tags, instagram_name }) => {
   dispatch(types.WAIT_PRODUCTS_RESPONSE);
 
   products.find({ limit, offset, from_id, direction,
-                  q, tags,
-                  user_id, user_instagram_name,
-                  shop_id, shop_instagram_name })
+                  q, tags, instagram_name })
   .then( data => {
     dispatch(types.RECEIVE_PRODUCTS_RESPONSE);
     if (data.object_list) {
