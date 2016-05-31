@@ -30,17 +30,6 @@ export function configRouter(router) {
       component: require('project/chat/index.vue'),
     },
 
-    // '/profile': {
-    //   name: 'profile',
-    //   auth: true,
-    //   component: require('project/profile/index.vue')
-    // },
-    //
-    // '/u/:username': {
-    //   name: 'user',
-    //   component: require('project/profile/index.vue')
-    // },
-
     '/why': {
       name: 'why',
       component: require('project/why/index.vue'),
@@ -83,15 +72,29 @@ export function configRouter(router) {
       component: require('project/auth/confirm-sms.vue'),
     },
 
+    '/404': {
+      name: '404',
+      component: require('project/not-found/index.vue'),
+    },
+
+    '/profile': {
+      name: 'profile',
+      auth: true,
+      component: require('project/profile/index.vue')
+    },
+
+    '/:username': {
+      // !important it must be last of the list.
+      // (exlclude '*' not found)
+      name: 'user',
+      component: require('project/profile/index.vue')
+    },
+
     // not found handler
     '*': {
       component: require('project/not-found/index.vue'),
     },
 
-    '/404': {
-      name: '404',
-      component: require('project/not-found/index.vue'),
-    }
 
   });
 

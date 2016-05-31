@@ -1,12 +1,12 @@
 import {
   RECEIVE_CURRENT_USER,
   USER_AUTHENTICATED,
-  RECEIVE_OPENED_USER,
+  RECEIVE_OPENED_PROFILE,
 } from '../mutation-types';
 
 // initial state
 const state = {
-  openedUser: null, // dict with opened user
+  openedProfile: null, // dict with opened user
 
   isAuth: false,
   token: null,
@@ -43,8 +43,8 @@ const mutations = {
     state.instagram_avatar_url = user.instagram_avatar_url;
     state.instagram_caption = user.instagram_caption;
   },
-  [RECEIVE_OPENED_USER] (state, user) {
-    state.openedUser = user
+  [RECEIVE_OPENED_PROFILE] (state, profile) {
+    state.openedProfile = profile
   },
 };
 

@@ -48,7 +48,8 @@
       isInfinityProducts,
       hasMoreProducts,
       getColumnNumber,
-      openedUser,
+      openedProfile,
+      user,
       } from 'vuex/getters';
 
     const PRODUCTS_PER_PAGE = 9;
@@ -103,7 +104,8 @@
           isInfinityProducts,
           hasMoreProducts,
           getColumnNumber,
-          openedUser,
+          openedProfile,
+          user,
         },
         actions: {
           getPartProducts,
@@ -163,9 +165,13 @@
             Object.assign(options, {tags});
           }
 
-          // if (this.$route.name === "user" && this.$route.params.username) {
-          //   Object.assign(options, {user_instagram_name: this.$route.params.username})
-          // }
+          if (this.$route.name === "user") {
+            Object.assign(options, { instagram_name: this.$route.params.username })
+          }
+
+          if (this.$route.name === "profile") {
+            Object.assign(options, { instagram_name: this.user.instagram_username })
+          }
 
           return options;
         },

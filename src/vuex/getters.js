@@ -16,7 +16,7 @@ export const userName = state => {
   }
   return state.user.instagram_username;
 };
-export const openedUser = state => state.user.openedUser;
+export const openedProfile = state => state.user.openedProfile;
 
 // Products
 export const products = state => state.products.all;
