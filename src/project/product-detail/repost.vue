@@ -43,8 +43,8 @@
 <script>
 
   import { urlThumbnail } from 'utils'
-  import { openedProduct } from 'vuex/getters';
-  import { openProduct } from 'vuex/actions';
+  import { openedProduct } from 'vuex/getters/products';
+  import { openProduct } from 'vuex/actions/products';
 
   export default {
     data: () => ({

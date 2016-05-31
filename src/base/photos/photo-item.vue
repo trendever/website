@@ -18,7 +18,7 @@
 <script type='text/ecmascript-6'>
   import pluralize from 'pluralize-ru';
   import { urlThumbnail } from 'utils';
-  import { getColumnNumber } from 'vuex/getters';
+  import { getColumnNumber } from 'vuex/getters/products';
   export default {
     data(){
       return {

@@ -7,15 +7,15 @@
     i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
   .bubble
     .chat-msg-product-wrap
-      a.chat-msg-product(v-link="{name: 'product_detail', params: {id: product.ID}}")
+      a.chat-msg-product(v-link="{name: 'product_detail', params: {id: product.id}}")
         .chat-msg-product-photo
           img(:src="photo")
       .chat-msg-description
         .chat-msg_t(v-if='!isOwnMessage', :class='{"chat-msg_t-customer-color":isCustomer}')
           | {{{ getUsername }}}
-        .chat-msg-product(v-link='{name: "product_detail", params: {id: product.ID}}')
+        .chat-msg-product(v-link='{name: "product_detail", params: {id: product.id}}')
           .chat-msg-product-txt
-            a(v-link='{name: "product_detail", params: {id: product.ID}}')
+            a(v-link='{name: "product_detail", params: {id: product.id}}')
               |{{{ titles }}}
             br
             span

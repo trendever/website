@@ -18,8 +18,8 @@ div.scroll-cnt
 </style>
 
 <script>
-  import {openProduct} from 'vuex/actions';
-  import {openedProduct} from 'vuex/getters';
+  import { openProduct } from 'vuex/actions/products';
+  import { openedProduct } from 'vuex/getters/products';
 
   import HeaderComponent from 'base/header/header.vue';
   import PostComponent from './product-post.vue';

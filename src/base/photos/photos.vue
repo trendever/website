@@ -34,23 +34,25 @@
     import listen from 'event-listener';
     import store from 'vuex/store';
     import photoItem from './photo-item.vue';
+    import { clearSearch } from 'vuex/actions';
     import {
       getPartProducts,
       getMoreProducts,
       setColumnNumber,
-      clearSearch,
-      } from 'vuex/actions';
+    } from 'vuex/actions/products';
     import {
       searchValue,
       selectedTags,
-      products,
-      isWaitReponseProducts,
-      isInfinityProducts,
-      hasMoreProducts,
-      getColumnNumber,
       openedProfile,
       user,
-      } from 'vuex/getters';
+    } from 'vuex/getters';
+    import {
+        products,
+        isWaitReponseProducts,
+        isInfinityProducts,
+        hasMoreProducts,
+        getColumnNumber,
+    } from 'vuex/getters/products';
 
     const PRODUCTS_PER_PAGE = 9;
     var scrollY = 0;
@@ -117,8 +119,8 @@
       methods: {
         enableInfinityScroll(e, show_more) {
           var self = this;
-          // Add event for infinity scroll
 
+          // Add event for infinity scroll
           self.scrollEvent = listen(self.scrollCnt, 'scroll', function(){
             scrollY = self.scrollCnt.scrollTop;
 
