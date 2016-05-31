@@ -23,7 +23,7 @@
 </template>
 
 <script type='text/babel'>
-  import { formatDatetime, urlThumbnail } from 'utils';
+  import { formatDatetime } from 'utils';
   import { formatTime } from './utils';
   import * as leads from 'services/leads';
   import { getCurrentMember, getLastMessageId, getShopName } from 'vuex/getters/chat.js';
@@ -62,7 +62,7 @@
       },
       photo() {
         if (Array.isArray(this.product.InstagramImages)) {
-          return this.product.InstagramImages.find((img) => img.Name === "S_square").url
+          return this.product.InstagramImages.find((img) => img.Name == "S_square").URL
         }
       },
       description(){
