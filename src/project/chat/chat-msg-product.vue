@@ -25,6 +25,7 @@
 <script type='text/babel'>
   import { formatDatetime, urlThumbnail } from 'utils';
   import { formatTime } from './utils';
+  import { user } from 'vuex/getters';
   import * as leads from 'services/leads';
   import { getCurrentMember, getLastMessageId, getShopName } from 'vuex/getters/chat.js';
   export default{
@@ -39,17 +40,21 @@
         getShopName,
         getCurrentMember,
         getLastMessageId,
+        user
       }
     },
     computed: {
-      getUsername () {
+      getUsername() {
         if (this.isCustomer) {
           return `<b>${this.msg.user.name}</b>`
         }
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
           return `<b>${this.getShopName}</b>`
         }
-        return `<b>${this.getShopName}</b> <br/> (продавец ${this.msg.user.name})`
+        if(this.user.role === leads.USER_ROLES.CUSTOMER.key){
+          return `<b>${this.getShopName}</b>`
+        }
+        return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`
       },
       isCustomer(){
         return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
@@ -69,17 +74,25 @@
         return this.product.InstagramImageCaption;
       },
       titles() {
-        return this.product.Items.reduce(function(desc, item, i, arr) {
-          desc += `${item.Name} `;
-          if (item.DiscountPrice) {
-            desc += `, ${item.DiscountPrice} <i class="ic-currency-rub"</i>`;
-          } else if (item.Price) {
-            desc += `, ${item.Price} <i class="ic-currency-rub"</i>`;
-          } else {
-            desc += `, цена по запросу`;
-          }
-          return desc;
-        }, '')
+
+        if(Array.isArray(this.product.Items)){
+
+          return this.product.Items.reduce(function(desc, item, i, arr) {
+            desc += `${item.Name} `;
+            if (item.DiscountPrice) {
+              desc += `, ${item.DiscountPrice} <i class="ic-currency-rub"</i>`;
+            } else if (item.Price) {
+              desc += `, ${item.Price} <i class="ic-currency-rub"</i>`;
+            } else {
+              desc += `, цена по запросу`;
+            }
+            return desc;
+          }, '')
+
+        }
+
+        return '';
+
       },
       isOwnMessage() {
         if ( this.getCurrentMember !== null ) {

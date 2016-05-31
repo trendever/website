@@ -16,6 +16,7 @@
 
 <script type='text/babel'>
   import { getCurrentMember, getShopName, getLastMessageId } from 'vuex/getters/chat.js';
+  import { user } from 'vuex/getters';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
   import { formatTime, escapeHtml, wrapLink } from './utils';
@@ -32,6 +33,7 @@
         getShopName,
         getCurrentMember,
         getLastMessageId,
+        user
       }
     },
     computed: {
@@ -52,6 +54,9 @@
           return `<b>${this.msg.user.name}</b>`
         }
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
+          return `<b>${this.getShopName}</b>`
+        }
+        if(this.user.role === leads.USER_ROLES.CUSTOMER.key){
           return `<b>${this.getShopName}</b>`
         }
         return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`

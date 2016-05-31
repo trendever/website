@@ -21,6 +21,7 @@
   import * as leads from 'services/leads';
   import { formatTime } from './utils';
   import { ratioFit } from 'utils';
+  import { user } from 'vuex/getters';
 
   export default{
     props: {
@@ -35,6 +36,7 @@
         getShopName,
         getCurrentMember,
         getLastMessageId,
+        user
       }
     },
 
@@ -102,6 +104,9 @@
           return `<b>${this.msg.user.name}</b>`
         }
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
+          return `<b>${this.getShopName}</b>`
+        }
+        if(this.user.role === leads.USER_ROLES.CUSTOMER.key){
           return `<b>${this.getShopName}</b>`
         }
         return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`
