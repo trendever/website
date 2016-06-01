@@ -50,16 +50,26 @@
     &__description {
       position: relative;
       z-index: 1;
-
       box-sizing: border-box;
       margin-top: 7px;
       padding: 0 125px;
-
       color: $color__white;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-
       font-size: $font__slogan;
       line-height: 54px;
+
+      .scroll-to-anchor {
+        position: absolute;
+        width: 56px;
+        height: 55px;
+        border-left: 3px solid #fff;
+        border-bottom: 3px solid #fff;
+        -webkit-transform: rotate(-41deg) skewX(8deg);
+        transform: rotate(-43deg) skewX(4deg);
+        bottom: -61px;
+        left: 50%;
+        margin-left: -28px;
+      }
     }
     &__btn-cnt {
       position: relative;;
@@ -92,24 +102,32 @@
   }
   &__logo{
     position: relative;
-
     display: inline-block;
-
     padding-top: 8px;
-
     color: $color__white;
-
+    width:150px;
     font-size: 32px;
 
-    @media(--mobile){
-      padding-top: 18px;
+    img {
+      display:block;
+      width:100%;
+    }
 
+    &:before {
+      position:relative;
+      z-index:2;
+    }
+
+    @media(--mobile){
+      width:290px;
+      padding-top: 18px;
       font-size: 60px;
     }
     &-apostrophe{
       position: absolute;
-      top: 10px;
-      right: -16px;
+      top: 12px;
+      right: 0px;
+      z-index:1;
 
       background: url(../img/logo32.png) no-repeat;
       background-size: 100%;
@@ -117,7 +135,7 @@
       size: 15px;
       @media(--mobile){
         top: 20px;
-        right: -32px;
+        right: -7px;
 
         background-size: 30px;
 

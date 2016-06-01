@@ -22,25 +22,45 @@
           span.badge(v-if='selectedTags.length') {{ selectedTags.length }}
           span.close(v-show='searchValue.length || selectedTags.length',
                      @click='clearSearch'): i.ic-close
+          span.change-col
+            span.change-col__two-col( :class='{"active": getColumnNumber === 3}', @click='setColumnNumber(2)')
+              span.change-col__big
+              span.change-col__big
+              span.change-col__big
+              span.change-col__big
+
+            span.change-col__three-col( :class='{"active": getColumnNumber === 2}', @click='setColumnNumber(3)')
+              span.change-col__sm
+              span.change-col__sm
+              span.change-col__sm
+              span.change-col__sm
+              span.change-col__sm
+              span.change-col__sm
+              span.change-col__sm
+              span.change-col__sm
+              span.change-col__sm
+          span(v-on:click="scrollUp").scroll-top
+              img(src='img/to-top.png')
 
     .search-tags(
       :class='{"__open": showMoreTags}')
-      ul.search-tags__container(v-el:tags)
+      .search-tags__wrap
+        ul.search-tags__container(v-el:tags)
 
-        li.search-tags__item__selected(
-          v-for='tag in selectedTags | filterBy searchValue in "name"',
-          @click='removeTag(tag, $index)',
-          @touch='removeTag(tag, $index)')
-          span {{ tag.name }}&nbsp;
-          i.ic-close
+          li.search-tags__item__selected(
+            v-for='tag in selectedTags | filterBy searchValue in "name"',
+            @click='removeTag(tag, $index)',
+            @touch='removeTag(tag, $index)')
+            span {{ tag.name }}&nbsp;
+            i.ic-close
 
-        li.search-tags__item.tag_list(
-          v-for='tag in tags | filterBy searchValue in "name"',
-          @click='selectTag(tag)') {{ tag.name }}
+          li.search-tags__item.tag_list(
+            v-for='tag in tags | filterBy searchValue in "name"',
+            @click='selectTag(tag)') {{ tag.name }}
 
-      .search-tags__button(
-        v-if='showMoreButton',
-        @click='toggleShowMoreTags')
+        .search-tags__button(
+          v-if='showMoreButton',
+          @click='toggleShowMoreTags')
 
 </template>
 
@@ -50,6 +70,7 @@
     searchValue,
     tags,
     selectedTags,
+    getColumnNumber,
     isAuth,
   } from 'vuex/getters';
 
@@ -58,7 +79,8 @@
     setSearchValue,
     selectTag,
     removeTag,
-    clearSearch
+    clearSearch,
+    setColumnNumber
   } from 'vuex/actions';
   export default {
     data(){
@@ -71,6 +93,16 @@
     },
     ready(){
       this.scrollCnt = document.querySelector('.scroll-cnt');
+
+      if (!this.getColumnNumber) {
+        let columnNumber = 3;
+        if( document.body.offsetWidth <= 750) {
+          columnNumber = 2;
+        }
+        this.setColumnNumber(columnNumber);
+      }
+
+      this.changeSearchNav();
 
       this.gluingSearch = listen( this.scrollCnt, 'scroll', () => {
         if ( this.isAuth ) {
@@ -86,6 +118,7 @@
           }
         }
       } );
+
     },
     beforeDestroy(){
       if ( this.isAuth ) {
@@ -97,11 +130,13 @@
         searchValue,
         tags,
         selectedTags,
+        getColumnNumber,
         isAuth,
       },
       actions: {
         loadTags,
         setSearchValue,
+        setColumnNumber,
         selectTag,
         removeTag,
         clearSearch
@@ -114,6 +149,23 @@
       toggleShowMoreTags() {
         this.$els.tags.scrollTop = 0;
         this.showMoreTags = !this.showMoreTags;
+      },
+
+      changeSearchNav() {
+        var posBlock = parseInt(getComputedStyle(document.querySelector('.smallHero')).height);
+        var blockToggleClass = document.querySelector('.search-input__clear-btn');
+        var scrollBlock = this.scrollCnt;
+        scrollBlock.onscroll = function () {
+          if(scrollBlock.scrollTop > posBlock ){
+            blockToggleClass.classList.add('scroll');
+          } else {
+            blockToggleClass.classList.remove('scroll');
+          }
+        }
+      },
+
+      scrollUp() {
+        this.scrollCnt.scrollTop = 0;
       },
 
       search() {
@@ -135,6 +187,46 @@
         })
       },
 
+      setPaddingTags(){
+        var tags = this.$els.tags.children;
+        var wrapWidth = this.$els.tags.offsetWidth;
+        var blocksWidth = 0;
+        var minPadding = 30;
+        for (var i = 0; i < tags.length; i++){
+          tags[i].style.width = 'auto';
+          tags[i].style.padding = 0;
+        }
+
+        for (var i = 0; i < tags.length; i++){
+          tags[i].style.width = tags[i].offsetWidth + 'px';
+        }
+
+        for(var i = 0, j = 0, count = 1; i < tags.length; i++, count++){
+          if ((blocksWidth + tags[i].offsetWidth + minPadding * count) > wrapWidth || i === tags.length - 1) {
+            var padding = ((wrapWidth - blocksWidth) / (count - 1)) / 2;
+
+            if (i === tags.length - 1) {
+              blocksWidth += tags[i].offsetWidth + 10;
+              var padding = ((wrapWidth - blocksWidth) / (count)) / 2;
+
+              for (;j <= i; j++) {
+                tags[j].style.padding =  '0 ' + padding + 'px';
+              }
+            } else {
+              for (;j < i; j++) {
+                tags[j].style.padding =  '0 ' + padding + 'px';
+              }
+            }
+
+            blocksWidth = 0;
+            count = 1;
+            blocksWidth += tags[i].offsetWidth + 10;
+          } else {
+            blocksWidth += tags[i].offsetWidth + 10;
+          }
+        }
+      },
+
       onFocusInput() {
         this.showMoreTags = false;
         this.inputFocused = true;
@@ -148,16 +240,19 @@
       searchValue() {
         this.scrollToView();
         this.detectHeightTags();
+        this.setPaddingTags();
       },
 
       selectedTags() {
         this.scrollToView();
         this.detectHeightTags();
+        this.setPaddingTags();
       },
 
       tags() {
         this.showMoreTags = false;
         this.detectHeightTags();
+        this.setPaddingTags();
       }
     }
   }

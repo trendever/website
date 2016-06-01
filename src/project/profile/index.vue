@@ -28,7 +28,6 @@ div.scroll-cnt
         photos-component
     navbar-component(current='profile')
 </template>
-
 <script type='text/babel'>
   import { urlThumbnail } from 'utils'
 
