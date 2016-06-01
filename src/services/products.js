@@ -66,13 +66,13 @@ export const ERROR_CODES = {
  */
 export function find({ limit, offset, from_id, direction,
                        q, tags,
-                       instagram_name }) {
+                       instagram_name, user_id }) {
 
   return new Promise( (resolve, reject) => {
 
     channel.req('search', 'product', { limit, offset, from_id, direction,
                                        q, tags,
-                                       instagram_name })
+                                       instagram_name, user_id })
     .then( data => {
 
         resolve(data.response_map);

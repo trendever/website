@@ -3,86 +3,96 @@ import * as products from 'services/products.js';
 
 /**
  * Get products and replace all
- * @param  {number} options.limit
- * @param  {number} options.offset
- * @param  {string} options.q              search in title
- * @param  {number|array} options.tags     products have tags
  */
-export const getPartProducts = ({ dispatch, state }, { limit, offset, q, tags, instagram_name }) => {
-  dispatch(types.WAIT_PRODUCTS_RESPONSE);
+export const getPartProducts = ({ dispatch, state }, { limit, offset, q,
+                                                             tags, instagram_name,
+                                                             user_id }) => {
+  return new Promise((resolve, reject) => {
 
-  products.find({ limit, offset, q, tags, instagram_name })
-  .then( data => {
-    dispatch(types.RECEIVE_PRODUCTS_RESPONSE);
-    dispatch(types.RECEIVE_PRODUCTS, data.object_list);
-    if (data.object_list) {
-      if (!state.products.hasMore) {
-        dispatch(types.ENABLE_HAS_MORE_PRODUCTS);
+    dispatch(types.WAIT_PRODUCTS_RESPONSE);
+
+    products.find({ limit, offset, q, tags, instagram_name, user_id })
+    .then( data => {
+      dispatch(types.RECEIVE_PRODUCTS_RESPONSE)
+      dispatch(types.RECEIVE_PRODUCTS, data.object_list)
+      resolve(data.object_list)
+      if (data.object_list) {
+        if (!state.products.hasMore) {
+          dispatch(types.ENABLE_HAS_MORE_PRODUCTS)
+        }
+      } else {
+        dispatch(types.DISABLE_HAS_MORE_PRODUCTS)
       }
-    } else {
-      dispatch(types.DISABLE_HAS_MORE_PRODUCTS);
-    }
-  });
-};
+    })
+
+  })
+
+}
 
 /**
  * Get products and add to all
- * @param  {number} options.limit
- * @param  {number} options.offset
- * @param  {string} options.q              search in title
- * @param  {number|array} options.tags     products have tags
  */
-export const getMoreProducts = ({ dispatch, state }, { limit, offset, from_id, direction,
-                                                       q, tags, instagram_name }) => {
-  dispatch(types.WAIT_PRODUCTS_RESPONSE);
+export const getMoreProducts = ({ dispatch, state }, { limit, offset, from_id,
+                                                             direction, q, tags,
+                                                             instagram_name, user_id }) => {
+  return new Promise((resolve, reject) => {
 
-  products.find({ limit, offset, from_id, direction,
-                  q, tags, instagram_name })
-  .then( data => {
-    dispatch(types.RECEIVE_PRODUCTS_RESPONSE);
-    if (data.object_list) {
-      dispatch(types.RECEIVE_MORE_PRODUCTS, data.object_list);
+    dispatch(types.WAIT_PRODUCTS_RESPONSE);
 
-      if (!state.products.hasMore) {
-        dispatch(types.ENABLE_HAS_MORE_PRODUCTS);
+    products.find({ limit, offset, from_id, direction,
+                    q, tags, instagram_name, user_id })
+    .then( data => {
+      dispatch(types.RECEIVE_PRODUCTS_RESPONSE);
+      if (data.object_list) {
+        dispatch(types.RECEIVE_MORE_PRODUCTS, data.object_list);
+
+        if (!state.products.hasMore) {
+          dispatch(types.ENABLE_HAS_MORE_PRODUCTS);
+        }
+        resolve(data.object_list)
+      } else {
+        dispatch(types.DISABLE_HAS_MORE_PRODUCTS);
+        resolve([])
       }
-    } else {
-      dispatch(types.DISABLE_HAS_MORE_PRODUCTS);
-    }
-  });
+    })
+
+  })
 };
 
 /**
  * Open product by id
- * try get from state.all (like a cache)
- * @param  {number} id
- * @return {object} object.product
- * @return {bool}   object.cached   will true, if from cache
+ * try get from state.feeds (like a cache)
  */
 export const openProduct = ({ dispatch, state }, id) => {
   return new Promise((resolve, reject) => {
 
-    if (state.products.opened.product.id === id) {
-      resolve({product: state.products.opened.product,
-              cachedImages: true});
+    if (state.products.openedProduct.id === id) {
+      resolve(state.products.openedProduct);
       return;
     }
 
-    // try get from all cached
-    var product = state.products.all.find( item => item.id === id);
-    if (product) {
-      dispatch(types.OPEN_PRODUCT, product, true);
-      resolve({product, cachedImages: true});
-      return;
+    // try get from cached
+    var lists = state.products.lists
+    if (lists) {
+      for (let list of Object.keys(lists)) {
+        if (lists[list]) {
+          var product = lists[list].find( item => item.id === id);
+          if (product) {
+            dispatch(types.OPEN_PRODUCT, product);
+            resolve(product);
+            return;
+          }
+        }
+      }
     }
 
     // Otherwise get from server
-    dispatch(types.WAIT_PRODUCTS_RESPONSE);
+    // dispatch(types.WAIT_PRODUCTS_RESPONSE);
     products.get(id)
     .then( product => {
-      dispatch(types.RECEIVE_PRODUCTS_RESPONSE);
-      dispatch(types.OPEN_PRODUCT, product, false);
-      resolve({product, cachedImages: false});
+      // dispatch(types.RECEIVE_PRODUCTS_RESPONSE);
+      dispatch(types.OPEN_PRODUCT, product);
+      resolve(product);
       return;
     })
     .catch( (error) => {
@@ -98,4 +108,8 @@ export const enableInfinityProducts = ({ dispatch }) => {
 
 export const setColumnNumber = ({ dispatch }, columnNumber) => {
   dispatch(types.SET_COLUMN_NUMBER, columnNumber);
+};
+
+export const openList = ({ dispatch }, name) => {
+  dispatch(types.OPEN_LIST, name);
 };

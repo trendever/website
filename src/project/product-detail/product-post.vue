@@ -8,9 +8,13 @@ article.product-post
      width='72' height='72')
 
     .product-post__info
-      .product-post__info__supplier {{ openedProduct.product.supplier.instagram_username }}
+      .product-post__info__supplier(
+        v-link='{name: "user", params: {username: openedProduct.supplier.instagram_username}}')
+        | {{ openedProduct.supplier.instagram_username }}
       .product-post__added добавлено&nbsp;
-        span.product-post__user-name {{ openedProduct.product.mentioned.instagram_username}}
+        span.product-post__user-name(
+          v-link='{name: "user", params: {username: openedProduct.mentioned.instagram_username}}')
+          | {{ openedProduct.mentioned.instagram_username}}
   main.product-post__body(v-el:image-body)
     div(v-bind:style='{ opacity: imageOpacity }',
         :class='{"__animate": animate}')
@@ -19,7 +23,7 @@ article.product-post
         :width='width',
         :height='height',
         )
-  section.product-post__bottom-photo(v-for='item in openedProduct.product.items')
+  section.product-post__bottom-photo(v-for='item in openedProduct.items')
     .product-post__price-container
       template(v-if='item.discount_price')
         .product-post__price-discount(v-if='item.price') {{ item.price | curency_spaces }}
@@ -44,7 +48,7 @@ article.product-post
 
 
   .product-post__description
-    .product-post__text {{{ openedProduct.product.instagram_image_caption }}}
+    .product-post__text {{{ openedProduct.instagram_image_caption }}}
 </template>
 
 <script type='text/babel'>
@@ -88,7 +92,7 @@ article.product-post
 
     computed: {
       obj() {
-        return this.openedProduct.product;
+        return this.openedProduct;
       },
     },
 
@@ -128,7 +132,7 @@ article.product-post
 
         } else {
 
-          const promise = this.createLead( this.openedProduct.product.id );
+          const promise = this.createLead( this.openedProduct.id );
 
           promise.then(
             ( lead ) => {
@@ -149,7 +153,7 @@ article.product-post
       loadFullImage() {
         // Load and set full image.
         let img = new Image();
-        let obj = this.openedProduct.product;
+        let obj = this.openedProduct;
         let url = obj.instagram_images.find((img) => img.name === "L").url
 
         img.load(url, null, null, () => {
@@ -159,9 +163,9 @@ article.product-post
       },
 
       onUserImageError(e){
-        console.warn(`Load user photo has failed. Product id: ${this.obj.id}`);
-
-        this.userImage = require('base/img/logo.png');
+        if (!this.$loadingRouteData) {
+          this.userImage = require('base/img/logo.png');
+        }
       }
     },
   }

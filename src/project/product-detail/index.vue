@@ -33,7 +33,7 @@ div.scroll-cnt
     },
     computed: {
      title(){
-       return 'Тренд ' + this.openedProduct.product.code
+       return 'Тренд ' + this.openedProduct.code
      }
     },
     vuex: {
@@ -48,11 +48,12 @@ div.scroll-cnt
       activate({to: {params: { id }}}) {
         let self = this;
 
-        return this.openProduct(+id).catch( (error) => {
+        return this
+        .openProduct(+id)
+        .catch( (error) => {
           console.error(new Error('Product doesn`t exists or error'), {
-            extra: {errorData: error.response, id: id}
+            extra: {errorData: error, id: +id}
           });
-          self.$router.go({name: '404'});
         })
       },
     },
