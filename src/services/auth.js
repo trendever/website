@@ -65,7 +65,7 @@ export function sendPassword(phone) {
 /**
  * Confirm by code from sms and get token with user data
  * @param  {string}   phone
- * @param  {string}   code      code from sms
+ * @param  {string}   password      code from sms
  *
  * RESOLVE
  * {
@@ -85,25 +85,26 @@ export function sendPassword(phone) {
  *
  * REJECT ERROR_CODES {WRONG_CREDENTIALS, INCORRECT_PHONE_FORMAT}
  */
-export function confirmByCode(phone, code) {
+export function confirmByCode( phone, password ) {
 
-  return new Promise( (resolve, reject) => {
+  return new Promise( ( resolve, reject ) => {
 
-    channel.req('login', 'auth', {
-      phone: phone, password: code
-    }).then( data => {
-      if (!data.response_map.ErrorCode) {
-        resolve(data.response_map);
-      } else {
-        reject(data.response_map.ErrorCode);
-      }
-    }).catch( error => {
-      if (!error.response_map || !error.response_map.ErrorCode) {
-        console.error('confirmPhone', error);
-        return;
-      }
-      reject(error.response_map.ErrorCode);
-    });
+    channel
+      .req( 'login', 'auth', { phone, password } )
+      .then( data => {
+        if ( !data.response_map.ErrorCode ) {
+          resolve( data.response_map );
+        } else {
+          reject( data.response_map.ErrorCode );
+        }
+      } )
+      .catch( error => {
+        if ( !error.response_map || !error.response_map.ErrorCode ) {
+          console.error( 'confirmPhone', error );
+          return;
+        }
+        reject( error.response_map.ErrorCode );
+      } );
 
-  });
+  } );
 }

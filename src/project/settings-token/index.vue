@@ -16,13 +16,21 @@
 import HeaderComponent from 'base/header/header.vue'
 import profile from 'services/profile'
 
-
 export default {
-    data: () => ({
-      token: profile.token,
-    }),
+    data(){
+      return {
+        token: profile.getProfile().token
+      }
+    },
     ready() {
-      this.$router.go({ name: 'settings-token', query: {'token': profile.token} });
+      this.$router.go(
+        {
+          name: 'settings-token',
+          query: {
+            'token': profile.getProfile().token
+          }
+        }
+      );
     },
     components: {
         HeaderComponent,

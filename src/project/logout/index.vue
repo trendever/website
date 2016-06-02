@@ -12,10 +12,7 @@
 import HeaderComponent from 'base/header/header.vue'
 import { removeToken } from 'services/profile'
 
-
 export default {
-    data: () => ({
-    }),
     ready() {
       removeToken();
       this.$router.go({name: 'home'});

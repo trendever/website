@@ -37,17 +37,15 @@ div
 <script type="text/babel">
 
   import { hidePopupFastSignup } from 'vuex/actions';
-  import { authenticateUser } from 'vuex/actions/user.js';
-  import {
-    authData,
-  } from 'vuex/getters';
+  import { authUser } from 'vuex/actions/user.js';
+  import { authData } from 'vuex/getters';
   import store from 'vuex/store';
   import * as auth from 'services/auth';
 
   const TEXT_HEADER = {
     DEFAULT: 'Введите код из sms',
     ERROR: 'Ошибка, попробуйте снова',
-  }
+  };
 
   export default {
     data(){
@@ -78,7 +76,7 @@ div
 
     vuex: {
       actions: {
-        authenticateUser,
+        authUser,
         hidePopupFastSignup,
       },
       getters: {
@@ -130,7 +128,7 @@ div
 
       onComplete(user, token) {
         this.isCompleted = true;
-        this.authenticateUser(user, token);
+        this.authUser(user, token);
         this.$els.confirmBtn.focus();
       },
 

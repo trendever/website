@@ -15,19 +15,13 @@
   import {
     showPopupSignup,
     showPopupFastSignup,
+    hidePopupFastSignup
   } from 'vuex/actions';
-  import {
-    loadUser,
-    authenticateUser,
-  } from 'vuex/actions/user.js';
-  import {
-    isShowPopupSignup,
-    isShowPopupFastSignup,
-  } from 'vuex/getters';
-  import {
-    isAuth
-  } from 'vuex/getters/user.js';
+  import { authUser } from 'vuex/actions/user.js';
+  import { isShowPopupSignup, isShowPopupFastSignup } from 'vuex/getters';
+  import { isAuth } from 'vuex/getters/user.js';
   import * as types from 'vuex/mutation-types';
+
   import profile from 'services/profile';
   import * as messages from 'services/message';
 
@@ -39,33 +33,28 @@
     vuex: {
       actions: {
         showPopupFastSignup,
-        authenticateUser,
-        loadUser
+        authUser,
+        hidePopupFastSignup
       },
       getters: {
         isAuth,
         isShowPopupSignup,
-        isShowPopupFastSignup,
+        isShowPopupFastSignup
       }
     },
     ready() {
 
+      let token = null;
+
       if ( this.$route.query ) {
-
         if ( this.$route.query.token ) {
-
-          // Auth by token in url
-          this.authenticateUser( null, this.$route.query.token );
-
+          token = this.$route.query.token;
         }
-
       }
 
-      this.loadUser();
+      this.authUser( null, token );
 
-      if ( !this.isAuth ) {
-        this.showPopupFastSignup();
-      }
+      this.showPopupFastSignup();
 
       // if not try subscribed, do it after 30s
       // if (!this.isAuth && !profile.subscribe_at) {
@@ -75,12 +64,20 @@
       //     }
       //   }, 30*1000);
       // }
+
       mixpanel.track( 'App Open' );
 
     },
     computed: {
       isNotWhy(){
         return this.$route.name !== 'why';
+      }
+    },
+    watch: {
+      isAuth( val ){
+        if ( val ) {
+          this.hidePopupFastSignup();
+        }
       }
     },
     components: {
