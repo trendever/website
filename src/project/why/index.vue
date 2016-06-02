@@ -15,7 +15,9 @@
       .header__logo
         a(v-link='{ name: "home" }')
           img(src='img/logo.svg' alt='')
-      a(href='#' v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
+      a(href='#'
+        v-if="!isAuth"
+        v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
   .section.top
 
     .arithmetic
@@ -238,17 +240,22 @@
           p У тебя свой бренд?
             br
             |  Хочешь продаваться у нас?
-          a(href='#'
-            v-link='{ name: "info", params: { type: "for_shop" } }').btn-yellow.btn-yellow__m
+          div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
             | Узнай как
   script
 
 </template>
 <script>
   import listen from 'event-listener';
+  import { Swipe, SwipeItem } from 'vue-swipe';
   import { ratioFit } from 'utils';
   import HeaderComponent from 'base/header/header.vue';
-  import { Swipe, SwipeItem } from 'vue-swipe';
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
+  import { createLead } from 'vuex/actions/lead';
+  import { isAuth } from 'vuex/getters';
+  import * as leads from 'services/leads';
+
+  const promoProduct = 21499
 
   export default {
     data(){
@@ -261,6 +268,16 @@
     beforeDestroy() {
       if (this.resizeEvent) {
         this.resizeEvent.remove();
+      }
+    },
+
+    vuex: {
+      getters: {
+        isAuth,
+      },
+      actions: {
+        createLead,
+        setCallbackOnSuccessAuth,
       }
     },
 
@@ -295,7 +312,31 @@
           btn.style.display = 'block';
           darknessBlock.classList.remove('played');
         });
-      }
+      },
+      onBuyPromoProduct() {
+        if ( !this.isAuth ) {
+
+          this.$router.go( { name: 'signup' } );
+          this.setCallbackOnSuccessAuth(this.onBuyPromoProduct.bind(this))
+
+        } else {
+
+          this.createLead( promoProduct )
+          .then(
+            ( lead ) => {
+              if (lead !== undefined && lead !== null){
+                this.$router.go( { name: 'chat', params: { id: lead.id } } );
+              }
+            },
+            ( error ) => {
+              if ( error === leads.ERROR_CODES.UNATHORIZED ) {
+                this.$router.go( { name: 'signup' } );
+              }
+            }
+          );
+
+        }
+      },
     },
 
     components: {

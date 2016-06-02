@@ -50,6 +50,17 @@ export const signup = ({ dispatch, state }) => {
   });
 };
 
+export const setCallbackOnSuccessAuth = ({ dispatch }, callback) => {
+  dispatch(types.SET_CALLBACK_ON_SUCCEESS_AUTH, callback);
+};
+
+export const executeCallbackOnSuccessAuth = ({ dispatch, state }) => {
+  if (state.auth.callbackOnSuccess) {
+    state.auth.callbackOnSuccess()
+    dispatch(types.CLEAR_CALLBACK_ON_SUCCEESS_AUTH);
+  }
+};
+
 // User
 
 /**
@@ -254,13 +265,4 @@ export const removeTag = (store, tag) => {
 export const clearSearch = (store) => {
   store.dispatch(types.CLEAR_SEARCH);
   loadTags(store);
-};
-
-// Popups
-export const showPopupFastSignup = ({ dispatch }) => {
-  dispatch(types.SHOW_POPUP_FAST_SIGNUP);
-};
-
-export const hidePopupFastSignup = ({ dispatch }) => {
-  dispatch(types.HIDE_POPUP_FAST_SIGNUP);
 };

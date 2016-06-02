@@ -14,45 +14,28 @@ div(class="popup" v-if="show")
 </template>
 
 <script>
-  import store from 'vuex/store';
   import {
     isAuth,
-    isShowPopupFastSignup,
   } from 'vuex/getters';
-  import {
-    showPopupFastSignup,
-    hidePopupFastSignup,
-  } from 'vuex/actions';
+
   import popupWrapper from 'base/popup/wrapper.vue'
 
   export default {
     data: () => ({}),
 
     vuex: {
-      actions: {
-        hidePopupFastSignup,
-      },
       getters: {
         isAuth,
-        isShowPopupFastSignup,
-      }
-    },
-
-    ready() {
-      if (!this.isAuth) {
-        showPopupFastSignup(store);
       }
     },
 
     methods: {
-      onClose() {
-        this.hidePopupFastSignup()
-      },
+      onClose() {},
     },
 
     computed:{
       show() {
-        return this.isShowPopupFastSignup && !this.isException
+        return !this.isAuth && !this.isException
       },
       isException(){
         if (this.$route.name === 'why') {
@@ -61,7 +44,7 @@ div(class="popup" v-if="show")
           return true
         } else if (this.$route.name === 'signup') {
           return true
-        } else if (this.$route.name === 'confirm-sms') {
+        } else if (this.$route.name === 'comfirm-sms') {
           return true
         }
         return false

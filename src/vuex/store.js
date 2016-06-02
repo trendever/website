@@ -10,7 +10,6 @@ import leads from './modules/leads';
 import conversation from './modules/conversation';
 import products from './modules/products';
 import search from './modules/search';
-import popups from './modules/popups';
 
 
 Vue.use(Vuex);
@@ -26,7 +25,6 @@ export default new Vuex.Store({
     leads,
     products,
     search,
-    popups,
   },
   strict: config.debug,
   middlewares: config.debug ? [createLogger()] : []
