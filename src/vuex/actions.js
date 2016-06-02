@@ -257,15 +257,6 @@ export const clearSearch = (store) => {
 };
 
 // Popups
-
-export const showPopupSignup = ({ dispatch }) => {
-  dispatch(types.SHOW_POPUP_SIGNUP);
-};
-
-export const hidePopupSignup = ({ dispatch }) => {
-  dispatch(types.HIDE_POPUP_SIGNUP);
-};
-
 export const showPopupFastSignup = ({ dispatch }) => {
   dispatch(types.SHOW_POPUP_FAST_SIGNUP);
 };

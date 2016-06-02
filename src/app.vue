@@ -1,12 +1,9 @@
 <style src="project/app/style.pcss"></style>
 
-<template >
-  <div :class="{popup: isShowPopupFastSignup}">
-    <popup-signup v-if="isShowPopupSignup"></popup-signup>
-    <popup-fast-signup v-if="isShowPopupFastSignup && isNotWhy"></popup-fast-signup>
-  </div>
-  <router-view></router-view>
-  <listener-component></listener-component>
+<template lang="jade">
+popup-fast-signup
+router-view
+listener-component
 </template>
 
 <script type='text/babel'>
@@ -15,20 +12,15 @@
   import {
     loadUser,
     authenticateUser,
-    showPopupSignup,
-    showPopupFastSignup,
   } from 'vuex/actions';
   import {
     isAuth,
-    isShowPopupSignup,
-    isShowPopupFastSignup,
   } from 'vuex/getters';
   import * as types from 'vuex/mutation-types';
   import profile from 'services/profile';
   import * as messages from 'services/message';
 
-  import PopupFastSignup from 'project/auth-popup/fast-signup.vue'
-  import PopupSignup from 'project/auth-popup/signup.vue'
+  import PopupFastSignup from 'base/auth-popup/fast-signup.vue'
   import ListenerComponent from 'project/listener/index.vue'
 
   export default {
@@ -40,8 +32,6 @@
     vuex: {
       getters: {
         isAuth,
-        isShowPopupSignup,
-        isShowPopupFastSignup,
       }
     },
 
@@ -56,30 +46,12 @@
         loadUser(store);
       }
 
-      if (!this.isAuth) {
-        showPopupFastSignup(store);
-      }
-
-      // if not try subscribed, do it after 30s
-      // if (!this.isAuth && !profile.subscribe_at) {
-      //   setTimeout( () => {
-      //     if (!self.isAuth) {
-      //       this.$router.go({name: 'subscribe'});
-      //     }
-      //   }, 30*1000);
-      // }
       mixpanel.track('App Open');
+    },
 
-    },
-    computed:{
-      isNotWhy(){
-        return this.$route.name !== 'why';
-      }
-    },
     components: {
       ListenerComponent,
       PopupFastSignup,
-      PopupSignup,
     },
     store
   }

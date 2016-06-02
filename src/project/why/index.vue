@@ -13,9 +13,9 @@
   .section.header.u-fixed
     .section__content.header__content
       .header__logo
-        a(href='./')
+        a(v-link='{ name: "home" }')
           img(src='img/logo.svg' alt='')
-      a(href='#').btn-yellow.btn-yellow__s Войти
+      a(href='#' v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
   .section.top
 
     .arithmetic
@@ -74,15 +74,15 @@
           ul.check-list
             li
               i.ic-galochka
-              Выбрали самое интересное
+              | Выбрали самое интересное
             li
               i.ic-galochka
-              Узнали все цены
+              | Узнали все цены
             li Отсортировали по категориям
               i.ic-galochka
             li
               i.ic-galochka
-              Проверили продавцов
+              | Проверили продавцов
           span Пара минут, и ты найдешь то, что нужно!
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
@@ -163,7 +163,7 @@
                   source(src="http://3wcode.com.ua/ostrog/video/main.mp4" type="video/mp4")
                   source(src="http://3wcode.com.ua/ostrog/video/main.ogv" type="video/ogg")
                   | Your browser does not support the video tag.
-                a(href='#' v-on:click="playVideo").play-btn
+                a(href='#' @click="playVideo").play-btn
                   i.ic-play-inverted
           .about-mobile__two-col__text
             .vertical-align-wrapper
@@ -218,7 +218,7 @@
                   source(src="http://3wcode.com.ua/ostrog/video/instagram.mp4" type="video/mp4")
                   source(src="http://3wcode.com.ua/ostrog/video/instagram.ogv" type="video/ogg")
                   | Your browser does not support the video tag.
-                a(href='#' v-on:click="playVideo").play-btn
+                a(href='#' @click="playVideo").play-btn
                   i.ic-play-inverted
   .section.about-us
     .section__content
@@ -228,7 +228,7 @@
       p Поможет найти и купить тренды
         br
         |  без наценки из первых рук!
-      a(href='#').btn-yellow.btn-yellow__m Перейти на сайт
+      a(v-link='{ name: "home" }').btn-yellow.btn-yellow__m Перейти на сайт
       p Превращаем Instagram-шопинг в удовольтсвие.
 
   .section.inform-item.footer
@@ -238,7 +238,9 @@
           p У тебя свой бренд?
             br
             |  Хочешь продаваться у нас?
-          a(href='#').btn-yellow.btn-yellow__m Узнай как
+          a(href='#'
+            v-link='{ name: "info", params: { type: "for_shop" } }').btn-yellow.btn-yellow__m
+            | Узнай как
   script
 
 </template>

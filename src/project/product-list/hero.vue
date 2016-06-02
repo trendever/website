@@ -1,9 +1,9 @@
 <style src='./styles/hero.pcss'></style>
 <template lang="jade">
 .section.smallHero(v-if='isAuth')
-  a(v-link='{ path: "/why" }')
+  a(v-link='{ name: "why" }')
     i.smallHero__logo
-      img(src='img/logo.png')
+      img(src='img/logo.svg')
 .section.hero(v-if='!isAuth')
   .section__content.hero__content
     .hero__content__img
