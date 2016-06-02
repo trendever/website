@@ -37,7 +37,7 @@ div
                   @click='phone = ""')
                   i.ic-close
           .btn-container
-            button.btn.btn_primary.__orange.__xl.fast__big__btn(
+            button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
               :disabled='!$signup.valid',
               @click='sendSMS') Отправить sms-код
             .link-container

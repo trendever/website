@@ -13,7 +13,7 @@
   .section.header.u-fixed
     .section__content.header__content
       .header__logo
-        a(href='#')
+        a(href='./')
           img(src='img/logo.svg' alt='')
       a(href='#').btn-yellow.btn-yellow__s Войти
   .section.top

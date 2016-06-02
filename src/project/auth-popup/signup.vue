@@ -1,7 +1,7 @@
 <template lang="jade">
 popup-wrapper(:show='isShowPopupSignup', :close='onClose')
   h3 Вход на территорию cвободного шопинга
-  button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn(
+  button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn.btn_fixed-bottom(
     @click='onClick') Войти
   a.fast__btn(
     @click.prevent='onClick',

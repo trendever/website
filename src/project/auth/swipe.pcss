@@ -50,7 +50,7 @@ $width-desktop: 680px;
   float: left;
   overflow: hidden;
 
-  width: calc($width-desktop - 2px);
+  width: calc($width-desktop);
   height: 100%;
   margin: 0;
   padding: 0;
@@ -100,25 +100,29 @@ $width-desktop: 680px;
 
 .swipe-item.slide-1 {
   p {
-    margin-left: 200px;
+    margin-left: 105px;
 
     @media(--mobile) { margin-left: 0; }
   }
   img {
-    margin-left: 10px;
+    margin-left: 150px;
+    width:auto;
 
-    @media(--mobile) { margin-left: -30px; }
+    @media(--mobile) {
+      margin-left:200px;
+      width:360px;
+    }
   }
 }
 
 .swipe-item.slide-2 {
   p {
-    margin-left: 140px;
+    margin-left: 105px;
 
     @media(--mobile) { margin-left: 0; }
   }
   img {
-    margin-left: 130px;
+    margin-left: 105px;
 
     @media(--mobile) { margin-left: 100px; }
   }
@@ -154,9 +158,22 @@ $width-desktop: 680px;
   }
 }
 
+.swipe-item.slide-5 {
+  p {
+    margin-left: 105px;
+
+    @media(--mobile) { margin-left: 0; }
+  }
+  img {
+    margin-left: 105px;
+
+    @media(--mobile) { margin-left: 90px; }
+  }
+}
+
 .swipe p {
   margin-bottom: 30px;
-  margin-left: 100px;
+  margin-left: 105px;
 
   text-align: left;
 

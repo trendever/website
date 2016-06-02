@@ -102,8 +102,6 @@
         this.setColumnNumber(columnNumber);
       }
 
-      this.changeSearchNav();
-
       this.gluingSearch = listen( this.scrollCnt, 'scroll', () => {
         if ( this.isAuth ) {
           let searchHeight = 50;

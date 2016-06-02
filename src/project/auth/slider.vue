@@ -3,13 +3,13 @@
 .swipe
   .swipe-item-container(
     v-el:swipe, @click='swipe(1)', :style='style')
-    .swipe-item.slide.slide-4
+    .swipe-item.slide.slide-5
       p ...сохранять товары инста-шопов#[br]в свою ленту трендов.
       img(src='img/auth-slide-4.png')
       p.hide-desktop(style='margin-top: 0px')
         | Поэтому укажите инста-логин #[i.emoji.emoji_down]
     .swipe-item.slide.slide-1
-      p ...искать и покупать в живой ленте#[br]товаров от трендскаутов.
+      p ...искать и покупать в живом каталоге#[br] товаров из инстаграма..
       img(src='img/auth-slide-1.png')
     .swipe-item.slide.slide-2
       p ...покупать в приложении Instagram#[br]по комментарию @wantit.
@@ -20,12 +20,15 @@
       p  ...общаться с магазинами#[br]и заказывать в привычном чате.
       img(src='img/auth-slide-3.png')
     .swipe-item.slide.slide-4
+      p  ...подписаться и следить за лентами#[br] фешн-экспертов – Трендскаутов..
+      img(src='img/auth-slide-5.png')
+    .swipe-item.slide.slide-5
       p ...сохранять товары инста-шопов#[br]в свою ленту трендов.
       img(src='img/auth-slide-4.png')
       p.hide-desktop(style='margin-top: 0px')
         | Поэтому укажите инста-логин #[i.emoji.emoji_down]
     .swipe-item.slide.slide-1
-      p ...искать и покупать в живой ленте#[br]товаров от трендскаутов.
+      p ...искать и покупать в живом каталоге#[br] товаров из инстаграма..
       img(src='img/auth-slide-1.png')
   .swipe-navigation
     .swipe-prev(@click='swipe(-1)'): i.ic-swipe-left
