@@ -37,7 +37,7 @@
     .hero__content__description Шопинг в Instagram стал проще
 </template>
 <script type='text/babel'>
-    import { isAuth } from 'vuex/getters';
+  import { isAuth } from 'vuex/getters/user.js';
     export default {
         vuex: {
             getters: {

@@ -25,7 +25,7 @@
 <script type='text/babel'>
   import { formatDatetime } from 'utils';
   import { formatTime } from './utils';
-  import { user } from 'vuex/getters';
+  import { user } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
   import { getCurrentMember, getLastMessageId, getShopName } from 'vuex/getters/chat.js';
   export default{

@@ -8,7 +8,7 @@ export const formatDatetime = unixtime => {
 export const formatTime = unixtime => formatDatetime(unixtime).split(' ')[1];
 
 export const formatPastTime = (unixtime) => {
-  const dateLast = new Date(unixtime * 1000);
+  const dateLast = new Date(parseInt(unixtime * 1000));
   const dateNow = new Date(Date.now());
 
   /**

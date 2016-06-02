@@ -1,6 +1,6 @@
 <style src="project/app/style.pcss"></style>
 
-<template >
+<template>
   <div :class="{popup: isShowPopupFastSignup}">
     <popup-signup v-if="isShowPopupSignup"></popup-signup>
     <popup-fast-signup v-if="isShowPopupFastSignup && isNotWhy"></popup-fast-signup>
@@ -13,16 +13,20 @@
   import font from 'base/fonts/trendever-icons/trendever-icons.font';
   import store from 'vuex/store';
   import {
-    loadUser,
-    authenticateUser,
     showPopupSignup,
     showPopupFastSignup,
   } from 'vuex/actions';
   import {
-    isAuth,
+    loadUser,
+    authenticateUser,
+  } from 'vuex/actions/user.js';
+  import {
     isShowPopupSignup,
     isShowPopupFastSignup,
   } from 'vuex/getters';
+  import {
+    isAuth
+  } from 'vuex/getters/user.js';
   import * as types from 'vuex/mutation-types';
   import profile from 'services/profile';
   import * as messages from 'services/message';
@@ -32,32 +36,35 @@
   import ListenerComponent from 'project/listener/index.vue'
 
   export default {
-    data: () => ({}),
-    init() {
-      loadUser(store);
-    },
-
     vuex: {
+      actions: {
+        showPopupFastSignup,
+        authenticateUser,
+        loadUser
+      },
       getters: {
         isAuth,
         isShowPopupSignup,
         isShowPopupFastSignup,
       }
     },
-
     ready() {
-      var self = this;
 
-      if (this.$route.query && this.$route.query.token) {
-        // Auth by token in url
-        authenticateUser(store, null, this.$route.query.token);
+      if ( this.$route.query ) {
 
-        // Reload in vuex
-        loadUser(store);
+        if ( this.$route.query.token ) {
+
+          // Auth by token in url
+          this.authenticateUser( null, this.$route.query.token );
+
+        }
+
       }
 
-      if (!this.isAuth) {
-        showPopupFastSignup(store);
+      this.loadUser();
+
+      if ( !this.isAuth ) {
+        this.showPopupFastSignup();
       }
 
       // if not try subscribed, do it after 30s
@@ -68,10 +75,10 @@
       //     }
       //   }, 30*1000);
       // }
-      mixpanel.track('App Open');
+      mixpanel.track( 'App Open' );
 
     },
-    computed:{
+    computed: {
       isNotWhy(){
         return this.$route.name !== 'why';
       }

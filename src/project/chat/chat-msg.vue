@@ -16,7 +16,7 @@
 
 <script type='text/babel'>
   import { getCurrentMember, getShopName, getLastMessageId } from 'vuex/getters/chat.js';
-  import { user } from 'vuex/getters';
+  import { user } from 'vuex/getters/user.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
   import { formatTime, escapeHtml, wrapLink } from './utils';

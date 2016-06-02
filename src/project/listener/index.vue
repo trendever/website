@@ -8,7 +8,7 @@
   import * as leads from 'services/leads';
   import * as lead from 'vuex/actions/lead.js';
   import * as chat from 'vuex/actions/chat.js';
-  import { isAuth } from 'vuex/getters';
+  import { isAuth } from 'vuex/getters/user.js';
 
   export default {
     ready() {

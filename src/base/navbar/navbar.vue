@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import { isAuth } from 'vuex/getters';
+  import { isAuth } from 'vuex/getters/user.js';
   import { getGlobalNotifyCount } from 'vuex/getters/lead.js';
 
   export default{

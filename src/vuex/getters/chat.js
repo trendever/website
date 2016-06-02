@@ -1,6 +1,6 @@
 import * as leads from 'services/leads';
 import { formatMonth } from 'project/chat/utils';
-import { userID } from 'vuex/getters';
+import { userID } from 'vuex/getters/user.js';
 import { getLeadByConversationId } from '../getters/lead.js';
 
 export const getId = ( { conversation } ) => conversation.id;

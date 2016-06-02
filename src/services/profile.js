@@ -75,7 +75,7 @@ export function setSubscribeEmail(flag) {
 
 export function saveToken(token) {
   try {
-    let decoded = jwt_decode(token);
+    const decoded = jwt_decode(token);
 
     Storage.setItem('token', token);
     saveUser({id: decoded.UID});

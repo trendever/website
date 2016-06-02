@@ -8,19 +8,12 @@ div.scroll-cnt
       .section__content
         .profile
           .profile_info
-            //- .profile_info_count
-              //- | 1258
-              //- .profile_info_count_t
-                //- | Подписчики
-
+            .profile_info_count 1258
+              .profile_info_count_t Подписчики
             .profile_info_img
               img(:src="photo")
-
-            //- .profile_info_count
-              //- | 53
-              //- .profile_info_count_t
-                //- | Подписки
-
+            .profile_info_count 53
+              .profile_info_count_t Подписки
           .profile_desc
             .profile_desc_t Слоган профиля
             span(v-if="caption") {{ caption }}
@@ -33,16 +26,18 @@ div.scroll-cnt
   import { urlThumbnail } from 'utils'
 
   import store from 'vuex/store'
-  import { openProfile } from 'vuex/actions'
+  import { openProfile } from 'vuex/actions/user.js'
 
   import HeaderComponent from 'base/header/header.vue'
   import PhotosComponent from 'base/photos/photos.vue'
   import NavbarComponent from 'base/navbar/navbar.vue'
 
   export default {
-    data(){return {
-      obj: {},
-    }},
+    data(){
+      return {
+        obj: {},
+      }
+    },
     init() {
       let username = this.$route.params.username;
       this.requestData = {}
@@ -51,7 +46,7 @@ div.scroll-cnt
 
       if (username) {
         let id = null
-        let search_id = username.match(/id(\d+)/)
+        let search_id = username.match(/id(\d+)/);
         if (search_id) {
           id = search_id[1]
         }

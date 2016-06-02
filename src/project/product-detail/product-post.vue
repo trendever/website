@@ -55,7 +55,7 @@ article.product-post
   import listen from 'event-listener';
   import { urlThumbnail, ratioFit } from 'utils';
   import { createLead } from 'vuex/actions/lead.js';
-  import { isAuth } from 'vuex/getters';
+  import { isAuth } from 'vuex/getters/user.js';
   import { openedProduct } from 'vuex/getters/products';
   import * as leads from 'services/leads';
 

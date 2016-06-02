@@ -50,9 +50,8 @@
     searchValue,
     tags,
     selectedTags,
-    isAuth,
   } from 'vuex/getters';
-
+  import { isAuth } from 'vuex/getters/user.js';
   import {
     loadTags,
     setSearchValue,

@@ -1,4 +1,4 @@
-import {userID} from '../getters';
+import { userID } from 'vuex/getters/user.js';
 
 export const getTab = ({leads}) => {
   if (getIsTab({leads})) {

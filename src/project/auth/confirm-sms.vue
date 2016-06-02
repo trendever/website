@@ -34,12 +34,10 @@ div
                 @click.prevent='sendSMS') Отправить новый код
 </template>
 
-<script>
+<script type="text/babel">
 
-  import {
-    hidePopupFastSignup,
-    authenticateUser,
-  } from 'vuex/actions';
+  import { hidePopupFastSignup } from 'vuex/actions';
+  import { authenticateUser } from 'vuex/actions/user.js';
   import {
     authData,
   } from 'vuex/getters';
@@ -52,14 +50,16 @@ div
   }
 
   export default {
-    data: () => ({
-      code: '',
-      errorCode: false,
-      isCompleted: false,
-      height: '',
-      text_header: TEXT_HEADER.DEFAULT,
-      needNewSMS: false,
-    }),
+    data(){
+      return {
+        code: '',
+        errorCode: false,
+        isCompleted: false,
+        height: '',
+        text_header: TEXT_HEADER.DEFAULT,
+        needNewSMS: false,
+      };
+    },
 
     route: {
       canActivate({abort}){

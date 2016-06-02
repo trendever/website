@@ -21,7 +21,7 @@
   import * as leads from 'services/leads';
   import { formatTime } from './utils';
   import { ratioFit } from 'utils';
-  import { user } from 'vuex/getters';
+  import { user } from 'vuex/getters/user.js';
 
   export default{
     props: {

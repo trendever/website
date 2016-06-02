@@ -7,7 +7,7 @@
   .caption__subtitle Ежедневные шопинг тренды
 </template>
 <script>
-  import { isAuth } from 'vuex/getters';
+  import { isAuth } from 'vuex/getters/user.js';
   export default {
     data(){
       return {};
