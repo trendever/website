@@ -1,72 +1,179 @@
 import {
-  RECEIVE_PRODUCTS,
-  RECEIVE_MORE_PRODUCTS,
-  WAIT_PRODUCTS_RESPONSE,
-  RECEIVE_PRODUCTS_RESPONSE,
-  OPEN_PRODUCT,
-  OPEN_LIST,
-  ENABLE_HAS_MORE_PRODUCTS,
-  DISABLE_HAS_MORE_PRODUCTS,
-  ENABLE_INFINITY_PRODUCTS,
-  SET_COLUMN_NUMBER,
+  PRODUCTS_RECEIVE,
+  PRODUCTS_LOADING,
+  PRODUCTS_SET_PRODUCT_ID,
+  PRODUCTS_SET_LIST_ID,
+  PRODUCTS_SET_HAS_MORE,
+  PRODUCTS_SET_INFINITY,
+  PRODUCTS_SET_COLUMN_NUMBER,
+  PRODUCTS_SET_SCROLL_TOP,
+  PRODUCTS_INC_LENGTH_LIST,
+  PRODUCTS_SET_ANIMATE,
+  PRODUCTS_FORCE_RECEIVE,
+  PRODUCTS_CLOSE
 } from '../mutation-types';
+
+const ITEMS_PER_PAGE = 9;
 
 // initial state
 const state = {
   lists: {
     // "profile": {
     //   products: [],
+    //   scrollTop: 0,
+    //   lengthList: 9,
     //   isInfinity: true,
     //   hasMore: true,
-    //   columnNumber: 0,
-    //   isWaitResponse: false,
     // },
   },
-  openedProduct: {},
-  openedList: null,  // string name
+  columnCount: document.body.offsetWidth <= 750 ? 2 : 3,
+  listId: null,
+  productId: null,
+  animateShow: true,
+  loading: true,
+  ITEMS_PER_PAGE
 };
 
 // mutations
 const mutations = {
-  [RECEIVE_PRODUCTS] (state, products) {
-    state.lists[state.openedList].products = products;
-  },
-  [RECEIVE_MORE_PRODUCTS] (state, products) {
-    state.lists[state.openedList].products = state.lists[state.openedList].products.concat(products);
-  },
-  [OPEN_PRODUCT] (state, product) {
-    state.openedProduct = product;
-  },
-  [OPEN_LIST] (state, name) {
-    if (!state.lists[name]) {
-      state.lists[name] = {
-        products: [],
-        isInfinity: true,
-        hasMore: true,
-        columnNumber: 0,
-        isWaitResponse: true,
+
+  [PRODUCTS_FORCE_RECEIVE] ( state, products ){
+
+    /**
+     * При филтрации кешировать не целесообразно.
+     * И по этому перезаписываю.
+     * */
+
+    if ( Array.isArray( products ) ) {
+
+      if(state.listId !== null) {
+
+        state.lists = Object.assign(
+          {},
+          state.lists,
+          {
+            [ state.listId ]: {
+              products,
+              scrollTop: 0,
+              lengthList: ITEMS_PER_PAGE,
+              isInfinity: true,
+              hasMore: products.length >= ITEMS_PER_PAGE
+            }
+          }
+        );
+
       }
+      
     }
-    state.openedList = name;
+
   },
-  [WAIT_PRODUCTS_RESPONSE] (state) {
-    state.lists[state.openedList].isWaitResponse = true;
+
+  [PRODUCTS_RECEIVE] ( state, products ) {
+
+    if ( Array.isArray( products ) ) {
+
+      if ( !state.lists.hasOwnProperty( state.listId ) ) {
+        state.lists = Object.assign(
+          {},
+          state.lists,
+          {
+            [ state.listId ]: {
+              products,
+              scrollTop: 0,
+              lengthList: ITEMS_PER_PAGE,
+              isInfinity: true,
+              hasMore: products.length >= ITEMS_PER_PAGE
+            }
+          }
+        )
+      } else {
+
+        state.lists[ state.listId ].hasMore = products.length >= ITEMS_PER_PAGE;
+        state.lists[ state.listId ].products = state.lists[ state.listId ].products.concat( products );
+
+      }
+
+    }
+
   },
-  [RECEIVE_PRODUCTS_RESPONSE] (state) {
-    // state.lists[state.openedList].isWaitResponse = false;
+  [PRODUCTS_SET_PRODUCT_ID] ( state, productId = null ) {
+
+    if ( productId !== null ) {
+
+      state.productId = productId;
+
+    }
+
   },
-  [ENABLE_HAS_MORE_PRODUCTS] (state) {
-    state.lists[state.openedList].hasMore = true;
+  [PRODUCTS_SET_LIST_ID] ( state, listId = null ) {
+
+    if ( listId !== null ) {
+
+      state.listId = listId;
+
+    }
+
   },
-  [DISABLE_HAS_MORE_PRODUCTS] (state) {
-    state.lists[state.openedList].hasMore = false;
+  [PRODUCTS_SET_COLUMN_NUMBER] ( state, columnNumber = 3 ) {
+
+    state.columnCount = columnNumber;
+
   },
-  [ENABLE_INFINITY_PRODUCTS] (state) {
-    state.lists[state.openedList].isInfinity = true;
+  [PRODUCTS_LOADING] ( state, loading = true ) {
+
+    state.loading = loading;
+
   },
-  [SET_COLUMN_NUMBER] (state, columnNumber) {
-    state.lists[state.openedList].columnNumber = columnNumber;
+  [PRODUCTS_SET_HAS_MORE] ( state, hasMore = true ) {
+
+    if ( state.hasOwnProperty( state.listId ) ) {
+
+      state.lists[ state.listId ].hasMore = hasMore;
+
+    }
+
   },
+  [PRODUCTS_SET_INFINITY] ( state, isInfinity = true ) {
+
+    if ( state.hasOwnProperty( state.listId ) ) {
+
+      state.lists[ state.listId ].isInfinity = isInfinity;
+
+    }
+
+  },
+  [PRODUCTS_SET_SCROLL_TOP] ( state, scrollTop = 0 ) {
+
+    if ( state.hasOwnProperty( state.listId ) ) {
+
+      state.lists[ state.listId ].scrollTop = scrollTop;
+
+    }
+
+  },
+  [PRODUCTS_INC_LENGTH_LIST] ( state ) {
+
+    if ( state.hasOwnProperty( state.listId ) ) {
+
+      state.lists[ state.listId ].lengthList += ITEMS_PER_PAGE;
+
+    }
+
+  },
+
+  [PRODUCTS_SET_ANIMATE] ( state, animateShow = true ) {
+
+    state.animateShow = animateShow;
+
+  },
+
+  [PRODUCTS_CLOSE] ( state ) {
+
+    state.listId    = null;
+    state.productId = null;
+    state.pending   = true;
+
+  }
 };
 
 export default {

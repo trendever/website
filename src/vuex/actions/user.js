@@ -68,11 +68,11 @@ export const authUser = ( { dispatch }, user, token ) => {
 
 export const openProfile = ( { dispatch, state }, id ) => {
 
-  return new Promise((resolve, reject) => {
+  return new Promise( ( resolve, reject ) => {
 
     const requestData  = { user_id: null, instagram_name: null };
     const photosConfig = {
-      list: 'profile',
+      listId: 'profile',
       photosFilter: {
         user_id: null,
         instagram_name: gerUserName( state )
@@ -84,13 +84,13 @@ export const openProfile = ( { dispatch, state }, id ) => {
       if ( id.indexOf( 'id' ) !== -1 ) {
 
         requestData.user_id               = +id.split( 'id' )[ 1 ];
-        photosConfig.list                 = `profile_id_${ requestData.user_id }`;
+        photosConfig.listId               = `profile_id_${ requestData.user_id }`;
         photosConfig.photosFilter.user_id = requestData.user_id;
 
       } else if ( id.length > 0 ) {
 
         requestData.instagram_name               = id;
-        photosConfig.list                        = `profile_${ id }`;
+        photosConfig.listId                      = `profile_${ id }`;
         photosConfig.photosFilter.instagram_name = id;
 
       }
@@ -103,7 +103,7 @@ export const openProfile = ( { dispatch, state }, id ) => {
 
       if ( cacheProfile !== null ) {
 
-        dispatch( types.USER_SET_PHOTOS_CONFIG, photosConfig.list, photosConfig.photosFilter, id );
+        dispatch( types.USER_SET_PHOTOS_CONFIG, photosConfig.listId, photosConfig.photosFilter, id );
         dispatch( types.USER_SET_PROFILE, id );
         resolve();
 
@@ -113,7 +113,7 @@ export const openProfile = ( { dispatch, state }, id ) => {
           .get( requestData )
           .then( ( { User, Shop } ) => {
             dispatch( types.USER_RECEIVE_PROFILE, User || Shop, id );
-            dispatch( types.USER_SET_PHOTOS_CONFIG, photosConfig.list, photosConfig.photosFilter, id );
+            dispatch( types.USER_SET_PHOTOS_CONFIG, photosConfig.listId, photosConfig.photosFilter, id );
             dispatch( types.USER_SET_PROFILE, id );
             resolve();
           } )
@@ -132,11 +132,11 @@ export const openProfile = ( { dispatch, state }, id ) => {
     } else {
 
       dispatch( types.USER_SET_PROFILE );
-      dispatch( types.USER_SET_PHOTOS_CONFIG, photosConfig.list, photosConfig.photosFilter );
+      dispatch( types.USER_SET_PHOTOS_CONFIG, photosConfig.listId, photosConfig.photosFilter );
       resolve();
     }
 
-  });
+  } );
 
 };
 

@@ -22,12 +22,12 @@ div.scroll-cnt(v-if="isDone")
             .profile_desc_t Слоган профиля
             span(v-if="getUserCaption") {{ getUserCaption }}
 
-        photos-component(:filter-by="getPhotoConfig.photoFilter", :list="getPhotoConfig.listConf")
+        photos-component( :filter-by-user-id="user_id", :filter-by-user-name="userName", :list-id="listId" )
     navbar-component(current='profile')
 </template>
 
 <script type='text/babel'>
-  import { urlThumbnail } from 'utils'
+  import { urlThumbnail } from 'utils';
 
   import store from 'vuex/store'
   import { openProfile, closeProfile } from 'vuex/actions/user.js';
@@ -59,6 +59,17 @@ div.scroll-cnt(v-if="isDone")
         getUserCaption,
         isDone,
         getPhotoConfig
+      }
+    },
+    computed:{
+      user_id(){
+        return this.getPhotoConfig.photoFilter.user_id;
+      },
+      listId(){
+        return this.getPhotoConfig.listId;
+      },
+      userName(){
+        return this.getPhotoConfig.photoFilter.instagram_name;
       }
     },
     components: {

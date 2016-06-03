@@ -74,7 +74,6 @@
         } else if (items[0].price) {
           return items[0].price
         }
-        return
       },
       title() {
         const items = this.product.items;

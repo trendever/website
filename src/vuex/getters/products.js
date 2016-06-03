@@ -1,20 +1,103 @@
-export const lists = state => state.products.lists;
-export const openedProduct = state => state.products.openedProduct;
-export const openedListName = state => state.products.openedList;
+export const getList = ( { products } ) => {
 
-export const isWaitReponseProducts = state => {
-  let list = state.products.lists[state.products.openedList]
-  return list ? list.isWaitResponse : false
-}
-export const hasMoreProducts = state => {
-  let list = state.products.lists[state.products.openedList]
-  return list ? list.hasMore : true
-}
-export const isInfinityProducts = state => {
-  let list = state.products.lists[state.products.openedList]
-  return list ? list.isInfinity : true
-}
-export const getColumnNumber = state => {
-  let list = state.products.lists[state.products.openedList]
-  return list ? list.columnNumber : 0
-}
+  if ( products.lists.hasOwnProperty( products.listId ) ) {
+
+    return products.lists[ products.listId ];
+
+  }
+
+  return null;
+
+};
+
+export const getProduct = ( { products } ) => {
+
+  const list = getList( { products } );
+
+  if ( list !== null ) {
+
+    if ( list.products.hasOwnProperty( products.productId ) ) {
+
+      return list.products[ products.productId ];
+
+    }
+
+  }
+
+  return null;
+
+};
+
+export const getScrollTop = ( state ) => {
+
+  const list = getList( state );
+
+  if ( list !== null ) {
+
+    return list.scrollTop;
+
+  }
+
+  return 0;
+
+};
+
+export const getLengthList = ( state ) => {
+
+  const list = getList( state );
+
+  if ( list !== null ) {
+
+    return list.lengthList;
+
+  }
+
+  return 9; // Количество элементов которое я буду вынимать из массива
+
+};
+
+export const hasMore = ( state ) => {
+
+  const list = getList( state );
+
+  if ( list !== null ) {
+
+    return list.hasMore;
+
+  }
+
+  return null;
+
+};
+
+export const isInfinity = ( state ) => {
+
+  const list = getList( state );
+
+  if ( list !== null ) {
+
+    return list.isInfinity;
+
+  }
+
+  return null;
+
+};
+
+export const getColumnCount = ( { products } ) => {
+
+  return products.columnCount;
+
+};
+
+export const isLoading = ( { products } ) => {
+
+  return products.loading;
+
+};
+
+export const isAnimateShow = ( { products } ) => {
+
+  return products.animateShow;
+
+};
