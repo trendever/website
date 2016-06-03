@@ -1,6 +1,7 @@
 import * as userService from 'services/user';
 import * as profile from 'services/profile.js';
 import * as types from '../mutation-types';
+import { gerUserName, getProfile } from 'vuex/getters/user.js';
 
 export const authUser = ( { dispatch }, user, token ) => {
 
@@ -17,7 +18,8 @@ export const authUser = ( { dispatch }, user, token ) => {
         profile.saveUser( user.User || user.Shop );
 
         dispatch( types.USER_AUTHENTICATED, token );
-        dispatch( types.RECEIVE_CURRENT_USER, profile.getProfile(true).user );
+        dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
+        dispatch( types.USER_SET_MY_ID, user_id );
 
       } else {
 
@@ -26,9 +28,10 @@ export const authUser = ( { dispatch }, user, token ) => {
           .then( ( user ) => {
 
             profile.saveUser( user.User || user.Shop );
-            
+
             dispatch( types.USER_AUTHENTICATED, token );
-            dispatch( types.RECEIVE_CURRENT_USER, profile.getProfile(true).user );
+            dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
+            dispatch( types.USER_SET_MY_ID, user_id );
 
           } )
           .catch( ( error ) => {
@@ -52,60 +55,93 @@ export const authUser = ( { dispatch }, user, token ) => {
     const { user, token } = profile.getProfile();
 
     if ( cookieToken && user ) {
+
       dispatch( types.USER_AUTHENTICATED, token );
-      dispatch( types.RECEIVE_CURRENT_USER, user );
+      dispatch( types.USER_RECEIVE_PROFILE, user );
+      dispatch( types.USER_SET_MY_ID, user.id );
+
     }
 
   }
 
 };
 
-export const openProfile = ( { dispatch, state }, { user_id, instagram_name } ) => {
-  return new Promise( ( resolve, reject ) => {
-    let openedProfile = state.user.openedProfile;
+export const openProfile = ( { dispatch, state }, id ) => {
 
-    if ( !user_id && !instagram_name ) {
-      // Open profile current user
-      if ( state.user.instagram_username ) {
-        // instagram_name have more priority, for get shop if exist.
-        instagram_name = state.user.instagram_username
+  return new Promise((resolve, reject) => {
+
+    const requestData  = { user_id: null, instagram_name: null };
+    const photosConfig = {
+      list: 'profile',
+      photosFilter: {
+        user_id: null,
+        instagram_name: gerUserName( state )
+      }
+    };
+
+    if ( typeof id === 'string' ) {
+
+      if ( id.indexOf( 'id' ) !== -1 ) {
+
+        requestData.user_id               = +id.split( 'id' )[ 1 ];
+        photosConfig.list                 = `profile_id_${ requestData.user_id }`;
+        photosConfig.photosFilter.user_id = requestData.user_id;
+
+      } else if ( id.length > 0 ) {
+
+        requestData.instagram_name               = id;
+        photosConfig.list                        = `profile_${ id }`;
+        photosConfig.photosFilter.instagram_name = id;
+
+      }
+
+    }
+
+    if ( requestData.user_id !== null || requestData.instagram_name !== null ) {
+
+      const cacheProfile = getProfile( state, id );
+
+      if ( cacheProfile !== null ) {
+
+        dispatch( types.USER_SET_PHOTOS_CONFIG, photosConfig.list, photosConfig.photosFilter, id );
+        dispatch( types.USER_SET_PROFILE, id );
+        resolve();
+
       } else {
-        // get user only
-        user_id = state.user.id
+
+        userService
+          .get( requestData )
+          .then( ( { User, Shop } ) => {
+            dispatch( types.USER_RECEIVE_PROFILE, User || Shop, id );
+            dispatch( types.USER_SET_PHOTOS_CONFIG, photosConfig.list, photosConfig.photosFilter, id );
+            dispatch( types.USER_SET_PROFILE, id );
+            resolve();
+          } )
+          .catch( error => {
+            console.error(
+              new Error( 'User doesn`t exists or opened incorect url' ),
+              {
+                extra: { errorData: error, username: id }
+              }
+            );
+            reject();
+          } );
+
       }
+
+    } else {
+
+      dispatch( types.USER_SET_PROFILE );
+      dispatch( types.USER_SET_PHOTOS_CONFIG, photosConfig.list, photosConfig.photosFilter );
+      resolve();
     }
 
-    if ( openedProfile ) {
-      if ( user_id && openedProfile.User ) {
-        if ( openedProfile.User.id === user_id ) {
-          resolve( state.user.openedProfile );
-          return;
-        }
-      }
-      if ( instagram_name && openedProfile.Shop ) {
-        if ( openedProfile.Shop.instagram_username === instagram_name ) {
-          resolve( openedProfile );
-          return;
-        }
-      }
-      if ( instagram_name && openedProfile.User ) {
-        if ( openedProfile.User.instagram_username === instagram_name ) {
-          resolve( openedProfile );
-          return;
-        }
-      }
-    }
+  });
 
-    // Otherwise get from server
-    userService.get( { user_id, instagram_name } )
-               .then( data => {
-                 dispatch( types.RECEIVE_OPENED_PROFILE, data );
-                 resolve( data );
-                 return;
-               } )
-               .catch( error => {
-                 reject( error );
-               } );
+};
 
-  } );
+export const closeProfile = ( { dispatch } ) => {
+
+  dispatch( types.USER_CLOSE_PROFILE );
+
 };

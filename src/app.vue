@@ -56,15 +56,6 @@
 
       this.showPopupFastSignup();
 
-      // if not try subscribed, do it after 30s
-      // if (!this.isAuth && !profile.subscribe_at) {
-      //   setTimeout( () => {
-      //     if (!self.isAuth) {
-      //       this.$router.go({name: 'subscribe'});
-      //     }
-      //   }, 30*1000);
-      // }
-
       mixpanel.track( 'App Open' );
 
     },

@@ -83,7 +83,7 @@ export function configRouter(router) {
       component: require('project/profile/index.vue')
     },
 
-    '/:username': {
+    '/:id': {
       // !important it must be last of the list.
       // (exlclude '*' not found)
       name: 'user',
