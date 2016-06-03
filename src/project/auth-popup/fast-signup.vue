@@ -4,10 +4,10 @@ popup-wrapper(:show='show', :close='onClose')
     p.desktop-text-right Войдите, чтобы искать и покупать#[br]товары лучших инста-шопов #[span.emoji.emoji_kitty]
   .column-desktop-50.column-desktop-left
     .container-left
-      button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn(
+      button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn.btn_fixed-bottom(
         @click='onClick') Войти
       .link-container
-        a.link-bottom(
+        // a.link-bottom(
           @click.prevent='onClick',
           href='#') Зачем мне это?
 </template>

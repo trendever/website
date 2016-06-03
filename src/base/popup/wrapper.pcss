@@ -12,21 +12,17 @@
   position: fixed;
   z-index: 100;
   bottom: 0;
-
   width: 100%;
   padding-top: 20px;
   padding-bottom: 10px;
-
   text-align: center;
-
   color: #FFF;
   background-color: rgba(18, 48, 45, .85);
-
   font-size: 24px;
 
   @media(--mobile) {
     min-height: 30%;
-    padding: 20px 0;
+    padding: 24px 0 59px;
 
     font-size: 36px;
   }
@@ -170,4 +166,15 @@
 
   opacity: .5;
   color: white;
+}
+
+.btn.fast__big__btn.btn_fixed-bottom{
+  @media(--mobile) {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+  }
 }

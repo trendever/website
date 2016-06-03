@@ -132,6 +132,7 @@ div
         this.isCompleted = true;
         this.authenticateUser(user, token);
         this.$els.confirmBtn.focus();
+        setTimeout( () => this.$router.go({name: 'home'}), 1000);
       },
 
       onErrorCode() {
