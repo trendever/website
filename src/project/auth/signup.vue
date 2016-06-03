@@ -61,8 +61,6 @@
   import {
     saveAuthData,
     signup,
-    hidePopupFastSignup,
-    showPopupFastSignup,
   } from 'vuex/actions';
   import {
     authData,
@@ -114,7 +112,6 @@
     },
 
     ready() {
-      this.hidePopupFastSignup();
       this.$set('height', `${ document.body.scrollHeight }px`);
       this.phone = this.authData.phone;
       this.login = this.authData.username;
@@ -133,8 +130,6 @@
       actions: {
         saveAuthData,
         signup,
-        hidePopupFastSignup,
-        showPopupFastSignup,
       },
       getters: {
         authData,
@@ -146,7 +141,6 @@
       closePage() {
         mixpanel.track('Close Signup Page');
         this.save();
-        this.showPopupFastSignup();
 
         if (window.history.length > 2) {
           this.$router.go(window.history.back());

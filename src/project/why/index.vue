@@ -13,10 +13,11 @@
   .section.header.u-fixed
     .section__content.header__content
       .header__logo
-        a(href='./')
+        a(v-link='{ name: "home" }')
           img(src='img/logo.svg' alt='')
-      a(href='#').btn-yellow.btn-yellow__s Войти
-
+      a(href='#'
+        v-if="!isAuth"
+        v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
   .section.top
     .section__content(v-el:main-video-cnt)
       iframe(src='https://player.vimeo.com/video/167123446?autoplay=1&title=0&byline=0&portrait=0',
@@ -80,15 +81,15 @@
           ul.check-list
             li
               i.ic-galochka
-              Выбрали самое интересное
+              | Выбрали самое интересное
             li
               i.ic-galochka
-              Узнали все цены
+              | Узнали все цены
             li Отсортировали по категориям
               i.ic-galochka
             li
               i.ic-galochka
-              Проверили продавцов
+              | Проверили продавцов
           span Пара минут, и ты найдешь то, что нужно!
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
@@ -169,7 +170,7 @@
                   source(src="http://3wcode.com.ua/ostrog/video/main.mp4" type="video/mp4")
                   source(src="http://3wcode.com.ua/ostrog/video/main.ogv" type="video/ogg")
                   | Your browser does not support the video tag.
-                a(href='#' v-on:click="playVideo").play-btn
+                a(href='#' @click="playVideo").play-btn
                   i.ic-play-inverted
           .about-mobile__two-col__text
             .vertical-align-wrapper
@@ -224,7 +225,7 @@
                   source(src="http://3wcode.com.ua/ostrog/video/instagram.mp4" type="video/mp4")
                   source(src="http://3wcode.com.ua/ostrog/video/instagram.ogv" type="video/ogg")
                   | Your browser does not support the video tag.
-                a(href='#' v-on:click="playVideo").play-btn
+                a(href='#' @click="playVideo").play-btn
                   i.ic-play-inverted
   .section.about-us
     .section__content
@@ -234,7 +235,7 @@
       p Поможет найти и купить тренды
         br
         |  без наценки из первых рук!
-      a(href='#').btn-yellow.btn-yellow__m Перейти на сайт
+      a(v-link='{ name: "home" }').btn-yellow.btn-yellow__m Перейти на сайт
       p Превращаем Instagram-шопинг в удовольтсвие.
 
   .section.inform-item.footer
@@ -244,15 +245,22 @@
           p У тебя свой бренд?
             br
             |  Хочешь продаваться у нас?
-          a(href='#').btn-yellow.btn-yellow__m Узнай как
+          div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
+            | Узнай как
   script
 
 </template>
 <script>
   import listen from 'event-listener';
+  import { Swipe, SwipeItem } from 'vue-swipe';
   import { ratioFit } from 'utils';
   import HeaderComponent from 'base/header/header.vue';
-  import { Swipe, SwipeItem } from 'vue-swipe';
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
+  import { createLead } from 'vuex/actions/lead';
+  import { isAuth } from 'vuex/getters';
+  import * as leads from 'services/leads';
+
+  const promoProduct = 21499
 
   export default {
     data(){
@@ -268,9 +276,19 @@
       }
     },
 
+    vuex: {
+      getters: {
+        isAuth,
+      },
+      actions: {
+        createLead,
+        setCallbackOnSuccessAuth,
+      }
+    },
+
     ready(){
       this.updateMainVideoSize();
-    
+
       if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
         document.querySelector('.video-1').classList.add('hidden');
         document.querySelector('.video-2').classList.add('hidden');
@@ -301,7 +319,31 @@
           btn.style.display = 'block';
           darknessBlock.classList.remove('played');
         });
-      }
+      },
+      onBuyPromoProduct() {
+        if ( !this.isAuth ) {
+
+          this.$router.go( { name: 'signup' } );
+          this.setCallbackOnSuccessAuth(this.onBuyPromoProduct.bind(this))
+
+        } else {
+
+          this.createLead( promoProduct )
+          .then(
+            ( lead ) => {
+              if (lead !== undefined && lead !== null){
+                this.$router.go( { name: 'chat', params: { id: lead.id } } );
+              }
+            },
+            ( error ) => {
+              if ( error === leads.ERROR_CODES.UNATHORIZED ) {
+                this.$router.go( { name: 'signup' } );
+              }
+            }
+          );
+
+        }
+      },
     },
 
     components: {

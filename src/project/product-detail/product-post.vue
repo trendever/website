@@ -50,6 +50,7 @@ article.product-post
 <script type='text/babel'>
   import listen from 'event-listener';
   import { urlThumbnail, ratioFit } from 'utils';
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import { createLead } from 'vuex/actions/lead.js';
   import { openedProduct, isAuth } from 'vuex/getters';
   import * as leads from 'services/leads';
@@ -78,6 +79,7 @@ article.product-post
     vuex: {
       actions: {
         createLead,
+        setCallbackOnSuccessAuth,
       },
       getters: {
         openedProduct,
@@ -124,14 +126,14 @@ article.product-post
         if ( !this.isAuth ) {
 
           this.$router.go( { name: 'signup' } );
+          this.setCallbackOnSuccessAuth(this.onBuy.bind(this))
 
         } else {
 
-          const promise = this.createLead( this.openedProduct.product.id );
-
-          promise.then(
+          this.createLead( this.openedProduct.product.id )
+          .then(
             ( lead ) => {
-              if(lead !== undefined && lead !== null){
+              if (lead !== undefined && lead !== null){
                 this.$router.go( { name: 'chat', params: { id: lead.id } } );
               }
             },
