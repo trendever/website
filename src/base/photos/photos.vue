@@ -110,7 +110,7 @@
 
     ready(){
 
-      this.setListId(this.listId);
+      this.setListId( this.listId );
 
       this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
@@ -169,7 +169,7 @@
                  * 50 - it is step for get items.
                  * */
 
-                this.incLengthList(50);
+                this.incLengthList( 50 );
 
                 this.$nextTick( () => {
                   add( this.scrollCnt.scrollHeight );
@@ -198,8 +198,11 @@
       },
 
       getProducts( force = false ){
-        const { isSearch, isTags, filterByUserName, filterByUserId } = this;
-        return this.loadProducts( { isSearch, isTags, filterByUserName, filterByUserId }, force );
+
+        const { search, tags, filterByUserName, filterByUserId } = this;
+
+        return this.loadProducts( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force );
+
       },
 
       enableInfinityScroll() {

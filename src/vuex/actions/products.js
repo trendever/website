@@ -126,7 +126,7 @@ export const loadProducts = (
           } );
 
       } else {
-        
+
         dispatch( types.PRODUCTS_INC_LENGTH_LIST );
         resolve();
 
@@ -144,7 +144,7 @@ export const setListId = ( { dispatch }, listId ) => {
 
 };
 
-export const setProductId = ( { dispatch, state }, id ) => {
+export const setProductId = ( { dispatch }, id ) => {
 
   dispatch( types.PRODUCTS_SET_PRODUCT_ID, id );
 
