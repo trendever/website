@@ -64,33 +64,35 @@ const mutations = {
   },
   [PRODUCTS_RECEIVE] ( state, products ) {
 
+    if ( !state.lists.hasOwnProperty( state.listId ) ) {
+
+      state.lists = Object.assign(
+        {},
+        state.lists,
+        {
+          [ state.listId ]: {
+            products: [],
+            scrollTop: 0,
+            scrollHeight: 0,
+            lengthList: ITEMS_PER_PAGE,
+            isInfinity: true,
+            hasMore: (Array.isArray( products )) ? products.length >= ITEMS_PER_PAGE : false
+          }
+        }
+      )
+
+    }
+
     if ( Array.isArray( products ) ) {
 
-      if ( !state.lists.hasOwnProperty( state.listId ) ) {
-        state.lists = Object.assign(
-          {},
-          state.lists,
-          {
-            [ state.listId ]: {
-              products,
-              scrollTop: 0,
-              scrollHeight: 0,
-              lengthList: ITEMS_PER_PAGE,
-              isInfinity: true,
-              hasMore: products.length >= ITEMS_PER_PAGE
-            }
-          }
-        )
-      } else {
-
-        state.lists[ state.listId ].hasMore  = products.length >= ITEMS_PER_PAGE;
-        state.lists[ state.listId ].lengthList += products.length;
-        state.lists[ state.listId ].products = state.lists[ state.listId ].products.concat( products );
-
-      }
+      state.lists[ state.listId ].hasMore  = products.length >= ITEMS_PER_PAGE;
+      state.lists[ state.listId ].lengthList += products.length;
+      state.lists[ state.listId ].products = state.lists[ state.listId ].products.concat( products );
 
     } else {
+
       state.lists[ state.listId ].hasMore = false;
+
     }
 
     state.loading = false;
