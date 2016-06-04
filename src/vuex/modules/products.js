@@ -39,14 +39,9 @@ const mutations = {
 
   [PRODUCTS_FORCE_RECEIVE] ( state, products ){
 
-    /**
-     * При филтрации кешировать не целесообразно.
-     * И по этому перезаписываю.
-     * */
-
     if ( Array.isArray( products ) ) {
 
-      if(state.listId !== null) {
+      if ( state.listId !== null ) {
 
         state.lists = Object.assign(
           {},
@@ -63,11 +58,10 @@ const mutations = {
         );
 
       }
-      
+
     }
-
+    state.loading = false;
   },
-
   [PRODUCTS_RECEIVE] ( state, products ) {
 
     if ( Array.isArray( products ) ) {
@@ -88,8 +82,9 @@ const mutations = {
         )
       } else {
 
-        state.lists[ state.listId ].hasMore = products.length >= ITEMS_PER_PAGE;
+        state.lists[ state.listId ].hasMore  = products.length >= ITEMS_PER_PAGE;
         state.lists[ state.listId ].products = state.lists[ state.listId ].products.concat( products );
+        state.loading                        = false;
 
       }
 
@@ -144,7 +139,7 @@ const mutations = {
   },
   [PRODUCTS_SET_SCROLL_TOP] ( state, scrollTop = 0 ) {
 
-    if ( state.hasOwnProperty( state.listId ) ) {
+    if ( state.lists.hasOwnProperty( state.listId ) ) {
 
       state.lists[ state.listId ].scrollTop = scrollTop;
 
@@ -160,18 +155,16 @@ const mutations = {
     }
 
   },
-
   [PRODUCTS_SET_ANIMATE] ( state, animateShow = true ) {
 
     state.animateShow = animateShow;
 
   },
-
   [PRODUCTS_CLOSE] ( state ) {
 
     state.listId    = null;
     state.productId = null;
-    state.pending   = true;
+    state.loading   = true;
 
   }
 };

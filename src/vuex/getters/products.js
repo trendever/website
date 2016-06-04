@@ -10,94 +10,52 @@ export const getList = ( { products } ) => {
 
 };
 
-export const getProduct = ( { products } ) => {
+export const getProducts = ( state ) => (getList( state ) !== null) ? getList( state ).products : null;
 
-  const list = getList( { products } );
+export const getScrollTop = ( state ) => (getList( state ) !== null) ? getList( state ).scrollTop : 0;
 
-  if ( list !== null ) {
+export const getLengthList = ( state ) => (getList( state ) !== null) ?
+  getList( state ).lengthList :
+  state.products.ITEMS_PER_PAGE;
 
-    if ( list.products.hasOwnProperty( products.productId ) ) {
+export const hasMore = ( state ) => (getList( state ) !== null) ? getList( state ).hasMore : true;
 
-      return list.products[ products.productId ];
+export const isInfinity = ( state ) => (getList( state ) !== null) ? getList( state ).isInfinity : null;
+
+export const getColumnCount = ( { products } ) => products.columnCount;
+
+export const isLoading = ( { products } ) => products.loading;
+
+export const isAnimateShow = ( { products } ) => products.animateShow;
+
+export const getLastProduct = ( state ) => {
+
+  const products = getProducts( state );
+
+  if ( products !== null ) {
+
+    return products[ products.length - 1 ];
+
+  }
+
+  return null;
+
+};
+
+export const getProduct = ( state ) => {
+
+  const products = getProducts( state );
+
+  if ( products !== null ) {
+
+    if ( products.hasOwnProperty( state.products.productId ) ) {
+
+      return products[ state.products.productId ];
 
     }
 
   }
 
   return null;
-
-};
-
-export const getScrollTop = ( state ) => {
-
-  const list = getList( state );
-
-  if ( list !== null ) {
-
-    return list.scrollTop;
-
-  }
-
-  return 0;
-
-};
-
-export const getLengthList = ( state ) => {
-
-  const list = getList( state );
-
-  if ( list !== null ) {
-
-    return list.lengthList;
-
-  }
-
-  return 9; // Количество элементов которое я буду вынимать из массива
-
-};
-
-export const hasMore = ( state ) => {
-
-  const list = getList( state );
-
-  if ( list !== null ) {
-
-    return list.hasMore;
-
-  }
-
-  return null;
-
-};
-
-export const isInfinity = ( state ) => {
-
-  const list = getList( state );
-
-  if ( list !== null ) {
-
-    return list.isInfinity;
-
-  }
-
-  return null;
-
-};
-
-export const getColumnCount = ( { products } ) => {
-
-  return products.columnCount;
-
-};
-
-export const isLoading = ( { products } ) => {
-
-  return products.loading;
-
-};
-
-export const isAnimateShow = ( { products } ) => {
-
-  return products.animateShow;
 
 };
