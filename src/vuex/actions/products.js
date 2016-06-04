@@ -107,23 +107,29 @@ export const loadProducts = (
           reject();
         } );
 
-    } else if ( hasMore( state ) ) {
+    } else {
 
       if ( items.length < getLengthList( state ) ) {
 
-        products
-          .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
-          .then( data => {
+        if ( hasMore( state ) ) {
 
-            dispatch( types.PRODUCTS_RECEIVE, data.object_list );
+          products
+            .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
+            .then( data => {
 
-            resolve();
+              dispatch( types.PRODUCTS_RECEIVE, data.object_list );
 
-          } )
-          .catch( ( error ) => {
-            products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
-            reject();
-          } );
+              resolve();
+
+            } )
+            .catch( ( error ) => {
+              products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
+              reject();
+            } );
+
+        }
+
+        resolve();
 
       } else {
 
