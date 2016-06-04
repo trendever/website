@@ -10,19 +10,31 @@ export const getList = ( { products } ) => {
 
 };
 
-export const getProducts = ( state ) => (getList( state ) !== null) ? getList( state ).products : null;
+export const getProducts = ( state ) => {
+
+  const list = getList( state );
+
+  if ( list !== null ) {
+
+    return list.products;
+
+  }
+
+  return null;
+
+};
 
 export const getScroll = ( state ) => {
-  
+
   const list = getList( state );
-  
-  if(list !== null){
+
+  if ( list !== null ) {
     return {
       scrollTop: list.scrollTop,
       scrollHeight: list.scrollHeight
     }
   }
-  
+
   return {};
 
 };
@@ -59,16 +71,14 @@ export const getProduct = ( state ) => {
 
   const products = getProducts( state );
 
-  if ( products !== null ) {
+  if ( Array.isArray( products ) ) {
 
-    if ( products.hasOwnProperty( state.products.productId ) ) {
-
-      return products[ state.products.productId ];
-
-    }
+    return products.filter( ( { id } ) => id === state.products.productId )[ 0 ];
 
   }
 
   return null;
 
 };
+
+export const getOpenedProduct = ( { products } ) => products.openedProduct;

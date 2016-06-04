@@ -10,6 +10,7 @@ import {
   PRODUCTS_INC_LENGTH_LIST,
   PRODUCTS_SET_ANIMATE,
   PRODUCTS_FORCE_RECEIVE,
+  PRODUCTS_SET_OPENED_PRODUCT,
   PRODUCTS_CLOSE
 } from '../mutation-types';
 
@@ -32,16 +33,15 @@ const state = {
   productId: null,
   animateShow: true,
   loading: true,
-  ITEMS_PER_PAGE
+  ITEMS_PER_PAGE,
+  openedProduct: null
 };
 
 // mutations
 const mutations = {
 
-  [PRODUCTS_FORCE_RECEIVE] ( state, products ){
-
-    if ( Array.isArray( products ) ) {
-
+  [PRODUCTS_FORCE_RECEIVE] ( state, products ) {
+    
       if ( state.listId !== null ) {
 
         state.lists = Object.assign(
@@ -49,19 +49,18 @@ const mutations = {
           state.lists,
           {
             [ state.listId ]: {
-              products,
+              products: Array.isArray( products ) ? products : [],
               scrollTop: 0,
               scrollHeight: 0,
               lengthList: ITEMS_PER_PAGE,
               isInfinity: true,
-              hasMore: products.length >= ITEMS_PER_PAGE
+              hasMore: Array.isArray( products )? products.length >= ITEMS_PER_PAGE: false
             }
           }
         );
 
       }
 
-    }
     state.loading = false;
   },
   [PRODUCTS_RECEIVE] ( state, products ) {
@@ -86,7 +85,7 @@ const mutations = {
       } else {
 
         state.lists[ state.listId ].hasMore  = products.length >= ITEMS_PER_PAGE;
-        state.lists[ state.listId ].lengthList  += products.length;
+        state.lists[ state.listId ].lengthList += products.length;
         state.lists[ state.listId ].products = state.lists[ state.listId ].products.concat( products );
 
       }
@@ -146,7 +145,7 @@ const mutations = {
 
     if ( state.lists.hasOwnProperty( state.listId ) ) {
 
-      state.lists[ state.listId ].scrollTop = scrollTop;
+      state.lists[ state.listId ].scrollTop    = scrollTop;
       state.lists[ state.listId ].scrollHeight = scrollHeight;
 
     }
@@ -157,7 +156,7 @@ const mutations = {
     if ( state.lists.hasOwnProperty( state.listId ) ) {
 
       state.lists[ state.listId ].lengthList += count;
-      state.loading   = false;
+      state.loading = false;
 
     }
 
@@ -167,12 +166,15 @@ const mutations = {
     state.animateShow = animateShow;
 
   },
+  [PRODUCTS_SET_OPENED_PRODUCT] ( state, product ){
+
+    state.openedProduct = product;
+
+  },
   [PRODUCTS_CLOSE] ( state ) {
 
     state.lists[ state.listId ].lengthList = ITEMS_PER_PAGE;
-    state.listId    = null;
-    state.productId = null;
-    state.loading   = true;
+    state.loading                          = true;
 
   }
 };

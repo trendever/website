@@ -17,9 +17,9 @@ div.scroll-cnt
   }
 </style>
 
-<script>
-  import { openProduct } from 'vuex/actions/products';
-  import { openedProduct } from 'vuex/getters/products';
+<script type="text/babel">
+  import { openProduct, closeProduct } from 'vuex/actions/products';
+  import { getOpenedProduct } from 'vuex/getters/products';
 
   import HeaderComponent from 'base/header/header.vue';
   import PostComponent from './product-post.vue';
@@ -28,34 +28,29 @@ div.scroll-cnt
   import * as products from 'services/products.js';
 
   export default {
-    data(){
-      return {};
-    },
     computed: {
      title(){
-       return 'Тренд ' + this.openedProduct.code
+       if(this.getOpenedProduct){
+         return 'Тренд ' + this.getOpenedProduct.code
+       }
      }
     },
     vuex: {
       getters: {
-        openedProduct
+        getOpenedProduct
       },
       actions: {
-        openProduct
+        openProduct,
+        closeProduct
       }
     },
     route: {
       activate({to: {params: { id }}}) {
-        let self = this;
-
-        return this
-        .openProduct(+id)
-        .catch( (error) => {
-          console.error(new Error('Product doesn`t exists or error'), {
-            extra: {errorData: error, id: +id}
-          });
-        })
-      },
+        return this.openProduct(+id);
+      }
+    },
+    beforeDestroy(){
+      this.closeProduct();
     },
     components: {
       HeaderComponent,

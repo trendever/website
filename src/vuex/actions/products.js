@@ -1,7 +1,7 @@
 import * as types from '../mutation-types';
 import * as products from 'services/products.js';
 import { searchValue, selectedTags } from 'vuex/getters';
-import { getLastProduct, getLengthList, getProducts } from '../getters/products.js';
+import { getLastProduct, getLengthList, getProducts, getProduct } from '../getters/products.js';
 
 export const getSearchOptions = (
   { state },
@@ -85,12 +85,12 @@ export const loadProducts = (
 
     if ( items === null || force ) {
 
-       products
+      products
         .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
         .then( data => {
 
           if ( force ) {
-
+            
             dispatch( types.PRODUCTS_FORCE_RECEIVE, data.object_list );
 
           } else {
@@ -144,9 +144,42 @@ export const setListId = ( { dispatch }, listId ) => {
 
 };
 
-export const setProductId = ( { dispatch }, id ) => {
+export const openProduct = ( { dispatch, state }, id ) => {
 
   dispatch( types.PRODUCTS_SET_PRODUCT_ID, id );
+
+  const product = getProduct( state );
+
+  return new Promise( ( resolve, reject ) => {
+
+    if ( product !== null ) {
+
+      dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+      resolve();
+
+    } else {
+
+      products
+        .get( id )
+        .then( ( product ) => {
+          dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product);
+          dispatch( types.PRODUCTS_SET_PRODUCT_ID, null );
+          resolve();
+        } )
+        .catch( ( error ) => {
+          products.sendError( error, { state, id } );
+          reject( error );
+        } );
+
+    }
+
+  } );
+
+};
+
+export const closeProduct = ( { dispatch } ) => {
+
+  dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, null );
 
 };
 

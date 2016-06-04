@@ -40,16 +40,18 @@
       button(v-on:click='openInsta', class='btn __primary __orange') Продолжить
 </template>
 
-<script>
+<script type="text/babel">
 
   import { urlThumbnail } from 'utils'
   import { openedProduct } from 'vuex/getters/products';
   import { openProduct } from 'vuex/actions/products';
 
   export default {
-    data: () => ({
-      id: ''
-    }),
+    data(){
+      return {
+        id: ''
+      }
+    },
     route: {
       activate({to: {params: { id }}}) {
         return this.openProduct(+id).catch( error => {

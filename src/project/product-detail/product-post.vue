@@ -9,12 +9,12 @@ article.product-post
 
     .product-post__info
       .product-post__info__supplier(
-        v-link='{name: "user", params: {username: openedProduct.supplier.instagram_username}}')
-        | {{ openedProduct.supplier.instagram_username }}
+        v-link='{name: "user", params: {username: getOpenedProduct.supplier.instagram_username}}')
+        | {{ getOpenedProduct.supplier.instagram_username }}
       .product-post__added добавлено&nbsp;
         span.product-post__user-name(
-          v-link='{name: "user", params: {username: openedProduct.mentioned.instagram_username}}')
-          | {{ openedProduct.mentioned.instagram_username}}
+          v-link='{name: "user", params: {username: getOpenedProduct.mentioned.instagram_username}}')
+          | {{ getOpenedProduct.mentioned.instagram_username}}
   main.product-post__body(v-el:image-body)
     div(v-bind:style='{ opacity: imageOpacity }',
         :class='{"__animate": animate}')
@@ -23,7 +23,7 @@ article.product-post
         :width='width',
         :height='height',
         )
-  section.product-post__bottom-photo(v-for='item in openedProduct.items')
+  section.product-post__bottom-photo(v-for='item in getOpenedProduct.items')
     .product-post__price-container
       template(v-if='item.discount_price')
         .product-post__price-discount(v-if='item.price') {{ item.price | curency_spaces }}
@@ -48,15 +48,17 @@ article.product-post
 
 
   .product-post__description
-    .product-post__text {{{ openedProduct.instagram_image_caption }}}
+    .product-post__text {{{ getOpenedProduct.instagram_image_caption }}}
 </template>
 
 <script type='text/babel'>
   import listen from 'event-listener';
+
   import { urlThumbnail, ratioFit } from 'utils';
+
   import { createLead } from 'vuex/actions/lead.js';
   import { isAuth } from 'vuex/getters/user.js';
-  import { openedProduct } from 'vuex/getters/products';
+  import { getOpenedProduct } from 'vuex/getters/products';
   import * as leads from 'services/leads';
 
   export default {
@@ -85,14 +87,14 @@ article.product-post
         createLead,
       },
       getters: {
-        openedProduct,
+        getOpenedProduct,
         isAuth,
       },
     },
 
     computed: {
       obj() {
-        return this.openedProduct;
+        return this.getOpenedProduct;
       },
     },
 
@@ -132,7 +134,7 @@ article.product-post
 
         } else {
 
-          const promise = this.createLead( this.openedProduct.id );
+          const promise = this.createLead( this.getOpenedProduct.id );
 
           promise.then(
             ( lead ) => {
@@ -153,7 +155,7 @@ article.product-post
       loadFullImage() {
         // Load and set full image.
         let img = new Image();
-        let obj = this.openedProduct;
+        let obj = this.getOpenedProduct;
         let url = obj.instagram_images.find((img) => img.name === "L").url
 
         img.load(url, null, null, () => {
