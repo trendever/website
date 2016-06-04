@@ -38,7 +38,7 @@
 
   import {
     setListId,
-    setScrollTop,
+    setScroll,
     incLengthList,
     setColumnNumber,
     enableInfinityProducts,
@@ -49,7 +49,7 @@
   import {
     getProducts,
     getColumnCount,
-    getScrollTop,
+    getScroll,
     getLengthList,
     hasMore,
     isInfinity,
@@ -65,7 +65,7 @@
         hasMore,
         isInfinity,
         getColumnCount,
-        getScrollTop,
+        getScroll,
         getLengthList,
         isLoading,
         isAnimateShow,
@@ -74,7 +74,7 @@
       },
       actions: {
         setListId,
-        setScrollTop,
+        setScroll,
         incLengthList,
         setColumnNumber,
         clearSearch,
@@ -112,20 +112,19 @@
 
       this.setListId(this.listId);
 
+      this.scrollCnt = document.querySelector( '.scroll-cnt' );
+
       this.getProducts().then( () => {
 
-        this.scrollCnt = document.querySelector( '.scroll-cnt' );
+        this.restore().then( () => {
 
-        //this.scrollCnt.scrollTop = this.getScrollTop;
+          if ( this.isInfinity && this.infinityScroll ) {
 
-        console.log(this.getScrollTop);
-        console.log(this.getLengthList);
+            this.enableInfinityScroll();
 
-        if ( this.isInfinity && this.infinityScroll ) {
+          }
 
-          this.enableInfinityScroll();
-
-        }
+        } );
 
       } );
 
@@ -150,6 +149,45 @@
     },
 
     methods: {
+      restore(){
+
+        return new Promise( ( resolve ) => {
+
+          const add = ( targetHeight ) => {
+
+            const { scrollTop, scrollHeight } = this.getScroll;
+
+            if ( targetHeight < scrollHeight ) {
+
+              setTimeout( () => {
+
+                this.incLengthList();
+
+                this.$nextTick( () => {
+                  add( this.scrollCnt.scrollHeight );
+                } );
+
+              }, 1 );
+
+            } else {
+
+              this.scrollCnt.scrollTop = scrollTop;
+
+              resolve();
+
+            }
+
+          };
+
+          this.$nextTick( () => {
+
+            add( this.scrollCnt.scrollHeight );
+
+          } );
+
+        } );
+
+      },
 
       getProducts( force = false ){
         const { isSearch, isTags, filterByUserName, filterByUserId } = this;
@@ -159,7 +197,7 @@
       enableInfinityScroll() {
         this.scrollEvent = listen( this.scrollCnt, 'scroll', () => {
 
-          this.setScrollTop( this.scrollCnt.scrollTop );
+          this.setScroll( this.scrollCnt.scrollTop, this.scrollCnt.scrollHeight );
 
           const full_scroll = (this.$els.photosList !== null) ? this.$els.photosList.offsetHeight : 0;
           const diff_scroll = full_scroll - this.scrollCnt.scrollTop;
@@ -197,7 +235,7 @@
         if ( this.search ) {
           this.getProducts( true );
         }
-      },
+      }
     },
 
     components: {

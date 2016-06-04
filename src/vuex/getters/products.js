@@ -12,7 +12,20 @@ export const getList = ( { products } ) => {
 
 export const getProducts = ( state ) => (getList( state ) !== null) ? getList( state ).products : null;
 
-export const getScrollTop = ( state ) => (getList( state ) !== null) ? getList( state ).scrollTop : 0;
+export const getScroll = ( state ) => {
+  
+  const list = getList( state );
+  
+  if(list !== null){
+    return {
+      scrollTop: list.scrollTop,
+      scrollHeight: list.scrollHeight
+    }
+  }
+  
+  return {};
+
+};
 
 export const getLengthList = ( state ) => (getList( state ) !== null) ?
   getList( state ).lengthList :

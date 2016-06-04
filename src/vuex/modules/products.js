@@ -6,7 +6,7 @@ import {
   PRODUCTS_SET_HAS_MORE,
   PRODUCTS_SET_INFINITY,
   PRODUCTS_SET_COLUMN_NUMBER,
-  PRODUCTS_SET_SCROLL_TOP,
+  PRODUCTS_SET_SCROLL,
   PRODUCTS_INC_LENGTH_LIST,
   PRODUCTS_SET_ANIMATE,
   PRODUCTS_FORCE_RECEIVE,
@@ -21,6 +21,7 @@ const state = {
     // "profile": {
     //   products: [],
     //   scrollTop: 0,
+    //   scrollHeight: 0,
     //   lengthList: 9,
     //   isInfinity: true,
     //   hasMore: true,
@@ -50,6 +51,7 @@ const mutations = {
             [ state.listId ]: {
               products,
               scrollTop: 0,
+              scrollHeight: 0,
               lengthList: ITEMS_PER_PAGE,
               isInfinity: true,
               hasMore: products.length >= ITEMS_PER_PAGE
@@ -74,6 +76,7 @@ const mutations = {
             [ state.listId ]: {
               products,
               scrollTop: 0,
+              scrollHeight: 0,
               lengthList: ITEMS_PER_PAGE,
               isInfinity: true,
               hasMore: products.length >= ITEMS_PER_PAGE
@@ -139,11 +142,12 @@ const mutations = {
     }
 
   },
-  [PRODUCTS_SET_SCROLL_TOP] ( state, scrollTop = 0 ) {
+  [PRODUCTS_SET_SCROLL] ( state, scrollTop = 0, scrollHeight = 0 ) {
 
     if ( state.lists.hasOwnProperty( state.listId ) ) {
 
       state.lists[ state.listId ].scrollTop = scrollTop;
+      state.lists[ state.listId ].scrollHeight = scrollHeight;
 
     }
 

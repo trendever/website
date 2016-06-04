@@ -162,9 +162,9 @@ export const setColumnNumber = ( { dispatch }, columnNumber ) => {
 
 };
 
-export const setScrollTop = ( { dispatch }, scrollTop ) => {
+export const setScroll = ( { dispatch }, scrollTop, scrollHeight ) => {
 
-  dispatch( types.PRODUCTS_SET_SCROLL_TOP, scrollTop );
+  dispatch( types.PRODUCTS_SET_SCROLL, scrollTop, scrollHeight );
 
 };
 
