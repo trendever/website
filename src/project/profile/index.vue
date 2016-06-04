@@ -9,14 +9,14 @@ div.scroll-cnt(v-if="isDone")
         .profile
           .profile_info
 
-            .profile_info_count 1258
-              .profile_info_count_t Подписчики
+            //- .profile_info_count 1258
+            //-   .profile_info_count_t Подписчики
 
             .profile_info_img
               img(:src="getUserPhoto")
 
-            .profile_info_count 53
-              .profile_info_count_t Подписки
+            //- .profile_info_count 53
+            //-   .profile_info_count_t Подписки
 
           .profile_desc
             .profile_desc_t Слоган профиля

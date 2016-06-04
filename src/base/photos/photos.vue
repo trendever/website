@@ -20,7 +20,7 @@
         .photos__more__base-ic: span еще
         .photos__more__anim-ic: i.ic-update
 
-  .photos__no-more-wrap(v-if='items.length === 0 && !hasMore')
+  .photos__no-more-wrap(v-if='itemsLength === 0 && !hasMore')
     .photos__no-goods Товаров не найдено
     .main__bottom.__no-goods: a.link.link_primary(
       @click.prevent.stop='clearSearch()',
@@ -199,6 +199,7 @@
       getProducts( force = false ){
 
         const { search, tags, filterByUserName, filterByUserId } = this;
+
         return this.loadProducts( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force );
 
       },
@@ -234,6 +235,21 @@
 
     },
 
+    computed:{
+
+      itemsLength(){
+
+        if(Array.isArray(this.items)){
+
+          return this.items.length;
+
+        }
+
+        return 0;
+
+      }
+
+    },
     watch: {
       selectedTags() {
         if ( this.tags ) {
@@ -244,9 +260,6 @@
         if ( this.search ) {
           this.getProducts( true );
         }
-      },
-      hasMore(val){
-        console.log(val);
       }
     },
 
