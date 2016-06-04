@@ -168,9 +168,9 @@ export const setScroll = ( { dispatch }, scrollTop, scrollHeight ) => {
 
 };
 
-export const incLengthList = ( { dispatch } ) => {
+export const incLengthList = ( { dispatch }, count ) => {
 
-  dispatch( types.PRODUCTS_INC_LENGTH_LIST );
+  dispatch( types.PRODUCTS_INC_LENGTH_LIST, count );
 
 };
 

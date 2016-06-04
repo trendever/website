@@ -155,13 +155,21 @@
 
           const add = ( targetHeight ) => {
 
-            const { scrollTop, scrollHeight } = this.getScroll;
-
-            if ( targetHeight < scrollHeight ) {
+            const { scrollTop } = this.getScroll;
+            /**
+             * Magic number
+             * 1000 - it is height after scrollTop.
+             * */
+            if ( targetHeight < scrollTop + 1000 ) {
 
               setTimeout( () => {
 
-                this.incLengthList();
+                /**
+                 * Magic number
+                 * 50 - it is step for get items.
+                 * */
+
+                this.incLengthList(50);
 
                 this.$nextTick( () => {
                   add( this.scrollCnt.scrollHeight );
