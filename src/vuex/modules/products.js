@@ -83,12 +83,14 @@ const mutations = {
       } else {
 
         state.lists[ state.listId ].hasMore  = products.length >= ITEMS_PER_PAGE;
+        state.lists[ state.listId ].lengthList  += products.length;
         state.lists[ state.listId ].products = state.lists[ state.listId ].products.concat( products );
-        state.loading                        = false;
 
       }
 
     }
+
+    state.loading = false;
 
   },
   [PRODUCTS_SET_PRODUCT_ID] ( state, productId = null ) {
@@ -121,7 +123,7 @@ const mutations = {
   },
   [PRODUCTS_SET_HAS_MORE] ( state, hasMore = true ) {
 
-    if ( state.hasOwnProperty( state.listId ) ) {
+    if ( state.lists.hasOwnProperty( state.listId ) ) {
 
       state.lists[ state.listId ].hasMore = hasMore;
 
@@ -130,7 +132,7 @@ const mutations = {
   },
   [PRODUCTS_SET_INFINITY] ( state, isInfinity = true ) {
 
-    if ( state.hasOwnProperty( state.listId ) ) {
+    if ( state.lists.hasOwnProperty( state.listId ) ) {
 
       state.lists[ state.listId ].isInfinity = isInfinity;
 
@@ -146,11 +148,12 @@ const mutations = {
     }
 
   },
-  [PRODUCTS_INC_LENGTH_LIST] ( state ) {
+  [PRODUCTS_INC_LENGTH_LIST] ( state, count = ITEMS_PER_PAGE ) {
 
-    if ( state.hasOwnProperty( state.listId ) ) {
+    if ( state.lists.hasOwnProperty( state.listId ) ) {
 
-      state.lists[ state.listId ].lengthList += ITEMS_PER_PAGE;
+      state.lists[ state.listId ].lengthList += count;
+      state.loading   = false;
 
     }
 
@@ -162,6 +165,7 @@ const mutations = {
   },
   [PRODUCTS_CLOSE] ( state ) {
 
+    state.lists[ state.listId ].lengthList = ITEMS_PER_PAGE;
     state.listId    = null;
     state.productId = null;
     state.loading   = true;

@@ -12,7 +12,7 @@
       .photo__title-column-short
 
   .photos__list(v-el:photos-list, v-if='items')
-    template(v-for='item in items' track-by="id")
+    template(v-for='item in items | list' track-by="id")
       photo-item( :product.once='item', :animate='isAnimateShow' )
 
   .photos__more-wrap(v-if='hasMore')
@@ -112,13 +112,14 @@
 
       this.setListId(this.listId);
 
-      this.getProducts( true ).then( () => {
+      this.getProducts().then( () => {
 
         this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
         //this.scrollCnt.scrollTop = this.getScrollTop;
 
         console.log(this.getScrollTop);
+        console.log(this.getLengthList);
 
         if ( this.isInfinity && this.infinityScroll ) {
 
@@ -142,6 +143,12 @@
 
     },
 
+    filters: {
+      list( value ){
+        return value.slice( 0, this.getLengthList );
+      }
+    },
+
     methods: {
 
       getProducts( force = false ){
@@ -153,8 +160,6 @@
         this.scrollEvent = listen( this.scrollCnt, 'scroll', () => {
 
           this.setScrollTop( this.scrollCnt.scrollTop );
-
-          console.log(this.getScrollTop);
 
           const full_scroll = (this.$els.photosList !== null) ? this.$els.photosList.offsetHeight : 0;
           const diff_scroll = full_scroll - this.scrollCnt.scrollTop;

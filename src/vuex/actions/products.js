@@ -1,7 +1,7 @@
 import * as types from '../mutation-types';
 import * as products from 'services/products.js';
 import { searchValue, selectedTags } from 'vuex/getters';
-import { getLastProduct } from '../getters/products.js';
+import { getLastProduct, getLengthList, getProducts } from '../getters/products.js';
 
 export const getSearchOptions = (
   { state },
@@ -79,26 +79,62 @@ export const loadProducts = (
 
   dispatch( types.PRODUCTS_LOADING, true );
 
-  return products
-    .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
-    .then( data => {
+  return new Promise( ( resolve, reject ) => {
 
-      console.log(data.object_list);
+    const items = getProducts( state );
 
-      if ( force ) {
+    if ( items === null || force ) {
 
-        dispatch( types.PRODUCTS_FORCE_RECEIVE, data.object_list );
+       products
+        .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
+        .then( data => {
+
+          if ( force ) {
+
+            dispatch( types.PRODUCTS_FORCE_RECEIVE, data.object_list );
+
+          } else {
+
+            dispatch( types.PRODUCTS_RECEIVE, data.object_list );
+
+          }
+
+          resolve();
+
+        } )
+        .catch( ( error ) => {
+          products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
+          reject();
+        } );
+
+    } else {
+
+      if ( items.length <= getLengthList( state ) ) {
+
+        products
+          .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
+          .then( data => {
+
+            dispatch( types.PRODUCTS_RECEIVE, data.object_list );
+
+            resolve();
+
+          } )
+          .catch( ( error ) => {
+            products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
+            reject();
+          } );
 
       } else {
-
-        dispatch( types.PRODUCTS_RECEIVE, data.object_list );
+        
+        dispatch( types.PRODUCTS_INC_LENGTH_LIST );
+        resolve();
 
       }
 
-    } )
-    .catch( ( error ) => {
-      products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
-    } );
+    }
+
+  } );
 
 };
 
