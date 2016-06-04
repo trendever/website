@@ -220,7 +220,7 @@
       },
 
       showMore() {
-        if ( this.hasMore ) {
+        if ( this.hasMore || this.getLengthList < this.items.length) {
 
           this.getProducts();
 
@@ -235,11 +235,11 @@
 
     },
 
-    computed:{
+    computed: {
 
       itemsLength(){
 
-        if(Array.isArray(this.items)){
+        if ( Array.isArray( this.items ) ) {
 
           return this.items.length;
 

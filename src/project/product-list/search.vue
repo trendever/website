@@ -23,13 +23,13 @@
           span.close(v-show='searchValue.length || selectedTags.length',
                      @click='clearSearch'): i.ic-close
           span.change-col
-            span.change-col__two-col( :class='{"active": getColumnNumber === 3}', @click='setColumnNumber(2)')
+            span.change-col__two-col( :class='{"active": getColumnCount === 3}', @click='setColumnNumber(2)')
               span.change-col__big
               span.change-col__big
               span.change-col__big
               span.change-col__big
 
-            span.change-col__three-col( :class='{"active": getColumnNumber === 2}', @click='setColumnNumber(3)')
+            span.change-col__three-col( :class='{"active": getColumnCount === 2}', @click='setColumnNumber(3)')
               span.change-col__sm
               span.change-col__sm
               span.change-col__sm
@@ -70,7 +70,6 @@
     searchValue,
     tags,
     selectedTags,
-    getColumnNumber, // TODO Исправить
   } from 'vuex/getters';
   import { isAuth } from 'vuex/getters/user.js';
   import {
@@ -78,9 +77,11 @@
     setSearchValue,
     selectTag,
     removeTag,
-    clearSearch,
-    setColumnNumber // TODO Исправить
+    clearSearch
   } from 'vuex/actions';
+
+  import { setColumnNumber } from 'vuex/actions/products';
+  import { getColumnCount } from 'vuex/getters/products';
 
   export default {
     data(){
@@ -93,18 +94,6 @@
     },
     ready(){
       this.scrollCnt = document.querySelector('.scroll-cnt');
-
-      //TODO исправить
-
-      if (!this.getColumnNumber) {
-        let columnNumber = 3;
-        if( document.body.offsetWidth <= 750) {
-          columnNumber = 2;
-        }
-        this.setColumnNumber(columnNumber);
-      }
-
-      //
 
       this.gluingSearch = listen( this.scrollCnt, 'scroll', () => {
         if ( this.isAuth ) {
@@ -132,7 +121,7 @@
         searchValue,
         tags,
         selectedTags,
-        getColumnNumber,
+        getColumnCount,
         isAuth,
       },
       actions: {

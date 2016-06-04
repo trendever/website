@@ -245,14 +245,14 @@
   script
 
 </template>
-<script>
+<script type="text/babel">
   import listen from 'event-listener';
   import { Swipe, SwipeItem } from 'vue-swipe';
   import { ratioFit } from 'utils';
   import HeaderComponent from 'base/header/header.vue';
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import { createLead } from 'vuex/actions/lead';
-  import { isAuth } from 'vuex/getters';
+  import { isAuth } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
 
   const promoProduct = 21499
