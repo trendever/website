@@ -3,7 +3,6 @@ import {
   PRODUCTS_LOADING,
   PRODUCTS_SET_PRODUCT_ID,
   PRODUCTS_SET_LIST_ID,
-  PRODUCTS_SET_HAS_MORE,
   PRODUCTS_SET_INFINITY,
   PRODUCTS_SET_COLUMN_NUMBER,
   PRODUCTS_SET_SCROLL,
@@ -41,25 +40,25 @@ const state = {
 const mutations = {
 
   [PRODUCTS_FORCE_RECEIVE] ( state, products ) {
-    
-      if ( state.listId !== null ) {
 
-        state.lists = Object.assign(
-          {},
-          state.lists,
-          {
-            [ state.listId ]: {
-              products: Array.isArray( products ) ? products : [],
-              scrollTop: 0,
-              scrollHeight: 0,
-              lengthList: ITEMS_PER_PAGE,
-              isInfinity: true,
-              hasMore: Array.isArray( products )? products.length >= ITEMS_PER_PAGE: false
-            }
+    if ( state.listId !== null ) {
+
+      state.lists = Object.assign(
+        {},
+        state.lists,
+        {
+          [ state.listId ]: {
+            products: Array.isArray( products ) ? products : [],
+            scrollTop: 0,
+            scrollHeight: 0,
+            lengthList: ITEMS_PER_PAGE,
+            isInfinity: true,
+            hasMore: Array.isArray( products ) ? products.length >= ITEMS_PER_PAGE : false
           }
-        );
+        }
+      );
 
-      }
+    }
 
     state.loading = false;
   },
@@ -90,6 +89,8 @@ const mutations = {
 
       }
 
+    } else {
+      state.lists[ state.listId ].hasMore = false;
     }
 
     state.loading = false;
@@ -123,24 +124,6 @@ const mutations = {
     state.loading = loading;
 
   },
-  [PRODUCTS_SET_HAS_MORE] ( state, hasMore = true ) {
-
-    if ( state.lists.hasOwnProperty( state.listId ) ) {
-
-      state.lists[ state.listId ].hasMore = hasMore;
-
-    }
-
-  },
-  [PRODUCTS_SET_INFINITY] ( state, isInfinity = true ) {
-
-    if ( state.lists.hasOwnProperty( state.listId ) ) {
-
-      state.lists[ state.listId ].isInfinity = isInfinity;
-
-    }
-
-  },
   [PRODUCTS_SET_SCROLL] ( state, scrollTop = 0, scrollHeight = 0 ) {
 
     if ( state.lists.hasOwnProperty( state.listId ) ) {
@@ -161,16 +144,27 @@ const mutations = {
     }
 
   },
-  [PRODUCTS_SET_ANIMATE] ( state, animateShow = true ) {
-
-    state.animateShow = animateShow;
-
-  },
   [PRODUCTS_SET_OPENED_PRODUCT] ( state, product ){
 
     state.openedProduct = product;
 
   },
+
+  [PRODUCTS_SET_INFINITY] ( state, isInfinity = true ) {
+
+    if ( state.lists.hasOwnProperty( state.listId ) ) {
+
+      state.lists[ state.listId ].isInfinity = isInfinity;
+
+    }
+
+  },
+  [PRODUCTS_SET_ANIMATE] ( state, animateShow = true ) {
+
+    state.animateShow = animateShow;
+
+  },
+
   [PRODUCTS_CLOSE] ( state ) {
 
     state.lists[ state.listId ].lengthList = ITEMS_PER_PAGE;

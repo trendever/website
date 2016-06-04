@@ -1,7 +1,7 @@
 import * as types from '../mutation-types';
 import * as products from 'services/products.js';
 import { searchValue, selectedTags } from 'vuex/getters';
-import { getLastProduct, getLengthList, getProducts, getProduct } from '../getters/products.js';
+import { getLastProduct, getLengthList, getProducts, getProduct, hasMore } from '../getters/products.js';
 
 export const getSearchOptions = (
   { state },
@@ -90,7 +90,7 @@ export const loadProducts = (
         .then( data => {
 
           if ( force ) {
-            
+
             dispatch( types.PRODUCTS_FORCE_RECEIVE, data.object_list );
 
           } else {
@@ -107,9 +107,9 @@ export const loadProducts = (
           reject();
         } );
 
-    } else {
+    } else if ( hasMore( state ) ) {
 
-      if ( items.length <= getLengthList( state ) ) {
+      if ( items.length < getLengthList( state ) ) {
 
         products
           .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
@@ -162,7 +162,7 @@ export const openProduct = ( { dispatch, state }, id ) => {
       products
         .get( id )
         .then( ( product ) => {
-          dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product);
+          dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
           dispatch( types.PRODUCTS_SET_PRODUCT_ID, null );
           resolve();
         } )
