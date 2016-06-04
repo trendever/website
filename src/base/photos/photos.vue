@@ -113,19 +113,31 @@
 
       this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
-      this.getProducts().then( () => {
+      this.getProducts()
+          .then( () => {
 
-        this.restore().then( () => {
+            this.restore()
+                .then( () => {
 
-          if ( this.isInfinity && this.infinityScroll ) {
+                  if ( this.isInfinity && this.infinityScroll ) {
 
-            this.enableInfinityScroll();
+                    this.enableInfinityScroll();
 
-          }
+                  }
 
-        } );
+                } )
+                .catch( ( error ) => {
 
-      } );
+                  console.error( new Error(error), this.listId );
+
+                } );
+
+          } )
+          .catch( ( error ) => {
+
+            console.error( new Error(error), this.listId );
+
+          } );
 
     },
 
@@ -199,7 +211,6 @@
       getProducts( force = false ){
 
         const { search, tags, filterByUserName, filterByUserId } = this;
-
         return this.loadProducts( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force );
 
       },

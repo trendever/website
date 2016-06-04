@@ -104,7 +104,7 @@ export const loadProducts = (
         } )
         .catch( ( error ) => {
           products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
-          reject();
+          reject(error);
         } );
 
     } else {
@@ -124,7 +124,7 @@ export const loadProducts = (
             } )
             .catch( ( error ) => {
               products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
-              reject();
+              reject(error);
             } );
 
         }

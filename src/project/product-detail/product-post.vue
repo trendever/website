@@ -8,9 +8,13 @@ article.product-post
      width='72' height='72')
 
     .product-post__info
-      .product-post__info__supplier {{ getOpenedProduct.supplier.instagram_username }}
+      .product-post__info__supplier(
+        v-link='{name: "user", params: {id: getOpenedProduct.supplier.instagram_username}}')
+        | {{ getOpenedProduct.supplier.instagram_username }}
       .product-post__added добавлено&nbsp;
-        span.product-post__user-name {{ getOpenedProduct.mentioned.instagram_username}}
+        span.product-post__user-name(
+          v-link='{name: "user", params: {id: getOpenedProduct.mentioned.instagram_username}}')
+         | {{ getOpenedProduct.mentioned.instagram_username}}
   main.product-post__body(v-el:image-body)
     div(v-bind:style='{ opacity: imageOpacity }',
         :class='{"__animate": animate}')

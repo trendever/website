@@ -118,13 +118,13 @@ export const openProfile = ( { dispatch, state }, id ) => {
             resolve();
           } )
           .catch( error => {
+            reject(error);
             console.error(
               new Error( 'User doesn`t exists or opened incorect url' ),
               {
                 extra: { errorData: error, username: id }
               }
             );
-            reject();
           } );
 
       }
