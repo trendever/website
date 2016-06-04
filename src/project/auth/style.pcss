@@ -3,18 +3,20 @@
 .signup {
   padding: 50px 30px 0 30px;
   padding-top: 120px;
-
   color: #FFF;
   background-color: #12302d;
-
   font-size: 24px;
   line-height: 1.2;
 
   @media(--mobile) {
     padding: 50px 30px 0 30px;
-
     font-size: 36px;
   }
+
+  .link-bottom {
+    margin-top:15px;
+  }
+
   .input__clear-btn {
     right: 0;
 
@@ -134,7 +136,6 @@
   }
   .btn.__orange {
     margin: 10px 0;
-
     font-size: 36px;
   }
   .error {
@@ -151,7 +152,6 @@
   }
   .column-desktop-50 {
     position: relative;
-
     width: 45%;
 
     @media(--mobile) {
@@ -248,4 +248,15 @@
 
 .opened-key-board{
   height: 555px;
+}
+
+.btn-container button.btn.btn_fixed-bottom{
+  @media(--mobile) {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+  }
 }

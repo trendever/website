@@ -25,7 +25,6 @@ div.scroll-cnt(v-if="isDone")
         photos-component( :filter-by-user-id="user_id", :filter-by-user-name="userName", :list-id="listId" )
     navbar-component(current='profile')
 </template>
-
 <script type='text/babel'>
   import { urlThumbnail } from 'utils';
 

@@ -10,114 +10,252 @@
   earth = 'img/earth.png'
 
 .scroll-cnt
-    header-component(
-      title='Почему Trendever?',
-      show_on_elem='headerAnchor',
-      :back-link='{name: "home"}')
+  .section.header.u-fixed
+    .section__content.header__content
+      .header__logo
+        a(v-link='{ name: "home" }')
+          img(src='img/logo.svg' alt='')
+      a(href='#'
+        v-if="!isAuth"
+        v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
+  .section.top
 
-    .section.top
-      .section__content(v-el:main-video-cnt)
-        iframe(src='https://player.vimeo.com/video/167123446?autoplay=1&title=0&byline=0&portrait=0',
-              :width='mainVideoWidth', :height='mainVideoHeight',
-              frameborder='0', webkitallowfullscreen,
-              mozallowfullscreen, allowfullscreen)
+    .arithmetic
+      .arithmetic__first
+        img(src='img/instagramm.png' alt ='')
+      .arithmetic__svg
+        img(src='img/arithmetic.svg' alt ='')
+      .arithmetic__result
+        img(src='img/result.png' alt ='')
 
-    div.why(style='width: 750px; margin: 0 auto;')
-      .section.available#headerAnchor
-        .section__content
-          .available__title.green Почему мы это делаем?
-          img.intro-hero__img(src=global_brands alt='')
+  .section.inform-item
+    .section__content
+      .inform-item__top-block.inform-item__bg-img-red
+        div.inform-item__title
+          p Любишь искать и покупать
+            br
+            |  что-то новенькое
+            br
+            |  через Instagram?
+      .inform-item__answer
+        div.inform-item__title.inform-item__answer__title
+          p Вот только среди
+            br
+            |  множества товаров
+            br
+            |  без категорий, отзывов и цен...
+          span ...шопинг в Instagram становится испытанием!
 
-      .section.free
-        .section__content
-          .free__title Мы за свободный шопинг,
-          .free__text ...когда ничего не мешает найти свой тренд и купить его из первых рук. #[br] Больше не нужно покупать то, #[br] что навязывают торговые сети #[br] и глобальные бренды.
-          .free__img: img(src=free_shopping alt='')
+  .section.inform-item
+    .section__content
+      .inform-item__top-block.inform-item__bg-blue
+        div.inform-item__title
+          ul.emoji-list
+            li Ой, сколько всего!
+              span.emoji_small.emoji_neutral
+            li Но где же то, что нужно?
+              span.emoji_small.emoji_confused
+            li И сколько это стоит?
+              span.emoji_small.emoji_think
+            li А есть ли отзывы?
+              span.emoji_small.emoji_imp
+            li Моя посылка точно придет?
+              span.emoji_small.emoji_doubts
+          span А теперь представь, что все стало гораздо проще!
+      .inform-item__answer
+        div.inform-item__title.inform-item__answer__title
+          p Трендскауты,
+            br
+            |  наши fashion-эксперты,
+          span ...уже все сделали для тебя!
 
-      .section.why
-        .section__content.why__content
-          .why__title
-            | Поэтому мы фанаты
-            .why__title__inner Instagram,
-          .why__inner
-            .why__inner__img: img(src=fans alt='' width='455' height='630')
-            .why__inner__text
-              .why__inner__text__item.why__inner__text__item_position_one где каждый
-              .why__inner__text__item.why__inner__text__item_position_two сам
-              .why__inner__text__item.why__inner__text__item_position_three выбирает
-              .why__inner__text__item.why__inner__text__item_position_four тренды.
+  .section.inform-item
+    .section__content
+      .inform-item__top-block.inform-item__bg-green
+        div.inform-item__title
+          ul.check-list
+            li
+              i.ic-galochka
+              | Выбрали самое интересное
+            li
+              i.ic-galochka
+              | Узнали все цены
+            li Отсортировали по категориям
+              i.ic-galochka
+            li
+              i.ic-galochka
+              | Проверили продавцов
+          span Пара минут, и ты найдешь то, что нужно!
+      .inform-item__answer
+        div.inform-item__title.inform-item__answer__title
+          p.with-padding Подписывайся
+            br
+            |  на ленты Трендскаутов,
+          span ...которые выбрали тренды не на продажу, а для себя.
+            br
+            |  Любой тренд можно сохранить в ленту своих желаний.
 
-      //- .section.list
-        .section__content
-          .list__title ..а шопинг-тренды выбирайте в Trendever:
-          .list__body
-            .list__item
-              .list__item__left: .list__item__number 1
-              .list__item__right
-                .list__item__text
-                  .list__item__text__green Ленты trendовых товаров,*
-                  | отбираемых стилистами #[br] и модницами (такими же как вы ;)
+  .section.inform-item
+    .section__content
+      .inform-item__top-block.inform-item__bg-yellow.gallery-about
+        swipe.my-swipe
+          swipe-item.slide1
+            .gallery-about__slide.gallery-about__slide__img-block
+                img(src='img/slide-img-1.png' alt='')
+            .gallery-about__slide__title Christine
+            .gallery-about__slide__theme Fashion & Beauty блогер
+            .gallery-about__slide__text
+              p «Мой мир - мое вдохновение, я люблю созерцать все самое прекрасное
+                br
+                |  и передавать свои эмоции окружающим. Я родилась в Латвии
+                br
+                |  и мой город диктует стиль моей жизни»
+          swipe-item.slide2
+            .gallery-about__slide.gallery-about__slide__img-block
+                img(src='img/slide-img-2.png' alt='')
+            .gallery-about__slide__title Polina
+            .gallery-about__slide__theme Fashion & lifestyle блогер
+            .gallery-about__slide__text
+              p «Фото - отражение моей жизни. Они разные, но в то же время гармонируют.
+                br
+                |  Я кофеман, авантюристка и путешественница.
+                br
+                |  Главные увлечения - фотография, съемка видео»
+          swipe-item.slide3
+            .gallery-about__slide.gallery-about__slide__img-block
+                img(src='img/slide-img-3.png' alt='')
+            .gallery-about__slide__title Alice
+            .gallery-about__slide__theme Fashion & lifestyle блогер
+            .gallery-about__slide__text
+              p «Хочу передать красоту повседневных вещей, на которые мы
+                br
+                |  не обращаем внимание. Поделиться с подписчиками эмоциями
+                br
+                |  о моем главном увлечении - музыка и игра на фортепиано»
+          swipe-item.slide4
+            .gallery-about__slide.gallery-about__slide__img-block
+                img(src='img/slide-img-4.png' alt='')
+            .gallery-about__slide__title Diana
+            .gallery-about__slide__theme Lifestyle блогер
+            .gallery-about__slide__text
+              p «Мой Инстаграмм это стильные, легкие фото, которые передают эмоции
+                br
+                |  и заставляют улыбаться! Люблю стрит-арт и одежду, которые удобно
+                br
+                |  носить и в которой я чувствую себя комфортно и уверенно!»
 
-            .list__item
-              .list__item__left
-                .list__item__number 2
-              .list__item__right
-                .list__item__text
-                  .list__item__text__green Покупка прямо в инстаграме
-                  | товаров с тегом #trendever
 
-            .list__item
-              .list__item__left
-                .list__item__number 3
 
-              .list__item__right
-                .list__item__text
-                  .list__item__text__green Чат-платформа**
-                  | для общения с магазинами #[br] и заказа без посредников
+  .section.inform-item.about-mobile
+    .section__content
+      .about-mobile__duplicate
+        .about-mobile__duplicate__title Шопинг твоих желаний
+        p Фильтруй по категориям,
+          br
+          | жми купить и консультант
+          br
+          | ответит в шопинг-чате.
+      .inform-item__top-block.inform-item__bg-red
+        .about-mobile__two-col
+          .about-mobile__two-col__img
+            .about-mobile__img-block
+              img(src='img/iphone-1.png' alt='')
+              .video.video-1
+                video
+                  source(src="http://3wcode.com.ua/ostrog/video/main.mp4" type="video/mp4")
+                  source(src="http://3wcode.com.ua/ostrog/video/main.ogv" type="video/ogg")
+                  | Your browser does not support the video tag.
+                a(href='#' @click="playVideo").play-btn
+                  i.ic-play-inverted
+          .about-mobile__two-col__text
+            .vertical-align-wrapper
+              .about-mobile__two-col__title Шопинг твоих желаний
+              p.mobile-hidden Фильтруй по категориям, жми купить
+                br
+                |  и консультант ответит в шопинг-чате.
+              p Весь заказ, включая оплату и доставку,
+                br
+                |  в одном окошке чата.
 
-            .list__text *дизайнерская одежда, обувь, модные аксессуары, мебель, арт, утварь, авторская кухня и многое другое
-            .list__text **сейчас на базе email, скоро mobile messenger, voicecall, videocall
-          .list__bottom
-            .list__how.main__link(v-link='{name: "guide"}') Узнайте как
-      .section.available
-        .section__content
-          .available__title Доступно #[br] всем магазинам
-          .available__text Социальные сети, электронные #[br] денежные переводы и современная логистика...
-          .available__img: img(src=all_shops alt='')
-          .available__text ...позволяют любому производителю или продавцу организовать витрину товаров в&nbsp;инстаграме, онлайн оплату и&nbsp;доставку в&nbsp;любую точку мира.
-          .available__text.__last Мы помогаем инстаграм-магазинам найти больше клиентов.
 
-      .section.available.__text-center
-        a(
-          v-link='{name: "info", params: {type: "for_shop"}}')
-            button(class='btn btn_primary __orange __xl hello__btn fast__big__btn') Оставьте заявку
+  .section.inform-item.about-mobile
+    .section__content
+      .about-mobile__duplicate
+        .about-mobile__duplicate__title А ещё,
+          br
+          |  мы интегрировались
+          br
+          |  с Instagram!
+        p Теперь ты можешь
+          br
+          |  купить или сохранить
+          br
+          |  инстаграм-пост, оставив
+          br
+          |  комментарий в ленте.
+      .inform-item__top-block.inform-item__bg-gradient
+        .about-mobile__two-col
+          .about-mobile__two-col__text.right
+            .vertical-align-wrapper
+              .about-mobile__two-col__title А ещё, мы интегрировались
+                br
+                |  с Instagram!
+              p.mobile-hidden Теперь ты можешь купить или сохранить
+                br
+                |  инстаграм-пост, оставив комментарий в ленте.
+              div.about-mobile__two-col__at
+                span @wantit
+                | *
+                |  купить товар через наш шопинг-чат
+              div.about-mobile__two-col__at
+                span @savetrend
+                |  добавить в свою ленту трендов
 
-      .section.focus
-        .section__content
-          .focus__title Фокус на главном
-          .focus__text Дизайнеры и&nbsp;производители больше не&nbsp;нуждаются в&nbsp;посредниках, торговых точках и&nbsp;сложном маркетинге.
-          .focus__img: img(src=focus alt='')
-          .focus__text В Trendever поставщик сосредоточен только на том, что важно клиенту: качестве товара, фотографиях #[br] и сервисе.
+            span.note *только посты с тегом #trendever
+          .about-mobile__two-col__img
+            .about-mobile__img-block.about-mobile__img-block__right
+              img(src='img/iphone-2.png' alt='')
+              .video.video-2
+                video
+                  source(src="http://3wcode.com.ua/ostrog/video/instagram.mp4" type="video/mp4")
+                  source(src="http://3wcode.com.ua/ostrog/video/instagram.ogv" type="video/ogg")
+                  | Your browser does not support the video tag.
+                a(href='#' @click="playVideo").play-btn
+                  i.ic-play-inverted
+  .section.about-us
+    .section__content
+      .about-us__logo
+        a(href='#')
+          img(src='img/about-us-logo.svg' alt='' itemprop="contentUrl")
+      p Поможет найти и купить тренды
+        br
+        |  без наценки из первых рук!
+      a(v-link='{ name: "home" }').btn-yellow.btn-yellow__m Перейти на сайт
+      p Превращаем Instagram-шопинг в удовольтсвие.
 
-      .section.together
-        .section__content
-          .together__title
-            span Bместе нам проще быть стильными и делать покупки по&nbsp;честной цене.
-          .together__img: img(src=earth alt='')
-          .together__text Давайте вместе делать мир ярче!
-          //- .available.__text-center
-            a.btn.btn_primary.__inverse.__xl(
-              href='#') Присоединяйтесь
-          .__text-center
-            a.together__tomain.main__link(v-link='{name: "home"}')
-              button(class='btn btn_primary __orange __xl hello__btn fast__big__btn') На главную
+  .section.inform-item.footer
+    .section__content
+      .inform-item__top-block.inform-item__bg-turquoise
+        .vertical-align-wrapper
+          p У тебя свой бренд?
+            br
+            |  Хочешь продаваться у нас?
+          div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
+            | Узнай как
+  script
 
 </template>
-
 <script>
   import listen from 'event-listener';
+  import { Swipe, SwipeItem } from 'vue-swipe';
   import { ratioFit } from 'utils';
   import HeaderComponent from 'base/header/header.vue';
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
+  import { createLead } from 'vuex/actions/lead';
+  import { isAuth } from 'vuex/getters';
+  import * as leads from 'services/leads';
+
+  const promoProduct = 21499
 
   export default {
     data(){
@@ -133,10 +271,21 @@
       }
     },
 
-    ready(){
-      this.updateMainVideoSize();
+    vuex: {
+      getters: {
+        isAuth,
+      },
+      actions: {
+        createLead,
+        setCallbackOnSuccessAuth,
+      }
+    },
 
-      this.resizeEvent = listen(window, 'optimizedResize', this.updateMainVideoSize.bind( this ))
+    ready(){
+      if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        document.querySelector('.video-1').classList.add('hidden');
+        document.querySelector('.video-2').classList.add('hidden');
+      }
     },
 
     methods: {
@@ -147,10 +296,54 @@
         this.mainVideoWidth = sizes.width;
         this.mainVideoHeight = sizes.height;
       },
+      playVideo: function (e) {
+        var btn = e.currentTarget,
+            video = btn.previousSibling,
+            darknessBlock = video.parentNode;
+
+        btn.style.display = 'none';
+        video.play();
+        darknessBlock.classList.add('played');
+        video.addEventListener("ended", function(){
+          btn.style.display = 'block';
+          darknessBlock.classList.remove('played');
+        });
+        video.addEventListener("pause", function(){
+          btn.style.display = 'block';
+          darknessBlock.classList.remove('played');
+        });
+      },
+      onBuyPromoProduct() {
+        if ( !this.isAuth ) {
+
+          this.$router.go( { name: 'signup' } );
+          this.setCallbackOnSuccessAuth(this.onBuyPromoProduct.bind(this))
+
+        } else {
+
+          this.createLead( promoProduct )
+          .then(
+            ( lead ) => {
+              if (lead !== undefined && lead !== null){
+                this.$router.go( { name: 'chat', params: { id: lead.id } } );
+              }
+            },
+            ( error ) => {
+              if ( error === leads.ERROR_CODES.UNATHORIZED ) {
+                this.$router.go( { name: 'signup' } );
+              }
+            }
+          );
+
+        }
+      },
     },
 
     components: {
-      HeaderComponent
+      HeaderComponent,
+        Swipe,
+        SwipeItem
     }
+
   }
 </script>

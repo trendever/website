@@ -36,9 +36,9 @@ div
 
 <script type="text/babel">
 
-  import { hidePopupFastSignup } from 'vuex/actions';
+  import { executeCallbackOnSuccessAuth } from 'vuex/actions';
   import { authUser } from 'vuex/actions/user.js';
-  import { authData } from 'vuex/getters';
+  import { authData, callbackOnSuccessAuth } from 'vuex/getters';
   import store from 'vuex/store';
   import * as auth from 'services/auth';
 
@@ -70,17 +70,17 @@ div
 
     ready() {
       this.$set('height', `${ document.body.scrollHeight }px`);
-      this.hidePopupFastSignup();
       this.$els.confirmField.focus();
     },
 
     vuex: {
       actions: {
         authUser,
-        hidePopupFastSignup,
+        executeCallbackOnSuccessAuth,
       },
       getters: {
         authData,
+        callbackOnSuccessAuth,
       }
     },
 
@@ -106,9 +106,11 @@ div
         }
         if (this.isCompleted) {
           // go to back
-          // this.closePage();
-          // this.closePage();
-          this.$router.go({name: 'home'});
+          if (!this.callbackOnSuccessAuth) {
+            this.$router.go({name: 'home'})
+          } else {
+            this.executeCallbackOnSuccessAuth()
+          }
         } else {
           this.onConfirm();
           setTimeout( () => this.$set('needNewSMS', true), 7000);

@@ -8,13 +8,9 @@ article.product-post
      width='72' height='72')
 
     .product-post__info
-      .product-post__info__supplier(
-        v-link='{name: "user", params: {username: getOpenedProduct.supplier.instagram_username}}')
-        | {{ getOpenedProduct.supplier.instagram_username }}
+      .product-post__info__supplier {{ getOpenedProduct.supplier.instagram_username }}
       .product-post__added добавлено&nbsp;
-        span.product-post__user-name(
-          v-link='{name: "user", params: {username: getOpenedProduct.mentioned.instagram_username}}')
-          | {{ getOpenedProduct.mentioned.instagram_username}}
+        span.product-post__user-name {{ getOpenedProduct.mentioned.instagram_username}}
   main.product-post__body(v-el:image-body)
     div(v-bind:style='{ opacity: imageOpacity }',
         :class='{"__animate": animate}')
@@ -55,7 +51,7 @@ article.product-post
   import listen from 'event-listener';
 
   import { urlThumbnail, ratioFit } from 'utils';
-
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import { createLead } from 'vuex/actions/lead.js';
   import { isAuth } from 'vuex/getters/user.js';
   import { getOpenedProduct } from 'vuex/getters/products';
@@ -85,6 +81,7 @@ article.product-post
     vuex: {
       actions: {
         createLead,
+        setCallbackOnSuccessAuth,
       },
       getters: {
         getOpenedProduct,
@@ -131,6 +128,7 @@ article.product-post
         if ( !this.isAuth ) {
 
           this.$router.go( { name: 'signup' } );
+          this.setCallbackOnSuccessAuth(this.onBuy.bind(this))
 
         } else {
 
@@ -138,7 +136,7 @@ article.product-post
 
           promise.then(
             ( lead ) => {
-              if(lead !== undefined && lead !== null){
+              if (lead !== undefined && lead !== null){
                 this.$router.go( { name: 'chat', params: { id: lead.id } } );
               }
             },
@@ -165,9 +163,9 @@ article.product-post
       },
 
       onUserImageError(e){
-        if (!this.$loadingRouteData) {
-          this.userImage = require('base/img/logo.png');
-        }
+        console.warn(`Load user photo has failed. Product id: ${this.obj.id}`);
+
+        this.userImage = require('base/img/logo.png');
       }
     },
   }

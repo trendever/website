@@ -37,7 +37,7 @@ div
                   @click='phone = ""')
                   i.ic-close
           .btn-container
-            button.btn.btn_primary.__orange.__xl.fast__big__btn(
+            button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
               :disabled='!$signup.valid',
               @click='sendSMS') Отправить sms-код
             .link-container
@@ -58,8 +58,6 @@ div
   import {
     saveAuthData,
     signup,
-    hidePopupFastSignup,
-    showPopupFastSignup,
   } from 'vuex/actions';
   import {
     authData,
@@ -111,7 +109,6 @@ div
     },
 
     ready() {
-      this.hidePopupFastSignup();
       this.$set('height', `${ document.body.scrollHeight }px`);
       this.phone = this.authData.phone;
       this.login = this.authData.username;
@@ -130,8 +127,6 @@ div
       actions: {
         saveAuthData,
         signup,
-        hidePopupFastSignup,
-        showPopupFastSignup,
       },
       getters: {
         authData,
@@ -143,7 +138,6 @@ div
       closePage() {
         mixpanel.track('Close Signup Page');
         this.save();
-        this.showPopupFastSignup();
 
         if (window.history.length > 2) {
           this.$router.go(window.history.back());
