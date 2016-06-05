@@ -19,7 +19,7 @@ div.scroll-cnt(v-if="isDone")
             //-   .profile_info_count_t Подписки
 
           .profile_desc
-            .profile_desc_t Слоган профиля
+            //- .profile_desc_t Слоган профиля
             span(v-if="getUserCaption") {{ getUserCaption }}
 
         photos-component( :filter-by-user-id="user_id", :filter-by-user-name="userName", :list-id="listId" )
