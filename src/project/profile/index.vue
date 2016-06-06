@@ -19,7 +19,7 @@ div.scroll-cnt(v-if="isDone")
             //-   .profile_info_count_t Подписки
 
           .profile_desc
-            //- .profile_desc_t Слоган профиля
+            .profile_desc_t {{getSlogan}}
             span(v-if="getUserCaption") {{ getUserCaption }}
 
         photos-component( :filter-by-user-id="user_id", :filter-by-user-name="userName", :list-id="listId" )
@@ -30,7 +30,7 @@ div.scroll-cnt(v-if="isDone")
 
   import store from 'vuex/store'
   import { openProfile, closeProfile } from 'vuex/actions/user.js';
-  import { gerUserName, getUserPhoto, getUserCaption, isDone, getPhotoConfig } from 'vuex/getters/user.js';
+  import { gerUserName, getUserPhoto, getUserCaption, getSlogan, isDone, getPhotoConfig } from 'vuex/getters/user.js';
 
   import HeaderComponent from 'base/header/header.vue'
   import PhotosComponent from 'base/photos/photos.vue'
@@ -56,6 +56,7 @@ div.scroll-cnt(v-if="isDone")
         gerUserName,
         getUserPhoto,
         getUserCaption,
+        getSlogan,
         isDone,
         getPhotoConfig
       }

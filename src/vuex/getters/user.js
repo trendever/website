@@ -68,6 +68,16 @@ export const getUserCaption = ( state ) => {
 
 };
 
+export const getSlogan = (state) => {
+
+  const {slogan} = user( state );
+
+  if ( typeof slogan === 'string' ) {
+    return slogan;
+  }
+  
+};
+
 export const getProfile = ( { user }, id = null ) => {
 
   if ( id !== null ) {

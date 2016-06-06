@@ -30,6 +30,7 @@ function picProfile( profile ) {
       instagram_fullname: profile.instagram_fullname,
       avatar_url: profile.avatar_url || profile.instagram_avatar_url,
       caption: profile.caption || profile.instagram_caption,
+      slogan: profile.slogan,
       name: profile.name,
       email: profile.email,
       phone: profile.phone,
