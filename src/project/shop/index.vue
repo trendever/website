@@ -39,9 +39,7 @@
 
   .section.inform-item
     .section__content
-      .inform-item__height-auto
-        div.inform-item__title
-          img(src='img/img-blue.png')
+      .inform-item__blue-img
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Трендскаут разрекламирует...
@@ -50,9 +48,7 @@
 
   .section.inform-item
     .section__content
-      .inform-item__height-auto
-        div.inform-item__title
-          img(src='img/img-green.png')
+      .inform-item__green-img
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Трендскаут проконсультирует...
@@ -60,9 +56,7 @@
 
   .section.inform-item
     .section__content
-      .inform-item__height-auto
-        div.inform-item__title
-          img(src='img/img-yellow.png')
+      .inform-item__yellow-img
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Трендскаут подключит тебя#[br] к шопинг-чату...
@@ -71,9 +65,7 @@
 
   .section.inform-item
     .section__content
-      .inform-item__height-auto
-        div.inform-item__title
-          img(src='img/img-pink.png')
+      .inform-item__red-img
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Звучит неплохо?
@@ -85,16 +77,13 @@
         div.inform-item__title
           ul.img-list
             li
-              .img-list-stile
-                img(src='img/list-1.png')
+              .img-list-stile.showcase
               span Стильная и «живая» витрина#[br] товаров в Instagram
             li
-              .img-list-stile
-                img(src='img/list-2.png')
+              .img-list-stile.time-saving
               span Дождаться пока Трендскаут#[br] заметит твой инста-шоп.
             li
-              .img-list-stile
-                img(src='img/list-3.png')
+              .img-list-stile.provide-information
               span  По запросу скаута сообщать#[br] информацию о товарах.
 
       .inform-item__answer

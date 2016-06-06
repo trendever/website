@@ -26,11 +26,58 @@
     }
   }
 
+  &__green-img {
+    height:481px;
+    background: url('img/img-green.png') no-repeat 50% 0;
+
+    @media(--mobile) {
+      height:710px;
+      background: url('img/img-green-sm.png') no-repeat 50% 0;
+    }
+  }
+
+  &__red-img {
+    height:503px;
+    background: url('img/img-pink.png') no-repeat 50% 0;
+
+    @media(--mobile) {
+      height:673px;
+      background: url('img/img-pink-sm.png') no-repeat 50% 0;
+    }
+  }
+
+  &__yellow-img {
+    height:546px;
+    background: url('img/img-yellow.png') no-repeat 50% 0;
+
+    @media(--mobile) {
+      height:701px;
+      background: url('img/img-yellow-sm.png') no-repeat 50% 0;
+    }
+  }
+
+  &__blue-img {
+    height:511px;
+    background: url('img/img-blue.png') no-repeat 50% 0;
+
+    @media(--mobile) {
+      height:761px;
+      background: url('img/img-blue-sm.png') no-repeat 50% 0;
+    }
+  }
+
   &__img-list {
     height:847px;
     background: url(img/inform-item-blue.png) no-repeat 0 0;
     margin-top:90px;
     margin-bottom: 39px;
+
+    @media(--mobile) {
+      margin-left:-40px;
+      margin-right:-40px;
+      height:1258px;
+      background: url(img/inform-item-blue-sm.png) no-repeat 50% 0;
+    }
   }
 
   &__green-with-img {
@@ -86,13 +133,27 @@ span.inform-item__answer__bold {
   text-align:center;
   margin-top:-52px;
 
+  @media(--mobile) {
+    text-align: left;
+    margin-top:-78px;
+  }
+
   li {
     margin-bottom:8px;
+
+    span {
+      text-align:center;
+      margin-bottom:46px;
+    }
   }
 
   span {
     display:inline-block;
     vertical-align:middle;
+
+    @media(--mobile) {
+      width:370px;
+    }
   }
 
   .img-list-stile {
@@ -100,5 +161,32 @@ span.inform-item__answer__bold {
     width:240px;
     display:inline-block;
     vertical-align:middle;
+
+    @media(--mobile) {
+      margin-right:45px;
+    }
+
+    &.showcase {
+      background:url('img/list-1.png') no-repeat 50% 0;
+      background-size: auto 100%;
+      height:334px;
+
+      @media(--mobile) {
+        height: 469px;
+        margin-left:45px;
+      }
+    }
+
+    &.time-saving {
+      background:url('img/list-2.png') no-repeat 50% 0;
+      background-size: auto 100%;
+      height:240px;
+    }
+
+    &.provide-information {
+      background:url('img/list-3.png') no-repeat 50% 0;
+      background-size: auto 100%;
+      height:309px;
+    }
   }
 }
