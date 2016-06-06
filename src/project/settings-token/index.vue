@@ -14,12 +14,12 @@
 
 <script type='text/ecmascript-6'>
 import HeaderComponent from 'base/header/header.vue'
-import profile from 'services/profile'
+import {getProfile} from 'services/profile'
 
 export default {
     data(){
       return {
-        token: profile.getProfile().token
+        token: getProfile().token
       }
     },
     ready() {
@@ -27,7 +27,7 @@ export default {
         {
           name: 'settings-token',
           query: {
-            'token': profile.getProfile().token
+            'token': getProfile().token
           }
         }
       );
