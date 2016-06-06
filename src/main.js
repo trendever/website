@@ -10,6 +10,7 @@ import InitValidators from './validators';
 import store from 'vuex/store';
 
 require('es6-promise').polyfill();
+require('core-js/fn/array/find');
 
 // Log errors
 if (config.raven.enabled) {
