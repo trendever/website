@@ -128,8 +128,12 @@ export const getLastMessage = (state) => {
             };
           }
           if (mime === 'text/json') {
+
+            const res = JSON.parse(data);
+            const title = res.title ? res.title : '';
+
             messages[id] = {
-              message: `товар: ${JSON.parse(data).title}`,
+              message: `товар: ${title}`,
               user_name
             };
           }
