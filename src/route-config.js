@@ -41,9 +41,9 @@ export function configRouter(router) {
     //   component: require('project/profile/index.vue')
     // },
 
-    '/why': {
-      name: 'why',
-      component: require('project/why/index.vue'),
+    '/mission': {
+      name: 'mission',
+      component: require('project/mission/index.vue'),
     },
 
     '/agreement': {
@@ -91,6 +91,11 @@ export function configRouter(router) {
     '/404': {
       name: '404',
       component: require('project/not-found/index.vue'),
+    },
+
+    '/shop': {
+      name: 'shop',
+      component: require('project/shop/index.vue'),
     }
 
   });

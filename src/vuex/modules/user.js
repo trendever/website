@@ -8,7 +8,7 @@ import {
 const state = {
   openedUser: null, // dict with opened user
 
-  isAuth: false,
+  isAuth: true,
   token: null,
 
   id: null, // string

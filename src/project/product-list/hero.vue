@@ -1,7 +1,7 @@
 <style src='./styles/hero.pcss'></style>
 <template lang="jade">
 .section.smallHero(v-if='isAuth')
-  a(v-link='{ name: "why" }')
+  a(v-link='{ name: "mission" }')
     i.smallHero__logo
       img(src='img/logo.svg')
 .section.hero(v-if='!isAuth')
@@ -28,7 +28,7 @@
           a(class='profile-header__menu-link',
             v-link='"for_blogger" | linkToInfo') Блогерам
           a(class='profile-header__menu-link',
-            v-link='{name: "why"}') Наша миссия
+            v-link='{name: "mission"}') Наша миссия
           a(class='profile-header__menu-link',
             v-link='{name: "agreement"}') Условия
           //- a(class='profile-header__menu-link', href='#') Отмена
