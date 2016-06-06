@@ -86,6 +86,7 @@ export const openProfile = ( { dispatch, state }, id ) => {
         requestData.user_id               = +id.split( 'id' )[ 1 ];
         photosConfig.listId               = `profile_id_${ requestData.user_id }`;
         photosConfig.photosFilter.user_id = requestData.user_id;
+        photosConfig.photosFilter.instagram_name = null;
 
       } else if ( id.length > 0 ) {
 
