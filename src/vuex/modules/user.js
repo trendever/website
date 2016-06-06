@@ -21,15 +21,15 @@ const state = {
 };
 
 function picProfile( profile ) {
-
+  
   return Object.assign(
     {
       id: profile.id,
       instagram_id: profile.instagram_id,
       instagram_username: profile.instagram_username,
       instagram_fullname: profile.instagram_fullname,
-      instagram_avatar_url: profile.instagram_avatar_url || profile.avatar_url,
-      instagram_caption: profile.instagram_caption,
+      avatar_url: profile.avatar_url || profile.instagram_avatar_url,
+      caption: profile.caption || profile.instagram_caption,
       name: profile.name,
       email: profile.email,
       phone: profile.phone,

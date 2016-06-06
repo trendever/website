@@ -22,23 +22,23 @@ export const getLeadId = ( state ) => {
 };
 
 export const isInit = ( { conversation }, lead ) => {
-  
+
   if ( lead.chat ) {
-    
+
     if ( lead.chat.id ) {
-      
+
       if ( conversation.allInit.hasOwnProperty( lead.chat.id ) ) {
-        
+
         return conversation.allInit[ lead.chat.id ];
-        
+
       }
-      
+
     }
-    
+
   }
-  
+
   return false;
-  
+
 };
 
 export const isMessages = ( { conversation }, lead ) => {
@@ -48,14 +48,14 @@ export const isMessages = ( { conversation }, lead ) => {
     if ( lead.chat.id ) {
 
       if ( conversation.all.hasOwnProperty( lead.chat.id ) ) {
-  
+
         if ( Array.isArray( conversation.all[ lead.chat.id ] ) ) {
-    
+
           return {
             count: conversation.all[ lead.chat.id ].length,
             messages: conversation.all[ lead.chat.id ]
           };
-    
+
         }
 
       }
@@ -63,7 +63,7 @@ export const isMessages = ( { conversation }, lead ) => {
     }
 
   }
-  
+
   return {
     count: 0,
     messages: null
@@ -142,8 +142,8 @@ export const getPhoto = ( state ) => {
   const lead = getLeadByConversationId( state, state.conversation.id );
 
   if ( lead !== null ) {
-
-    return lead.shop.instagram_avatar_url;
+    
+    return lead.shop.avatar_url || lead.shop.instagram_avatar_url;
 
   }
 

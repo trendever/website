@@ -5,9 +5,9 @@ export const isAuth = ( { user } ) => {
 };
 
 export const isDone = ( { user }) => {
-  
+
   return user.done;
-  
+
 };
 
 export const user = ( { user } ) => {
@@ -50,20 +50,20 @@ export const gerUserName = ( state ) => {
 
 export const getUserPhoto = ( state ) => {
 
-  const { instagram_avatar_url } = user( state );
+  const { avatar_url } = user( state );
 
-  if ( typeof instagram_avatar_url === 'string' ) {
-    return instagram_avatar_url;
+  if ( typeof avatar_url === 'string' ) {
+    return avatar_url;
   }
 
 };
 
 export const getUserCaption = ( state ) => {
 
-  const {instagram_caption} = user( state );
-
-  if ( typeof instagram_caption === 'string' ) {
-    return instagram_caption;
+  const {caption} = user( state );
+  
+  if ( typeof caption === 'string' ) {
+    return caption;
   }
 
 };

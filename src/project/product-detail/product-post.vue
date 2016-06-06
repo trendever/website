@@ -104,9 +104,9 @@ article.product-post
 
       this.updateImageSize();
 
-      this.resizeEvent = listen(window, 'optimizedResize', this.updateImageSize.bind( this ))
+      this.resizeEvent = listen(window, 'optimizedResize', this.updateImageSize.bind( this ));
 
-      this.userImage = this.obj.supplier.instagram_avatar_url;
+      this.userImage = this.obj.supplier.avatar_url;
     },
 
     methods: {
