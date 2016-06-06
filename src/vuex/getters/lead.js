@@ -116,7 +116,7 @@ export const getLastMessage = (state) => {
             if (chat.recent_message.user.name) {
 
               user_name = chat.recent_message.user.name;
-              
+
             }
 
           }
@@ -129,7 +129,7 @@ export const getLastMessage = (state) => {
           }
           if (mime === 'text/json') {
             messages[id] = {
-              message: `товар: ${JSON.parse(data).Title}`,
+              message: `товар: ${JSON.parse(data).title}`,
               user_name
             };
           }

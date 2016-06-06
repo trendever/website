@@ -75,9 +75,10 @@
       },
       titles() {
         if(Array.isArray(this.product.items)) {
-
           return this.product.items.reduce( function( desc, item, i, arr ) {
-            desc += `${item.name} `;
+            if(item.name){
+              desc += `${item.name} `;
+            }
             if ( item.discount_price ) {
               desc += `, ${item.discount_price} <i class="ic-currency-rub"</i>`;
             } else if ( item.price ) {
@@ -89,9 +90,7 @@
           }, '' )
 
         }
-
         return '';
-
       },
       isOwnMessage() {
         if ( this.getCurrentMember !== null ) {
