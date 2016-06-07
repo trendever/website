@@ -1,9 +1,9 @@
 <style src="project/app/style.pcss"></style>
 
 <template lang="jade">
-popup-fast-signup
-router-view
-listener-component
+popup-fast-signup(v-if="authIsDone")
+router-view(v-if="authIsDone")
+listener-component(v-if="authIsDone")
 </template>
 
 <script type='text/babel'>
@@ -15,6 +15,11 @@ listener-component
   import ListenerComponent from 'project/listener/index.vue'
 
   export default {
+    data(){
+      return {
+        authIsDone: false
+      }
+    },
     vuex: {
       actions: {
         authUser
@@ -29,9 +34,11 @@ listener-component
           token = this.$route.query.token;
         }
       }
-
-      this.authUser( null, token );
-
+      this
+        .authUser( null, token )
+        .then( () => {
+          this.$set( 'authIsDone', true );
+        } );
       mixpanel.track( 'App Open' );
 
     },

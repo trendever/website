@@ -33,7 +33,7 @@ div.scroll-cnt(v-el:scroll-cnt)
     isDone,
     getLengthList,
   } from 'vuex/getters/lead.js';
-
+  import { isAuth } from 'vuex/getters/user.js';
   import {
     setTab,
     loadLeads,
@@ -55,6 +55,7 @@ div.scroll-cnt(v-el:scroll-cnt)
     },
     vuex: {
       getters: {
+        isAuth,
         getLeads,
         getTab,
         getIsTab,
@@ -75,11 +76,17 @@ div.scroll-cnt(v-el:scroll-cnt)
       }
     },
     ready(){
-      this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
+      if ( this.isAuth ) {
+        this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
+      } else {
+        this.$router.go( { name: 'signup' } );
+      }
     },
     beforeDestroy(){
-      this.scrollListener.remove();
-      this.leadClose();
+      if ( this.isAuth ) {
+        this.scrollListener.remove();
+        this.leadClose();
+      }
     },
     methods: {
       scrollHandler(){
@@ -88,14 +95,14 @@ div.scroll-cnt(v-el:scroll-cnt)
           const diff_scroll = full_scroll - this.$els.scrollCnt.scrollTop;
           if ( diff_scroll < 2500 ) {
             this.$set( 'needLoadLeads', false );
-            this.loadLeads().then(() => {
+            this.loadLeads().then( () => {
               this.$set( 'needLoadLeads', true );
-            });
+            } );
           }
         }
       },
     },
-    watch:{
+    watch: {
       getTab(){
         this.$els.scrollCnt.scrollTop = 0;
       }

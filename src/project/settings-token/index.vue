@@ -12,28 +12,39 @@
 
 </template>
 
-<script type='text/ecmascript-6'>
-import HeaderComponent from 'base/header/header.vue'
-import {getProfile} from 'services/profile'
+<script type='text/babel'>
 
-export default {
+  import HeaderComponent from 'base/header/header.vue';
+  import { getProfile } from 'services/profile';
+  import { isAuth } from 'vuex/getters/user.js';
+
+  export default {
     data(){
       return {
         token: getProfile().token
       }
     },
     ready() {
-      this.$router.go(
-        {
-          name: 'settings-token',
-          query: {
-            'token': getProfile().token
+      if ( this.isAuth ) {
+        this.$router.go(
+          {
+            name: 'settings-token',
+            query: {
+              'token': getProfile().token
+            }
           }
-        }
-      );
+        );
+      } else {
+        this.$router.go( { name: 'signup' } );
+      }
+    },
+    vuex: {
+      getters: {
+        isAuth
+      }
     },
     components: {
-        HeaderComponent,
+      HeaderComponent,
     }
-}
+  }
 </script>

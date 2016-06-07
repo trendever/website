@@ -34,9 +34,8 @@
     getCurrentMember,
     getLengthList
   } from 'vuex/getters/chat.js';
-  import {
-    isDone
-  } from 'vuex/getters/lead.js';
+  import { isDone } from 'vuex/getters/lead.js';
+  import { isAuth } from 'vuex/getters/user.js';
   import { clearNotify } from 'vuex/actions/lead.js';
 
   import * as messages from 'services/message';
@@ -60,7 +59,7 @@
     watch: {
       isDone( done ){
         if ( done ) {
-          this.run();
+          return this.run();
         }
       }
     },
@@ -68,19 +67,29 @@
       data( { to: { params: { id:lead_id } } } ) {
         this.$set( 'lead_id', +lead_id );
         if ( this.isDone ) {
-          this.run();
+          if ( this.isAuth ) {
+            return this.run();
+          } else {
+            return Promise.resolve()
+          }
         }
       },
     },
     ready(){
-      this.onMessage      = this.onMessage.bind( this );
-      this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
-      messages.onMsg( this.onMessage );
+      if ( this.isAuth ) {
+        this.onMessage      = this.onMessage.bind( this );
+        this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
+        messages.onMsg( this.onMessage );
+      } else {
+        this.$router.go( { name: 'signup' } );
+      }
     },
     beforeDestroy() {
-      this.scrollListener.remove();
-      this.closeConversation();
-      messages.offMsg( this.onMessage );
+      if ( this.isAuth ) {
+        this.scrollListener.remove();
+        this.closeConversation();
+        messages.offMsg( this.onMessage );
+      }
     },
     vuex: {
       actions: {
@@ -90,6 +99,7 @@
         closeConversation,
       },
       getters: {
+        isAuth,
         isDone,
         getMessages,
         conversationNotifyCount,
@@ -101,27 +111,29 @@
 
     filters: {
       list( value ){
-        const end = value.length;
+        const end   = value.length;
         const start = end - this.getLengthList;
-        return value.slice( (start <= 0) ? 0 : start, end);
+        return value.slice( (start <= 0) ? 0 : start, end );
       }
     },
 
     methods: {
 
       run(){
-        this.setConversation( this.lead_id ).then(
-          () => {
-            this.clearNotify( this.lead_id );
-            this.$nextTick( () => {
-              this.goToBottom();
-            } );
-          },
-          ( error ) => {
-            console.error( `[ CONVERSATION_SET ERROR ]: `, error );
-            this.$router.go( { name: 'home' } );
-          }
-        );
+        return this
+          .setConversation( this.lead_id )
+          .then(
+            () => {
+              this.clearNotify( this.lead_id );
+              this.$nextTick( () => {
+                this.goToBottom();
+              } );
+            },
+            ( error ) => {
+              console.error( `[ CONVERSATION_SET ERROR ]: `, error );
+              this.$router.go( { name: 'home' } );
+            }
+          );
       },
 
       onMessage(){

@@ -5,64 +5,79 @@ import { getUserName, getProfile } from 'vuex/getters/user.js';
 
 export const authUser = ( { dispatch }, user, token ) => {
 
-  const { token:cookieToken } = profile.getProfile();
+  return new Promise((resolve, reject) => {
 
-  if ( token && cookieToken !== token ) {
+    const { token:cookieToken } = profile.getProfile();
 
-    const user_id = profile.saveToken( token );
+    if ( token && cookieToken !== token ) {
 
-    if ( Number.isFinite( user_id ) ) {
+      const user_id = profile.saveToken( token );
 
-      if ( user ) {
+      if ( Number.isFinite( user_id ) ) {
 
-        profile.saveUser( user.User || user.Shop );
+        if ( user ) {
 
-        dispatch( types.USER_AUTHENTICATED, token );
-        dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
-        dispatch( types.USER_SET_MY_ID, user_id );
+          profile.saveUser( user.User || user.Shop || {} );
+
+          dispatch( types.USER_AUTHENTICATED, token );
+          dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
+          dispatch( types.USER_SET_MY_ID, user_id );
+
+          resolve();
+
+        } else {
+
+          userService
+            .get( { user_id } )
+            .then( ( user ) => {
+
+              profile.saveUser( user.User || user.Shop || {} );
+
+              dispatch( types.USER_AUTHENTICATED, token );
+              dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
+              dispatch( types.USER_SET_MY_ID, user_id );
+
+              resolve();
+
+            } )
+            .catch( ( error ) => {
+              if ( error === 1 ) {
+                console.error( '[ USER_NOT_FOUND ]', { user_id } );
+              } else {
+                console.error( '[ USER_UNDEFINED_ERROR ]', error );
+              }
+              reject(error);
+            } );
+
+        }
 
       } else {
 
-        userService
-          .get( { user_id } )
-          .then( ( user ) => {
+        console.warn( '[ TOKEN IS NOT CORRECT ]', { token } );
 
-            profile.saveUser( user.User || user.Shop );
-
-            dispatch( types.USER_AUTHENTICATED, token );
-            dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
-            dispatch( types.USER_SET_MY_ID, user_id );
-
-          } )
-          .catch( ( error ) => {
-            if ( error === 1 ) {
-              console.error( '[ USER_NOT_FOUND ]', { user_id } );
-            } else {
-              console.error( '[ USER_UNDEFINED_ERROR ]', error );
-            }
-          } );
+        reject('[ TOKEN IS NOT CORRECT ]', { token });
 
       }
 
     } else {
 
-      console.warn( '[ TOKEN IS NOT CORRECT ]', { token } );
+      const { user, token } = profile.getProfile();
+
+      if ( cookieToken && user ) {
+
+        dispatch( types.USER_AUTHENTICATED, token );
+        dispatch( types.USER_RECEIVE_PROFILE, user );
+        dispatch( types.USER_SET_MY_ID, user.id );
+
+        resolve();
+
+      }
+
+      resolve();
 
     }
 
-  } else {
-
-    const { user, token } = profile.getProfile();
-
-    if ( cookieToken && user ) {
-
-      dispatch( types.USER_AUTHENTICATED, token );
-      dispatch( types.USER_RECEIVE_PROFILE, user );
-      dispatch( types.USER_SET_MY_ID, user.id );
-
-    }
-
-  }
+  });
 
 };
 

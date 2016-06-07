@@ -30,7 +30,15 @@ div.scroll-cnt(v-if="isDone")
 
   import store from 'vuex/store'
   import { openProfile, closeProfile } from 'vuex/actions/user.js';
-  import { getUserName, getUserPhoto, getUserCaption, getSlogan, isDone, getPhotoConfig } from 'vuex/getters/user.js';
+  import {
+    getUserName,
+    getUserPhoto,
+    getUserCaption,
+    getSlogan,
+    isDone,
+    getPhotoConfig,
+    isAuth
+  } from 'vuex/getters/user.js';
 
   import HeaderComponent from 'base/header/header.vue'
   import PhotosComponent from 'base/photos/photos.vue'
@@ -39,13 +47,24 @@ div.scroll-cnt(v-if="isDone")
   export default {
     route: {
       data( { to: { params: { id } } } ) {
-        this.openProfile( id ).catch(() => {
-          this.$router.go( { name: '404' } );
-        });
+        if ( this.isAuth ) {
+          return this.openProfile( id ).catch( () => {
+            this.$router.go( { name: '404' } );
+          } );
+        } else {
+          return Promise.resolve();
+        }
+      }
+    },
+    ready(){
+      if ( !this.isAuth ) {
+        this.$router.go( { name: 'signup' } );
       }
     },
     beforeDestroy(){
-      this.closeProfile();
+      if ( this.isAuth ) {
+        this.closeProfile();
+      }
     },
     vuex: {
       actions: {
@@ -53,6 +72,7 @@ div.scroll-cnt(v-if="isDone")
         closeProfile
       },
       getters: {
+        isAuth,
         getUserName,
         getUserPhoto,
         getUserCaption,
@@ -61,7 +81,7 @@ div.scroll-cnt(v-if="isDone")
         getPhotoConfig
       }
     },
-    computed:{
+    computed: {
       user_id(){
         return this.getPhotoConfig.photoFilter.user_id;
       },

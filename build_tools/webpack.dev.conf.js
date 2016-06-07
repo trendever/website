@@ -8,7 +8,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var env = settings.dev.env;
 
 module.exports = merge(baseWebpackConfig, {
-  devtool: '#source-map',
+  devtool: 'cheap-module-eval-source-map',
   watch: true,
 
   entry: {

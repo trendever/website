@@ -1,5 +1,4 @@
 /* globals mixpanel */
-import store from 'vuex/store'
 
 export function configRouter(router) {
   router.map({
@@ -20,13 +19,11 @@ export function configRouter(router) {
 
     '/chat': {
       name: 'chat_list',
-      auth: true,
       component: require('project/chat-list/index.vue'),
     },
 
     '/chat/:id': {
       name: 'chat',
-      auth: true,
       component: require('project/chat/index.vue'),
     },
 
@@ -52,13 +49,11 @@ export function configRouter(router) {
 
     '/settings/token': {
       name: 'settings-token',
-      auth: true,
       component: require('project/settings-token/index.vue'),
     },
 
     '/logout': {
       name: 'logout',
-      auth: true,
       component: require('project/logout/index.vue'),
     },
 
@@ -79,7 +74,6 @@ export function configRouter(router) {
 
     '/profile': {
       name: 'profile',
-      auth: true,
       component: require('project/profile/index.vue')
     },
 
@@ -95,15 +89,6 @@ export function configRouter(router) {
       component: require('project/not-found/index.vue'),
     },
 
-
-  });
-
-  router.beforeEach(function(transition) {
-    if (transition.to.auth && !store.state.user.isAuth) {
-      transition.redirect({name: 'signup'});
-    } else {
-      transition.next();
-    }
   });
 
   router.afterEach(function(transition) {
