@@ -73,7 +73,15 @@ export const getProduct = ( state ) => {
 
   if ( Array.isArray( products ) ) {
 
-    return products.filter( ( { id } ) => id === state.products.productId )[ 0 ];
+    const result = products.filter( ( { id } ) => id === state.products.productId )[ 0 ];
+
+    if ( typeof result === 'undefined' ) {
+
+      return null;
+
+    }
+
+    return result;
 
   }
 
