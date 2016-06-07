@@ -2,7 +2,7 @@
 <template lang="jade">
 div.scroll-cnt(v-if="isDone")
   .profile-cnt
-    header-component(:title='gerUserName', :left-btn-show='false')
+    header-component(:title='getUserName', :left-btn-show='false')
 
     .section.top.bottom
       .section__content
@@ -22,7 +22,7 @@ div.scroll-cnt(v-if="isDone")
             .profile_desc_t {{getSlogan}}
             span(v-if="getUserCaption") {{ getUserCaption }}
 
-        photos-component( :filter-by-user-id="user_id", :filter-by-user-name="userName", :list-id="listId" )
+        photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId" )
     navbar-component(current='profile')
 </template>
 <script type='text/babel'>
@@ -30,7 +30,7 @@ div.scroll-cnt(v-if="isDone")
 
   import store from 'vuex/store'
   import { openProfile, closeProfile } from 'vuex/actions/user.js';
-  import { gerUserName, getUserPhoto, getUserCaption, getSlogan, isDone, getPhotoConfig } from 'vuex/getters/user.js';
+  import { getUserName, getUserPhoto, getUserCaption, getSlogan, isDone, getPhotoConfig } from 'vuex/getters/user.js';
 
   import HeaderComponent from 'base/header/header.vue'
   import PhotosComponent from 'base/photos/photos.vue'
@@ -53,7 +53,7 @@ div.scroll-cnt(v-if="isDone")
         closeProfile
       },
       getters: {
-        gerUserName,
+        getUserName,
         getUserPhoto,
         getUserCaption,
         getSlogan,

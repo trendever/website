@@ -1,7 +1,7 @@
 import * as userService from 'services/user';
 import * as profile from 'services/profile.js';
 import * as types from '../mutation-types';
-import { gerUserName, getProfile } from 'vuex/getters/user.js';
+import { getUserName, getProfile } from 'vuex/getters/user.js';
 
 export const authUser = ( { dispatch }, user, token ) => {
 
@@ -70,12 +70,22 @@ export const openProfile = ( { dispatch, state }, id ) => {
 
   return new Promise( ( resolve, reject ) => {
 
-    const requestData  = { user_id: null, instagram_name: null };
+    if ( typeof id === 'undefined' ) {
+
+      dispatch( types.USER_SET_PROFILE, id );
+
+    }
+
+    const requestData  = {
+      user_id: null,
+      instagram_name: null
+    };
+
     const photosConfig = {
       listId: 'profile',
       photosFilter: {
         user_id: null,
-        instagram_name: gerUserName( state )
+        instagram_name: getUserName( state )
       }
     };
 

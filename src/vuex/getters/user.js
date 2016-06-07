@@ -18,7 +18,7 @@ export const user = ( { user } ) => {
 
   } else {
 
-    console.warn( `[ GET USER ] - profile with id: ${user.id}, not found`, user );
+    console.warn( `[ GET USER ] - profile with id: ${user.id}, not found`, JSON.stringify(user) );
 
   }
 
@@ -32,7 +32,7 @@ export const userID = ( state ) => {
 
 };
 
-export const gerUserName = ( state ) => {
+export const getUserName = ( state ) => {
 
   const { instagram_username, name } = user( state );
 

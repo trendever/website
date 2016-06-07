@@ -113,31 +113,7 @@
 
       this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
-      this.getProducts()
-          .then( () => {
-
-            this.restore()
-                .then( () => {
-
-                  if ( this.isInfinity && this.infinityScroll ) {
-
-                    this.enableInfinityScroll();
-
-                  }
-
-                } )
-                .catch( ( error ) => {
-
-                  console.error( new Error(error), this.listId );
-
-                } );
-
-          } )
-          .catch( ( error ) => {
-
-            console.error( new Error(error), this.listId );
-
-          } );
+      this.run();
 
     },
 
@@ -160,6 +136,37 @@
     },
 
     methods: {
+
+      run(){
+
+        this.getProducts()
+            .then( () => {
+
+              this.restore()
+                  .then( () => {
+
+                    if ( this.isInfinity && this.infinityScroll ) {
+
+                      this.enableInfinityScroll();
+
+                    }
+
+                  } )
+                  .catch( ( error ) => {
+
+                    console.error( new Error(error), this.listId );
+
+                  } );
+
+            } )
+            .catch( ( error ) => {
+
+              console.error( new Error(error), this.listId );
+
+            } );
+
+      },
+
       restore(){
 
         return new Promise( ( resolve ) => {
@@ -262,6 +269,10 @@
 
     },
     watch: {
+      listId(listId){
+        this.setListId(listId);
+        this.run();
+      },
       selectedTags() {
         if ( this.tags ) {
           this.getProducts( true );
