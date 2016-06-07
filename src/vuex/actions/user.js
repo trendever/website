@@ -5,9 +5,11 @@ import { getUserName, getProfile } from 'vuex/getters/user.js';
 
 export const authUser = ( { dispatch }, user, token ) => {
 
-  return new Promise((resolve, reject) => {
+  return new Promise( ( resolve, reject ) => {
 
     const { token:cookieToken } = profile.getProfile();
+
+    console.log( {token, cookieToken} );
 
     if ( token && cookieToken !== token ) {
 
@@ -15,7 +17,13 @@ export const authUser = ( { dispatch }, user, token ) => {
 
       if ( Number.isFinite( user_id ) ) {
 
+        console.log( {user_id, token, cookieToken} );
+
         if ( user ) {
+
+          console.log( {user_id, token, cookieToken, user} );
+
+          debugger;
 
           profile.saveUser( user.User || user.Shop || {} );
 
@@ -27,9 +35,17 @@ export const authUser = ( { dispatch }, user, token ) => {
 
         } else {
 
+          console.log( {user_id, token, cookieToken, user} );
+
+          debugger;
+
           userService
             .get( { user_id } )
             .then( ( user ) => {
+
+              console.log( {user_id, token, cookieToken, user} );
+
+              debugger;
 
               profile.saveUser( user.User || user.Shop || {} );
 
@@ -46,7 +62,7 @@ export const authUser = ( { dispatch }, user, token ) => {
               } else {
                 console.error( '[ USER_UNDEFINED_ERROR ]', error );
               }
-              reject(error);
+              reject( error );
             } );
 
         }
@@ -55,13 +71,17 @@ export const authUser = ( { dispatch }, user, token ) => {
 
         console.warn( '[ TOKEN IS NOT CORRECT ]', { token } );
 
-        reject('[ TOKEN IS NOT CORRECT ]', { token });
+        reject( '[ TOKEN IS NOT CORRECT ]', { token } );
 
       }
 
     } else {
 
       const { user, token } = profile.getProfile();
+
+      console.log( {token, cookieToken, user} );
+
+      debugger;
 
       if ( cookieToken && user ) {
 
@@ -77,7 +97,7 @@ export const authUser = ( { dispatch }, user, token ) => {
 
     }
 
-  });
+  } );
 
 };
 
@@ -91,7 +111,7 @@ export const openProfile = ( { dispatch, state }, id ) => {
 
     }
 
-    const requestData  = {
+    const requestData = {
       user_id: null,
       instagram_name: null
     };
@@ -108,9 +128,9 @@ export const openProfile = ( { dispatch, state }, id ) => {
 
       if ( id.indexOf( 'id' ) !== -1 ) {
 
-        requestData.user_id               = +id.split( 'id' )[ 1 ];
-        photosConfig.listId               = `profile_id_${ requestData.user_id }`;
-        photosConfig.photosFilter.user_id = requestData.user_id;
+        requestData.user_id                      = +id.split( 'id' )[ 1 ];
+        photosConfig.listId                      = `profile_id_${ requestData.user_id }`;
+        photosConfig.photosFilter.user_id        = requestData.user_id;
         photosConfig.photosFilter.instagram_name = null;
 
       } else if ( id.length > 0 ) {
@@ -144,7 +164,7 @@ export const openProfile = ( { dispatch, state }, id ) => {
             resolve();
           } )
           .catch( error => {
-            reject(error);
+            reject( error );
             console.error(
               new Error( 'User doesn`t exists or opened incorect url' ),
               {
