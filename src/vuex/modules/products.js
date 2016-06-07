@@ -169,8 +169,13 @@ const mutations = {
 
   [PRODUCTS_CLOSE] ( state ) {
 
-    state.lists[ state.listId ].lengthList = ITEMS_PER_PAGE;
-    state.loading                          = true;
+    if ( state.lists.hasOwnProperty( state.listId ) ) {
+
+      state.lists[ state.listId ].lengthList = ITEMS_PER_PAGE;
+
+    }
+
+    state.loading = true;
 
   }
 };
