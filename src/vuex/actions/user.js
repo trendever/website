@@ -3,29 +3,39 @@ import * as profile from 'services/profile.js';
 import * as types from '../mutation-types';
 import { getUserName, getProfile } from 'vuex/getters/user.js';
 
+export const getValidUserObject = (user, user_id) => {
+
+  if ( user.hasOwnProperty( 'id' ) ) {
+    return user
+  }
+
+  if ( user.hasOwnProperty( 'User' ) ) {
+    return user.User;
+  }
+
+  if ( user.hasOwnProperty( 'Shop' ) ) {
+    return user.Shop;
+  }
+
+  return { id: user_id }
+
+};
+
 export const authUser = ( { dispatch }, user, token ) => {
 
   return new Promise( ( resolve, reject ) => {
 
     const { token:cookieToken } = profile.getProfile();
 
-    console.log( {token, cookieToken} );
-
-    if ( token && cookieToken !== token ) {
+    if ( typeof token === 'string' && (cookieToken !== token) ) {
 
       const user_id = profile.saveToken( token );
 
       if ( Number.isFinite( user_id ) ) {
 
-        console.log( {user_id, token, cookieToken} );
-
         if ( user ) {
 
-          console.log( {user_id, token, cookieToken, user} );
-
-          debugger;
-
-          profile.saveUser( user.User || user.Shop || {} );
+          profile.saveUser(getValidUserObject( user, user_id ));
 
           dispatch( types.USER_AUTHENTICATED, token );
           dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
@@ -35,19 +45,11 @@ export const authUser = ( { dispatch }, user, token ) => {
 
         } else {
 
-          console.log( {user_id, token, cookieToken, user} );
-
-          debugger;
-
           userService
             .get( { user_id } )
             .then( ( user ) => {
 
-              console.log( {user_id, token, cookieToken, user} );
-
-              debugger;
-
-              profile.saveUser( user.User || user.Shop || {} );
+              profile.saveUser(getValidUserObject( user, user_id ));
 
               dispatch( types.USER_AUTHENTICATED, token );
               dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
@@ -78,10 +80,6 @@ export const authUser = ( { dispatch }, user, token ) => {
     } else {
 
       const { user, token } = profile.getProfile();
-
-      console.log( {token, cookieToken, user} );
-
-      debugger;
 
       if ( cookieToken && user ) {
 
@@ -157,8 +155,8 @@ export const openProfile = ( { dispatch, state }, id ) => {
 
         userService
           .get( requestData )
-          .then( ( { User, Shop } ) => {
-            dispatch( types.USER_RECEIVE_PROFILE, User || Shop, id );
+          .then( ( user ) => {
+            dispatch( types.USER_RECEIVE_PROFILE, getValidUserObject(user, id), id );
             dispatch( types.USER_SET_PHOTOS_CONFIG, photosConfig.listId, photosConfig.photosFilter, id );
             dispatch( types.USER_SET_PROFILE, id );
             resolve();
