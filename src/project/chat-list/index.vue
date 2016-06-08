@@ -33,7 +33,9 @@ div.scroll-cnt(v-el:scroll-cnt)
     isDone,
     getLengthList,
   } from 'vuex/getters/lead.js';
+
   import { isAuth } from 'vuex/getters/user.js';
+
   import {
     setTab,
     loadLeads,
@@ -45,6 +47,7 @@ div.scroll-cnt(v-el:scroll-cnt)
 
   import HeaderComponent from 'base/header/header.vue';
   import NavbarComponent from 'base/navbar/navbar.vue';
+
   import ChatListItem from './chat-list-item.vue';
 
   export default {
@@ -72,7 +75,8 @@ div.scroll-cnt(v-el:scroll-cnt)
     },
     data(){
       return {
-        needLoadLeads: true
+        needLoadLeads: true,
+        hasMore: true
       }
     },
     ready(){
@@ -90,12 +94,15 @@ div.scroll-cnt(v-el:scroll-cnt)
     },
     methods: {
       scrollHandler(){
-        if ( this.needLoadLeads ) {
+        if ( this.needLoadLeads && this.hasMore ) {
           const full_scroll = this.$els.scrollCnt.scrollHeight;
           const diff_scroll = full_scroll - this.$els.scrollCnt.scrollTop;
           if ( diff_scroll < 2500 ) {
             this.$set( 'needLoadLeads', false );
-            this.loadLeads().then( () => {
+            this.loadLeads().then( (count) => {
+              if(count <= 0){
+                this.$set('hasMore', false);
+              }
               this.$set( 'needLoadLeads', true );
             } );
           }

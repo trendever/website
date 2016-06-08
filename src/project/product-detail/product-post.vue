@@ -3,6 +3,7 @@
 article.product-post
   header.product-post__header
     img.product-post__user-preview(
+     v-link='{name: "user", params: {id: getOpenedProduct.supplier.instagram_username}}',
      :src='userImage',
      v-on:error='onUserImageError',
      width='72' height='72')
@@ -11,9 +12,10 @@ article.product-post
       .product-post__info__supplier(
         v-link='{name: "user", params: {id: getOpenedProduct.supplier.instagram_username}}')
         | {{ getOpenedProduct.supplier.instagram_username }}
-      .product-post__added добавлено&nbsp;
-        span.product-post__user-name(
-          v-link='{name: "user", params: {id: getOpenedProduct.mentioned.instagram_username}}')
+      .product-post__added(
+          v-link='{name: "user", params: {id: getOpenedProduct.mentioned.instagram_username}}'
+        ) добавлено&nbsp;
+        span.product-post__user-name
          | {{ getOpenedProduct.mentioned.instagram_username}}
   main.product-post__body(v-el:image-body)
     div(v-bind:style='{ opacity: imageOpacity }',

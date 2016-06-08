@@ -17,7 +17,7 @@
           .chat-msg-product-txt
             a(v-link='{name: "product_detail", params: {id: product.id}}')
               |{{{ titles }}}
-            br
+            br(v-if="titles")
             span
               |{{{ description }}}
 </template>
@@ -75,14 +75,14 @@
       },
       titles() {
         if(Array.isArray(this.product.items)) {
-          return this.product.items.reduce( function( desc, item, i, arr ) {
+          this.product.items.reduce( function( desc, item, i, arr ) {
             if(item.name){
               desc += `${item.name} `;
             }
             if ( item.discount_price ) {
-              desc += `, ${item.discount_price} <i class="ic-currency-rub"</i>`;
+              desc += `, ${item.discount_price} <i class="ic-currency-rub"></i> `;
             } else if ( item.price ) {
-              desc += `, ${item.price} <i class="ic-currency-rub"</i>`;
+              desc += `, ${item.price} <i class="ic-currency-rub"></i> `;
             } else {
               desc += `, цена по запросу`;
             }

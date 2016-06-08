@@ -70,7 +70,7 @@ export const loadLeads = ( { dispatch, state }, count = 6 ) => {
           ( { leads } ) => {
             incLengthList( { dispatch }, leads.length );
             dispatch( LEAD_RECEIVE, leads, tab );
-            resolve();
+            resolve(leads.length);
           },
           (error) => {
             leads.sendError( error );
