@@ -75,7 +75,7 @@ export function configRouter(router) {
     '/shop': {
       name: 'shop',
       component: require('project/shop/index.vue'),
-    }
+    },
 
     '/profile': {
       name: 'profile',

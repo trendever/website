@@ -11,15 +11,6 @@
         v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
 
   .section.top
-<<<<<<< HEAD:src/project/mission/index.vue
-=======
-    .section__content(v-el:main-video-cnt)
-      iframe(src='https://player.vimeo.com/video/167123446?autoplay=1&title=0&byline=0&portrait=0',
-            :width='mainVideoWidth', :height='mainVideoHeight',
-            frameborder='0', webkitallowfullscreen,
-            mozallowfullscreen, allowfullscreen)
-
->>>>>>> dev:src/project/why/index.vue
     .arithmetic
       .arithmetic__first
         img(src='img/instagramm.png' alt ='')
