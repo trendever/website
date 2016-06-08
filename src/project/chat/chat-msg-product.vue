@@ -11,8 +11,12 @@
         .chat-msg-product-photo
           img(:src="photo")
       .chat-msg-description
-        .chat-msg_t(v-if='!isOwnMessage', :class='{"chat-msg_t-customer-color":isCustomer}')
-          | {{{ getUsername }}}
+        .chat-msg_t(
+            v-link='{name: "user", params: {id: getUserNameLink}}',
+            v-if='!isOwnMessage',
+            :class='{"chat-msg_t-customer-color":isCustomer}'
+          )
+            | {{{ getUsername }}}
         .chat-msg-product(v-link='{name: "product_detail", params: {id: product.id}}')
           .chat-msg-product-txt
             a(v-link='{name: "product_detail", params: {id: product.id}}')
@@ -69,6 +73,12 @@
         if (Array.isArray(this.product.instagram_images)) {
           return this.product.instagram_images.find((img) => img.name == "S_square").url
         }
+      },
+      getUserNameLink() {
+        if (this.isCustomer) {
+          return this.msg.user.name;
+        }
+        return this.getShopName;
       },
       description(){
         return this.product.instagram_image_caption;

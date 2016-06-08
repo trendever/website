@@ -5,13 +5,11 @@ div
 
     .chat-header(slot='content')
       .chat-header_cnt(v-show='getShopName')
-        .chat-header_cnt_t {{ getShopName }}
+        .chat-header_cnt_t(v-link='{name: "user", params: {id: getShopName}}') {{ getShopName }}
         .chat-header_cnt_info
           span.chat-header_cnt_info-text
           | {{ getLeadId }},
           span  {{ getStatus }}
-
-
 
       .chat-header_photo
         img(

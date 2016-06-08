@@ -6,7 +6,11 @@
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
     i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
   .chat-msg.bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
-    .chat-msg_t(v-if='!isOwnMessage && !isClosest', :class='{"chat-msg_t-customer-color":isCustomer}')
+    .chat-msg_t(
+        v-if='!isOwnMessage && !isClosest',
+        :class='{"chat-msg_t-customer-color":isCustomer}'
+        v-link='{name: "user", params: {id: getUserNameLink}}',
+      )
       | {{{ getUsername }}}
     .chat-msg-wrap
       p.chat-msg_txt
@@ -48,6 +52,12 @@
       },
       datetime() {
         return formatTime(this.msg.created_at);
+      },
+      getUserNameLink() {
+        if (this.isCustomer) {
+          return this.msg.user.name;
+        }
+        return this.getShopName;
       },
       getUsername() {
         if (this.isCustomer) {
