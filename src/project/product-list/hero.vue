@@ -65,15 +65,17 @@
 
         scrollAnchor() {
           var block = document.querySelector("#how-it-work");
-          var scrollBlock = this.scrollCnt;
+          if(block !== null){
+            var scrollBlock = this.scrollCnt;
 
-          if (!timer) {
-            var timer = setInterval(function () {
-              if (block.getBoundingClientRect().top < 80){
-                clearInterval(timer);
-              }
-              scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
-            }, 20);
+            if (!timer) {
+              var timer = setInterval(function () {
+                if (block.getBoundingClientRect().top < 80){
+                  clearInterval(timer);
+                }
+                scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
+              }, 20);
+            }
           }
         }
       },

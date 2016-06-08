@@ -261,6 +261,7 @@
       this.hidePopup();
 
       if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        // TODO Через vue
         document.querySelector('.video-1').classList.add('hidden')
         document.querySelector('.video-2').classList.add('hidden')
       }

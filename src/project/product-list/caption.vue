@@ -40,9 +40,14 @@
       showVideo(test) {
         var btn = document.querySelector('.show-video');
 
-        btn.addEventListener('click', function () {
-          test.videoShowed = true;
-        });
+        if(btn !== null){
+
+          btn.addEventListener('click', function () {
+            test.videoShowed = true;
+          });
+
+        }
+
       },
 
       up() {

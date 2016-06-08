@@ -97,17 +97,13 @@
         div.inform-item__title
           ul.check-list.check-list-sm
             li
-              i.ic-galochka
-              Продавать товары на Trendever
+              i.ic-galochka Продавать товары на Trendever
             li
-              i.ic-galochka
-              Выгодно продавать у блогеров
+              i.ic-galochka Выгодно продавать у блогеров
             li
-              i.ic-galochka
-              Продавать по отметке @wantit
+              i.ic-galochka Продавать по отметке @wantit
             li
-              i.ic-galochka
-              Использовать шопинг-чат на 100%
+              i.ic-galochka Использовать шопинг-чат на 100%
 
   .section.about-us
     .section__content

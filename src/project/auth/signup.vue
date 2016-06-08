@@ -203,20 +203,23 @@
 
       // change to hint text
       onClickLink() {
-        this.instagram = !this.instagram
-        var toggleClassBlock = document.querySelector('.input.name i');
-        if (!this.instagram) {
-          this.textLink = TEXT_LINK.withoutInstagramMode;
-          this.placeholder = PLACEHOLDER.withoutInstagramMode;
-          toggleClassBlock.classList.remove('ic-insta-name');
-          toggleClassBlock.classList.add('ic-user');
-        } else {
-          this.textLink = TEXT_LINK.instagramMode;
-          this.placeholder = PLACEHOLDER.instagramMode;
-          toggleClassBlock.classList.remove('ic-user');
-          toggleClassBlock.classList.add('ic-insta-name');
+        this.instagram = !this.instagram;
+        var toggleClassBlock = document.querySelector('.input.name i'); // TODO Сделай чезе v-el или v-ref
+        if(toggleClassBlock !== null){
+          if (!this.instagram) {
+            this.textLink = TEXT_LINK.withoutInstagramMode;
+            this.placeholder = PLACEHOLDER.withoutInstagramMode;
+            // TODO Классы тоже можно вешать через vue
+            toggleClassBlock.classList.remove('ic-insta-name');
+            toggleClassBlock.classList.add('ic-user');
+          } else {
+            this.textLink = TEXT_LINK.instagramMode;
+            this.placeholder = PLACEHOLDER.instagramMode;
+            toggleClassBlock.classList.remove('ic-user');
+            toggleClassBlock.classList.add('ic-insta-name');
+          }
         }
-      },
+      }
     },
 
     components: {
