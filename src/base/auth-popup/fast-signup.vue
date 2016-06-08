@@ -2,7 +2,7 @@
 div(class="popup" v-if="show")
   popup-wrapper(:show="show" close="onClose")
     .column-desktop-50.column-desktop-right
-      p.desktop-text-right Войдите, чтобы искать и покупать#[br]товары лучших инста-шопов #[span.emoji.emoji_kitty]
+      span.desktop-text-right Смотрите видео о Trendever
     .column-desktop-50.column-desktop-left
       .container-left
         button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn(

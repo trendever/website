@@ -16,7 +16,7 @@
           @focus='onFocusInput',
           @blur='onBlurInput',
           type='text',
-          placeholder='Ищите или фильтруйте...')
+          placeholder='Поиск текстом...')
 
         .search-input__clear-btn
           span.badge(v-if='selectedTags.length') {{ selectedTags.length }}
@@ -115,7 +115,7 @@
             this.$set( 'searchGlued', false );
           }
         }
-      } );
+      });
 
     },
     beforeDestroy(){

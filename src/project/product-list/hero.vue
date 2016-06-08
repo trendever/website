@@ -13,14 +13,15 @@
         a(href='https://www.fb.com/trendevercom', class='profile-header__center__ic')
           i(class='ic-facebook-icon')
         a(href='https://www.instagram.com/trendevercom', class='profile-header__center__ic')
-          i(class='ic-instagram-icon')
+          i(class='ic-instagram-new-icon')
         a(href='https://vk.com/trendever', class='profile-header__center__ic')
           i(class='ic-vkontakte-icon')
       .profile-header__menu
         .profile-header__menu-btn
           .profile-header__menu-btn-label
-          .profile-header__menu-btn-icon
-        .profile-header__menu-links
+          .profile-header__menu-btn-icon(v-on:click='menuOpened=true')
+        .profile-header__menu-links(v-show='menuOpened')
+          a(class='profile-header__menu-link profile-header__close-menu', v-on:click='menuOpened=false') Отмена
           a(class='profile-header__menu-link',
            v-link='"for_customer" | linkToInfo') Покупателям
           a(class='profile-header__menu-link',
@@ -35,23 +36,61 @@
 
     .hero__content__logo
     .hero__content__description Шопинг в Instagram стал проще
-      a(href='#how-it-work').scroll-to-anchor
+      span(v-on:click='scrollAnchor()').scroll-to-anchor
 </template>
 <script type='text/babel'>
     import { isAuth } from 'vuex/getters';
     export default {
-        vuex: {
-            getters: {
-                isAuth,
-            },
-        },
-        filters: {
-          linkToInfo(type) {
-            return {
-              name: 'info',
-              params: {type},
+      data(){
+        return {
+          menuOpened: false
+        }
+      },
+
+      ready() {
+        this.scrollCnt = document.querySelector('.scroll-cnt');
+        this.closeMenu(this);
+      },
+
+      methods: {
+        closeMenu(test) {
+          document.body.addEventListener('click', function (e) {
+            if (e.target === document.querySelector('.profile-header__menu-btn-icon')) return;
+
+            if (e.target.parentNode !== document.querySelector('.profile-header__menu-links')){
+              test.menuOpened = false;
             }
-          },
+          });
         },
+
+        scrollAnchor() {
+          var block = document.querySelector("#how-it-work");
+          var scrollBlock = this.scrollCnt;
+
+          if (!timer) {
+            var timer = setInterval(function () {
+              if (block.getBoundingClientRect().top < 80){
+                clearInterval(timer);
+              }
+              scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
+            }, 20);
+          }
+        }
+      },
+
+      vuex: {
+          getters: {
+              isAuth,
+          },
+      },
+
+      filters: {
+        linkToInfo(type) {
+          return {
+            name: 'info',
+            params: {type},
+          }
+        },
+      },
     };
 </script>

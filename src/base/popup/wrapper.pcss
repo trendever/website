@@ -21,14 +21,16 @@
   font-size: 24px;
 
   @media(--mobile) {
-    min-height: 30%;
-    padding: 24px 0 59px;
-
+    padding: 13px 0 0px;
     font-size: 36px;
   }
   .emoji {
     width: 40px;
     height: 40px;
+
+    &.emoji_kitty {
+      display:none;
+    }
 
     @media(--mobile) {
       width: 50px;
@@ -55,24 +57,25 @@
   }
   .column-desktop-right {
     float: right;
-
     height: 136px;
-    padding-top: 20px;
-    padding-left: 50px;
+    padding-top: 36px;
+    padding-left: 40px;
+    text-align:left;
 
     @media(--mobile) {
+      text-align:center;
       float: none;
-
-      height: 152px;
+      padding-top:19px;
+      height: 93px;
       padding-left: 0;
     }
   }
   .desktop-text-right {
     text-align: left;
+    border-bottom:1px solid #fff;
+    cursor:pointer;
 
     @media(--mobile) {
-      padding-bottom: 20px;
-
       text-align: center;
     }
   }
@@ -88,9 +91,10 @@
   line-height: 77px;
 
   @media(--mobile) {
-    width: 490px;
+    width: 100%;
     height: auto;
-
+    margin-bottom:0;
+    border-radius: 0;
     font-size: 36px;
     line-height: 118px;
   }
@@ -117,6 +121,12 @@
   @media(--mobile) {
     width: 490px;
     height: 55px;
+  }
+}
+
+.popup-wrapper {
+  .link-container {
+    display:none;
   }
 }
 
@@ -174,7 +184,6 @@
     bottom: 0;
     width: 100%;
     left: 0;
-    border-radius: 0;
     margin-bottom: 0;
   }
 }
