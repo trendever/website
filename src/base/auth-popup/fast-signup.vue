@@ -2,7 +2,7 @@
 div(class="popup" v-if="show")
   popup-wrapper(:show="show" close="onClose")
     .column-desktop-50.column-desktop-right
-      span.desktop-text-right Смотрите видео о Trendever
+      span.desktop-text-right.show-video Смотрите видео о Trendever
     .column-desktop-50.column-desktop-left
       .container-left
         button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn(

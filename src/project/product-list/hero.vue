@@ -3,7 +3,7 @@
 .section.smallHero(v-if='isAuth')
   a(v-link='{ name: "mission" }')
     i.smallHero__logo
-      img(src='img/logo.svg')
+      img(src='img/logo-beta.svg')
 .section.hero(v-if='!isAuth')
   .section__content.hero__content
     .hero__content__img

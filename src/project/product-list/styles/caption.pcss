@@ -90,3 +90,23 @@
 .player .sidedock {
   top:45px !important;
 }
+.scroll-top {
+  position: fixed;
+  font-size: 75px;
+  width:75px;
+  height:75px;
+  background:url(../img/scroll-top.svg) no-repeat 0 0;
+  bottom: 160px;
+  right: 203px;
+  z-index: 10;
+  cursor: pointer;
+
+  @media(--smalldesktop) {
+    right:10px;
+  }
+
+  @media(--tabletandless) {
+    right:10px;
+    bottom:250px;
+  }
+}

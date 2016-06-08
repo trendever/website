@@ -1,5 +1,7 @@
 <style src='./styles/caption.pcss'></style>
 <template lang="jade">
+.scroll-top(v-on:click='up()')
+
 .caption(v-if='!isAuth')
   span(id='how-it-work') Как это работает?
   span(v-on:click='toggleVideo(this)').caption__play
@@ -24,9 +26,32 @@
       };
     },
 
+    ready() {
+      this.scrollCnt = document.querySelector('.scroll-cnt');
+
+      this.showVideo(this);
+    },
+
     methods: {
       toggleVideo(test) {
         test.videoShowed = true;
+      },
+
+      showVideo(test) {
+        var btn = document.querySelector('.show-video');
+
+        btn.addEventListener('click', function () {
+          test.videoShowed = true;
+        });
+      },
+
+      up() {
+        var top = Math.max(this.scrollCnt.scrollTop);
+        if(top > 0) {
+          this.scrollCnt.scrollTop = top - top/5;
+          var t = setTimeout(this.up, 20);
+        } else clearTimeout(t);
+        return false;
       }
     },
 
