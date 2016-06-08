@@ -8,20 +8,27 @@
 
 </template>
 
-<script type='text/ecmascript-6'>
-import HeaderComponent from 'base/header/header.vue'
-import { removeToken } from 'services/profile'
+<script type='text/babel'>
+  import HeaderComponent from 'base/header/header.vue'
+  import { removeToken } from 'services/profile'
+  import { isAuth } from 'vuex/getters/user.js';
 
-
-export default {
-    data: () => ({
-    }),
+  export default {
     ready() {
-      removeToken();
-      this.$router.go({name: 'home'});
+      if(this.isAuth){
+        removeToken();
+        location.replace('/')
+      } else {
+        this.$router.go( { name: 'signup' } );
+      }
+    },
+    vuex:{
+      getters:{
+        isAuth
+      }
     },
     components: {
-        HeaderComponent,
+      HeaderComponent,
     }
-}
+  }
 </script>

@@ -1,51 +1,89 @@
 import {
-  RECEIVE_CURRENT_USER,
   USER_AUTHENTICATED,
-  RECEIVE_OPENED_USER,
+  USER_RECEIVE_PROFILE,
+  USER_SET_PROFILE,
+  USER_SET_MY_ID,
+  USER_SET_PHOTOS_CONFIG,
+  USER_CLOSE_PROFILE
 } from '../mutation-types';
 
 // initial state
 const state = {
-  openedUser: null, // dict with opened user
 
   isAuth: false,
   token: null,
+  id: null, // string - current profile
+  myId: null, // Id profile of current user.
+  all: {},
+  photoConfigs: {},
+  done: false
 
-  id: null, // string
-  name: null,
-  email: null,
-  phone: null, // string
-  has_email: false,
-  has_phone: false,
-  instagram_id: null, // string
-  instagram_username: null,
-  instagram_fullname: null,
-  instagram_avatar_url: null,
-  instagram_caption: null
 };
+
+function picProfile( profile ) {
+  
+  return Object.assign(
+    {
+      id: profile.id,
+      instagram_id: profile.instagram_id,
+      instagram_username: profile.instagram_username,
+      instagram_fullname: profile.instagram_fullname,
+      avatar_url: profile.avatar_url || profile.instagram_avatar_url,
+      caption: profile.caption || profile.instagram_caption,
+      slogan: profile.slogan,
+      name: profile.name,
+      email: profile.email,
+      phone: profile.phone,
+    },
+    (profile.supplier) ?
+    {
+      has_email: profile.supplier.has_email,
+      has_phone: profile.supplier.has_phone,
+    }
+      :
+    {
+      has_email: profile.has_email,
+      has_phone: profile.has_phone,
+    }
+  )
+
+}
 
 // mutations
 const mutations = {
-  [USER_AUTHENTICATED] (state, token) {
+  [USER_AUTHENTICATED] ( state, token ) {
     state.isAuth = true;
-    state.token = token;
+    state.token  = token;
   },
-  [RECEIVE_CURRENT_USER] (state, user) {
-    state.id = user.id;
-    state.name = user.name;
-    state.email = user.email;
-    state.phone = user.phone;
-    state.has_email = user.has_email;
-    state.has_phone = user.has_phone;
-    state.instagram_id = user.instagram_id;
-    state.instagram_username = user.instagram_username;
-    state.instagram_fullname = user.instagram_fullname;
-    state.instagram_avatar_url = user.instagram_avatar_url;
-    state.instagram_caption = user.instagram_caption;
+  [USER_SET_MY_ID] ( state, myId ) {
+    state.myId = myId;
+    state.id   = myId;
   },
-  [RECEIVE_OPENED_USER] (state, user) {
-    state.openedUser = user
+  [USER_RECEIVE_PROFILE] ( state, profile, id = null ) {
+    state.all = Object.assign( {}, state.all, { [(id !== null) ? id : profile.id]: picProfile( profile ) } );
   },
+  [USER_SET_PROFILE] ( state, id = state.myId ) {
+    if ( state.all.hasOwnProperty( id ) ) {
+      state.id = id;
+    }
+    state.done = true;
+  },
+  [USER_SET_PHOTOS_CONFIG] ( state, listId, photoFilter, id = state.myId ) {
+    if ( state.all.hasOwnProperty( id ) ) {
+      state.photoConfigs = Object.assign( {}, state.photoConfigs, { [id]: { listId, photoFilter } } );
+    } else {
+      console.warn( `[ USER_SET_PHOTOS_CONFIG ] - profile with id: ${id}, not found.`, {
+        state,
+        listId,
+        photoFilter,
+        id
+      } )
+    }
+  },
+  [USER_CLOSE_PROFILE] ( state ) {
+    state.id = state.myId;
+    state.done = false;
+  }
 };
 
 export default {

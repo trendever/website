@@ -22,7 +22,7 @@ div
 
       .bottom-container.__fixed-width
           .btn-container
-            button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
+            button.btn.btn_primary.__orange.__xl.fast__big__btn(
               :disabled='isDisabled',
               v-el:confirm-btn,
               @keydown.enter='onButton()',
@@ -34,34 +34,30 @@ div
                 @click.prevent='sendSMS') Отправить новый код
 </template>
 
-<script>
+<script type="text/babel">
 
-  import {
-
-    authenticateUser,
-    executeCallbackOnSuccessAuth,
-  } from 'vuex/actions';
-  import {
-    authData,
-    callbackOnSuccessAuth,
-  } from 'vuex/getters';
+  import { executeCallbackOnSuccessAuth } from 'vuex/actions';
+  import { authUser } from 'vuex/actions/user.js';
+  import { authData, callbackOnSuccessAuth } from 'vuex/getters';
   import store from 'vuex/store';
   import * as auth from 'services/auth';
 
   const TEXT_HEADER = {
     DEFAULT: 'Введите код из sms',
     ERROR: 'Ошибка, попробуйте снова',
-  }
+  };
 
   export default {
-    data: () => ({
-      code: '',
-      errorCode: false,
-      isCompleted: false,
-      height: '',
-      text_header: TEXT_HEADER.DEFAULT,
-      needNewSMS: false,
-    }),
+    data(){
+      return {
+        code: '',
+        errorCode: false,
+        isCompleted: false,
+        height: '',
+        text_header: TEXT_HEADER.DEFAULT,
+        needNewSMS: false,
+      };
+    },
 
     route: {
       canActivate({abort}){
@@ -79,7 +75,7 @@ div
 
     vuex: {
       actions: {
-        authenticateUser,
+        authUser,
         executeCallbackOnSuccessAuth,
       },
       getters: {

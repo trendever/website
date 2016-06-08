@@ -39,7 +39,7 @@
       span(v-on:click='scrollAnchor()').scroll-to-anchor
 </template>
 <script type='text/babel'>
-    import { isAuth } from 'vuex/getters';
+  import { isAuth } from 'vuex/getters/user.js';
     export default {
       data(){
         return {

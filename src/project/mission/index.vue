@@ -9,7 +9,17 @@
       a(href='#'
         v-if="!isAuth"
         v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
+
   .section.top
+<<<<<<< HEAD:src/project/mission/index.vue
+=======
+    .section__content(v-el:main-video-cnt)
+      iframe(src='https://player.vimeo.com/video/167123446?autoplay=1&title=0&byline=0&portrait=0',
+            :width='mainVideoWidth', :height='mainVideoHeight',
+            frameborder='0', webkitallowfullscreen,
+            mozallowfullscreen, allowfullscreen)
+
+>>>>>>> dev:src/project/why/index.vue
     .arithmetic
       .arithmetic__first
         img(src='img/instagramm.png' alt ='')
@@ -260,8 +270,8 @@
       this.hidePopup();
 
       if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        document.querySelector('.video-1').classList.add('hidden');
-        document.querySelector('.video-2').classList.add('hidden');
+        document.querySelector('.video-1').classList.add('hidden')
+        document.querySelector('.video-2').classList.add('hidden')
       }
     },
 

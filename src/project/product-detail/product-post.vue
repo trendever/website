@@ -3,14 +3,20 @@
 article.product-post
   header.product-post__header
     img.product-post__user-preview(
+     v-link='{name: "user", params: {id: getOpenedProduct.supplier.instagram_username}}',
      :src='userImage',
      v-on:error='onUserImageError',
      width='72' height='72')
 
     .product-post__info
-      .product-post__info__supplier {{ openedProduct.product.supplier.instagram_username }}
-      .product-post__added добавлено&nbsp;
-        span.product-post__user-name {{ openedProduct.product.mentioned.instagram_username}}
+      .product-post__info__supplier(
+        v-link='{name: "user", params: {id: getOpenedProduct.supplier.instagram_username}}')
+        | {{ getOpenedProduct.supplier.instagram_username }}
+      .product-post__added(
+          v-link='{name: "user", params: {id: getOpenedProduct.mentioned.instagram_username}}'
+        ) добавлено&nbsp;
+        span.product-post__user-name
+         | {{ getOpenedProduct.mentioned.instagram_username}}
   main.product-post__body(v-el:image-body)
     div(v-bind:style='{ opacity: imageOpacity }',
         :class='{"__animate": animate}')
@@ -19,7 +25,7 @@ article.product-post
         :width='width',
         :height='height',
         )
-  section.product-post__bottom-photo(v-for='item in openedProduct.product.items')
+  section.product-post__bottom-photo(v-for='item in getOpenedProduct.items')
     .product-post__price-container
       template(v-if='item.discount_price')
         .product-post__price-discount(v-if='item.price') {{ item.price | curency_spaces }}
@@ -44,15 +50,17 @@ article.product-post
 
 
   .product-post__description
-    .product-post__text {{{ openedProduct.product.instagram_image_caption }}}
+    .product-post__text {{{ getOpenedProduct.instagram_image_caption }}}
 </template>
 
 <script type='text/babel'>
   import listen from 'event-listener';
+
   import { urlThumbnail, ratioFit } from 'utils';
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import { createLead } from 'vuex/actions/lead.js';
-  import { openedProduct, isAuth } from 'vuex/getters';
+  import { isAuth } from 'vuex/getters/user.js';
+  import { getOpenedProduct } from 'vuex/getters/products';
   import * as leads from 'services/leads';
 
   export default {
@@ -82,14 +90,14 @@ article.product-post
         setCallbackOnSuccessAuth,
       },
       getters: {
-        openedProduct,
+        getOpenedProduct,
         isAuth,
       },
     },
 
     computed: {
       obj() {
-        return this.openedProduct.product;
+        return this.getOpenedProduct;
       },
     },
 
@@ -98,9 +106,9 @@ article.product-post
 
       this.updateImageSize();
 
-      this.resizeEvent = listen(window, 'optimizedResize', this.updateImageSize.bind( this ))
+      this.resizeEvent = listen(window, 'optimizedResize', this.updateImageSize.bind( this ));
 
-      this.userImage = this.obj.supplier.instagram_avatar_url;
+      this.userImage = this.obj.supplier.avatar_url;
     },
 
     methods: {
@@ -130,8 +138,9 @@ article.product-post
 
         } else {
 
-          this.createLead( this.openedProduct.product.id )
-          .then(
+          const promise = this.createLead( this.getOpenedProduct.id );
+
+          promise.then(
             ( lead ) => {
               if (lead !== undefined && lead !== null){
                 this.$router.go( { name: 'chat', params: { id: lead.id } } );
@@ -150,7 +159,7 @@ article.product-post
       loadFullImage() {
         // Load and set full image.
         let img = new Image();
-        let obj = this.openedProduct.product;
+        let obj = this.getOpenedProduct;
         let url = obj.instagram_images.find((img) => img.name === "L").url
 
         img.load(url, null, null, () => {

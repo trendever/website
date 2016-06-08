@@ -24,7 +24,7 @@ import {
   getCountRowOnBody
 } from 'vuex/getters/chat.js';
 import { getLeadById, getGroup, getLeadByConversationId } from 'vuex/getters/lead.js';
-import { userID } from 'vuex/getters';
+import { userID } from 'vuex/getters/user.js';
 
 export const setConversation = ( { dispatch, state }, lead_id ) => {
 

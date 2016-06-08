@@ -1,4 +1,4 @@
-import { setCookie, getCookie, removeCookie, guid} from 'utils';
+import { setCookie, getCookie, removeCookie, guid } from 'utils';
 import jwt_decode from 'jwt-decode';
 
 /*
@@ -6,10 +6,8 @@ import jwt_decode from 'jwt-decode';
  * Use vuex/modules/user instead
  */
 
-var prefix = '_te_';
-
-var Storage = getStorage();
-var cachedProfile = getProfile();
+const prefix  = '_te_';
+const storage = new CookieStorage();
 
 /**
  *
@@ -18,112 +16,102 @@ var cachedProfile = getProfile();
  * @param  {boolean} withoutCache  if then disable caching
  * @return {object}                profile object
  */
-export function getProfile(withoutCache) {
-  if (cachedProfile && !withoutCache) {
-    return cachedProfile;
+
+export const getProfile = (function() {
+
+  var CACHE = null;
+
+  return function( withoutCache ) {
+
+    if ( CACHE !== null && !withoutCache ) {
+      return CACHE;
+    }
+
+    /**
+     * profile
+     * @type {string} uid - инднтификатор юзера
+     * @type {object} user - user data
+     * @type {string} token - токен авторизации
+     * @type {timestamp} first_visit_at - время первого посещения
+     * @type {timestamp} last_visit_at  - время последненго посещения
+     * @type {boolean} isFirstVisit - флаг, индефицирующий первое посещение
+     * @type {boolean} isSubscribedEmail - флаг, индефицирующий подписку, true - подписан
+     * @type {timestamp} subscribe_at - время согласия/несогласия с подпиской
+     * @ return {object}
+     */
+
+    const profile = {
+      uid: storage.getItem( 'uid' ),
+      user: storage.getItem( 'user' ),
+      token: storage.getItem( 'token' ),
+      first_visit_at: storage.getItem( 'first_visit_at' ),
+      last_visit_at: storage.getItem( 'last_visit_at' ),
+      isSubscribedEmail: storage.getItem( 'isSubscribedEmail' ),
+      subscribe_at: storage.getItem( 'subscribe_at' ),
+    };
+
+
+    if ( !profile.uid ) {
+      // if first visit
+      profile.uid            = guid();
+      profile.first_visit_at = Date.now();
+      profile.isFirstVisit   = true;
+
+      storage.setItem( 'uid', profile.uid );
+      storage.setItem( 'first_visit_at', profile.first_visit_at  );
+
+    } else {
+
+      profile.isFirstVisit = false;
+
+    }
+
+    storage.setItem( 'last_visit_at', Date.now() );
+
+    CACHE = profile;
+
+    return profile;
   }
 
-  var profile = {
-    uid: Storage.getItem('uid'),
-    user: Storage.getItem('user'),
-    token: Storage.getItem('token'),
-    first_visit_at: Storage.getItem('first_visit_at'),
-    last_visit_at: Storage.getItem('last_visit_at'),
-    isSubscribedEmail: Storage.getItem('isSubscribedEmail'),
-    subscribe_at: Storage.getItem('subscribe_at'),
-  };
+})();
 
-  // if first visit
-  if (!profile.uid) {
-    profile = createProfile();
-    profile.isFirstVisit = true;
-  } else {
-    profile.isFirstVisit = false;
-  }
-
-  Storage.setItem('last_visit_at', (new Date()).getTime());
-  cachedProfile = profile;
-
-  return profile;
+export function saveUser( data ) {
+  storage.setItem( 'user', data );
 }
 
-export function createProfile() {
-
-  var uid = guid();
-  var first_visit_at = (new Date()).getTime();
-
-  Storage.setItem('uid', uid);
-  Storage.setItem('first_visit_at', first_visit_at);
-
-  return getProfile(true);
-}
-
-export function getStorage() {
-    return new CookieStorage();
-}
-
-export function CookieStorage() {
-  this.setItem = (name, value) => setCookie(`${prefix}${name}`, value, 1095);
-  this.getItem = (name) => getCookie(`${prefix}${name}`);
-  this.removeItem = (name) => removeCookie(`${prefix}${name}`);
-}
-
-export function setSubscribeEmail(flag) {
-  Storage.setItem('isSubscribedEmail', flag);
-  Storage.setItem('subscribe_at', (new Date()).getTime());
-}
-
-export function saveToken(token) {
+export function saveToken( token ) {
   try {
-    let decoded = jwt_decode(token);
 
-    Storage.setItem('token', token);
-    saveUser({id: decoded.UID});
-    return getProfile(true);
+    const { UID: id } = jwt_decode( token );
 
-  } catch (err) {
-    // incorrect token
-    console.warn('WARNING: incorrect token');
+    storage.setItem( 'token', token );
+
+    return +id;
+
+  } catch ( err ) {
+    console.warn( 'WARNING: incorrect token' );
     return false;
   }
 }
 
-/**
- * Save user data
- * @param {object} data see below
- * {
- *  'id': 1379,
- *  'name': 'Покупатель #1',
- *  'email': 'happierall@gmail.com',
- *  'phone': '+79388708611',
- *  'instagram_id': 1482392154,
- *  'instagram_username': 'happierall',
- *  'instagram_fullname': 'Руслан Янбердин',
- *  'instagram_avatar_url': 'https://scontent.cdninstagram.com/t51.2885-19/10932407_823916984341993_1645923981_a.jpg',
- *  'instagram_caption': 'Hi all'
- * }
- */
-export function saveUser(data) {
-  Storage.setItem('user', data);
-  return getProfile(true);
-}
-
 export function removeToken() {
-  Storage.removeItem('token');
-  Storage.removeItem('user');
-  return getProfile(true);
+  storage.removeItem( 'token' );
+  storage.removeItem( 'user' );
 }
 
-/**
- * profile
- * @type {string} uid - инднтификатор юзера
- * @type {object} user - user data
- * @type {string} token - токен авторизации
- * @type {timestamp} first_visit_at - время первого посещения
- * @type {timestamp} last_visit_at  - время последненго посещения
- * @type {boolean} isFirstVisit - флаг, индефицирующий первое посещение
- * @type {boolean} isSubscribedEmail - флаг, индефицирующий подписку, true - подписан
- * @type {timestamp} subscribe_at - время согласия/несогласия с подпиской
- * @ return {object}
- */
-export default cachedProfile;
+export function CookieStorage() {
+  this.setItem    = ( name, value ) => setCookie( `${prefix}${name}`, value, 1095 );
+  this.getItem    = ( name ) => getCookie( `${prefix}${name}` );
+  this.removeItem = ( name ) => removeCookie( `${prefix}${name}` );
+}
+
+export function getStorage() {
+  return storage;
+}
+
+export function setSubscribeEmail( flag ) {
+  storage.setItem( 'isSubscribedEmail', flag );
+  storage.setItem( 'subscribe_at', (new Date()).getTime() );
+}
+
+

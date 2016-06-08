@@ -1,7 +1,7 @@
 <style src='./repost.pcss'></style>
 <template lang="jade">
 .scroll-cnt
-  .repost(:style='{min-height: height}')
+  .repost(:style='{height: "100%"}')
     .info__close(@click='back'): i.ic-close
     .crop
       img(:src='igImageUrl')
@@ -40,16 +40,18 @@
       button(v-on:click='openInsta', class='btn __primary __orange') Продолжить
 </template>
 
-<script>
+<script type="text/babel">
 
   import { urlThumbnail } from 'utils'
-  import { openedProduct } from 'vuex/getters';
-  import { openProduct } from 'vuex/actions';
+  import { getOpenedProduct } from 'vuex/getters/products';
+  import { openProduct } from 'vuex/actions/products';
 
   export default {
-    data: () => ({
-      id: ''
-    }),
+    data(){
+      return {
+        id: ''
+      }
+    },
     route: {
       activate({to: {params: { id }}}) {
         return this.openProduct(+id).catch( error => {
@@ -63,43 +65,47 @@
         openProduct,
       },
       getters: {
-        openedProduct,
+        getOpenedProduct,
       },
     },
     computed: {
-      height() {
-        // TODO handler fo resize
-        return `${window.innerHeight}px`;
-      },
       caption() {
-        var source = this.openedProduct.product.instagram_image_caption;
-        if (!source) return;
-        source = source.replace(/([^0-9a-zа-я\s])/ig, ' ').replace(/\s{2,}/g, ' ');
-        // need part of text for bubble
-        source = source.slice(0, 80);
-        source = source.replace(/[.,\/#!\'\"$%+\s@\^☀️&\*;:{}=\-_`~()]/g, '<span class="whitespace"></span>');
-        return source + '...'
+        if(this.getOpenedProduct !== null){
+          var source = this.getOpenedProduct.instagram_image_caption;
+          if (!source) return;
+          source = source.replace(/([^0-9a-zа-я\s])/ig, ' ').replace(/\s{2,}/g, ' ');
+          // need part of text for bubble
+          source = source.slice(0, 80);
+          source = source.replace(/[.,\/#!\'\"$%+\s@\^☀️&\*;:{}=\-_`~()]/g, '<span class="whitespace"></span>');
+          return source + '...'
+        }
       },
       igImageUrl() {
-        let obj = this.openedProduct.product
-        return obj.instagram_images.find((img) => img.name === "L").url
+        let obj = this.getOpenedProduct;
+        if(obj !== null){
+          return obj.instagram_images.find((img) => img.name === "L").url
+        }
       }
     },
     methods: {
       back() {
-        mixpanel.track('Close Repost Page', {productId: this.openedProduct.product.id});
+        if(this.getOpenedProduct !== null){
+          mixpanel.track('Close Repost Page', {productId: this.getOpenedProduct.id});
 
-        this.$route.router.go({
-          name: 'product_detail',
-          params: { id: this.openedProduct.product.id }
-        });
+          this.$route.router.go({
+            name: 'product_detail',
+            params: { id: this.getOpenedProduct.id }
+          });
+        }
       },
       openInsta() {
         window.open('instagram://camera', '_blank');
       },
       addInfo() {
           //Get the selected text and append the extra info
-          let obj = this.openedProduct.product;
+          let obj = this.getOpenedProduct;
+        if(obj !== null){
+
           var selection = window.getSelection(),
               before = 'Покупайте в этой ленте, написав в комментарии @wantit 🙌 <br><br>',
               after = '<br><br>Напишите @wantit 🌷 и товар добавится в вашу корзину на #trendever.com  ✒️' + obj.supplier.instagram_username + ', ' + obj.code,
@@ -116,8 +122,11 @@
           selection.selectAllChildren(newdiv);
 
           window.setTimeout(function () {
-              document.body.removeChild(newdiv);
+            document.body.removeChild(newdiv);
           }, 1);
+
+        }
+
       }
     }
   }

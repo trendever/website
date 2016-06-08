@@ -2,190 +2,291 @@
 <template lang="jade">
 .photos
   .photo__title-row
-    .photo__title-column( :class='{"active": getColumnNumber === 2}', @click='setColumnNumber(2)')
+    .photo__title-column( :class='{"active": getColumnCount === 2}', @click='setColumnNumber(2)')
       .photo__title-column-long
       .photo__title-column-long
 
-    .photo__title-column( :class='{"active": getColumnNumber === 3}', @click='setColumnNumber(3)')
+    .photo__title-column( :class='{"active": getColumnCount === 3}', @click='setColumnNumber(3)')
       .photo__title-column-short
       .photo__title-column-short
       .photo__title-column-short
 
-  .photos__list(v-el:photos-list, v-if='object_list')
-    template(v-for='product in object_list')
-      photo-item(:product='product', :animate='animateShow')
+  .photos__list(v-el:photos-list, v-if='items')
+    template(v-for='item in items | list' track-by="id")
+      photo-item( :product.once='item', :animate='isAnimateShow' )
 
-  .photos__more-wrap(v-if='hasMoreProducts')
-    .photos__more(
-       :class='{"_active": isWaitReponseProducts}',
-       @click='enableInfinityScroll(event, true)')
+  .photos__more-wrap(v-if='hasMore')
+    .photos__more( :class='{"_active": isLoading}', @click='enableInfinityScroll(event, true)' )
         .photos__more__base-ic: span еще
         .photos__more__anim-ic: i.ic-update
 
-  .photos__no-more-wrap(v-if='!object_list')
+  .photos__no-more-wrap(v-if='itemsLength === 0 && !hasMore')
     .photos__no-goods Товаров не найдено
     .main__bottom.__no-goods: a.link.link_primary(
       @click.prevent.stop='clearSearch()',
-      href='#') Сбросить поиск
+      href='#',
+      v-if="tags || search" ) Сбросить поиск
 </template>
 
 <script type='text/babel'>
+  import listen from 'event-listener';
 
-    import listen from 'event-listener';
-    import store from 'vuex/store';
-    import photoItem from './photo-item.vue';
-    import {
-      getPartProducts,
-      getMoreProducts,
-      setColumnNumber,
-      clearSearch,
-      } from 'vuex/actions';
-    import {
-      searchValue,
-      selectedTags,
-      products,
-      isWaitReponseProducts,
-      isInfinityProducts,
-      hasMoreProducts,
-      getColumnNumber,
-      openedUser,
-      } from 'vuex/getters';
+  import photoItem from './photo-item.vue';
 
-    const PRODUCTS_PER_PAGE = 9;
-    var scrollY = 0;
+  import { clearSearch } from 'vuex/actions';
+  import { searchValue, selectedTags } from 'vuex/getters';
 
-    export default {
-      ready(){
-        this.scrollCnt = document.querySelector('.scroll-cnt');
-        this.scrollCnt.scrollTop = scrollY;
+  import {
+    setListId,
+    setScroll,
+    incLengthList,
+    setColumnNumber,
+    productsClose,
+    loadProducts,
+  } from 'vuex/actions/products';
 
-        if (!this.getColumnNumber) {
-          let columnNumber = 3;
-          if( document.body.offsetWidth <= 750) {
-            columnNumber = 2;
-          }
-          this.setColumnNumber(columnNumber);
-        }
-        if (this.isInfinityProducts) {
-          this.enableInfinityScroll();
-        }
+  import {
+    getProducts,
+    getColumnCount,
+    getScroll,
+    getLengthList,
+    hasMore,
+    isInfinity,
+    isLoading,
+    isAnimateShow
+  } from 'vuex/getters/products';
+
+  export default {
+
+    vuex: {
+      getters: {
+        items: getProducts,
+        hasMore,
+        isInfinity,
+        getColumnCount,
+        getScroll,
+        getLengthList,
+        isLoading,
+        isAnimateShow,
+        searchValue,
+        selectedTags
       },
-      data: () => ({
-        showBillEmpty: false,
-        tag_list: [],
-        search: '',
-        scrollEvent: null,
-        animateShow: true,
-      }),
+      actions: {
+        setListId,
+        setScroll,
+        incLengthList,
+        setColumnNumber,
+        clearSearch,
+        productsClose,
+        loadProducts
+      }
+    },
 
-      activate(done) {
+    props: {
+      tags: {
+        type: Boolean,
+        default: false
+      },
+      search: {
+        type: Boolean,
+        default: false
+      },
+      filterByUserName: {
+        default: null
+      },
+      filterByUserId: {
+        default: null
+      },
+      listId: {
+        type: String,
+        required: true
+      },
+      infinityScroll: {
+        type: Boolean,
+        default: true
+      }
+    },
 
-        if (!this.object_list.length) {
-          this.loadProducts();
-        } else {
-          this.animateShow = false;
-        }
-        done();
+    ready(){
+
+      this.setListId( this.listId );
+
+      this.scrollCnt = document.querySelector( '.scroll-cnt' );
+
+      this.run();
+
+    },
+
+    beforeDestroy() {
+
+      if ( this.scrollEvent ) {
+
+        this.scrollEvent.remove();
+
+      }
+
+      this.productsClose();
+
+    },
+
+    filters: {
+      list( value ){
+        return value.slice( 0, this.getLengthList );
+      }
+    },
+
+    methods: {
+
+      run(){
+
+        this.getProducts()
+            .then( () => {
+
+              this.restore()
+                  .then( () => {
+
+                    if ( this.isInfinity && this.infinityScroll ) {
+
+                      this.enableInfinityScroll();
+
+                    }
+
+                  } )
+                  .catch( ( error ) => {
+
+                    console.error( new Error(error), this.listId );
+
+                  } );
+
+            } )
+            .catch( ( error ) => {
+
+              console.error( new Error(error), this.listId );
+
+            } );
+
       },
 
-      beforeDestroy() {
-        if (this.scrollEvent) {
-          this.scrollEvent.remove();
-        }
-      },
+      restore(){
 
-      vuex: {
-        getters: {
-          searchValue,
-          selectedTags,
-          object_list: products,
-          isWaitReponseProducts,
-          isInfinityProducts,
-          hasMoreProducts,
-          getColumnNumber,
-          openedUser,
-        },
-        actions: {
-          getPartProducts,
-          getMoreProducts,
-          setColumnNumber,
-          clearSearch,
-        }
-      },
-      methods: {
-        enableInfinityScroll(e, show_more) {
-          var self = this;
-          // Add event for infinity scroll
+        return new Promise( ( resolve ) => {
 
-          self.scrollEvent = listen(self.scrollCnt, 'scroll', function(){
-            scrollY = self.scrollCnt.scrollTop;
+          const add = ( targetHeight ) => {
 
-            var full_scroll = (self.$els.photosList !== null) ? self.$els.photosList.offsetHeight : 0;
-            var diff_scroll = full_scroll - self.scrollCnt.scrollTop;
+            const { scrollTop } = this.getScroll;
+            /**
+             * Magic number
+             * 1000 - it is height after scrollTop.
+             * */
+            if ( targetHeight < scrollTop + 1000 ) {
 
+              setTimeout( () => {
 
-            if (diff_scroll < 2500 && !self.isWaitReponseProducts) {
-              self.showMore()
+                /**
+                 * Magic number
+                 * 50 - it is step for get items.
+                 * */
+
+                this.incLengthList( 50 );
+
+                this.$nextTick( () => {
+                  add( this.scrollCnt.scrollHeight );
+                } );
+
+              }, 1 );
+
+            } else {
+
+              this.scrollCnt.scrollTop = scrollTop;
+
+              resolve();
+
             }
-          });
-        },
-        showMore() {
-          if (!this.hasMoreProducts){ return; }
-          this.animateShow = true;
 
-          let last_product = this.object_list[this.object_list.length-1];
-
-          let settings = {
-            from_id: last_product ? last_product.id : null,
-            type: 'more'
           };
 
-          mixpanel.track('Show More Products', {
-            offset: this.object_list.length,
-            view: `${ this.getColumnNumber }columns`,
-          });
+          this.$nextTick( () => {
 
-          Object.assign(settings, this.getSearchOptions());
+            add( this.scrollCnt.scrollHeight );
 
-          this.getMoreProducts(settings);
-        },
-        getSearchOptions() {
-          let options = {limit: PRODUCTS_PER_PAGE};
-          let q = this.searchValue.trim();
-          let tags = this.selectedTags.map(tag => tag.id);
-          let openedUser = this.openedUser
+          } );
 
-          if(q) {
-            Object.assign(options, {q});
+        } );
+
+      },
+
+      getProducts( force = false ){
+
+        const { search, tags, filterByUserName, filterByUserId } = this;
+        return this.loadProducts( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force );
+
+      },
+
+      enableInfinityScroll() {
+        this.scrollEvent = listen( this.scrollCnt, 'scroll', () => {
+
+          this.setScroll( this.scrollCnt.scrollTop, this.scrollCnt.scrollHeight );
+
+          const full_scroll = (this.$els.photosList !== null) ? this.$els.photosList.offsetHeight : 0;
+          const diff_scroll = full_scroll - this.scrollCnt.scrollTop;
+
+          if ( diff_scroll < 2500 && !this.isLoading ) {
+            this.showMore();
           }
 
-          if(tags) {
-            Object.assign(options, {tags});
-          }
-
-          // if (this.$route.name === "user" && this.$route.params.username) {
-          //   Object.assign(options, {user_instagram_name: this.$route.params.username})
-          // }
-
-          return options;
-        },
-        loadProducts() {
-          this.$nextTick(() => {
-            this.getPartProducts(this.getSearchOptions());
-            this.animateShow = true;
-          })
-        }
+        } );
       },
-      watch: {
-        selectedTags() {
-          this.loadProducts();
-        },
-        searchValue() {
-          this.loadProducts();
+
+      showMore() {
+        if ( this.hasMore || this.getLengthList < this.items.length) {
+
+          this.getProducts();
+
+          // Stats
+          mixpanel.track( 'Show More Products', {
+            offset: this.items !== null ? this.items.length : null,
+            view: `${ this.getColumnCount }columns`
+          } );
+
         }
-      },
-      components: {
-        photoItem,
       }
+
+    },
+
+    computed: {
+
+      itemsLength(){
+
+        if ( Array.isArray( this.items ) ) {
+
+          return this.items.length;
+
+        }
+
+        return 0;
+
+      }
+
+    },
+    watch: {
+      listId(listId){
+        this.setListId(listId);
+        this.run();
+      },
+      selectedTags() {
+        if ( this.tags ) {
+          this.getProducts( true );
+        }
+      },
+      searchValue() {
+        if ( this.search ) {
+          this.getProducts( true );
+        }
+      }
+    },
+
+    components: {
+      photoItem,
     }
+  }
 </script>

@@ -18,7 +18,7 @@
 <script type='text/ecmascript-6'>
   import pluralize from 'pluralize-ru';
   import { urlThumbnail } from 'utils';
-  import { getColumnNumber } from 'vuex/getters';
+  import { getColumnCount } from 'vuex/getters/products';
   export default {
     data(){
       return {
@@ -74,7 +74,6 @@
         } else if (items[0].price) {
           return items[0].price
         }
-        return
       },
       title() {
         const items = this.product.items;
@@ -89,7 +88,7 @@
 
     vuex: {
       getters: {
-        count: getColumnNumber,
+        count: getColumnCount,
       },
     },
   }

@@ -34,6 +34,8 @@ div.scroll-cnt(v-el:scroll-cnt)
     getLengthList,
   } from 'vuex/getters/lead.js';
 
+  import { isAuth } from 'vuex/getters/user.js';
+
   import {
     setTab,
     loadLeads,
@@ -45,6 +47,7 @@ div.scroll-cnt(v-el:scroll-cnt)
 
   import HeaderComponent from 'base/header/header.vue';
   import NavbarComponent from 'base/navbar/navbar.vue';
+
   import ChatListItem from './chat-list-item.vue';
 
   export default {
@@ -55,6 +58,7 @@ div.scroll-cnt(v-el:scroll-cnt)
     },
     vuex: {
       getters: {
+        isAuth,
         getLeads,
         getTab,
         getIsTab,
@@ -71,31 +75,41 @@ div.scroll-cnt(v-el:scroll-cnt)
     },
     data(){
       return {
-        needLoadLeads: true
+        needLoadLeads: true,
+        hasMore: true
       }
     },
     ready(){
-      this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
+      if ( this.isAuth ) {
+        this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
+      } else {
+        this.$router.go( { name: 'signup' } );
+      }
     },
     beforeDestroy(){
-      this.scrollListener.remove();
-      this.leadClose();
+      if ( this.isAuth ) {
+        this.scrollListener.remove();
+        this.leadClose();
+      }
     },
     methods: {
       scrollHandler(){
-        if ( this.needLoadLeads ) {
+        if ( this.needLoadLeads && this.hasMore ) {
           const full_scroll = this.$els.scrollCnt.scrollHeight;
           const diff_scroll = full_scroll - this.$els.scrollCnt.scrollTop;
           if ( diff_scroll < 2500 ) {
             this.$set( 'needLoadLeads', false );
-            this.loadLeads().then(() => {
+            this.loadLeads().then( (count) => {
+              if(count <= 0){
+                this.$set('hasMore', false);
+              }
               this.$set( 'needLoadLeads', true );
-            });
+            } );
           }
         }
       },
     },
-    watch:{
+    watch: {
       getTab(){
         this.$els.scrollCnt.scrollTop = 0;
       }

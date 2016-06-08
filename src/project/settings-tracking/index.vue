@@ -11,8 +11,6 @@
 <script type='text/ecmascript-6'>
 
 import HeaderComponent from 'base/header/header.vue'
-import profile from 'services/profile'
-
 
 export default {
     data: () => ({

@@ -1,16 +1,23 @@
 <template lang="jade">
-.chat-list_i(v-link='{name: "chat", params: {id: lead.id}}', track-by='id')
-  .chat-list_i_photo
+.chat-list-i(v-link='{name: "chat", params: {id: lead.id}}', track-by='id')
+  .chat-list-i-photo
     img(:src='getPhoto(lead.products[0])')
-  .chat-list_i_body
-    .body_t {{ title }}
-    .body_status ({{ status | lowercase }})
-    .body_last-msg
-      | {{{ recentMessage }}}
-  .chat-list_i_info
-    .chat-list_i_info_date {{ dataTime }}
-    .chat-list_i_info_notify(v-if='unreadCount')
-      span {{ unreadCount }}
+
+  .chat-list-i-body
+
+    .body-title {{ title }}
+
+    .body-status-time
+      .body-status ({{ status | lowercase }})
+      .body-time {{ dataTime }}
+
+    .body-last-msg
+      p
+        b(v-if="recentMessage.user_name.length > 0") {{recentMessage.user_name}}:
+        | {{{ recentMessage.message }}}
+      .body-notify(v-if='unreadCount')
+        span {{ unreadCount }}
+
 </template>
 
 <script type='text/babel'>
@@ -39,8 +46,8 @@
     },
     methods: {
       getPhoto(obj) {
-        if (this.lead.products) {
-          return urlThumbnail(obj.instagram_image_url, 306, obj.instagram_image_width, obj.instagram_image_height)
+        if (this.lead.products && Array.isArray(obj.instagram_images)) {
+          return obj.instagram_images.find((img) => img.name == "S_square").url
         }
       }
     },
@@ -49,7 +56,14 @@
         return this.getNotifyCountList[ this.lead.id ];
       },
       recentMessage(){
-        return this.getLastMessage[ this.lead.id ];
+        const msgObj = this.getLastMessage[this.lead.id];
+        if (msgObj) {
+          return msgObj;
+        }
+        return {
+          message: '',
+          user_name: '',
+        }
       },
       status(){
         return service.getStatus(this.lead.status).name

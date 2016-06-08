@@ -5,6 +5,19 @@ export const ERROR_CODES = {
   SERVER_ERROR: 2,
 };
 
+export const sendError = (errorCode, state = null) => {
+  
+  switch(errorCode){
+    case ERROR_CODES.NOT_FOUND:
+      console.error( new Error( `Products error: [ NOT_FOUND ]` ), state );
+      break;
+    case ERROR_CODES.SERVER_ERROR:
+      console.error( new Error( `Products error: [ SERVER_ERROR ]` ), state );
+      break;
+  }
+  
+};
+
 /**
  * List of products
  * @param {number} options.offset  !(Deprecated) count products of top of list
@@ -66,15 +79,13 @@ export const ERROR_CODES = {
  */
 export function find({ limit, offset, from_id, direction,
                        q, tags,
-                       user_id, user_instagram_name,
-                       shop_id, shop_instagram_name }) {
+                       instagram_name, user_id }) {
 
   return new Promise( (resolve, reject) => {
 
     channel.req('search', 'product', { limit, offset, from_id, direction,
                                        q, tags,
-                                       user_id, user_instagram_name,
-                                       shop_id, shop_instagram_name })
+                                       instagram_name, user_id })
     .then( data => {
 
         resolve(data.response_map);

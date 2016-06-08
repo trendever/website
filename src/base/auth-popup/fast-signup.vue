@@ -5,27 +5,20 @@ div(class="popup" v-if="show")
       span.desktop-text-right.show-video Смотрите видео о Trendever
     .column-desktop-50.column-desktop-left
       .container-left
-        button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn(
-          v-link="{ name: 'signup' }") Войти
+        button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }") Войти
         .link-container
-          a.link-bottom(
-            v-link="{ name: 'signup' }",
-            href='#') Зачем мне это?
+          a.link-bottom( v-link="{ name: 'signup' }", href='#') Зачем мне это?
 </template>
 
-<script>
-  import {
-    isAuth,
-  } from 'vuex/getters';
+<script type="text/babel">
 
+  import { isAuth } from '../../vuex/getters/user.js';
   import popupWrapper from 'base/popup/wrapper.vue'
 
   export default {
-    data: () => ({}),
-
     vuex: {
       getters: {
-        isAuth,
+        isAuth
       }
     },
 
@@ -39,15 +32,15 @@ div(class="popup" v-if="show")
       },
       isException(){
         if (this.$route.name === 'why') {
-          return true
+          return true;
         } else if (this.$route.name === 'info') {
-          return true
+          return true;
         } else if (this.$route.name === 'signup') {
-          return true
+          return true;
         } else if (this.$route.name === 'comfirm-sms') {
-          return true
+          return true;
         }
-        return false
+        return false;
       }
     },
 

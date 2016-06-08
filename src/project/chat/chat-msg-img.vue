@@ -5,13 +5,16 @@
   span(class='bubble_info bubble_info_time') {{ datetime }}
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
     i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
-  a.chat-msg.bubble(
-    :href='getImg',
-    target='_blank',
+  .chat-msg.bubble(
     :class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
-    .chat-msg_t(v-if='!isOwnMessage && !isClosest', :class='{"chat-msg_t-customer-color":isCustomer}')
+    .chat-msg_t(
+        v-link='{name: "user", params: {id: getUserNameLink}}',
+        v-if='!isOwnMessage && !isClosest',
+        :class='{"chat-msg_t-customer-color":isCustomer}'
+    )
       | {{{ getUsername }}}
-    img(:src='getImg', class='chat-msg-img', v-bind:class='{"chat-msg-img-opacity":!isLoaded }', v-bind:style="imgStyle")
+    a( :href='getImg', target='_blank')
+      img(:src='getImg', class='chat-msg-img', v-bind:class='{"chat-msg-img-opacity":!isLoaded }', v-bind:style="imgStyle")
 
 </template>
 
@@ -21,6 +24,7 @@
   import * as leads from 'services/leads';
   import { formatTime } from './utils';
   import { ratioFit } from 'utils';
+  import { user } from 'vuex/getters/user.js';
 
   export default{
     props: {
@@ -35,6 +39,7 @@
         getShopName,
         getCurrentMember,
         getLastMessageId,
+        user
       }
     },
 
@@ -97,6 +102,12 @@
       datetime() {
         return formatTime(this.msg.created_at);
       },
+      getUserNameLink() {
+        if (this.isCustomer) {
+          return this.msg.user.name;
+        }
+        return this.getShopName;
+      },
       getUsername() {
         if (this.isCustomer) {
           return `<b>${this.msg.user.name}</b>`
@@ -104,7 +115,10 @@
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
           return `<b>${this.getShopName}</b>`
         }
-        return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`
+        if(this.user.role === leads.USER_ROLES.CUSTOMER.key){
+          return `<b>${this.getShopName}</b>`
+        }
+        return `<b>${this.getShopName}</b> ( ${this.msg.user.name} )`
       },
       isClosest(){
         return this.msg.closestMessage;

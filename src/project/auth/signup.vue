@@ -64,8 +64,8 @@
   } from 'vuex/actions';
   import {
     authData,
-    isAuth,
   } from 'vuex/getters';
+  import { isAuth } from 'vuex/getters/user.js';
 
   import store from 'vuex/store';
   import * as auth from 'services/auth';

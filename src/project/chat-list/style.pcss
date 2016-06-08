@@ -1,22 +1,22 @@
 @import 'base/vars/vars.pcss';
 
 .chat-list-cnt {
-  &-is-empty{
+  &-is-empty {
     position: absolute;
-    top:50%;
-    left:50%;
+    top: 50%;
+    left: 50%;
 
     margin-top: -22px;
     margin-left: -212px;
 
-    color:$color__gray;
+    color: $color__gray;
 
     font-size: $font__main_text;
   }
   .chat-list {
     min-width: 750px;
 
-    &_i {
+    &-i {
       display: flex;
 
       height: 134px;
@@ -28,7 +28,8 @@
         height: 230px;
         padding: 20px 20px 20px 10px;
       }
-      &_photo {
+
+      &-photo {
         overflow: hidden;
 
         width: 110px;
@@ -52,18 +53,20 @@
           background: #fafafa;
         }
       }
-      &_body {
-        width: calc(100% - 210px);
-        padding: 10px 10px;
+
+      &-body {
+
+        width: calc(100% - 110px);
+        padding: 10px 0 10px 10px;
 
         color: $color__gray-dark;
 
         @media (--mobile) {
-          width: 430px;
-          padding: 20px 17px;
+          padding: 20px 15px;
+          width: calc(100% - 190px);
         }
-        flex-shrink: 0;
-        .body_t {
+
+        .body-title {
           overflow: hidden;
 
           height: 1.1em;
@@ -75,11 +78,17 @@
           line-height: 28.8px;
 
           @media (--mobile) {
+            height: 47.5px;
             font-size: 38px;
             line-height: 45.6px;
           }
         }
-        .body_status {
+        .body-status-time{
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .body-status {
           font-size: 16px;
           line-height: 20.85px;
 
@@ -88,44 +97,10 @@
             line-height: 36px;
           }
         }
-        .body_last-msg {
-          display: -webkit-box;
-          overflow: hidden;
-
-          height: 42px;
-
-          text-overflow: ellipsis;
-
-          color: #b2b2b2;
-
-          font-size: 16px;
-          line-height: 20.85px;
-
-          @media (--mobile) {
-            height: 76px;
-
-            font-size: 28px;
-            line-height: 38px;
-          }
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-        }
-      }
-      &_info {
-        display: flex;
-
-        width: 100px;
-        padding: 10px;
-
-        flex-shrink: 0;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        align-content: space-between;
-        &_date {
+        .body-time{
           display: inline;
 
           min-width: 60px;
-
           text-align: right;
 
           color: #b2b2b2;
@@ -137,9 +112,44 @@
             font-size: 28px;
           }
         }
-        &_notify {
-          display: flex;
+        .body-last-msg {
 
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          color: #b2b2b2;
+
+          font-size: 16px;
+          line-height: 20.85px;
+
+          b {
+            font-weight: 700;
+          }
+          b::after{
+            content: " ";
+          }
+
+          p{
+            width: calc(100% - 75px);
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            overflow: hidden;
+            height: 42px;
+            @media (--mobile) {
+              height: 76px;
+
+              font-size: 28px;
+              line-height: 38px;
+            }
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+          }
+
+        }
+        .body-notify{
+          display: flex;
+          margin-top: 15px;
           width: 26px;
           height: 26px;
 

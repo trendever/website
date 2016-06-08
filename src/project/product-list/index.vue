@@ -6,7 +6,7 @@
   .section.main
     .section__content
       search-component
-      photos-component
+      photos-component(:tags="true", :search="true", list-id="home")
       footer-component
       navbar-component(current='feed')
 </template>

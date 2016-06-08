@@ -1,5 +1,4 @@
 /* globals mixpanel */
-import store from 'vuex/store'
 
 export function configRouter(router) {
   router.map({
@@ -20,26 +19,13 @@ export function configRouter(router) {
 
     '/chat': {
       name: 'chat_list',
-      auth: true,
       component: require('project/chat-list/index.vue'),
     },
 
     '/chat/:id': {
       name: 'chat',
-      auth: true,
       component: require('project/chat/index.vue'),
     },
-
-    // '/profile': {
-    //   name: 'profile',
-    //   auth: true,
-    //   component: require('project/profile/index.vue')
-    // },
-    //
-    // '/u/:username': {
-    //   name: 'user',
-    //   component: require('project/profile/index.vue')
-    // },
 
     '/mission': {
       name: 'mission',
@@ -63,13 +49,11 @@ export function configRouter(router) {
 
     '/settings/token': {
       name: 'settings-token',
-      auth: true,
       component: require('project/settings-token/index.vue'),
     },
 
     '/logout': {
       name: 'logout',
-      auth: true,
       component: require('project/logout/index.vue'),
     },
 
@@ -83,11 +67,6 @@ export function configRouter(router) {
       component: require('project/auth/confirm-sms.vue'),
     },
 
-    // not found handler
-    '*': {
-      component: require('project/not-found/index.vue'),
-    },
-
     '/404': {
       name: '404',
       component: require('project/not-found/index.vue'),
@@ -98,14 +77,23 @@ export function configRouter(router) {
       component: require('project/shop/index.vue'),
     }
 
-  });
+    '/profile': {
+      name: 'profile',
+      component: require('project/profile/index.vue')
+    },
 
-  router.beforeEach(function(transition) {
-    if (transition.to.auth && !store.state.user.isAuth) {
-      transition.redirect({name: 'signup'});
-    } else {
-      transition.next();
-    }
+    '/:id': {
+      // !important it must be last of the list.
+      // (exlclude '*' not found)
+      name: 'user',
+      component: require('project/profile/index.vue')
+    },
+
+    // not found handler
+    '*': {
+      component: require('project/not-found/index.vue'),
+    },
+
   });
 
   router.afterEach(function(transition) {

@@ -7,24 +7,29 @@
     i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
   .bubble
     .chat-msg-product-wrap
-      a.chat-msg-product(v-link="{name: 'product_detail', params: {id: product.ID}}")
+      a.chat-msg-product(v-link="{name: 'product_detail', params: {id: product.id}}")
         .chat-msg-product-photo
           img(:src="photo")
       .chat-msg-description
-        .chat-msg_t(v-if='!isOwnMessage', :class='{"chat-msg_t-customer-color":isCustomer}')
-          | {{{ getUsername }}}
-        .chat-msg-product(v-link='{name: "product_detail", params: {id: product.ID}}')
+        .chat-msg_t(
+            v-link='{name: "user", params: {id: getUserNameLink}}',
+            v-if='!isOwnMessage',
+            :class='{"chat-msg_t-customer-color":isCustomer}'
+          )
+            | {{{ getUsername }}}
+        .chat-msg-product(v-link='{name: "product_detail", params: {id: product.id}}')
           .chat-msg-product-txt
-            a(v-link='{name: "product_detail", params: {id: product.ID}}')
+            a(v-link='{name: "product_detail", params: {id: product.id}}')
               |{{{ titles }}}
-            br
+            br(v-if="titles")
             span
               |{{{ description }}}
 </template>
 
 <script type='text/babel'>
-  import { formatDatetime, urlThumbnail } from 'utils';
+  import { formatDatetime } from 'utils';
   import { formatTime } from './utils';
+  import { user } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
   import { getCurrentMember, getLastMessageId, getShopName } from 'vuex/getters/chat.js';
   export default{
@@ -39,17 +44,21 @@
         getShopName,
         getCurrentMember,
         getLastMessageId,
+        user
       }
     },
     computed: {
-      getUsername () {
+      getUsername() {
         if (this.isCustomer) {
           return `<b>${this.msg.user.name}</b>`
         }
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
           return `<b>${this.getShopName}</b>`
         }
-        return `<b>${this.getShopName}</b> <br/> (продавец ${this.msg.user.name})`
+        if(this.user.role === leads.USER_ROLES.CUSTOMER.key){
+          return `<b>${this.getShopName}</b>`
+        }
+        return `<b>${this.getShopName}</b> ( ${this.msg.user.name} )`
       },
       isCustomer(){
         return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
@@ -61,25 +70,37 @@
         return JSON.parse(this.msg.parts[0].content);
       },
       photo() {
-        if (Array.isArray(this.product.InstagramImages)) {
-          return this.product.InstagramImages.find((img) => img.Name === "S_square").url
+        if (Array.isArray(this.product.instagram_images)) {
+          return this.product.instagram_images.find((img) => img.name == "S_square").url
         }
       },
+      getUserNameLink() {
+        if (this.isCustomer) {
+          return this.msg.user.name;
+        }
+        return this.getShopName;
+      },
       description(){
-        return this.product.InstagramImageCaption;
+        return this.product.instagram_image_caption;
       },
       titles() {
-        return this.product.Items.reduce(function(desc, item, i, arr) {
-          desc += `${item.Name} `;
-          if (item.DiscountPrice) {
-            desc += `, ${item.DiscountPrice} <i class="ic-currency-rub"</i>`;
-          } else if (item.Price) {
-            desc += `, ${item.Price} <i class="ic-currency-rub"</i>`;
-          } else {
-            desc += `, цена по запросу`;
-          }
-          return desc;
-        }, '')
+        if(Array.isArray(this.product.items)) {
+          this.product.items.reduce( function( desc, item, i, arr ) {
+            if(item.name){
+              desc += `${item.name} `;
+            }
+            if ( item.discount_price ) {
+              desc += `, ${item.discount_price} <i class="ic-currency-rub"></i> `;
+            } else if ( item.price ) {
+              desc += `, ${item.price} <i class="ic-currency-rub"></i> `;
+            } else {
+              desc += `, цена по запросу`;
+            }
+            return desc;
+          }, '' )
+
+        }
+        return '';
       },
       isOwnMessage() {
         if ( this.getCurrentMember !== null ) {
