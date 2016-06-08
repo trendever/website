@@ -69,7 +69,7 @@
         if(this.user.role === leads.USER_ROLES.CUSTOMER.key){
           return `<b>${this.getShopName}</b>`
         }
-        return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`
+        return `<b>${this.getShopName}</b> ( ${this.msg.user.name} )`
       },
       isCustomer(){
         return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
