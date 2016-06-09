@@ -7,14 +7,45 @@
   background-color: #12302d;
   font-size: 24px;
   line-height: 1.2;
+  min-height:100vh;
+  height:auto !important;
 
-  @media(--mobile) {
-    padding: 50px 30px 0 30px;
-    font-size: 36px;
+  .signup__close {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    right: 0;
+
+    display: flex;
+
+    size: 70px;
+
+    cursor: pointer;
+
+    color: white;
+
+    align-items: center;
+    justify-content: center;
+  
+    @media(--mobile) {
+      width: 90px;
+      height: 90px;
+    }
   }
 
   .link-bottom {
-    margin-top:15px;
+      opacity:.2;
+  }
+
+  @media(--mobile) {
+    padding: 50px 30px 130px 30px;
+    font-size: 36px;
+  }
+
+  .btn-container {
+    @media(--mobile) {
+      margin-top:-14px;
+    }
   }
 
   .input__clear-btn {
@@ -32,23 +63,26 @@
   }
   .input input {
     height: 3rem;
-
     font-size: 24px;
+
+    &::-webkit-input-placeholder{opacity: .2; color: #fff;}
+    &::-moz-placeholder{opacity: .2; color: #fff;}
+    &:-moz-placeholder{opacity: .2; color: #fff;}
+    &:-ms-input-placeholder{opacity: .2; color: #fff;}
 
     @media(--mobile) {
       height: 4rem;
-
       font-size: 36px;
     }
   }
   h1 {
-    margin-bottom: 60px;
+    margin-bottom: 77px;
 
     text-align: left;
 
     font-size: 40px;
 
-    @media(--mobile) {
+    @media(--tabletandless) {
       margin-bottom: 0;
 
       text-align: center;
@@ -58,14 +92,19 @@
   }
   .section {
     position: absolute;
-    top: 50%; right: 0;
+    top: 50%;
+    right: 0;
     left: 0;
 
     transform: translateY(-50%);
 
-     @media(--mobile) {
+    @media(--smalldesktop) {
       position: static;
+      transform: none;
+    }
 
+     @media(--tabletandless) {
+      position: static;
       transform: none;
      }
   }
@@ -81,16 +120,21 @@
     }
   }
   .bottom-container {
-    position: static; right: 0; bottom: 0;
+    position: static;
+    right: 0;
+    bottom: 120px;
+    height:auto !important;
     left: 0;
-
     width: 520px;
     padding: 20px 0;
     padding-top: 0;
-
     text-align: center;
 
-    @media(--mobile) {
+    @media(--smalldesktop) {
+      margin:0 auto;
+    }
+
+    @media(--tabletandless) {
       float: none;
 
       width: 100%;
@@ -99,24 +143,30 @@
   }
   &.confirm .bottom-container {
     position: auto;
-
     width: 100%;
     padding-top: 60px;
     padding-bottom: 0;
+
+
+    .link-bottom {
+
+      @media(--mobile) {
+        display:inline-block !important;
+      }
+    }
 
     @media(--mobile) {
       position: absolute;
       bottom: 0;
       left: 0;
-
-      padding-bottom: 20px;
+      padding-bottom: 138px;
     }
   }
   .input-container {
     padding: 20px 50px;
 
     @media(--mobile) {
-      padding:0 50px;
+      padding: 20px 15px 20px 50px;
     }
   }
   &.confirm {
@@ -151,27 +201,45 @@
     position: relative;
     width: 45%;
 
-    @media(--mobile) {
-       position: static;
+    @media(--smalldesktop) {
+      width:auto;
+    }
 
+    @media(--tabletandless) {
+      position: static;
       width: 100%;
+      margin-top:0;
     }
 
   }
   .column-desktop-50.header {
     padding: 0 50px;
 
-    @media(--mobile) {
+    @media(--smalldesktop) {
+      width:auto;
+      h1{
+        text-align:center;
+      }
+    }
+
+    @media(--tabletandless) {
       padding: 0;
     }
   }
   .column-desktop-right {
     float: right;
-
-    width: 55%;
+    width: 63%;
     margin-top: -60px;
 
-    @media(--mobile) { float: none; }
+    @media(--smalldesktop) {
+      width: auto;
+      float:none;
+    }
+
+    @media(--tabletandless) {
+      float: none;
+      height:538px;
+    }
     @media(--mobile) { margin-top: 0; }
   }
   .desktop-text-right {
@@ -221,7 +289,7 @@
 
 .input.confirm-input {
   display: inline-block;
-
+  padding-left:0;
   width: 160px;
 
   @media(--mobile) { width: 240px; }
@@ -230,10 +298,8 @@
 .input.confirm-input input {
   margin-bottom: 10px;
   padding: 0;
-
   text-align: center;
   letter-spacing: 10px;
-
   font-size: 40px;
 
   @media(--mobile) {
@@ -248,12 +314,74 @@
 }
 
 .btn-container button.btn.btn_fixed-bottom{
-  @media(--mobile) {
-    position: fixed;
+  @media(--tabletandless) {
+    position: fixed !important;
     bottom: 0;
     width: 100%;
     left: 0;
     border-radius: 0;
     margin-bottom: 0;
+  }
+}
+
+.input {
+  position:relative;
+  margin-left: 50px;
+
+  .ic-close {
+    right:0;
+    left:auto;
+  }
+
+  @media(--mobile) {
+    width:580px;
+    padding-left:0;
+    margin-left:40px;
+    margin-bottom:38px;
+  }
+
+  i {
+    position:absolute;
+    top: 50%;
+    margin-top: -17px;
+    left: -47px;
+
+    @media(--mobile) {
+      left:-91px;
+    }
+  }
+  .ic-insta-name {
+    font-size:28px;
+    left:-47px;
+
+    @media(--mobile) {
+      left: -79px;
+      font-size: 44px;
+      margin-top: -22px;
+    }
+  }
+
+  .ic-mobile-phone {
+    font-size:36px;
+    left: -51px;
+    margin-top: -23px;
+
+    @media(--mobile) {
+      font-size: 61px;
+      left: -89px;
+      margin-top:-30px;
+    }
+  }
+
+  .ic-user {
+    font-size:28px;
+    margin-top:-14px;
+    left:-46px;
+
+    @media(--mobile) {
+      font-size: 40px;
+      margin-top: -20px;
+      left: -77px;
+    }
   }
 }

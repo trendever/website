@@ -1,7 +1,7 @@
 <template lang="jade">
 div
   .signup.confirm(:style='{ height: height }')
-    .info__close.__hello(@click='closePage'): i.ic-close
+    .signup__close.__hello(@click='closePage'): i.ic-close
     .section
       h1 Подтвердите номер телефона
       .middle-container
@@ -132,6 +132,7 @@ div
         this.isCompleted = true;
         this.authUser(user, token);
         this.$els.confirmBtn.focus();
+        setTimeout( () => this.$router.go({name: 'home'}), 1000);
       },
 
       onErrorCode() {

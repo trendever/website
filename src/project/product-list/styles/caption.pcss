@@ -15,25 +15,22 @@
   align-items: center;
   &__play{
     display: flex;
-
     margin-top: 40px;
     margin-bottom: 20px;
-
     transition: $btn-transition;
     text-decoration: none;
-
     border-radius: 150px;
-
     size: 150px;
     align-items: center;
     justify-content: center;
+    cursor:pointer;
+
     i {
       transition: $btn-transition;
-
       color: $color__green;
-
       font-size: 150px;
     }
+
     &:hover {
       i {
         color: $color__gray-dark;
@@ -46,9 +43,50 @@
     font-size: $font__subtitle;
   }
   &__subtitle{
-    margin-top: 30px;
+    margin-top: 68px;
   }
   .btn__more {
-    margin-top:50px !important;
+    border-radius:5px !important;
+    margin-top:32px !important;
+    margin-bottom:-8px !important;
+
+    @media(--mobile) {
+      margin-top:50px !important;
+      width:490px !important;
+      margin-bottom:0px !important;
+    }
   }
+}
+.main-video {
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:#000;
+  z-index:9999;
+
+  iframe {
+    width: 100%;
+    height:100%;
+  }
+
+  .ic-close {
+    position: absolute;
+    top: 10px;
+    padding: 7px;
+    left: 10px;
+    cursor: pointer;
+    background: rgba(23,35,34,.75);
+    color: #fff;
+    border-radius: 6px;
+    font-size: 23px;
+
+    &:hover {
+      background:rgb(0, 173, 239);
+    }
+  }
+}
+.player .sidedock {
+  top:45px !important;
 }

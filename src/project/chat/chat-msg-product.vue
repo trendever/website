@@ -11,13 +11,17 @@
         .chat-msg-product-photo
           img(:src="photo")
       .chat-msg-description
-        .chat-msg_t(v-if='!isOwnMessage', :class='{"chat-msg_t-customer-color":isCustomer}')
-          | {{{ getUsername }}}
+        .chat-msg_t(
+            v-link='{name: "user", params: {id: getUserNameLink}}',
+            v-if='!isOwnMessage',
+            :class='{"chat-msg_t-customer-color":isCustomer}'
+          )
+            | {{{ getUsername }}}
         .chat-msg-product(v-link='{name: "product_detail", params: {id: product.id}}')
           .chat-msg-product-txt
             a(v-link='{name: "product_detail", params: {id: product.id}}')
               |{{{ titles }}}
-            br
+            br(v-if="titles")
             span
               |{{{ description }}}
 </template>
@@ -51,13 +55,15 @@
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
           return `<b>${this.getShopName}</b>`
         }
-        if(this.user.role === leads.USER_ROLES.CUSTOMER.key){
-          return `<b>${this.getShopName}</b>`
+        if ( this.getCurrentMember !== null ) {
+          if(this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key){
+            return `<b>${this.getShopName}</b>`
+          }
         }
-        return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`
+        return `<b>${this.getShopName}</b> ( ${this.msg.user.name} )`
       },
       isCustomer(){
-        return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
+        return this.user.role === leads.USER_ROLES.CUSTOMER.key;
       },
       datetime () {
         return formatTime(this.msg.created_at);
@@ -70,19 +76,25 @@
           return this.product.instagram_images.find((img) => img.name == "S_square").url
         }
       },
+      getUserNameLink() {
+        if (this.isCustomer) {
+          return this.msg.user.name;
+        }
+        return this.getShopName;
+      },
       description(){
         return this.product.instagram_image_caption;
       },
       titles() {
         if(Array.isArray(this.product.items)) {
-          return this.product.items.reduce( function( desc, item, i, arr ) {
+          this.product.items.reduce( function( desc, item, i, arr ) {
             if(item.name){
               desc += `${item.name} `;
             }
             if ( item.discount_price ) {
-              desc += `, ${item.discount_price} <i class="ic-currency-rub"</i>`;
+              desc += `, ${item.discount_price} <i class="ic-currency-rub"></i> `;
             } else if ( item.price ) {
-              desc += `, ${item.price} <i class="ic-currency-rub"</i>`;
+              desc += `, ${item.price} <i class="ic-currency-rub"></i> `;
             } else {
               desc += `, цена по запросу`;
             }

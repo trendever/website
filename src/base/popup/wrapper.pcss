@@ -1,38 +1,28 @@
 @import 'base/vars/vars.pcss';
 
-#page_body.popup {
-  margin-bottom: 192px;
-
-  @media(--mobile) {
-    margin-bottom: 30%;
-  }
-}
-
 .popup-wrapper {
   position: fixed;
   z-index: 100;
   bottom: 0;
-
   width: 100%;
   padding-top: 20px;
   padding-bottom: 10px;
-
   text-align: center;
-
   color: #FFF;
   background-color: rgba(18, 48, 45, .85);
-
   font-size: 24px;
 
   @media(--mobile) {
-    min-height: 30%;
-    padding: 20px 0;
-
+    padding: 13px 0 0px;
     font-size: 36px;
   }
   .emoji {
     width: 40px;
     height: 40px;
+
+    &.emoji_kitty {
+      display:none;
+    }
 
     @media(--mobile) {
       width: 50px;
@@ -47,8 +37,7 @@
     }
   }
   .column-desktop-left {
-    padding-right: 50px;
-
+    padding-right: 24px;
     text-align: right;
 
     @media(--mobile) {
@@ -59,24 +48,25 @@
   }
   .column-desktop-right {
     float: right;
-
-    height: 136px;
-    padding-top: 20px;
-    padding-left: 50px;
+    height: 110px;
+    padding-top: 33px;
+    padding-left: 62px;
+    text-align:left;
 
     @media(--mobile) {
+      text-align:center;
       float: none;
-
-      height: 152px;
+      padding-top:19px;
+      height: 93px;
       padding-left: 0;
     }
   }
   .desktop-text-right {
     text-align: left;
+    border-bottom:1px solid #fff;
+    cursor:pointer;
 
     @media(--mobile) {
-      padding-bottom: 20px;
-
       text-align: center;
     }
   }
@@ -89,12 +79,13 @@
 
   font-family: $font__family;
   font-size: 24px;
-  line-height: 77px;
+  line-height: 73px;
 
   @media(--mobile) {
-    width: 490px;
+    width: 100%;
     height: auto;
-
+    margin-bottom:0;
+    border-radius: 0;
     font-size: 36px;
     line-height: 118px;
   }
@@ -121,6 +112,12 @@
   @media(--mobile) {
     width: 490px;
     height: 55px;
+  }
+}
+
+.popup-wrapper {
+  .link-container {
+    display:none;
   }
 }
 
@@ -170,4 +167,14 @@
 
   opacity: .5;
   color: white;
+}
+
+.btn.fast__big__btn.btn_fixed-bottom{
+  @media(--mobile) {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    margin-bottom: 0;
+  }
 }

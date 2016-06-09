@@ -1,49 +1,52 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-div
-  .signup(:style='{ height: height }')
-    .info__close.__hello(@click='closePage'): i.ic-close
-    .section
-      .column-desktop-50.header(v-if="showTitleSlider")
-        h1 Войдите и сможете...
-      .column-desktop-50.column-desktop-right(v-if="showTitleSlider")
-        slider
-      .column-desktop-50
-        .bottom-container(:class='{"opened-key-board":!showTitleSlider}')
-          validator(name='signup')
-            .input-container
-              .input
-                input(type='text',
-                  :class=' {error: errorLogin} ',
-                  @focus='onFocusLogin',
-                  @keydown.enter='sendSMS()',
-                  v-validate:login='[ "required" ]',
-                  v-model='login',
-                  :placeholder='placeholder')
-                .input__clear-btn(
-                  v-if='login',
-                  @click='login = ""')
-                  i.ic-close
-              .input
-                input(type='tel',
-                  :class=' {error: errorPhone} ',
-                  @focus='onFocusPhone',
-                  @keydown.enter='sendSMS()',
-                  v-validate:phone='[ "phone", "required" ]',
-                  v-model='phone',
-                  placeholder='Введите номер телефона')
-                .input__clear-btn(
-                  v-if='phone',
-                  @click='phone = ""')
-                  i.ic-close
-          .btn-container
-            button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
-              :disabled='!$signup.valid',
-              @click='sendSMS') Отправить sms-код
-            .link-container
-              a.link-bottom(href='#',
-                @click.prevent='onClickLink')
-                | {{{ textLink }}}
+.scroll-cnt
+  div
+    .signup(:style='{ height: height }')
+      .signup__close.__hello(@click='closePage'): i.ic-close
+      .section
+        .column-desktop-50.header(v-if="showTitleSlider")
+          h1 Войдите и сможете...
+        .column-desktop-50.column-desktop-right(v-if="showTitleSlider")
+          slider
+        .column-desktop-50
+          .bottom-container(:class='{"opened-key-board":!showTitleSlider}')
+            validator(name='signup')
+              .input-container
+                .input.name
+                  i.ic-insta-name
+                  input(type='text',
+                    :class=' {error: errorLogin} ',
+                    @focus='onFocusLogin',
+                    @keydown.enter='sendSMS()',
+                    v-validate:login='[ "required" ]',
+                    v-model='login',
+                    :placeholder='placeholder')
+                  .input__clear-btn(
+                    v-if='login',
+                    @click='login = ""')
+                    i.ic-close
+                .input.phone
+                  i.ic-mobile-phone
+                  input(type='tel',
+                    :class=' {error: errorPhone} ',
+                    @focus='onFocusPhone',
+                    @keydown.enter='sendSMS()',
+                    v-validate:phone='[ "phone", "required" ]',
+                    v-model='phone',
+                    placeholder='Введите номер телефона')
+                  .input__clear-btn(
+                    v-if='phone',
+                    @click='phone = ""')
+                    i.ic-close
+            .btn-container
+              button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
+                :disabled='!$signup.valid',
+                @click='sendSMS') Отправить sms-код
+              .link-container
+                a.link-bottom(href='#',
+                  @click.prevent='onClickLink')
+                  | {{{ textLink }}}
 </template>
 
 <style>
@@ -200,15 +203,23 @@ div
 
       // change to hint text
       onClickLink() {
-        this.instagram = !this.instagram
-        if (!this.instagram) {
-          this.textLink = TEXT_LINK.withoutInstagramMode;
-          this.placeholder = PLACEHOLDER.withoutInstagramMode;
-        } else {
-          this.textLink = TEXT_LINK.instagramMode;
-          this.placeholder = PLACEHOLDER.instagramMode;
+        this.instagram = !this.instagram;
+        var toggleClassBlock = document.querySelector('.input.name i'); // TODO Сделай чезе v-el или v-ref
+        if(toggleClassBlock !== null){
+          if (!this.instagram) {
+            this.textLink = TEXT_LINK.withoutInstagramMode;
+            this.placeholder = PLACEHOLDER.withoutInstagramMode;
+            // TODO Классы тоже можно вешать через vue
+            toggleClassBlock.classList.remove('ic-insta-name');
+            toggleClassBlock.classList.add('ic-user');
+          } else {
+            this.textLink = TEXT_LINK.instagramMode;
+            this.placeholder = PLACEHOLDER.instagramMode;
+            toggleClassBlock.classList.remove('ic-user');
+            toggleClassBlock.classList.add('ic-insta-name');
+          }
         }
-      },
+      }
     },
 
     components: {

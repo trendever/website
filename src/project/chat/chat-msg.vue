@@ -6,7 +6,11 @@
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
     i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
   .chat-msg.bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
-    .chat-msg_t(v-if='!isOwnMessage && !isClosest', :class='{"chat-msg_t-customer-color":isCustomer}')
+    .chat-msg_t(
+        v-if='!isOwnMessage && !isClosest',
+        :class='{"chat-msg_t-customer-color":isCustomer}'
+        v-link='{name: "user", params: {id: getUserNameLink}}',
+      )
       | {{{ getUsername }}}
     .chat-msg-wrap
       p.chat-msg_txt
@@ -19,7 +23,7 @@
   import { user } from 'vuex/getters/user.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
-  import { formatTime, escapeHtml, wrapLink } from './utils';
+  import { formatTime, formatDatetime, escapeHtml, wrapLink } from './utils';
 
   export default{
     props: {
@@ -49,6 +53,12 @@
       datetime() {
         return formatTime(this.msg.created_at);
       },
+      getUserNameLink() {
+        if (this.isCustomer) {
+          return this.msg.user.name;
+        }
+        return this.getShopName;
+      },
       getUsername() {
         if (this.isCustomer) {
           return `<b>${this.msg.user.name}</b>`
@@ -56,10 +66,12 @@
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
           return `<b>${this.getShopName}</b>`
         }
-        if(this.user.role === leads.USER_ROLES.CUSTOMER.key){
-          return `<b>${this.getShopName}</b>`
+        if ( this.getCurrentMember !== null ) {
+          if(this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key){
+            return `<b>${this.getShopName}</b>`
+          }
         }
-        return `<b>${this.getShopName}</b> (продавец ${this.msg.user.name})`
+        return `<b>${this.getShopName}</b> ( ${this.msg.user.name} )`
       },
       isCustomer(){
         return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
@@ -68,6 +80,13 @@
         return this.msg.closestMessage;
       },
       isOwnMessage() {
+
+/*        if(this.msg.addDateStatus !== null){
+
+          console.log(formatDatetime(this.msg.addDateStatus));
+
+        }*/
+
         if ( this.getCurrentMember !== null ) {
           return this.getCurrentMember.user_id === this.msg.user.user_id;
         }

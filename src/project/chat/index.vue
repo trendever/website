@@ -5,8 +5,10 @@
     .section.top.bottom
       .chat.section__content
         .chat_messages
-          //- chat-msg-date
           template(v-for='msg in getMessages | list', track-by='$index')
+            chat-msg-date(
+              v-if='msg.parts[0].mime_type === "json/status"',
+              :msg='msg')
             chat-msg-product(
               v-if='msg.parts[0].mime_type === "text/json"',
               :msg='msg')

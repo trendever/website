@@ -23,7 +23,7 @@ div.scroll-cnt(v-if="isDone")
             span(v-if="getUserCaption") {{ getUserCaption }}
 
         photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId" )
-    navbar-component(current='profile')
+    navbar-component(:current='listId')
 </template>
 <script type='text/babel'>
   import { urlThumbnail } from 'utils';
@@ -86,6 +86,7 @@ div.scroll-cnt(v-if="isDone")
         return this.getPhotoConfig.photoFilter.user_id;
       },
       listId(){
+        console.log(this.getPhotoConfig.listId);
         return this.getPhotoConfig.listId;
       },
       userName(){

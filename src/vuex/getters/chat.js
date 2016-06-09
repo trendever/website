@@ -5,7 +5,7 @@ import { getLeadByConversationId } from '../getters/lead.js';
 
 export const getId = ( { conversation } ) => conversation.id;
 
-export const getLengthList = ({ conversation }) => conversation.lengthList;
+export const getLengthList = ( { conversation } ) => conversation.lengthList;
 
 export const getLeadId = ( state ) => {
 
@@ -78,8 +78,21 @@ export const getMessages = ( { conversation:{ id, all } } ) => {
   if ( Array.isArray( messages ) ) {
 
     let lastUserId = null;
+    //let lastDay = {};
 
     return messages.map( ( message ) => {
+
+/*      message.addDateStatus = null;
+
+      const date = new Date( message.created_at * 1000 );
+
+      if ( !lastDay.hasOwnProperty(date.getDay()) ) {
+
+        lastDay[date.getDay()] = date.getDay();
+
+        message.addDateStatus = message.created_at;
+
+      }*/
 
       if ( message.parts[ 0 ].mime_type === 'text/plain' ) {
 
@@ -142,7 +155,7 @@ export const getPhoto = ( state ) => {
   const lead = getLeadByConversationId( state, state.conversation.id );
 
   if ( lead !== null ) {
-    
+
     return lead.shop.avatar_url || lead.shop.instagram_avatar_url;
 
   }
@@ -164,9 +177,7 @@ export const getShopName = ( state ) => {
 
 };
 
-export const getCurrentMember = ( state ) => {
-
-  const lead = getLeadByConversationId( state, state.conversation.id );
+export const getCurrentMember = ( state, lead = getLeadByConversationId( state, state.conversation.id ) ) => {
 
   if ( lead ) {
 
@@ -176,11 +187,19 @@ export const getCurrentMember = ( state ) => {
 
         if ( Array.isArray( lead.chat.members ) ) {
 
-          return lead.chat.members.find( ( { user_id } ) => {
+          const result = lead.chat.members.find( ( { user_id } ) => {
 
             return user_id === state.user.id;
 
           } );
+
+          if ( typeof result === 'undefined' ) {
+
+            return null;
+
+          }
+
+          return result;
 
         }
 
@@ -313,13 +332,13 @@ export const isJoined = ( state, lead ) => {
 };
 
 export const getRowHeight = () => {
-  
+
   if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
     return 65
   }
-  
+
   return 50;
-  
+
 };
 
 export const getCountRowOnBody = () => Math.round( document.body.offsetHeight / getRowHeight() );

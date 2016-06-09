@@ -3,6 +3,7 @@
 article.product-post
   header.product-post__header
     img.product-post__user-preview(
+     v-link='{name: "user", params: {id: getOpenedProduct.supplier.instagram_username}}',
      :src='userImage',
      v-on:error='onUserImageError',
      width='72' height='72')
@@ -11,9 +12,10 @@ article.product-post
       .product-post__info__supplier(
         v-link='{name: "user", params: {id: getOpenedProduct.supplier.instagram_username}}')
         | {{ getOpenedProduct.supplier.instagram_username }}
-      .product-post__added добавлено&nbsp;
-        span.product-post__user-name(
-          v-link='{name: "user", params: {id: getOpenedProduct.mentioned.instagram_username}}')
+      .product-post__added(
+          v-link='{name: "user", params: {id: getOpenedProduct.mentioned.instagram_username}}'
+        ) добавлено&nbsp;
+        span.product-post__user-name
          | {{ getOpenedProduct.mentioned.instagram_username}}
   main.product-post__body(v-el:image-body)
     div(v-bind:style='{ opacity: imageOpacity }',
@@ -33,8 +35,7 @@ article.product-post
     .product-post__title.__bottom {{{ item.name }}}
 
   footer.product-post__footer
-    a.product-post__action.__heart(
-      v-link='{name: "info", params: {type: "post_like"}}')
+    .product-post__action.__heart(v-on:click="setLike")
       .product-post__trend: i.ic-heart
       .product-post__action-title тренд
 
@@ -60,6 +61,7 @@ article.product-post
   import { isAuth } from 'vuex/getters/user.js';
   import { getOpenedProduct } from 'vuex/getters/products';
   import * as leads from 'services/leads';
+  import * as products from 'services/products';
 
   export default {
     data(){
@@ -126,6 +128,16 @@ article.product-post
 
       zeroPrice (item) {
         return (!item.discount_price && !item.price);
+      },
+
+      setLike(){
+
+        products.like(this.obj.id, true).then((isLike) =>{
+
+          //TODO Обновлять продукт в ленте если открыт из ленты.
+
+        });
+
       },
 
       onBuy() {

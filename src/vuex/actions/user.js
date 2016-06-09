@@ -3,7 +3,7 @@ import * as profile from 'services/profile.js';
 import * as types from '../mutation-types';
 import { getUserName, getProfile } from 'vuex/getters/user.js';
 
-export const getValidUserObject = (user, user_id) => {
+export const getValidUserObject = ( user, user_id ) => {
 
   if ( user.hasOwnProperty( 'id' ) ) {
     return user
@@ -25,31 +25,51 @@ export const authUser = ( { dispatch }, user, token ) => {
 
   return new Promise( ( resolve, reject ) => {
 
-    const { token:cookieToken } = profile.getProfile();
+    const { user: cookieUser } = profile.getProfile();
 
-    if ( typeof token === 'string' && (cookieToken !== token) ) {
+    if ( typeof token === 'string' && user ) {
+
+      const user_id = profile.saveToken( token );
+
+      profile.saveUser( getValidUserObject( user, user_id ) );
+
+      dispatch( types.USER_AUTHENTICATED, token );
+      dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
+      dispatch( types.USER_SET_MY_ID, user_id );
+
+      resolve();
+
+      return null;
+
+    }
+
+    if ( typeof token === 'string' ) {
 
       const user_id = profile.saveToken( token );
 
       if ( Number.isFinite( user_id ) ) {
 
-        if ( user ) {
+        if ( user_id === cookieUser.id ) {
 
-          profile.saveUser(getValidUserObject( user, user_id ));
+          const { user } = profile.getProfile( true );
+
+          profile.saveUser( getValidUserObject( user, user_id ) );
 
           dispatch( types.USER_AUTHENTICATED, token );
-          dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
+          dispatch( types.USER_RECEIVE_PROFILE, user );
           dispatch( types.USER_SET_MY_ID, user_id );
 
           resolve();
 
+          return null;
+
         } else {
 
-          userService
+          return userService
             .get( { user_id } )
             .then( ( user ) => {
 
-              profile.saveUser(getValidUserObject( user, user_id ));
+              profile.saveUser( getValidUserObject( user, user_id ) );
 
               dispatch( types.USER_AUTHENTICATED, token );
               dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
@@ -75,23 +95,25 @@ export const authUser = ( { dispatch }, user, token ) => {
 
         reject( '[ TOKEN IS NOT CORRECT ]', { token } );
 
+        return null;
+
       }
 
     } else {
 
       const { user, token } = profile.getProfile();
 
-      if ( cookieToken && user ) {
+      if ( user && token ) {
 
         dispatch( types.USER_AUTHENTICATED, token );
         dispatch( types.USER_RECEIVE_PROFILE, user );
         dispatch( types.USER_SET_MY_ID, user.id );
 
-        resolve();
-
       }
 
       resolve();
+
+      return null;
 
     }
 
@@ -156,7 +178,7 @@ export const openProfile = ( { dispatch, state }, id ) => {
         userService
           .get( requestData )
           .then( ( user ) => {
-            dispatch( types.USER_RECEIVE_PROFILE, getValidUserObject(user, id), id );
+            dispatch( types.USER_RECEIVE_PROFILE, getValidUserObject( user, id ), id );
             dispatch( types.USER_SET_PHOTOS_CONFIG, photosConfig.listId, photosConfig.photosFilter, id );
             dispatch( types.USER_SET_PROFILE, id );
             resolve();

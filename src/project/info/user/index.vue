@@ -1,31 +1,16 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
--
-  global_brands = 'img/global_brands.jpg'
-  free_shopping = 'img/free_shopping.jpg'
-  fans = 'img/fans.jpg'
-  rocket_cat = 'img/Rocket-and-Cat.jpg'
-  all_shops = 'img/all_shops.jpg'
-  focus = 'img/focus.jpg'
-  earth = 'img/earth.png'
-
 .scroll-cnt
   .section.header.u-fixed
     .section__content.header__content
       .header__logo
         a(v-link='{ name: "home" }')
-          img(src='img/logo.svg' alt='')
+          img(src='img/logo-beta.svg' alt='')
       a(href='#'
         v-if="!isAuth"
         v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
 
   .section.top
-    .section__content(v-el:main-video-cnt)
-      iframe(src='https://player.vimeo.com/video/167123446?autoplay=1&title=0&byline=0&portrait=0',
-            :width='mainVideoWidth', :height='mainVideoHeight',
-            frameborder='0', webkitallowfullscreen,
-            mozallowfullscreen, allowfullscreen)
-
     .arithmetic
       .arithmetic__first
         img(src='img/instagramm.png' alt ='')
@@ -43,6 +28,9 @@
             |  что-то новенькое
             br
             |  через Instagram?
+        .play-btn-sm(v-on:click='videoShowed=true')
+          i.ic-play-inverted
+          span (смотреть видео)
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Вот только среди
@@ -166,10 +154,10 @@
           .about-mobile__two-col__img
             .about-mobile__img-block
               img(src='img/iphone-1.png' alt='')
-              .video.video-1
+              .video.video-1(v-show="!isIOS")
                 video
-                  source(src="http://3wcode.com.ua/ostrog/video/main.mp4" type="video/mp4")
-                  source(src="http://3wcode.com.ua/ostrog/video/main.ogv" type="video/ogg")
+                  source(src="http://cdn.trendever.com/videos/why/main.mp4" type="video/mp4")
+                  source(src="http://cdn.trendever.com/videos/why/main.ogv" type="video/ogg")
                   | Your browser does not support the video tag.
                 a(href='#' @click="playVideo").play-btn
                   i.ic-play-inverted
@@ -221,13 +209,14 @@
           .about-mobile__two-col__img
             .about-mobile__img-block.about-mobile__img-block__right
               img(src='img/iphone-2.png' alt='')
-              .video.video-2
+              .video.video-2(v-show="!isIOS")
                 video
-                  source(src="http://3wcode.com.ua/ostrog/video/instagram.mp4" type="video/mp4")
-                  source(src="http://3wcode.com.ua/ostrog/video/instagram.ogv" type="video/ogg")
+                  source(src="http://cdn.trendever.com/videos/why/instagram.mp4" type="video/mp4")
+                  source(src="http://cdn.trendever.com/videos/why/instagram.ogv" type="video/ogg")
                   | Your browser does not support the video tag.
                 a(href='#' @click="playVideo").play-btn
                   i.ic-play-inverted
+
   .section.about-us
     .section__content
       .about-us__logo
@@ -248,32 +237,33 @@
             |  Хочешь продаваться у нас?
           div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
             | Узнай как
-  script
+
+.main-video(v-if='videoShowed')
+  i(@click='videoShowed=false').ic-close
+  iframe(src='https://player.vimeo.com/video/167123446?title=0&byline=0&portrait=0&autoplay=1',
+  frameborder='0', webkitallowfullscreen,
+  mozallowfullscreen, allowfullscreen)
 
 </template>
-<script type="text/babel">
-  import listen from 'event-listener';
+<script>
   import { Swipe, SwipeItem } from 'vue-swipe';
-  import { ratioFit } from 'utils';
-  import HeaderComponent from 'base/header/header.vue';
+  import settings from 'settings'
+  import { browser } from 'utils'
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import { createLead } from 'vuex/actions/lead';
   import { isAuth } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
 
-  const promoProduct = 21499
-
   export default {
     data(){
       return {
-        mainVideoWidth: '',
-        mainVideoHeight: '',
+        videoShowed: false
       }
     },
 
-    beforeDestroy() {
-      if (this.resizeEvent) {
-        this.resizeEvent.remove();
+    computed: {
+      isIOS(){
+        return browser.ipad && browser.iphone && browser.ipod
       }
     },
 
@@ -287,25 +277,10 @@
       }
     },
 
-    ready(){
-      this.updateMainVideoSize()
-      this.resizeEvent = listen(window, 'optimizedResize', this.updateMainVideoSize.bind( this ))
-
-      if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        document.querySelector('.video-1').classList.add('hidden')
-        document.querySelector('.video-2').classList.add('hidden')
-      }
-    },
-
     methods: {
-      updateMainVideoSize(){
-        let sizes = ratioFit(1050, 588,
-                            this.$els.mainVideoCnt.offsetWidth,
-                            588);
-        this.mainVideoWidth = sizes.width;
-        this.mainVideoHeight = sizes.height;
-      },
       playVideo: function (e) {
+        // important! do it with http://vuejs.org/api/#v-el
+
         var btn = e.currentTarget,
             video = btn.previousSibling,
             darknessBlock = video.parentNode;
@@ -322,6 +297,7 @@
           darknessBlock.classList.remove('played');
         });
       },
+
       onBuyPromoProduct() {
         if ( !this.isAuth ) {
 
@@ -330,26 +306,21 @@
 
         } else {
 
-          this.createLead( promoProduct )
+          this.createLead( settings.promo_product_id )
           .then(
             ( lead ) => {
               if (lead !== undefined && lead !== null){
                 this.$router.go( { name: 'chat', params: { id: lead.id } } );
-              }
-            },
-            ( error ) => {
-              if ( error === leads.ERROR_CODES.UNATHORIZED ) {
-                this.$router.go( { name: 'signup' } );
               }
             }
           );
 
         }
       },
+
     },
 
     components: {
-      HeaderComponent,
         Swipe,
         SwipeItem
     }

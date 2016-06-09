@@ -2,7 +2,7 @@
 <template lang="jade">
 .scroll-cnt
   .repost(:style='{height: "100%"}')
-    .info__close(@click='back'): i.ic-close
+    .repost__close(@click='back'): i.ic-close
     .crop
       img(:src='igImageUrl')
       .repost_header

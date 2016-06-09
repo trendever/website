@@ -63,9 +63,6 @@ configRouter(router);
 const App = Vue.extend(require('./app.vue'));
 router.start(App, 'app');
 
-// just for debugging
-window.router = router;
-
 // Init FastClick
 FastClick.attach(document.body, {});
 

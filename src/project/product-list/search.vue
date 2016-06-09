@@ -16,7 +16,7 @@
           @focus='onFocusInput',
           @blur='onBlurInput',
           type='text',
-          placeholder='Ищите или фильтруйте...')
+          placeholder='Поиск текстом...')
 
         .search-input__clear-btn
           span.badge(v-if='selectedTags.length') {{ selectedTags.length }}
@@ -39,8 +39,6 @@
               span.change-col__sm
               span.change-col__sm
               span.change-col__sm
-          span(v-on:click="scrollUp").scroll-top
-              img(src='img/to-top.png')
 
     .search-tags(
       :class='{"__open": showMoreTags}')
@@ -108,7 +106,7 @@
             this.$set( 'searchGlued', false );
           }
         }
-      } );
+      });
 
     },
     beforeDestroy(){
@@ -140,19 +138,6 @@
       toggleShowMoreTags() {
         this.$els.tags.scrollTop = 0;
         this.showMoreTags = !this.showMoreTags;
-      },
-
-      changeSearchNav() {
-        var posBlock = parseInt(getComputedStyle(document.querySelector('.smallHero')).height);
-        var blockToggleClass = document.querySelector('.search-input__clear-btn');
-        var scrollBlock = this.scrollCnt;
-        scrollBlock.onscroll = function () {
-          if(scrollBlock.scrollTop > posBlock ){
-            blockToggleClass.classList.add('scroll');
-          } else {
-            blockToggleClass.classList.remove('scroll');
-          }
-        }
       },
 
       scrollUp() {
