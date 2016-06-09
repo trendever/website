@@ -154,7 +154,7 @@
           .about-mobile__two-col__img
             .about-mobile__img-block
               img(src='img/iphone-1.png' alt='')
-              .video.video-1(v-show="!isIOS", :class="{'played': videoOnePlayed}")
+              .video.video-1(v-show="!isIOS || videoOnePlayed", :class="{'played': videoOnePlayed}")
                 a(href='#', @click="toggleVideoOne()", style="z-index: 1000;" v-show='!videoOnePlayed').play-btn
                   i.ic-play-inverted
                 video(v-el:video-one, @click="pauseVideoOne()", v-on:pause="videoOnePlayed=false")
@@ -209,7 +209,7 @@
           .about-mobile__two-col__img
             .about-mobile__img-block.about-mobile__img-block__right
               img(src='img/iphone-2.png' alt='')
-              .video.video-2(v-show="!isIOS", :class="{'played': videoTwoPlayed}")
+              .video.video-2(v-show="!isIOS || videoTwoPlayed", :class="{'played': videoTwoPlayed}")
                 video(v-el:video-two, @click="pauseVideoTwo()", v-on:pause="videoTwoPlayed=false")
                   source(src="http://cdn.trendever.com/videos/why/instagram.mp4" type="video/mp4")
                   source(src="http://cdn.trendever.com/videos/why/instagram.ogv" type="video/ogg")
