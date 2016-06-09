@@ -306,7 +306,7 @@
 
         } else {
 
-          this.createLead( settings.promo_product_id )
+          this.createLead( settings.promoProductID )
           .then(
             ( lead ) => {
               if (lead !== undefined && lead !== null){
