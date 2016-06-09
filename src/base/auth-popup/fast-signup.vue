@@ -2,7 +2,8 @@
 div(class="popup" v-if="show")
   popup-wrapper(:show="show" close="onClose")
     .column-desktop-50.column-desktop-right
-      span.desktop-text-right.show-video Смотрите видео о Trendever
+      a(href="https://vimeo.com/167123446", target='_blank').desktop-text-right.show-video
+        | Смотрите видео о Trendever
     .column-desktop-50.column-desktop-left
       .container-left
         button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }") Войти
@@ -11,15 +12,14 @@ div(class="popup" v-if="show")
 </template>
 
 <script type="text/babel">
-
   import { isAuth } from 'vuex/getters/user.js';
   import popupWrapper from 'base/popup/wrapper.vue'
 
   export default {
     vuex: {
       getters: {
-        isAuth
-      }
+        isAuth,
+      },
     },
 
     methods: {
