@@ -1,7 +1,7 @@
 <style src='./styles/hero.pcss'></style>
 <template lang="jade">
 .section.smallHero(v-if='isAuth')
-  a(v-link='{ name: "mission" }')
+  a(v-link='{ name: "info-user" }')
     i.smallHero__logo
       img(src='img/logo-beta.svg')
 .section.hero(v-if='!isAuth')
@@ -45,7 +45,7 @@
 <script type='text/babel'>
 import { setCallbackOnSuccessAuth } from 'vuex/actions';
 import { createLead } from 'vuex/actions/lead';
-import { isAuth } from 'vuex/getters';
+import { isAuth } from 'vuex/getters/user.js';
 import * as leads from 'services/leads';
 
 export default {
@@ -80,7 +80,7 @@ export default {
       // document.body.addEventListener('click', (e) => {
       //   console.log("Fired event on every page. See!");
       //   if (e.target === document.querySelector('.profile-header__menu-btn-icon')) return;
-      // 
+      //
       //   if (e.target.parentNode !== document.querySelector('.profile-header__menu-links')){
       //     this.menuOpened = false;
       //   }
