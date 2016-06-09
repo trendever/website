@@ -10,6 +10,29 @@
   min-height:100vh;
   height:auto !important;
 
+  .signup__close {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    right: 0;
+
+    display: flex;
+
+    size: 70px;
+
+    cursor: pointer;
+
+    color: white;
+
+    align-items: center;
+    justify-content: center;
+  
+    @media(--mobile) {
+      width: 90px;
+      height: 90px;
+    }
+  }
+
   .link-bottom {
       opacity:.2;
   }

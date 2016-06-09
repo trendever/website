@@ -1,5 +1,6 @@
 @import 'base/vars/vars.pcss';
-@import 'project/info/info.pcss';
+
+$padding: 70px;
 
 .repost {
   position: relative;
@@ -10,9 +11,29 @@
   color: white;
   background-color: rgba(51, 153, 153, 1);
 
-  .info__close {
+  .repost__close {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    right: 0;
+
+    display: flex;
+
+    width: $padding;
+    height: $padding;
+
+    cursor: pointer;
+
+    color: white;
+
+    align-items: center;
+    justify-content: center;
     i {
       font-size: 32px;
+    }
+    @media(--mobile) {
+      width: 90px;
+      height: 90px;
     }
   }
   .crop {

@@ -26,11 +26,14 @@
       @click.prevent.stop='clearSearch()',
       href='#',
       v-if="tags || search" ) Сбросить поиск
+
+scroll-top
 </template>
 
 <script type='text/babel'>
   import listen from 'event-listener';
 
+  import scrollTop from 'base/scroll-top/scroll-top.vue';
   import photoItem from './photo-item.vue';
 
   import { clearSearch } from 'vuex/actions';
@@ -287,6 +290,7 @@
 
     components: {
       photoItem,
+      scrollTop
     }
   }
 </script>

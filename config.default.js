@@ -23,6 +23,12 @@ var config = {
   mixpanel: {
     token: "28b7f9270a9a491f44167767767770c6"
   },
+
+  /**
+   * Other
+   */
+  promo_product_id: 21499
+  
 };
 
 module.exports = config;

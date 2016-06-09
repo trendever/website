@@ -154,10 +154,10 @@
           .about-mobile__two-col__img
             .about-mobile__img-block
               img(src='img/iphone-1.png' alt='')
-              .video.video-1
+              .video.video-1(v-show="!isIOS")
                 video
-                  source(src="http://3wcode.com.ua/ostrog/video/main.mp4" type="video/mp4")
-                  source(src="http://3wcode.com.ua/ostrog/video/main.ogv" type="video/ogg")
+                  source(src="http://cdn.trendever.com/videos/why/main.mp4" type="video/mp4")
+                  source(src="http://cdn.trendever.com/videos/why/main.ogv" type="video/ogg")
                   | Your browser does not support the video tag.
                 a(href='#' @click="playVideo").play-btn
                   i.ic-play-inverted
@@ -209,10 +209,10 @@
           .about-mobile__two-col__img
             .about-mobile__img-block.about-mobile__img-block__right
               img(src='img/iphone-2.png' alt='')
-              .video.video-2
+              .video.video-2(v-show="!isIOS")
                 video
-                  source(src="http://3wcode.com.ua/ostrog/video/instagram.mp4" type="video/mp4")
-                  source(src="http://3wcode.com.ua/ostrog/video/instagram.ogv" type="video/ogg")
+                  source(src="http://cdn.trendever.com/videos/why/instagram.mp4" type="video/mp4")
+                  source(src="http://cdn.trendever.com/videos/why/instagram.ogv" type="video/ogg")
                   | Your browser does not support the video tag.
                 a(href='#' @click="playVideo").play-btn
                   i.ic-play-inverted
@@ -238,15 +238,21 @@
           div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
             | Узнай как
 
-.main-video(v-show='videoShowed')
-  i(v-on:click='videoShowed=false').ic-close
-  iframe(src='https://player.vimeo.com/video/167123446?title=0&byline=0&portrait=0',
+.main-video(v-if='videoShowed')
+  i(@click='videoShowed=false').ic-close
+  iframe(src='https://player.vimeo.com/video/167123446?title=0&byline=0&portrait=0&autoplay=1',
   frameborder='0', webkitallowfullscreen,
   mozallowfullscreen, allowfullscreen)
 
 </template>
 <script>
   import { Swipe, SwipeItem } from 'vue-swipe';
+  import settings from 'settings'
+  import { browser } from 'utils'
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
+  import { createLead } from 'vuex/actions/lead';
+  import { isAuth } from 'vuex/getters';
+  import * as leads from 'services/leads';
 
   export default {
     data(){
@@ -255,24 +261,26 @@
       }
     },
 
-    ready(){
-      this.showVideo(this);
+    computed: {
+      isIOS(){
+        return browser.ipad && browser.iphone && browser.ipod
+      }
+    },
 
-      this.hidePopup();
-
-      if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        // TODO Через vue
-        document.querySelector('.video-1').classList.add('hidden')
-        document.querySelector('.video-2').classList.add('hidden')
+    vuex: {
+      getters: {
+        isAuth,
+      },
+      actions: {
+        createLead,
+        setCallbackOnSuccessAuth,
       }
     },
 
     methods: {
-      hidePopup(){
-        document.querySelector('.popup').style.display = 'none';
-      },
-
       playVideo: function (e) {
+        // important! do it with http://vuejs.org/api/#v-el
+
         var btn = e.currentTarget,
             video = btn.previousSibling,
             darknessBlock = video.parentNode;
@@ -290,12 +298,24 @@
         });
       },
 
-      showVideo(test) {
-        var btn = document.querySelector('.show-video');
+      onBuyPromoProduct() {
+        if ( !this.isAuth ) {
 
-        btn.addEventListener('click', function () {
-          test.videoShowed = true;
-        });
+          this.$router.go( { name: 'signup' } );
+          this.setCallbackOnSuccessAuth(this.onBuyPromoProduct.bind(this))
+
+        } else {
+
+          this.createLead( settings.promo_product_id )
+          .then(
+            ( lead ) => {
+              if (lead !== undefined && lead !== null){
+                this.$router.go( { name: 'chat', params: { id: lead.id } } );
+              }
+            }
+          );
+
+        }
       },
 
     },

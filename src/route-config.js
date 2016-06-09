@@ -1,5 +1,7 @@
 /* globals mixpanel */
 
+import InfoRoutes from 'project/info/routes'
+
 export function configRouter(router) {
   router.map({
     '/': {
@@ -25,21 +27,6 @@ export function configRouter(router) {
     '/chat/:id': {
       name: 'chat',
       component: require('project/chat/index.vue'),
-    },
-
-    '/mission': {
-      name: 'mission',
-      component: require('project/mission/index.vue'),
-    },
-
-    '/agreement': {
-      name: 'agreement',
-      component: require('project/agreement/index.vue'),
-    },
-
-    '/info/:type': {
-      name: 'info',
-      component: require('project/info/info.vue'),
     },
 
     '/settings/tracking': {
@@ -72,9 +59,10 @@ export function configRouter(router) {
       component: require('project/not-found/index.vue'),
     },
 
-    '/shop': {
-      name: 'shop',
-      component: require('project/shop/index.vue'),
+    '/info': {
+      name: 'info',
+      component: require('project/info/index.vue'),
+      subRoutes: InfoRoutes()
     },
 
     '/profile': {
