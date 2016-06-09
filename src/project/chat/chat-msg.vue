@@ -23,7 +23,7 @@
   import { user } from 'vuex/getters/user.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
-  import { formatTime, escapeHtml, wrapLink } from './utils';
+  import { formatTime, formatDatetime, escapeHtml, wrapLink } from './utils';
 
   export default{
     props: {
@@ -80,6 +80,13 @@
         return this.msg.closestMessage;
       },
       isOwnMessage() {
+
+/*        if(this.msg.addDateStatus !== null){
+
+          console.log(formatDatetime(this.msg.addDateStatus));
+
+        }*/
+
         if ( this.getCurrentMember !== null ) {
           return this.getCurrentMember.user_id === this.msg.user.user_id;
         }

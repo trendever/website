@@ -78,8 +78,21 @@ export const getMessages = ( { conversation:{ id, all } } ) => {
   if ( Array.isArray( messages ) ) {
 
     let lastUserId = null;
+    //let lastDay = {};
 
     return messages.map( ( message ) => {
+
+/*      message.addDateStatus = null;
+
+      const date = new Date( message.created_at * 1000 );
+
+      if ( !lastDay.hasOwnProperty(date.getDay()) ) {
+
+        lastDay[date.getDay()] = date.getDay();
+
+        message.addDateStatus = message.created_at;
+
+      }*/
 
       if ( message.parts[ 0 ].mime_type === 'text/plain' ) {
 

@@ -70,25 +70,30 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
             const msg = messages[ messages.length - 1 ];
 
-            if ( state.leads.notify_count[ lead_id ] ) {
+            if ( msg.parts[ 0 ].mime_type !== 'json/status' ) {
 
-              const currentRole  = getCurrentMember( state, lead ).role;
-              const customerRole = chat.MEMBER_ROLES.CUSTOMER;
-              // TODO Объединить в функцию #logicReading
-              if (
-                ( customerRole === currentRole ) ||
-                ( msg.user.role === customerRole && currentRole !== customerRole )
-              ) {
+              if ( state.leads.notify_count[ lead_id ] ) {
 
-                messageService
-                  .update( conversation_id, msg.id )
-                  .catch( ( error ) => {
-                    messageService.sendError( error, {
-                      conversation_id,
-                      messages,
-                      lastMessageId: msg.id
-                    } )
-                  } );
+                const currentRole  = getCurrentMember( state, lead ).role;
+                const customerRole = chat.MEMBER_ROLES.CUSTOMER;
+                // TODO Объединить в функцию #logicReading
+
+                if (
+                  ( customerRole === currentRole ) ||
+                  ( msg.user.role === customerRole && currentRole !== customerRole )
+                ) {
+
+                  messageService
+                    .update( conversation_id, msg.id )
+                    .catch( ( error ) => {
+                      messageService.sendError( error, {
+                        conversation_id,
+                        messages,
+                        lastMessageId: msg.id
+                      } )
+                    } );
+
+                }
 
               }
 
@@ -377,41 +382,49 @@ export const receiveMessage = ( { dispatch, state }, conversation_id, messages )
 
       const msg = messages[ messages.length - 1 ];
 
-      if ( userID( state ) !== msg.user.user_id ) {
+      if ( msg.parts[ 0 ].mime_type !== 'json/status' ) {
 
-        dispatch( CONVERSATION_RECEIVE_MESSAGE, messages, conversation_id );
+        if ( userID( state ) !== msg.user.user_id ) {
 
-        if ( state.conversation.id === msg.conversation_id ) {
+          dispatch( CONVERSATION_RECEIVE_MESSAGE, messages, conversation_id );
 
-          if ( getLastMessageId( state ) !== msg.id ) {
+          if ( state.conversation.id === msg.conversation_id ) {
 
-            const currentRole  = getCurrentMember( state ).role;
-            const customerRole = chat.MEMBER_ROLES.CUSTOMER;
+            if ( getLastMessageId( state ) !== msg.id ) {
 
-            // TODO Объединить в функцию #logicReading
-            
-            if (
-              ( customerRole === currentRole ) ||
-              ( msg.user.role === customerRole && currentRole !== customerRole )
-            ) {
+              const currentRole  = getCurrentMember( state ).role;
+              const customerRole = chat.MEMBER_ROLES.CUSTOMER;
 
-              messageService
-                .update( conversation_id, msg.id )
-                .catch( ( error ) => {
-                  messageService.sendError( error, {
-                    conversation_id,
-                    messages,
-                    lastMessageId: msg.id
-                  } )
-                } );
+              // TODO Объединить в функцию #logicReading
 
-              return null;
+              if (
+                ( customerRole === currentRole ) ||
+                ( msg.user.role === customerRole && currentRole !== customerRole )
+              ) {
+
+                messageService
+                  .update( conversation_id, msg.id )
+                  .catch( ( error ) => {
+                    messageService.sendError( error, {
+                      conversation_id,
+                      messages,
+                      lastMessageId: msg.id
+                    } )
+                  } );
+
+                return null;
+
+              }
 
             }
 
           }
 
         }
+
+      } else {
+
+        dispatch( CONVERSATION_RECEIVE_MESSAGE, messages, conversation_id );
 
       }
 
@@ -491,7 +504,7 @@ export const onMessages = ( { dispatch, state }, data ) => {
 
           const MIME = messages[ 0 ].parts[ 0 ].mime_type;
 
-          if ( MIME === "text/plain" || MIME === "image/json" ) {
+          if ( MIME === "text/plain" || MIME === "image/json" || MIME === "json/status" ) {
 
             return receiveMessage( { dispatch, state }, conversation_id, messages );
 
