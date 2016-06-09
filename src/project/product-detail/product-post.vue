@@ -35,8 +35,7 @@ article.product-post
     .product-post__title.__bottom {{{ item.name }}}
 
   footer.product-post__footer
-    a.product-post__action.__heart(
-      v-link='{name: "info", params: {type: "post_like"}}')
+    .product-post__action.__heart(v-on:click="setLike")
       .product-post__trend: i.ic-heart
       .product-post__action-title тренд
 
@@ -62,6 +61,7 @@ article.product-post
   import { isAuth } from 'vuex/getters/user.js';
   import { getOpenedProduct } from 'vuex/getters/products';
   import * as leads from 'services/leads';
+  import * as products from 'services/products';
 
   export default {
     data(){
@@ -128,6 +128,16 @@ article.product-post
 
       zeroPrice (item) {
         return (!item.discount_price && !item.price);
+      },
+
+      setLike(){
+
+        products.like(this.obj.id, true).then((isLike) =>{
+
+          //TODO Обновлять продукт в ленте если открыт из ленты.
+
+        });
+
       },
 
       onBuy() {

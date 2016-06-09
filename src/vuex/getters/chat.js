@@ -5,7 +5,7 @@ import { getLeadByConversationId } from '../getters/lead.js';
 
 export const getId = ( { conversation } ) => conversation.id;
 
-export const getLengthList = ({ conversation }) => conversation.lengthList;
+export const getLengthList = ( { conversation } ) => conversation.lengthList;
 
 export const getLeadId = ( state ) => {
 
@@ -142,7 +142,7 @@ export const getPhoto = ( state ) => {
   const lead = getLeadByConversationId( state, state.conversation.id );
 
   if ( lead !== null ) {
-    
+
     return lead.shop.avatar_url || lead.shop.instagram_avatar_url;
 
   }
@@ -176,11 +176,19 @@ export const getCurrentMember = ( state ) => {
 
         if ( Array.isArray( lead.chat.members ) ) {
 
-          return lead.chat.members.find( ( { user_id } ) => {
+          const result = lead.chat.members.find( ( { user_id } ) => {
 
             return user_id === state.user.id;
 
           } );
+
+          if ( typeof result === 'undefined' ) {
+
+            return null;
+
+          }
+
+          return result;
 
         }
 
@@ -313,13 +321,13 @@ export const isJoined = ( state, lead ) => {
 };
 
 export const getRowHeight = () => {
-  
+
   if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
     return 65
   }
-  
+
   return 50;
-  
+
 };
 
 export const getCountRowOnBody = () => Math.round( document.body.offsetHeight / getRowHeight() );

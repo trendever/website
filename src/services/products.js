@@ -77,27 +77,33 @@ export const sendError = (errorCode, state = null) => {
  *
  * REJECT (one of ERROR_CODES)
  */
-export function find({ limit, offset, from_id, direction,
-                       q, tags,
-                       instagram_name, user_id }) {
+export function find(
+  {
+    limit, offset, from_id, direction,
+    q, tags,
+    instagram_name, user_id
+  }
+) {
 
-  return new Promise( (resolve, reject) => {
+  return new Promise( ( resolve, reject ) => {
 
-    channel.req('search', 'product', { limit, offset, from_id, direction,
-                                       q, tags,
-                                       instagram_name, user_id })
-    .then( data => {
+    channel.req( 'search', 'product', {
+      limit, offset, from_id, direction,
+      q, tags,
+      instagram_name, user_id
+    } )
+           .then( data => {
 
-        resolve(data.response_map);
+             resolve( data.response_map );
 
-    }).catch( error => {
+           } ).catch( error => {
 
-      console.error('products Find', error);
-      reject(ERROR_CODES.SERVER_ERROR);
+      console.error( 'products Find', error );
+      reject( ERROR_CODES.SERVER_ERROR );
 
-    });
+    } );
 
-  });
+  } );
 }
 
 
@@ -144,24 +150,54 @@ export function find({ limit, offset, from_id, direction,
  *
  * REJECT (one of ERROR_CODES, response)
  */
-export function get(id) {
+export function get( id ) {
 
-  return new Promise( (resolve, reject) => {
+  return new Promise( ( resolve, reject ) => {
 
-    channel.req('retrieve', 'product', {id})
-    .then( data => {
+    channel.req( 'retrieve', 'product', { id } )
+           .then( data => {
 
-        if (data.response_map.count > 0) {
-          resolve(data.response_map.object_list[0]);
+             if ( data.response_map.count > 0 ) {
+               resolve( data.response_map.object_list[ 0 ] );
+             } else {
+               reject( ERROR_CODES.NOT_FOUND, data );
+             }
+
+           } ).catch( error => {
+
+      reject( { code: ERROR_CODES.SERVER_ERROR, response: error } );
+
+    } );
+
+  } );
+}
+
+export const like = ( product_id = null, like = true ) => {
+
+  return new Promise( ( resolve, reject ) => {
+
+    channel
+      .req( 'like', 'product', { product_id, like } )
+      .then( ( status ) => {
+
+        if ( status !== null ) {
+          
+          resolve( true );
+          
         } else {
-          reject(ERROR_CODES.NOT_FOUND, data);
+          
+          resolve( false );      
+          
         }
 
-    }).catch( error => {
+      } )
+      .catch( error => {
 
-      reject({ code: ERROR_CODES.SERVER_ERROR, response: error });
+        reject( { code: ERROR_CODES.SERVER_ERROR, response: error } );
 
-    });
+      } );
 
-  });
-}
+  } );
+
+};
+

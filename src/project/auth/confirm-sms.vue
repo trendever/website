@@ -130,7 +130,7 @@ div
 
       onComplete(user, token) {
         this.isCompleted = true;
-        this.authenticateUser(user, token);
+        this.authUser(user, token);
         this.$els.confirmBtn.focus();
         setTimeout( () => this.$router.go({name: 'home'}), 1000);
       },
