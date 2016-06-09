@@ -11,7 +11,7 @@ export const isDone = ( { user }) => {
 };
 
 export const user = ( { user } ) => {
-
+  
   if ( user.all.hasOwnProperty( user.id ) ) {
 
     return user.all[ user.id ];
@@ -61,7 +61,7 @@ export const getUserPhoto = ( state ) => {
 export const getUserCaption = ( state ) => {
 
   const {caption} = user( state );
-  
+
   if ( typeof caption === 'string' ) {
     return caption;
   }
@@ -75,7 +75,7 @@ export const getSlogan = (state) => {
   if ( typeof slogan === 'string' ) {
     return slogan;
   }
-  
+
 };
 
 export const getProfile = ( { user }, id = null ) => {

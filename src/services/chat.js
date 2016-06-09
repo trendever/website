@@ -1,10 +1,10 @@
 import channel from 'services/channel/channel.js';
 
 export const MEMBER_ROLES = {
-    CUSTOMER: 0,
-    SUPPLIER: 1,
-    SELLER: 2,
-    SUPER_SELLER: 3,
+    CUSTOMER: 1,
+    SUPPLIER: 2,
+    SELLER: 3,
+    SUPER_SELLER: 4
 };
 
 export const ERROR_CODES = {

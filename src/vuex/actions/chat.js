@@ -21,7 +21,8 @@ import {
   isInit,
   getMessages,
   getLastMessageId,
-  getCountRowOnBody
+  getCountRowOnBody,
+  getCurrentMember
 } from 'vuex/getters/chat.js';
 import { getLeadById, getGroup, getLeadByConversationId } from 'vuex/getters/lead.js';
 import { userID } from 'vuex/getters/user.js';
@@ -71,15 +72,25 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
             if ( state.leads.notify_count[ lead_id ] ) {
 
-              messageService
-                .update( conversation_id, msg.id )
-                .catch( ( error ) => {
-                  messageService.sendError( error, {
-                    conversation_id,
-                    messages,
-                    lastMessageId: msg.id
-                  } )
-                } );
+              const currentRole  = getCurrentMember( state, lead ).role;
+              const customerRole = chat.MEMBER_ROLES.CUSTOMER;
+              // TODO Объединить в функцию #logicReading
+              if (
+                ( customerRole === currentRole ) ||
+                ( msg.user.role === customerRole && currentRole !== customerRole )
+              ) {
+
+                messageService
+                  .update( conversation_id, msg.id )
+                  .catch( ( error ) => {
+                    messageService.sendError( error, {
+                      conversation_id,
+                      messages,
+                      lastMessageId: msg.id
+                    } )
+                  } );
+
+              }
 
             }
 
@@ -317,7 +328,6 @@ export const loadMessage = ( { dispatch, state } ) => {
 
 };
 
-
 export const createMessage = ( { dispatch, state }, conversation_id, text, mime_type ) => {
 
   const beforeLoadId = Math.random();
@@ -375,9 +385,29 @@ export const receiveMessage = ( { dispatch, state }, conversation_id, messages )
 
           if ( getLastMessageId( state ) !== msg.id ) {
 
-            messageService
-              .update( conversation_id, msg.id )
-              .catch( messageService.sendError );
+            const currentRole  = getCurrentMember( state ).role;
+            const customerRole = chat.MEMBER_ROLES.CUSTOMER;
+
+            // TODO Объединить в функцию #logicReading
+            
+            if (
+              ( customerRole === currentRole ) ||
+              ( msg.user.role === customerRole && currentRole !== customerRole )
+            ) {
+
+              messageService
+                .update( conversation_id, msg.id )
+                .catch( ( error ) => {
+                  messageService.sendError( error, {
+                    conversation_id,
+                    messages,
+                    lastMessageId: msg.id
+                  } )
+                } );
+
+              return null;
+
+            }
 
           }
 
@@ -461,7 +491,7 @@ export const onMessages = ( { dispatch, state }, data ) => {
 
           const MIME = messages[ 0 ].parts[ 0 ].mime_type;
 
-          if ( MIME === "text/plain" || MIME === "image/json") {
+          if ( MIME === "text/plain" || MIME === "image/json" ) {
 
             return receiveMessage( { dispatch, state }, conversation_id, messages );
 

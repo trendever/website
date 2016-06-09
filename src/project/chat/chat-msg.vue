@@ -66,8 +66,10 @@
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
           return `<b>${this.getShopName}</b>`
         }
-        if(this.user.role === leads.USER_ROLES.CUSTOMER.key){
-          return `<b>${this.getShopName}</b>`
+        if ( this.getCurrentMember !== null ) {
+          if(this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key){
+            return `<b>${this.getShopName}</b>`
+          }
         }
         return `<b>${this.getShopName}</b> ( ${this.msg.user.name} )`
       },

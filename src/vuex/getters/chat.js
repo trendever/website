@@ -164,9 +164,7 @@ export const getShopName = ( state ) => {
 
 };
 
-export const getCurrentMember = ( state ) => {
-
-  const lead = getLeadByConversationId( state, state.conversation.id );
+export const getCurrentMember = ( state, lead = getLeadByConversationId( state, state.conversation.id ) ) => {
 
   if ( lead ) {
 
