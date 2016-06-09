@@ -3,15 +3,12 @@
 footer.section.footer
   .section__content.footer__content
     .footer__content__links
-      a.footer__content__link.link(@click="onBuyPromoProduct()")
-        | Блогерам
+      a.footer__content__link.link(
+        @click="onBuyPromoProduct()") Блогерам
       a.footer__content__link.link(
         v-link='{name: "info-user"}') Покупателям
-      //- a.footer__content__link.link(
-        v-link='{name: "info-shop"}') Магазинам
-
       a.footer__content__link.link(
-        v-link='{name: "info-mission"}') Наша миссия
+        @click="onBuyPromoProduct()") Магазинам
       a.footer__content__link.link(
         v-link='{name: "info-agreement"}') Условия
 
