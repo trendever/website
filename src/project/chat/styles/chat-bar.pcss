@@ -2,34 +2,31 @@
 
 .chat-bar {
   position: fixed * 0 0 0;
-
-  display: flex;
-
+  display: table;
   min-height: 50px;
-
   background: #fff;
+  vertical-align: middle;
 
   @media(--mobile) {
     min-height: 90px;
   }
-  align-items: center;
-  justify-content: space-between;
+
   &_menu-btn {
+    display: table-cell;
+    padding: 12px 12px;
     width:50px;
     height: 50px;
-    padding: 12px 12px;
-
+    vertical-align: middle;
     cursor: pointer;
 
     @media(--mobile){
+      padding: 25px 30px;
       width:100px;
       height: 90px;
-      padding: 25px 30px;
     }
-    flex-shrink: 0;
+
     i {
       color: $color__gray-dark;
-
       font-size: 26px;
 
       @media(--mobile){
@@ -41,37 +38,35 @@
     }
   }
   &_input {
-    display: flex;
-
-    width: 100%;
-    min-height: 32px;
+    display: table-cell;
     margin: 9px 0;
     padding: 1px 0;
+    min-height: 32px;
+    width: 100%;
+    vertical-align: middle;
 
     @media(--mobile){
-      min-height: 58px;
       margin: 16px 0;
+      min-height: 58px;
     }
+
     textarea {
       overflow-y: hidden;
-
+      margin-bottom: -4px;
+      padding: 6px;
       width: 100%;
       height: 32px;
-      padding: 6px;
-
-      resize: none;
-
-      color: $color__gray-dark;
+      outline: none;
       border: 1px solid $color__gray-dark;
       border-radius: 8px;
-      outline: none;
-
+      color: $color__gray-dark;
       font-size: 16px;
       line-height: 19.2px;
+      resize: none;
 
       @media(--mobile){
-        height: 58px;
         padding: 12px 18px;
+        height: 58px;
         font: 400 16px Сomfortaa, arial narrow, arial;
         font-size: 32px;
         line-height: 33.6px;
@@ -82,23 +77,20 @@
     }
   }
   &_send-btn {
-    display: flex;
-
+    display: table-cell;
+    padding: 0 15px;
     width: 60px;
     height: 50px;
-    padding-left: 15px;
-
+    vertical-align: middle;
     cursor: pointer;
 
     @media(--mobile){
       width: 120px;
       height: 90px;
     }
-    flex-shrink: 0;
-    align-items: center;
+
     i {
       color: $color__gray-dark;
-
       font-size: 30px;
 
       @media(--mobile){

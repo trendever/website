@@ -15,14 +15,7 @@
       show_on_elem='headerAnchor',
       :back-link='{name: "home"}')
 
-    .section.top
-      .section__content(v-el:main-video-cnt)
-        iframe(src='https://player.vimeo.com/video/167123446?autoplay=1&title=0&byline=0&portrait=0',
-              :width='mainVideoWidth', :height='mainVideoHeight',
-              frameborder='0', webkitallowfullscreen,
-              mozallowfullscreen, allowfullscreen)
-
-    div.why(style='width: 750px; margin: 0 auto;')
+    .section.top.why(style='width: 750px; margin: 0 auto;')
       .section.available#headerAnchor
         .section__content
           .available__title.green Почему мы это делаем?
@@ -115,40 +108,9 @@
 </template>
 
 <script>
-  import listen from 'event-listener';
-  import { ratioFit } from 'utils';
   import HeaderComponent from 'base/header/header.vue';
 
   export default {
-    data(){
-      return {
-        mainVideoWidth: '',
-        mainVideoHeight: '',
-      }
-    },
-
-    beforeDestroy() {
-      if (this.resizeEvent) {
-        this.resizeEvent.remove();
-      }
-    },
-
-    ready(){
-      this.updateMainVideoSize();
-
-      this.resizeEvent = listen(window, 'optimizedResize', this.updateMainVideoSize.bind( this ))
-    },
-
-    methods: {
-      updateMainVideoSize(){
-        let sizes = ratioFit(1050, 588,
-                            this.$els.mainVideoCnt.offsetWidth,
-                            588);
-        this.mainVideoWidth = sizes.width;
-        this.mainVideoHeight = sizes.height;
-      },
-    },
-
     components: {
       HeaderComponent
     }
