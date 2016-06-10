@@ -49,45 +49,47 @@ export const authUser = ( { dispatch }, user, token ) => {
 
       if ( Number.isFinite( user_id ) ) {
 
-        if ( user_id === cookieUser.id ) {
+        if ( cookieUser !== null ) {
 
-          const { user } = profile.getProfile( true );
+          if ( user_id === cookieUser.id ) {
 
-          profile.saveUser( getValidUserObject( user, user_id ) );
+            const { user } = profile.getProfile( true );
 
-          dispatch( types.USER_AUTHENTICATED, token );
-          dispatch( types.USER_RECEIVE_PROFILE, user );
-          dispatch( types.USER_SET_MY_ID, user_id );
+            profile.saveUser( getValidUserObject( user, user_id ) );
 
-          resolve();
+            dispatch( types.USER_AUTHENTICATED, token );
+            dispatch( types.USER_RECEIVE_PROFILE, user );
+            dispatch( types.USER_SET_MY_ID, user_id );
 
-          return null;
+            resolve();
 
-        } else {
+            return null;
 
-          return userService
-            .get( { user_id } )
-            .then( ( user ) => {
-
-              profile.saveUser( getValidUserObject( user, user_id ) );
-
-              dispatch( types.USER_AUTHENTICATED, token );
-              dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
-              dispatch( types.USER_SET_MY_ID, user_id );
-
-              resolve();
-
-            } )
-            .catch( ( error ) => {
-              if ( error === 1 ) {
-                console.error( '[ USER_NOT_FOUND ]', { user_id } );
-              } else {
-                console.error( '[ USER_UNDEFINED_ERROR ]', error );
-              }
-              reject( error );
-            } );
+          }
 
         }
+
+        return userService
+          .get( { user_id } )
+          .then( ( user ) => {
+
+            profile.saveUser( getValidUserObject( user, user_id ) );
+
+            dispatch( types.USER_AUTHENTICATED, token );
+            dispatch( types.USER_RECEIVE_PROFILE, profile.getProfile( true ).user );
+            dispatch( types.USER_SET_MY_ID, user_id );
+
+            resolve();
+
+          } )
+          .catch( ( error ) => {
+            if ( error === 1 ) {
+              console.error( '[ USER_NOT_FOUND ]', { user_id } );
+            } else {
+              console.error( '[ USER_UNDEFINED_ERROR ]', error );
+            }
+            reject( error );
+          } );
 
       } else {
 
