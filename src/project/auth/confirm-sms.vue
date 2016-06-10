@@ -1,7 +1,7 @@
 <template lang="jade">
 div
   .signup.confirm(:style='{ height: height }')
-    .info__close.__hello(@click='closePage'): i.ic-close
+    .signup__close.__hello(@click='closePage'): i.ic-close
     .section
       h1 Подтвердите номер телефона
       .middle-container

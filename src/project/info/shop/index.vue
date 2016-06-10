@@ -1,14 +1,5 @@
-<style src='./shop.pcss'></style>
+<style src='./style.pcss'></style>
 <template lang="jade">
--
-  global_brands = 'img/global_brands.jpg'
-  free_shopping = 'img/free_shopping.jpg'
-  fans = 'img/fans.jpg'
-  rocket_cat = 'img/Rocket-and-Cat.jpg'
-  all_shops = 'img/all_shops.jpg'
-  focus = 'img/focus.jpg'
-  earth = 'img/earth.png'
-
 .scroll-cnt
   .section.header.u-fixed
     .section__content.header__content
@@ -129,26 +120,16 @@
 
 </template>
 <script>
-  import listen from 'event-listener';
-  import { Swipe, SwipeItem } from 'vue-swipe';
-  import { ratioFit } from 'utils';
+  import settings from 'settings'
   import HeaderComponent from 'base/header/header.vue';
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import { createLead } from 'vuex/actions/lead';
   import { isAuth } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
 
-  const promoProduct = 21499;
-
   export default {
     data(){
       return {
-      }
-    },
-
-    beforeDestroy() {
-      if (this.resizeEvent) {
-        this.resizeEvent.remove();
       }
     },
 
@@ -162,10 +143,26 @@
       }
     },
 
-    ready(){
-    },
-
     methods: {
+      onBuyPromoProduct() {
+        if ( !this.isAuth ) {
+
+          this.$router.go( { name: 'signup' } );
+          this.setCallbackOnSuccessAuth(this.onBuyPromoProduct.bind(this))
+
+        } else {
+
+          this.createLead( settings.promoProductID )
+          .then(
+            ( lead ) => {
+              if (lead !== undefined && lead !== null){
+                this.$router.go( { name: 'chat', params: { id: lead.id } } );
+              }
+            }
+          );
+
+        }
+      },
     },
 
     components: {

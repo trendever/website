@@ -3,7 +3,7 @@
 .scroll-cnt
   div
     .signup(:style='{ height: height }')
-      .info__close.__hello(@click='closePage'): i.ic-close
+      .signup__close.__hello(@click='closePage'): i.ic-close
       .section
         .column-desktop-50.header(v-if="showTitleSlider")
           h1 Войдите и сможете...

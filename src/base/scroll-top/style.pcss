@@ -1,0 +1,40 @@
+@import 'base/vars/vars.pcss';
+
+.scroll-top {
+  position: fixed;
+  font-size: 40px;
+  size: 75px;
+  color: white;
+  padding-top: 18px;
+  text-align: center;
+  background: rgba(0,0,0,0.75);
+  border-radius: 50%;
+  bottom: 60px;
+  right: 203px;
+  z-index: 10;
+  cursor: pointer;
+
+  i {
+    display: inline-block;
+  }
+
+  @media(--smalldesktop) {
+    right:10px;
+  }
+
+  @media(--tabletandless) {
+    right:10px;
+  }
+  @media(--mobile) {
+    bottom: 100px;
+  }
+
+  &.__fly  {
+    bottom: 160px;
+
+    @media(--mobile) {
+      bottom:250px;
+    }
+
+  }
+}

@@ -28,7 +28,7 @@
             |  что-то новенькое
             br
             |  через Instagram?
-        .play-btn-sm(v-on:click='videoShowed=true')
+        a.play-btn-sm(href="https://vimeo.com/167123446", target='_blank')
           i.ic-play-inverted
           span (смотреть видео)
       .inform-item__answer
@@ -154,13 +154,13 @@
           .about-mobile__two-col__img
             .about-mobile__img-block
               img(src='img/iphone-1.png' alt='')
-              .video.video-1
-                video
-                  source(src="http://3wcode.com.ua/ostrog/video/main.mp4" type="video/mp4")
-                  source(src="http://3wcode.com.ua/ostrog/video/main.ogv" type="video/ogg")
-                  | Your browser does not support the video tag.
-                a(href='#' @click="playVideo").play-btn
+              .video.video-1(v-show="!isIOS || videoOnePlayed", :class="{'played': videoOnePlayed}")
+                a(href='#', @click="toggleVideoOne()", style="z-index: 1000;" v-show='!videoOnePlayed').play-btn
                   i.ic-play-inverted
+                video(v-el:video-one, @click="pauseVideoOne()", v-on:pause="videoOnePlayed=false", preload="yes")
+                  source(src="//cdn.trendever.com/videos/video_one.mp4" type="video/mp4")
+                  source(src="//cdn.trendever.com/videos/video_one.webm" type="video/webm")
+                  | Your browser does not support the video.
           .about-mobile__two-col__text
             .vertical-align-wrapper
               .about-mobile__two-col__title Шопинг твоих желаний
@@ -209,12 +209,12 @@
           .about-mobile__two-col__img
             .about-mobile__img-block.about-mobile__img-block__right
               img(src='img/iphone-2.png' alt='')
-              .video.video-2
-                video
-                  source(src="http://3wcode.com.ua/ostrog/video/instagram.mp4" type="video/mp4")
-                  source(src="http://3wcode.com.ua/ostrog/video/instagram.ogv" type="video/ogg")
-                  | Your browser does not support the video tag.
-                a(href='#' @click="playVideo").play-btn
+              .video.video-2(v-show="!isIOS || videoTwoPlayed", :class="{'played': videoTwoPlayed}")
+                video(v-el:video-two, @click="pauseVideoTwo()", v-on:pause="videoTwoPlayed=false")
+                  source(src="//cdn.trendever.com/videos/video_one.mp4" type="video/mp4")
+                  source(src="//cdn.trendever.com/videos/video_two.webm" type="video/webm")
+                  | Your browser does not support the video.
+                a(href='#', @click="toggleVideoTwo()", v-show='!videoTwoPlayed').play-btn
                   i.ic-play-inverted
 
   .section.about-us
@@ -226,7 +226,7 @@
         br
         |  без наценки из первых рук!
       a(v-link='{ name: "home" }').btn-yellow.btn-yellow__m Перейти на сайт
-      p Превращаем Instagram-шопинг в удовольтсвие.
+      p Превращаем Instagram-шопинг в удовольствие.
 
   .section.inform-item.footer
     .section__content
@@ -238,64 +238,84 @@
           div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
             | Узнай как
 
-.main-video(v-show='videoShowed')
-  i(v-on:click='videoShowed=false').ic-close
-  iframe(src='https://player.vimeo.com/video/167123446?title=0&byline=0&portrait=0',
-  frameborder='0', webkitallowfullscreen,
-  mozallowfullscreen, allowfullscreen)
+//- .main-video(v-if='videoShowed')
+//-   i(@click='videoShowed=false').ic-close
+//-   iframe(src='https://player.vimeo.com/video/167123446?title=0&byline=0&portrait=0&autoplay=1',
+//-   frameborder='0', webkitallowfullscreen,
+//-   mozallowfullscreen, allowfullscreen)
 
 </template>
 <script>
   import { Swipe, SwipeItem } from 'vue-swipe';
+  import settings from 'settings'
+  import { browser } from 'utils'
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
+  import { createLead } from 'vuex/actions/lead';
+  import { isAuth } from 'vuex/getters/user.js';
+  import * as leads from 'services/leads';
 
   export default {
     data(){
       return {
-        videoShowed: false
+        videoOnePlayed: false,
+        videoTwoPlayed: false,
       }
     },
 
-    ready(){
-      this.showVideo(this);
+    computed: {
+      isIOS(){
+        return browser.ipad && browser.iphone && browser.ipod
+      }
+    },
 
-      this.hidePopup();
-
-      if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        // TODO Через vue
-        document.querySelector('.video-1').classList.add('hidden')
-        document.querySelector('.video-2').classList.add('hidden')
+    vuex: {
+      getters: {
+        isAuth,
+      },
+      actions: {
+        createLead,
+        setCallbackOnSuccessAuth,
       }
     },
 
     methods: {
-      hidePopup(){
-        document.querySelector('.popup').style.display = 'none';
+      pauseVideoOne(){
+        if (this.videoOnePlayed) {
+          this.$els.videoOne.pause()
+        }
+      },
+      toggleVideoOne() {
+        this.videoOnePlayed = true
+        this.$els.videoOne.play()
+      },
+      pauseVideoTwo(){
+        if (this.videoTwoPlayed) {
+          this.$els.videoTwo.pause()
+        }
+      },
+      toggleVideoTwo() {
+        this.videoTwoPlayed = true
+        this.$els.videoTwo.play()
       },
 
-      playVideo: function (e) {
-        var btn = e.currentTarget,
-            video = btn.previousSibling,
-            darknessBlock = video.parentNode;
+      onBuyPromoProduct() {
+        if ( !this.isAuth ) {
 
-        btn.style.display = 'none';
-        video.play();
-        darknessBlock.classList.add('played');
-        video.addEventListener("ended", function(){
-          btn.style.display = 'block';
-          darknessBlock.classList.remove('played');
-        });
-        video.addEventListener("pause", function(){
-          btn.style.display = 'block';
-          darknessBlock.classList.remove('played');
-        });
-      },
+          this.$router.go( { name: 'signup' } );
+          this.setCallbackOnSuccessAuth(this.onBuyPromoProduct.bind(this))
 
-      showVideo(test) {
-        var btn = document.querySelector('.show-video');
+        } else {
 
-        btn.addEventListener('click', function () {
-          test.videoShowed = true;
-        });
+          this.createLead( settings.promoProductID )
+          .then(
+            ( lead ) => {
+              if (lead !== undefined && lead !== null){
+                this.$router.go( { name: 'chat', params: { id: lead.id } } );
+              }
+            }
+          );
+
+        }
       },
 
     },

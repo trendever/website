@@ -2,37 +2,63 @@
 <template lang="jade">
 footer.section.footer
   .section__content.footer__content
-
-    // BEGIN footer__content__links
     .footer__content__links
       a.footer__content__link.link(
-        v-link='"for_blogger" | linkToInfo') Блогерам
+        @click="onBuyPromoProduct()") Блогерам
       a.footer__content__link.link(
-        v-link='"for_customer" | linkToInfo') Покупателям
+        v-link='{name: "info-user"}') Покупателям
       a.footer__content__link.link(
-        v-link='"for_shop" | linkToInfo') Магазинам
+        @click="onBuyPromoProduct()") Магазинам
       a.footer__content__link.link(
-        v-link='{name: "agreement"}') Условия
-    // END footer__content__links
+        v-link='{name: "info-agreement"}') Условия
 
     .footer__content__copyright © Trendever {{ year }}
       .footer__content__img
 </template>
 
 <script>
-  export default {
-    computed: {
-      year() {
-        return new Date().getFullYear()
-      },
+import { setCallbackOnSuccessAuth } from 'vuex/actions';
+import { createLead } from 'vuex/actions/lead';
+import { isAuth } from 'vuex/getters';
+import * as leads from 'services/leads';
+
+export default {
+  computed: {
+    year() {
+      return new Date().getFullYear()
     },
-    filters: {
-      linkToInfo(type) {
-        return {
-          name: 'info',
-          params: {type},
-        }
-      },
+  },
+
+  vuex: {
+    getters: {
+      isAuth,
+    },
+    actions: {
+      createLead,
+      setCallbackOnSuccessAuth,
+    }
+  },
+
+  methods: {
+    onBuyPromoProduct() {
+      if ( !this.isAuth ) {
+
+        this.$router.go( { name: 'signup' } );
+        this.setCallbackOnSuccessAuth(this.onBuyPromoProduct.bind(this))
+
+      } else {
+
+        this.createLead( settings.promoProductID )
+        .then(
+          ( lead ) => {
+            if (lead !== undefined && lead !== null){
+              this.$router.go( { name: 'chat', params: { id: lead.id } } );
+            }
+          }
+        );
+
+      }
     },
   }
+}
 </script>

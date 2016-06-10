@@ -1,7 +1,7 @@
 <style src='./styles/hero.pcss'></style>
 <template lang="jade">
 .section.smallHero(v-if='isAuth')
-  a(v-link='{ name: "mission" }')
+  a(v-link='{ name: "info-user" }')
     i.smallHero__logo
       img(src='img/logo-beta.svg')
 .section.hero(v-if='!isAuth')
@@ -19,80 +19,109 @@
       .profile-header__menu
         .profile-header__menu-btn
           .profile-header__menu-btn-label
-          .profile-header__menu-btn-icon(v-on:click='menuOpened=true')
+          .profile-header__menu-btn-icon(@click='menuOpened=true')
         .profile-header__menu-links(v-show='menuOpened')
-          a(class='profile-header__menu-link profile-header__close-menu', v-on:click='menuOpened=false') Отмена
+          a(class='profile-header__menu-link profile-header__close-menu',
+           @click='menuOpened=false') Отмена
           a(class='profile-header__menu-link',
-           v-link='"for_customer" | linkToInfo') Покупателям
+           v-link='{name: "info-user"}') Покупателям
+
           a(class='profile-header__menu-link',
-            v-link='"for_shop" | linkToInfo') Магазинам
+            @click="onBuyPromoProduct()") Магазинам
+
           a(class='profile-header__menu-link',
-            v-link='"for_blogger" | linkToInfo') Блогерам
+            @click="onBuyPromoProduct()") Блогерам
+
           a(class='profile-header__menu-link',
-            v-link='{name: "mission"}') Наша миссия
+            v-link='{name: "info-mission"}') Наша миссия
           a(class='profile-header__menu-link',
-            v-link='{name: "agreement"}') Условия
-          //- a(class='profile-header__menu-link', href='#') Отмена
+            v-link='{name: "info-agreement"}') Условия
 
     .hero__content__logo
     .hero__content__description Шопинг в Instagram стал проще
-      span(v-on:click='scrollAnchor()').scroll-to-anchor
+      span(@click='scrollAnchor()').scroll-to-anchor
 </template>
+
 <script type='text/babel'>
-  import { isAuth } from 'vuex/getters/user.js';
-    export default {
-      data(){
-        return {
-          menuOpened: false
-        }
-      },
+import { setCallbackOnSuccessAuth } from 'vuex/actions';
+import { createLead } from 'vuex/actions/lead';
+import { isAuth } from 'vuex/getters/user.js';
+import * as leads from 'services/leads';
 
-      ready() {
-        this.scrollCnt = document.querySelector('.scroll-cnt');
-        this.closeMenu(this);
-      },
+export default {
+  data(){
+    return {
+      menuOpened: false
+    }
+  },
 
-      methods: {
-        closeMenu(test) {
-          document.body.addEventListener('click', function (e) {
-            if (e.target === document.querySelector('.profile-header__menu-btn-icon')) return;
+  ready() {
+    this.scrollCnt = document.querySelector('.scroll-cnt');
+    this.closeMenu();
+  },
 
-            if (e.target.parentNode !== document.querySelector('.profile-header__menu-links')){
-              test.menuOpened = false;
-            }
-          });
-        },
+  vuex: {
+    getters: {
+      isAuth,
+    },
+    actions: {
+      createLead,
+      setCallbackOnSuccessAuth,
+    }
+  },
 
-        scrollAnchor() {
-          var block = document.querySelector("#how-it-work");
-          if(block !== null){
-            var scrollBlock = this.scrollCnt;
+  methods: {
+    closeMenu(test) {
+      // Горло через жопу не лечат.
+      // Я просил сделать подложку на весь экран под меню
+      // И на нее повесить событие @click.
+      // Показывать подложку, когда открыто меню.
+      // Переделай Денис.
+      // document.body.addEventListener('click', (e) => {
+      //   console.log("Fired event on every page. See!");
+      //   if (e.target === document.querySelector('.profile-header__menu-btn-icon')) return;
+      //
+      //   if (e.target.parentNode !== document.querySelector('.profile-header__menu-links')){
+      //     this.menuOpened = false;
+      //   }
+      // });
+    },
 
-            if (!timer) {
-              var timer = setInterval(function () {
-                if (block.getBoundingClientRect().top < 80){
-                  clearInterval(timer);
-                }
-                scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
-              }, 20);
+    onBuyPromoProduct() {
+      if ( !this.isAuth ) {
+
+        this.$router.go( { name: 'signup' } );
+        this.setCallbackOnSuccessAuth(this.onBuyPromoProduct.bind(this))
+
+      } else {
+
+        this.createLead( settings.promoProductID )
+        .then(
+          ( lead ) => {
+            if (lead !== undefined && lead !== null){
+              this.$router.go( { name: 'chat', params: { id: lead.id } } );
             }
           }
+        );
+
+      }
+    },
+
+    scrollAnchor() {
+      var block = document.querySelector("#how-it-work");
+      if(block !== null){
+        var scrollBlock = this.scrollCnt;
+
+        if (!timer) {
+          var timer = setInterval(function () {
+            if (block.getBoundingClientRect().top < 80){
+              clearInterval(timer);
+            }
+            scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
+          }, 20);
         }
-      },
-
-      vuex: {
-          getters: {
-              isAuth,
-          },
-      },
-
-      filters: {
-        linkToInfo(type) {
-          return {
-            name: 'info',
-            params: {type},
-          }
-        },
-      },
-    };
+      }
+    }
+  },
+};
 </script>
