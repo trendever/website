@@ -21,7 +21,7 @@ const state = {
 };
 
 function picProfile( profile ) {
-  
+
   return Object.assign(
     {
       id: profile.id,

@@ -5,7 +5,7 @@
     .section__content.header__content
       .header__logo
         a(v-link='{ name: "home" }')
-          img(src='img/logo-beta.svg' alt='')
+          img(src='../../../base/img/logo-beta.png' alt='')
       a(href='#'
         v-if="!isAuth"
         v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
