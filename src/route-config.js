@@ -64,7 +64,10 @@ export function configRouter(router) {
       component: require('project/info/index.vue'),
       subRoutes: InfoRoutes()
     },
-
+    '/video': {
+      name: 'main-video',
+      component: require('base/main-video/index.vue')
+    },
     '/profile': {
       name: 'profile',
       component: require('project/profile/index.vue')

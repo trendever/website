@@ -1,89 +1,62 @@
 <style src='./index.pcss'></style>
 <template lang="jade">
 
-  .main-video(v-if='videoShowed')
+  .main-video
     i(@click='closeVideo').ic-close
-    iframe(v-el:iframe-video, width="100%", src="https://www.youtube.com/embed/QPSw5RKJw3s?autoplay=0&rel=1", frameborder="0", allowfullscreen)
+    iframe(
+      v-el:iframe-video,
+      v-bind:style="{ height: height, width: width }",
+      src="https://www.youtube.com/embed/QPSw5RKJw3s?autoplay=0&rel=1",
+      frameborder="0",
+      allowfullscreen)
 
 </template>
 
 <script type="text/babel">
 
   import listen from 'event-listener';
-  import { isAuth } from 'vuex/getters/user.js';
+
   export default {
     data(){
       return {
-        videoShowed: false,
-        resize: null
+        height:'300px',
+        width:'300px',
+
       };
     },
-    props: {
-      isOpen: {
-        type: Boolean,
-        default: false
-      },
-      onClose: {
-        type: Function,
-        default: () => {
+    ready(){
 
-        }
-      }
+      this.resize = listen( window, 'optimizedResize', () => {
+
+        this.setSize();
+
+      } ) ;
+
+      this.$nextTick( () => {
+
+        this.setSize();
+
+      } );
+
     },
+
+    beforeDestroy(){
+      this.resize.remove();
+    },
+
     methods: {
       setSize(){
-        const height                       = (720 * this.$els.iframeVideo.offsetWidth) / 1280;
-        this.$els.iframeVideo.style.height = `${ height }px`;
+        const width = document.body.offsetWidth;
+        const height = (720 * width) / 1280;
+        this.$set( 'height', `${ height }px` );
+        this.$set( 'width', `${ width }px` );
       },
-      openVideo(){
 
-        if ( this.resize === null ) {
-
-          this.$set( 'videoShowed', true );
-
-          this.$nextTick( () => {
-
-            this.$set( 'resize', listen( window, 'optimizedResize', () => {
-
-              this.setSize();
-
-            } ) );
-
-            this.setSize();
-
-          } );
-
-        }
-
-      },
       closeVideo(){
-
-        this.$set( 'videoShowed', false );
-
-        if ( this.resize !== null ) {
-
-          this.resize.remove();
-
-        }
-
-        this.$set( 'resize', null );
-
-        this.onClose();
-
+        window.history.back();
       }
     },
-    watch: {
-      isOpen( value ){
-        if ( value ) {
-          this.openVideo();
-        }
-      }
-    },
-    vuex: {
-      getters: {
-        isAuth,
-      },
-    },
+
   };
 
 </script>
