@@ -1,6 +1,6 @@
 <style src='./styles/chat-msg-date.pcss'></style>
 <template lang="jade">
-  .chat-row.__center(v-if="isHide")
+  .chat-row.__center(v-if="isHide && text !== null")
     .chat-msg-date
       span {{text}}
 
@@ -40,7 +40,7 @@
 
         if ( type === 'lead.state.changed' ) {
 
-          let name = '';
+          let name = null;
 
           switch ( value ) {
             case 'COMPLETED':
@@ -55,6 +55,10 @@
             case 'CANCELLED':
               name = 'Отменён';
               break;
+          }
+
+          if ( name === null ) {
+            return name;
           }
 
           return `статус изменен на ${ name }`;

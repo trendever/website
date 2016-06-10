@@ -28,7 +28,7 @@
             |  что-то новенькое
             br
             |  через Instagram?
-        a.play-btn-sm(href="https://vimeo.com/167123446", target='_blank')
+        .play-btn-sm(v-link='{name: "main-video"}')
           i.ic-play-inverted
           span (смотреть видео)
       .inform-item__answer
@@ -94,9 +94,9 @@
       .inform-item__top-block.inform-item__bg-yellow.gallery-about
         swipe.my-swipe
           swipe-item.slide1
-            .gallery-about__slide.gallery-about__slide__img-block
+            a(href='http://www.trendever.com/cosinessshades/').gallery-about__slide.gallery-about__slide__img-block
                 img(src='img/slide-img-1.png' alt='')
-            .gallery-about__slide__title Christine
+            a(href='http://www.trendever.com/cosinessshades/').gallery-about__slide__title Christine
             .gallery-about__slide__theme Fashion & Beauty блогер
             .gallery-about__slide__text
               p «Мой мир - мое вдохновение, я люблю созерцать все самое прекрасное
@@ -105,9 +105,9 @@
                 br
                 |  и мой город диктует стиль моей жизни»
           swipe-item.slide2
-            .gallery-about__slide.gallery-about__slide__img-block
+            a(href='http://www.trendever.com/tumblrcereals/').gallery-about__slide.gallery-about__slide__img-block
                 img(src='img/slide-img-2.png' alt='')
-            .gallery-about__slide__title Polina
+            a(href='http://www.trendever.com/tumblrcereals/').gallery-about__slide__title Polina
             .gallery-about__slide__theme Fashion & lifestyle блогер
             .gallery-about__slide__text
               p «Фото - отражение моей жизни. Они разные, но в то же время гармонируют.
@@ -116,9 +116,9 @@
                 br
                 |  Главные увлечения - фотография, съемка видео»
           swipe-item.slide3
-            .gallery-about__slide.gallery-about__slide__img-block
+            a(href='http://www.trendever.com/fenechfox/').gallery-about__slide.gallery-about__slide__img-block
                 img(src='img/slide-img-3.png' alt='')
-            .gallery-about__slide__title Alice
+            a(href='http://www.trendever.com/fenechfox/').gallery-about__slide__title Alice
             .gallery-about__slide__theme Fashion & lifestyle блогер
             .gallery-about__slide__text
               p «Хочу передать красоту повседневных вещей, на которые мы
@@ -127,9 +127,9 @@
                 br
                 |  о моем главном увлечении - музыка и игра на фортепиано»
           swipe-item.slide4
-            .gallery-about__slide.gallery-about__slide__img-block
+            a(href='http://www.trendever.com/diasafina/').gallery-about__slide.gallery-about__slide__img-block
                 img(src='img/slide-img-4.png' alt='')
-            .gallery-about__slide__title Diana
+            a(href='http://www.trendever.com/diasafina/').gallery-about__slide__title Diana
             .gallery-about__slide__theme Lifestyle блогер
             .gallery-about__slide__text
               p «Мой Инстаграмм это стильные, легкие фото, которые передают эмоции
@@ -238,14 +238,8 @@
           div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
             | Узнай как
 
-//- .main-video(v-if='videoShowed')
-//-   i(@click='videoShowed=false').ic-close
-//-   iframe(src='https://player.vimeo.com/video/167123446?title=0&byline=0&portrait=0&autoplay=1',
-//-   frameborder='0', webkitallowfullscreen,
-//-   mozallowfullscreen, allowfullscreen)
-
 </template>
-<script>
+<script type="text/babel">
   import { Swipe, SwipeItem } from 'vue-swipe';
   import settings from 'settings'
   import { browser } from 'utils'
@@ -254,11 +248,13 @@
   import { isAuth } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
 
+  import mainVideo from 'base/main-video/index.vue';
+
   export default {
     data(){
       return {
         videoOnePlayed: false,
-        videoTwoPlayed: false,
+        videoTwoPlayed: false
       }
     },
 
@@ -280,21 +276,21 @@
 
     methods: {
       pauseVideoOne(){
-        if (this.videoOnePlayed) {
+        if ( this.videoOnePlayed ) {
           this.$els.videoOne.pause()
         }
       },
       toggleVideoOne() {
-        this.videoOnePlayed = true
+        this.videoOnePlayed = true;
         this.$els.videoOne.play()
       },
       pauseVideoTwo(){
-        if (this.videoTwoPlayed) {
+        if ( this.videoTwoPlayed ) {
           this.$els.videoTwo.pause()
         }
       },
       toggleVideoTwo() {
-        this.videoTwoPlayed = true
+        this.videoTwoPlayed = true;
         this.$els.videoTwo.play()
       },
 
@@ -302,18 +298,18 @@
         if ( !this.isAuth ) {
 
           this.$router.go( { name: 'signup' } );
-          this.setCallbackOnSuccessAuth(this.onBuyPromoProduct.bind(this))
+          this.setCallbackOnSuccessAuth( this.onBuyPromoProduct.bind( this ) )
 
         } else {
 
           this.createLead( settings.promoProductID )
-          .then(
-            ( lead ) => {
-              if (lead !== undefined && lead !== null){
-                this.$router.go( { name: 'chat', params: { id: lead.id } } );
-              }
-            }
-          );
+              .then(
+                ( lead ) => {
+                  if ( lead !== undefined && lead !== null ) {
+                    this.$router.go( { name: 'chat', params: { id: lead.id } } );
+                  }
+                }
+              );
 
         }
       },
@@ -321,8 +317,8 @@
     },
 
     components: {
-        Swipe,
-        SwipeItem
+      Swipe,
+      SwipeItem
     }
 
   }

@@ -7,7 +7,7 @@
     .section__content
       article.article
         header.article__header
-          i.ic-logo(style='font-size: 36px; color: #399')
+          img(src='../../../base/img/logo.svg')
         .article__content
           h3
             | 1. Срок действия, расторжение и изменение

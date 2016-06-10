@@ -22,7 +22,7 @@ div
 
       .bottom-container.__fixed-width
           .btn-container
-            button.btn.btn_primary.__orange.__xl.fast__big__btn(
+            button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
               :disabled='isDisabled',
               v-el:confirm-btn,
               @keydown.enter='onButton()',
