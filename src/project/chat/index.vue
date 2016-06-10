@@ -113,8 +113,10 @@
 
     filters: {
       list( value ){
+
         const end   = value.length;
-        const start = end - this.getLengthList;
+        const start = end - this.getLengthList - 1; // -1 потому что есть первое сообщение с датой.
+        //TODO придумать как сделать нормально.
         return value.slice( (start <= 0) ? 0 : start, end );
       }
     },

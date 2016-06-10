@@ -123,6 +123,7 @@ div
 
     computed: {
       isAdmin() {
+        console.log(this.getCurrentMember.role);
         return !!(this.getCurrentMember.role === leads.USER_ROLES.SUPPLIER.key
         || this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
         || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key);

@@ -77,41 +77,7 @@ export const getMessages = ( { conversation:{ id, all } } ) => {
 
   if ( Array.isArray( messages ) ) {
 
-    let lastUserId = null;
-    //let lastDay = {};
-
-    return messages.map( ( message ) => {
-
-/*      message.addDateStatus = null;
-
-      const date = new Date( message.created_at * 1000 );
-
-      if ( !lastDay.hasOwnProperty(date.getDay()) ) {
-
-        lastDay[date.getDay()] = date.getDay();
-
-        message.addDateStatus = message.created_at;
-
-      }*/
-
-      if ( message.parts[ 0 ].mime_type === 'text/plain' ) {
-
-        if ( lastUserId === message.user.id ) {
-
-          message.closestMessage = true;
-
-        } else {
-
-          lastUserId             = message.user.id;
-          message.closestMessage = false;
-
-        }
-
-      }
-
-      return message;
-
-    } );
+    return messages;
 
   }
 
@@ -334,10 +300,10 @@ export const isJoined = ( state, lead ) => {
 export const getRowHeight = () => {
 
   if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
-    return 65
+    return 50
   }
 
-  return 50;
+  return 40;
 
 };
 

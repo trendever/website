@@ -9,6 +9,7 @@
 <script>
   import { getCurrentMember } from 'vuex/getters/chat.js';
   import * as leads from 'services/leads';
+  import { formatMonth } from './utils';
 
   export default{
     props: {
@@ -38,7 +39,17 @@
 
         const { type, value } = JSON.parse( this.msg.parts[ 0 ].content );
 
+        console.log({ type, value });
+
+        if(type === 'lead.state.date'){
+
+          return formatMonth(value);
+
+        }
+
         if ( type === 'lead.state.changed' ) {
+
+          //return null;
 
           let name = null;
 

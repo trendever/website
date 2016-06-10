@@ -18,7 +18,7 @@ export const formatPastTime = ( unixtime ) => {
   let seconds = dateNow.getSeconds() - dateLast.getSeconds();
   let minutes = dateNow.getMinutes() - dateLast.getMinutes();
   let hours   = dateNow.getHours() - dateLast.getHours();
-  let days    = dateNow.getDay() - dateLast.getDay();
+  let days    = dateNow.getDate() - dateLast.getDate();
   let month   = dateNow.getMonth() - dateLast.getMonth();
   let year    = dateNow.getFullYear() - dateLast.getFullYear();
 
@@ -85,21 +85,21 @@ export const formatPastTime = ( unixtime ) => {
 };
 
 export const formatMonth = ( unixtime ) => {
-  const date = new Date( unixtime * 1000 );
-  return `${date.getDay()} ${
+  const date = new Date( unixtime );
+  return `${date.getDate()} ${
     {
-      '1': 'января',
-      '2': 'февраля',
-      '3': 'марта',
-      '4': 'апреля',
-      '5': 'мая',
-      '6': 'июня',
-      '7': 'июля',
-      '8': 'августа',
-      '9': 'сентября',
-      '10': 'октября',
-      '11': 'ноября',
-      '12': 'декабря'
+      '0': 'января',
+      '1': 'февраля',
+      '2': 'марта',
+      '3': 'апреля',
+      '4': 'мая',
+      '5': 'июня',
+      '6': 'июля',
+      '7': 'августа',
+      '8': 'сентября',
+      '9': 'октября',
+      '10': 'ноября',
+      '11': 'декабря'
     }[ date.getMonth() ]
     }`;
 };
