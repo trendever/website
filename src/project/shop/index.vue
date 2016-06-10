@@ -135,10 +135,10 @@
   import HeaderComponent from 'base/header/header.vue';
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import { createLead } from 'vuex/actions/lead';
-  import { isAuth } from 'vuex/getters';
+  import { isAuth } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
 
-  const promoProduct = 21499
+  const promoProduct = 21499;
 
   export default {
     data(){
