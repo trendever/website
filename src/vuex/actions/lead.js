@@ -114,14 +114,13 @@ export const onMessages = (
 
     if ( messages[ 0 ].parts[ 0 ].mime_type === "json/status" ) {
 
-      const statusCode = leads.getStatusCode( JSON.parse( messages[ 0 ].parts[ 0 ].content ).value );
+      const value = JSON.parse( messages[ 0 ].parts[ 0 ].content ).value;
 
-      dispatch( LEAD_UPDATE, {
+      dispatch( LEAD_UPDATE, Object.assign({
         conversation_id,
         members,
-        status: statusCode,
         updated_at: messages[ 0 ].created_at * 1e9
-      } );
+      }, (typeof value !== 'undefined')?{status: leads.getStatusCode(value)}:{}) );
 
     }
 
