@@ -28,7 +28,7 @@
             |  что-то новенькое
             br
             |  через Instagram?
-        .play-btn-sm(v-on:click="openVideo")
+        .play-btn-sm(v-link='{name: "main-video"}')
           i.ic-play-inverted
           span (смотреть видео)
       .inform-item__answer
@@ -238,9 +238,6 @@
           div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
             | Узнай как
 
-  main-video(:is-open.sync="videoShowed", :on-close="onClose")
-
-
 </template>
 <script type="text/babel">
   import { Swipe, SwipeItem } from 'vue-swipe';
@@ -257,8 +254,7 @@
     data(){
       return {
         videoOnePlayed: false,
-        videoTwoPlayed: false,
-        videoShowed: false
+        videoTwoPlayed: false
       }
     },
 
@@ -279,12 +275,6 @@
     },
 
     methods: {
-      openVideo(){
-        this.$set( 'videoShowed', true );
-      },
-      onClose(){
-        this.$set( 'videoShowed', false );
-      },
       pauseVideoOne(){
         if ( this.videoOnePlayed ) {
           this.$els.videoOne.pause()
@@ -328,8 +318,7 @@
 
     components: {
       Swipe,
-      SwipeItem,
-      mainVideo
+      SwipeItem
     }
 
   }
