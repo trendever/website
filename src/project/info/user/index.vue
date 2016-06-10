@@ -28,7 +28,7 @@
             |  что-то новенькое
             br
             |  через Instagram?
-        a.play-btn-sm(href="https://vimeo.com/167123446", target='_blank')
+        .play-btn-sm(v-on:click="openVideo")
           i.ic-play-inverted
           span (смотреть видео)
       .inform-item__answer
@@ -238,14 +238,11 @@
           div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
             | Узнай как
 
-//- .main-video(v-if='videoShowed')
-//-   i(@click='videoShowed=false').ic-close
-//-   iframe(src='https://player.vimeo.com/video/167123446?title=0&byline=0&portrait=0&autoplay=1',
-//-   frameborder='0', webkitallowfullscreen,
-//-   mozallowfullscreen, allowfullscreen)
+  main-video(:is-open.sync="videoShowed", :on-close="onClose")
+
 
 </template>
-<script>
+<script type="text/babel">
   import { Swipe, SwipeItem } from 'vue-swipe';
   import settings from 'settings'
   import { browser } from 'utils'
@@ -254,11 +251,14 @@
   import { isAuth } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
 
+  import mainVideo from 'base/main-video/index.vue';
+
   export default {
     data(){
       return {
         videoOnePlayed: false,
         videoTwoPlayed: false,
+        videoShowed: false
       }
     },
 
@@ -279,22 +279,28 @@
     },
 
     methods: {
+      openVideo(){
+        this.$set( 'videoShowed', true );
+      },
+      onClose(){
+        this.$set( 'videoShowed', false );
+      },
       pauseVideoOne(){
-        if (this.videoOnePlayed) {
+        if ( this.videoOnePlayed ) {
           this.$els.videoOne.pause()
         }
       },
       toggleVideoOne() {
-        this.videoOnePlayed = true
+        this.videoOnePlayed = true;
         this.$els.videoOne.play()
       },
       pauseVideoTwo(){
-        if (this.videoTwoPlayed) {
+        if ( this.videoTwoPlayed ) {
           this.$els.videoTwo.pause()
         }
       },
       toggleVideoTwo() {
-        this.videoTwoPlayed = true
+        this.videoTwoPlayed = true;
         this.$els.videoTwo.play()
       },
 
@@ -302,18 +308,18 @@
         if ( !this.isAuth ) {
 
           this.$router.go( { name: 'signup' } );
-          this.setCallbackOnSuccessAuth(this.onBuyPromoProduct.bind(this))
+          this.setCallbackOnSuccessAuth( this.onBuyPromoProduct.bind( this ) )
 
         } else {
 
           this.createLead( settings.promoProductID )
-          .then(
-            ( lead ) => {
-              if (lead !== undefined && lead !== null){
-                this.$router.go( { name: 'chat', params: { id: lead.id } } );
-              }
-            }
-          );
+              .then(
+                ( lead ) => {
+                  if ( lead !== undefined && lead !== null ) {
+                    this.$router.go( { name: 'chat', params: { id: lead.id } } );
+                  }
+                }
+              );
 
         }
       },
@@ -321,8 +327,9 @@
     },
 
     components: {
-        Swipe,
-        SwipeItem
+      Swipe,
+      SwipeItem,
+      mainVideo
     }
 
   }

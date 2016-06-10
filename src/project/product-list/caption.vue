@@ -3,32 +3,44 @@
 
 .caption(v-if='!isAuth')
   span(id='how-it-work') Как это работает?
-  a(href="https://vimeo.com/167123446", target='_blank').caption__play
+  .caption__play(v-on:click="openVideo")
     i.ic-play
-  a.caption__description(href="https://vimeo.com/167123446", target='_blank') (смотрите видео)
+  .caption__description(v-on:click="openVideo") (смотрите видео)
   a(href='' v-link='{name: "info-user"}').btn.fast__big__btn.__orange.btn_primary.btn__more
     | Подробнее
   .caption__subtitle Ежедневные шопинг тренды
 
-//- .main-video(v-if='videoShowed')
-//-   i(@click='videoShowed=false').ic-close
-//-   iframe(src='https://player.vimeo.com/video/167123446?title=0&byline=0&portrait=0&autoplay=1',
-//-     frameborder='0', webkitallowfullscreen,
-//-     mozallowfullscreen, allowfullscreen)
+  main-video(:is-open.sync="videoShowed", :on-close="onClose")
+
 </template>
-<script>
+
+<script type="text/babel">
+
+  import listen from 'event-listener';
   import { isAuth } from 'vuex/getters/user.js';
+  import mainVideo from 'base/main-video/index.vue';
   export default {
     data(){
       return {
         videoShowed: false
       };
     },
-
+    methods: {
+      openVideo(){
+        this.$set( 'videoShowed', true );
+      },
+      onClose(){
+        this.$set( 'videoShowed', false );
+      }
+    },
     vuex: {
       getters: {
         isAuth,
       },
     },
+    components:{
+      mainVideo
+    }
   };
+
 </script>
