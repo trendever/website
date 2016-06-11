@@ -15,8 +15,7 @@
     z-index: 100;
     top: 0;
     right: 0;
-
-    display: flex;
+    text-align:center;
 
     size: 70px;
 
@@ -27,6 +26,15 @@
     align-items: center;
     justify-content: center;
 
+    &:before{
+      content:"";
+      display: inline-block;
+      height:100%;
+      vertical-align: middle;
+    }
+    [class^='ic-']{
+      vertical-align: middle;
+    }
     @media(--mobile) {
       width: 90px;
       height: 90px;
