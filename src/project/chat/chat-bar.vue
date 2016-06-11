@@ -141,7 +141,7 @@ div
             this.getStatus === leads.STATUSES.NEW.key &&
             this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key
           ) {
-            this.setStatus( 'PROGRESS' );
+            this.setStatus( 'PROGRESS', 'lead.state.changed' );
           }
         } );
 

@@ -10,6 +10,8 @@ import {
   CONVERSATION_INC_LENGTH_LIST,
 } from '../mutation-types';
 
+import { formatMonth } from 'project/chat/utils';
+
 // initial state
 const state = {
 
@@ -32,6 +34,86 @@ const state = {
   lengthList: 12
 };
 
+function getDateMessage( date, id ) {
+  return {
+    serviceMessage: true,
+    conversation_id: null,
+    parts: [ {
+      content: JSON.stringify( {
+        type: "lead.state.date",
+        value: date
+      } ),
+      mime_type: "json/status"
+    } ],
+    created_at: date,
+    id
+  }
+}
+
+const addServiceMessage = (function() {
+
+  function normalizeDate(time){
+
+    return new Date( time * 1000 );
+
+  }
+
+  let lastDate = null;
+
+  return ( messages ) => {
+
+    console.time( 'addServiceMessage' );
+
+    let lastUserId   = null;
+    const newMessage = [];
+
+    lastDate = normalizeDate( messages[ 0 ].created_at ).getDate();
+
+    newMessage.push( getDateMessage( messages[ 0 ].created_at, messages[ 0 ].id ) );
+
+    for ( let i = 0; i < messages.length; i++ ) {
+
+      const date = normalizeDate( messages[ i ].created_at );
+
+      if ( messages[ i ].parts[ 0 ].mime_type === 'text/plain' ) {
+
+        if ( lastUserId === messages[ i ].user.id ) {
+
+          messages[ i ].closestMessage = true;
+
+        } else {
+
+          lastUserId                   = messages[ i ].user.id;
+          messages[ i ].closestMessage = false;
+
+        }
+
+      }
+
+      if ( typeof messages[ i ].serviceMessage === 'undefined' ) {
+
+        newMessage.push( messages[ i ] );
+
+      }
+
+      if ( date.getDate() !== lastDate ) {
+
+        lastDate = date.getDate();
+
+        newMessage.push( getDateMessage( messages[ i ].created_at, messages[ i ].id ) );
+
+      }
+
+    }
+
+    console.timeEnd( 'addServiceMessage' );
+
+    return newMessage;
+
+  };
+
+})();
+
 // mutations
 const mutations = {
 
@@ -44,7 +126,7 @@ const mutations = {
 
     if ( Array.isArray( messages ) ) {
 
-      state.all[ id ] = messages;
+      state.all[ id ] = addServiceMessage( messages );
 
     } else {
 
@@ -65,11 +147,11 @@ const mutations = {
 
     if ( all.hasOwnProperty( id ) ) {
 
-      state.all = Object.assign( {}, all, { [id]: messages.concat( all[ id ] ) } );
+      state.all = Object.assign( {}, all, { [id]: addServiceMessage( messages.concat( all[ id ] ) ) } );
 
     } else {
 
-      state.all = Object.assign( {}, all, { [id]: messages } );
+      state.all = Object.assign( {}, all, { [id]: addServiceMessage( messages ) } );
 
       console.warn( 'При загрузке старых сообщений должены уже быть сообщения ', { id, all } );
 
@@ -89,11 +171,11 @@ const mutations = {
         }
       }
 
-      state.all = Object.assign( {}, all, { [id]: all[ id ].concat( messages ) } );
+      state.all = Object.assign( {}, all, { [id]: addServiceMessage( all[ id ].concat( messages ) ) } );
 
     } else {
 
-      state.all = Object.assign( {}, all, { [id]: messages } );
+      state.all = Object.assign( {}, all, { [id]: addServiceMessage( messages ) } );
 
     }
 
@@ -144,7 +226,7 @@ const mutations = {
     state.showStatusMenu = showStatusMenu;
   },
 
-  [CONVERSATION_SEND_STATUS] (state) {
+  [CONVERSATION_SEND_STATUS] ( state ) {
     state.showMenu       = false;
     state.showStatusMenu = false;
   },

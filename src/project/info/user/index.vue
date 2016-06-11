@@ -158,8 +158,8 @@
                 a(href='#', @click="toggleVideoOne()", style="z-index: 1000;" v-show='!videoOnePlayed').play-btn
                   i.ic-play-inverted
                 video(v-el:video-one, @click="pauseVideoOne()", v-on:pause="videoOnePlayed=false", preload="yes")
-                  source(src="//cdn.trendever.com/videos/video_one.mp4" type="video/mp4")
-                  source(src="//cdn.trendever.com/videos/video_one.webm" type="video/webm")
+                  source(src="http://cdn.trendever.com/videos/video_one.mp4" type="video/mp4")
+                  source(src="http://cdn.trendever.com/videos/video_one.webm" type="video/webm")
                   | Your browser does not support the video.
           .about-mobile__two-col__text
             .vertical-align-wrapper
@@ -211,8 +211,8 @@
               img(src='img/iphone-2.png' alt='')
               .video.video-2(v-show="!isIOS || videoTwoPlayed", :class="{'played': videoTwoPlayed}")
                 video(v-el:video-two, @click="pauseVideoTwo()", v-on:pause="videoTwoPlayed=false")
-                  source(src="//cdn.trendever.com/videos/video_two.mp4" type="video/mp4")
-                  source(src="//cdn.trendever.com/videos/video_two.webm" type="video/webm")
+                  source(src="http://cdn.trendever.com/videos/video_two.mp4" type="video/mp4")
+                  source(src="http://cdn.trendever.com/videos/video_two.webm" type="video/webm")
                   | Your browser does not support the video.
                 a(href='#', @click="toggleVideoTwo()", v-show='!videoTwoPlayed').play-btn
                   i.ic-play-inverted

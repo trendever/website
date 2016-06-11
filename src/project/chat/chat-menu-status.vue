@@ -2,13 +2,13 @@
 <template lang="jade">
 menu-component
   div(slot='items')
-    .menu_i.__bg-green(@click='setStatus("COMPLETE")')
+    .menu_i.__bg-green(@click='setStatus("COMPLETE", "lead.state.changed")')
       .menu_i_t.__txt-white Выполнен
-    .menu_i.__bg-blue(@click='setStatus("DELIVERY")')
+    .menu_i.__bg-blue(@click='setStatus("DELIVERY", "lead.state.changed")')
       .menu_i_t.__txt-white На доставке
-    .menu_i.__bg-orange(@click='setStatus("SUBMIT")')
+    .menu_i.__bg-orange(@click='setStatus("SUBMIT", "lead.state.changed")')
       .menu_i_t.__txt-white Подтвержден
-    .menu_i.__bg-red(@click='setStatus("CANCEL")')
+    .menu_i.__bg-red(@click='setStatus("CANCEL", "lead.state.changed")')
       .menu_i_t.__txt-white Отменен
     .menu_i(@click='setShowStatusMenu(false);')
       .menu_i_t.__txt-green Назад

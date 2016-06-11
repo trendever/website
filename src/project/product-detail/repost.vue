@@ -107,7 +107,7 @@
         if(obj !== null){
 
           var selection = window.getSelection(),
-              before = 'Покупайте в этой ленте, написав в комментарии @wantit 🙌 <br><br>',
+              before = 'Напишите @wantit в комментарии, чтобы узнать и купить 🙌 <br><br>',
               after = '<br><br>Напишите @wantit 🌷 и товар добавится в вашу корзину на #trendever.com  ✒️' + obj.supplier.instagram_username + ', ' + obj.code,
               copytext = before + obj.instagram_image_caption + after,
               newdiv = document.createElement('div');
