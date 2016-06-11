@@ -39,8 +39,6 @@
 
         const { type, value } = JSON.parse( this.msg.parts[ 0 ].content );
 
-        console.log({ type, value });
-
         if(type === 'lead.state.date'){
 
           return formatMonth(value);
@@ -49,8 +47,9 @@
 
         if ( type === 'lead.state.changed' ) {
 
-          //return null;
+          return null;
 
+/*
           let name = null;
 
           switch ( value ) {
@@ -73,6 +72,7 @@
           }
 
           return `статус изменен на ${ name }`;
+*/
 
         }
 

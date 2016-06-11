@@ -34,9 +34,9 @@ const state = {
   lengthList: 12
 };
 
-function getDateMessage( date, id, firstMessage = false ) {
+function getDateMessage( date, id ) {
   return {
-    firstMessage,
+    serviceMessage: true,
     conversation_id: null,
     parts: [ {
       content: JSON.stringify( {
@@ -50,25 +50,30 @@ function getDateMessage( date, id, firstMessage = false ) {
   }
 }
 
-const addServiceMessage = (function(){
+const addServiceMessage = (function() {
+
+  function normalizeDate(time){
+
+    return new Date( time * 1000 );
+
+  }
 
   let lastDate = null;
 
   return ( messages ) => {
 
-    console.time('addServiceMessage');
+    console.time( 'addServiceMessage' );
 
-    /**
-     * Запоминать последние сутки, если сутки меняются то добавдять сообщение с датой.
-     * */
-
-    let lastUserId = null;
-
+    let lastUserId   = null;
     const newMessage = [];
 
-    newMessage.push( getDateMessage( messages[ 0 ].created_at, messages[ 0 ].id, true ) );
+    lastDate = normalizeDate( messages[ 0 ].created_at ).getDate();
+
+    newMessage.push( getDateMessage( messages[ 0 ].created_at, messages[ 0 ].id ) );
 
     for ( let i = 0; i < messages.length; i++ ) {
+
+      const date = normalizeDate( messages[ i ].created_at );
 
       if ( messages[ i ].parts[ 0 ].mime_type === 'text/plain' ) {
 
@@ -82,17 +87,26 @@ const addServiceMessage = (function(){
           messages[ i ].closestMessage = false;
 
         }
+
       }
 
-      if ( typeof messages[ i ].firstMessage === 'undefined' ) {
+      if ( typeof messages[ i ].serviceMessage === 'undefined' ) {
 
         newMessage.push( messages[ i ] );
 
       }
 
+      if ( date.getDate() !== lastDate ) {
+
+        lastDate = date.getDate();
+
+        newMessage.push( getDateMessage( messages[ i ].created_at, messages[ i ].id ) );
+
+      }
+
     }
 
-    console.timeEnd('addServiceMessage');
+    console.timeEnd( 'addServiceMessage' );
 
     return newMessage;
 

@@ -85,7 +85,7 @@ export const formatPastTime = ( unixtime ) => {
 };
 
 export const formatMonth = ( unixtime ) => {
-  const date = new Date( unixtime );
+  const date = new Date( unixtime * 1000 );
   return `${date.getDate()} ${
     {
       '0': 'января',
