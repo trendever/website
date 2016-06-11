@@ -3,7 +3,7 @@
 .section.smallHero(v-if='isAuth')
   a(v-link='{ name: "info-user" }')
     i.smallHero__logo
-      img(src='img/logo-beta.svg')
+      img(src='../../base/img/logo-beta.png')
 .section.hero(v-if='!isAuth')
   .section__content.hero__content
     .hero__content__img
@@ -25,13 +25,10 @@
            @click='menuOpened=false') Отмена
           a(class='profile-header__menu-link',
            v-link='{name: "info-user"}') Покупателям
-
           a(class='profile-header__menu-link',
             @click="onBuyPromoProduct()") Магазинам
-
           a(class='profile-header__menu-link',
             @click="onBuyPromoProduct()") Блогерам
-
           a(class='profile-header__menu-link',
             v-link='{name: "info-mission"}') Наша миссия
           a(class='profile-header__menu-link',
@@ -71,7 +68,7 @@ export default {
   },
 
   methods: {
-    closeMenu(test) {
+    closeMenu() {
       // Горло через жопу не лечат.
       // Я просил сделать подложку на весь экран под меню
       // И на нее повесить событие @click.
