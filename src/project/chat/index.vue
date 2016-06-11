@@ -6,7 +6,7 @@
       .chat.section__content
         .chat_messages
           template(v-for='msg in getMessages | list', track-by='$index')
-            chat-msg-date(
+            //- chat-msg-date(
               v-if='msg.parts[0].mime_type === "json/status"',
               :msg='msg')
             chat-msg-product(
