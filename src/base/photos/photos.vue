@@ -44,7 +44,7 @@ scroll-top
     setScroll,
     incLengthList,
     setColumnNumber,
-    productsClose,
+    closeProducts,
     loadProducts,
   } from 'vuex/actions/products';
 
@@ -80,7 +80,7 @@ scroll-top
         incLengthList,
         setColumnNumber,
         clearSearch,
-        productsClose,
+        closeProducts,
         loadProducts
       }
     },
@@ -128,7 +128,7 @@ scroll-top
 
       }
 
-      this.productsClose();
+      this.closeProducts();
 
     },
 

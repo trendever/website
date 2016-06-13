@@ -1,7 +1,7 @@
 import {
   PRODUCTS_RECEIVE,
   PRODUCTS_LOADING,
-  PRODUCTS_SET_PRODUCT_ID,
+  PRODUCTS_UPDATE_LIKED_BY,
   PRODUCTS_SET_LIST_ID,
   PRODUCTS_SET_INFINITY,
   PRODUCTS_SET_COLUMN_NUMBER,
@@ -29,7 +29,6 @@ const state = {
   },
   columnCount: document.body.offsetWidth <= 750 ? 2 : 3,
   listId: null,
-  productId: null,
   animateShow: true,
   loading: true,
   ITEMS_PER_PAGE,
@@ -62,6 +61,7 @@ const mutations = {
 
     state.loading = false;
   },
+
   [PRODUCTS_RECEIVE] ( state, products ) {
 
     if ( !state.lists.hasOwnProperty( state.listId ) ) {
@@ -98,15 +98,7 @@ const mutations = {
     state.loading = false;
 
   },
-  [PRODUCTS_SET_PRODUCT_ID] ( state, productId = null ) {
 
-    if ( productId !== null ) {
-
-      state.productId = productId;
-
-    }
-
-  },
   [PRODUCTS_SET_LIST_ID] ( state, listId = null ) {
 
     if ( listId !== null ) {
@@ -116,26 +108,120 @@ const mutations = {
     }
 
   },
+
+  [PRODUCTS_SET_OPENED_PRODUCT] ( state, product ){
+
+    state.openedProduct = product;
+
+  },
+
+  [PRODUCTS_UPDATE_LIKED_BY] ( state, product_id, user, like ){
+
+    if ( state.openedProduct !== null ) {
+
+      if ( state.openedProduct.hasOwnProperty( 'liked_by' ) ) {
+
+        const foundUser = state.openedProduct.liked_by.find( ( { id } ) => {
+
+          return id === user.id;
+
+        } );
+
+        if ( typeof foundUser === 'undefined' ) {
+
+          state.openedProduct = Object.assign( {}, state.openedProduct, {
+            liked_by: state.openedProduct.liked_by.concat( [ user ] )
+          } );
+
+        } else {
+
+          if ( !like ) {
+
+            const liked_by = [];
+
+            state.openedProduct.liked_by.forEach( ( userItem ) => {
+
+              if ( userItem.id !== user.id ) {
+                liked_by.push( userItem );
+              }
+
+            } );
+
+            state.openedProduct = Object.assign( {}, state.openedProduct, {
+
+              liked_by
+
+            } );
+
+          }
+
+        }
+
+      } else {
+
+        state.openedProduct = Object.assign( {}, state.openedProduct, { liked_by: [ user ] } );
+
+      }
+
+    }
+
+    // TODO выяснить по поводу удаления из ленты. 
+
+    /*    if ( !like ) {
+
+     for ( const listId in state.lists ) {
+
+     if ( state.lists.hasOwnProperty( listId ) ) {
+
+     const products = state.lists[ listId ];
+
+     for ( let i = 0; i <= products.length; i++ ) {
+
+     const { id, liked_by } = products[ i - 1 ];
+
+     /!**
+     * Находим продукт в ленте и удаляем его из ленты
+     * *!/
+
+     if ( id === product_id ) {
+
+     if ( typeof liked_by !== 'undefined' ) {
+
+     if ( Array.isArray( liked_by ) ) {
+
+     products[ i - 1 ].liked_by = liked_by.map( ( userItem ) => {
+
+     if ( userItem !== user.id ) {
+
+     return userItem;
+
+     }
+
+     } );
+
+     }
+
+     }
+
+     }
+
+
+     }
+
+     }
+
+     }
+
+     }*/
+
+  },
+
   [PRODUCTS_SET_COLUMN_NUMBER] ( state, columnNumber = 3 ) {
 
     state.columnCount = columnNumber;
 
   },
-  [PRODUCTS_LOADING] ( state, loading = true ) {
 
-    state.loading = loading;
-
-  },
-  [PRODUCTS_SET_SCROLL] ( state, scrollTop = 0, scrollHeight = 0 ) {
-
-    if ( state.lists.hasOwnProperty( state.listId ) ) {
-
-      state.lists[ state.listId ].scrollTop    = scrollTop;
-      state.lists[ state.listId ].scrollHeight = scrollHeight;
-
-    }
-
-  },
   [PRODUCTS_INC_LENGTH_LIST] ( state, count = ITEMS_PER_PAGE ) {
 
     if ( state.lists.hasOwnProperty( state.listId ) ) {
@@ -146,24 +232,10 @@ const mutations = {
     }
 
   },
-  [PRODUCTS_SET_OPENED_PRODUCT] ( state, product ){
 
-    state.openedProduct = product;
+  [PRODUCTS_LOADING] ( state, loading = true ) {
 
-  },
-
-  [PRODUCTS_SET_INFINITY] ( state, isInfinity = true ) {
-
-    if ( state.lists.hasOwnProperty( state.listId ) ) {
-
-      state.lists[ state.listId ].isInfinity = isInfinity;
-
-    }
-
-  },
-  [PRODUCTS_SET_ANIMATE] ( state, animateShow = true ) {
-
-    state.animateShow = animateShow;
+    state.loading = loading;
 
   },
 
@@ -177,7 +249,35 @@ const mutations = {
 
     state.loading = true;
 
+  },
+
+  [PRODUCTS_SET_SCROLL] ( state, scrollTop = 0, scrollHeight = 0 ) {
+
+    if ( state.lists.hasOwnProperty( state.listId ) ) {
+
+      state.lists[ state.listId ].scrollTop    = scrollTop;
+      state.lists[ state.listId ].scrollHeight = scrollHeight;
+
+    }
+
+  },
+
+  [PRODUCTS_SET_INFINITY] ( state, isInfinity = true ) {
+
+    if ( state.lists.hasOwnProperty( state.listId ) ) {
+
+      state.lists[ state.listId ].isInfinity = isInfinity;
+
+    }
+
+  },
+
+  [PRODUCTS_SET_ANIMATE] ( state, animateShow = true ) {
+
+    state.animateShow = animateShow;
+
   }
+
 };
 
 export default {

@@ -1,7 +1,16 @@
 import * as types from '../mutation-types';
 import * as products from 'services/products.js';
 import { searchValue, selectedTags } from 'vuex/getters';
-import { getLastProduct, getLengthList, getProducts, getProduct, hasMore } from '../getters/products.js';
+import { user } from 'vuex/getters/user.js';
+import {
+  getLastProduct,
+  getLengthList,
+  getProducts,
+  getProduct,
+  hasMore,
+  getOpenedProduct,
+  isLiked
+} from 'vuex/getters/products.js';
 
 export const getSearchOptions = (
   { state },
@@ -104,7 +113,7 @@ export const loadProducts = (
         } )
         .catch( ( error ) => {
           products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
-          reject(error);
+          reject( error );
         } );
 
     } else {
@@ -124,7 +133,7 @@ export const loadProducts = (
             } )
             .catch( ( error ) => {
               products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
-              reject(error);
+              reject( error );
             } );
 
         }
@@ -144,24 +153,38 @@ export const loadProducts = (
 
 };
 
-export const setListId = ( { dispatch }, listId ) => {
-
-  dispatch( types.PRODUCTS_SET_LIST_ID, listId );
-
-};
-
 export const openProduct = ( { dispatch, state }, id ) => {
 
-  dispatch( types.PRODUCTS_SET_PRODUCT_ID, id );
-
-  const product = getProduct( state );
+  const product = getProduct( state, id );
 
   return new Promise( ( resolve, reject ) => {
 
     if ( product !== null ) {
 
-      dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-      resolve();
+      if ( product.hasOwnProperty( 'liked_by' ) ) {
+
+        dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+        resolve();
+
+      } else {
+
+        /**
+         * !!! Внимание
+         * Этот дублирущий запрос делается потому что сейчас в объектах ленты нет поля liked_by.
+         * */
+
+        products
+          .get( id )
+          .then( ( product ) => {
+            dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+            resolve();
+          } )
+          .catch( ( error ) => {
+            products.sendError( error, { state, id } );
+            reject( error );
+          } );
+
+      }
 
     } else {
 
@@ -169,7 +192,6 @@ export const openProduct = ( { dispatch, state }, id ) => {
         .get( id )
         .then( ( product ) => {
           dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-          dispatch( types.PRODUCTS_SET_PRODUCT_ID, null );
           resolve();
         } )
         .catch( ( error ) => {
@@ -183,15 +205,9 @@ export const openProduct = ( { dispatch, state }, id ) => {
 
 };
 
-export const closeProduct = ( { dispatch } ) => {
+export const setListId = ( { dispatch }, listId ) => {
 
-  dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, null );
-
-};
-
-export const enableInfinityProducts = ( { dispatch } ) => {
-
-  dispatch( types.PRODUCTS_SET_INFINITY, true );
+  dispatch( types.PRODUCTS_SET_LIST_ID, listId );
 
 };
 
@@ -201,9 +217,15 @@ export const setColumnNumber = ( { dispatch }, columnNumber ) => {
 
 };
 
-export const setScroll = ( { dispatch }, scrollTop, scrollHeight ) => {
+export const closeProduct = ( { dispatch } ) => {
 
-  dispatch( types.PRODUCTS_SET_SCROLL, scrollTop, scrollHeight );
+  dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, null );
+
+};
+
+export const closeProducts = ( { dispatch } ) => {
+
+  dispatch( types.PRODUCTS_CLOSE );
 
 };
 
@@ -213,8 +235,45 @@ export const incLengthList = ( { dispatch }, count ) => {
 
 };
 
-export const productsClose = ( { dispatch } ) => {
+export const setLike = ( { dispatch, state } ) => {
 
-  dispatch( types.PRODUCTS_CLOSE );
+  const product = getOpenedProduct( state );
+
+  if ( product !== null ) {
+
+    const newLikeState = !isLiked( state );
+
+    dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product.id, user( state ), newLikeState );
+
+    products
+      .like( product.id, newLikeState )
+      .then( ( isLike ) => {
+        if ( !isLike ) {
+
+          dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product.id, user( state ), false );
+
+          console.warn( `Отрицательный ответ на установку
+          like в ${ newLikeState }
+          от пользователя ${ user( state ).id }.
+          Id продкута ${ product.id }` );
+
+        }
+      } );
+
+  }
+
+  return null;
+
+};
+
+export const setScroll = ( { dispatch }, scrollTop, scrollHeight ) => {
+
+  dispatch( types.PRODUCTS_SET_SCROLL, scrollTop, scrollHeight );
+
+};
+
+export const enableInfinityProducts = ( { dispatch } ) => {
+
+  dispatch( types.PRODUCTS_SET_INFINITY, true );
 
 };
