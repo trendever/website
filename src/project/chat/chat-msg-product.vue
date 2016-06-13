@@ -63,7 +63,7 @@
         return `<b>${this.getShopName}</b> (${this.msg.user.name})`
       },
       isCustomer(){
-        return this.user.role === leads.USER_ROLES.CUSTOMER.key;
+        return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
       },
       datetime () {
         return formatTime(this.msg.created_at);

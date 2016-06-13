@@ -126,7 +126,7 @@
         return this.msg.closestMessage;
       },
       isCustomer(){
-        return this.user.role === leads.USER_ROLES.CUSTOMER.key;
+        return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
       },
       isOwnMessage() {
         if ( this.getCurrentMember !== null ) {
