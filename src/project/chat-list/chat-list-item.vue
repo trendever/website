@@ -1,7 +1,7 @@
 <template lang="jade">
 .chat-list-i(v-link='{name: "chat", params: {id: lead.id}}', track-by='id')
   .chat-list-i-photo
-    img(:src='getPhoto(lead.products[0])')
+    img(:src='getPhoto()')
 
   .chat-list-i-body
 
@@ -45,10 +45,34 @@
       }
     },
     methods: {
-      getPhoto(obj) {
-        if (this.lead.products && Array.isArray(obj.instagram_images)) {
-          return obj.instagram_images.find((img) => img.name == "S_square").url
+      getPhoto() {
+
+        if ( Array.isArray( this.lead.products ) ) {
+
+          if ( this.lead.products.length > 0 ) {
+
+            const { instagram_images } = this.lead.products[ 0 ];
+
+            if ( Array.isArray( instagram_images ) ) {
+
+              const result = instagram_images.find( ( img ) => img.name == "S_square" ).url;
+
+              if ( typeof result === 'undefined' ) {
+
+                return null;
+
+              }
+
+              return result;
+
+            }
+
+          }
+
         }
+
+        return null;
+
       }
     },
     computed: {
@@ -56,8 +80,8 @@
         return this.getNotifyCountList[ this.lead.id ];
       },
       recentMessage(){
-        const msgObj = this.getLastMessage[this.lead.id];
-        if (msgObj) {
+        const msgObj = this.getLastMessage[ this.lead.id ];
+        if ( msgObj ) {
           return msgObj;
         }
         return {
@@ -66,20 +90,20 @@
         }
       },
       status(){
-        return service.getStatus(this.lead.status).name
+        return service.getStatus( this.lead.status ).name
       },
       dataTime(){
-        if(this.lead.chat !== null){
-          return formatPastTime(this.lead.updated_at / 1e9);
+        if ( this.lead.chat !== null ) {
+          return formatPastTime( this.lead.updated_at / 1e9 );
         }
       },
       title(){
-        if(this.lead.chat !== null){
-          if (this.lead.user_role === service.USER_ROLES.CUSTOMER.key
-                  || this.lead.user_role === service.USER_ROLES.SUPPLIER.key) {
+        if ( this.lead.chat !== null ) {
+          if ( this.lead.user_role === service.USER_ROLES.CUSTOMER.key
+            || this.lead.user_role === service.USER_ROLES.SUPPLIER.key ) {
             return this.lead.shop.instagram_username
           }
-          return `${this.lead.chat.members.find(({user_id}) => this.lead.customer_id === user_id).name} (${this.lead.shop.instagram_username})`
+          return `${this.lead.chat.members.find( ( { user_id } ) => this.lead.customer_id === user_id ).name} (${this.lead.shop.instagram_username})`
         }
       }
     },
