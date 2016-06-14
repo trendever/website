@@ -83,7 +83,7 @@ const addServiceMessage = (function() {
         MIME === 'text/plain' ||
         MIME === 'text/json' ||
         MIME === 'image/json' ||
-        MIME === 'json/status' ||
+       // MIME === 'json/status' ||
         MIME === 'image/base64'
       ) {
 
