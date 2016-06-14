@@ -43,7 +43,7 @@
       background-position: 0 27px;
 
       width: 530px;
-      height: calc(163px + 27px);
+      height: calc(151px + 27px);
 
       padding-top: 27px;
     }
@@ -67,7 +67,7 @@
         border-bottom: 3px solid #fff;
         -webkit-transform: rotate(-41deg) skewX(8deg);
         transform: rotate(-43deg) skewX(4deg);
-        bottom: -61px;
+        bottom: -54px;
         left: 50%;
         margin-left: -28px;
       }
@@ -100,6 +100,48 @@
 
   @media(--mobile){
     height: 100px;
+  }
+  .profile-header{
+
+    &__menu{
+      left: 0;
+      height: 50px;
+      width: 85px;
+
+      @media (--mobile) {
+         width: 106px;
+         height: 100px;
+      }
+
+      &-links{
+        position: absolute 0 auto * 50%;
+        margin-left: -375px;
+      }
+
+      &-btn{
+        margin: 0;
+        text-align: left;
+        height: 100%;
+
+        &:before{
+          content: "";
+          display: inline-block;
+          height: 100%;
+          vertical-align: middle;
+        }
+        &-icon{
+          font-size: 25px;
+          vertical-align: middle;
+          line-height: 0;
+
+          @media (--mobile) {
+             font-size: 46px;
+          }
+        }
+      }
+
+    }
+
   }
   &__logo{
     position: relative;
@@ -144,4 +186,5 @@
       }
     }
   }
+
 }
