@@ -2,7 +2,7 @@
 <template lang="jade">
 div.scroll-cnt(v-if="isDone")
   .profile-cnt
-    header-component(:title='getUserName', :left-btn-show='false')
+    header-component(:title='getUserName', :left-btn-show='true')
 
     .section.top.bottom
       .section__content
