@@ -14,7 +14,7 @@ div.scroll-cnt(v-el:scroll-cnt)
 
     .section.top.bottom
       .section__content
-        .chat-list
+        .chat-list(v-bind:style="styleObject")
           template(v-for='lead in getLeads | orderBy "updated_at" -1 | cutList')
             chat-list-item(:lead='lead')
     .chat-list-cnt-is-empty(v-if='isEmptyLeads') У вас нет шопинг-чатов
@@ -76,12 +76,62 @@ div.scroll-cnt(v-el:scroll-cnt)
     data(){
       return {
         needLoadLeads: true,
-        hasMore: true
+        hasMore: true,
+        styleObject:{
+          pointerEvents: 'auto'
+        }
       }
     },
     ready(){
       if ( this.isAuth ) {
-        this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
+        this.scrollListener = listen( this.$els.scrollCnt, 'scroll', (() => {
+
+          let timerId = null;
+
+          return () => {
+
+            if ( timerId !== null ) {
+
+              clearTimeout( timerId );
+
+            }
+
+            this.$set( 'styleObject.pointerEvents', 'none' );
+
+            timerId = setTimeout( () => {
+
+              this.$set( 'styleObject.pointerEvents', 'auto' );
+
+            }, 200 );
+
+            if ( this.needLoadLeads && this.hasMore ) {
+
+              const full_scroll = this.$els.scrollCnt.scrollHeight;
+              const diff_scroll = full_scroll - this.$els.scrollCnt.scrollTop;
+
+              if ( diff_scroll < 2500 ) {
+
+                this.$set( 'needLoadLeads', false );
+
+                this.loadLeads().then( (count) => {
+
+                  if(count <= 0){
+
+                    this.$set('hasMore', false);
+
+                  }
+
+                  this.$set( 'needLoadLeads', true );
+
+                } );
+
+              }
+
+            }
+
+          }
+
+        })() );
       } else {
         this.$router.go( { name: 'signup' } );
       }
@@ -92,23 +142,7 @@ div.scroll-cnt(v-el:scroll-cnt)
         this.leadClose();
       }
     },
-    methods: {
-      scrollHandler(){
-        if ( this.needLoadLeads && this.hasMore ) {
-          const full_scroll = this.$els.scrollCnt.scrollHeight;
-          const diff_scroll = full_scroll - this.$els.scrollCnt.scrollTop;
-          if ( diff_scroll < 2500 ) {
-            this.$set( 'needLoadLeads', false );
-            this.loadLeads().then( (count) => {
-              if(count <= 0){
-                this.$set('hasMore', false);
-              }
-              this.$set( 'needLoadLeads', true );
-            } );
-          }
-        }
-      },
-    },
+
     watch: {
       getTab(){
         this.$els.scrollCnt.scrollTop = 0;
