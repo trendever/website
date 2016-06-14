@@ -5,12 +5,11 @@ import {
   CONVERSATION_SET_SHOW_MENU,
   CONVERSATION_SET_SHOW_STATUS_MENU,
   CONVERSATION_CONFIRM_MSG,
+  CONVERSATION_CONFIRM_STATUS_MSG,
   CONVERSATION_CLOSE,
   CONVERSATION_SEND_STATUS,
   CONVERSATION_INC_LENGTH_LIST,
 } from '../mutation-types';
-
-import { formatMonth } from 'project/chat/utils';
 
 // initial state
 const state = {
@@ -78,7 +77,6 @@ const addServiceMessage = (function() {
       /**
        * Для отключения какого нибудь MIME типа просто убрать из условия.
        * Сейчас убрат статус: MIME === 'json/status'
-       *
        * */
 
       if (
@@ -183,6 +181,8 @@ const mutations = {
 
   [CONVERSATION_RECEIVE_MESSAGE] ( state, messages, id ) {
 
+    console.time('CONVERSATION_RECEIVE_MESSAGE');
+
     const { all } = state;
 
     if ( all.hasOwnProperty( id ) ) {
@@ -200,6 +200,8 @@ const mutations = {
       state.all = Object.assign( {}, all, { [id]: addServiceMessage( messages ) } );
 
     }
+
+    console.timeEnd('CONVERSATION_RECEIVE_MESSAGE');
 
   },
 
@@ -237,6 +239,50 @@ const mutations = {
       } );
 
     }
+
+  },
+
+  [CONVERSATION_CONFIRM_STATUS_MSG] ( state, messages, id ){
+
+    console.time('CONVERSATION_CONFIRM_STATUS_MSG');
+
+    if ( Array.isArray( messages ) ) {
+
+      if ( state.all.hasOwnProperty( id ) ) {
+
+        const items = state.all[ id ];
+
+        for ( let i = items.length; i; i-- ) {
+
+          const message = items[ i - 1 ];
+
+          if ( message.parts[ 0 ].mime_type === 'json/status' && message.dirty ) {
+
+            if ( JSON.parse( message.parts[ 0 ].content ).value === JSON.parse( messages[ 0 ].parts[ 0 ].content ).value ) {
+
+              state.all[ id ].$set( i - 1, messages[ 0 ] );
+
+              state.all = Object.assign( {}, state.all, { [id]: addServiceMessage( state.all[ id ] ) } );
+
+              return null;
+
+            }
+
+          }
+
+        }
+
+        state.all = Object.assign( {}, state.all, { [id]: addServiceMessage( items.concat(messages) ) } );
+
+      } else {
+
+        state.all = Object.assign( {}, state.all, { [id]: addServiceMessage( messages ) } );
+
+      }
+
+    }
+
+    console.timeEnd('CONVERSATION_CONFIRM_STATUS_MSG');
 
   },
 

@@ -70,9 +70,9 @@ export const loadLeads = ( { dispatch, state }, count = 6 ) => {
           ( { leads } ) => {
             incLengthList( { dispatch }, leads.length );
             dispatch( LEAD_RECEIVE, leads, tab );
-            resolve(leads.length);
+            resolve( leads.length );
           },
-          (error) => {
+          ( error ) => {
             leads.sendError( error );
             reject();
           }
@@ -112,26 +112,25 @@ export const onMessages = (
 
   function handler( lead ) {
 
-    if ( messages[ 0 ].parts[ 0 ].mime_type === "json/status" ) {
+    const MIME = messages[ 0 ].parts[ 0 ].mime_type;
+    const updated_at = messages[ 0 ].created_at * 1e9;
+    const parts = messages[ 0 ].parts;
+
+    if ( MIME === "json/status" ) {
 
       const value = JSON.parse( messages[ 0 ].parts[ 0 ].content ).value;
 
-      dispatch( LEAD_UPDATE, Object.assign({
+      dispatch( LEAD_UPDATE, Object.assign( {
         conversation_id,
         members,
-        updated_at: messages[ 0 ].created_at * 1e9
-      }, (typeof value !== 'undefined')?{status: leads.getStatusCode(value)}:{}) );
+        updated_at
+      }, (typeof value !== 'undefined') ? { status: leads.getStatusCode( value ) } : {} ) );
 
     }
 
-    if ( messages[ 0 ].parts[ 0 ].mime_type === "text/plain" ) {
+    if ( MIME === "text/plain" ) {
 
-      dispatch( LEAD_UPDATE, {
-        conversation_id,
-        members,
-        parts: messages[ 0 ].parts,
-        updated_at: messages[ 0 ].created_at * 1e9
-      } );
+      dispatch( LEAD_UPDATE, { conversation_id, members, parts, updated_at } );
 
       if ( state.conversation.id !== conversation_id ) {
 
@@ -139,6 +138,17 @@ export const onMessages = (
 
       }
 
+    }
+
+    if ( MIME === "image/base64" ) {
+
+      dispatch( LEAD_UPDATE, { conversation_id, members, parts: '', updated_at } );
+
+      if ( state.conversation.id !== conversation_id ) {
+
+        dispatch( LEAD_INC_NOTIFY, (lead !== undefined) ? lead.id : null );
+
+      }
     }
 
   }
@@ -154,11 +164,11 @@ export const onMessages = (
     leads
       .get( { conversation_id } )
       .then(
-      ( { lead } ) => {
-        // TODO Спросить как можно определить, для текущего пользователя lead в покупаю || продаю.
-        dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) );
-        handler( lead );
-      } )
+        ( { lead } ) => {
+          // TODO Спросить как можно определить, для текущего пользователя lead в покупаю || продаю.
+          dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) );
+          handler( lead );
+        } )
       .catch( ( error ) => {
         leads.sendError( error, state );
       } );

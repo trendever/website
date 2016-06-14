@@ -5,6 +5,7 @@ import {
   CONVERSATION_SET_SHOW_MENU,
   CONVERSATION_SET_SHOW_STATUS_MENU,
   CONVERSATION_CONFIRM_MSG,
+  CONVERSATION_CONFIRM_STATUS_MSG,
   CONVERSATION_CLOSE,
   LEAD_RECEIVE,
   LEAD_UPDATE,
@@ -424,7 +425,7 @@ export const receiveMessage = ( { dispatch, state }, conversation_id, messages )
 
       } else {
 
-        dispatch( CONVERSATION_RECEIVE_MESSAGE, messages, conversation_id );
+        dispatch( CONVERSATION_CONFIRM_STATUS_MSG, messages, conversation_id );
 
       }
 
@@ -470,22 +471,75 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 
 };
 
-export const setStatus = ( { dispatch, state }, status ) => {
+export const setStatus = ( { dispatch, state }, status, type ) => {
 
-  const lead = getLeadByConversationId( state, state.conversation.id );
+  const statusMap = {
+    COMPLETE: 'COMPLETED',
+    DELIVERY: 'ON_DELIVERY',
+    SUBMIT: 'SUBMITTED',
+    CANCEL: 'CANCELLED'
+  };
+
+  const messages = getMessages( state );
+
+  const { parts } = messages[ messages.length - 1 ];
 
   dispatch( CONVERSATION_SEND_STATUS );
 
-  return new Promise( ( resolve, reject ) => {
-    leads
-      .setEvent( lead.id, status )
-      .then( ( { status } ) => {
-        resolve( status );
-      } )
-      .catch( error => {
-        reject( error );
-      } );
-  } );
+  /**
+   * Добавлять одинаковый статус нет необходимости.
+   * */
+  
+  if ( parts[ 0 ].mime_type === "json/status" ) {
+
+    if ( JSON.parse( parts[ 0 ].content ).value === statusMap[ status ] ) {
+
+      return null;
+
+    }
+
+  }
+
+  const dirtyStatusMessage = [
+    {
+      dirty: true,
+      id: Date.now() + Math.random(),
+      conversation_id: state.conversation.id,
+      parts: [ {
+        content: JSON.stringify( {
+          type: type,
+          value: statusMap[ status ]
+        } ),
+        mime_type: "json/status"
+      } ],
+      created_at: null
+    }
+  ];
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead !== null ) {
+
+    dispatch( CONVERSATION_RECEIVE_MESSAGE, dirtyStatusMessage, state.conversation.id );
+
+    return new Promise( ( resolve, reject ) => {
+      leads
+        .setEvent( lead.id, status )
+        .then( ( { status } ) => {
+          resolve( status );
+        } )
+        .catch( error => {
+          reject( error );
+        } );
+    } );
+
+  } else {
+
+    console.error( '[ ACTION/CHAT ] - В момент установки статуса lead не может быть null.', {
+      conversation_id: state.conversation.id
+    } );
+
+  }
 
 };
 
@@ -498,23 +552,7 @@ export const onMessages = ( { dispatch, state }, data ) => {
       const conversation_id = data.response_map.chat.id;
       const messages        = data.response_map.messages;
 
-      if ( Array.isArray( messages ) ) {
-
-        if ( messages.length > 0 ) {
-
-          const MIME = messages[ 0 ].parts[ 0 ].mime_type;
-
-          if ( MIME === "text/plain" || MIME === "image/json" || MIME === "json/status" ) {
-
-            return receiveMessage( { dispatch, state }, conversation_id, messages );
-
-          }
-
-          return Promise.resolve();
-
-        }
-
-      }
+      return receiveMessage( { dispatch, state }, conversation_id, messages );
 
     }
 
