@@ -52,7 +52,7 @@ function getDateMessage( date, id ) {
 
 const addServiceMessage = (function() {
 
-  function normalizeDate(time){
+  function normalizeDate( time ) {
 
     return new Date( time * 1000 );
 
@@ -73,34 +73,56 @@ const addServiceMessage = (function() {
 
     for ( let i = 0; i < messages.length; i++ ) {
 
-      const date = normalizeDate( messages[ i ].created_at );
+      const MIME = messages[ i ].parts[ 0 ].mime_type;
 
-      if ( messages[ i ].parts[ 0 ].mime_type === 'text/plain' ) {
+      /**
+       * Для отключения какого нибудь MIME типа просто убрать из условия.
+       * Сейчас убрат статус: MIME === 'json/status'
+       *
+       * */
 
-        if ( lastUserId === messages[ i ].user.id ) {
+      if (
+        MIME === 'text/plain' ||
+        MIME === 'text/json' ||
+        MIME === 'image/json' ||
+        MIME === 'json/status' ||
+        MIME === 'image/base64'
+      ) {
 
-          messages[ i ].closestMessage = true;
+        if ( MIME !== 'json/status' ) {
 
-        } else {
+          if ( lastUserId === messages[ i ].user.user_id ) {
 
-          lastUserId                   = messages[ i ].user.id;
-          messages[ i ].closestMessage = false;
+            messages[ i ].closestMessage = true;
+
+          } else {
+
+            lastUserId                   = messages[ i ].user.user_id;
+            messages[ i ].closestMessage = false;
+
+          }
 
         }
 
-      }
+        if ( typeof messages[ i ].serviceMessage === 'undefined' ) {
 
-      if ( typeof messages[ i ].serviceMessage === 'undefined' ) {
+          newMessage.push( messages[ i ] );
 
-        newMessage.push( messages[ i ] );
+        }
 
-      }
+        if ( messages[ i ].created_at !== null ) {
 
-      if ( date.getDate() !== lastDate ) {
+          const date = normalizeDate( messages[ i ].created_at );
 
-        lastDate = date.getDate();
+          if ( date.getDate() !== lastDate ) {
 
-        newMessage.push( getDateMessage( messages[ i ].created_at, messages[ i ].id ) );
+            lastDate = date.getDate();
+
+            newMessage.push( getDateMessage( messages[ i ].created_at, messages[ i ].id ) );
+
+          }
+
+        }
 
       }
 

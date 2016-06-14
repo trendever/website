@@ -6,7 +6,7 @@
       .chat.section__content
         .chat_messages
           template(v-for='msg in getMessages | list', track-by='$index')
-            //- chat-msg-date(
+            chat-msg-status(
               v-if='msg.parts[0].mime_type === "json/status"',
               :msg='msg')
             chat-msg-product(
@@ -18,7 +18,6 @@
             chat-msg-img(
               v-if='isImage(msg.parts[0].mime_type)',
               :msg='msg')
-
     chat-bar
 </template>
 
@@ -44,7 +43,7 @@
   import * as leads from 'services/leads';
 
   import ChatMsgProduct from './chat-msg-product.vue';
-  import ChatMsgDate from './chat-msg-date.vue';
+  import ChatMsgStatus from './chat-msg-status.vue';
   import ChatMsg from './chat-msg.vue';
   import ChatMsgImg from './chat-msg-img.vue';
   import ChatBar from './chat-bar.vue';
@@ -116,7 +115,6 @@
 
         const end   = value.length;
         const start = end - this.getLengthList - 1; // -1 потому что есть первое сообщение с датой.
-        //TODO придумать как сделать нормально.
         return value.slice( (start <= 0) ? 0 : start, end );
       }
     },
@@ -176,18 +174,16 @@
         }
 
       },
-
       goToBottom(){
         this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
-      },
-
+      }
     },
     components: {
       ChatHeader,
       ChatBar,
       ChatMsg,
       ChatMsgProduct,
-      ChatMsgDate,
+      ChatMsgStatus,
       ChatMsgImg
     },
   }

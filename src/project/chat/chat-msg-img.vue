@@ -65,8 +65,7 @@
         if ( this.msg.parts[ 0 ].mime_type === 'image/json' ) {
 
           let img = JSON.parse( cnt );
-          const maxWidth = (window.matchMedia("(max-width:750px)").matches)? 570 : 600;
-          const {width, height} = ratioFit(img.width, img.height, maxWidth, img.height);
+          const {width, height} = ratioFit(img.width, img.height, 570, img.height);
 
           this.$set('imgStyle.width', `${width}px`);
           this.$set('imgStyle.height', `${height}px`);

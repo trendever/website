@@ -32,10 +32,10 @@
     }
 
     &_info {
-      .ic-clock{
+      .ic-clock {
         display: block;
         font-size: 13px;
-        @media(--mobile){
+        @media(--mobile) {
           margin-top: -1px;
           font-size: 20px;
           padding-bottom: 0;
@@ -97,7 +97,7 @@
 
       -webkit-line-clamp: 6;
 
-      @media(--mobile){
+      @media(--mobile) {
 
         -webkit-line-clamp: 7;
 
@@ -136,11 +136,20 @@
     justify-content: flex-end;
 
     .chat-msg-product-txt {
+      &.-closest{
+        height: 135px;
+        padding-top: 15px;
+        @media(--mobile){
+          height: 265px;
+          padding-top: 15px;
+          -webkit-line-clamp: 2;
+        }
+      }
       padding: 0 20px 0;
-      height: 103.267px;
+      height: 103px;
       -webkit-line-clamp: 5;
-      @media(--mobile){
-        height: 221.267px;
+      @media(--mobile) {
+        height: 221px;
         -webkit-line-clamp: 6;
       }
     }
@@ -149,11 +158,11 @@
       flex-direction: row-reverse;
     }
 
-    .chat-msg-product-photo{
+    .chat-msg-product-photo {
       border-radius: 0 12px 12px 0;
     }
 
-    .bubble_info_time{
+    .bubble_info_time {
       margin: auto 10px 10px;
       color: $color__gray-light;
     }

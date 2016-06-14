@@ -5,7 +5,7 @@
   .bubble_info.bubble_info_time {{ datetime }}
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
     i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
-  .bubble
+  .bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
     .chat-msg-product-wrap
       a.chat-msg-product(v-link="{name: 'product_detail', params: {id: product.id}}")
         .chat-msg-product-photo
@@ -13,12 +13,14 @@
       .chat-msg-description
         .chat-msg_t(
             v-link='{name: "user", params: {id: getUserNameLink}}',
-            v-if='!isOwnMessage',
+            v-if='!isOwnMessage && !isClosest',
             :class='{"chat-msg_t-customer-color":isCustomer}'
           )
             | {{{ getUsername }}}
-        .chat-msg-product(v-link='{name: "product_detail", params: {id: product.id}}')
-          .chat-msg-product-txt
+        .chat-msg-product(
+            v-link='{name: "product_detail", params: {id: product.id}}'
+          )
+          .chat-msg-product-txt(:class="{'-closest':isClosest}")
             a(v-link='{name: "product_detail", params: {id: product.id}}')
               |{{{ titles }}}
             br(v-if="titles")
@@ -39,8 +41,8 @@
         required: true
       }
     },
-    vuex:{
-      getters:{
+    vuex: {
+      getters: {
         getShopName,
         getCurrentMember,
         getLastMessageId,
@@ -49,14 +51,14 @@
     },
     computed: {
       getUsername() {
-        if (this.isCustomer) {
+        if ( this.isCustomer ) {
           return `<b>${this.msg.user.name}</b>`
         }
-        if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
+        if ( this.msg.user.role === leads.USER_ROLES.SUPPLIER.key ) {
           return `<b>${this.getShopName}</b>`
         }
         if ( this.getCurrentMember !== null ) {
-          if(this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key){
+          if ( this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key ) {
             return `<b>${this.getShopName}</b>`
           }
         }
@@ -66,18 +68,18 @@
         return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
       },
       datetime () {
-        return formatTime(this.msg.created_at);
+        return formatTime( this.msg.created_at );
       },
       product() {
-        return JSON.parse(this.msg.parts[0].content);
+        return JSON.parse( this.msg.parts[ 0 ].content );
       },
       photo() {
-        if (Array.isArray(this.product.instagram_images)) {
-          return this.product.instagram_images.find((img) => img.name == "S_square").url
+        if ( Array.isArray( this.product.instagram_images ) ) {
+          return this.product.instagram_images.find( ( img ) => img.name == "S_square" ).url
         }
       },
       getUserNameLink() {
-        if (this.isCustomer) {
+        if ( this.isCustomer ) {
           return this.msg.user.name;
         }
         return this.getShopName;
@@ -86,9 +88,9 @@
         return this.product.instagram_image_caption;
       },
       titles() {
-        if(Array.isArray(this.product.items)) {
-          this.product.items.reduce( function( desc, item, i, arr ) {
-            if(item.name){
+        if ( Array.isArray( this.product.items ) ) {
+          return this.product.items.reduce( function( desc, item, i, arr ) {
+            if ( item.name ) {
               desc += `${item.name} `;
             }
             if ( item.discount_price ) {
@@ -104,6 +106,9 @@
         }
         return '';
       },
+      isClosest(){
+        return this.msg.closestMessage;
+      },
       isOwnMessage() {
         if ( this.getCurrentMember !== null ) {
           return this.getCurrentMember.user_id === this.msg.user.user_id;
@@ -117,7 +122,7 @@
         return this.getLastMessageId >= this.msg.id;
       },
       getSide() {
-        if(!this.msg.user || !this.getCurrentMember) {
+        if ( !this.msg.user || !this.getCurrentMember ) {
           return '__center';
         }
         return this.isOwnMessage ? '__right' : '__left';

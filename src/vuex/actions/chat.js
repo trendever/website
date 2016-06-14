@@ -349,7 +349,7 @@ export const createMessage = ( { dispatch, state }, conversation_id, text, mime_
           mime_type: mime_type
         }
       ],
-      created_at: Date.now(),
+      created_at: null,
       id: Date.now() + beforeLoadId,
       user: {
         user_id: userID( state )
@@ -443,7 +443,7 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
     beforeLoadId,
     loaded: false,
     conversation_id: getId( state ),
-    created_at: Date.now(),
+    created_at: null,
     user_id: userID( state ),
     user: {
       user_id: userID( state ),

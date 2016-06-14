@@ -1,4 +1,5 @@
 import * as leads from 'services/leads';
+import * as chat from 'services/chat';
 import { formatMonth } from 'project/chat/utils';
 import { userID } from 'vuex/getters/user.js';
 import { getLeadByConversationId } from '../getters/lead.js';
@@ -14,6 +15,42 @@ export const getLeadId = ( state ) => {
   if ( lead ) {
 
     return lead.id;
+
+  }
+
+  return null;
+
+};
+
+export const getCustomerName = ( state ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead ) {
+
+    if ( lead.chat ) {
+
+      if ( lead.chat.members ) {
+
+        const user = lead.chat.members.find( ( user ) => {
+
+          return user.role === chat.MEMBER_ROLES.CUSTOMER;
+
+        } );
+
+        if ( typeof user !== 'undefined' ) {
+
+          /**
+           * Это имя запоминается на момент создания чата.
+           * */
+
+          return user.name;
+
+        }
+
+      }
+
+    }
 
   }
 
