@@ -163,7 +163,8 @@ export const throttleEvent = function(type, name, obj) {
 
 export var isDebug = window.__debugMode = /[a-z0-9_\-]*[\.]*[a-z0-9_\-]*\.[a-z0-9_\-]+\.[a-z0-9_\-]+/i.test(location.host) || location.hostname === 'localhost';
 
-var _ua = navigator.userAgent.toLowerCase();
+var _ua = navigator.userAgent.toLowerCase()
+var standalone = navigator.standalone
 
 export const browser = {
   version: (_ua.match(/.+(?:me|ox|on|rv|it|era|opr|ie)[\/: ]([\d.]+)/) || [0, '0'])[1],
@@ -177,6 +178,7 @@ export const browser = {
   chrome: /chrome/i.test(_ua),
   chrome_mobile: /CriOS/i.test(_ua),
   safari: (!(/chrome/i.test(_ua)) && /webkit|safari|khtml/i.test(_ua)),
+  standalone: (/iphone|ipod|ipad/.test(_ua) && !standalone && !/safari/.test(_ua)),
   iphone: /iphone/i.test(_ua),
   ipod: /ipod/i.test(_ua),
   iphone4: /iphone.*OS 4/i.test(_ua),
@@ -191,7 +193,7 @@ export const browser = {
   opera_mini: /opera mini/i.test(_ua),
   mac: /mac/i.test(_ua),
   search_bot: /(yandex|google|stackrambler|aport|slurp|msnbot|bingbot|twitterbot|ia_archiver|facebookexternalhit)/i.test(_ua)
-};
+}
 // legacy support
 window.browser = browser;
 
