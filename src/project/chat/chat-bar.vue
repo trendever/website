@@ -49,9 +49,35 @@ div
       };
     },
 
+    ready(){
+
+      if ( !window.browser.mobile ) {
+
+        this.sendMessage = listen( window, 'keyup', ( event ) => {
+
+          if ( !event.ctrlKey && event.keyCode === 13 ) {
+
+            this.send( event );
+
+          }
+          if ( event.ctrlKey && event.keyCode === 13 ) {
+
+            this.$set( 'txtMsg', this.txtMsg + '\n' );
+
+          }
+
+        } )
+
+      }
+
+    },
+
     beforeDestroy() {
-      if (this.scrollEvent) {
+      if ( this.scrollEvent ) {
         this.scrollEvent.remove();
+      }
+      if ( this.sendMessage ) {
+        this.sendMessage.remove();
       }
     },
 
@@ -72,36 +98,36 @@ div
     methods: {
       normalizeScroll() {
         // Hard hack for ios jumping, why open keyboard
-        if (window.scrollY === 0) {
+        if ( window.scrollY === 0 ) {
           return;
         }
 
-        if (this.windowScrollY
+        if ( this.windowScrollY
           && this.windowScrollY.min !== window.scrollY
-          && this.windowScrollY.msx !== window.scrollY) {
-          return window.scrollTo(0, this.windowScrollY.last);
+          && this.windowScrollY.msx !== window.scrollY ) {
+          return window.scrollTo( 0, this.windowScrollY.last );
         }
 
         // Magic numbers
         var devices = [
-          {min:446, max:510, diff:19}, // iphone 6 plus, 6s plus
-          {min:470, max:536, diff:20}, // iphone 6, 6s
-          {min:548, max:616, diff:24}, // iphone 5, 4s
-        ]
-        if (window.browser.iphone) {
+          { min: 446, max: 510, diff: 19 }, // iphone 6 plus, 6s plus
+          { min: 470, max: 536, diff: 20 }, // iphone 6, 6s
+          { min: 548, max: 616, diff: 24 }, // iphone 5, 4s
+        ];
+        if ( window.browser.iphone ) {
 
-          for (var item of devices) {
-            if (window.scrollY === item.min) {
+          for ( var item of devices ) {
+            if ( window.scrollY === item.min ) {
 
-              item.last = item.min - item.diff
+              item.last          = item.min - item.diff;
               this.windowScrollY = item;
-              return window.scrollTo(0, item.last);
+              return window.scrollTo( 0, item.last );
 
-            } else if (window.scrollY === item.max) {
+            } else if ( window.scrollY === item.max ) {
 
-              item.last = item.max - item.diff
+              item.last          = item.max - item.diff;
               this.windowScrollY = item;
-              return window.scrollTo(0, item.last);
+              return window.scrollTo( 0, item.last );
 
             }
           }
@@ -109,24 +135,24 @@ div
         }
       },
 
-      blurInput(event){
-        if (window.browser.iphone) {
-          if (this.scrollEvent) {
+      blurInput( event ){
+        if ( window.browser.iphone ) {
+          if ( this.scrollEvent ) {
             this.scrollEvent.remove();
           }
         }
       },
 
       focusInput(){
-        if (window.browser.iphone) {
+        if ( window.browser.iphone ) {
           this.normalizeScroll();
-          this.scrollEvent = listen(window, 'scroll', this.normalizeScroll.bind(this));
+          this.scrollEvent = listen( window, 'scroll', this.normalizeScroll.bind( this ) );
         }
       },
 
-      send (e) {
-        e.stopPropagation();
-        e.preventDefault();
+      send ( event ) {
+        event.stopPropagation();
+        event.preventDefault();
 
         const txtMsg = this.txtMsg.trim();
         if ( !txtMsg.length ) {
@@ -145,30 +171,32 @@ div
           }
         } );
 
-        promise.catch( ({ code, errData }) => {
+        promise.catch( ( { code, errData } ) => {
           this.txtMsg = txtMsg;
           console.error( errData );
 
           // ToDo надо отображать, что сообщение не отправлено значком в сообщении
-          alert('Ошибка. Сообщение не отправлено. Может нет интернета?')
+          alert( 'Ошибка. Сообщение не отправлено. Может нет интернета?' )
 
-          console.error(new Error('Problem to send message'), {extra: {
-            errorMsg: errData,
-            user: store.state.user,
-          }});
+          console.error( new Error( 'Problem to send message' ), {
+            extra: {
+              errorMsg: errData,
+              user: store.state.user,
+            }
+          } );
 
         } );
       }
     },
 
     watch: {
-      txtMsg(msg) {
-        this.$nextTick(() => {
-          let inputMsg = this.$els.inputMsg;
-          const textHeight = window.matchMedia('(max-width: 750px)').matches ? 58: 32;
-          const inpHeight = inputMsg.scrollHeight;
-          inputMsg.style.height = (msg ? (inpHeight <= textHeight)? textHeight: inpHeight : textHeight)  + 'px';
-        });
+      txtMsg( msg ) {
+        this.$nextTick( () => {
+          let inputMsg          = this.$els.inputMsg;
+          const textHeight      = window.matchMedia( '(max-width: 750px)' ).matches ? 58 : 32;
+          const inpHeight       = inputMsg.scrollHeight;
+          inputMsg.style.height = (msg ? (inpHeight <= textHeight) ? textHeight : inpHeight : textHeight) + 'px';
+        } );
 
       }
     },
