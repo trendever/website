@@ -58,27 +58,7 @@ export const getCustomerName = ( state ) => {
 
 };
 
-export const isInit = ( { conversation }, lead ) => {
-
-  if ( lead.chat ) {
-
-    if ( lead.chat.id ) {
-
-      if ( conversation.allInit.hasOwnProperty( lead.chat.id ) ) {
-
-        return conversation.allInit[ lead.chat.id ];
-
-      }
-
-    }
-
-  }
-
-  return false;
-
-};
-
-export const isMessages = ( { conversation }, lead ) => {
+export const getMessageByLead = ( { conversation }, lead ) => {
 
   if ( lead.chat ) {
 
@@ -88,10 +68,7 @@ export const isMessages = ( { conversation }, lead ) => {
 
         if ( Array.isArray( conversation.all[ lead.chat.id ] ) ) {
 
-          return {
-            count: conversation.all[ lead.chat.id ].length,
-            messages: conversation.all[ lead.chat.id ]
-          };
+          return conversation.all[ lead.chat.id ];
 
         }
 
@@ -101,10 +78,7 @@ export const isMessages = ( { conversation }, lead ) => {
 
   }
 
-  return {
-    count: 0,
-    messages: null
-  };
+  return null;
 
 };
 
@@ -283,28 +257,6 @@ export const getInviteCustomer = ( state ) => {
 
 };
 
-export const getCreateData = ( state ) => {
-
-  const lead = getLeadByConversationId( state, state.conversation.id );
-
-  if ( lead ) {
-
-    if ( lead.chat ) {
-
-      if ( lead.chat.recent_message ) {
-
-        return formatMonth( lead.chat.recent_message.created_at );
-
-      }
-
-    }
-
-  }
-
-  return null;
-
-};
-
 export const isJoined = ( state, lead ) => {
 
   if ( lead ) {
@@ -334,14 +286,4 @@ export const isJoined = ( state, lead ) => {
 
 };
 
-export const getRowHeight = () => {
-
-  if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
-    return 50
-  }
-
-  return 40;
-
-};
-
-export const getCountRowOnBody = () => Math.round( document.body.offsetHeight / getRowHeight() );
+export const getCountForLoading = (window.browser.mobile) ? 10 : 20;

@@ -51,12 +51,22 @@
 
   export default {
 
+    components: {
+      ChatHeader,
+      ChatBar,
+      ChatMsg,
+      ChatMsgProduct,
+      ChatMsgStatus,
+      ChatMsgImg
+    },
+
     data(){
       return {
         needLoadMessage: true,
         lead_id: null
       }
     },
+
     watch: {
       isDone( done ){
         if ( done ) {
@@ -64,6 +74,7 @@
         }
       }
     },
+
     route: {
       data( { to: { params: { id:lead_id } } } ) {
         this.$set( 'lead_id', +lead_id );
@@ -76,6 +87,7 @@
         }
       },
     },
+
     ready(){
       if ( this.isAuth ) {
         this.onMessage      = this.onMessage.bind( this );
@@ -85,6 +97,7 @@
         this.$router.go( { name: 'signup' } );
       }
     },
+
     beforeDestroy() {
       if ( this.isAuth ) {
         this.scrollListener.remove();
@@ -92,6 +105,7 @@
         messages.offMsg( this.onMessage );
       }
     },
+
     vuex: {
       actions: {
         setConversation,
@@ -127,15 +141,65 @@
           .then(
             () => {
               this.clearNotify( this.lead_id );
-              this.$nextTick( () => {
-                this.goToBottom();
-              } );
+                this
+                  .runLoadinMessage()
+                  .then( () => {
+                    this.$nextTick( () => {
+                      this.goToBottom();
+                    } );
+                  } );
             },
             ( error ) => {
               console.error( `[ CONVERSATION_SET ERROR ]: `, error );
               this.$router.go( { name: 'home' } );
             }
           );
+      },
+
+      runLoadinMessage(){
+
+        return new Promise((resolve, reject) => {
+
+          const add = ( scrollHeight ) => {
+
+             if ( document.body.offsetHeight >= scrollHeight ) {
+
+                this
+                  .loadMessage()
+                  .then( ( messages ) => {
+
+                    if ( messages === null ) {
+
+                      resolve();
+
+                    } else {
+
+                      this.$nextTick( () => {
+
+                        add( this.$els.scrollCnt.scrollHeight )
+
+                      } );
+
+                    }
+
+                  });
+
+             } else {
+
+              resolve();
+
+             }
+
+          };
+
+          this.$nextTick( () => {
+
+            add( this.$els.scrollCnt.scrollHeight )
+
+          } );
+
+        });
+
       },
 
       onMessage(){
@@ -177,14 +241,6 @@
       goToBottom(){
         this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
       }
-    },
-    components: {
-      ChatHeader,
-      ChatBar,
-      ChatMsg,
-      ChatMsgProduct,
-      ChatMsgStatus,
-      ChatMsgImg
     },
   }
 </script>
