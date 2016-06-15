@@ -16,6 +16,7 @@
                 .input.name
                   i.ic-insta-name
                   input(type='text',
+                    autocomplete="off",
                     :class=' {error: errorLogin} ',
                     @focus='onFocusLogin',
                     @keydown.enter='sendSMS()',
@@ -29,6 +30,7 @@
                 .input.phone
                   i.ic-mobile-phone
                   input(type='tel',
+                    autocomplete="off",
                     :class=' {error: errorPhone} ',
                     @focus='onFocusPhone',
                     @keydown.enter='sendSMS()',
