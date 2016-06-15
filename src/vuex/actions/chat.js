@@ -409,7 +409,11 @@ export const receiveMessage = ( { dispatch, state }, conversation_id, messages )
 
       } else {
 
-        dispatch( CONVERSATION_CONFIRM_STATUS_MSG, messages, conversation_id )
+        if ( msg.parts[ 0 ].mime_type === 'json/status' ) {
+
+          dispatch( CONVERSATION_CONFIRM_STATUS_MSG, messages, conversation_id )
+
+        }
 
       }
 
