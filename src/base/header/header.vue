@@ -60,12 +60,6 @@ export default {
       default: null
     },
 
-    // If exist, then LeftArrowBtn will redirect to backLink
-    // receive reverse url name. Example: home
-    backLink: {
-      default: false
-    },
-
     // Show or Hide back arrow
     leftBtnShow: {
       type: Boolean,
@@ -110,12 +104,7 @@ export default {
         }
       }
 
-      var backLink = this.$get('backLink');
-      if (backLink) {
-        this.$router.go(backLink);
-      } else {
-       window.history.back();
-      }
+      window.history.back();
 
     },
     toggleHeaderOnScroll() {

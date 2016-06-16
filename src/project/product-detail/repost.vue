@@ -92,10 +92,8 @@
         if(this.getOpenedProduct !== null){
           mixpanel.track('Close Repost Page', {productId: this.getOpenedProduct.id});
 
-          this.$route.router.go({
-            name: 'product_detail',
-            params: { id: this.getOpenedProduct.id }
-          });
+          window.history.back();
+
         }
       },
       openInsta() {
