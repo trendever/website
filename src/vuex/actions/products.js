@@ -160,7 +160,7 @@ export const openProduct = ( { dispatch, state }, id ) => {
    * не известно был ли установлени или снят @savetrend/
    * TODO попросить сделать событие product.LIKE - позволит постоянно не запрашивать объект продукта.
    * */
-  
+
   return products
     .get( id )
     .then( ( product ) => {
@@ -250,13 +250,13 @@ export const incLengthList = ( { dispatch }, count ) => {
 
 };
 
-export const setLike = ( { dispatch, state } ) => {
-
-  const product = getOpenedProduct( state );
+export const setLike = (
+  { dispatch, state },
+  product = getOpenedProduct( state ),
+  newLikeState = !isLiked( state )
+) => {
 
   if ( product !== null ) {
-
-    const newLikeState = !isLiked( state );
 
     dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product, user( state ), newLikeState );
 

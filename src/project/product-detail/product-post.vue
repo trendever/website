@@ -35,7 +35,7 @@ article.product-post
     .product-post__title.__bottom {{{ item.name }}}
 
   footer.product-post__footer
-    .product-post__action.__heart(v-on:click="setLike", :class="{'__heart-active': isLiked}")
+    .product-post__action.__heart(v-on:click.prevent="like", :class="{'__heart-active': isLiked}")
       .product-post__trend: i.ic-heart
       .product-post__action-title тренд
 
@@ -109,6 +109,10 @@ article.product-post
     },
 
     methods: {
+
+      like(){
+        this.setLike();
+      },
 
       updateImageSize(){
         let sizes   = ratioFit( this.getOpenedProduct.instagram_image_width,
