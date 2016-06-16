@@ -45,6 +45,7 @@ scroll-top
     incLengthList,
     setColumnNumber,
     closeProducts,
+    offAnimate,
     loadProducts,
   } from 'vuex/actions/products';
 
@@ -81,6 +82,7 @@ scroll-top
         setColumnNumber,
         clearSearch,
         closeProducts,
+        offAnimate,
         loadProducts
       }
     },
@@ -229,7 +231,21 @@ scroll-top
       getProducts( force = false ){
 
         const { search, tags, filterByUserName, filterByUserId } = this;
-        return this.loadProducts( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force );
+        return this
+          .loadProducts( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force )
+          .then( () => {
+
+            if ( this.isAnimateShow ) {
+
+              setTimeout( () => {
+
+                this.offAnimate();
+
+              }, 1000 )
+
+            }
+
+          } );
 
       },
 

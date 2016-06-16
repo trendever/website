@@ -272,6 +272,12 @@ export const setScroll = ( { dispatch }, scrollTop, scrollHeight ) => {
 
 };
 
+export const offAnimate = ( { dispatch } ) => {
+
+  dispatch( types.PRODUCTS_SET_ANIMATE, false );
+
+};
+
 export const enableInfinityProducts = ( { dispatch } ) => {
 
   dispatch( types.PRODUCTS_SET_INFINITY, true );

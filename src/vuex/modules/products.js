@@ -24,12 +24,12 @@ const state = {
     //   scrollHeight: 0,
     //   lengthList: 9,
     //   isInfinity: true,
+    //   animateShow: true,
     //   hasMore: true,
     // },
   },
   columnCount: document.body.offsetWidth <= 750 ? 2 : 3,
   listId: null,
-  animateShow: true,
   loading: true,
   ITEMS_PER_PAGE,
   openedProduct: null
@@ -52,6 +52,7 @@ const mutations = {
             scrollHeight: 0,
             lengthList: ITEMS_PER_PAGE,
             isInfinity: true,
+            animateShow: true,
             hasMore: Array.isArray( products ) ? products.length >= ITEMS_PER_PAGE : false
           }
         }
@@ -76,6 +77,7 @@ const mutations = {
             scrollHeight: 0,
             lengthList: ITEMS_PER_PAGE,
             isInfinity: true,
+            animateShow: true,
             hasMore: (Array.isArray( products )) ? products.length >= ITEMS_PER_PAGE : false
           }
         }
@@ -109,13 +111,13 @@ const mutations = {
 
   },
 
-  [PRODUCTS_SET_OPENED_PRODUCT] ( state, product ){
+  [PRODUCTS_SET_OPENED_PRODUCT] ( state, product ) {
 
     state.openedProduct = product;
 
   },
 
-  [PRODUCTS_UPDATE_LIKED_BY] ( state, product_id, user, like ){
+  [PRODUCTS_UPDATE_LIKED_BY] ( state, product_id, user, like ) {
 
     if ( state.openedProduct !== null ) {
 
@@ -165,7 +167,7 @@ const mutations = {
 
     }
 
-    // TODO выяснить по поводу удаления из ленты. 
+    // TODO выяснить по поводу удаления из ленты.
 
     /*    if ( !like ) {
 
@@ -272,9 +274,13 @@ const mutations = {
 
   },
 
-  [PRODUCTS_SET_ANIMATE] ( state, animateShow = true ) {
+  [PRODUCTS_SET_ANIMATE] ( state, animateShow = true, listId = state.listId ) {
 
-    state.animateShow = animateShow;
+    if ( state.lists.hasOwnProperty( listId ) ) {
+
+      state.lists[listId].animateShow = animateShow;
+      
+    }
 
   }
 
