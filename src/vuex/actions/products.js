@@ -155,53 +155,68 @@ export const loadProducts = (
 
 export const openProduct = ( { dispatch, state }, id ) => {
 
-  const product = getProduct( state, id );
+  /**
+   * Логика упростилась так как каждый раз при открытии продкута нужно его запрашивать
+   * не известно был ли установлени или снят @savetrend/
+   * TODO попросить сделать событие product.LIKE - позволит постоянно не запрашивать объект продукта.
+   * */
+  
+  return products
+    .get( id )
+    .then( ( product ) => {
+      dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+    } )
+    .catch( ( error ) => {
+      products.sendError( error, { state, id } );
+    } );
 
-  return new Promise( ( resolve, reject ) => {
+  /*  const product = getProduct( state, id );
 
-    if ( product !== null ) {
+   return new Promise( ( resolve, reject ) => {
 
-      if ( product.hasOwnProperty( 'liked_by' ) ) {
+   if ( product !== null ) {
 
-        dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-        resolve();
+   if ( product.hasOwnProperty( 'liked_by' ) ) {
 
-      } else {
+   dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+   resolve();
 
-        /**
-         * !!! Внимание
-         * Этот дублирущий запрос делается потому что сейчас в объектах ленты нет поля liked_by.
-         * */
+   } else {
 
-        products
-          .get( id )
-          .then( ( product ) => {
-            dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-            resolve();
-          } )
-          .catch( ( error ) => {
-            products.sendError( error, { state, id } );
-            reject( error );
-          } );
+   /!**
+   * !!! Внимание
+   * Этот дублирущий запрос делается потому что сейчас в объектах ленты нет поля liked_by.
+   * *!/
 
-      }
+   products
+   .get( id )
+   .then( ( product ) => {
+   dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+   resolve();
+   } )
+   .catch( ( error ) => {
+   products.sendError( error, { state, id } );
+   reject( error );
+   } );
 
-    } else {
+   }
 
-      products
-        .get( id )
-        .then( ( product ) => {
-          dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-          resolve();
-        } )
-        .catch( ( error ) => {
-          products.sendError( error, { state, id } );
-          reject( error );
-        } );
+   } else {
 
-    }
+   products
+   .get( id )
+   .then( ( product ) => {
+   dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+   resolve();
+   } )
+   .catch( ( error ) => {
+   products.sendError( error, { state, id } );
+   reject( error );
+   } );
 
-  } );
+   }
+
+   } );*/
 
 };
 
@@ -243,14 +258,14 @@ export const setLike = ( { dispatch, state } ) => {
 
     const newLikeState = !isLiked( state );
 
-    dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product.id, user( state ), newLikeState );
+    dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product, user( state ), newLikeState );
 
     products
       .like( product.id, newLikeState )
       .then( ( isLike ) => {
         if ( !isLike ) {
 
-          dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product.id, user( state ), false );
+          dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product, user( state ), false );
 
           console.warn( `Отрицательный ответ на установку
           like в ${ newLikeState }
