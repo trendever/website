@@ -230,7 +230,7 @@
           p У тебя свой бренд?
             br
             |  Хочешь продаваться у нас?
-          div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
+          div(v-link='{name: "info-shop"}').btn-yellow.btn-yellow__m
             | Узнай как
 
 </template>
