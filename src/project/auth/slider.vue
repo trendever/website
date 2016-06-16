@@ -1,41 +1,51 @@
 <style src='./swipe.pcss'></style>
 <template lang="jade">
-.swipe
-  .swipe-item-container(
-    v-el:swipe, @click='swipe(1)', :style='style')
+.swipe(v-el:swipe-container)
+  .swipe-item-container( v-el:swipe, @click='swipe(1)', :style='style' )
+
     .swipe-item.slide.slide-5
       p ...сохранять товары инста-шопов#[br]в свою ленту трендов.
       img(src='img/auth-slide-4.png')
       p.hide-desktop(style='margin-top: 0px')
         | Поэтому укажите инста-логин #[i.emoji.emoji_down]
+
     .swipe-item.slide.slide-1
       p ...искать и покупать в живом каталоге#[br] товаров из инстаграма.
       img(src='img/auth-slide-1.png')
+
     .swipe-item.slide.slide-2
       p ...покупать в приложении Instagram#[br]по комментарию @wantit.
       img(src='img/auth-slide-2.png')
       p.hide-desktop(style='margin-top: -10px')
         | Поэтому укажите инста-логин #[i.emoji.emoji_down]
+
     .swipe-item.slide.slide-3
       p  ...общаться с магазинами#[br]и заказывать в привычном чате.
       img(src='img/auth-slide-3.png')
+
     .swipe-item.slide.slide-4
       p  ...подписаться и следить за лентами#[br] фешн-экспертов – Трендскаутов.
       img(src='img/auth-slide-5.png')
+
     .swipe-item.slide.slide-5
       p ...сохранять товары инста-шопов#[br]в свою ленту трендов.
       img(src='img/auth-slide-4.png')
       p.hide-desktop(style='margin-top: 0px')
         | Поэтому укажите инста-логин #[i.emoji.emoji_down]
+
     .swipe-item.slide.slide-1
       p ...искать и покупать в живом каталоге#[br] товаров из инстаграма.
       img(src='img/auth-slide-1.png')
+
   .swipe-navigation
     .swipe-prev(@click='swipe(-1)'): i.ic-swipe-left
     .swipe-next(@click='swipe(1)'): i.ic-swipe-right
 </template>
 
 <script type='text/ecmascript-6'>
+
+  import listen from 'event-listener';
+
   const TIMEOUT_SLIDER = 7000;
 
   export default {
@@ -44,32 +54,43 @@
       width: '',
       left: 0,
       timerId: '',
-      isActiveSwipe: false,
+      isActiveSwipe: false
     }),
 
     ready() {
-      this.$els.swipe.style.transition = '1s';
       this.createSlider();
-      this.$set('timerId', setInterval(this.swipe, TIMEOUT_SLIDER));
+
+      this.$nextTick(() => {
+        this.$set('timerId', setInterval(this.swipe, TIMEOUT_SLIDER));
+        setTimeout(() => {
+          this.$els.swipe.style.transition = '1s';
+        }, 100);
+      });
+
+      this.resize = listen(window, 'optimizedResize', () => {
+        this.createSlider();
+      });
     },
 
     beforeDestroy() {
       clearInterval(this.$get('timerId'));
+      this.resize.remove();
     },
 
     computed: {
       style() {
         return {
           width: `${ this.$get('widthSwipe') }px`,
-          left: `${ this.$get('left') }px`
+          left: `${ this.$get('left') }px`,
+          minHeight:'640px'
         };
-      },
+      }
     },
 
     methods: {
       createSlider() {
         var length = this.$els.swipe.childNodes.length;
-        var width = this.$els.swipe.clientWidth;
+        var width = this.$els.swipeContainer.clientWidth;
 
         this.$set('width', width);
         this.$set('left', -width);

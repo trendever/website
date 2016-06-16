@@ -8,7 +8,7 @@
   .caption__description(v-link='{name: "main-video"}') (смотрите видео)
   a(href='' v-link='{name: "info-user"}').btn.fast__big__btn.__orange.btn_primary.btn__more
     | Подробнее
-  .caption__subtitle Ежедневные шопинг тренды
+  .caption__subtitle Ежедневные шопинг - тренды
 
 </template>
 
