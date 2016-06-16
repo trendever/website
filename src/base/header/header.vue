@@ -60,6 +60,10 @@
         default: false
       },
 
+      forceBackLink: {
+        default: false
+      },
+
       // if exists, scroll to position Y this id element
       scrollToElement: {
         type: String,
@@ -110,7 +114,7 @@
           }
         }
 
-        if ( window.history.length > 1 ) {
+        if ( window.history.length > 1 && !this.forceBackLink) {
 
           window.history.back();
 

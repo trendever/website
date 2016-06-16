@@ -60,6 +60,8 @@ const mutations = {
 
         if ( state[ tab ][ i - 1 ].id === leads[ j - 1 ].id ) {
 
+          state[ tab ].$set( i - 1, leads[ j - 1 ] );
+
           matchedId.push( leads[ j - 1 ].id );
 
         }
@@ -179,7 +181,7 @@ const mutations = {
 
     if ( state.notify_count.hasOwnProperty( lead_id ) ) {
 
-      const globalCount         = state.global_notify_count - state.notify_count[ lead_id ];
+      const globalCount = state.global_notify_count - state.notify_count[ lead_id ];
 
       state.global_notify_count = globalCount >= 0 ? globalCount : 0;
 
