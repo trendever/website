@@ -216,7 +216,7 @@
     .section__content
       .about-us__logo
         a(href='#')
-          img(src='img/about-us-logo.png' alt='' itemprop="contentUrl")
+          img(src='../../../base/img/about-us-logo.png' alt='' itemprop="contentUrl")
       p Поможет найти и купить тренды
         br
         |  без наценки из первых рук!

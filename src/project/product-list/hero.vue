@@ -12,7 +12,7 @@
     a(class='profile-header__menu-link',
       v-link='{name: "info-user"}') Покупателям
     a(class='profile-header__menu-link',
-      @click="onBuyPromoProduct()") Магазинам
+      v-link='{name: "info-shop"}') Магазинам
     a(class='profile-header__menu-link',
       @click="onBuyPromoProduct()") Блогерам
     a(class='profile-header__menu-link',
@@ -40,7 +40,7 @@
           a(class='profile-header__menu-link',
            v-link='{name: "info-user"}') Покупателям
           a(class='profile-header__menu-link',
-            @click="onBuyPromoProduct(font-size: 25px;)") Магазинам
+            v-link='{name: "info-shop"}') Магазинам
           a(class='profile-header__menu-link',
             @click="onBuyPromoProduct()") Блогерам
           a(class='profile-header__menu-link',
