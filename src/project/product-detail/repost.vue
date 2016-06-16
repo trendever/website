@@ -37,7 +37,7 @@
 
     .footer
       p Нажмите 'Продолжить',#[br]чтобы открыть Instagram#[br]и вставить фото с текстом
-      button(v-on:click='openInsta', class='btn __primary __orange') Продолжить
+      a(href="instagram://camera", target="_blank", class='btn __primary __orange') Продолжить
 </template>
 
 <script type="text/babel">
@@ -96,12 +96,9 @@
 
         }
       },
-      openInsta() {
-        window.open('instagram://camera', '_blank');
-      },
       addInfo() {
-          //Get the selected text and append the extra info
-          let obj = this.getOpenedProduct;
+        //Get the selected text and append the extra info
+        let obj = this.getOpenedProduct;
         if(obj !== null){
 
           var selection = window.getSelection(),
