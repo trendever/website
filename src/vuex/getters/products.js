@@ -102,7 +102,19 @@ export const getColumnCount = ( { products } ) => products.columnCount;
 
 export const isLoading = ( { products } ) => products.loading;
 
-export const isAnimateShow = ( { products } ) => products.animateShow;
+export const isAnimateShow = ( state ) => {
+
+  const list = getList( state );
+
+  if ( list !== null ) {
+
+    return list.animateShow;
+
+  }
+
+  return true;
+
+};
 
 export const getScroll = ( state ) => {
 

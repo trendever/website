@@ -1,6 +1,6 @@
 <template lang="jade">
 div.scroll-cnt
-  header-component(:title='title', :back-link.once='comeBack')
+  header-component(:title='title', :back-link='{name: "home"}')
   .section.main.top
     .section__content#headerAnchor
       .wall#PostsList
@@ -27,16 +27,13 @@ div.scroll-cnt
 
   import * as products from 'services/products.js';
 
-  let entryPoint = '/';
-
   export default {
+    components: {
+      HeaderComponent,
+      PostComponent,
+      FooterComponent
+    },
     computed: {
-      comeBack: {
-        cache: false,
-        get(){
-          return entryPoint;
-        }
-      },
       title(){
         if ( this.getOpenedProduct ) {
           return 'Тренд ' + this.getOpenedProduct.code
@@ -53,31 +50,12 @@ div.scroll-cnt
       }
     },
     route: {
-      activate( { from:{ path }, to: { params: { id } } } ) {
-        if ( path ) {
-
-          if ( path.indexOf( 'repost' ) === -1 ) {
-
-            entryPoint = path;
-
-          }
-
-        } else {
-
-          entryPoint = '/';
-
-        }
-
+      activate( { to: { params: { id } } } ) {
         return this.openProduct( +id );
       }
     },
     beforeDestroy(){
       this.closeProduct();
-    },
-    components: {
-      HeaderComponent,
-      PostComponent,
-      FooterComponent
     }
   }
 </script>

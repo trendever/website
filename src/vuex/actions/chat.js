@@ -70,21 +70,16 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
             const msg = messages[ messages.length - 1 ]
 
-            /**
-             * Читать могут все пока с логикой не разберёмся
-             * */
-
-            //if ( msg.parts[ 0 ].mime_type !== 'json/status' ) {
-
             if ( state.leads.notify_count[ lead_id ] ) {
 
               const currentRole  = getCurrentMember( state, lead ).role
               const customerRole = chat.MEMBER_ROLES.CUSTOMER
+
               // TODO Объединить в функцию #logicReading
 
-              if ( true
-              /*                  ( customerRole === currentRole ) ||
-               ( msg.user.role === customerRole && currentRole !== customerRole )*/
+              if (
+                ( customerRole === currentRole ) ||
+                ( ( msg.user ) ? ( msg.user.role === customerRole && currentRole !== customerRole ) : true )
               ) {
 
                 messageService
@@ -100,8 +95,6 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
               }
 
             }
-
-            //}
 
           }
 
@@ -259,7 +252,7 @@ export const loadMessage = (() => {
         if ( hasMore[ state.conversation.id ] ) {
 
           return messageService
-            .find( id, messages[ 0 ].id, getCountForLoading )
+            .find( id, messages.length > 0 ? messages[ 0 ].id : undefined, getCountForLoading )
             .then(
               ( messages ) => {
 
@@ -363,15 +356,11 @@ export const receiveMessage = ( { dispatch, state }, conversation_id, messages )
 
       const msg = messages[ messages.length - 1 ]
 
-      /**
-       * Читать могу все, до тех пор пока с логикой не разберёмся
-       * */
+      const msgUserId = msg.user ? msg.user.user_id : null
 
-      //if ( msg.parts[ 0 ].mime_type !== 'json/status' ) {
+      dispatch( CONVERSATION_RECEIVE_MESSAGE, messages, conversation_id )
 
-      if ( userID( state ) !== msg.user.user_id ) {
-
-        dispatch( CONVERSATION_RECEIVE_MESSAGE, messages, conversation_id )
+      if ( userID( state ) !== msgUserId ) {
 
         if ( state.conversation.id === msg.conversation_id ) {
 
@@ -382,9 +371,9 @@ export const receiveMessage = ( { dispatch, state }, conversation_id, messages )
 
             // TODO Объединить в функцию #logicReading
 
-            if ( true
-            /*( customerRole === currentRole ) ||
-             ( msg.user.role === customerRole && currentRole !== customerRole )*/
+            if (
+              ( customerRole === currentRole ) ||
+              ( ( msg.user ) ? ( msg.user.role === customerRole && currentRole !== customerRole ) : true )
             ) {
 
               messageService
@@ -405,15 +394,11 @@ export const receiveMessage = ( { dispatch, state }, conversation_id, messages )
 
         }
 
-        //}
+      }
 
-      } else {
+      if ( msg.parts[ 0 ].mime_type === 'json/status' ) {
 
-        if ( msg.parts[ 0 ].mime_type === 'json/status' ) {
-
-          dispatch( CONVERSATION_CONFIRM_STATUS_MSG, messages, conversation_id )
-
-        }
+        dispatch( CONVERSATION_CONFIRM_STATUS_MSG, messages, conversation_id )
 
       }
 

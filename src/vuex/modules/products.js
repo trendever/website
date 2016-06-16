@@ -24,12 +24,12 @@ const state = {
     //   scrollHeight: 0,
     //   lengthList: 9,
     //   isInfinity: true,
+    //   animateShow: true,
     //   hasMore: true,
     // },
   },
   columnCount: document.body.offsetWidth <= 750 ? 2 : 3,
   listId: null,
-  animateShow: true,
   loading: true,
   ITEMS_PER_PAGE,
   openedProduct: null
@@ -52,6 +52,7 @@ const mutations = {
             scrollHeight: 0,
             lengthList: ITEMS_PER_PAGE,
             isInfinity: true,
+            animateShow: true,
             hasMore: Array.isArray( products ) ? products.length >= ITEMS_PER_PAGE : false
           }
         }
@@ -76,6 +77,7 @@ const mutations = {
             scrollHeight: 0,
             lengthList: ITEMS_PER_PAGE,
             isInfinity: true,
+            animateShow: true,
             hasMore: (Array.isArray( products )) ? products.length >= ITEMS_PER_PAGE : false
           }
         }
@@ -109,110 +111,144 @@ const mutations = {
 
   },
 
-  [PRODUCTS_SET_OPENED_PRODUCT] ( state, product ){
+  [PRODUCTS_SET_OPENED_PRODUCT] ( state, product ) {
 
     state.openedProduct = product;
 
   },
 
-  [PRODUCTS_UPDATE_LIKED_BY] ( state, product_id, user, like ){
+  [PRODUCTS_UPDATE_LIKED_BY] ( state, product, user, like ) {
+
+    /**
+     * Если я лайкнул я просто одного себя ставлю в liked_by.
+     * Всё ровно сейчас необходимо каждый раз запрашивать объект продукта.
+     * */
 
     if ( state.openedProduct !== null ) {
 
-      if ( state.openedProduct.hasOwnProperty( 'liked_by' ) ) {
+      if ( like ) {
 
-        const foundUser = state.openedProduct.liked_by.find( ( { id } ) => {
-
-          return id === user.id;
-
+        state.openedProduct = Object.assign( {}, state.openedProduct, {
+          liked_by: [ user ]
         } );
-
-        if ( typeof foundUser === 'undefined' ) {
-
-          state.openedProduct = Object.assign( {}, state.openedProduct, {
-            liked_by: state.openedProduct.liked_by.concat( [ user ] )
-          } );
-
-        } else {
-
-          if ( !like ) {
-
-            const liked_by = [];
-
-            state.openedProduct.liked_by.forEach( ( userItem ) => {
-
-              if ( userItem.id !== user.id ) {
-                liked_by.push( userItem );
-              }
-
-            } );
-
-            state.openedProduct = Object.assign( {}, state.openedProduct, {
-
-              liked_by
-
-            } );
-
-          }
-
-        }
 
       } else {
 
-        state.openedProduct = Object.assign( {}, state.openedProduct, { liked_by: [ user ] } );
+        state.openedProduct = Object.assign( {}, state.openedProduct, {
+          liked_by: []
+        } );
 
       }
 
     }
 
-    // TODO выяснить по поводу удаления из ленты. 
+    /*    if ( state.openedProduct !== null ) {
 
-    /*    if ( !like ) {
+     if ( state.openedProduct.hasOwnProperty( 'liked_by' ) ) {
 
-     for ( const listId in state.lists ) {
+     const foundUser = state.openedProduct.liked_by.find( ( { id } ) => {
 
-     if ( state.lists.hasOwnProperty( listId ) ) {
+     return id === user.id;
 
-     const products = state.lists[ listId ];
+     } );
 
-     for ( let i = 0; i <= products.length; i++ ) {
+     if ( typeof foundUser === 'undefined' ) {
 
-     const { id, liked_by } = products[ i - 1 ];
+     state.openedProduct = Object.assign(
+     {},
+     state.openedProduct,
+     {
+     liked_by: state.openedProduct.liked_by.concat( [ user ] )
+     }
+     );
 
-     /!**
-     * Находим продукт в ленте и удаляем его из ленты
-     * *!/
+     } else {
 
-     if ( id === product_id ) {
+     if ( !like ) {
 
-     if ( typeof liked_by !== 'undefined' ) {
+     const liked_by = [];
 
-     if ( Array.isArray( liked_by ) ) {
+     state.openedProduct.liked_by.forEach( ( userItem ) => {
 
-     products[ i - 1 ].liked_by = liked_by.map( ( userItem ) => {
-
-     if ( userItem !== user.id ) {
-
-     return userItem;
-
+     if ( userItem.id !== user.id ) {
+     liked_by.push( userItem );
      }
 
+     } );
+
+     state.openedProduct = Object.assign( {}, state.openedProduct, {
+     liked_by
      } );
 
      }
 
      }
 
-     }
+     } else {
 
-
-     }
-
-     }
+     state.openedProduct = Object.assign( {}, state.openedProduct, {
+     liked_by: [ user ]
+     } );
 
      }
 
      }*/
+
+    if ( state.lists.hasOwnProperty( 'profile' ) ) {
+
+      const { products } = state.lists.profile;
+
+      if ( like ) {
+
+        state.lists.profile = Object.assign( {}, state.lists.profile, {
+          products: products.concat( [ product ] )
+        } )
+
+      } else {
+
+        const newProducts = [];
+
+        for ( let i = 0; i < products.length; i++ ) {
+
+          const { id } = products[ i ];
+
+          if ( id !== product.id ) {
+
+            newProducts.push( products[ i ] );
+
+          }
+
+        }
+
+        state.lists.profile = Object.assign( {}, state.lists.profile, {
+          products: newProducts
+        } )
+
+      }
+
+    } else {
+
+      if ( like ) {
+
+        state.lists = Object.assign(
+          {},
+          state.lists,
+          {
+            [ 'profile' ]: {
+              products: [ Object.assign( {}, product ) ],
+              scrollTop: 0,
+              scrollHeight: 0,
+              lengthList: ITEMS_PER_PAGE,
+              isInfinity: true,
+              animateShow: true,
+              hasMore: true
+            }
+          }
+        )
+
+      }
+
+    }
 
   },
 
@@ -272,9 +308,13 @@ const mutations = {
 
   },
 
-  [PRODUCTS_SET_ANIMATE] ( state, animateShow = true ) {
+  [PRODUCTS_SET_ANIMATE] ( state, animateShow = true, listId = state.listId ) {
 
-    state.animateShow = animateShow;
+    if ( state.lists.hasOwnProperty( listId ) ) {
+
+      state.lists[ listId ].animateShow = animateShow;
+
+    }
 
   }
 

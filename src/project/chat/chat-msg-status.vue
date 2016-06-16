@@ -54,6 +54,9 @@
             case 'COMPLETED':
               name = 'Выполнен';
               break;
+            case 'IN_PROGRESS':
+              name = 'В процессе';
+              break;
             case 'ON_DELIVERY':
               name = 'На доставке';
               break;
