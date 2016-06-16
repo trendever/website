@@ -29,6 +29,11 @@
       }
     },
     ready() {
+      let splash = document.querySelector('.splash')
+      let viewport = document.getElementById('viewport')
+      viewport.setAttribute('content', 'width=750, maximum-scale=1.0, user-scalable=no')
+      splash.style.display = "none"
+
       let token = null
 
       if ( this.$route.query ) {
