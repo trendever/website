@@ -1,7 +1,7 @@
 <style src='./styles/chat-header.pcss'></style>
 <template lang="jade">
 div
-  header-component(:notify-count='getGlobalNotifyCount')
+  header-component(:notify-count='getGlobalNotifyCount', :back-link='{name: "chat_list"}')
 
     .chat-header(slot='content')
       .chat-header_cnt(v-show='getShopName')

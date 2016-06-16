@@ -21,124 +21,138 @@
 </template>
 
 <script type='text/babel'>
-import listen from 'event-listener';
+  import listen from 'event-listener';
 
-export default {
-  data(){
-    return {
-      is_visible: false,
-      is_action_up: false,
-      scrollEvent: null,
-      showOnEl: null,
-    }
-  },
-  props: {
-    // Title of header
-    title: {
-      type: String
+  export default {
+    data(){
+      return {
+        is_visible: false,
+        is_action_up: false,
+        scrollEvent: null,
+        showOnEl: null,
+      }
     },
+    props: {
+      // Title of header
+      title: {
+        type: String
+      },
 
-    // if exists, then btn will work in two mode:
-    // 1. Go to prev page
-    // 2. Scroll to top (if show_on_elem scrollY is 0 or smaller)
-    // Elem Y position must be not ~0px.
-    show_on_elem: {
-      type: String,
-      default: null
+      // if exists, then btn will work in two mode:
+      // 1. Go to prev page
+      // 2. Scroll to top (if show_on_elem scrollY is 0 or smaller)
+      // Elem Y position must be not ~0px.
+      show_on_elem: {
+        type: String,
+        default: null
+      },
+
+      // if header is not main. For example the home page.
+      // Header will show if show_on_elem scrollY is 0 or smaller
+      is_secondary: {
+        type: Boolean,
+        default: false
+      },
+
+      // If exist, then LeftArrowBtn will redirect to backLink
+      // receive reverse url name. Example: home
+      backLink: {
+        default: false
+      },
+
+      // if exists, scroll to position Y this id element
+      scrollToElement: {
+        type: String,
+        default: null
+      },
+
+      // Show or Hide back arrow
+      leftBtnShow: {
+        type: Boolean,
+        default: true
+      },
+
+      // Show notify badge if exist
+      notifyCount: {
+        type: Number,
+        default: 0
+      }
     },
-
-    // if header is not main. For example the home page.
-    // Header will show if show_on_elem scrollY is 0 or smaller
-    is_secondary: {
-      type: Boolean,
-      default: false
+    beforeDestroy() {
+      if ( this.scrollEvent ) {
+        this.scrollEvent.remove();
+      }
     },
+    ready() {
+      this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
-    // if exists, scroll to position Y this id element
-    scrollToElement: {
-      type: String,
-      default: null
+      if ( this.show_on_elem ) {
+        this.showOnEl = document.getElementById( this.show_on_elem );
+      }
+
+      // Run, function for stopped scroll.
+      // Because function work only in motion.
+      this.toggleHeaderOnScroll();
+
+      this.scrollEvent = listen( this.scrollCnt, 'scroll', this.toggleHeaderOnScroll.bind( this ) )
     },
+    methods: {
+      leftBtnAction() {
+        if ( this.show_on_elem ) {
+          if ( this.scrollCnt.scrollTop - this.showOnEl.offsetTop >= 0 ) {
 
-    // Show or Hide back arrow
-    leftBtnShow: {
-      type: Boolean,
-      default: true
-    },
-
-    // Show notify badge if exist
-    notifyCount: {
-      type: Number,
-      default: 0
-    }
-  },
-  beforeDestroy() {
-    if (this.scrollEvent) {
-      this.scrollEvent.remove();
-    }
-  },
-  ready() {
-    this.scrollCnt = document.querySelector('.scroll-cnt');
-
-    if (this.show_on_elem) {
-      this.showOnEl = document.getElementById(this.show_on_elem);
-    }
-
-    // Run, function for stopped scroll.
-    // Because function work only in motion.
-    this.toggleHeaderOnScroll();
-
-    this.scrollEvent = listen(this.scrollCnt, 'scroll', this.toggleHeaderOnScroll.bind(this))
-  },
-  methods: {
-    leftBtnAction() {
-      if (this.show_on_elem) {
-        if (this.scrollCnt.scrollTop - this.showOnEl.offsetTop >= 0) {
-
-          if (this.scrollToElement) {
-            this.scrollCnt.scrollTop = document.getElementById(this.scrollToElement).offsetTop;
-          } else {
-            this.scrollCnt.scrollTop = 0;
+            if ( this.scrollToElement ) {
+              this.scrollCnt.scrollTop = document.getElementById( this.scrollToElement ).offsetTop;
+            } else {
+              this.scrollCnt.scrollTop = 0;
+            }
+            return;
           }
+        }
+
+        if ( window.history.length > 1 ) {
+
+          window.history.back();
+
+        } else {
+
+          this.$router.go( this.backLink );
+
+        }
+
+      },
+      toggleHeaderOnScroll() {
+
+        if ( this.show_on_elem ) {
+          // If show_on_elem not exists, then wait when render it.
+          // Be careful, it's may cycling as
+          // infinity recursion if element not exists.
+          if ( !this.showOnEl ) {
+            setTimeout( this.toggleHeaderOnScroll.bind( this ), 50 );
+            return;
+          }
+
+          // Show header, if show_on_elem scrollY is 0 or smaller
+          if ( this.scrollCnt.scrollTop - this.showOnEl.offsetTop >= 0 ) {
+            this.$set( 'is_visible', true );
+
+            // Left btn now work as ScrollToTop
+            this.$set( 'is_action_up', true );
+            return;
+          }
+        }
+
+        // Left btn now work as Go to Prev Page
+        this.$set( 'is_action_up', false );
+
+        // if header as secondary header
+        if ( this.$get( 'is_secondary' ) ) {
+          this.$set( 'is_visible', false );
           return;
         }
-      }
-
-      window.history.back();
-
+        this.$set( 'is_visible', true );
+      },
     },
-    toggleHeaderOnScroll() {
-
-      if (this.show_on_elem) {
-        // If show_on_elem not exists, then wait when render it.
-        // Be careful, it's may cycling as
-        // infinity recursion if element not exists.
-        if (!this.showOnEl) {
-          setTimeout(this.toggleHeaderOnScroll.bind(this), 50);
-          return;
-        }
-
-        // Show header, if show_on_elem scrollY is 0 or smaller
-        if (this.scrollCnt.scrollTop - this.showOnEl.offsetTop >= 0) {
-          this.$set('is_visible', true);
-
-          // Left btn now work as ScrollToTop
-          this.$set('is_action_up', true);
-          return;
-        }
-      }
-
-      // Left btn now work as Go to Prev Page
-      this.$set('is_action_up', false);
-
-      // if header as secondary header
-      if (this.$get('is_secondary')) {
-        this.$set('is_visible', false);
-        return;
-      }
-      this.$set('is_visible', true);
-    },
-  },
-}
+  }
 
 </script>

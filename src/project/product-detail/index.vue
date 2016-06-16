@@ -1,6 +1,6 @@
 <template lang="jade">
 div.scroll-cnt
-  header-component(:title='title')
+  header-component(:title='title', :back-link='{name: "home"}')
   .section.main.top
     .section__content#headerAnchor
       .wall#PostsList
