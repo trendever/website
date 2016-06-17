@@ -142,7 +142,7 @@
             () => {
               this.clearNotify( this.lead_id );
                 this
-                  .runLoadinMessage()
+                  .runLoadingMessage()
                   .then( () => {
                     this.$nextTick( () => {
                       this.goToBottom();
@@ -156,7 +156,7 @@
           );
       },
 
-      runLoadinMessage(){
+      runLoadingMessage(){
 
         return new Promise((resolve, reject) => {
 

@@ -21,32 +21,32 @@ div
 </template>
 
 <script type='text/babel'>
-  import listen from 'event-listener';
+  import listen from 'event-listener'
 
-  import store from 'vuex/store';
+  import store from 'vuex/store'
   import {
     getId,
     getCurrentMember,
     getStatus,
     getShowMenu
-  } from 'vuex/getters/chat.js';
+  } from 'vuex/getters/chat.js'
 
   import {
     createMessage,
     setShowMenu,
     setStatus
-  } from 'vuex/actions/chat.js';
+  } from 'vuex/actions/chat.js'
 
-  import * as service from 'services/message';
-  import * as leads from 'services/leads';
+  import * as service from 'services/message'
+  import * as leads from 'services/leads'
 
-  import ChatMenu from './chat-menu.vue';
+  import ChatMenu from './chat-menu.vue'
 
   export default{
     data(){
       return {
         txtMsg: '',
-      };
+      }
     },
 
     ready(){
@@ -57,12 +57,12 @@ div
 
           if ( !event.ctrlKey && event.keyCode === 13 ) {
 
-            this.send( event );
+            this.send( event )
 
           }
           if ( event.ctrlKey && event.keyCode === 13 ) {
 
-            this.$set( 'txtMsg', this.txtMsg + '\n' );
+            this.$set( 'txtMsg', this.txtMsg + '\n' )
 
           }
 
@@ -74,10 +74,10 @@ div
 
     beforeDestroy() {
       if ( this.scrollEvent ) {
-        this.scrollEvent.remove();
+        this.scrollEvent.remove()
       }
       if ( this.sendMessage ) {
-        this.sendMessage.remove();
+        this.sendMessage.remove()
       }
     },
 
@@ -85,7 +85,7 @@ div
       actions: {
         createMessage,
         setShowMenu,
-        setStatus,
+        setStatus
       },
       getters: {
         getId,
@@ -99,35 +99,35 @@ div
       normalizeScroll() {
         // Hard hack for ios jumping, why open keyboard
         if ( window.scrollY === 0 ) {
-          return;
+          return
         }
 
         if ( this.windowScrollY
           && this.windowScrollY.min !== window.scrollY
           && this.windowScrollY.msx !== window.scrollY ) {
-          return window.scrollTo( 0, this.windowScrollY.last );
+          return window.scrollTo( 0, this.windowScrollY.last )
         }
 
         // Magic numbers
         var devices = [
           { min: 446, max: 510, diff: 19 }, // iphone 6 plus, 6s plus
           { min: 470, max: 536, diff: 20 }, // iphone 6, 6s
-          { min: 548, max: 616, diff: 24 }, // iphone 5, 4s
-        ];
+          { min: 548, max: 616, diff: 24 } // iphone 5, 4s
+        ]
         if ( window.browser.iphone ) {
 
           for ( var item of devices ) {
             if ( window.scrollY === item.min ) {
 
-              item.last          = item.min - item.diff;
-              this.windowScrollY = item;
-              return window.scrollTo( 0, item.last );
+              item.last          = item.min - item.diff
+              this.windowScrollY = item
+              return window.scrollTo( 0, item.last )
 
             } else if ( window.scrollY === item.max ) {
 
-              item.last          = item.max - item.diff;
-              this.windowScrollY = item;
-              return window.scrollTo( 0, item.last );
+              item.last          = item.max - item.diff
+              this.windowScrollY = item
+              return window.scrollTo( 0, item.last )
 
             }
           }
@@ -138,42 +138,42 @@ div
       blurInput( event ){
         if ( window.browser.iphone ) {
           if ( this.scrollEvent ) {
-            this.scrollEvent.remove();
+            this.scrollEvent.remove()
           }
         }
       },
 
       focusInput(){
         if ( window.browser.iphone ) {
-          this.normalizeScroll();
-          this.scrollEvent = listen( window, 'scroll', this.normalizeScroll.bind( this ) );
+          this.normalizeScroll()
+          this.scrollEvent = listen( window, 'scroll', this.normalizeScroll.bind( this ) )
         }
       },
 
       send ( event ) {
-        event.stopPropagation();
-        event.preventDefault();
+        event.stopPropagation()
+        event.preventDefault()
 
-        const txtMsg = this.txtMsg.trim();
+        const txtMsg = this.txtMsg.trim()
         if ( !txtMsg.length ) {
-          return;
+          return
         }
 
-        this.txtMsg = '';
+        this.txtMsg = ''
 
-        const promise = this.createMessage( this.getId, txtMsg, 'text/plain' );
+        const promise = this.createMessage( this.getId, txtMsg, 'text/plain' )
         promise.then( () => {
           if (
             this.getStatus === leads.STATUSES.NEW.key &&
             this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key
           ) {
-            this.setStatus( 'PROGRESS', 'lead.state.changed' );
+            this.setStatus( 'PROGRESS', 'lead.state.changed' )
           }
-        } );
+        } )
 
         promise.catch( ( { code, errData } ) => {
-          this.txtMsg = txtMsg;
-          console.error( errData );
+          this.txtMsg = txtMsg
+          console.error( errData )
 
           // ToDo надо отображать, что сообщение не отправлено значком в сообщении
           alert( 'Ошибка. Сообщение не отправлено. Может нет интернета?' )
@@ -181,22 +181,22 @@ div
           console.error( new Error( 'Problem to send message' ), {
             extra: {
               errorMsg: errData,
-              user: store.state.user,
+              user: store.state.user
             }
-          } );
+          } )
 
-        } );
+        } )
       }
     },
 
     watch: {
       txtMsg( msg ) {
         this.$nextTick( () => {
-          let inputMsg          = this.$els.inputMsg;
-          const textHeight      = window.matchMedia( '(max-width: 750px)' ).matches ? 58 : 32;
-          const inpHeight       = inputMsg.scrollHeight;
-          inputMsg.style.height = (msg ? (inpHeight <= textHeight) ? textHeight : inpHeight : textHeight) + 'px';
-        } );
+          let inputMsg          = this.$els.inputMsg
+          const textHeight      = window.matchMedia( '(max-width: 750px)' ).matches ? 58 : 32
+          const inpHeight       = inputMsg.scrollHeight
+          inputMsg.style.height = (msg ? (inpHeight <= textHeight) ? textHeight : inpHeight : textHeight) + 'px'
+        } )
 
       }
     },

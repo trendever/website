@@ -12,7 +12,22 @@ export const getTab = ( { leads } ) => {
 
 export const getLengthList = ( { leads } ) => {
 
-  return leads.lengthList;
+  return leads.lengthList[ getTab( { leads } ) ];
+
+};
+
+export const getHasMore = ( { leads } ) => {
+
+  return leads.hasMore[ getTab( { leads } ) ];
+
+};
+
+export const getScroll = ( { leads } ) => {
+
+  return {
+    scrollTop: leads.scrollTop[ getTab( { leads } ) ],
+    scrollHeight: leads.scrollHeight[ getTab( { leads } ) ]
+  };
 
 };
 
@@ -161,14 +176,4 @@ export const isDone = ( state ) => state.leads.done;
 
 export const getGroup = ( state, lead ) => lead.customer_id === userID( state ) ? 'customer' : 'seller';
 
-export const getLeadHeight = () => {
-
-  if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
-    return 230
-  }
-
-  return 134;
-
-};
-
-export const getLengthListOnBody = () => Math.round( document.body.offsetHeight / getLeadHeight() );
+export const getCountForLoading = (window.browser.mobile) ? 6 : 12;
