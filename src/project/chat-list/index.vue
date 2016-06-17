@@ -184,7 +184,7 @@ div.scroll-cnt(v-el:scroll-cnt)
              * Магическое 500 это кол-во px после scrollTop;
              * */
 
-            if ( targetHeight < ( scrollTop + 500 ) ) {
+            if ( targetHeight < ( scrollTop + 1000 ) ) {
 
               setTimeout( () => {
 
