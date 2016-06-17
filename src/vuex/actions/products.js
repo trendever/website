@@ -94,6 +94,8 @@ export const loadProducts = (
 
     if ( items === null || force ) {
 
+      setAnimate({ dispatch, state }, true);
+      
       products
         .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
         .then( data => {
@@ -122,6 +124,8 @@ export const loadProducts = (
 
         if ( hasMore( state ) ) {
 
+          setAnimate({ dispatch, state }, true);
+          
           products
             .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
             .then( data => {
@@ -142,6 +146,8 @@ export const loadProducts = (
 
       } else {
 
+        setAnimate({ dispatch, state }, false);
+        
         dispatch( types.PRODUCTS_INC_LENGTH_LIST );
         resolve();
 
@@ -287,9 +293,9 @@ export const setScroll = ( { dispatch }, scrollTop, scrollHeight ) => {
 
 };
 
-export const offAnimate = ( { dispatch } ) => {
+export const setAnimate = ( { dispatch }, state ) => {
 
-  dispatch( types.PRODUCTS_SET_ANIMATE, false );
+  dispatch( types.PRODUCTS_SET_ANIMATE, state );
 
 };
 
