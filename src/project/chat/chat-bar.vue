@@ -53,16 +53,16 @@ div
 
       if ( !window.browser.mobile ) {
 
-        this.sendMessage = listen( window, 'keyup', ( event ) => {
+        this.sendMessage = listen( window, 'keydown', ( event ) => {
 
-          if ( !event.ctrlKey && event.keyCode === 13 ) {
+          if ( !event.shiftKey && event.keyCode === 13 ) {
 
             this.send( event )
 
           }
-          if ( event.ctrlKey && event.keyCode === 13 ) {
+          if ( event.shiftKey && event.keyCode === 13 ) {
 
-            this.$set( 'txtMsg', this.txtMsg + '\n' )
+            this.$set( 'txtMsg', this.txtMsg )
 
           }
 
