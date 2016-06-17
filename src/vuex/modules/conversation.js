@@ -102,12 +102,6 @@ const addServiceMessage = (function() {
 
         }
 
-        if ( typeof messages[ i ].serviceMessage === 'undefined' ) {
-
-          newMessage.push( messages[ i ] );
-
-        }
-
         if ( messages[ i ].created_at !== null ) {
 
           const date = normalizeDate( messages[ i ].created_at );
@@ -119,6 +113,16 @@ const addServiceMessage = (function() {
             newMessage.push( getDateMessage( messages[ i ].created_at, messages[ i ].id ) );
 
           }
+
+        }
+
+        /**
+         * Вот тут зависит от того как составлять массив, необходимо
+         * */
+
+        if ( typeof messages[ i ].serviceMessage === 'undefined' ) {
+
+          newMessage.push( messages[ i ] );
 
         }
 

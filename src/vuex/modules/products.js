@@ -201,7 +201,7 @@ const mutations = {
       if ( like ) {
 
         state.lists.profile = Object.assign( {}, state.lists.profile, {
-          products: products.concat( [ product ] )
+          products: [ product ].concat( products )
         } )
 
       } else {
