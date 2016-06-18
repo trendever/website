@@ -35,7 +35,7 @@ article.product-post
     .product-post__title.__bottom {{{ item.name }}}
 
   footer.product-post__footer
-    .product-post__action.__heart(v-on:click="setLike")
+    .product-post__action.__heart(v-on:click.prevent="like", :class="{'__heart-active': isLiked}")
       .product-post__trend: i.ic-heart
       .product-post__action-title тренд
 
@@ -43,7 +43,7 @@ article.product-post
       .product-post__trend: i.ic-bag
       .product-post__action-title купить
 
-    a.product-post__action.__right(v-link='{name:"product_repost", params: {id: obj.id}}' v-if='Mobile')
+    a.product-post__action.__right(v-link='{name:"product_repost", params: {id: getOpenedProduct.id}}' v-if='Mobile')
       .product-post__trend: i.ic-instagram-icon
       .product-post__action-title пост
 
@@ -59,7 +59,8 @@ article.product-post
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import { createLead } from 'vuex/actions/lead.js';
   import { isAuth } from 'vuex/getters/user.js';
-  import { getOpenedProduct } from 'vuex/getters/products';
+  import { getOpenedProduct, isLiked } from 'vuex/getters/products';
+  import { setLike } from 'vuex/actions/products';
   import * as leads from 'services/leads';
   import * as products from 'services/products';
 
@@ -79,7 +80,7 @@ article.product-post
     },
 
     beforeDestroy() {
-      if (this.resizeEvent) {
+      if ( this.resizeEvent ) {
         this.resizeEvent.remove();
       }
     },
@@ -88,17 +89,13 @@ article.product-post
       actions: {
         createLead,
         setCallbackOnSuccessAuth,
+        setLike
       },
       getters: {
         getOpenedProduct,
-        isAuth,
-      },
-    },
-
-    computed: {
-      obj() {
-        return this.getOpenedProduct;
-      },
+        isLiked,
+        isAuth
+      }
     },
 
     ready: function() {
@@ -106,45 +103,39 @@ article.product-post
 
       this.updateImageSize();
 
-      this.resizeEvent = listen(window, 'optimizedResize', this.updateImageSize.bind( this ));
+      this.resizeEvent = listen( window, 'optimizedResize', this.updateImageSize.bind( this ) );
 
-      this.userImage = this.obj.supplier.avatar_url;
+      this.userImage = this.getOpenedProduct.supplier.avatar_url;
     },
 
     methods: {
 
+      like(){
+        this.setLike();
+      },
+
       updateImageSize(){
-        let sizes = ratioFit(this.obj.instagram_image_width,
-                            this.obj.instagram_image_height,
-                            this.$els.imageBody.offsetWidth,
-                            this.obj.instagram_image_height);
-        this.width = sizes.width;
+        let sizes   = ratioFit( this.getOpenedProduct.instagram_image_width,
+          this.getOpenedProduct.instagram_image_height,
+          this.$els.imageBody.offsetWidth,
+          this.getOpenedProduct.instagram_image_height );
+        this.width  = sizes.width;
         this.height = sizes.height;
       },
 
-      price (item) {
+      price ( item ) {
         return (item.price && !item.discount_price);
       },
 
-      zeroPrice (item) {
+      zeroPrice ( item ) {
         return (!item.discount_price && !item.price);
-      },
-
-      setLike(){
-
-        products.like(this.obj.id, true).then((isLike) =>{
-
-          //TODO Обновлять продукт в ленте если открыт из ленты.
-
-        });
-
       },
 
       onBuy() {
         if ( !this.isAuth ) {
 
           this.$router.go( { name: 'signup' } );
-          this.setCallbackOnSuccessAuth(this.onBuy.bind(this))
+          this.setCallbackOnSuccessAuth( this.onBuy.bind( this ) )
 
         } else {
 
@@ -152,7 +143,7 @@ article.product-post
 
           promise.then(
             ( lead ) => {
-              if (lead !== undefined && lead !== null){
+              if ( lead !== undefined && lead !== null ) {
                 this.$router.go( { name: 'chat', params: { id: lead.id } } );
               }
             },
@@ -169,19 +160,18 @@ article.product-post
       loadFullImage() {
         // Load and set full image.
         let img = new Image();
-        let obj = this.getOpenedProduct;
-        let url = obj.instagram_images.find((img) => img.name === "L").url
+        let url = this.getOpenedProduct.instagram_images.find( ( img ) => img.name === "L" ).url;
 
-        img.load(url, null, null, () => {
-          this.IgImageUrl = url;
+        img.load( url, null, null, () => {
+          this.IgImageUrl   = url;
           this.imageOpacity = 1;
-        });
+        } );
       },
 
-      onUserImageError(e){
-        console.warn(`Load user photo has failed. Product id: ${this.obj.id}`);
+      onUserImageError( e ){
+        console.warn( `Load user photo has failed. Product id: ${this.getOpenedProduct.id}` );
 
-        this.userImage = require('base/img/logo.png');
+        this.userImage = require( 'base/img/logo.png' );
       }
     },
   }

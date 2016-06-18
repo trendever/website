@@ -60,15 +60,16 @@
 </template>
 
 <script type='text/babel'>
-import { setCallbackOnSuccessAuth } from 'vuex/actions';
-import { createLead } from 'vuex/actions/lead';
-import { isAuth } from 'vuex/getters/user.js';
-import * as leads from 'services/leads';
+import { setCallbackOnSuccessAuth } from 'vuex/actions'
+import { createLead } from 'vuex/actions/lead'
+import { isAuth } from 'vuex/getters/user.js'
+import * as leads from 'services/leads'
 
 export default {
   data(){
     return {
-      menuOpened: false
+      menuOpened: false,
+      isStandalone: browser.standalone
     }
   },
 

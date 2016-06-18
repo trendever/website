@@ -13,6 +13,7 @@ div
           .input-container
             .input.confirm-input
               input(type='tel',
+                autocomplete="off",
                 @keyup='onInput',
                 @focus='onFocus',
                 @keydown.enter='onButton()',

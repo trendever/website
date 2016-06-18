@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import { getCurrentMember } from 'vuex/getters/chat.js';
+  import { getCurrentMember, getCustomerName } from 'vuex/getters/chat.js';
   import * as leads from 'services/leads';
   import { formatMonth } from './utils';
 
@@ -20,7 +20,8 @@
     },
     vuex: {
       getters: {
-        getCurrentMember
+        getCurrentMember,
+        getCustomerName
       }
     },
     computed: {
@@ -39,22 +40,22 @@
 
         const { type, value } = JSON.parse( this.msg.parts[ 0 ].content );
 
-        if(type === 'lead.state.date'){
+        if ( type === 'lead.state.date' ) {
 
-          return formatMonth(value);
+          return formatMonth( value );
 
         }
 
         if ( type === 'lead.state.changed' ) {
 
-          return null;
-
-/*
           let name = null;
 
           switch ( value ) {
             case 'COMPLETED':
               name = 'Выполнен';
+              break;
+            case 'IN_PROGRESS':
+              name = 'В процессе';
               break;
             case 'ON_DELIVERY':
               name = 'На доставке';
@@ -72,7 +73,6 @@
           }
 
           return `статус изменен на ${ name }`;
-*/
 
         }
 
@@ -90,7 +90,7 @@
 
         if ( type === 'customer.phone.added' ) {
 
-          return `добавлен номер телефона покупателя`;
+          return `${this.getCustomerName} здесь впервые ;-)`;
 
         }
 

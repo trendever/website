@@ -1,7 +1,16 @@
 import * as types from '../mutation-types';
 import * as products from 'services/products.js';
 import { searchValue, selectedTags } from 'vuex/getters';
-import { getLastProduct, getLengthList, getProducts, getProduct, hasMore } from '../getters/products.js';
+import { user } from 'vuex/getters/user.js';
+import {
+  getLastProduct,
+  getLengthList,
+  getProducts,
+  getProduct,
+  hasMore,
+  getOpenedProduct,
+  isLiked
+} from 'vuex/getters/products.js';
 
 export const getSearchOptions = (
   { state },
@@ -85,6 +94,8 @@ export const loadProducts = (
 
     if ( items === null || force ) {
 
+      setAnimate({ dispatch, state }, true);
+      
       products
         .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
         .then( data => {
@@ -104,7 +115,7 @@ export const loadProducts = (
         } )
         .catch( ( error ) => {
           products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
-          reject(error);
+          reject( error );
         } );
 
     } else {
@@ -113,6 +124,8 @@ export const loadProducts = (
 
         if ( hasMore( state ) ) {
 
+          setAnimate({ dispatch, state }, true);
+          
           products
             .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
             .then( data => {
@@ -124,7 +137,7 @@ export const loadProducts = (
             } )
             .catch( ( error ) => {
               products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
-              reject(error);
+              reject( error );
             } );
 
         }
@@ -133,6 +146,8 @@ export const loadProducts = (
 
       } else {
 
+        setAnimate({ dispatch, state }, false);
+        
         dispatch( types.PRODUCTS_INC_LENGTH_LIST );
         resolve();
 
@@ -144,54 +159,76 @@ export const loadProducts = (
 
 };
 
+export const openProduct = ( { dispatch, state }, id ) => {
+
+  /**
+   * Логика упростилась так как каждый раз при открытии продкута нужно его запрашивать
+   * не известно был ли установлени или снят @savetrend/
+   * TODO попросить сделать событие product.LIKE - позволит постоянно не запрашивать объект продукта.
+   * */
+
+  return products
+    .get( id )
+    .then( ( product ) => {
+      dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+    } )
+    .catch( ( error ) => {
+      products.sendError( error, { state, id } );
+    } );
+
+  /*  const product = getProduct( state, id );
+
+   return new Promise( ( resolve, reject ) => {
+
+   if ( product !== null ) {
+
+   if ( product.hasOwnProperty( 'liked_by' ) ) {
+
+   dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+   resolve();
+
+   } else {
+
+   /!**
+   * !!! Внимание
+   * Этот дублирущий запрос делается потому что сейчас в объектах ленты нет поля liked_by.
+   * *!/
+
+   products
+   .get( id )
+   .then( ( product ) => {
+   dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+   resolve();
+   } )
+   .catch( ( error ) => {
+   products.sendError( error, { state, id } );
+   reject( error );
+   } );
+
+   }
+
+   } else {
+
+   products
+   .get( id )
+   .then( ( product ) => {
+   dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+   resolve();
+   } )
+   .catch( ( error ) => {
+   products.sendError( error, { state, id } );
+   reject( error );
+   } );
+
+   }
+
+   } );*/
+
+};
+
 export const setListId = ( { dispatch }, listId ) => {
 
   dispatch( types.PRODUCTS_SET_LIST_ID, listId );
-
-};
-
-export const openProduct = ( { dispatch, state }, id ) => {
-
-  dispatch( types.PRODUCTS_SET_PRODUCT_ID, id );
-
-  const product = getProduct( state );
-
-  return new Promise( ( resolve, reject ) => {
-
-    if ( product !== null ) {
-
-      dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-      resolve();
-
-    } else {
-
-      products
-        .get( id )
-        .then( ( product ) => {
-          dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-          dispatch( types.PRODUCTS_SET_PRODUCT_ID, null );
-          resolve();
-        } )
-        .catch( ( error ) => {
-          products.sendError( error, { state, id } );
-          reject( error );
-        } );
-
-    }
-
-  } );
-
-};
-
-export const closeProduct = ( { dispatch } ) => {
-
-  dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, null );
-
-};
-
-export const enableInfinityProducts = ( { dispatch } ) => {
-
-  dispatch( types.PRODUCTS_SET_INFINITY, true );
 
 };
 
@@ -201,9 +238,15 @@ export const setColumnNumber = ( { dispatch }, columnNumber ) => {
 
 };
 
-export const setScroll = ( { dispatch }, scrollTop, scrollHeight ) => {
+export const closeProduct = ( { dispatch } ) => {
 
-  dispatch( types.PRODUCTS_SET_SCROLL, scrollTop, scrollHeight );
+  dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, null );
+
+};
+
+export const closeProducts = ( { dispatch } ) => {
+
+  dispatch( types.PRODUCTS_CLOSE );
 
 };
 
@@ -213,8 +256,51 @@ export const incLengthList = ( { dispatch }, count ) => {
 
 };
 
-export const productsClose = ( { dispatch } ) => {
+export const setLike = (
+  { dispatch, state },
+  product = getOpenedProduct( state ),
+  newLikeState = !isLiked( state )
+) => {
 
-  dispatch( types.PRODUCTS_CLOSE );
+  if ( product !== null ) {
+
+    dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product, user( state ), newLikeState );
+
+    products
+      .like( product.id, newLikeState )
+      .then( ( isLike ) => {
+        if ( !isLike ) {
+
+          dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product, user( state ), false );
+
+          console.warn( `Отрицательный ответ на установку
+          like в ${ newLikeState }
+          от пользователя ${ user( state ).id }.
+          Id продкута ${ product.id }` );
+
+        }
+      } );
+
+  }
+
+  return null;
+
+};
+
+export const setScroll = ( { dispatch }, scrollTop, scrollHeight ) => {
+
+  dispatch( types.PRODUCTS_SET_SCROLL, scrollTop, scrollHeight );
+
+};
+
+export const setAnimate = ( { dispatch }, state ) => {
+
+  dispatch( types.PRODUCTS_SET_ANIMATE, state );
+
+};
+
+export const enableInfinityProducts = ( { dispatch } ) => {
+
+  dispatch( types.PRODUCTS_SET_INFINITY, true );
 
 };

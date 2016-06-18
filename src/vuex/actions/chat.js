@@ -5,27 +5,27 @@ import {
   CONVERSATION_SET_SHOW_MENU,
   CONVERSATION_SET_SHOW_STATUS_MENU,
   CONVERSATION_CONFIRM_MSG,
+  CONVERSATION_CONFIRM_STATUS_MSG,
   CONVERSATION_CLOSE,
   LEAD_RECEIVE,
   LEAD_UPDATE,
   CONVERSATION_SEND_STATUS,
   CONVERSATION_INC_LENGTH_LIST
-} from '../mutation-types';
-import * as messageService from 'services/message.js';
-import * as leads from 'services/leads.js';
-import * as chat from 'services/chat.js';
+} from '../mutation-types'
+import * as messageService from 'services/message.js'
+import * as leads from 'services/leads.js'
+import * as chat from 'services/chat.js'
 import {
   getId,
   isJoined,
-  isMessages,
-  isInit,
+  getMessageByLead,
   getMessages,
   getLastMessageId,
-  getCountRowOnBody,
+  getCountForLoading,
   getCurrentMember
-} from 'vuex/getters/chat.js';
-import { getLeadById, getGroup, getLeadByConversationId } from 'vuex/getters/lead.js';
-import { userID } from 'vuex/getters/user.js';
+} from 'vuex/getters/chat.js'
+import { getLeadById, getGroup, getLeadByConversationId } from 'vuex/getters/lead.js'
+import { userID } from 'vuex/getters/user.js'
 
 export const setConversation = ( { dispatch, state }, lead_id ) => {
 
@@ -39,16 +39,16 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
         return leads
           .get( { lead_id } )
           .then( ( { messages, lead, error } ) => {
-            return callBack( { messages, lead, error } );
+            return callBack( { messages, lead, error } )
           } )
           .catch( ( error ) => {
-            leads.sendError( error );
-          } );
+            leads.sendError( error )
+          } )
 
       } )
       .catch( ( error ) => {
-        chat.sendError( error );
-      } );
+        chat.sendError( error )
+      } )
 
   }
 
@@ -62,38 +62,35 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
       if ( lead.chat.id ) {
 
-        const { chat:{ id:conversation_id } } = lead;
+        const { chat:{ id:conversation_id } } = lead
 
         if ( Array.isArray( messages ) ) {
 
           if ( messages.length > 0 ) {
 
-            const msg = messages[ messages.length - 1 ];
+            const msg = messages[ messages.length - 1 ]
 
-            if ( msg.parts[ 0 ].mime_type !== 'json/status' ) {
+            if ( state.leads.notify_count[ lead_id ] ) {
 
-              if ( state.leads.notify_count[ lead_id ] ) {
+              const currentRole  = getCurrentMember( state, lead ).role
+              const customerRole = chat.MEMBER_ROLES.CUSTOMER
 
-                const currentRole  = getCurrentMember( state, lead ).role;
-                const customerRole = chat.MEMBER_ROLES.CUSTOMER;
-                // TODO Объединить в функцию #logicReading
+              // TODO Объединить в функцию #logicReading
 
-                if (
-                  ( customerRole === currentRole ) ||
-                  ( msg.user.role === customerRole && currentRole !== customerRole )
-                ) {
+              if (
+                ( customerRole === currentRole ) ||
+                ( ( msg.user ) ? ( msg.user.role === customerRole && currentRole !== customerRole ) : true )
+              ) {
 
-                  messageService
-                    .update( conversation_id, msg.id )
-                    .catch( ( error ) => {
-                      messageService.sendError( error, {
-                        conversation_id,
-                        messages,
-                        lastMessageId: msg.id
-                      } )
-                    } );
-
-                }
+                messageService
+                  .update( conversation_id, msg.id )
+                  .catch( ( error ) => {
+                    messageService.sendError( error, {
+                      conversation_id,
+                      messages,
+                      lastMessageId: msg.id
+                    } )
+                  } )
 
               }
 
@@ -103,7 +100,7 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
         }
 
-        dispatch( CONVERSATION_SET, conversation_id, messages, getCountRowOnBody() );
+        dispatch( CONVERSATION_SET, conversation_id, messages, getCountForLoading )
 
       }
 
@@ -111,7 +108,7 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
   }
 
-  const lead = getLeadById( state, lead_id );
+  const lead = getLeadById( state, lead_id )
 
   if ( lead !== null ) {
 
@@ -123,7 +120,7 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
       return new Promise( ( resolve, reject ) => {
 
-        const { messages } = isMessages( state, lead );
+        const messages = getMessageByLead( state, lead )
 
         if ( messages === null ) {
 
@@ -132,18 +129,18 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
             if ( lead.chat.id ) {
 
               return messageService
-                .find( lead.chat.id, null, getCountRowOnBody() )
+                .find( lead.chat.id, null, getCountForLoading )
                 .then(
                   ( messages ) => {
                     if ( Array.isArray( messages ) ) {
-                      run( messages, lead );
+                      run( messages, lead )
                     }
-                    resolve();
+                    resolve()
                   } )
                 .catch( ( error ) => {
-                  messageService.sendError( error, state );
-                  reject( error, state );
-                } );
+                  messageService.sendError( error, state )
+                  reject( error, state )
+                } )
 
             }
 
@@ -151,38 +148,13 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
         } else {
 
-          const { count, messages } = isMessages( state, lead );
+          run( messages, lead )
 
-          if ( isInit( state, lead ) ) {
-
-            run( messages, lead );
-
-            resolve();
-
-          } else {
-
-            const from_message_id = (messages === null) ? null : messages[ 0 ].id;
-            const limit           = getCountRowOnBody() - count;
-
-            return messageService
-              .find( lead.chat.id, from_message_id, limit )
-              .then(
-                ( oldMessages ) => {
-                  if ( Array.isArray( oldMessages ) ) {
-                    run( oldMessages.concat( messages ), lead );
-                  }
-                  resolve();
-                } )
-              .catch( ( error ) => {
-                messageService.sendError( error, state );
-                reject( error, state );
-              } );
-
-          }
+          resolve()
 
         }
 
-      } );
+      } )
 
     } else {
 
@@ -194,13 +166,13 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
             conversation_id: lead.chat.id,
             members: lead.chat.members,
             updated_at: lead.chat.recent_message.created_at * 1e9
-          } );
+          } )
 
-          return setConversation( { dispatch, state }, lead_id );
+          return setConversation( { dispatch, state }, lead_id )
 
         }
 
-      } );
+      } )
 
     }
 
@@ -222,47 +194,25 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
               return chatJoin( lead_id, ( { lead } ) => {
 
-                dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) );
+                dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) )
 
-                return setConversation( { dispatch, state }, lead_id );
+                return setConversation( { dispatch, state }, lead_id )
 
-              } );
+              } )
 
             }
 
           } else {
 
-            dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) );
+            dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) )
 
             if ( Array.isArray( messages ) ) {
 
-              if ( messages.length < getCountRowOnBody() ) {
-
-                const from_message_id = (messages.length > 0) ? messages[ 0 ].id : null;
-
-                return messageService
-                  .find( lead.chat.id, from_message_id, getCountRowOnBody() - messages.length )
-                  .then(
-                    ( newMessages = [] ) => {
-                      if ( newMessages === null ) {
-                        run( messages, lead );
-                      } else {
-                        run( newMessages.concat( messages ), lead );
-                      }
-                    } )
-                  .catch( ( error ) => {
-                    messageService.sendError( error, state );
-                  } );
-
-              } else {
-
-                run( messages, lead );
-
-              }
+              run( messages, lead )
 
             } else {
 
-              run( null, lead );
+              run( null, lead )
 
             }
 
@@ -271,71 +221,95 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
         } )
       .catch( ( error ) => {
 
-        leads.sendError( error, state );
-        return error;
+        leads.sendError( error, state )
+        return error
 
-      } );
+      } )
 
   }
 
-};
+}
 
-export const loadMessage = ( { dispatch, state } ) => {
+export const loadMessage = (() => {
 
-  return new Promise( ( resolve, reject ) => {
+  const hasMore = {};
 
-    const messages = getMessages( state );
-    const id       = state.conversation.id;
+  return ( { dispatch, state } ) => {
 
-    if ( Array.isArray( messages ) ) {
+    if ( !hasMore.hasOwnProperty( state.conversation.id ) ) {
 
-      if ( messages.length <= state.conversation.lengthList ) {
-
-        messageService
-          .find( id, messages[ 0 ].id, 12 )
-          .then(
-            ( messages ) => {
-
-              if ( Array.isArray( messages ) ) {
-
-                dispatch( CONVERSATION_LOAD_MESSAGE, messages );
-                dispatch( CONVERSATION_INC_LENGTH_LIST, messages.length );
-                resolve();
-
-              }
-
-            },
-            ( error ) => {
-
-              messageService.sendError( error, state );
-              reject();
-
-            }
-          );
-
-      } else {
-
-        dispatch( CONVERSATION_INC_LENGTH_LIST, 12 ); // Удлинняю список на 12 каждый раз если в памяти есть сообщения
-
-        resolve();
-
-      }
-
-    } else {
-
-      reject();
-
-      console.error( '[ loadMessage ]: messages must be array' );
+      hasMore[ state.conversation.id ] = true
 
     }
 
-  } );
+    return new Promise( ( resolve, reject ) => {
 
-};
+      const messages = getMessages( state )
+      const id       = state.conversation.id
+
+      if ( Array.isArray( messages ) ) {
+
+        if ( hasMore[ state.conversation.id ] ) {
+
+          return messageService
+            .find( id, messages.length > 0 ? messages[ 0 ].id : undefined, getCountForLoading )
+            .then(
+              ( messages ) => {
+
+                if ( messages === null || messages.length < getCountForLoading ) {
+
+                  hasMore[ state.conversation.id ] = false;
+
+                }
+
+                if ( Array.isArray( messages ) ) {
+
+                  dispatch( CONVERSATION_LOAD_MESSAGE, messages )
+                  dispatch( CONVERSATION_INC_LENGTH_LIST, messages.length )
+                  resolve( messages )
+
+                }
+
+              },
+              ( error ) => {
+
+                messageService.sendError( error, state )
+                reject()
+
+              }
+            )
+
+        }
+
+        if ( !hasMore[ state.conversation.id ] && messages.length >= state.conversation.lengthList ) {
+
+          dispatch( CONVERSATION_INC_LENGTH_LIST, getCountForLoading )
+
+          resolve( messages );
+
+          return null;
+
+        }
+
+        resolve( null )
+
+      } else {
+
+        reject()
+
+        console.error( '[ loadMessage ]: messages must be array' )
+
+      }
+
+    } )
+
+  }
+
+})();
 
 export const createMessage = ( { dispatch, state }, conversation_id, text, mime_type ) => {
 
-  const beforeLoadId = Math.random();
+  const beforeLoadId = Math.random()
 
   const rowMessage = [
     {
@@ -349,30 +323,30 @@ export const createMessage = ( { dispatch, state }, conversation_id, text, mime_
           mime_type: mime_type
         }
       ],
-      created_at: Date.now(),
+      created_at: null,
       id: Date.now() + beforeLoadId,
       user: {
         user_id: userID( state )
       }
     }
-  ];
+  ]
 
-  dispatch( CONVERSATION_RECEIVE_MESSAGE, rowMessage, conversation_id );
+  dispatch( CONVERSATION_RECEIVE_MESSAGE, rowMessage, conversation_id )
 
   return messageService
     .create( conversation_id, text, mime_type )
     .then( ( { chat, messages, error } ) => {
 
-      dispatch( CONVERSATION_CONFIRM_MSG, beforeLoadId, messages[ 0 ], conversation_id );
+      dispatch( CONVERSATION_CONFIRM_MSG, beforeLoadId, messages[ 0 ], conversation_id )
 
     } )
     .catch( ( error ) => {
 
-      messageService.sendError( error, state );
+      messageService.sendError( error, state )
 
-    } );
+    } )
 
-};
+}
 
 export const receiveMessage = ( { dispatch, state }, conversation_id, messages ) => {
 
@@ -380,41 +354,39 @@ export const receiveMessage = ( { dispatch, state }, conversation_id, messages )
 
     if ( messages.length > 0 ) {
 
-      const msg = messages[ messages.length - 1 ];
+      const msg = messages[ messages.length - 1 ]
 
-      if ( msg.parts[ 0 ].mime_type !== 'json/status' ) {
+      const msgUserId = msg.user ? msg.user.user_id : null
 
-        if ( userID( state ) !== msg.user.user_id ) {
+      dispatch( CONVERSATION_RECEIVE_MESSAGE, messages, conversation_id )
 
-          dispatch( CONVERSATION_RECEIVE_MESSAGE, messages, conversation_id );
+      if ( userID( state ) !== msgUserId ) {
 
-          if ( state.conversation.id === msg.conversation_id ) {
+        if ( state.conversation.id === msg.conversation_id ) {
 
-            if ( getLastMessageId( state ) !== msg.id ) {
+          if ( getLastMessageId( state ) !== msg.id ) {
 
-              const currentRole  = getCurrentMember( state ).role;
-              const customerRole = chat.MEMBER_ROLES.CUSTOMER;
+            const currentRole  = getCurrentMember( state ).role
+            const customerRole = chat.MEMBER_ROLES.CUSTOMER
 
-              // TODO Объединить в функцию #logicReading
+            // TODO Объединить в функцию #logicReading
 
-              if (
-                ( customerRole === currentRole ) ||
-                ( msg.user.role === customerRole && currentRole !== customerRole )
-              ) {
+            if (
+              ( customerRole === currentRole ) ||
+              ( ( msg.user ) ? ( msg.user.role === customerRole && currentRole !== customerRole ) : true )
+            ) {
 
-                messageService
-                  .update( conversation_id, msg.id )
-                  .catch( ( error ) => {
-                    messageService.sendError( error, {
-                      conversation_id,
-                      messages,
-                      lastMessageId: msg.id
-                    } )
-                  } );
+              messageService
+                .update( conversation_id, msg.id )
+                .catch( ( error ) => {
+                  messageService.sendError( error, {
+                    conversation_id,
+                    messages,
+                    lastMessageId: msg.id
+                  } )
+                } )
 
-                return null;
-
-              }
+              return null
 
             }
 
@@ -422,9 +394,11 @@ export const receiveMessage = ( { dispatch, state }, conversation_id, messages )
 
         }
 
-      } else {
+      }
 
-        dispatch( CONVERSATION_RECEIVE_MESSAGE, messages, conversation_id );
+      if ( msg.parts[ 0 ].mime_type === 'json/status' ) {
+
+        dispatch( CONVERSATION_CONFIRM_STATUS_MSG, messages, conversation_id )
 
       }
 
@@ -432,21 +406,21 @@ export const receiveMessage = ( { dispatch, state }, conversation_id, messages )
 
   }
 
-};
+}
 
 export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix, MIME, { width, height } ) => {
 
-  const beforeLoadId = Math.random();
+  const beforeLoadId = Math.random()
 
   const preLoadMessage = {
     id: Date.now() + beforeLoadId,
     beforeLoadId,
     loaded: false,
     conversation_id: getId( state ),
-    created_at: Date.now(),
+    created_at: null,
     user_id: userID( state ),
     user: {
-      user_id: userID( state ),
+      user_id: userID( state )
     },
     parts: [
       {
@@ -455,39 +429,92 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
           width,
           height
         },
-        mime_type: 'image/base64',
+        mime_type: 'image/base64'
       }
     ]
-  };
+  }
 
-  dispatch( CONVERSATION_RECEIVE_MESSAGE, [ preLoadMessage ], getId( state ) );
+  dispatch( CONVERSATION_RECEIVE_MESSAGE, [ preLoadMessage ], getId( state ) )
 
   messageService.create( getId( state ), base64, MIME ).then( ( { messages } ) => {
 
-    dispatch( CONVERSATION_CONFIRM_MSG, beforeLoadId, messages[ 0 ], getId( state ) );
+    dispatch( CONVERSATION_CONFIRM_MSG, beforeLoadId, messages[ 0 ], getId( state ) )
 
-  }, messageService.sendError );
+  }, messageService.sendError )
 
-};
+}
 
-export const setStatus = ( { dispatch, state }, status ) => {
+export const setStatus = ( { dispatch, state }, status, type ) => {
 
-  const lead = getLeadByConversationId( state, state.conversation.id );
+  const statusMap = {
+    COMPLETE: 'COMPLETED',
+    DELIVERY: 'ON_DELIVERY',
+    SUBMIT: 'SUBMITTED',
+    CANCEL: 'CANCELLED'
+  }
 
-  dispatch( CONVERSATION_SEND_STATUS );
+  const messages = getMessages( state )
 
-  return new Promise( ( resolve, reject ) => {
-    leads
-      .setEvent( lead.id, status )
-      .then( ( { status } ) => {
-        resolve( status );
-      } )
-      .catch( error => {
-        reject( error );
-      } );
-  } );
+  const { parts } = messages[ messages.length - 1 ]
 
-};
+  dispatch( CONVERSATION_SEND_STATUS )
+
+  /**
+   * Добавлять одинаковый статус нет необходимости.
+   * */
+
+  if ( parts[ 0 ].mime_type === "json/status" ) {
+
+    if ( JSON.parse( parts[ 0 ].content ).value === statusMap[ status ] ) {
+
+      return null
+
+    }
+
+  }
+
+  const dirtyStatusMessage = [
+    {
+      dirty: true,
+      id: Date.now() + Math.random(),
+      conversation_id: state.conversation.id,
+      parts: [ {
+        content: JSON.stringify( {
+          type: type,
+          value: statusMap[ status ]
+        } ),
+        mime_type: "json/status"
+      } ],
+      created_at: null
+    }
+  ]
+
+  const lead = getLeadByConversationId( state, state.conversation.id )
+
+  if ( lead !== null ) {
+
+    dispatch( CONVERSATION_RECEIVE_MESSAGE, dirtyStatusMessage, state.conversation.id )
+
+    return new Promise( ( resolve, reject ) => {
+      leads
+        .setEvent( lead.id, status )
+        .then( ( { status } ) => {
+          resolve( status )
+        } )
+        .catch( error => {
+          reject( error )
+        } )
+    } )
+
+  } else {
+
+    console.error( '[ ACTION/CHAT ] - В момент установки статуса lead не может быть null.', {
+      conversation_id: state.conversation.id
+    } )
+
+  }
+
+}
 
 export const onMessages = ( { dispatch, state }, data ) => {
 
@@ -495,49 +522,33 @@ export const onMessages = ( { dispatch, state }, data ) => {
 
     if ( data.response_map.chat && data.response_map.messages ) {
 
-      const conversation_id = data.response_map.chat.id;
-      const messages        = data.response_map.messages;
+      const conversation_id = data.response_map.chat.id
+      const messages        = data.response_map.messages
 
-      if ( Array.isArray( messages ) ) {
-
-        if ( messages.length > 0 ) {
-
-          const MIME = messages[ 0 ].parts[ 0 ].mime_type;
-
-          if ( MIME === "text/plain" || MIME === "image/json" || MIME === "json/status" ) {
-
-            return receiveMessage( { dispatch, state }, conversation_id, messages );
-
-          }
-
-          return Promise.resolve();
-
-        }
-
-      }
+      return receiveMessage( { dispatch, state }, conversation_id, messages )
 
     }
 
   }
 
-  return null;
+  return null
 
-};
+}
 
 export const setShowMenu = ( { dispatch }, showMenu ) => {
 
-  dispatch( CONVERSATION_SET_SHOW_MENU, showMenu );
+  dispatch( CONVERSATION_SET_SHOW_MENU, showMenu )
 
-};
+}
 
 export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
 
-  dispatch( CONVERSATION_SET_SHOW_STATUS_MENU, showStatusMenu );
+  dispatch( CONVERSATION_SET_SHOW_STATUS_MENU, showStatusMenu )
 
-};
+}
 
 export const closeConversation = ( { dispatch } ) => {
 
-  dispatch( CONVERSATION_CLOSE );
+  dispatch( CONVERSATION_CLOSE )
 
-};
+}

@@ -6,6 +6,7 @@ import {
   LEAD_CLEAR_NOTIFY,
   LEAD_INC_NOTIFY,
   LEAD_INC_LENGTH_LIST,
+  LEAD_SET_SCROLL,
   LEAD_CLOSE
 } from '../mutation-types';
 import * as leads from 'services/leads.js';
@@ -14,7 +15,8 @@ import {
   getOlderLead,
   getLeadByConversationId,
   getTab,
-  getLengthListOnBody,
+  getHasMore,
+  getCountForLoading,
   getLeads,
   getLengthList,
   getGroup
@@ -24,34 +26,39 @@ export const init = ( { dispatch } ) => {
 
   return new Promise( ( resolve, reject ) => {
 
-    Promise.all( [ message.getCountUnread(), leads.find( getLengthListOnBody() ) ] ).then(
-      ( [countUnread, { customer, seller }] ) => {
-        dispatch( LEAD_INIT, {
-          customer,
-          seller,
-          countUnread,
-          lengthList: getLengthListOnBody()
-        } );
-        resolve();
-      },
-      ( errors ) => {
-        message.sendError( errors[ 0 ] );
-        leads.sendError( errors[ 1 ] );
-        reject();
-      }
-    );
+    Promise
+      .all( [
+        message.getCountUnread(),
+        leads.find( getCountForLoading )
+      ] )
+      .then(
+        ( [countUnread, { customer, seller }] ) => {
+          dispatch( LEAD_INIT, {
+            customer,
+            seller,
+            countUnread,
+            lengthList: getCountForLoading
+          } );
+          resolve();
+        },
+        ( errors ) => {
+          message.sendError( errors[ 0 ] );
+          leads.sendError( errors[ 1 ] );
+          reject();
+        }
+      );
 
   } );
 
 };
 
-export const incLengthList = ( { dispatch }, count = getLengthListOnBody() ) => {
+export const incLengthList = ( { dispatch, state }, count = getCountForLoading ) => {
 
-  dispatch( LEAD_INC_LENGTH_LIST, count );
+  dispatch( LEAD_INC_LENGTH_LIST, count, getTab( state ) );
 
 };
 
-export const loadLeads = ( { dispatch, state }, count = 6 ) => {
+export const loadLeads = ( { dispatch, state }, count = getCountForLoading ) => {
 
   return new Promise( ( resolve, reject ) => {
 
@@ -59,24 +66,32 @@ export const loadLeads = ( { dispatch, state }, count = 6 ) => {
 
     if ( getLeads( state ).length > (getLengthList( state ) + count) ) {
 
-      incLengthList( { dispatch }, count );
+      incLengthList( { dispatch, state }, (!getHasMore( state )) ? count * 2 : count );
       resolve();
 
     } else {
 
-      leads
-        .find( count, getOlderLead( state ), tab )
-        .then(
-          ( { leads } ) => {
-            incLengthList( { dispatch }, leads.length );
-            dispatch( LEAD_RECEIVE, leads, tab );
-            resolve(leads.length);
-          },
-          (error) => {
-            leads.sendError( error );
-            reject();
-          }
-        );
+      if ( getHasMore( state ) ) {
+
+        leads
+          .find( count, getOlderLead( state ), tab )
+          .then(
+            ( { leads } ) => {
+              incLengthList( { dispatch, state }, leads.length );
+              dispatch( LEAD_RECEIVE, leads, tab );
+              resolve( leads.length );
+            },
+            ( error ) => {
+              leads.sendError( error );
+              reject();
+            }
+          );
+
+      } else {
+
+        resolve();
+
+      }
 
     }
 
@@ -101,9 +116,15 @@ export const createLead = ( { dispatch }, product_id ) => {
 
 export const setTab = ( { dispatch }, tab ) => {
 
-  dispatch( LEAD_SET_TAB, tab, getLengthListOnBody() );
+  dispatch( LEAD_SET_TAB, tab, getCountForLoading );
 
 };
+
+export const setScroll = ( { dispatch, state }, scrollTop, scrollHeight ) => {
+
+  dispatch( LEAD_SET_SCROLL, scrollTop, scrollHeight, getTab( state ) )
+
+}
 
 export const onMessages = (
   { dispatch, state },
@@ -112,26 +133,25 @@ export const onMessages = (
 
   function handler( lead ) {
 
-    if ( messages[ 0 ].parts[ 0 ].mime_type === "json/status" ) {
+    const MIME       = messages[ 0 ].parts[ 0 ].mime_type;
+    const updated_at = messages[ 0 ].created_at * 1e9;
+    const parts      = messages[ 0 ].parts;
+
+    if ( MIME === "json/status" ) {
 
       const value = JSON.parse( messages[ 0 ].parts[ 0 ].content ).value;
 
-      dispatch( LEAD_UPDATE, Object.assign({
+      dispatch( LEAD_UPDATE, Object.assign( {
         conversation_id,
         members,
-        updated_at: messages[ 0 ].created_at * 1e9
-      }, (typeof value !== 'undefined')?{status: leads.getStatusCode(value)}:{}) );
+        updated_at
+      }, (typeof value !== 'undefined') ? { status: leads.getStatusCode( value ) } : {} ) );
 
     }
 
-    if ( messages[ 0 ].parts[ 0 ].mime_type === "text/plain" ) {
+    if ( MIME === "text/plain" ) {
 
-      dispatch( LEAD_UPDATE, {
-        conversation_id,
-        members,
-        parts: messages[ 0 ].parts,
-        updated_at: messages[ 0 ].created_at * 1e9
-      } );
+      dispatch( LEAD_UPDATE, { conversation_id, members, parts, updated_at } );
 
       if ( state.conversation.id !== conversation_id ) {
 
@@ -139,6 +159,17 @@ export const onMessages = (
 
       }
 
+    }
+
+    if ( MIME === "image/base64" ) {
+
+      dispatch( LEAD_UPDATE, { conversation_id, members, parts: '', updated_at } );
+
+      if ( state.conversation.id !== conversation_id ) {
+
+        dispatch( LEAD_INC_NOTIFY, (lead !== undefined) ? lead.id : null );
+
+      }
     }
 
   }
@@ -154,11 +185,11 @@ export const onMessages = (
     leads
       .get( { conversation_id } )
       .then(
-      ( { lead } ) => {
-        // TODO Спросить как можно определить, для текущего пользователя lead в покупаю || продаю.
-        dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) );
-        handler( lead );
-      } )
+        ( { lead } ) => {
+          // TODO Спросить как можно определить, для текущего пользователя lead в покупаю || продаю.
+          dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) );
+          handler( lead );
+        } )
       .catch( ( error ) => {
         leads.sendError( error, state );
       } );

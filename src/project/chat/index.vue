@@ -6,7 +6,7 @@
       .chat.section__content
         .chat_messages
           template(v-for='msg in getMessages | list', track-by='$index')
-            chat-msg-date(
+            chat-msg-status(
               v-if='msg.parts[0].mime_type === "json/status"',
               :msg='msg')
             chat-msg-product(
@@ -18,7 +18,6 @@
             chat-msg-img(
               v-if='isImage(msg.parts[0].mime_type)',
               :msg='msg')
-
     chat-bar
 </template>
 
@@ -44,7 +43,7 @@
   import * as leads from 'services/leads';
 
   import ChatMsgProduct from './chat-msg-product.vue';
-  import ChatMsgDate from './chat-msg-date.vue';
+  import ChatMsgStatus from './chat-msg-status.vue';
   import ChatMsg from './chat-msg.vue';
   import ChatMsgImg from './chat-msg-img.vue';
   import ChatBar from './chat-bar.vue';
@@ -52,12 +51,22 @@
 
   export default {
 
+    components: {
+      ChatHeader,
+      ChatBar,
+      ChatMsg,
+      ChatMsgProduct,
+      ChatMsgStatus,
+      ChatMsgImg
+    },
+
     data(){
       return {
         needLoadMessage: true,
         lead_id: null
       }
     },
+
     watch: {
       isDone( done ){
         if ( done ) {
@@ -65,6 +74,7 @@
         }
       }
     },
+
     route: {
       data( { to: { params: { id:lead_id } } } ) {
         this.$set( 'lead_id', +lead_id );
@@ -77,6 +87,7 @@
         }
       },
     },
+
     ready(){
       if ( this.isAuth ) {
         this.onMessage      = this.onMessage.bind( this );
@@ -86,6 +97,7 @@
         this.$router.go( { name: 'signup' } );
       }
     },
+
     beforeDestroy() {
       if ( this.isAuth ) {
         this.scrollListener.remove();
@@ -93,6 +105,7 @@
         messages.offMsg( this.onMessage );
       }
     },
+
     vuex: {
       actions: {
         setConversation,
@@ -116,7 +129,6 @@
 
         const end   = value.length;
         const start = end - this.getLengthList - 1; // -1 потому что есть первое сообщение с датой.
-        //TODO придумать как сделать нормально.
         return value.slice( (start <= 0) ? 0 : start, end );
       }
     },
@@ -129,15 +141,65 @@
           .then(
             () => {
               this.clearNotify( this.lead_id );
-              this.$nextTick( () => {
-                this.goToBottom();
-              } );
+                this
+                  .runLoadingMessage()
+                  .then( () => {
+                    this.$nextTick( () => {
+                      this.goToBottom();
+                    } );
+                  } );
             },
             ( error ) => {
               console.error( `[ CONVERSATION_SET ERROR ]: `, error );
               this.$router.go( { name: 'home' } );
             }
           );
+      },
+
+      runLoadingMessage(){
+
+        return new Promise((resolve, reject) => {
+
+          const add = ( scrollHeight ) => {
+
+             if ( document.body.offsetHeight >= scrollHeight ) {
+
+                this
+                  .loadMessage()
+                  .then( ( messages ) => {
+
+                    if ( messages === null ) {
+
+                      resolve();
+
+                    } else {
+
+                      this.$nextTick( () => {
+
+                        add( this.$els.scrollCnt.scrollHeight )
+
+                      } );
+
+                    }
+
+                  });
+
+             } else {
+
+              resolve();
+
+             }
+
+          };
+
+          this.$nextTick( () => {
+
+            add( this.$els.scrollCnt.scrollHeight )
+
+          } );
+
+        });
+
       },
 
       onMessage(){
@@ -176,19 +238,9 @@
         }
 
       },
-
       goToBottom(){
         this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
-      },
-
-    },
-    components: {
-      ChatHeader,
-      ChatBar,
-      ChatMsg,
-      ChatMsgProduct,
-      ChatMsgDate,
-      ChatMsgImg
+      }
     },
   }
 </script>

@@ -5,12 +5,11 @@ import {
   CONVERSATION_SET_SHOW_MENU,
   CONVERSATION_SET_SHOW_STATUS_MENU,
   CONVERSATION_CONFIRM_MSG,
+  CONVERSATION_CONFIRM_STATUS_MSG,
   CONVERSATION_CLOSE,
   CONVERSATION_SEND_STATUS,
   CONVERSATION_INC_LENGTH_LIST,
 } from '../mutation-types';
-
-import { formatMonth } from 'project/chat/utils';
 
 // initial state
 const state = {
@@ -52,7 +51,7 @@ function getDateMessage( date, id ) {
 
 const addServiceMessage = (function() {
 
-  function normalizeDate(time){
+  function normalizeDate( time ) {
 
     return new Date( time * 1000 );
 
@@ -73,34 +72,59 @@ const addServiceMessage = (function() {
 
     for ( let i = 0; i < messages.length; i++ ) {
 
-      const date = normalizeDate( messages[ i ].created_at );
+      const MIME = messages[ i ].parts[ 0 ].mime_type;
 
-      if ( messages[ i ].parts[ 0 ].mime_type === 'text/plain' ) {
+      /**
+       * Для отключения какого нибудь MIME типа просто убрать из условия.
+       * Сейчас убрат статус: MIME === 'json/status'
+       * */
 
-        if ( lastUserId === messages[ i ].user.id ) {
+      if (
+        MIME === 'text/plain' ||
+        MIME === 'text/json' ||
+        MIME === 'image/json' ||
+       // MIME === 'json/status' ||
+        MIME === 'image/base64'
+      ) {
 
-          messages[ i ].closestMessage = true;
+        if ( MIME !== 'json/status' ) {
 
-        } else {
+          if ( lastUserId === messages[ i ].user.user_id ) {
 
-          lastUserId                   = messages[ i ].user.id;
-          messages[ i ].closestMessage = false;
+            messages[ i ].closestMessage = true;
+
+          } else {
+
+            lastUserId                   = messages[ i ].user.user_id;
+            messages[ i ].closestMessage = false;
+
+          }
 
         }
 
-      }
+        if ( messages[ i ].created_at !== null ) {
 
-      if ( typeof messages[ i ].serviceMessage === 'undefined' ) {
+          const date = normalizeDate( messages[ i ].created_at );
 
-        newMessage.push( messages[ i ] );
+          if ( date.getDate() !== lastDate ) {
 
-      }
+            lastDate = date.getDate();
 
-      if ( date.getDate() !== lastDate ) {
+            newMessage.push( getDateMessage( messages[ i ].created_at, messages[ i ].id ) );
 
-        lastDate = date.getDate();
+          }
 
-        newMessage.push( getDateMessage( messages[ i ].created_at, messages[ i ].id ) );
+        }
+
+        /**
+         * Вот тут зависит от того как составлять массив, необходимо
+         * */
+
+        if ( typeof messages[ i ].serviceMessage === 'undefined' ) {
+
+          newMessage.push( messages[ i ] );
+
+        }
 
       }
 
@@ -161,6 +185,8 @@ const mutations = {
 
   [CONVERSATION_RECEIVE_MESSAGE] ( state, messages, id ) {
 
+    console.time('CONVERSATION_RECEIVE_MESSAGE');
+
     const { all } = state;
 
     if ( all.hasOwnProperty( id ) ) {
@@ -178,6 +204,8 @@ const mutations = {
       state.all = Object.assign( {}, all, { [id]: addServiceMessage( messages ) } );
 
     }
+
+    console.timeEnd('CONVERSATION_RECEIVE_MESSAGE');
 
   },
 
@@ -215,6 +243,50 @@ const mutations = {
       } );
 
     }
+
+  },
+
+  [CONVERSATION_CONFIRM_STATUS_MSG] ( state, messages, id ){
+
+    console.time('CONVERSATION_CONFIRM_STATUS_MSG');
+
+    if ( Array.isArray( messages ) ) {
+
+      if ( state.all.hasOwnProperty( id ) ) {
+
+        const items = state.all[ id ];
+
+        for ( let i = items.length; i; i-- ) {
+
+          const message = items[ i - 1 ];
+
+          if ( message.parts[ 0 ].mime_type === 'json/status' && message.dirty ) {
+
+            if ( JSON.parse( message.parts[ 0 ].content ).value === JSON.parse( messages[ 0 ].parts[ 0 ].content ).value ) {
+
+              state.all[ id ].$set( i - 1, messages[ 0 ] );
+
+              state.all = Object.assign( {}, state.all, { [id]: addServiceMessage( state.all[ id ] ) } );
+
+              return null;
+
+            }
+
+          }
+
+        }
+
+        state.all = Object.assign( {}, state.all, { [id]: addServiceMessage( items.concat(messages) ) } );
+
+      } else {
+
+        state.all = Object.assign( {}, state.all, { [id]: addServiceMessage( messages ) } );
+
+      }
+
+    }
+
+    console.timeEnd('CONVERSATION_CONFIRM_STATUS_MSG');
 
   },
 

@@ -37,7 +37,7 @@
 
     .footer
       p Нажмите 'Продолжить',#[br]чтобы открыть Instagram#[br]и вставить фото с текстом
-      button(v-on:click='openInsta', class='btn __primary __orange') Продолжить
+      a(href="instagram://camera", target="_blank", class='btn __primary __orange') Продолжить
 </template>
 
 <script type="text/babel">
@@ -53,10 +53,10 @@
       }
     },
     route: {
-      activate({to: {params: { id }}}) {
-        return this.openProduct(+id).catch( error => {
-          this.$route.router.go({name: '404'});
-        })
+      activate( { to: { params: { id } } } ) {
+        return this.openProduct( +id ).catch( error => {
+          this.$route.router.go( { name: '404' } );
+        } )
       },
     },
 
@@ -70,60 +70,63 @@
     },
     computed: {
       caption() {
-        if(this.getOpenedProduct !== null){
+        if ( this.getOpenedProduct !== null ) {
           var source = this.getOpenedProduct.instagram_image_caption;
-          if (!source) return;
-          source = source.replace(/([^0-9a-zа-я\s])/ig, ' ').replace(/\s{2,}/g, ' ');
+          if ( !source ) return;
+          source = source.replace( /([^0-9a-zа-я\s])/ig, ' ' ).replace( /\s{2,}/g, ' ' );
           // need part of text for bubble
-          source = source.slice(0, 80);
-          source = source.replace(/[.,\/#!\'\"$%+\s@\^☀️&\*;:{}=\-_`~()]/g, '<span class="whitespace"></span>');
+          source = source.slice( 0, 80 );
+          source = source.replace( /[.,\/#!\'\"$%+\s@\^☀️&\*;:{}=\-_`~()]/g, '<span class="whitespace"></span>' );
           return source + '...'
         }
       },
       igImageUrl() {
         let obj = this.getOpenedProduct;
-        if(obj !== null){
-          return obj.instagram_images.find((img) => img.name === "L").url
+        if ( obj !== null ) {
+          return obj.instagram_images.find( ( img ) => img.name === "L" ).url
         }
       }
     },
     methods: {
       back() {
-        if(this.getOpenedProduct !== null){
-          mixpanel.track('Close Repost Page', {productId: this.getOpenedProduct.id});
+        if ( this.getOpenedProduct !== null ) {
+          mixpanel.track( 'Close Repost Page', { productId: this.getOpenedProduct.id } );
 
-          this.$route.router.go({
-            name: 'product_detail',
-            params: { id: this.getOpenedProduct.id }
-          });
+          if ( window.history.length > 1 ) {
+
+            window.history.back();
+
+          } else {
+
+            this.$router.go( { name: "home" } );
+
+          }
+
         }
       },
-      openInsta() {
-        window.open('instagram://camera', '_blank');
-      },
       addInfo() {
-          //Get the selected text and append the extra info
-          let obj = this.getOpenedProduct;
-        if(obj !== null){
+        //Get the selected text and append the extra info
+        let obj = this.getOpenedProduct;
+        if ( obj !== null ) {
 
           var selection = window.getSelection(),
-              before = 'Покупайте в этой ленте, написав в комментарии @wantit 🙌 <br><br>',
-              after = '<br><br>Напишите @wantit 🌷 и товар добавится в вашу корзину на #trendever.com  ✒️' + obj.supplier.instagram_username + ', ' + obj.code,
-              copytext = before + obj.instagram_image_caption + after,
-              newdiv = document.createElement('div');
+              before    = 'Напишите @wantit в комментарии, чтобы узнать и купить 🙌 <br><br>',
+              after     = '<br><br>Напишите @wantit 🌷 и товар добавится в вашу корзину на #trendever.com  ✒️' + obj.supplier.instagram_username + ', ' + obj.code,
+              copytext  = before + obj.instagram_image_caption + after,
+              newdiv    = document.createElement( 'div' );
 
           //hide the newly created container
           newdiv.style.position = 'absolute';
-          newdiv.style.top = '-99999px';
+          newdiv.style.top      = '-99999px';
 
           //insert the container, fill it with the extended text, and define the new selection
-          document.body.appendChild(newdiv);
+          document.body.appendChild( newdiv );
           newdiv.innerHTML = copytext;
-          selection.selectAllChildren(newdiv);
+          selection.selectAllChildren( newdiv );
 
-          window.setTimeout(function () {
-            document.body.removeChild(newdiv);
-          }, 1);
+          window.setTimeout( function() {
+            document.body.removeChild( newdiv );
+          }, 1 );
 
         }
 

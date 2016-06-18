@@ -1,4 +1,5 @@
 import * as leads from 'services/leads';
+import * as chat from 'services/chat';
 import { formatMonth } from 'project/chat/utils';
 import { userID } from 'vuex/getters/user.js';
 import { getLeadByConversationId } from '../getters/lead.js';
@@ -21,40 +22,29 @@ export const getLeadId = ( state ) => {
 
 };
 
-export const isInit = ( { conversation }, lead ) => {
+export const getCustomerName = ( state ) => {
 
-  if ( lead.chat ) {
+  const lead = getLeadByConversationId( state, state.conversation.id );
 
-    if ( lead.chat.id ) {
+  if ( lead ) {
 
-      if ( conversation.allInit.hasOwnProperty( lead.chat.id ) ) {
+    if ( lead.chat ) {
 
-        return conversation.allInit[ lead.chat.id ];
+      if ( lead.chat.members ) {
 
-      }
+        const user = lead.chat.members.find( ( user ) => {
 
-    }
+          return user.role === chat.MEMBER_ROLES.CUSTOMER;
 
-  }
+        } );
 
-  return false;
+        if ( typeof user !== 'undefined' ) {
 
-};
+          /**
+           * Это имя запоминается на момент создания чата.
+           * */
 
-export const isMessages = ( { conversation }, lead ) => {
-
-  if ( lead.chat ) {
-
-    if ( lead.chat.id ) {
-
-      if ( conversation.all.hasOwnProperty( lead.chat.id ) ) {
-
-        if ( Array.isArray( conversation.all[ lead.chat.id ] ) ) {
-
-          return {
-            count: conversation.all[ lead.chat.id ].length,
-            messages: conversation.all[ lead.chat.id ]
-          };
+          return user.name;
 
         }
 
@@ -64,10 +54,31 @@ export const isMessages = ( { conversation }, lead ) => {
 
   }
 
-  return {
-    count: 0,
-    messages: null
-  };
+  return null;
+
+};
+
+export const getMessageByLead = ( { conversation }, lead ) => {
+
+  if ( lead.chat ) {
+
+    if ( lead.chat.id ) {
+
+      if ( conversation.all.hasOwnProperty( lead.chat.id ) ) {
+
+        if ( Array.isArray( conversation.all[ lead.chat.id ] ) ) {
+
+          return conversation.all[ lead.chat.id ];
+
+        }
+
+      }
+
+    }
+
+  }
+
+  return null;
 
 };
 
@@ -246,28 +257,6 @@ export const getInviteCustomer = ( state ) => {
 
 };
 
-export const getCreateData = ( state ) => {
-
-  const lead = getLeadByConversationId( state, state.conversation.id );
-
-  if ( lead ) {
-
-    if ( lead.chat ) {
-
-      if ( lead.chat.recent_message ) {
-
-        return formatMonth( lead.chat.recent_message.created_at );
-
-      }
-
-    }
-
-  }
-
-  return null;
-
-};
-
 export const isJoined = ( state, lead ) => {
 
   if ( lead ) {
@@ -297,14 +286,4 @@ export const isJoined = ( state, lead ) => {
 
 };
 
-export const getRowHeight = () => {
-
-  if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
-    return 50
-  }
-
-  return 40;
-
-};
-
-export const getCountRowOnBody = () => Math.round( document.body.offsetHeight / getRowHeight() );
+export const getCountForLoading = (window.browser.mobile) ? 10 : 20;

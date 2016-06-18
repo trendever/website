@@ -11,9 +11,7 @@
 
 .scroll-cnt
     header-component(
-      title='Почему Trendever?',
-      show_on_elem='headerAnchor',
-      :back-link='{name: "home"}')
+      title='Почему Trendever?', show_on_elem='headerAnchor', :back-link='{name: "home"}')
 
     .section.top.why(style='width: 750px; margin: 0 auto;')
       .section.available#headerAnchor

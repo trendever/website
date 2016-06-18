@@ -8,80 +8,100 @@ export const formatDatetime = unixtime => {
 export const formatTime = unixtime => formatDatetime( unixtime ).split( ' ' )[ 1 ];
 
 export const formatPastTime = ( unixtime ) => {
-  const dateLast = new Date( parseInt( unixtime * 1000 ) );
-  const dateNow  = new Date( Date.now() );
 
-  /**
-   * Позже сделаю как объект и проверять буду в цикле.
-   * */
+  const diffUnixTime = Date.now() - parseInt( unixtime * 1000 );
 
-  let seconds = dateNow.getSeconds() - dateLast.getSeconds();
-  let minutes = dateNow.getMinutes() - dateLast.getMinutes();
-  let hours   = dateNow.getHours() - dateLast.getHours();
-  let days    = dateNow.getDate() - dateLast.getDate();
-  let month   = dateNow.getMonth() - dateLast.getMonth();
-  let year    = dateNow.getFullYear() - dateLast.getFullYear();
+  const second = parseInt( diffUnixTime / 1000 );
+  const minute = parseInt( second / 60 );
+  const hour   = parseInt( minute / 60 );
+  const day    = parseInt( hour / 24 );
+  const month  = parseInt( day / 30 );
+  const year   = parseInt( month / 12 );
 
-  if ( seconds < 0 ) {
-    seconds = 0
+  if ( second <= 60 ) {
+    return `${second} сек`;
   }
-  if ( minutes < 0 ) {
-    minutes = 0
+
+  if ( minute <= 60 ) {
+    return `${minute} мин`;
   }
-  if ( hours < 0 ) {
-    hours = 0
+
+  if ( hour < 24 ) {
+
+    if ( (hour === 1) || (hour === 21) ) {
+
+      return `${hour} час`;
+
+    }
+
+    if ( (hour > 1 && hour <= 4) || (hour >= 22 && hour <= 23) ) {
+
+      return `${hour} часа`;
+
+    }
+
+    return `${hour} часов`;
+
   }
-  if ( days < 0 ) {
-    days = 0
+
+  if ( day > 0 ) {
+
+    if ( (day === 1) || (day === 21) || (day === 31) ) {
+
+      return `${day} день`;
+
+    }
+
+    if ( (day >= 2 && day <= 4) || (day >= 22 && day <= 24) ) {
+
+      return `${day} дня`;
+
+    }
+
+    if ( (day >= 5 && day <= 20) || (day >= 26 && day <= 30) ) {
+
+      return `${day} дней`;
+
+    }
+
   }
-  if ( month < 0 ) {
-    month = 0
-  }
-  if ( year < 0 ) {
-    year = 0
+
+  if ( month > 0 ) {
+
+    if ( month === 1 ) {
+
+      return `${month} месяц`;
+
+    }
+
+    if ( month >= 2 && day <= 4 ) {
+
+      return `${month} месяца`;
+
+    }
+
+    return `${month} месяцев`;
+
   }
 
   if ( year > 0 ) {
+
     if ( year === 1 ) {
+
       return `${year} год`;
+
     }
+
     if ( year > 1 && year <= 4 ) {
+
       return `${year} года`;
+
     }
+
     return `${year} лет`;
-  }
-  if ( month > 0 ) {
-    if ( month === 1 ) {
-      return `${month} месяц`;
-    }
-    if ( month > 1 && month <= 4 ) {
-      return `${month} месяца`;
-    }
-    return `${month} месяцев`;
-  }
-  if ( days > 0 ) {
-    if ( days === 1 ) {
-      return `${days} день`;
-    }
-    if ( days > 1 && days <= 4 ) {
-      return `${days} дня`;
-    }
-    return `${days} дней`;
-  }
-  if ( hours > 0 ) {
-    if ( hours === 1 ) {
-      return `${hours} час`;
-    }
-    if ( hours > 1 && hours <= 4 ) {
-      return `${hours} часа`;
-    }
-    return `${hours} часов`;
-  }
-  if ( minutes > 0 ) {
-    return `${minutes} мин`;
+
   }
 
-  return `${seconds} сек`;
 };
 
 export const formatMonth = ( unixtime ) => {

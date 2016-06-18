@@ -2,12 +2,12 @@ import channel from 'services/channel/channel.js';
 
 export const ERROR_CODES = {
   NOT_FOUND: 1,
-  SERVER_ERROR: 2,
+  SERVER_ERROR: 2
 };
 
-export const sendError = (errorCode, state = null) => {
-  
-  switch(errorCode){
+export const sendError = ( errorCode, state = null ) => {
+
+  switch ( errorCode ) {
     case ERROR_CODES.NOT_FOUND:
       console.error( new Error( `Products error: [ NOT_FOUND ]` ), state );
       break;
@@ -15,7 +15,7 @@ export const sendError = (errorCode, state = null) => {
       console.error( new Error( `Products error: [ SERVER_ERROR ]` ), state );
       break;
   }
-  
+
 };
 
 /**
@@ -39,9 +39,11 @@ export const sendError = (errorCode, state = null) => {
  *          'id': 16154,
  *          'title': 'Трикотажный топ с цветочным узором',
  *          'code': 'tf8276',
- *          'instagram_image_caption': 'Последний цветочный топ джерси размер М. Доставка по МСК бесплатная.  #maybe#maybespace#maybesale',
+ *          'instagram_image_caption': 'Последний цветочный топ джерси размер М. Доставка по МСК бесплатная.
+ *     #maybe#maybespace#maybesale',
  *          'instagram_image_id': '1220922723815723851',
- *          'instagram_image_url': 'https://scontent.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/12383420_977019085721689_1440543230_n.jpg?ig_cache_key=MTIyMDkyMjcyMzgxNTcyMzg1MQ%3D%3D.2',
+ *          'instagram_image_url':
+ *     'https://scontent.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/12383420_977019085721689_1440543230_n.jpg?ig_cache_key=MTIyMDkyMjcyMzgxNTcyMzg1MQ%3D%3D.2',
  *          'instagram_image_width': 1080,
  *          'instagram_image_height': 780,
  *          'instagram_link': 'https://www.instagram.com/p/BDxlr-jPRNL/',
@@ -53,7 +55,8 @@ export const sendError = (errorCode, state = null) => {
  *            'instagram_id': 1328901077,
  *            'instagram_username': 'rush.x',
  *            'instagram_fullname': 'Ann',
- *            'instagram_avatar_url': 'http://scontent.cdninstagram.com/t51.2885-19/s150x150/12797972_964243070312823_1112795527_a.jpg'
+ *            'instagram_avatar_url':
+ *     'http://scontent.cdninstagram.com/t51.2885-19/s150x150/12797972_964243070312823_1112795527_a.jpg'
  *          },
  *          'isSale': true,
  *          'items': [
@@ -78,11 +81,7 @@ export const sendError = (errorCode, state = null) => {
  * REJECT (one of ERROR_CODES)
  */
 export function find(
-  {
-    limit, offset, from_id, direction,
-    q, tags,
-    instagram_name, user_id
-  }
+  { limit, offset, from_id, direction, q, tags, instagram_name, user_id }
 ) {
 
   return new Promise( ( resolve, reject ) => {
@@ -106,7 +105,6 @@ export function find(
   } );
 }
 
-
 /**
  * Get product
  * @param {number} id User id
@@ -116,9 +114,11 @@ export function find(
  *     'id': 16154,
  *     'title': 'Трикотажный топ с цветочным узором',
  *     'code': 'tf8276',
- *     'instagram_image_caption': 'Последний цветочный топ джерси размер М. Доставка по МСК бесплатная.  #maybe#maybespace#maybesale',
+ *     'instagram_image_caption': 'Последний цветочный топ джерси размер М. Доставка по МСК бесплатная.
+ *     #maybe#maybespace#maybesale',
  *     'instagram_image_id': '1220922723815723851',
- *     'instagram_image_url': 'https://scontent.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/12383420_977019085721689_1440543230_n.jpg?ig_cache_key=MTIyMDkyMjcyMzgxNTcyMzg1MQ%3D%3D.2',
+ *     'instagram_image_url':
+ *     'https://scontent.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/12383420_977019085721689_1440543230_n.jpg?ig_cache_key=MTIyMDkyMjcyMzgxNTcyMzg1MQ%3D%3D.2',
  *     'instagram_link': 'https://www.instagram.com/p/BDxlr-jPRNL/',
  *     'instagram_published_at': -62135596800,
  *     'supplier': {},
@@ -128,7 +128,8 @@ export function find(
  *       'instagram_id': 1328901077,
  *       'instagram_username': 'rush.x',
  *       'instagram_fullname': 'Ann',
- *       'instagram_avatar_url': 'http://scontent.cdninstagram.com/t51.2885-19/s150x150/12797972_964243070312823_1112795527_a.jpg'
+ *       'instagram_avatar_url':
+ *     'http://scontent.cdninstagram.com/t51.2885-19/s150x150/12797972_964243070312823_1112795527_a.jpg'
  *     },
  *     'isSale': true,
  *     'items': [
@@ -181,13 +182,13 @@ export const like = ( product_id = null, like = true ) => {
       .then( ( status ) => {
 
         if ( status !== null ) {
-          
+
           resolve( true );
-          
+
         } else {
-          
-          resolve( false );      
-          
+
+          resolve( false );
+
         }
 
       } )
@@ -201,3 +202,10 @@ export const like = ( product_id = null, like = true ) => {
 
 };
 
+export function onNew( handler ) {
+  channel.on( 'NEW', 'product', handler );
+}
+
+export function offNew( handler ) {
+  channel.off( 'NEW', 'product', handler );
+}

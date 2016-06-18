@@ -1,6 +1,6 @@
 <template lang="jade">
 div.scroll-cnt
-  header-component(:title='title')
+  header-component(:title='title', :back-link='{name: "home"}')
   .section.main.top
     .section__content#headerAnchor
       .wall#PostsList
@@ -28,12 +28,17 @@ div.scroll-cnt
   import * as products from 'services/products.js';
 
   export default {
+    components: {
+      HeaderComponent,
+      PostComponent,
+      FooterComponent
+    },
     computed: {
-     title(){
-       if(this.getOpenedProduct){
-         return 'Тренд ' + this.getOpenedProduct.code
-       }
-     }
+      title(){
+        if ( this.getOpenedProduct ) {
+          return 'Тренд ' + this.getOpenedProduct.code
+        }
+      }
     },
     vuex: {
       getters: {
@@ -45,17 +50,12 @@ div.scroll-cnt
       }
     },
     route: {
-      activate({to: {params: { id }}}) {
-        return this.openProduct(+id);
+      activate( { to: { params: { id } } } ) {
+        return this.openProduct( +id );
       }
     },
     beforeDestroy(){
       this.closeProduct();
-    },
-    components: {
-      HeaderComponent,
-      PostComponent,
-      FooterComponent
     }
   }
 </script>
