@@ -58,7 +58,7 @@ div.scroll-cnt(v-if="isDone")
     },
     ready(){
       if ( !this.isAuth ) {
-        this.$router.go( { name: 'signup' } );
+        this.$router.replace( { name: 'signup' } );
       }
     },
     beforeDestroy(){

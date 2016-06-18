@@ -17,11 +17,11 @@
     .section__content
       .inform-item__top-block-mission
         div.inform-item__title
-          p Trendever повысит продажи#[br] твоего инстаграм-магазина#[br] без вложений и твоего участия!
+          p Ты даже не заметишь, как Trendever#[br] повысит продажи твоего#[br] инстаграм-магазина!
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Как это возможно?
-          span Знакомься! Это Трендскаут!#[br] Она наполнит твою витрину на Trendever,#[br] отсортирует все товары и назначит цены.
+          span Знакомься! Это Трендскаут!#[br] Она наполнит твою витрину на Trendever,#[br] отсортирует все товары и укажет цены.
 
   .section.inform-item
     .section__content
@@ -29,7 +29,7 @@
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Трендскаут разрекламирует...
-          span ...твои товары у подходящего блогера за свой счет.#[br] Подписчики покупают прямо в его ленте#[br] по комментарию
+          span ...твои товары у подходящего блогера за счет Trendever.#[br] Подписчики покупают прямо в его ленте#[br] по комментарию
             span.inform-item__answer__bold.wantit &nbsp;@wantit
 
   .section.inform-item
@@ -45,9 +45,8 @@
       .inform-item__yellow-img
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
-          p Трендскаут подключит тебя#[br] к шопинг-чату...
-          span ...с уже «тёпленьким» клиентом.#[br] Ты платишь скауту 12% комиссии только за продажу.
-          span.inform-item__answer__bold.with-margin А первые 3 продажи – вообще#[br] БЕСПЛАТНЫЕ!
+          p.no-br-mobile Трендскаут подключит тебя#[br] к шопинг-чату...
+          span ...с уже готовым клиентом.#[br] Ты получишь sms со ссылкой на шопинг-чат."
 
   .section.inform-item
     .section__content
@@ -101,13 +100,13 @@
         a(href='#')
           img(src='../../../base/img/about-us-logo.png' alt='' itemprop="contentUrl")
       p Пока мы отлаживаем работу системы,#[br] Трендскауты готовы обслуживать тебя#[br] БЕСПЛАТНО
-      a(v-link='{ name: "home" }').btn-yellow.btn-yellow__m Попробовать
+      a( @click="onBuyPromoProduct()" ).btn-yellow.btn-yellow__m Попробовать
 
   .section.inform-item.footer
     .section__content
       .inform-item__top-block.inform-item__bg-turquoise.invert
         .vertical-align-wrapper
-          p У тебя есть вкус?#[br] Хочешь стать трендскаутом?
+          p Ты стильный блогер?#[br] Хочешь заработать?
           div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
             | Узнай как
 

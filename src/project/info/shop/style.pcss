@@ -2,15 +2,23 @@
 @import 'base/vars/vars.pcss';
 .inform-item {
   &__top-block-mission {
-    height:492px;
-    background: url('img/inform-item-1.png') no-repeat 50% 0;
+    height:457px;
+    margin-bottom:30px;
+    background: url('img/inform-item-1.jpg') no-repeat 50% 0;
     padding-top:152px;
 
     @media(--mobile) {
-      height:608px;
-      padding-top:90px;
-      margin-bottom:52px;
-      background: url('img/inform-item-1-sm.png') no-repeat 0 0;
+      height:597px;
+      padding-top:145px;
+      background: url('img/inform-item-1-sm.jpg') no-repeat 0 0;
+    }
+
+    .inform-item__title {
+      br {
+        @media(--mobile) {
+          display:none;
+        }
+      }
     }
   }
 
@@ -28,6 +36,7 @@
 
   &__green-img {
     height:481px;
+    margin-bottom:30px;
     background: url('img/img-green.png') no-repeat 50% 0;
 
     @media(--mobile) {
@@ -37,7 +46,8 @@
   }
 
   &__red-img {
-    height:503px;
+    height:494px;
+    margin-bottom:30px;
     background: url('img/img-pink.png') no-repeat 50% 0;
 
     @media(--mobile) {
@@ -47,21 +57,23 @@
   }
 
   &__yellow-img {
-    height:546px;
+    height:505px;
+    margin-bottom:30px;
     background: url('img/img-yellow.png') no-repeat 50% 0;
 
     @media(--mobile) {
-      height:701px;
+      height:662px;
       background: url('img/img-yellow-sm.png') no-repeat 50% 0;
     }
   }
 
   &__blue-img {
-    height:511px;
+    height:483px;
+    margin-bottom:30px;
     background: url('img/img-blue.png') no-repeat 50% 0;
 
     @media(--mobile) {
-      height:761px;
+      height:708px;
       background: url('img/img-blue-sm.png') no-repeat 50% 0;
     }
   }
@@ -70,7 +82,7 @@
     height:847px;
     background: url(img/inform-item-blue.png) no-repeat 50% 0;
     margin-top:90px;
-    margin-bottom: 39px;
+    margin-bottom: 30px;
 
     @media(--mobile) {
       height:1258px;
@@ -190,6 +202,11 @@ span.inform-item__answer__bold {
     }
 
     &:last-child {
+
+      @media(--mobile) {
+        margin-bottom:0;
+      }
+
       span {
         margin-bottom:60px;
 
@@ -285,5 +302,12 @@ span.inform-item__answer__bold {
   @media(--mobile) {
     display:block;
     margin-top:0;
+  }
+}
+.no-br-mobile {
+  br {
+    @media(--mobile) {
+      display:none;
+    }
   }
 }
