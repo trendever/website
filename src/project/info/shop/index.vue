@@ -5,28 +5,23 @@
     .section__content.header__content
       .header__logo
         a(v-link='{ name: "home" }')
-          img(src='img/logo.svg' alt='')
+          img(src='../../../base/img/logo-beta.png' alt='')
       a(href='#'
         v-if="!isAuth"
         v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
   .section.top
     .arithmetic.arithmetic-mission
-      .arithmetic__first
-        img(src='img/instagramm.png' alt ='')
-      .arithmetic__svg
-        img(src='img/arithmetic.svg' alt ='')
-      .arithmetic__result
-        img(src='img/result.png' alt ='')
+      img(src='img/arithmetic.png' alt ='')
 
   .section.inform-item
     .section__content
       .inform-item__top-block-mission
         div.inform-item__title
-          p Trendever повысит продажи#[br] твоего инстаграм-магазина#[br] без вложений и твоего участия!
+          p Ты даже не заметишь, как Trendever#[br] повысит продажи твоего#[br] инстаграм-магазина!
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Как это возможно?
-          span Знакомься! Это Трендскаут!#[br] Она наполнит твою витрину на Trendever,#[br] отсортирует все товары и назначит цены.
+          span Знакомься! Это Трендскаут!#[br] Она наполнит твою витрину на Trendever,#[br] отсортирует все товары и укажет цены.
 
   .section.inform-item
     .section__content
@@ -34,8 +29,8 @@
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Трендскаут разрекламирует...
-          span ...твои товары у подходящего блогера за свой счет.#[br] Подписчики покупают прямо в его ленте#[br] по комментарию
-            span.inform-item__answer__bold @wantit
+          span ...твои товары у подходящего блогера за счет Trendever.#[br] Подписчики покупают прямо в его ленте#[br] по комментарию
+            span.inform-item__answer__bold.wantit &nbsp;@wantit
 
   .section.inform-item
     .section__content
@@ -50,9 +45,8 @@
       .inform-item__yellow-img
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
-          p Трендскаут подключит тебя#[br] к шопинг-чату...
-          span ...с уже «тёпленьким» клиентом.#[br] Ты платишь скауту 12% комиссии только за продажу.
-          span.inform-item__answer__bold.with-margin А первые 3 продажи – вообще#[br] БЕСПЛАТНЫЕ!
+          p.no-br-mobile Трендскаут подключит тебя#[br] к шопинг-чату...
+          span ...с уже готовым клиентом.#[br] Ты получишь sms со ссылкой на шопинг-чат."
 
   .section.inform-item
     .section__content
@@ -88,35 +82,33 @@
         div.inform-item__title
           ul.check-list.check-list-sm
             li
-              i.ic-galochka Продавать товары на Trendever
+              i.ic-galochka
+              | Продавать товары на Trendever
             li
-              i.ic-galochka Выгодно продавать у блогеров
+              i.ic-galochka
+              | Выгодно продавать у блогеров
             li
-              i.ic-galochka Продавать по отметке @wantit
+              i.ic-galochka
+              | Продавать по отметке @wantit
             li
-              i.ic-galochka Использовать шопинг-чат на 100%
+              i.ic-galochka
+              | Использовать шопинг-чат на 100%
 
   .section.about-us
     .section__content
       .about-us__logo
         a(href='#')
-          img(src='img/about-us-logo.svg' alt='' itemprop="contentUrl")
-      p Поможет найти и купить тренды
-        br
-        |  без наценки из первых рук!
-      a(v-link='{ name: "home" }').btn-yellow.btn-yellow__m Перейти на сайт
-      p Превращаем Instagram-шопинг в удовольтсвие.
+          img(src='../../../base/img/about-us-logo.png' alt='' itemprop="contentUrl")
+      p Пока мы отлаживаем работу системы,#[br] Трендскауты готовы обслуживать тебя#[br] БЕСПЛАТНО
+      a( @click="onBuyPromoProduct()" ).btn-yellow.btn-yellow__m Попробовать
 
   .section.inform-item.footer
     .section__content
-      .inform-item__top-block.inform-item__bg-turquoise
+      .inform-item__top-block.inform-item__bg-turquoise.invert
         .vertical-align-wrapper
-          p У тебя свой бренд?
-            br
-            |  Хочешь продаваться у нас?
+          p Ты стильный блогер?#[br] Хочешь заработать?
           div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
             | Узнай как
-  script
 
 </template>
 <script>

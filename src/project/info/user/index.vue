@@ -12,12 +12,7 @@
 
   .section.top
     .arithmetic
-      .arithmetic__first
-        img(src='img/instagramm.png' alt ='')
-      .arithmetic__svg
-        img(src='img/arithmetic.svg' alt ='')
-      .arithmetic__result
-        img(src='img/result.png' alt ='')
+      img(src='img/arithmetic.png' alt ='')
 
   .section.inform-item
     .section__content
@@ -221,7 +216,7 @@
     .section__content
       .about-us__logo
         a(href='#')
-          img(src='img/about-us-logo.svg' alt='' itemprop="contentUrl")
+          img(src='../../../base/img/about-us-logo.png' alt='' itemprop="contentUrl")
       p Поможет найти и купить тренды
         br
         |  без наценки из первых рук!
@@ -235,7 +230,7 @@
           p У тебя свой бренд?
             br
             |  Хочешь продаваться у нас?
-          div( @click="onBuyPromoProduct()").btn-yellow.btn-yellow__m
+          div(v-link='{name: "info-shop"}').btn-yellow.btn-yellow__m
             | Узнай как
 
 </template>
