@@ -114,7 +114,7 @@
           }
         }
 
-        if ( window.history.length > 1 && !this.forceBackLink) {
+        if ( window.history.length > 2 && !this.forceBackLink) {
 
           window.history.back();
 
