@@ -10,7 +10,7 @@ import {
 // initial state
 const state = {
 
-  isAuth: true,
+  isAuth: false,
   token: null,
   id: null, // string - current profile
   myId: null, // Id profile of current user.
