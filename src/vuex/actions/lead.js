@@ -99,13 +99,13 @@ export const loadLeads = ( { dispatch, state }, count = getCountForLoading ) => 
 
 };
 
-export const createLead = ( { dispatch }, product_id ) => {
+export const createLead = ( { dispatch, state }, product_id ) => {
 
   return leads
     .create( product_id )
     .then(
       ( lead ) => {
-        incLengthList( { dispatch }, 1 );
+        incLengthList( { dispatch, state }, 1 );
         dispatch( LEAD_RECEIVE, [ lead ], 'customer' );
         return lead;
       },
