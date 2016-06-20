@@ -17,6 +17,7 @@ footer.section.footer
 </template>
 
 <script>
+import settings from 'settings'
 import { setCallbackOnSuccessAuth } from 'vuex/actions';
 import { createLead } from 'vuex/actions/lead';
 import { isAuth } from 'vuex/getters/user.js';
