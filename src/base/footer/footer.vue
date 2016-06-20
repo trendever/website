@@ -16,11 +16,12 @@ footer.section.footer
       .footer__content__img
 </template>
 
-<script>
+<script type="text/babel">
 import { setCallbackOnSuccessAuth } from 'vuex/actions';
 import { createLead } from 'vuex/actions/lead';
 import { isAuth } from 'vuex/getters/user.js';
 import * as leads from 'services/leads';
+import settings from 'settings'
 
 export default {
   computed: {
