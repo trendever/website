@@ -18,7 +18,7 @@
     .navbar_i(:class='{"__active": current=="chat"}', v-link='{name: "chat_list"}')
       .navbar_i_wrap
         i.ic-cloud.navbar_i_wrap_ic.__chat_ic
-        .navbar_i_wrap_t Шопинг-чаты
+        .navbar_i_wrap_t Чаты
         .navbar_i_wrap_notify(v-show='getGlobalNotifyCount')
           span {{ getGlobalNotifyCount }}
 
