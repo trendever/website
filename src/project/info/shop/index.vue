@@ -29,7 +29,9 @@
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Трендскаут разрекламирует...
-          span ...твои товары у подходящего блогера за счет Trendever.#[br] Подписчики покупают прямо в его ленте#[br] по комментарию
+          span ...твои товары у подходящего блогера за счет Trendever.#[br] Подписчики покупают прямо в его ленте
+            br(class='mobile-hidden')
+            | по комментарию
             span.inform-item__answer__bold.wantit &nbsp;@wantit
 
   .section.inform-item
@@ -46,7 +48,7 @@
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p.no-br-mobile Трендскаут подключит тебя#[br] к шопинг-чату...
-          span ...с уже готовым клиентом.#[br] Ты получишь sms со ссылкой на шопинг-чат."
+          span ...с уже готовым клиентом.#[br] Ты получишь sms со ссылкой на шопинг-чат.
 
   .section.inform-item
     .section__content
@@ -54,7 +56,7 @@
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Звучит неплохо?
-          span Тогда рассказываем, что нужно, чтобы понравится Трендскауту.
+          span Тогда рассказываем, что нужно, чтобы понравиться Трендскауту.
 
   .section.inform-item
     .section__content
@@ -99,7 +101,7 @@
       .about-us__logo
         a(href='#')
           img(src='../../../base/img/about-us-logo.png' alt='' itemprop="contentUrl")
-      p Пока мы отлаживаем работу системы,#[br] Трендскауты готовы обслуживать тебя#[br] БЕСПЛАТНО
+      p Нажми Попробовать, зарегистрируйся#[br] и Трендскаут проконсультирует тебя в чате.
       a( @click="onBuyPromoProduct()" ).btn-yellow.btn-yellow__m Попробовать
 
   .section.inform-item.footer

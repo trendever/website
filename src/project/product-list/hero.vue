@@ -74,7 +74,6 @@ export default {
 
   ready() {
     this.scrollCnt = document.querySelector( '.scroll-cnt' );
-    this.closeMenu();
   },
 
   vuex: {
@@ -88,22 +87,6 @@ export default {
   },
 
   methods: {
-    closeMenu() {
-      // Горло через жопу не лечат.
-      // Я просил сделать подложку на весь экран под меню
-      // И на нее повесить событие @click.
-      // Показывать подложку, когда открыто меню.
-      // Переделай Денис.
-      // document.body.addEventListener('click', (e) => {
-      //   console.log("Fired event on every page. See!");
-      //   if (e.target === document.querySelector('.profile-header__menu-btn-icon')) return;
-      //
-      //   if (e.target.parentNode !== document.querySelector('.profile-header__menu-links')){
-      //     this.menuOpened = false;
-      //   }
-      // });
-    },
-
     onBuyPromoProduct() {
       if ( !this.isAuth ) {
 

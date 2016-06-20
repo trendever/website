@@ -8,7 +8,7 @@ footer.section.footer
       a.footer__content__link.link(
         v-link='{name: "info-user"}') Покупателям
       a.footer__content__link.link(
-        @click="onBuyPromoProduct()") Магазинам
+        v-link='{name: "info-shop"}') Магазинам
       a.footer__content__link.link(
         v-link='{name: "info-agreement"}') Условия
 
