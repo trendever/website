@@ -5,49 +5,33 @@
   &__content {
     position: relative;
 
-    width: 750px;
     height: 615px;
 
     text-align: center;
 
-    @media (--mobile) {
-      overflow-x: hidden;
+    background: url(../img/hero.jpg) no-repeat 50% 50%;
 
-      width: auto;
-    }
-
-    &__img {
-      position: absolute;
-      top: 0;
-      left: -150px;
-
-      display: block;
-
-      width: calc(750px + 150px + 150px);
-      height: 615px;
-
-      content: '';
-
-      background: url(../img/hero.jpg);
-    }
     .profile-header {
       z-index: 2;
+      max-width:750px;
+      margin-left:auto;
+      margin-right:auto;
     }
+
     &__logo {
       position: relative;
       z-index: 1;
       display: inline-block;
 
-      background: url(../../../base/img/logo-beta.png);
+      background: url(../../../base/img/logo-beta.png) no-repeat 0 27px;
       background-size: 100%;
-      background-repeat: no-repeat;
-      background-position: 0 27px;
 
       width: 530px;
       height: calc(151px + 27px);
 
       padding-top: 27px;
     }
+
     &__description {
       position: relative;
       z-index: 1;
@@ -73,7 +57,9 @@
         margin-left: -28px;
       }
     }
+
     &__btn-cnt {
+
       position: relative;;
       z-index: 1;
 
@@ -84,7 +70,9 @@
 
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
       }
+
     }
+
   }
 }
 
