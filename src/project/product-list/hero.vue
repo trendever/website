@@ -58,6 +58,7 @@
 
 <script type='text/babel'>
 import listener from 'event-listener'
+import settings from 'settings'
 import { setCallbackOnSuccessAuth } from 'vuex/actions'
 import { createLead } from 'vuex/actions/lead'
 import { isAuth } from 'vuex/getters/user.js'
