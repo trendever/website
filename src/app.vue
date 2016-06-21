@@ -8,9 +8,15 @@
 </template>
 
 <script type='text/babel'>
+  import listen from 'event-listener';
+
   import { browser } from 'utils'
 
   import font from 'base/fonts/trendever-icons/trendever-icons.font'
+
+  import * as version from 'services/version'
+  import { getStorage } from 'services/profile'
+
   import store from 'vuex/store'
   import { authUser } from 'vuex/actions/user.js'
 
@@ -30,6 +36,19 @@
       }
     },
     ready() {
+
+      if (process.env.NODE_ENV === "production") {
+
+        this.checkVersion()
+        // Check version of app, when app open or tab with app shown.
+        listen(document, 'visibilitychange', () => {
+          if (!document.hidden) {
+            this.checkVersion()
+          }
+        })
+
+      }
+
       let token = null
 
       if ( this.$route.query ) {
@@ -44,6 +63,32 @@
         } );
       mixpanel.track( 'App Open' )
 
+    },
+    methods: {
+      checkVersion() {
+        version.get().then((data) => {
+          console.log(data);
+
+          let currentBuild = getStorage().getItem("build")
+          console.log(currentBuild);
+          if (!currentBuild) {
+
+            getStorage().setItem("build", data.buildTimestamp)
+
+          } else if (currentBuild !== data.buildTimestamp) {
+
+            console.log("restart");
+
+            // window.location.reload()
+
+          }
+
+        })
+        .catch( () => {
+          // It's dev mode, nothing do.
+          // If want test it, run with SimpleHTTPServer
+        });
+      }
     },
     computed: {
       isNotWhy(){

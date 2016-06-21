@@ -45,7 +45,6 @@ module.exports = merge(baseWebpackConfig, {
       template: './src/index.jade',
       inject: true,
     }),
-
   ]
 
 });
