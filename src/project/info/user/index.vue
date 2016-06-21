@@ -200,7 +200,8 @@
                 span @savetrend
                 |  добавить в свою ленту трендов
 
-            span.note *только посты с тегом #trendever
+            span.note *только посты с тегом
+              a(href='https://www.instagram.com/explore/tags/trendever/')&nbsp;#trendever
           .about-mobile__two-col__img
             .about-mobile__img-block.about-mobile__img-block__right
               img(src='img/iphone-2.png' alt='')

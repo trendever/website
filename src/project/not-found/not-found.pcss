@@ -1,0 +1,75 @@
+@import 'base/vars/vars.pcss';
+.not-found {
+  width:100%;
+  height:100%;
+  background:#12302d;
+
+  &__container {
+    max-width: 763px;
+    height:100%;
+    margin:0 auto;
+    position:relative;
+    overflow: hidden;
+  }
+
+  &__img {
+    margin-bottom:-60px;
+    width: 100%;
+
+    @media(--tabletandless) {
+      padding: 0 40px;
+    }
+
+    img {
+      width:100%;
+    }
+  }
+
+  &__wrapper {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__clip {
+    height:200px;
+    overflow: hidden;
+  }
+
+  &__text {
+    background: #294442;
+    width:490px;
+    height:461px;
+    border-radius: 50%;
+    text-align: center;
+    padding-bottom:230px;
+    margin:0 auto;
+
+    &__wrap {
+      display: inline-block;
+      vertical-align: middle;
+      color: #fff;
+      font-size:24px;
+
+      span {
+        display: block;
+        opacity:.5;
+        margin-top: 8px;
+      }
+
+      a {
+        color: #fff;
+        display: inline-block;
+        border-bottom:1px solid #fff;
+      }
+    }
+
+    &:before {
+      height:100%;
+      content: '';
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}

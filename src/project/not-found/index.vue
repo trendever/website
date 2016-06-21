@@ -1,23 +1,26 @@
+<style src='./not-found.pcss'></style>
 <template lang="jade">
 .scroll-cnt
-  header-component(title='Страница не существует')
-  .section.main(style='margin-top: 140px')
-    .section__content(style='text-align:center;')
-      h1(style='font-size:32px; margin-bottom: 48px')
-        | Возможно вы попали сюда случайно, либо страница и правда не существует.
-      a(v-link='{name: "home"}')
-        button(class='btn btn_primary __orange __xl fast__big__btn') На главную
+  .not-found
+    .not-found__container
+      .not-found__wrapper
+        .not-found__img
+          img(src='img/404.png')
+        .not-found__clip
+          .not-found__text
+            .not-found__text__wrap
+              Страницу похитили...
+              span но&nbsp;
+                a(v-link='{name: "home"}')главная страница
+                | &nbsp;осталась
+
 
 </template>
 
 <script>
-import HeaderComponent from 'base/header/header.vue'
 
 export default {
   data: () => ({
   }),
-  components: {
-    HeaderComponent
-  }
 }
 </script>
