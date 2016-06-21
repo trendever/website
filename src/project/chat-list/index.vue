@@ -17,7 +17,8 @@ div.scroll-cnt(v-el:scroll-cnt)
         .chat-list(v-bind:style="styleObject")
           template(v-for='lead in getLeads | orderBy "updated_at" -1 | cutList')
             chat-list-item(:lead='lead')
-    .chat-list-cnt-is-empty(v-if='isEmptyLeads') У вас нет шопинг-чатов
+    .chat-list-cnt-is-empty(v-if='isEmptyLeads')
+      .chat-list-cnt-is-empty__container Нет сообщений#[br] Покупай и продавай в шопинг-чатах
     navbar-component(current='chat')
 </template>
 
