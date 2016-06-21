@@ -1,5 +1,5 @@
 <template lang="jade">
-div.scroll-cnt
+scroll-component
   header-component(:title='title', :back-link='{name: "home"}')
   .section.main.top
     .section__content#headerAnchor
@@ -21,6 +21,7 @@ div.scroll-cnt
   import { openProduct, closeProduct } from 'vuex/actions/products';
   import { getOpenedProduct } from 'vuex/getters/products';
 
+  import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
   import PostComponent from './product-post.vue';
   import FooterComponent from 'base/footer/footer.vue';
@@ -29,6 +30,7 @@ div.scroll-cnt
 
   export default {
     components: {
+      ScrollComponent,
       HeaderComponent,
       PostComponent,
       FooterComponent

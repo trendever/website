@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-.scroll-cnt
+scroll-component
   .section.header.u-fixed
     .section__content.header__content
       .header__logo
@@ -115,7 +115,10 @@
 </template>
 <script>
   import settings from 'settings'
+
+  import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
+
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import { createLead } from 'vuex/actions/lead';
   import { isAuth } from 'vuex/getters/user.js';
@@ -160,6 +163,7 @@
     },
 
     components: {
+      ScrollComponent,
       HeaderComponent
     }
 

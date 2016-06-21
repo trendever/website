@@ -21,6 +21,7 @@
     data(){
       return {
         authIsDone: false,
+        touchMoveY: 0
       }
     },
     vuex: {

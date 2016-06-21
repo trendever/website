@@ -1,7 +1,7 @@
 <template>
-  <div class="spinner">
-    <div class="dot1"></div>
-    <div class="dot2"></div>
+  <div class="spinner" :style="style">
+    <div class="dot1" :style="styleDots"></div>
+    <div class="dot2" :style="styleDots"></div>
   </div>
 </template>
 
@@ -22,7 +22,7 @@
   display: inline-block;
   position: absolute;
   top: 0;
-  background-color: #333;
+  background-color: inherit;;
   border-radius: 100%;
 
   animation: sk-bounce 2.0s infinite ease-in-out;
@@ -66,12 +66,14 @@
     },
     computed: {
       style() {
-        var color = `color: ${this.color}`;
         var width = `width: ${this.size}px`;
         var height = `height: ${this.size}px`;
 
-        return `${color}; ${width}; ${height};`;
+        return `${width}; ${height};`;
       },
+      styleDots() {
+        return `background-color: ${this.color}`
+      }
     },
   }
 </script>

@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-div.scroll-cnt(v-if="isDone")
+scroll-component(v-if="isDone")
   .profile-cnt
     header-component(:title='getUserName', :left-btn-show='true')
 
@@ -40,6 +40,7 @@ div.scroll-cnt(v-if="isDone")
     isAuth
   } from 'vuex/getters/user.js';
 
+  import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue'
   import PhotosComponent from 'base/photos/photos.vue'
   import NavbarComponent from 'base/navbar/navbar.vue'
@@ -94,6 +95,7 @@ div.scroll-cnt(v-if="isDone")
       }
     },
     components: {
+      ScrollComponent,
       HeaderComponent,
       PhotosComponent,
       NavbarComponent,
