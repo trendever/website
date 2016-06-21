@@ -4,6 +4,7 @@
     <template v-for="product of products">
       <product :name="product.name" :old-price="product.oldPrice" :price="product.price"></product>
     </template>
+    <buttons></buttons>
   </div>
 </template>
 
@@ -22,6 +23,7 @@
 <script type="text/babel">
   import user from '../user-info/index.vue'
   import product from '../products/index.vue'
+  import buttons from '../buttons/index.vue'
   export default {
 
     data(){
@@ -55,7 +57,8 @@
 
     components: {
       user,
-      product
+      product,
+      buttons
     }
   }
 </script>
