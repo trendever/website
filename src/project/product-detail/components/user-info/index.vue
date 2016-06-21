@@ -3,7 +3,7 @@
     <div class="info">
       <img class="avatar" :src="img" alt="Аватар пользователя {{code}}">
       <div class="description">
-        <div>
+        <div class="userName">
           <span class="title">Нашёл</span>
           <span class="name">{{name}}</span>
         </div>
