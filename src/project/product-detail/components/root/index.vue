@@ -6,6 +6,7 @@
     </template>
     <buttons></buttons>
     <description></description>
+    <picture img="https://yandex.ru/images/today?size=1920x1920"></picture>
   </div>
 </template>
 
@@ -26,6 +27,7 @@
   import product from '../products/index.vue'
   import buttons from '../buttons/index.vue'
   import description from '../description/index.vue'
+  import picture from '../picture/index.vue'
   export default {
 
     data(){
@@ -61,7 +63,8 @@
       user,
       product,
       buttons,
-      description
+      description,
+      picture
     }
   }
 </script>
