@@ -1,0 +1,17 @@
+@use postcss-autoreset {
+  reset: {
+    all: initial;
+    sizes: 0;
+  }
+}
+
+@use postcss-initial {
+  reset: inherited;
+}
+
+@import 'base/mixin/bubble.pcss';
+
+.mobileLayout {
+  display: block;
+}
+

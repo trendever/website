@@ -1,12 +1,12 @@
 <template>
   <div>
-    <user img="11111" code="22222" name="wqdqwdqwd" last-update="1 день"></user>
-    <template v-for="product of products">
-      <product :name="product.name" :old-price="product.oldPrice" :price="product.price"></product>
-    </template>
-    <buttons></buttons>
-    <description></description>
-    <picture img="https://yandex.ru/images/today?size=1920x1920"></picture>
+    <mobile-layout
+      v-if="isSmall"
+    ></mobile-layout>
+    <desktop-layout
+      v-if="!isSmall"
+      :products.once="products"
+    ></desktop-layout>
   </div>
 </template>
 
@@ -23,34 +23,55 @@
 </style>
 
 <script type="text/babel">
-  import user from '../user-info/index.vue'
-  import product from '../products/index.vue'
-  import buttons from '../buttons/index.vue'
-  import description from '../description/index.vue'
-  import picture from '../picture/index.vue'
+  import listen from 'event-listener'
+  import mobileLayout from '../mobileLayout/index.vue'
+  import desktopLayout from '../desktopLayout/index.vue'
   export default {
+
+    ready(){
+
+      this.$set( 'isSmall', window.matchMedia( "(max-width: 750px)" ).matches );
+
+      this.resizeLayout = listen( window, 'optimizedResize', () => {
+
+        if ( window.matchMedia( "(max-width: 750px)" ).matches !== this.isSmall ) {
+
+          this.$set( 'isSmall', window.matchMedia( "(max-width: 750px)" ).matches );
+
+        }
+
+      } );
+
+    },
+
+    beforeDestroy(){
+
+      this.resizeLayout.remove();
+
+    },
 
     data(){
 
       return {
-        products:[
+        isSmall: false,
+        products: [
           {
-            name:'Это название продкута которое указывается в его названиии в элом это очень длинное название)))',
+            name: 'Это название продкута которое указывается в его названиии в элом это очень длинное название)))',
             oldPrice: 20000,
             price: 10000
           },
           {
-            name:'111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111',
+            name: '111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111',
             oldPrice: null,
             price: 10000
           },
           {
-            name:'222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222',
+            name: '222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222',
             oldPrice: 20000,
             price: null
           },
           {
-            name:'222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222',
+            name: '222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222',
             oldPrice: null,
             price: null
           }
@@ -60,11 +81,8 @@
     },
 
     components: {
-      user,
-      product,
-      buttons,
-      description,
-      picture
+      mobileLayout,
+      desktopLayout
     }
   }
 </script>
