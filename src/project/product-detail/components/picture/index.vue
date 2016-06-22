@@ -1,6 +1,6 @@
 <template>
   <div class="picture">
-    <img class="img" :src="img" alt="">
+    <img :width="width" :height="height" :src="img">
   </div>
 </template>
 
@@ -12,6 +12,14 @@
       img:{
         type: String,
         default: null
+      },
+      width:{
+        type: String,
+        default: '100%'
+      },
+      height:{
+        type: String,
+        default: '100%'
       }
     }
   }

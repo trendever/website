@@ -1,12 +1,8 @@
 <template>
   <div>
-    <mobile-layout
-      v-if="isSmall"
-    ></mobile-layout>
-    <desktop-layout
-      v-if="!isSmall"
-      :products.once="products"
-    ></desktop-layout>
+    <mobile-layout v-if="isSmall" :products.once="products"></mobile-layout>
+    <desktop-layout v-if="!isSmall" :products.once="products"></desktop-layout>
+    <div class="products"></div>
   </div>
 </template>
 
@@ -23,6 +19,7 @@
 </style>
 
 <script type="text/babel">
+
   import listen from 'event-listener'
   import mobileLayout from '../mobileLayout/index.vue'
   import desktopLayout from '../desktopLayout/index.vue'
@@ -30,9 +27,7 @@
 
     ready(){
 
-      this.$set( 'isSmall', window.matchMedia( "(max-width: 750px)" ).matches );
-
-      this.resizeLayout = listen( window, 'optimizedResize', () => {
+      const resize = () => {
 
         if ( window.matchMedia( "(max-width: 750px)" ).matches !== this.isSmall ) {
 
@@ -40,7 +35,11 @@
 
         }
 
-      } );
+      };
+
+      this.resizeLayout = listen( window, 'optimizedResize', resize );
+
+      resize();
 
     },
 
@@ -51,7 +50,6 @@
     },
 
     data(){
-
       return {
         isSmall: false,
         products: [
@@ -77,7 +75,6 @@
           }
         ]
       }
-
     },
 
     components: {

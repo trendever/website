@@ -1,14 +1,12 @@
 <template>
   <div class="user-info">
-    <div class="info">
-      <img class="avatar" :src="img" alt="Аватар пользователя {{code}}">
-      <div class="description">
-        <div class="userName">
-          <span class="title">Нашёл</span>
-          <span class="name">{{name}}</span>
-        </div>
-        <span class="code">Код товара {{code}}</span>
+    <img class="avatar" :src="img" alt="Аватар пользователя {{code}}">
+    <div class="description">
+      <div class="userName">
+        <span class="title">Нашёл</span>
+        <span class="name">{{name}}</span>
       </div>
+      <span class="code">Код товара {{code}}</span>
     </div>
     <span class="lastUpdate">{{lastUpdate}}</span>
   </div>

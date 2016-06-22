@@ -4,7 +4,6 @@ div.scroll-cnt
   .section.main.top
     .section__content
       post-component
-      footer-component
 </template>
 
 <script type="text/babel">

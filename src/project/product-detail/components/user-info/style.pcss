@@ -11,13 +11,11 @@
 @import 'base/vars/vars.pcss';
 
 .user-info {
-
+  display: block;
   width: 100%;
   height: 46px;
   padding: 3px 0 3px 0;
   box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
   @media(--mobile) {
     height: 110px;
     padding: 15px 0 15px 0;
@@ -25,21 +23,9 @@
 
 }
 
-.info{
-
-  flex-grow: 1;
-  display: -webkit-box;
-  align-items: center;
-  overflow: hidden;
-
-}
-
-.userName{
-  display: flex;
-}
-
 .avatar {
-
+  display: block;
+  float: left;
   size: 40px;
   margin-right: 20px;
   @media(--mobile) {
@@ -49,51 +35,14 @@
 }
 
 .description {
-
-  display: flex;
-  flex-direction: column;
+  display: block;
   width: 100%;
-  padding-right: 110px;
   box-sizing: border-box;
-}
-
-.title {
-  font-family: $font__family;
-  line-height: 19.2px;
-  font-size: 16px;
-  color: $color__gray;
-  flex-shrink: 0;
-  @media(--mobile) {
-    line-height: 38px;
-    font-size: 32px;
-  }
-}
-
-.name {
-  font-family: $font__family;
-  line-height: 19.2px;
-  font-size: 16px;
-  color: $color__green;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  @media(--mobile) {
-    line-height: 38px;
-    font-size: 32px;
-  }
-}
-
-.code {
-  display: inline;
-  font-family: $font__family;
-  line-height: 19.2px;
-  font-size: 16px;
-  color: $color__gray;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  @media(--mobile) {
-    line-height: 38px;
-    font-size: 32px;
-  }
+  border-right: 85px solid transparent;
+  margin-right: -85px;
+  border-left: 60px solid transparent;
+  margin-left: -60px;
+  float: left;
 }
 
 .lastUpdate{
@@ -103,10 +52,63 @@
   font-size: 16px;
   color: $color__gray;
   float: right;
-  flex-shrink: 0;
   @media(--mobile) {
     line-height: 38px;
     font-size: 32px;
     margin-top: 15px;
+  }
+}
+
+.userName{
+  display: block;
+  height: 20px;
+}
+
+.title {
+  display: inline-block;
+  float: left;
+  font-family: $font__family;
+  line-height: 19.2px;
+  font-size: 16px;
+  color: $color__gray;
+  margin-right: 5px;
+  @media(--mobile) {
+    line-height: 38px;
+    font-size: 32px;
+  }
+}
+
+.name {
+  display: inline-block;
+  float: right;
+  width: 100%;
+  box-sizing: border-box;
+  border-left: 60px solid transparent;
+  margin-left: -60px;
+  font-family: $font__family;
+  line-height: 19.2px;
+  font-size: 16px;
+  color: $color__green;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  @media(--mobile) {
+    line-height: 38px;
+    font-size: 32px;
+  }
+}
+
+.code {
+  display: block;
+  font-family: $font__family;
+  line-height: 19.2px;
+  font-size: 16px;
+  color: $color__gray;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  @media(--mobile) {
+    line-height: 38px;
+    font-size: 32px;
   }
 }
