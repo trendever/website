@@ -31,6 +31,7 @@
   size: 40px;
   margin-right: 20px;
   border-radius: 40px;
+  cursor: pointer;
   @media(--mobile) {
     size: 70px;
     margin-top: 5px;
@@ -43,11 +44,12 @@
   display: block;
   width: 100%;
   box-sizing: border-box;
-  border-right: 85px solid transparent;
-  margin-right: -85px;
+  border-right: 70px solid transparent;
+  margin-right: -70px;
   border-left: 60px solid transparent;
   margin-left: -60px;
   float: left;
+  pointer-events: none;
   @media(--mobile) {
     border-right: 120px solid transparent;
     margin-right: -120px;
@@ -105,6 +107,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  cursor: pointer;
   @media(--mobile) {
     line-height: 38px;
     font-size: 32px;

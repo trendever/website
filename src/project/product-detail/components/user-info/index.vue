@@ -1,12 +1,12 @@
 <template>
   <div class="user-info">
-    <img class="avatar" :src="img">
+    <img class="avatar" :src="img" v-link='{name: "user", params: {id: name}}'>
     <div class="description">
       <div class="userName">
         <span class="title">Нашёл</span>
-        <span class="name">{{name}}</span>
+        <span class="name" v-link='{name: "user", params: {id: name}}'>{{name}}</span>
       </div>
-      <span class="code">Код товара {{code}}</span>
+      <span class="code">Код тренда {{code}}</span>
     </div>
     <span class="lastUpdate">{{lastUpdate}}</span>
   </div>

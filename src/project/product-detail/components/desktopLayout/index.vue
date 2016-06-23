@@ -1,7 +1,7 @@
 <template>
-  <div class="desktopLayout">
+  <div class="desktopLayout"  v-el:root>
 
-    <div class="product" v-el:root>
+    <div class="product" v-el:product>
 
       <div class="leftSide" v-bind:style="leftSide">
         <picture :img="picture"></picture>
@@ -23,9 +23,17 @@
               :old-price="product.oldPrice"
             ></products>
           </template>
-          <buttons :is-liked.once="isLiked"></buttons>
+          <buttons
+            :is-liked="isLiked"
+            :is-mobile="isMobile"
+            :product-id="productId"
+            :like="like"
+            :buy="buy"
+          ></buttons>
         </div>
-        <description :text="caption"></description>
+        <div class="description-wrapper">
+          <description :text="caption"></description>
+        </div>
       </div>
 
     </div>
@@ -78,17 +86,41 @@
         type: Boolean,
         default: false
       },
+      isMobile: {
+        type: Boolean,
+        default: false
+      },
+      productId: {
+        type: Number,
+        default: 0
+      },
+      like: {
+        type: Function,
+        default: () => {
+
+        }
+      },
+      buy: {
+        type: Function,
+        default: () => {
+
+        }
+      }
     },
     ready(){
 
       const resize = () => {
 
-        const { clientWidth } = this.$els.root;
+        const { offsetWidth } = this.$els.root;
+        const { clientWidth } = this.$els.product;
 
         if ( offsetWidth => 750 ) {
 
-          this.$set( 'leftSide.width', `${clientWidth * 0.6}px` );
-          this.$set( 'rightSide.width', `${clientWidth * 0.4}px` );
+          const widthLeft  = clientWidth * 0.6;
+          const widthRight = clientWidth * 0.4;
+
+          this.$set( 'leftSide.width', `${ widthLeft >= 580 ? 580 : widthLeft }px` );
+          this.$set( 'rightSide.width', `${ widthLeft >= 580 ? clientWidth - 580 : widthRight }px` );
 
         }
 

@@ -19,7 +19,13 @@
           :old-price="product.oldPrice"
         ></products>
       </template>
-      <buttons :is-liked.once="isLiked"></buttons>
+      <buttons
+        :is-liked="isLiked"
+        :is-mobile="isMobile"
+        :product-id="productId"
+        :like="like"
+        :buy="buy"
+      ></buttons>
     </div>
     <div class="desc-wrapper">
       <description :text="caption"></description>
@@ -78,6 +84,27 @@
         type: Boolean,
         default: false
       },
+      isMobile: {
+        type: Boolean,
+        default: false
+      },
+      productId: {
+        type: Number,
+        default: 0
+      },
+      like: {
+        type: Function,
+        default: () => {
+
+        }
+      },
+      buy: {
+        type: Function,
+        default: () => {
+
+        }
+      }
+
     },
   }
 </script>

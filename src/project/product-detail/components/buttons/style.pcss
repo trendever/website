@@ -14,11 +14,11 @@
 
 .buttons {
 
-  display: flex;
-  justify-content: space-between;
+  display: block;
   height: 70px;
   margin-bottom: 15px;
-
+  position: relative;
+  min-width: 285px;
   @media(--mobile){
 
     height: 115px;
@@ -29,16 +29,16 @@
 
 .button {
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: inline-block;
   height: 100%;
-  justify-content: flex-end;
-  background-color: $color-bg-hello;
+
 }
 
 .buttonLeft{
   margin-right: 15px;
+  @media (--mobile) {
+    margin-right: 30px;
+  }
   &:last-of-type{
     margin-right: 0;
   }
@@ -46,37 +46,72 @@
 
 .buttonRight{
   margin-left: 15px;
+  @media (--mobile) {
+    margin-left: 30px;
+  }
   &:first-of-type{
     margin-left: 0;
   }
 }
 
 .leftSide{
-  height: 100%;
-  display: flex;
-  align-items: center;
+  margin-right: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
 .rightSide{
-  height: 100%;
-  display: flex;
-  align-items: center;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.icon-active{
+  &::before{
+    color:$color__red;
+  }
+}
+
+.icon-default{
+
+  &::before{
+    color:$color__green;
+  }
+
 }
 
 .icon{
-  &::before{
-    color:$color__green;
+  display: block;
+  text-align: center;
+}
+
+.text-active{
+  color: $color__red;
+}
+
+.text-default{
+  color: $color__green;
+}
+
+.text{
+  display: block;
+  font-family: $font__family;
+  font-size: 14px;
+  margin-top: 2.5px;
+  @media(--mobile){
+    font-size: 24px;
   }
 }
 
 .like {
 
-  font-size: 41px;
+  font-size: 36px;
 
   @media(--mobile) {
 
-    font-size: 71px;
-
+    font-size: 64px;
+    height: 64px;
   }
 
 }
@@ -85,10 +120,11 @@
 
   font-size: 47px;
 
+
   @media(--mobile) {
 
     font-size: 85px;
-
+    height: 85px;
   }
 
 }
@@ -100,7 +136,7 @@
   @media(--mobile) {
 
     font-size: 64px;
-
+    height: 64px;
   }
 
 }
@@ -108,9 +144,11 @@
 .blogger {
 
   font-size: 36px;
+
   @media(--mobile) {
 
     font-size: 64px;
+    height: 64px;
   }
 
 }
@@ -118,10 +156,12 @@
 .instName {
 
   font-size: 36px;
+
+
   @media(--mobile) {
 
     font-size: 64px;
-
+    height: 64px;
   }
 
 }

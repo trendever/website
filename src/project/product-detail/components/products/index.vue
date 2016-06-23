@@ -1,10 +1,10 @@
 <template>
-  <div class="products">
+  <div class="products" v-if="isName && !isNotPrice">
     <div class="name">{{name}}</div>
     <div class="numbers">
-      <span class="oldPrice" v-if="!isNotPrice">{{oldPrice}}</span>
-      <span class="price" v-if="!isNotPrice">{{price}}</span>
-      <span class="price" v-if="isNotPrice">?</span>
+      <span class="oldPrice">{{oldPrice}}</span>
+      <span class="price">{{price}}</span>
+      <!--span class="price">?</span-->
       <i class="ic-currency-rub rub"></i>
     </div>
   </div>
@@ -29,6 +29,11 @@
       },
     },
     computed: {
+      isName(){
+
+        return this.name !== null;
+
+      },
       isNotPrice(){
 
         return !!(this.oldPrice === null && this.price === null);

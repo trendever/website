@@ -55,14 +55,13 @@ article.product-post
 <script type='text/babel'>
   import listen from 'event-listener';
 
-  import { urlThumbnail, ratioFit } from 'utils';
+  import { ratioFit } from 'utils';
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import { createLead } from 'vuex/actions/lead.js';
   import { isAuth } from 'vuex/getters/user.js';
   import { getOpenedProduct, isLiked } from 'vuex/getters/products';
   import { setLike } from 'vuex/actions/products';
   import * as leads from 'services/leads';
-  import * as products from 'services/products';
 
   export default {
     data(){
@@ -114,17 +113,6 @@ article.product-post
         this.setLike();
       },
 
-      updateImageSize(){
-        let sizes   = ratioFit(
-          this.getOpenedProduct.instagram_image_width,
-          this.getOpenedProduct.instagram_image_height,
-          this.$els.imageBody.offsetWidth,
-          this.getOpenedProduct.instagram_image_height
-        );
-        this.width  = sizes.width;
-        this.height = sizes.height;
-      },
-
       price ( item ) {
         return (item.price && !item.discount_price);
       },
@@ -170,11 +158,24 @@ article.product-post
         } );
       },
 
+      updateImageSize(){
+        let sizes   = ratioFit(
+          this.getOpenedProduct.instagram_image_width,
+          this.getOpenedProduct.instagram_image_height,
+          this.$els.imageBody.offsetWidth,
+          this.getOpenedProduct.instagram_image_height
+        );
+        this.width  = sizes.width;
+        this.height = sizes.height;
+      },
+
       onUserImageError( e ){
         console.warn( `Load user photo has failed. Product id: ${this.getOpenedProduct.id}` );
 
         this.userImage = require( 'base/img/logo.png' );
       }
+
     },
+
   }
 </script>

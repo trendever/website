@@ -21,7 +21,7 @@ div.scroll-cnt
     computed: {
       title(){
         if ( this.getOpenedProduct ) {
-          return 'Тренд ' + this.getOpenedProduct.code
+          return 'Тренд от ' + this.getOpenedProduct.code
         }
       }
     },
