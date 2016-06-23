@@ -10,8 +10,12 @@
       span {{ notifyCount }}
 
     .header__center
-      .header__text {{{ title }}}
+      .header__text(v-if="centerTextLink === null") {{{ title }}}
+      .header__text.active(v-if="centerTextLink !== null", v-link="centerTextLink") {{{ title }}}
       slot(name='content')
+
+    .header-right(v-if="avatarUrl !== null && centerTextLink !== null", v-link="centerTextLink")
+      img(:src="avatarUrl")
 
     //- .header__menu
       .header__menu-icon
@@ -80,6 +84,14 @@
       notifyCount: {
         type: Number,
         default: 0
+      },
+      centerTextLink:{
+        type: Object,
+        default : null
+      },
+      avatarUrl:{
+        type: String,
+        default : null
       }
     },
     beforeDestroy() {

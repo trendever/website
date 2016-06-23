@@ -2,8 +2,8 @@
   <div class="products" v-if="isName && !isNotPrice">
     <div class="name">{{name}}</div>
     <div class="numbers">
-      <span class="oldPrice">{{oldPrice}}</span>
-      <span class="price">{{price}}</span>
+      <span class="oldPrice" v-if="oldPrice !== null">{{oldPrice | curency_spaces}}</span>
+      <span class="price" v-if="price !== null">{{price | curency_spaces}}</span>
       <!--span class="price">?</span-->
       <i class="ic-currency-rub rub"></i>
     </div>

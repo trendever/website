@@ -209,9 +209,9 @@
 
       avatarUrl(){
 
-        if ( this.supplier !== null ) {
+        if ( this.mentioned !== null ) {
 
-          return this.supplier.avatar_url || this.supplier.instagram_avatar_url
+          return this.mentioned.avatar_url
 
         }
 
@@ -305,9 +305,9 @@
 
           if ( Array.isArray( this.getOpenedProduct.items ) ) {
 
-            return this.getOpenedProduct.items.map( ( { name = null, price = null, oldPrice = null } ) => {
+            return this.getOpenedProduct.items.map( ( { name = null, price = null, discount_price = null } ) => {
 
-              return { name, price, oldPrice }
+              return { name, price, oldPrice: discount_price }
 
             } )
 

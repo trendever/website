@@ -1,6 +1,10 @@
 <template lang="jade">
 div.scroll-cnt
-  header-component(:title='title', :back-link='{name: "home"}')
+  header-component(
+    :title='title',
+    :back-link='{name: "home"}',
+    :center-text-link="centerTextLink",
+    :avatar-url='avatarUrl')
   .section.main.top
     .section__content
       post-component
@@ -21,9 +25,68 @@ div.scroll-cnt
     computed: {
       title(){
         if ( this.getOpenedProduct ) {
-          return 'Тренд от ' + this.getOpenedProduct.code
+          return 'Тренд от ' + this.supplierName
         }
+      },
+      supplier(){
+
+        if ( this.getOpenedProduct ) {
+
+          if ( this.getOpenedProduct.supplier ) {
+
+            return this.getOpenedProduct.supplier
+
+          }
+
+        }
+
+        return null
+
+      },
+      supplierName(){
+
+        if ( this.getOpenedProduct ) {
+
+          if ( this.getOpenedProduct.supplier ) {
+
+            if ( this.getOpenedProduct.supplier.instagram_username ) {
+
+              return this.getOpenedProduct.supplier.instagram_username
+
+            }
+
+          }
+
+        }
+
+        return null;
+
+      },
+
+      avatarUrl(){
+
+        if ( this.supplier !== null ) {
+
+          return this.supplier.avatar_url || this.supplier.instagram_avatar_url
+
+        }
+
+        return null;
+
+      },
+
+      centerTextLink(){
+
+        if ( this.supplierName !== null ) {
+
+          return { name: "user", params: { id: this.supplierName } };
+
+        }
+
+        return null;
+
       }
+
     },
     vuex: {
       getters: {
