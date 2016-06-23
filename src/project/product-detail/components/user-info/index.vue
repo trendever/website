@@ -1,6 +1,6 @@
 <template>
   <div class="user-info">
-    <img class="avatar" :src="img" alt="Аватар пользователя {{code}}">
+    <img class="avatar" :src="img">
     <div class="description">
       <div class="userName">
         <span class="title">Нашёл</span>

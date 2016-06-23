@@ -25,6 +25,7 @@
           </template>
           <buttons></buttons>
         </div>
+        <description></description>
       </div>
 
     </div>
@@ -40,6 +41,7 @@
   import userInfo from '../user-info/index.vue';
   import products from '../products/index.vue';
   import buttons from '../buttons/index.vue';
+  import description from '../description/index.vue';
   import listener from 'event-listener';
 
   export default {
@@ -56,8 +58,6 @@
         const { clientWidth } = this.$els.root;
 
         if ( offsetWidth => 750 ) {
-
-          console.log(clientWidth);
 
           this.$set( 'leftSide.width', `${clientWidth * 0.6}px` );
           this.$set( 'rightSide.width', `${clientWidth * 0.4}px` );
@@ -88,7 +88,8 @@
       picture,
       userInfo,
       products,
-      buttons
+      buttons,
+      description
     }
   }
 </script>

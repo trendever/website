@@ -20,6 +20,10 @@
 
 .numbers {
   flex-shrink: 0;
+/*  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;*/
 }
 
 .name {
@@ -48,20 +52,22 @@
   @media(--mobile) {
     font-size: 22px;
     line-height: 37.2px;
+    margin-right: 5px;
   }
   text-decoration: line-through;
-  margin-right: 5px;
 }
 
 .price {
   color: $color__gray-dark;
   font-family: $font__family;
+
+  font-size: 16px;
+  line-height: 19.2px;
   @media(--mobile) {
     font-size: 32px;
     line-height: 44.3px;
+    margin-right: 5px;
   }
-  font-size: 16px;
-  line-height: 19.2px;
 
 }
 

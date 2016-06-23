@@ -16,9 +16,11 @@
   height: 46px;
   padding: 3px 0 3px 0;
   box-sizing: border-box;
+  margin-bottom: 10px;
   @media(--mobile) {
     height: 110px;
     padding: 15px 0 15px 0;
+    margin-bottom: 0;
   }
 
 }
@@ -43,6 +45,12 @@
   border-left: 60px solid transparent;
   margin-left: -60px;
   float: left;
+  @media(--mobile) {
+    border-right: 120px solid transparent;
+    margin-right: -120px;
+    border-left: 90px solid transparent;
+    margin-left: -90px;
+  }
 }
 
 .lastUpdate{
@@ -55,13 +63,16 @@
   @media(--mobile) {
     line-height: 38px;
     font-size: 32px;
-    margin-top: 15px;
+    margin-top: 18px;
   }
 }
 
 .userName{
   display: block;
-  height: 20px;
+  height: 19px;
+  @media(--mobile) {
+    height: 38px;
+  }
 }
 
 .title {
@@ -83,8 +94,8 @@
   float: right;
   width: 100%;
   box-sizing: border-box;
-  border-left: 60px solid transparent;
-  margin-left: -60px;
+  border-left: 55px solid transparent;
+  margin-left: -55px;
   font-family: $font__family;
   line-height: 19.2px;
   font-size: 16px;
@@ -95,6 +106,8 @@
   @media(--mobile) {
     line-height: 38px;
     font-size: 32px;
+    border-left: 110px solid transparent;
+    margin-left: -110px;
   }
 }
 
