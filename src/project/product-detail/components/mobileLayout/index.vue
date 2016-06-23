@@ -16,7 +16,7 @@
         <products
           :name="product.name"
           :price="product.price"
-          :old-price="product.oldPrice"
+          :discount-price="product.discountPrice"
         ></products>
       </template>
       <buttons
@@ -25,6 +25,7 @@
         :product-id="productId"
         :like="like"
         :buy="buy"
+        :buy-promo-product="buyPromoProduct"
       ></buttons>
     </div>
     <div class="desc-wrapper">
@@ -95,13 +96,16 @@
       like: {
         type: Function,
         default: () => {
-
         }
       },
       buy: {
         type: Function,
         default: () => {
-
+        }
+      },
+      buyPromoProduct: {
+        type: Function,
+        default: () => {
         }
       }
 

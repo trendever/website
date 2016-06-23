@@ -2,8 +2,8 @@
   <div class="products" v-if="isName && !isNotPrice">
     <div class="name">{{name}}</div>
     <div class="numbers">
-      <span class="oldPrice" v-if="oldPrice !== null">{{oldPrice | curency_spaces}}</span>
       <span class="price" v-if="price !== null">{{price | curency_spaces}}</span>
+      <span class="discountPrice" v-if="discountPrice !== null">{{discountPrice | curency_spaces}}</span>
       <!--span class="price">?</span-->
       <i class="ic-currency-rub rub"></i>
     </div>
@@ -19,7 +19,7 @@
         type: String,
         default: null
       },
-      oldPrice: {
+      discountPrice: {
         type: Number,
         default: null
       },
@@ -36,7 +36,7 @@
       },
       isNotPrice(){
 
-        return !!(this.oldPrice === null && this.price === null);
+        return !!(this.discountPrice === null && this.price === null);
 
       }
     }

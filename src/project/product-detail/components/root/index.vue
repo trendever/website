@@ -15,6 +15,7 @@
       :product-id="productId"
       :like="like"
       :buy="buy"
+      :buy-promo-product="buyPromoProduct"
     ></mobile-layout>
     <desktop-layout
       v-if="!isSmall"
@@ -31,10 +32,11 @@
       :product-id="productId"
       :like="like"
       :buy="buy"
+      :buy-promo-product="buyPromoProduct"
     ></desktop-layout>
 
     <div class="products" v-if="isProduct">
-      <h1 class="title">Больше трендов от {{code}}</h1>
+      <h1 class="title">Больше трендов от {{supplierName}}</h1>
       <photos :list-id="listId" :filter-by-user-name="supplierName"></photos>
     </div>
   </div>
@@ -55,6 +57,7 @@
   import { setCallbackOnSuccessAuth } from 'vuex/actions'
   import * as leads from 'services/leads'
   import { ratioFit } from 'utils'
+  import settings from 'settings'
 
   export default {
     data(){
@@ -116,15 +119,27 @@
       },
       buy() {
 
+        this._buy( this.productId );
+
+      },
+
+      buyPromoProduct() {
+
+        this._buy( settings.promoProductID );
+
+      },
+
+      _buy( productId ){
+
         if ( !this.isAuth ) {
 
           this.$router.go( { name: 'signup' } )
-          this.setCallbackOnSuccessAuth( this.buy.bind( this ) )
+          this.setCallbackOnSuccessAuth( this._buy.bind( this ) )
 
         } else {
 
           this
-            .createLead( this.productId )
+            .createLead( productId )
             .then(
               ( lead ) => {
                 if ( lead !== undefined && lead !== null ) {
@@ -141,7 +156,6 @@
             )
 
         }
-
       }
 
     },
@@ -210,6 +224,8 @@
       avatarUrl(){
 
         if ( this.mentioned !== null ) {
+
+          console.log( this.mentioned );
 
           return this.mentioned.avatar_url
 
@@ -307,7 +323,7 @@
 
             return this.getOpenedProduct.items.map( ( { name = null, price = null, discount_price = null } ) => {
 
-              return { name, price, oldPrice: discount_price }
+              return { name, price, discountPrice: discount_price }
 
             } )
 
