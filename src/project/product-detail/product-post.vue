@@ -71,9 +71,7 @@ article.product-post
         width: '',
         height: '',
         imageOpacity: 0,
-
         userImage: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
-
         animate: true,
         Mobile: window.browser.mobile,
       };
@@ -99,6 +97,7 @@ article.product-post
     },
 
     ready: function() {
+
       this.loadFullImage();
 
       this.updateImageSize();
@@ -106,6 +105,7 @@ article.product-post
       this.resizeEvent = listen( window, 'optimizedResize', this.updateImageSize.bind( this ) );
 
       this.userImage = this.getOpenedProduct.supplier.avatar_url;
+
     },
 
     methods: {
@@ -115,10 +115,12 @@ article.product-post
       },
 
       updateImageSize(){
-        let sizes   = ratioFit( this.getOpenedProduct.instagram_image_width,
+        let sizes   = ratioFit(
+          this.getOpenedProduct.instagram_image_width,
           this.getOpenedProduct.instagram_image_height,
           this.$els.imageBody.offsetWidth,
-          this.getOpenedProduct.instagram_image_height );
+          this.getOpenedProduct.instagram_image_height
+        );
         this.width  = sizes.width;
         this.height = sizes.height;
       },

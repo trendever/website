@@ -2,14 +2,14 @@
   <div class="mobileLayout">
     <div class="wrapper">
       <user-info
-        img="'http://vsenovoe.info/wp-content/images/2014/03/BMW-R1200S.jpg'"
-        code="111112223333"
-        name="33333333334445345345"
-        last-update="1 день"
+        :img="avatarUrl"
+        :code="code"
+        :name="name"
+        :last-update="lastUpdate"
       ></user-info>
     </div>
     <div class="picture-wrapper">
-      <picture :img="'http://vsenovoe.info/wp-content/images/2014/03/BMW-R1200S.jpg'"></picture>
+      <picture :img="picture"></picture>
     </div>
     <div class="wrapper">
       <template v-for="product of products">
@@ -19,13 +19,12 @@
           :old-price="product.oldPrice"
         ></products>
       </template>
-      <buttons></buttons>
+      <buttons :is-liked.once="isLiked"></buttons>
     </div>
     <div class="desc-wrapper">
-      <description></description>
+      <description :text="caption"></description>
     </div>
   </div>
-
 </template>
 
 <style src="./style.pcss" scoped lang="postcss"></style>
@@ -50,6 +49,34 @@
       products: {
         type: Array,
         default: []
+      },
+      avatarUrl: {
+        type: String,
+        default: ''
+      },
+      code: {
+        type: String,
+        default: ''
+      },
+      name: {
+        type: String,
+        default: ''
+      },
+      lastUpdate: {
+        type: String,
+        default: ''
+      },
+      picture: {
+        type: String,
+        default: ''
+      },
+      caption: {
+        type: String,
+        default: ''
+      },
+      isLiked: {
+        type: Boolean,
+        default: false
       },
     },
   }

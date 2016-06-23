@@ -30,8 +30,11 @@
   float: left;
   size: 40px;
   margin-right: 20px;
+  border-radius: 40px;
   @media(--mobile) {
     size: 70px;
+    margin-top: 5px;
+    border-radius: 70px;
   }
 
 }
@@ -82,7 +85,6 @@
   line-height: 19.2px;
   font-size: 16px;
   color: $color__gray;
-  margin-right: 5px;
   @media(--mobile) {
     line-height: 38px;
     font-size: 32px;
@@ -94,8 +96,8 @@
   float: right;
   width: 100%;
   box-sizing: border-box;
-  border-left: 55px solid transparent;
-  margin-left: -55px;
+  border-left: 60px solid transparent;
+  margin-left: -60px;
   font-family: $font__family;
   line-height: 19.2px;
   font-size: 16px;
@@ -113,6 +115,7 @@
 
 .code {
   display: block;
+  width: 100%;
   font-family: $font__family;
   line-height: 19.2px;
   font-size: 16px;

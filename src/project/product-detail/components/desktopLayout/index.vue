@@ -4,17 +4,17 @@
     <div class="product" v-el:root>
 
       <div class="leftSide" v-bind:style="leftSide">
-        <picture :img="'http://vsenovoe.info/wp-content/images/2014/03/BMW-R1200S.jpg'"></picture>
+        <picture :img="picture"></picture>
       </div>
 
       <div class="rightSide" v-bind:style="rightSide">
 
         <div class="userAndProducts">
           <user-info
-            img="'http://vsenovoe.info/wp-content/images/2014/03/BMW-R1200S.jpg'"
-            code="111112223333"
-            name="33333333334445345345"
-            last-update="1 день"
+            :img="avatarUrl"
+            :code="code"
+            :name="name"
+            :last-update="lastUpdate"
           ></user-info>
           <template v-for="product of products">
             <products
@@ -23,9 +23,9 @@
               :old-price="product.oldPrice"
             ></products>
           </template>
-          <buttons></buttons>
+          <buttons :is-liked.once="isLiked"></buttons>
         </div>
-        <description></description>
+        <description :text="caption"></description>
       </div>
 
     </div>
@@ -49,6 +49,34 @@
       products: {
         type: Array,
         default: []
+      },
+      avatarUrl: {
+        type: String,
+        default: ''
+      },
+      code: {
+        type: String,
+        default: ''
+      },
+      name: {
+        type: String,
+        default: ''
+      },
+      lastUpdate: {
+        type: String,
+        default: ''
+      },
+      picture: {
+        type: String,
+        default: ''
+      },
+      caption: {
+        type: String,
+        default: ''
+      },
+      isLiked: {
+        type: Boolean,
+        default: false
       },
     },
     ready(){

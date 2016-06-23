@@ -1,17 +1,7 @@
 <template>
   <div class="description">
     <div class="bubble bubbleLeft">
-      <p class="text">
-
-        adegfadgadf asd fas dfa sdgf asd fadfsg adf gasdf gs dfgsfg
-        adegfadgadf asd fas dfa sdgf asd fadfsg adf gasdf gs dfgsfg
-        adegfadgadf asd fas dfa sdgf asd fadfsg adf gasdf gs dfgsfg
-        adegfadgadf asd fas dfa sdgf asd fadfsg adf gasdf gs dfgsfg
-        adegfadgadf asd fas dfa sdgf asd fadfsg adf gasdf gs dfgsfg
-        adegfadgadf asd fas dfa sdgf asd fadfsg adf gasdf gs dfgsfg
-        adegfadgadf asd fas dfa sdgf asd fadfsg adf gasdf gs dfgsfg
-
-      </p>
+      <p class="text">{{text}}</p>
     </div>
   </div>
 
@@ -24,7 +14,7 @@
     props: {
       text:{
         type: String,
-        default: null
+        default: ''
       }
     }
   }

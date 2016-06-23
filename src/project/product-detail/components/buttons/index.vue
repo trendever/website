@@ -1,7 +1,7 @@
 <template>
   <div class="buttons">
     <div class="leftSide">
-      <div class="button buttonLeft">
+      <div class="button buttonLeft" :class="{ 'button-active': isLiked }">
         <i class="ic-heart like icon"></i>
         <span class="text">Тренд</span>
       </div>
@@ -32,6 +32,11 @@
 
 <script type="text/babel">
   export default {
-    props: {}
+    props: {
+      isLiked:{
+        type: Boolean,
+        default: false
+      }
+    }
   }
 </script>

@@ -12,15 +12,11 @@ div.scroll-cnt
 
   import HeaderComponent from 'base/header/header.vue';
   import PostComponent from './components/root/index.vue';
-  import FooterComponent from 'base/footer/footer.vue';
-
-  import * as products from 'services/products.js';
 
   export default {
     components: {
       HeaderComponent,
-      PostComponent,
-      FooterComponent
+      PostComponent
     },
     computed: {
       title(){

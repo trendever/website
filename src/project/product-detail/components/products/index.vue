@@ -1,5 +1,5 @@
 <template>
-  <div class="product">
+  <div class="products">
     <div class="name">{{name}}</div>
     <div class="numbers">
       <span class="oldPrice" v-if="!isNotPrice">{{oldPrice}}</span>
