@@ -15,18 +15,18 @@
       }
     },
     ready(){
-      this.loadImg();
+      this.loadImg( this.img );
     },
     methods: {
 
-      loadImg(){
+      loadImg( url ){
         this.$set( 'opacityImg', 0 );
-
+        this.$set( 'srcImg', url );
         // Load and set full image.
         let img = new Image();
-        img.load( this.img, null, null, () => {
+        img.load( url, null, null, () => {
+          this.$set( 'srcImg', url );
           this.$set( 'opacityImg', 1 );
-          this.$set( 'srcImg', this.img );
         } );
       }
 
@@ -46,8 +46,8 @@
       }
     },
     watch: {
-      img(){
-        this.loadImg();
+      img( newImg ){
+        this.loadImg( newImg );
       }
     }
   }
