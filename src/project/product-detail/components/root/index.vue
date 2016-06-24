@@ -175,7 +175,7 @@
       },
 
       listId(){
-        return `product-list-of-${this.code}`
+        return `product-list-of-${this.supplierName}`
       },
 
       supplier(){
@@ -224,8 +224,6 @@
       avatarUrl(){
 
         if ( this.mentioned !== null ) {
-
-          console.log( this.mentioned );
 
           return this.mentioned.avatar_url
 

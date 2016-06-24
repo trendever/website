@@ -100,6 +100,10 @@ div.scroll-cnt
     route: {
       activate( { to: { params: { id } } } ) {
         return this.openProduct( +id );
+      },
+      canReuse( { to: { params: { id } } }  ){
+        this.openProduct( +id );
+        return true;
       }
     },
     beforeDestroy(){
