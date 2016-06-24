@@ -14,7 +14,6 @@
 
   import { browser } from 'utils'
 
-  import * as version from 'services/version'
   import { getStorage } from 'services/profile'
 
   import store from 'vuex/store'

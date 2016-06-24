@@ -19,26 +19,9 @@
 
       this.$nextTick( () => {
         this.flex();
-        setTimeout( this.onFlex, 500 );
       } );
 
-      this.resize = listener( window, 'optimizedResize', (() => {
-
-        let timer = null;
-
-        return () => {
-
-          this.onFlex();
-
-          if ( timer === null ) {
-
-            setTimeout( this.onFlex, 500 );
-
-          }
-
-        }
-
-      })() )
+      this.resize = listener( window, 'optimizedResize', this.onFlex)
 
       this.$on( 'photosIsRun', this.onFlex )
 
@@ -57,7 +40,7 @@
 
         const marginRight = 10;
         const padding     = 20;
-        const border      = 2;
+        const border      = 4; // Для супер точности нужно поставить 2, но так дёргается всё потому что окно первее сжимается чем вызывается пересчёт.
 
         const containerWidth = this.$els.tags.offsetWidth;
 
