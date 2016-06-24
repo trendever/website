@@ -1,6 +1,7 @@
 /* globals env, rm, mkdir, mv */
 // https://github.com/shelljs/shelljs
 require('shelljs/global')
+var Rsync = require('rsync')
 env.NODE_ENV = 'production'
 
 var path = require('path')
@@ -33,7 +34,8 @@ webpack(webpackConfig, function (err, stats) {
     chunkModules: false,
   }) + '\n')
 
-  console.log("Move to building to", settings.build.assetsRoot);
+  console.log("Move building to", settings.build.assetsRoot);
   rm('-rf', settings.build.assetsRoot)
   mv(settings.build.buildingRoot, settings.build.assetsRoot)
+
 })

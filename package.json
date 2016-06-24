@@ -68,6 +68,7 @@
     "postcss-use": "^2.1.0",
     "precss": "^1.4.0",
     "require-dir": "^0.3.0",
+    "rsync": "^0.4.0",
     "run-sequence": "^1.2.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
