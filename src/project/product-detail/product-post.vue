@@ -18,8 +18,7 @@ article.product-post
         span.product-post__user-name
          | {{ getOpenedProduct.mentioned.instagram_username}}
   main.product-post__body(v-el:image-body)
-    div(v-bind:style='{ opacity: imageOpacity }',
-        :class='{"__animate": animate}')
+    div( v-bind:style='{ opacity: imageOpacity }', :class='{"__animate": animate}' )
       img.product-post__image(
         :src='IgImageUrl',
         :width='width',

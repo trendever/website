@@ -1,5 +1,5 @@
 <template lang="jade">
-div.scroll-cnt
+div.scroll-cnt(v-el:scroll-cnt)
   header-component(
     :title='title',
     :back-link='{name: "home"}',
@@ -102,7 +102,9 @@ div.scroll-cnt
         return this.openProduct( +id );
       },
       canReuse( { to: { params: { id } } }  ){
-        this.openProduct( +id );
+        this.openProduct( +id ).then(() => {
+          this.$els.scrollCnt.scrollTop = 0;
+        });
         return true;
       }
     },

@@ -1,6 +1,6 @@
 <template>
-  <div class="picture">
-    <img :width="width" :height="height" :src="img">
+  <div class="picture" v-bind:style='{ opacity: opacityImg }'>
+    <img :width="width" :height="height" :src="srcImg">
   </div>
 </template>
 
@@ -8,18 +8,46 @@
 
 <script type="text/babel">
   export default {
+    data(){
+      return {
+        srcImg: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+        opacityImg: 0
+      }
+    },
+    ready(){
+      this.loadImg();
+    },
+    methods: {
+
+      loadImg(){
+        this.$set( 'opacityImg', 0 );
+
+        // Load and set full image.
+        let img = new Image();
+        img.load( this.img, null, null, () => {
+          this.$set( 'opacityImg', 1 );
+          this.$set( 'srcImg', this.img );
+        } );
+      }
+
+    },
     props: {
-      img:{
+      img: {
         type: String,
         default: null
       },
-      width:{
+      width: {
         type: String,
         default: '100%'
       },
-      height:{
+      height: {
         type: String,
         default: '100%'
+      }
+    },
+    watch: {
+      img(){
+        this.loadImg();
       }
     }
   }
