@@ -1,0 +1,78 @@
+@import 'base/vars/vars.pcss';
+
+@use postcss-autoreset {
+  reset: {
+    all: initial;
+    sizes: 0;
+  }
+}
+
+@use postcss-initial {
+  reset: inherited;
+}
+
+.products {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+
+}
+
+.numbers {
+  flex-shrink: 0;
+}
+
+.name {
+  flex-grow: 1;
+  display: -webkit-box;
+  color: $color__gray-dark;
+  font-family: $font__family;
+  font-size: 16px;
+  line-height: 19.2px;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  margin-right: 15px;
+  @media(--mobile) {
+    font-size: 32px;
+    line-height: 38px;
+  }
+}
+
+.price {
+  color: $color__gray-light;
+  font-family: $font__family;
+  font-size: 12px;
+  line-height: 14.2px;
+  @media(--mobile) {
+    font-size: 22px;
+    line-height: 37.2px;
+    margin-right: 5px;
+  }
+  text-decoration: line-through;
+}
+
+.discountPrice {
+  color: $color__gray-dark;
+  font-family: $font__family;
+
+  font-size: 16px;
+  line-height: 19.2px;
+  @media(--mobile) {
+    font-size: 32px;
+    line-height: 44.3px;
+    margin-right: 5px;
+  }
+
+}
+
+.rub{
+  color: $color__gray-dark;
+  @media(--mobile){
+    &::before{
+      font-size: 1.5em;
+    }
+  }
+}

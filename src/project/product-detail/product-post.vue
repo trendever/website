@@ -18,8 +18,7 @@ article.product-post
         span.product-post__user-name
          | {{ getOpenedProduct.mentioned.instagram_username}}
   main.product-post__body(v-el:image-body)
-    div(v-bind:style='{ opacity: imageOpacity }',
-        :class='{"__animate": animate}')
+    div( v-bind:style='{ opacity: imageOpacity }', :class='{"__animate": animate}' )
       img.product-post__image(
         :src='IgImageUrl',
         :width='width',
@@ -55,14 +54,13 @@ article.product-post
 <script type='text/babel'>
   import listen from 'event-listener';
 
-  import { urlThumbnail, ratioFit } from 'utils';
+  import { ratioFit } from 'utils';
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import { createLead } from 'vuex/actions/lead.js';
   import { isAuth } from 'vuex/getters/user.js';
   import { getOpenedProduct, isLiked } from 'vuex/getters/products';
   import { setLike } from 'vuex/actions/products';
   import * as leads from 'services/leads';
-  import * as products from 'services/products';
 
   export default {
     data(){
@@ -71,9 +69,7 @@ article.product-post
         width: '',
         height: '',
         imageOpacity: 0,
-
         userImage: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
-
         animate: true,
         Mobile: window.browser.mobile,
       };
@@ -99,6 +95,7 @@ article.product-post
     },
 
     ready: function() {
+
       this.loadFullImage();
 
       this.updateImageSize();
@@ -106,21 +103,13 @@ article.product-post
       this.resizeEvent = listen( window, 'optimizedResize', this.updateImageSize.bind( this ) );
 
       this.userImage = this.getOpenedProduct.supplier.avatar_url;
+
     },
 
     methods: {
 
       like(){
         this.setLike();
-      },
-
-      updateImageSize(){
-        let sizes   = ratioFit( this.getOpenedProduct.instagram_image_width,
-          this.getOpenedProduct.instagram_image_height,
-          this.$els.imageBody.offsetWidth,
-          this.getOpenedProduct.instagram_image_height );
-        this.width  = sizes.width;
-        this.height = sizes.height;
       },
 
       price ( item ) {
@@ -168,11 +157,24 @@ article.product-post
         } );
       },
 
+      updateImageSize(){
+        let sizes   = ratioFit(
+          this.getOpenedProduct.instagram_image_width,
+          this.getOpenedProduct.instagram_image_height,
+          this.$els.imageBody.offsetWidth,
+          this.getOpenedProduct.instagram_image_height
+        );
+        this.width  = sizes.width;
+        this.height = sizes.height;
+      },
+
       onUserImageError( e ){
         console.warn( `Load user photo has failed. Product id: ${this.getOpenedProduct.id}` );
 
         this.userImage = require( 'base/img/logo.png' );
       }
+
     },
+
   }
 </script>

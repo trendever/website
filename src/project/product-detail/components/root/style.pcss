@@ -1,0 +1,28 @@
+
+@import 'base/vars/vars.pcss';
+
+@use postcss-autoreset {
+  reset: {
+    all: initial;
+    sizes: 0;
+  }
+}
+@use postcss-initial {
+  reset: inherited;
+}
+
+.title{
+  display: block;
+  font-family: $font__family;
+  font-size: 40px;
+  line-height: 130px;
+  text-align: center;
+  overflow: hidden;
+  color: $color__gray-dark;
+  height: 130px;
+  width: 100%;
+  @media(--mobile){
+    height: 90px;
+    line-height: 90px;
+  }
+}

@@ -80,6 +80,14 @@ module.exports = {
     // use custom postcss plugins
     postcss: function (webpack) {
       return [
+        require( `postcss-use` )(
+          {
+            modules: [
+              'postcss-autoreset',
+              'postcss-initial'
+            ]
+          }
+        ),
         require("postcss-import")({
           path: path.resolve('./src'),
           addDependencyTo: webpack
@@ -87,15 +95,10 @@ module.exports = {
 
         require("postcss-url")(),
         require('postcss-discard-comments')(),
-
-        require("postcss-nested")(),
-        require('postcss-custom-media')(),
         require('postcss-simple-vars')(),
-        require('postcss-custom-selectors')(),
-        require('postcss-short-font-size')(),
-        require('postcss-short-size')(),
-        require("postcss-color-function")(),
-        require('postcss-short-position')(),
+        require('postcss-short')(),
+        require('precss')(),
+        require('postcss-flexbugs-fixes')(),
 
         // optimizations
         require('postcss-comment/hookRequire')(),
@@ -107,8 +110,10 @@ module.exports = {
             angle: false
         }),
         require('css-mqpacker')(),
-
-        require("postcss-reporter")(),
+        require("postcss-browser-reporter")({
+          selector: `body:before`,
+          clearMessages: true
+        }),
       ];
     },
 

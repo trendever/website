@@ -98,12 +98,37 @@
     align-items: center;
 
   }
+
+  &-right{
+    position: absolute;
+    right: 30px;
+    top:5px;
+
+    @media(--mobile){
+      top:16px;
+    }
+
+    img{
+      cursor: pointer;
+      @media(--mobile){
+        size: 70px;
+        border-radius: 70px;
+      }
+      size: 40px;
+      border-radius: 40px;
+    }
+  }
+
   &__text {
     //padding-top: 0.1563em; // 10% for centered
     color: #fff;
 
     font-size: 1.563em;
     font-weight: 400;
+
+    &.active{
+      cursor: pointer;
+    }
 
     @media(--mobile) {
       //padding-top: 0.2125em; // 10% for centered
