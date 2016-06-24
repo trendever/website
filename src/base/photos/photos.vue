@@ -150,6 +150,12 @@ scroll-top
 
     methods: {
 
+      emitIsRun(){
+
+        this.$dispatch('photosIsRun');
+
+      },
+
       run(){
 
         this.getProducts()
@@ -161,6 +167,7 @@ scroll-top
                     if ( this.isInfinity && this.infinityScroll ) {
 
                       this.enableInfinityScroll();
+                      this.emitIsRun();
 
                     }
 

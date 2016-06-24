@@ -1,0 +1,47 @@
+@import 'base/vars/vars.pcss';
+
+@use postcss-autoreset {
+  reset: {
+    all: initial;
+    sizes: 0;
+  }
+}
+
+@use postcss-initial {
+  reset: inherited;
+}
+
+.tags {
+  display: block;
+  width: 100%;
+  float: left;
+}
+
+.tag{
+  display: block;
+  float: left;
+  margin-bottom: 12px;
+  border:1px solid $color__green;
+  cursor: pointer;
+  text-align: center;
+  height: 34px;
+  padding-right: 20px;
+  padding-left: 20px;
+  @media(--mobile){
+    height: 43px;
+  }
+}
+.text{
+  display: inline-block;
+  font-family: $font__family;
+  color: $color__green;
+  height: 34px;
+  line-height: 29px;
+  font-size: 28px;
+  @media(--mobile){
+    font-size: 36px;
+    height: 43px;
+    line-height: 36px;
+  }
+
+}

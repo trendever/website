@@ -40,8 +40,7 @@
               span.change-col__sm
               span.change-col__sm
 
-    .search-tags(
-      :class='{"__open": showMoreTags}')
+    .search-tags(:class='{"__open": showMoreTags}')
       .search-tags__wrap
         ul.search-tags__container(v-el:tags)
 
@@ -56,9 +55,7 @@
             v-for='tag in tags | filterBy searchValue in "name"',
             @click='selectTag(tag)') {{ tag.name }}
 
-        .search-tags__button(
-          v-if='showMoreButton',
-          @click='toggleShowMoreTags')
+        .search-tags__button( v-if='showMoreButton', @click='toggleShowMoreTags' )
 
 </template>
 
@@ -168,6 +165,7 @@
         var wrapWidth = this.$els.tags.offsetWidth;
         var blocksWidth = 0;
         var minPadding = 30;
+
         for (var i = 0; i < tags.length; i++){
           tags[i].style.width = 'auto';
           tags[i].style.padding = 0;

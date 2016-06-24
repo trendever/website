@@ -35,6 +35,7 @@
         <div class="description-wrapper">
           <description :text="caption"></description>
         </div>
+        <tags :tags="tags"></tags>
       </div>
 
     </div>
@@ -52,10 +53,15 @@
   import buttons from '../buttons/index.vue';
   import description from '../description/index.vue';
   import listener from 'event-listener';
+  import tags from 'base/tags/index.vue'
 
   export default {
     props: {
       products: {
+        type: Array,
+        default: []
+      },
+      tags: {
         type: Array,
         default: []
       },
@@ -156,7 +162,8 @@
       userInfo,
       products,
       buttons,
-      description
+      description,
+      tags
     }
   }
 </script>

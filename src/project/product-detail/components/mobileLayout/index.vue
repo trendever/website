@@ -31,6 +31,7 @@
     <div class="desc-wrapper">
       <description :text="caption"></description>
     </div>
+    <tags :tags="tags"></tags>
   </div>
 </template>
 
@@ -43,6 +44,7 @@
   import products from '../products/index.vue';
   import buttons from '../buttons/index.vue';
   import description from '../description/index.vue';
+  import tags from 'base/tags/index.vue'
 
   export default {
     components: {
@@ -50,10 +52,15 @@
       userInfo,
       products,
       buttons,
-      description
+      description,
+      tags
     },
     props: {
       products: {
+        type: Array,
+        default: []
+      },
+      tags: {
         type: Array,
         default: []
       },

@@ -72,6 +72,10 @@
     },
     ready(){
 
+      this.photosIsRunBroadcast = this.photosIsRunBroadcast.bind( this )
+
+      this.$on( 'photosIsRun', this.photosIsRunBroadcast );
+
       const resize = () => {
 
         if ( window.matchMedia( "(max-width: 750px)" ).matches !== this.isSmall ) {
@@ -90,11 +94,18 @@
 
     beforeDestroy(){
 
+      this.$off( 'photosIsRun', this.photosIsRunBroadcast )
       this.resizeLayout.remove()
 
     },
 
     methods: {
+
+      photosIsRunBroadcast(){
+
+        this.$broadcast( 'photosIsRun' );
+
+      },
 
       // TODO setCallbackOnSuccessAuth - разобраться как это работает.
 
@@ -338,11 +349,35 @@
 
           if ( Array.isArray( this.getOpenedProduct.items ) ) {
 
-            return this.getOpenedProduct.items.reduce( ( prevTags, { tags = [] } ) => {
+            const tagsObject = {};
 
-              return prevTags.concat( tags )
+            this.getOpenedProduct.items.forEach( ( { tags = [] } ) => {
 
-            }, [] )
+              tags.forEach( ( { id, name } ) => {
+
+                tagsObject[ name ] = id;
+
+              } )
+
+            } )
+
+            return Object.keys( tagsObject ).map( ( name ) => {
+
+              return { name, id: tagsObject[ name ] }
+
+            } )/*.concat(Object.keys( tagsObject ).map( ( name ) => {
+
+             return { name, id: tagsObject[ name ] }
+
+             } ), Object.keys( tagsObject ).map( ( name ) => {
+
+             return { name, id: tagsObject[ name ] }
+
+             } ), Object.keys( tagsObject ).map( ( name ) => {
+
+             return { name, id: tagsObject[ name ] }
+
+             } ))*/;
 
           }
 

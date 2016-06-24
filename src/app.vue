@@ -8,11 +8,11 @@
 </template>
 
 <script type='text/babel'>
+  import 'base/fonts/trendever-icons/trendever-icons.font'
+
   import listen from 'event-listener';
 
   import { browser } from 'utils'
-
-  import font from 'base/fonts/trendever-icons/trendever-icons.font'
 
   import * as version from 'services/version'
   import { getStorage } from 'services/profile'
