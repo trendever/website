@@ -212,6 +212,29 @@ export const log = function() {
 // legacy support
 window.debugLog = log;
 
+export const loadJSON = (url) => {
+
+  return new Promise( (resolve, reject) => {
+
+    var xobj = new XMLHttpRequest()
+    xobj.overrideMimeType("application/json")
+    xobj.open('GET', url, true)
+
+    xobj.onreadystatechange = function () {
+         if (xobj.readyState == 4) {
+            if (xobj.status == "200") {
+              resolve(JSON.parse(xobj.responseText))
+            } else {
+              reject(xobj)
+            }
+         }
+    }
+    xobj.send(null)
+
+  })
+
+}
+
 window.Image.prototype.load = function(url, onprogress, onerror, onload) {
   var thisImg = this;
   var xmlHTTP = new XMLHttpRequest();

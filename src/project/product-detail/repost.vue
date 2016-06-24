@@ -1,6 +1,6 @@
 <style src='./repost.pcss'></style>
 <template lang="jade">
-.scroll-cnt
+scroll-component
   .repost(:style='{height: "100%"}')
     .repost__close(@click='back'): i.ic-close
     .crop
@@ -46,12 +46,19 @@
   import { getOpenedProduct } from 'vuex/getters/products';
   import { openProduct } from 'vuex/actions/products';
 
+  import ScrollComponent from 'base/scroll/scroll.vue'
+
   export default {
     data(){
       return {
         id: ''
       }
     },
+    
+    components: {
+      ScrollComponent,
+    },
+
     route: {
       activate( { to: { params: { id } } } ) {
         return this.openProduct( +id ).catch( error => {

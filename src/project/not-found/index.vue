@@ -1,5 +1,5 @@
 <template lang="jade">
-.scroll-cnt
+scroll-component
   header-component(title='Страница не существует')
   .section.main(style='margin-top: 140px')
     .section__content(style='text-align:center;')
@@ -11,12 +11,14 @@
 </template>
 
 <script>
+import ScrollComponent from 'base/scroll/scroll.vue'
 import HeaderComponent from 'base/header/header.vue'
 
 export default {
   data: () => ({
   }),
   components: {
+    ScrollComponent,
     HeaderComponent
   }
 }

@@ -5,6 +5,7 @@ var webpack = require('webpack')
 var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
+var VersionFile = require("webpack-version-file-plugin")
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var env = settings.build.env;
@@ -87,6 +88,16 @@ module.exports = merge(baseWebpackConfig, {
       name: 'manifest',
       chunks: ['vendor']
     }),
+
+    new VersionFile({
+      packageFile:path.join(__dirname, '../package.json'),
+      template:path.join(__dirname, 'version.ejs'),
+      outputFile: path.join(settings.build.assetsRoot, 'version.json'),
+      extras: {
+        buildTimestamp: new Date().getTime()
+      }
+    })
+
 
   ]
 

@@ -1,5 +1,5 @@
 <template lang="jade">
-.scroll-cnt
+scroll-component
   header-component(title='Токен авторизации')
   .section.main(style='margin-top: 110px')
     .section__content(style='text-align:center;')
@@ -13,8 +13,9 @@
 </template>
 
 <script type='text/babel'>
-
+  import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
+
   import { getProfile } from 'services/profile';
   import { isAuth } from 'vuex/getters/user.js';
 
@@ -44,6 +45,7 @@
       }
     },
     components: {
+      ScrollComponent,
       HeaderComponent,
     }
   }

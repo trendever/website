@@ -1,5 +1,5 @@
 <template lang="jade">
-.scroll-cnt
+scroll-component
   hero-component
   caption-component
 
@@ -13,6 +13,7 @@
 
 <script type='text/babel'>
 import NavbarComponent from 'base/navbar/navbar.vue'
+import ScrollComponent from 'base/scroll/scroll.vue'
 import HeroComponent from './hero.vue'
 import CaptionComponent from './caption.vue'
 import SearchComponent from './search.vue'
@@ -21,6 +22,7 @@ import FooterComponent from 'base/footer/footer.vue'
 
 export default {
   components: {
+    ScrollComponent,
     NavbarComponent,
     SearchComponent,
     HeroComponent,

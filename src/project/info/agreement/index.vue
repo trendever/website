@@ -1,7 +1,7 @@
 <style src='base/article/article.pcss'></style>
 
 <template lang="jade">
-.scroll-cnt
+scroll-component
   header-component(title='Условия использования', show_on_elem='headerAnchor')
   .section.main.top
     .section__content
@@ -666,14 +666,16 @@
 </template>
 
 <script>
-    import HeaderComponent from 'base/header/header.vue';
+import ScrollComponent from 'base/scroll/scroll.vue'
+import HeaderComponent from 'base/header/header.vue';
 
-    export default {
-        data () {
-            return {}
-        },
-        components: {
-            HeaderComponent
-        }
-    }
+export default {
+  data () {
+    return {}
+  },
+  components: {
+    ScrollComponent,
+    HeaderComponent,
+  }
+}
 </script>

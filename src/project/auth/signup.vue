@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-.scroll-cnt
+scroll-component
   div
     .signup(:style='{ height: height }')
       .signup__close.__hello(@click='closePage'): i.ic-close
@@ -68,9 +68,13 @@
   } from 'vuex/getters';
   import { isAuth } from 'vuex/getters/user.js';
 
+
   import store from 'vuex/store';
   import * as auth from 'services/auth';
   import { formatPhone } from 'utils.js';
+
+  import ScrollComponent from 'base/scroll/scroll.vue'
+
   import Slider from './slider.vue';
 
   const TEXT_LINK = {
@@ -224,6 +228,7 @@
     },
 
     components: {
+      ScrollComponent,
       Slider,
     },
   }

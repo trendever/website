@@ -1,6 +1,6 @@
 <style src='./styles/chat.pcss'></style>
 <template lang="jade">
-  .chat-cnt.scroll-cnt(v-el:scroll-cnt)
+  scroll-component(v-el:scroll-cnt, class="chat-cnt")
     chat-header(:notify-count='conversationNotifyCount')
     .section.top.bottom
       .chat.section__content
@@ -42,6 +42,8 @@
   import * as messages from 'services/message';
   import * as leads from 'services/leads';
 
+  import ScrollComponent from 'base/scroll/scroll.vue'
+
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgStatus from './chat-msg-status.vue';
   import ChatMsg from './chat-msg.vue';
@@ -52,6 +54,8 @@
   export default {
 
     components: {
+      ScrollComponent,
+
       ChatHeader,
       ChatBar,
       ChatMsg,
