@@ -12,7 +12,7 @@ var env = settings.build.env;
 
 module.exports = merge(baseWebpackConfig, {
   output: {
-    path: settings.build.assetsRoot,
+    path: settings.build.buildingRoot,
     filename: utils.assetsPath('js/[name].[chunkhash:7].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash:7].js'),
   },
@@ -92,7 +92,7 @@ module.exports = merge(baseWebpackConfig, {
     new VersionFile({
       packageFile:path.join(__dirname, '../package.json'),
       template:path.join(__dirname, 'version.ejs'),
-      outputFile: path.join(settings.build.assetsRoot, 'version.json'),
+      outputFile: path.join(settings.build.buildingRoot, 'version.json'),
       extras: {
         buildTimestamp: new Date().getTime()
       }
