@@ -1,5 +1,5 @@
 <template>
-  <div class="tags" v-el:tags>
+  <div class="tags" v-el:tags v-bind:style="{maxHeight: maxHeight}">
     <div class="tag" v-for="tag of tags">
       <span class="text">{{tag.name}}</span>
     </div>
@@ -13,6 +13,26 @@
   import listener from 'event-listener'
 
   export default {
+    props: {
+      tags: {
+        type: Array,
+        default: []
+      },
+      height: {
+        type: String,
+        default: `auto`
+      },
+      maxHeight: {
+        type: String,
+        default: `auto`
+      }
+    },
+    data(){
+      return {
+        timer: null,
+        containerWidth: null
+      }
+    },
     ready(){
 
       this.onFlex = this.onFlex.bind( this );
@@ -23,87 +43,130 @@
 
       this.resize = listener( window, 'optimizedResize', this.onFlex )
 
-      this.$on( 'photosIsRun', this.onFlex )
+      this.$on( 'update', this.onFlex )
 
     },
     beforeDestroy(){
+
       this.resize.remove()
-      this.$off( 'photosIsRun', this.onFlex )
+      this.$off( 'update', this.onFlex )
+      clearTimeout( this.timer )
+      this.$set( 'timer', null )
+
     },
     methods: {
 
       onFlex(){
 
-        Array.from( this.$els.tags.children ).forEach( ( tag ) => {
+        const computed = () => {
 
-          tag.style.marginRight = '0';
+          Array
+            .from( this.$els.tags.children )
+            .forEach( ( tag ) => {
 
-        } );
+              tag.style.marginRight = '0';
 
-        this.flex();
-      },
+            } );
 
-      flex( tags = Array.from( this.$els.tags.children ) ){
+          this.flex();
 
-        const marginRight = 10;
-        const padding     = 20;
-        const border      = 4; // Для супер точности нужно поставить 2, но так дёргается всё потому что окно первее сжимается чем вызывается пересчёт.
+        };
 
-        const containerWidth = this.$els.tags.offsetWidth;
+        const containerWidth = this.$els.tags.clientWidth;
 
-        let count    = 0;
-        let rowWidth = 0;
+        if ( this.containerWidth !== containerWidth ) {
 
-        for ( let i = 0; i < tags.length; i++ ) {
+          this.$set('containerWidth', containerWidth)
 
-          const textWidth = tags[ i ].children[ 0 ].offsetWidth;
+          computed();
 
-          const fullWidth = (textWidth + border + (padding * 2)) + marginRight;
+          if ( this.timer !== null ) {
 
-          rowWidth += fullWidth;
-
-          if ( parseInt( containerWidth / rowWidth ) > 0 ) {
-
-            count++;
-
-          } else {
-
-            rowWidth -= fullWidth + marginRight;
-
-            break;
+            clearTimeout( this.timer )
 
           }
 
-        }
+          this.$set( 'timer', setTimeout( () => {
 
-        if ( count === 1 ) {
+            this.$set( 'timer', null );
 
-          rowWidth += border / 2;
+            computed();
 
-        }
-
-        if ( tags.slice( count, tags.length ).length === 0 ) {
-
-          rowWidth -= marginRight;
+          }, 50 ) );
 
         }
 
-        const freeSpace = containerWidth - rowWidth;
+      },
 
-        for ( let i = 0; i < count; i++ ) {
+      flex( tags = Array.from( this.$els.tags === null ? [] : this.$els.tags.children ) ){
 
-          const textWidth = tags[ i ].children[ 0 ].offsetWidth;
+        if ( this.$els.tags !== null ) {
 
-          const newWidth = textWidth + ( freeSpace / count );
+          const marginRight = 10;
+          const padding     = 20;
+          const border      = 2; // Для супер точности нужно поставить 2, но так дёргается всё потому что окно первее сжимается чем вызывается пересчёт.
 
-          if ( count > 1 ) {
+          const containerWidth = this.$els.tags.clientWidth - 20;
 
-            if ( i < count - 1 ) {
+          let count    = 0;
+          let rowWidth = 0;
 
-              console.log( count, i, count - 1 );
+          for ( let i = 0; i < tags.length; i++ ) {
 
-              tags[ i ].style.width       = `${ newWidth }px`
-              tags[ i ].style.marginRight = `${ marginRight }px`
+            const textWidth = tags[ i ].children[ 0 ].offsetWidth;
+
+            const fullWidth = (textWidth + border + (padding * 2)) + marginRight;
+
+            rowWidth += fullWidth;
+
+            if ( parseInt( containerWidth / rowWidth ) > 0 ) {
+
+              count++;
+
+            } else {
+
+              rowWidth -= fullWidth + marginRight;
+
+              break;
+
+            }
+
+          }
+
+          if ( count === 1 ) {
+
+            rowWidth += border / 2;
+
+          }
+
+          if ( tags.slice( count, tags.length ).length === 0 ) {
+
+            rowWidth -= marginRight;
+
+          }
+
+          const freeSpace = containerWidth - rowWidth;
+
+          for ( let i = 0; i < count; i++ ) {
+
+            const textWidth = tags[ i ].children[ 0 ].offsetWidth;
+
+            const newWidth = textWidth + ( freeSpace / count );
+
+            if ( count > 1 ) {
+
+              if ( i < count - 1 ) {
+
+                console.log( count, i, count - 1 );
+
+                tags[ i ].style.width       = `${ newWidth }px`
+                tags[ i ].style.marginRight = `${ marginRight }px`
+
+              } else {
+
+                tags[ i ].style.width = `${ newWidth }px`
+
+              }
 
             } else {
 
@@ -111,32 +174,22 @@
 
             }
 
-          } else {
+          }
 
-            tags[ i ].style.width = `${ newWidth }px`
+          if ( count > 0 ) {
+
+            const tagsSlice = tags.slice( count, tags.length );
+
+            if ( tagsSlice.length > 0 ) {
+
+              this.flex( tagsSlice );
+
+            }
 
           }
 
         }
 
-        if ( count > 0 ) {
-
-          const tagsSlice = tags.slice( count, tags.length );
-
-          if ( tagsSlice.length > 0 ) {
-
-            this.flex( tagsSlice );
-
-          }
-
-        }
-
-      }
-    },
-    props: {
-      tags: {
-        type: Array,
-        default: []
       }
     }
   }

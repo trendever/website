@@ -72,9 +72,9 @@
     },
     ready(){
 
-      this.photosIsRunBroadcast = this.photosIsRunBroadcast.bind( this )
+      this.onUpdate = this.onUpdate.bind( this )
 
-      this.$on( 'photosIsRun', this.photosIsRunBroadcast );
+      this.$on( 'photosIsRun', this.onUpdate );
 
       const resize = () => {
 
@@ -94,16 +94,16 @@
 
     beforeDestroy(){
 
-      this.$off( 'photosIsRun', this.photosIsRunBroadcast )
+      this.$off( 'photosIsRun', this.onUpdate )
       this.resizeLayout.remove()
 
     },
 
     methods: {
 
-      photosIsRunBroadcast(){
+      onUpdate(){
 
-        this.$broadcast( 'photosIsRun' );
+        this.$broadcast( 'update' );
 
       },
 
@@ -365,7 +365,7 @@
 
               return { name, id: tagsObject[ name ] }
 
-            } )/*.concat(Object.keys( tagsObject ).map( ( name ) => {
+            } ).concat(Object.keys( tagsObject ).map( ( name ) => {
 
              return { name, id: tagsObject[ name ] }
 
@@ -377,7 +377,7 @@
 
              return { name, id: tagsObject[ name ] }
 
-             } ))*/;
+             } ));
 
           }
 
