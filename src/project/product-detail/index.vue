@@ -23,11 +23,13 @@ div.scroll-cnt(v-el:scroll-cnt)
       PostComponent
     },
     computed: {
+
       title(){
         if ( this.getOpenedProduct ) {
           return 'Тренд от ' + this.supplierName
         }
       },
+
       supplier(){
 
         if ( this.getOpenedProduct ) {
@@ -43,6 +45,7 @@ div.scroll-cnt(v-el:scroll-cnt)
         return null
 
       },
+
       supplierName(){
 
         if ( this.getOpenedProduct ) {
@@ -101,10 +104,11 @@ div.scroll-cnt(v-el:scroll-cnt)
       activate( { to: { params: { id } } } ) {
         return this.openProduct( +id );
       },
-      canReuse( { to: { params: { id } } }  ){
-        this.openProduct( +id ).then(() => {
+      canReuse( { to: { params: { id } } } ){
+        this.openProduct( +id ).then( () => {
           this.$els.scrollCnt.scrollTop = 0;
-        });
+          this.$broadcast( 'update' )
+        } );
         return true;
       }
     },

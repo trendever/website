@@ -128,6 +128,7 @@
         }
 
       },
+
       buy() {
 
         this._buy( this.productId );

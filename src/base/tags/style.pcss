@@ -11,39 +11,118 @@
   reset: inherited;
 }
 
+.tags-container {
+  display: block;
+  position: relative;
+  width: 100%;
+  float: left;
+  padding-bottom: 22px;
+  box-sizing: border-box;
+  &-open {
+    .tags {
+      height: auto;
+      overflow-y: auto;
+      display: block;
+      width: 100%;
+      float: left;
+      margin-left: 20px;
+    }
+  }
+}
+
 .tags {
   display: block;
   width: 100%;
   float: left;
   margin-left: 20px;
-  overflow-y: auto;
+  overflow: hidden;
+  height: 90px;
+  @media(--mobile) {
+
+    height: 170px;
+
+  }
 }
 
-.tag{
+.tag {
   display: block;
   float: left;
   margin-bottom: 12px;
-  border:1px solid $color__green;
+  border: 1px solid $color__green;
   cursor: pointer;
   text-align: center;
   height: 34px;
   padding-right: 20px;
   padding-left: 20px;
-  @media(--mobile){
+  &:hover {
+    background: $color__green;
+    .text {
+      color: $color__white;
+    }
+  }
+  @media(--mobile) {
     height: 43px;
   }
+
+  &-selected {
+    background: $color__green;
+    .text {
+      color: $color__white;
+      display: inline-block;
+      font-family: $font__family;
+      height: 34px;
+      line-height: 29px;
+      font-size: 28px;
+      cursor: pointer;
+      @media(--mobile) {
+        font-size: 36px;
+        height: 43px;
+        line-height: 36px;
+      }
+    }
+  }
+
 }
-.text{
+
+.text {
   display: inline-block;
   font-family: $font__family;
   color: $color__green;
   height: 34px;
   line-height: 29px;
   font-size: 28px;
-  @media(--mobile){
+  cursor: pointer;
+  @media(--mobile) {
     font-size: 36px;
     height: 43px;
     line-height: 36px;
   }
 
+}
+
+.button {
+  position: absolute;
+  height: 22px;
+  right: 0;
+  bottom: 0;
+  left: 20px;
+  display: block;
+  background-color: white;
+  color: $color__gray-light;
+  text-align: center;
+  line-height: 22px;
+  cursor: pointer;
+  &:after {
+    display: inline-block;
+    width: 40px;
+    height: 7px;
+    border-radius: 100px;
+    background-color: $color__gray;
+    content: '';
+
+    @media(--mobile) {
+      width: 50px;
+      height: 10px;
+    }
+  }
 }

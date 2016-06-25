@@ -1,8 +1,11 @@
 <template>
-  <div class="tags" v-el:tags v-bind:style="{maxHeight: maxHeight}">
-    <div class="tag" v-for="tag of tags">
-      <span class="text">{{tag.name}}</span>
+  <div v-if="isShow" class="tags-container" :class="{'tags-container-open': isOpen || !hiddenContent}">
+    <div class="tags" v-el:tags v-bind:style="{maxHeight: maxHeight}">
+      <div class="tag" v-for="tag of tags">
+        <span class="text">{{tag.name}}</span>
+      </div>
     </div>
+    <div class="button" @click="open" v-if="hiddenContent"></div>
   </div>
 </template>
 
@@ -18,19 +21,19 @@
         type: Array,
         default: []
       },
-      height: {
-        type: String,
-        default: `auto`
-      },
       maxHeight: {
         type: String,
-        default: `auto`
+        default: `285px`
+      },
+      hiddenContent: {
+        type: Boolean,
+        default: true
       }
     },
     data(){
       return {
         timer: null,
-        containerWidth: null
+        isOpen: false
       }
     },
     ready(){
@@ -38,7 +41,7 @@
       this.onFlex = this.onFlex.bind( this );
 
       this.$nextTick( () => {
-        this.flex();
+        this.onFlex();
       } );
 
       this.resize = listener( window, 'optimizedResize', this.onFlex )
@@ -54,29 +57,46 @@
       this.$set( 'timer', null )
 
     },
+
+    computed: {
+
+      isShow(){
+        if ( Array.isArray( this.tags ) ) {
+
+          return this.tags.length > 0;
+
+        }
+
+        return false;
+      }
+
+    },
+
     methods: {
+
+      open(){
+
+        this.$set( 'isOpen', !this.isOpen );
+
+      },
 
       onFlex(){
 
-        const computed = () => {
+        if ( this.isShow ) {
 
-          Array
-            .from( this.$els.tags.children )
-            .forEach( ( tag ) => {
+          const computed = () => {
 
-              tag.style.marginRight = '0';
+            Array
+              .from( this.$els.tags.children )
+              .forEach( ( tag ) => {
 
-            } );
+                tag.style.marginRight = '0';
 
-          this.flex();
+              } );
 
-        };
+            this.flex();
 
-        const containerWidth = this.$els.tags.clientWidth;
-
-        if ( this.containerWidth !== containerWidth ) {
-
-          this.$set('containerWidth', containerWidth)
+          };
 
           computed();
 
@@ -92,7 +112,7 @@
 
             computed();
 
-          }, 50 ) );
+          }, 100 ) );
 
         }
 
@@ -157,8 +177,6 @@
 
               if ( i < count - 1 ) {
 
-                console.log( count, i, count - 1 );
-
                 tags[ i ].style.width       = `${ newWidth }px`
                 tags[ i ].style.marginRight = `${ marginRight }px`
 
@@ -190,6 +208,18 @@
 
         }
 
+      }
+    },
+
+    watch: {
+      tags(){
+        this.onFlex()
+      },
+      height(){
+        this.onFlex()
+      },
+      maxHeight(){
+        this.onFlex()
       }
     }
   }
