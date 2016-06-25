@@ -21,7 +21,7 @@
         this.flex();
       } );
 
-      this.resize = listener( window, 'optimizedResize', this.onFlex)
+      this.resize = listener( window, 'optimizedResize', this.onFlex )
 
       this.$on( 'photosIsRun', this.onFlex )
 
@@ -33,6 +33,13 @@
     methods: {
 
       onFlex(){
+
+        Array.from( this.$els.tags.children ).forEach( ( tag ) => {
+
+          tag.style.marginRight = '0';
+
+        } );
+
         this.flex();
       },
 
@@ -44,14 +51,6 @@
 
         const containerWidth = this.$els.tags.offsetWidth;
 
-        if ( tags.length <= 1 ) {
-
-          tags[ 0 ].style.width = `${ containerWidth }px`;
-
-          return null;
-
-        }
-
         let count    = 0;
         let rowWidth = 0;
 
@@ -59,7 +58,9 @@
 
           const textWidth = tags[ i ].children[ 0 ].offsetWidth;
 
-          rowWidth += (textWidth + border + (padding * 2));
+          const fullWidth = (textWidth + border + (padding * 2)) + marginRight;
+
+          rowWidth += fullWidth;
 
           if ( parseInt( containerWidth / rowWidth ) > 0 ) {
 
@@ -67,11 +68,23 @@
 
           } else {
 
-            rowWidth -= ( textWidth + border + ( padding * 2 ) );
+            rowWidth -= fullWidth + marginRight;
 
             break;
 
           }
+
+        }
+
+        if ( count === 1 ) {
+
+          rowWidth += border / 2;
+
+        }
+
+        if ( tags.slice( count, tags.length ).length === 0 ) {
+
+          rowWidth -= marginRight;
 
         }
 
@@ -83,36 +96,40 @@
 
           const newWidth = textWidth + ( freeSpace / count );
 
-          console.log( newWidth );
+          if ( count > 1 ) {
 
-          tags[ i ].style.width = `${ newWidth }px`
+            if ( i < count - 1 ) {
 
-          /*          console.log( partOfContainerWidth * freeSpace );
+              console.log( count, i, count - 1 );
 
-           if ( i !== count - 1 ) {
+              tags[ i ].style.width       = `${ newWidth }px`
+              tags[ i ].style.marginRight = `${ marginRight }px`
 
-           tags[ i ].style.width       = `${ newWidth }px`
-           tags[ i ].style.marginRight = `${ marginRight }px`
+            } else {
 
-           } else {
+              tags[ i ].style.width = `${ newWidth }px`
 
-           tags[ i ].style.width = `${ newWidth }px`
+            }
 
-           }*/
+          } else {
+
+            tags[ i ].style.width = `${ newWidth }px`
+
+          }
 
         }
 
-        /*        if ( count > 0 ) {
+        if ( count > 0 ) {
 
-         const tagsSlice = tags.slice( count, tags.length );
+          const tagsSlice = tags.slice( count, tags.length );
 
-         if ( tagsSlice.length > 0 ) {
+          if ( tagsSlice.length > 0 ) {
 
-         this.flex( tagsSlice );
+            this.flex( tagsSlice );
 
-         }
+          }
 
-         }*/
+        }
 
       }
     },
