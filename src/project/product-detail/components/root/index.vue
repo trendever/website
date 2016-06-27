@@ -366,19 +366,7 @@
 
               return { name, id: tagsObject[ name ] }
 
-            } ).concat(Object.keys( tagsObject ).map( ( name ) => {
-
-             return { name, id: tagsObject[ name ] }
-
-             } ), Object.keys( tagsObject ).map( ( name ) => {
-
-             return { name, id: tagsObject[ name ] }
-
-             } ), Object.keys( tagsObject ).map( ( name ) => {
-
-             return { name, id: tagsObject[ name ] }
-
-             } ));
+            } );
 
           }
 

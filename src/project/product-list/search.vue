@@ -46,13 +46,16 @@
 
           li.search-tags__item__selected(
             v-for='tag in selectedTags | filterBy searchValue in "name"',
+
             @click='removeTag(tag, $index)',
             @touch='removeTag(tag, $index)')
+
             span {{ tag.name }}&nbsp;
             i.ic-close
 
           li.search-tags__item.tag_list(
             v-for='tag in tags | filterBy searchValue in "name"',
+
             @click='selectTag(tag)') {{ tag.name }}
 
         .search-tags__button( v-if='showMoreButton', @click='toggleShowMoreTags' )

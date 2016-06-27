@@ -59,12 +59,15 @@
     .text {
       color: $color__white;
     }
+    .close {
+      color: $color__white;
+    }
   }
   @media(--mobile) {
     height: 43px;
   }
 
-  &-selected {
+  &-active {
     background: $color__green;
     .text {
       color: $color__white;
@@ -74,11 +77,16 @@
       line-height: 29px;
       font-size: 28px;
       cursor: pointer;
+      padding-right: 5px;
       @media(--mobile) {
         font-size: 36px;
         height: 43px;
         line-height: 36px;
       }
+    }
+    .close {
+      color: $color__white;
+      cursor: pointer;
     }
   }
 
@@ -92,6 +100,7 @@
   line-height: 29px;
   font-size: 28px;
   cursor: pointer;
+  padding-right: 5px;
   @media(--mobile) {
     font-size: 36px;
     height: 43px;
@@ -125,4 +134,12 @@
       height: 10px;
     }
   }
+}
+
+.close {
+
+  font-size: $font__size;
+  color: $color__green;
+  cursor: pointer;
+
 }

@@ -1,8 +1,9 @@
 <template>
   <div v-if="isShow" class="tags-container" :class="{'tags-container-open': isOpen || !hiddenContent}">
     <div class="tags" v-el:tags v-bind:style="{maxHeight: maxHeight}">
-      <div class="tag" v-for="tag of tags">
+      <div class="tag" v-for="tag of tags" :class="{'tag-active': tag.active}" @click.stop="addTag(tag)">
         <span class="text">{{tag.name}}</span>
+        <i class="ic-close close" v-if="tag.active" @click.stop="delTag(tag)"></i>
       </div>
     </div>
     <div class="button" @click="open" v-if="hiddenContent"></div>
@@ -14,6 +15,7 @@
 <script type="text/babel">
 
   import listener from 'event-listener'
+  import { flex } from '../utils/flexWidth'
 
   export default {
     props: {
@@ -28,6 +30,18 @@
       hiddenContent: {
         type: Boolean,
         default: true
+      },
+      delTag: {
+        type: Function,
+        default: ( tag ) => {
+          console.log( tag );
+        }
+      },
+      addTag: {
+        type: Function,
+        default: ( tag ) => {
+          console.log( tag );
+        }
       }
     },
     data(){
@@ -75,9 +89,7 @@
     methods: {
 
       open(){
-
         this.$set( 'isOpen', !this.isOpen );
-
       },
 
       onFlex(){
@@ -94,7 +106,11 @@
 
               } );
 
-            this.flex();
+            if ( this.$els.tags !== null ) {
+
+              flex( Array.from( this.$els.tags.children ), this.$els.tags.clientWidth )
+
+            }
 
           };
 
@@ -116,99 +132,8 @@
 
         }
 
-      },
-
-      flex( tags = Array.from( this.$els.tags === null ? [] : this.$els.tags.children ) ){
-
-        if ( this.$els.tags !== null ) {
-
-          const marginRight = 10;
-          const padding     = 20;
-          const border      = 2; // Для супер точности нужно поставить 2, но так дёргается всё потому что окно первее сжимается чем вызывается пересчёт.
-
-          const containerWidth = this.$els.tags.clientWidth - 20;
-
-          let count    = 0;
-          let rowWidth = 0;
-
-          for ( let i = 0; i < tags.length; i++ ) {
-
-            const textWidth = tags[ i ].children[ 0 ].offsetWidth;
-
-            const fullWidth = (textWidth + border + (padding * 2)) + marginRight;
-
-            rowWidth += fullWidth;
-
-            if ( parseInt( containerWidth / rowWidth ) > 0 ) {
-
-              count++;
-
-            } else {
-
-              rowWidth -= fullWidth + marginRight;
-
-              break;
-
-            }
-
-          }
-
-          if ( count === 1 ) {
-
-            rowWidth += border / 2;
-
-          }
-
-          if ( tags.slice( count, tags.length ).length === 0 ) {
-
-            rowWidth -= marginRight;
-
-          }
-
-          const freeSpace = containerWidth - rowWidth;
-
-          for ( let i = 0; i < count; i++ ) {
-
-            const textWidth = tags[ i ].children[ 0 ].offsetWidth;
-
-            const newWidth = textWidth + ( freeSpace / count );
-
-            if ( count > 1 ) {
-
-              if ( i < count - 1 ) {
-
-                tags[ i ].style.width       = `${ newWidth }px`
-                tags[ i ].style.marginRight = `${ marginRight }px`
-
-              } else {
-
-                tags[ i ].style.width = `${ newWidth }px`
-
-              }
-
-            } else {
-
-              tags[ i ].style.width = `${ newWidth }px`
-
-            }
-
-          }
-
-          if ( count > 0 ) {
-
-            const tagsSlice = tags.slice( count, tags.length );
-
-            if ( tagsSlice.length > 0 ) {
-
-              this.flex( tagsSlice );
-
-            }
-
-          }
-
-        }
-
       }
+
     },
 
     watch: {
