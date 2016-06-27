@@ -31,6 +31,7 @@ export const RECEIVE_TAGS = 'RECEIVE_TAGS';
 export const SELECT_TAG = 'SELECT_TAG';
 export const REMOVE_TAG = 'REMOVE_TAG';
 export const CLEAR_SEARCH = 'CLEAR_SEARCH';
+export const SEARCH_SET_PENDING = 'SEARCH_SET_PENDING';
 
 //Conversation
 export const CONVERSATION_SET = 'CONVERSATION_SET';

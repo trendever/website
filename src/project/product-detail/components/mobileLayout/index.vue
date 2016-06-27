@@ -31,7 +31,12 @@
     <div class="desc-wrapper">
       <description :text="caption"></description>
     </div>
-    <tags :tags="tags"></tags>
+    <div class="tags-wrapper">
+      <tags
+        :tags="tags"
+        :add-tag="goToHome"
+      ></tags>
+    </div>
   </div>
 </template>
 
@@ -111,6 +116,11 @@
         }
       },
       buyPromoProduct: {
+        type: Function,
+        default: () => {
+        }
+      },
+      goToHome: {
         type: Function,
         default: () => {
         }

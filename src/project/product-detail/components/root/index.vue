@@ -16,6 +16,7 @@
       :like="like"
       :buy="buy"
       :buy-promo-product="buyPromoProduct"
+      :go-to-home="goToHome"
     ></mobile-layout>
     <desktop-layout
       v-if="!isSmall"
@@ -33,6 +34,7 @@
       :like="like"
       :buy="buy"
       :buy-promo-product="buyPromoProduct"
+      :go-to-home="goToHome"
     ></desktop-layout>
 
     <div class="products" v-if="isProduct">
@@ -58,6 +60,7 @@
   import * as leads from 'services/leads'
   import { ratioFit } from 'utils'
   import settings from 'settings'
+  import { selectTag } from 'vuex/actions/search.js';
 
   export default {
     data(){
@@ -100,6 +103,14 @@
     },
 
     methods: {
+
+      goToHome( tag ){
+
+        this.selectTag( tag, true );
+
+        this.$router.go( { name: 'home' } );
+
+      },
 
       onUpdate(){
 
@@ -396,6 +407,7 @@
         isAuth
       },
       actions: {
+        selectTag,
         setLike,
         createLead,
         setCallbackOnSuccessAuth

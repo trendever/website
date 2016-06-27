@@ -1,12 +1,16 @@
 <template>
   <div v-if="isShow" class="tags-container" :class="{'tags-container-open': isOpen || !hiddenContent}">
     <div class="tags" v-el:tags v-bind:style="{maxHeight: maxHeight}">
-      <div class="tag" v-for="tag of tags" :class="{'tag-active': tag.active}" @click.stop="addTag(tag)">
+      <div class="tag"
+           v-for="tag of tags | filterBy searchString in 'name'"
+           :class="{'tag-active': tag.active}"
+           @click.stop="addTag(tag)">
         <span class="text">{{tag.name}}</span>
         <i class="ic-close close" v-if="tag.active" @click.stop="delTag(tag)"></i>
       </div>
     </div>
-    <div class="button" @click="open" v-if="hiddenContent"></div>
+    <div class="button" @click="open" v-if="hiddenContent && showMoreButton"></div>
+    <div class="pending" v-if="isPending"></div>
   </div>
 </template>
 
@@ -31,23 +35,35 @@
         type: Boolean,
         default: true
       },
+      searchString: {
+        type: String,
+        default: ''
+      },
       delTag: {
         type: Function,
-        default: ( tag ) => {
-          console.log( tag );
+        default: ( tag, index ) => {
+          console.log( tag, index );
         }
       },
       addTag: {
         type: Function,
-        default: ( tag ) => {
-          console.log( tag );
+        default: ( tag, index ) => {
+          console.log( tag, index );
         }
+      },
+      isOpen: {
+        type: Boolean,
+        default: false
+      },
+      isPending: {
+        type: Boolean,
+        default: false
       }
     },
     data(){
       return {
         timer: null,
-        isOpen: false
+        showMoreButton: false
       }
     },
     ready(){
@@ -65,7 +81,9 @@
     },
     beforeDestroy(){
 
-      this.resize.remove()
+      if ( this.resize ) {
+        this.resize.remove()
+      }
       this.$off( 'update', this.onFlex )
       clearTimeout( this.timer )
       this.$set( 'timer', null )
@@ -90,6 +108,7 @@
 
       open(){
         this.$set( 'isOpen', !this.isOpen );
+        this.$els.tags.scrollTop = 0;
       },
 
       onFlex(){
@@ -98,15 +117,17 @@
 
           const computed = () => {
 
-            Array
-              .from( this.$els.tags.children )
-              .forEach( ( tag ) => {
-
-                tag.style.marginRight = '0';
-
-              } );
-
             if ( this.$els.tags !== null ) {
+
+              this.$set( 'showMoreButton', this.$els.tags.scrollHeight > (this.$els.tags.offsetHeight + 10) )
+
+              Array
+                .from( this.$els.tags.children )
+                .forEach( ( tag ) => {
+
+                  tag.style.marginRight = '0';
+
+                } );
 
               flex( Array.from( this.$els.tags.children ), this.$els.tags.clientWidth )
 
@@ -144,6 +165,9 @@
         this.onFlex()
       },
       maxHeight(){
+        this.onFlex()
+      },
+      searchString(){
         this.onFlex()
       }
     }

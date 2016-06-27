@@ -9,70 +9,72 @@ $count-tags-close: 3;
 $count-tags-open: 13;
 
 .photo__title-row {
-  display:none !important;
+  display: none !important;
 }
 
 .__mirror {
   font-weight: 600;
   transform: scaleX(-1);
 }
-.change-col{
-  position:absolute;
-  width:60px;
-  display:block;
-  height:60px;
-  right:29px;
-  top:50%;
-  margin-top:-30px;
+
+.change-col {
+  position: absolute;
+  width: 60px;
+  display: block;
+  height: 60px;
+  right: 29px;
+  top: 50%;
+  margin-top: -30px;
 
   & > span {
-    display:block;
+    display: block;
     width: 60px;
     padding: 12px;
     height: 60px;
-    display:none;
+    display: none;
 
     &:hover {
-      span{
-        background:#595959;
+      span {
+        background: #595959;
       }
     }
 
     &.active {
-      display:none;
+      display: none;
 
       @media(--mobile) {
-        display:block;
+        display: block;
       }
     }
   }
 
   &__big {
-    float:left;
-    width:15px;
-    height:15px;
-    margin-right:6px;
-    margin-bottom:6px;
+    float: left;
+    width: 15px;
+    height: 15px;
+    margin-right: 6px;
+    margin-bottom: 6px;
     background: #b2b2b2;
 
     &:nth-child(even) {
-      margin-right:0;
+      margin-right: 0;
     }
   }
 
   &__sm {
-    float:left;
-    width:9px;
-    height:9px;
-    margin-right:4px;
-    margin-bottom:4px;
+    float: left;
+    width: 9px;
+    height: 9px;
+    margin-right: 4px;
+    margin-bottom: 4px;
     background: #b2b2b2;
 
     &:nth-child(3n) {
-      margin-right:0;
+      margin-right: 0;
     }
   }
 }
+
 .badge {
   left: -27px;
   display: inline-block;
@@ -86,14 +88,14 @@ $count-tags-open: 13;
   font-size: 16px;
   line-height: 27px;
 
-   @media (--mobile) {
+  @media (--mobile) {
     width: 46px;
     height: 46px;
     left: -105px;
     top: 28px;
     font-size: 28px;
     line-height: 46px;
-   }
+  }
 }
 
 .search-placeholder {
@@ -103,7 +105,7 @@ $count-tags-open: 13;
 
   @media (max-width: 750px) {
     height: calc($height__mobile + 155px + $height-tag-button);
-    margin-bottom:33px;
+    margin-bottom: 33px;
   }
 }
 
@@ -117,11 +119,14 @@ $count-tags-open: 13;
     position: fixed;
     top: $height__desktop;
 
-    @media (max-width: 750px) { top: $height__mobile; }
+    @media (max-width: 750px) {
+      top: $height__mobile;
+    }
   }
 }
-.search-stub{
-  max-width:1050px;
+
+.search-stub {
+  max-width: 1050px;
   height: 50px;
 
   @media (--mobile) {
@@ -129,6 +134,7 @@ $count-tags-open: 13;
     height: 100px;
   }
 }
+
 .search-input {
   height: $height__desktop;
   border-bottom: 1px solid $color__gray;
@@ -137,9 +143,9 @@ $count-tags-open: 13;
     height: $height__mobile;
   }
 
-  &.glued{
+  &.glued {
     position: fixed;
-    top:-2px;
+    top: -2px;
     z-index: 100;
     max-width: 1050px;
     width: 100%;
@@ -213,18 +219,18 @@ $count-tags-open: 13;
     font-size: 25px;
     line-height: $height__desktop;
 
-   .close {
-    margin-left: -57px;
-    position: relative;
-    top: -4px;
-    font-size:23px;
-    z-index:99999;
-    cursor:pointer;
-      @media (--mobile){
+    .close {
+      margin-left: -57px;
+      position: relative;
+      top: -4px;
+      font-size: 23px;
+      z-index: 99999;
+      cursor: pointer;
+      @media (--mobile) {
         margin-left: -137px;
-        font-size:40px;
+        font-size: 40px;
       }
-   }
+    }
 
     i {
       vertical-align: middle !important;
@@ -239,7 +245,7 @@ $count-tags-open: 13;
     }
   }
   &__search-btn {
-   padding: 0 30px;
+    padding: 0 30px;
   }
   &__clear-btn {
     position: absolute;
@@ -257,7 +263,7 @@ $count-tags-open: 13;
   }
 }
 
-.search-tags {
+/*.search-tags {
   overflow: hidden;
   padding: 11px 0 $height-tag-button 0;
   width: 100%;
@@ -374,4 +380,12 @@ $count-tags-open: 13;
       }
     }
   }
+}*/
+
+.tags-wrapper {
+  display: inline-block;
+  width: calc(100% + 20px);
+  margin-left: -20px;
+  margin-top: 10px;
+  margin-bottom: 5px;
 }

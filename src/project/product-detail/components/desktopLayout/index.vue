@@ -5,6 +5,12 @@
 
       <div class="leftSide" v-bind:style="leftSide">
         <picture :img="picture"></picture>
+        <div class="tags-wrapper">
+          <tags
+            :tags="tags"
+            :add-tag="goToHome"
+          ></tags>
+        </div>
       </div>
 
       <div class="rightSide" v-bind:style="rightSide">
@@ -35,7 +41,6 @@
         <div class="description-wrapper">
           <description :text="caption"></description>
         </div>
-        <tags :tags="tags"></tags>
       </div>
 
     </div>
@@ -114,6 +119,12 @@
         }
       },
       buyPromoProduct: {
+        type: Function,
+        default: () => {
+
+        }
+      },
+      goToHome: {
         type: Function,
         default: () => {
 
