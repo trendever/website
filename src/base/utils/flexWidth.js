@@ -2,7 +2,9 @@ export const flex = ( tags = [], baseWidth = 200, marginRight = 10, padding = 20
 
   if ( tags.length > 0 ) {
 
-    const containerWidth = baseWidth - 20; // Для того чтобы элементы не перескакивали со строки на строку я убрал из ширины контейнера 20 пикселей
+    const containerWidth = baseWidth - 20; // Для того чтобы элементы не перескакивали со строки на строку я убрал из
+                                           // ширины контейнера 20 пикселей
+
 
     let count    = 0;
     let rowWidth = 0;

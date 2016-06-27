@@ -45,8 +45,10 @@
 }
 
 .tag {
+  width: auto;
   display: block;
   float: left;
+  box-sizing: content-box;
   margin-bottom: 12px;
   border: 1px solid $color__green;
   cursor: pointer;
@@ -87,12 +89,14 @@
     .close {
       color: $color__white;
       cursor: pointer;
+      display: inline;
     }
   }
 
 }
 
 .text {
+  width: auto;
   display: inline-block;
   font-family: $font__family;
   color: $color__green;
@@ -141,6 +145,7 @@
   font-size: $font__size;
   color: $color__green;
   cursor: pointer;
+  display: inline;
 
 }
 
