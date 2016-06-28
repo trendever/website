@@ -299,6 +299,15 @@ export const setAnimate = ( { dispatch }, state ) => {
 
 };
 
+export const setCallBackAfterLoading = (
+  { dispatch }, callback = () => {
+  }
+) => {
+
+  dispatch( types.PRODUCTS_SET_CALL_BACK_AFTER_LOADING, callback )
+
+};
+
 export const enableInfinityProducts = ( { dispatch } ) => {
 
   dispatch( types.PRODUCTS_SET_INFINITY, true );

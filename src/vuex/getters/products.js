@@ -135,7 +135,11 @@ export const getLengthList = ( state ) => (getList( state ) !== null) ?
   getList( state ).lengthList :
   state.products.ITEMS_PER_PAGE;
 
+export const callAfterLoading = (state) => {
 
+  return state.products.callBackAfterLoading;
+  
+};
 
 
 

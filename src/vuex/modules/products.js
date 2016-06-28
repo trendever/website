@@ -10,7 +10,8 @@ import {
   PRODUCTS_SET_ANIMATE,
   PRODUCTS_FORCE_RECEIVE,
   PRODUCTS_SET_OPENED_PRODUCT,
-  PRODUCTS_CLOSE
+  PRODUCTS_CLOSE,
+  PRODUCTS_SET_CALL_BACK_AFTER_LOADING
 } from '../mutation-types';
 
 const ITEMS_PER_PAGE = 9;
@@ -32,7 +33,9 @@ const state = {
   listId: null,
   loading: true,
   ITEMS_PER_PAGE,
-  openedProduct: null
+  openedProduct: null,
+  callBackAfterLoading: () => {
+  }
 };
 
 // mutations
@@ -273,6 +276,12 @@ const mutations = {
 
     state.loading = loading;
 
+  },
+
+  [PRODUCTS_SET_CALL_BACK_AFTER_LOADING] ( state, callBack ){
+
+    state.callBackAfterLoading = callBack;
+    
   },
 
   [PRODUCTS_CLOSE] ( state ) {

@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="rightSide">
-      <div class="button buttonRight" @click="buyPromoProduct">
+      <div v-if="false" class="button buttonRight" @click="buyPromoProduct">
         <i class="ic-blogger blogger icon icon-default"></i>
         <span class="text text-default">блогер</span>
       </div>

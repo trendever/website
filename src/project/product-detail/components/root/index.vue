@@ -52,8 +52,8 @@
   import mobileLayout from '../mobileLayout/index.vue'
   import desktopLayout from '../desktopLayout/index.vue'
   import photos from 'base/photos/photos.vue'
-  import { getOpenedProduct, isLiked } from 'vuex/getters/products'
-  import { setLike } from 'vuex/actions/products'
+  import { getOpenedProduct, isLiked, callAfterLoading } from 'vuex/getters/products'
+  import { setLike, setCallBackAfterLoading } from 'vuex/actions/products'
   import { isAuth } from 'vuex/getters/user.js'
   import { createLead } from 'vuex/actions/lead.js'
   import { setCallbackOnSuccessAuth } from 'vuex/actions'
@@ -74,6 +74,8 @@
       photos
     },
     ready(){
+
+      this.callAfterLoading();
 
       this.onUpdate = this.onUpdate.bind( this )
 
@@ -118,18 +120,18 @@
 
       },
 
-      // TODO setCallbackOnSuccessAuth - разобраться как это работает.
-
       like(){
 
         if ( !this.isAuth ) {
 
-          this.setCallbackOnSuccessAuth( () => {
+          this.setCallbackOnSuccessAuth( function( id, product, newLike ) {
 
-            this.setLike()
-            this.$router.go( { name: "product_detail", params: { id: this.productId } } )
+            this.$router.go( { name: "product_detail", params: { id } } )
 
-          } )
+            this.setCallBackAfterLoading( this.setLike.bind( this, product, newLike ) )
+
+          }.bind( this, this.productId, this.getOpenedProduct, true ) )
+
           this.$router.go( { name: 'signup' } )
 
         } else {
@@ -157,7 +159,7 @@
         if ( !this.isAuth ) {
 
           this.$router.go( { name: 'signup' } )
-          this.setCallbackOnSuccessAuth( this._buy.bind( this ) )
+          this.setCallbackOnSuccessAuth( this._buy.bind( this, productId ), 'PRODUCT_BUY' )
 
         } else {
 
@@ -177,7 +179,6 @@
                 }
               }
             )
-
         }
       }
 
@@ -403,6 +404,7 @@
     vuex: {
       getters: {
         getOpenedProduct,
+        callAfterLoading,
         isLiked,
         isAuth
       },
@@ -410,7 +412,8 @@
         selectTag,
         setLike,
         createLead,
-        setCallbackOnSuccessAuth
+        setCallbackOnSuccessAuth,
+        setCallBackAfterLoading
       }
     }
   }

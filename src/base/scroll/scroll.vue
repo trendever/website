@@ -5,7 +5,7 @@
             v-on:touchend="onEnd",
             v-el:scroll-el)
 
-  h1(v-if="showUpdate",
+  //- h1(v-if="showUpdate",
     style="position: fixed; top: 50px; left: 0; z-index: 100; background: blue; height: 50px; width: 300px")
               | Pull down to reload
 
@@ -74,12 +74,12 @@
 
           if ((this.minPanToUpdate / 2 - this.distanceFromStartPanY) <= 0) {
             this.showUpdate = true
-            document.body.style.background = "red"
+            //document.body.style.background = "red"
           } else {
             this.showUpdate = false
             document.body.style.background = "white"
           }
-          console.log("to update", this.minPanToUpdate - this.distanceFromStartPanY);
+          //console.log("to update", this.minPanToUpdate - this.distanceFromStartPanY);
         }
 
       },
