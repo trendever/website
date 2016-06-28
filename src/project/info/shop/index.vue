@@ -29,8 +29,7 @@ scroll-component
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Трендскаут разрекламирует...
-          span ...твои товары у подходящего блогера за счет Trendever.#[br] Подписчики покупают прямо в его ленте
-            br(class='mobile-hidden')
+          span ...твои товары у#[br] подходящего блогера.#[br] Подписчики покупают прямо в его ленте&nbsp;
             | по комментарию
             span.inform-item__answer__bold.wantit &nbsp;@wantit
 
@@ -40,7 +39,7 @@ scroll-component
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Трендскаут проконсультирует...
-          span ...покупателей по товарам и условиям покупки в шопинг-чате.#[br] Все это совершенно бесплатно!
+          span ...покупателей по товарам и условиям покупки в шопинг-чате.#[br]
 
   .section.inform-item
     .section__content
