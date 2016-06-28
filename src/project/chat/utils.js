@@ -192,3 +192,62 @@ export const wrapLink = ( text ) => {
   return text;
 
 };
+
+export const statusString = (type, value, customerName) => {
+
+  if ( type === 'lead.state.date' ) {
+
+    return formatMonth( value );
+
+  }
+
+  if ( type === 'lead.state.changed' ) {
+
+    let name = null;
+
+    switch ( value ) {
+      case 'COMPLETED':
+        name = 'Выполнен';
+        break;
+      case 'IN_PROGRESS':
+        name = 'В процессе';
+        break;
+      case 'ON_DELIVERY':
+        name = 'На доставке';
+        break;
+      case 'SUBMITTED':
+        name = 'Подтверждён';
+        break;
+      case 'CANCELLED':
+        name = 'Отменён';
+        break;
+    }
+
+    if ( name === null ) {
+      return name;
+    }
+
+    return `статус изменен на ${ name }`;
+
+  }
+
+  if ( type === 'suplier.called' ) {
+
+    return `отправлено уведомление поставщику`;
+
+  }
+
+  if ( type === 'customer.called' ) {
+
+    return `отправлено уведомление покупателю`;
+
+  }
+
+  if ( type === 'customer.phone.added' ) {
+
+    return `${customerName} здесь впервые ;-)`;
+
+  }
+
+
+};

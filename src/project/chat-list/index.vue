@@ -184,7 +184,7 @@ scroll-component(v-el:scroll-cnt)
             const { scrollTop } = this.getScroll;
 
             /**
-             * Магическое 500 это кол-во px после scrollTop;
+             * Магическое 1000 это кол-во px после scrollTop;
              * */
 
             if ( targetHeight < ( scrollTop + 1000 ) ) {

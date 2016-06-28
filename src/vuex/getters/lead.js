@@ -1,4 +1,6 @@
 import { userID } from 'vuex/getters/user.js';
+import { getCustomerName } from 'vuex/getters/chat.js';
+import { statusString } from '../../project/chat/utils';
 
 export const getTab = ( { leads } ) => {
   if ( getIsTab( { leads } ) ) {
@@ -109,10 +111,12 @@ export const getTitle = ( state ) => {
 };
 
 export const getLastMessage = ( state ) => {
+
   const messages = {};
   const leads    = getLeads( state );
 
   for ( let i = leads.length; i; i-- ) {
+
     const { id, chat } = leads[ i - 1 ];
 
     if ( chat !== null ) {
@@ -136,21 +140,64 @@ export const getLastMessage = ( state ) => {
 
           }
 
-          if ( mime === 'text/plain' ) {
+          if ( mime === 'json/status' ) {
+
+            const { type, value } = JSON.parse( data );
+
             messages[ id ] = {
-              message: data,
+
+              message: statusString(type, value, getCustomerName(state)),
               user_name
+
             };
           }
+
+          if ( mime === 'image/json' ) {
+
+            messages[ id ] = {
+
+              message: 'фото',
+              user_name
+
+            };
+
+          }
+
+          if ( mime === 'text/plain' ) {
+
+            messages[ id ] = {
+
+              message: data,
+              user_name
+
+            };
+          }
+
           if ( mime === 'text/json' ) {
 
             const res   = JSON.parse( data );
             const title = res.title ? res.title : '';
 
-            messages[ id ] = {
-              message: `товар: ${title}`,
-              user_name
-            };
+            if ( title.length > 0 ) {
+
+              messages[ id ] = {
+
+                message: `товар: ${title}`,
+                user_name
+
+              };
+
+            } else {
+
+              messages[ id ] = {
+
+                message: `тренд`,
+                user_name
+                
+              };
+
+            }
+
           }
 
         }
@@ -158,12 +205,15 @@ export const getLastMessage = ( state ) => {
       }
 
     } else {
+
       messages[ id ] = '';
+
     }
 
   }
 
   return messages;
+
 };
 
 export const getGlobalNotifyCount = state => state.leads.global_notify_count;
