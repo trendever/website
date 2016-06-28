@@ -21,7 +21,8 @@ scroll-component
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Как это возможно?
-          span Знакомься! Это Трендскаут!#[br] Она наполнит твою витрину на Trendever,#[br] отсортирует все товары и укажет цены.
+          span(v-if="isMobile") Знакомься! Это Трендскаут!#[br] Она наполнит твою#[br] витрину на Trendever,#[br] отсортирует все товары и укажет цены.
+          span(v-if="!isMobile") Знакомься! Это Трендскаут!#[br] Она наполнит твою витрину на Trendever,#[br] отсортирует все товары и укажет цены.
 
   .section.inform-item
     .section__content
@@ -137,6 +138,14 @@ scroll-component
         createLead,
         setCallbackOnSuccessAuth,
       }
+    },
+
+    computed:{
+
+      isMobile(){
+        return window.browser.mobile;
+      }
+
     },
 
     methods: {
