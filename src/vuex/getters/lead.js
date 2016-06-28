@@ -182,7 +182,7 @@ export const getLastMessage = ( state ) => {
 
               messages[ id ] = {
 
-                message: `товар: ${title}`,
+                message: `тренд: ${title}`,
                 user_name
 
               };
@@ -193,7 +193,7 @@ export const getLastMessage = ( state ) => {
 
                 message: `тренд`,
                 user_name
-                
+
               };
 
             }
