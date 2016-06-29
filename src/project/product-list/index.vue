@@ -21,6 +21,11 @@ scroll-component
 
 
   export default {
+    ready(){
+      this.$once('photosIsRun', () => {
+        this.$broadcast('update');
+      });
+    },
     beforeDestroy(){
       this.setComeBack( false );
     },

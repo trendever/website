@@ -8,21 +8,79 @@ export const setSearchValue = ( { dispatch }, value ) => {
 
 };
 
-export const loadTags = ( { dispatch, state } ) => {
+export const loadTags = (() => {
 
-  dispatch( types.SEARCH_SET_PENDING, true );
+  // TODO Внимание кеширование тегов.
 
-  return tagsService
-    .find( { tags: selectedTagsId( state ) } )
-    .then( tags => {
-      dispatch( types.RECEIVE_TAGS, tags );
-      dispatch( types.SEARCH_SET_PENDING, false );
-    } );
+  // TODO Подумать как регулярно перезапрашивать в фоне комбинации тегов.
 
-};
+  let lastSelectedTagsId = [];
+
+  const result = null;//localStorage.getItem( 'TAGS' );
+
+  const memoize = (result !== null) ? JSON.parse( result ) : {};
+
+  return ( { dispatch, state } ) => {
+
+    const tags = selectedTagsId( state );
+
+    let neeLoad = false;
+
+    if ( lastSelectedTagsId.length === tags.length ) {
+
+      for ( let i = 0; i < tags.length; i++ ) {
+
+        if ( tags[ i ] !== lastSelectedTagsId[ i ] ) {
+
+          neeLoad = true;
+          break;
+
+        }
+
+      }
+
+    } else {
+
+      neeLoad = true;
+
+    }
+
+    if ( neeLoad ) {
+
+      dispatch( types.SEARCH_SET_PENDING, true );
+
+      lastSelectedTagsId = tags;
+
+      const key = tags.join( ',' );
+
+      if ( memoize.hasOwnProperty( key ) ) {
+
+        dispatch( types.RECEIVE_TAGS, memoize[ key ] );
+        dispatch( types.SEARCH_SET_PENDING, false );
+
+        return Promise.resolve( memoize[ key ] );
+
+      }
+
+      return tagsService
+        .find( { tags } )
+        .then( tags => {
+          memoize[ key ] = tags;
+         // localStorage.setItem( 'TAGS', JSON.stringify( memoize ) );
+          dispatch( types.RECEIVE_TAGS, tags );
+          dispatch( types.SEARCH_SET_PENDING, false );
+        } );
+
+    }
+
+    return Promise.resolve();
+
+  }
+
+})();
 
 export const selectTag = ( store, tag, clear ) => {
-  
+
   if ( clear === true ) {
 
     store.dispatch( types.CLEAR_SEARCH );
