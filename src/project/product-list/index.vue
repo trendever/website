@@ -7,7 +7,6 @@ scroll-component
     .section__content
       search-component
       photos-component(:tags="true", :search="true", list-id="home")
-      footer-component
       navbar-component(current='feed')
 </template>
 
@@ -18,7 +17,7 @@ import HeroComponent from './hero.vue'
 import CaptionComponent from './caption.vue'
 import SearchComponent from './search.vue'
 import PhotosComponent from 'base/photos/photos.vue'
-import FooterComponent from 'base/footer/footer.vue'
+
 
 export default {
   components: {
@@ -27,8 +26,7 @@ export default {
     SearchComponent,
     HeroComponent,
     CaptionComponent,
-    PhotosComponent,
-    FooterComponent
+    PhotosComponent
   }
 }
 </script>

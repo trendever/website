@@ -4,7 +4,7 @@
   .profile-header__menu
     .profile-header__menu-btn
       .profile-header__menu-btn-label
-      .profile-header__menu-btn-icon(@click='menuOpened=true')
+      .profile-header__menu-btn-icon(@click='menuOpened=!menuOpened')
         i(class='ic-info')
   .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth }")
     a(class='profile-header__menu-link profile-header__close-menu',
