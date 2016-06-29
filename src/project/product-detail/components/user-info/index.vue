@@ -3,7 +3,7 @@
     <img class="avatar" :src="img" v-link='{name: "user", params: {id: name}}'>
     <div class="description">
       <div class="userName">
-        <span class="title">Нашёл</span>
+        <span class="title" v-link='{name: "user", params: {id: name}}'>Нашёл</span>
         <span class="name" v-link='{name: "user", params: {id: name}}'>{{name}}</span>
       </div>
       <span class="code">Код тренда {{code}}</span>

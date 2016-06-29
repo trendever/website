@@ -20,7 +20,7 @@
         )
 
         .search-input__clear-btn
-          span.badge(v-if='selectedCount > 0') {{ selectedCount }}
+          span.badge(v-if='selectedCount > 0', @click='clear') {{ selectedCount }}
           span.close(v-show='searchValue.length || selectedCount > 0', @click='clear'): i.ic-close
           span.change-col
             span.change-col__two-col( :class='{"active": getColumnCount === 3}', @click='setColumnNumber(2)')

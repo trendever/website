@@ -1,6 +1,10 @@
 <template>
-  <div v-if="isShow" class="tags-container" :class="{'tags-container-open': isOpen || !hiddenContent}">
-    <div class="tags" v-el:tags v-bind:style="{maxHeight: maxHeight}">
+  <div
+    v-if="isShow"
+    class="tags-container"
+    :class="{'tags-container-open': isOpen || !hiddenContent, 'tags-container-button': hiddenContent && showMoreButton}"
+  >
+    <div class="tags" v-el:tags v-bind:style="{maxHeight: maxHeight, height: height}">
       <div class="tag"
            v-for="tag of tags | filterBy searchString in 'name'"
            :class="{'tag-active': tag.active}"
@@ -20,8 +24,10 @@
 
   import listener from 'event-listener'
   import { flex } from '../utils/flexWidth'
+  import { browser } from 'utils'
 
   export default {
+
     props: {
       tags: {
         type: Array,
@@ -60,12 +66,15 @@
         default: false
       }
     },
+
     data(){
       return {
         timer: null,
-        showMoreButton: false
+        showMoreButton: false,
+        fullHeight: 0
       }
     },
+
     ready(){
 
       this.onFlex = this.onFlex.bind( this );
@@ -79,6 +88,7 @@
       this.$on( 'update', this.onFlex )
 
     },
+
     beforeDestroy(){
 
       if ( this.resize ) {
@@ -91,6 +101,30 @@
     },
 
     computed: {
+
+      height(){
+
+        if ( window.matchMedia( "(max-width: 750px)" ).matches ) {
+
+          if ( this.fullHeight < 170 ) {
+
+            return `${this.fullHeight - 10}px`
+
+          }
+
+        } else {
+
+          if ( this.fullHeight < 90 ) {
+
+            return `${this.fullHeight -10}px`
+
+          }
+
+        }
+
+        return null;
+
+      },
 
       isShow(){
         if ( Array.isArray( this.tags ) ) {
@@ -129,7 +163,7 @@
 
                 } );
 
-              flex( Array.from( this.$els.tags.children ), this.$els.tags.clientWidth )
+              this.$set( 'fullHeight', flex( Array.from( this.$els.tags.children ), this.$els.tags.clientWidth ) )
 
             }
 

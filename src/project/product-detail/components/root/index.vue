@@ -38,7 +38,11 @@
     ></desktop-layout>
 
     <div class="products" v-if="isProduct">
-      <h1 class="title">Больше трендов от {{supplierName}}</h1>
+      <div class="title-wrapper">
+
+        <p class="title">Больше трендов от {{supplierName}}</p>
+
+      </div>
       <photos :list-id="listId" :filter-by-user-name="supplierName"></photos>
     </div>
   </div>

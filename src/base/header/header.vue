@@ -10,8 +10,8 @@
       span {{ notifyCount }}
 
     .header__center
-      .header__text(v-if="centerTextLink === null") {{{ title }}}
-      .header__text.active(v-if="centerTextLink !== null", v-link="centerTextLink") {{{ title }}}
+      .header__text(v-if="centerTextLink === null") {{ title }}
+      .header__text.active(v-if="centerTextLink !== null", v-link="centerTextLink") {{ title }}
       slot(name='content')
 
     .header-right(v-if="avatarUrl !== null && centerTextLink !== null", v-link="centerTextLink")

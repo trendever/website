@@ -1,4 +1,3 @@
-
 @import 'base/vars/vars.pcss';
 
 @use postcss-autoreset {
@@ -11,18 +10,40 @@
   reset: inherited;
 }
 
-.title{
-  display: block;
-  font-family: $font__family;
-  font-size: 40px;
-  line-height: 130px;
-  text-align: center;
-  overflow: hidden;
-  color: $color__gray-dark;
+.title-wrapper {
+  display: flex;
+  align-items: center;
   height: 130px;
   width: 100%;
-  @media(--mobile){
+  overflow: hidden;
+  word-wrap: break-word;
+  -webkit-line-clamp: 6;
+  @media(--mobile) {
     height: 90px;
-    line-height: 90px;
   }
+}
+
+.title {
+
+  display: -webkit-box;
+  overflow: hidden;
+  word-wrap: break-word;
+  max-height: 83.267px;
+  line-height: 40px;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+  -webkit-line-clamp: 2;
+  font-family: $font__family;
+  font-size: 40px;
+  color: $color__gray-dark;
+
+  @media(--mobile) {
+
+    padding: 0 20px;
+
+  }
+
 }
