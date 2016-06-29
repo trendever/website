@@ -308,6 +308,12 @@ export const setCallBackAfterLoading = (
 
 };
 
+export const setComeBack = ( { dispatch }, comeBack = false ) => {
+
+  dispatch( types.PRODUCTS_SET_COME_BACK, comeBack )
+
+};
+
 export const enableInfinityProducts = ( { dispatch } ) => {
 
   dispatch( types.PRODUCTS_SET_INFINITY, true );

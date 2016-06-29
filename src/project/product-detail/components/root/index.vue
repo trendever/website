@@ -57,14 +57,14 @@
   import desktopLayout from '../desktopLayout/index.vue'
   import photos from 'base/photos/photos.vue'
   import { getOpenedProduct, isLiked, callAfterLoading } from 'vuex/getters/products'
-  import { setLike, setCallBackAfterLoading } from 'vuex/actions/products'
+  import { setLike, setCallBackAfterLoading, setComeBack } from 'vuex/actions/products'
   import { isAuth } from 'vuex/getters/user.js'
   import { createLead } from 'vuex/actions/lead.js'
   import { setCallbackOnSuccessAuth } from 'vuex/actions'
   import * as leads from 'services/leads'
   import { ratioFit } from 'utils'
   import settings from 'settings'
-  import { selectTag } from 'vuex/actions/search.js';
+  import { selectTag } from 'vuex/actions/search.js'
 
   export default {
     data(){
@@ -113,6 +113,8 @@
       goToHome( tag ){
 
         this.selectTag( tag, true );
+
+        this.setComeBack( true );
 
         this.$router.go( { name: 'home' } );
 
@@ -415,6 +417,7 @@
       actions: {
         selectTag,
         setLike,
+        setComeBack,
         createLead,
         setCallbackOnSuccessAuth,
         setCallBackAfterLoading

@@ -11,22 +11,31 @@ scroll-component
 </template>
 
 <script type='text/babel'>
-import NavbarComponent from 'base/navbar/navbar.vue'
-import ScrollComponent from 'base/scroll/scroll.vue'
-import HeroComponent from './hero.vue'
-import CaptionComponent from './caption.vue'
-import SearchComponent from './search.vue'
-import PhotosComponent from 'base/photos/photos.vue'
+  import NavbarComponent from 'base/navbar/navbar.vue'
+  import ScrollComponent from 'base/scroll/scroll.vue'
+  import HeroComponent from './hero.vue'
+  import CaptionComponent from './caption.vue'
+  import SearchComponent from './search.vue'
+  import PhotosComponent from 'base/photos/photos.vue'
+  import { setComeBack } from 'vuex/actions/products.js'
 
 
-export default {
-  components: {
-    ScrollComponent,
-    NavbarComponent,
-    SearchComponent,
-    HeroComponent,
-    CaptionComponent,
-    PhotosComponent
+  export default {
+    beforeDestroy(){
+      this.setComeBack( false );
+    },
+    components: {
+      ScrollComponent,
+      NavbarComponent,
+      SearchComponent,
+      HeroComponent,
+      CaptionComponent,
+      PhotosComponent
+    },
+    vuex: {
+      actions: {
+        setComeBack
+      }
+    }
   }
-}
 </script>

@@ -11,7 +11,8 @@ import {
   PRODUCTS_FORCE_RECEIVE,
   PRODUCTS_SET_OPENED_PRODUCT,
   PRODUCTS_CLOSE,
-  PRODUCTS_SET_CALL_BACK_AFTER_LOADING
+  PRODUCTS_SET_CALL_BACK_AFTER_LOADING,
+  PRODUCTS_SET_COME_BACK
 } from '../mutation-types';
 
 const ITEMS_PER_PAGE = 9;
@@ -35,7 +36,8 @@ const state = {
   ITEMS_PER_PAGE,
   openedProduct: null,
   callBackAfterLoading: () => {
-  }
+  },
+  comeBack: false
 };
 
 // mutations
@@ -281,7 +283,7 @@ const mutations = {
   [PRODUCTS_SET_CALL_BACK_AFTER_LOADING] ( state, callBack ){
 
     state.callBackAfterLoading = callBack;
-    
+
   },
 
   [PRODUCTS_CLOSE] ( state ) {
@@ -324,6 +326,14 @@ const mutations = {
       state.lists[ listId ].animateShow = animateShow;
 
     }
+
+  },
+
+  [PRODUCTS_SET_COME_BACK] (state, comeBack = false) {
+
+    console.log(comeBack);
+
+    state.comeBack = comeBack;
 
   }
 

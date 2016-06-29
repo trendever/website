@@ -138,8 +138,12 @@ export const getLengthList = ( state ) => (getList( state ) !== null) ?
 export const callAfterLoading = (state) => {
 
   return state.products.callBackAfterLoading;
-  
+
 };
 
+export const getComeBack = (state) => {
+  
+  return state.products.comeBack;
 
+}
 

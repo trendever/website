@@ -4,8 +4,10 @@
   .profile-header__menu
     .profile-header__menu-btn
       .profile-header__menu-btn-label
-      .profile-header__menu-btn-icon(@click='menuOpened=!menuOpened')
+      .profile-header__menu-btn-icon(v-if="!getComeBack", @click='menuOpened=!menuOpened')
         i(class='ic-info')
+      .profile-header__menu-btn-icon(v-if="getComeBack", @click='goBack')
+        i(class='ic-arrow-left')
   .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth }")
     a(class='profile-header__menu-link profile-header__close-menu',
       @click='menuOpened=false') Отмена
@@ -62,6 +64,7 @@ import settings from 'settings'
 import { setCallbackOnSuccessAuth } from 'vuex/actions'
 import { createLead } from 'vuex/actions/lead'
 import { isAuth } from 'vuex/getters/user.js'
+import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
 
 export default {
@@ -79,6 +82,7 @@ export default {
   vuex: {
     getters: {
       isAuth,
+      getComeBack
     },
     actions: {
       createLead,
@@ -87,6 +91,9 @@ export default {
   },
 
   methods: {
+    goBack(){
+      window.history.back();
+    },
     onBuyPromoProduct() {
       if ( !this.isAuth ) {
 
