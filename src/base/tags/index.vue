@@ -4,20 +4,22 @@
     class="tags-container"
     :class="{'tags-container-open': isOpen || !hiddenContent, 'tags-container-button': hiddenContent && showMoreButton}"
   >
-    <div class="tags" v-el:tags v-bind:style="{maxHeight: maxHeight, height: height}">
+    <div class="tags"
+         v-el:tags
+         v-bind:style="tagsStyle">
       <div class="tag"
-           v-bind:style="{height: itemHeight}"
+           v-bind:style="tagStyle"
            v-for="tag of tags | filterBy searchString in 'name'"
            :class="{'tag-active': tag.active}"
            @click.stop="addTag(tag)">
         <span
           class="text"
-          v-bind:style="{height: itemHeight, fontSize: textFontSize, lineHeight: textLineHeight}">{{tag.name}}</span>
+          v-bind:style="textStyle">{{tag.name}}</span>
         <i
           class="ic-close close"
           v-if="tag.active"
           @click.stop="delTag(tag)"
-          v-bind:style="{fontSize: iconFontSize}"></i>
+          v-bind:style="iconStyle"></i>
       </div>
     </div>
     <div class="button" @click="open" v-if="hiddenContent && showMoreButton"></div>
@@ -42,6 +44,10 @@
       maxHeight: {
         type: String,
         default: `285px`
+      },
+      baseHeight: {
+        type: Number,
+        default: 90
       },
       itemHeight: {
         type: String,
@@ -124,6 +130,30 @@
 
     computed: {
 
+      tagsStyle(){
+        return {
+          maxHeight: this.maxHeight,
+          height: (this.isOpen) ? null : this.height
+        }
+      },
+      tagStyle(){
+        return {
+          height: this.itemHeight
+        }
+      },
+      textStyle() {
+        return {
+          height: this.itemHeight,
+          fontSize: this.textFontSize,
+          lineHeight: this.textLineHeight
+        }
+      },
+      iconStyle(){
+        return {
+          fontSize: this.iconFontSize
+        }
+      },
+
       height(){
 
         if ( window.matchMedia( "(max-width: 750px)" ).matches ) {
@@ -136,7 +166,7 @@
 
         } else {
 
-          if ( this.fullHeight < 90 ) {
+          if ( this.fullHeight < this.baseHeight ) {
 
             return `${this.fullHeight - 10}px`
 
@@ -144,7 +174,7 @@
 
         }
 
-        return null;
+        return `${this.baseHeight}px`;
 
       },
 
@@ -175,7 +205,7 @@
 
             if ( this.$els.tags !== null ) {
 
-              this.$set( 'showMoreButton', this.$els.tags.scrollHeight > (this.$els.tags.offsetHeight + 10) )
+              this.$set( 'showMoreButton', this.$els.tags.scrollHeight > (this.baseHeight + 10) )
 
               Array
                 .from( this.$els.tags.children )

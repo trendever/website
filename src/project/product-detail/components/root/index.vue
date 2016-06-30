@@ -41,7 +41,7 @@
       <div class="title-wrapper">
 
         <span class="title">
-          <p class="title-not-link">Больше трендов от</p>
+          <p class="title-not-link">Больше трендов от </p>
           <p class="title-link" v-link='{name: "user", params: {id: supplierName}}'>{{supplierName}}</p>
         </span>
 
