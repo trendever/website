@@ -40,7 +40,10 @@
     <div class="products" v-if="isProduct">
       <div class="title-wrapper">
 
-        <p class="title">Больше трендов от {{supplierName}}</p>
+        <span class="title">
+          <p class="title-not-link">Больше трендов от</p>
+          <p class="title-link" v-link='{name: "user", params: {id: supplierName}}'>{{supplierName}}</p>
+        </span>
 
       </div>
       <photos :list-id="listId" :filter-by-user-name="supplierName"></photos>

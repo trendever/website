@@ -5,12 +5,6 @@
 
       <div class="leftSide" v-bind:style="leftSide">
         <picture :img="picture"></picture>
-        <div class="tags-wrapper">
-          <tags
-            :tags="tags"
-            :add-tag="goToHome"
-          ></tags>
-        </div>
       </div>
 
       <div class="rightSide" v-bind:style="rightSide">
@@ -40,6 +34,16 @@
         </div>
         <div class="description-wrapper">
           <description :text="caption"></description>
+        </div>
+        <div class="tags-wrapper">
+          <tags
+            :tags="tags"
+            :add-tag="goToHome"
+            item-height="32px"
+            text-font-size="26px"
+            icon-font-size="14px"
+            max-height="325px"
+          ></tags>
         </div>
       </div>
 

@@ -6,11 +6,18 @@
   >
     <div class="tags" v-el:tags v-bind:style="{maxHeight: maxHeight, height: height}">
       <div class="tag"
+           v-bind:style="{height: itemHeight}"
            v-for="tag of tags | filterBy searchString in 'name'"
            :class="{'tag-active': tag.active}"
            @click.stop="addTag(tag)">
-        <span class="text">{{tag.name}}</span>
-        <i class="ic-close close" v-if="tag.active" @click.stop="delTag(tag)"></i>
+        <span
+          class="text"
+          v-bind:style="{height: itemHeight, fontSize: textFontSize, lineHeight: textLineHeight}">{{tag.name}}</span>
+        <i
+          class="ic-close close"
+          v-if="tag.active"
+          @click.stop="delTag(tag)"
+          v-bind:style="{fontSize: iconFontSize}"></i>
       </div>
     </div>
     <div class="button" @click="open" v-if="hiddenContent && showMoreButton"></div>
@@ -27,7 +34,6 @@
   import { browser } from 'utils'
 
   export default {
-
     props: {
       tags: {
         type: Array,
@@ -36,6 +42,22 @@
       maxHeight: {
         type: String,
         default: `285px`
+      },
+      itemHeight: {
+        type: String,
+        default: null
+      },
+      textFontSize: {
+        type: String,
+        default: null
+      },
+      iconFontSize: {
+        type: String,
+        default: null
+      },
+      textLineHeight: {
+        type: String,
+        default: null
       },
       hiddenContent: {
         type: Boolean,
@@ -116,7 +138,7 @@
 
           if ( this.fullHeight < 90 ) {
 
-            return `${this.fullHeight -10}px`
+            return `${this.fullHeight - 10}px`
 
           }
 

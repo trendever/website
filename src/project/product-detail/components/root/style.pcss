@@ -17,10 +17,9 @@
   width: 100%;
   overflow: hidden;
   word-wrap: break-word;
-  -webkit-line-clamp: 6;
-  @media(--mobile) {
-    height: 90px;
-  }
+  -webkit-line-clamp: 2;
+  padding-bottom: 10px;
+
 }
 
 .title {
@@ -28,23 +27,53 @@
   display: -webkit-box;
   overflow: hidden;
   word-wrap: break-word;
+  width: 100%;
   max-height: 83.267px;
   min-height: 47px;
-  line-height: 40px;
   text-overflow: ellipsis;
   -webkit-box-orient: vertical;
   box-sizing: border-box;
-  width: 100%;
   text-align: center;
   -webkit-line-clamp: 2;
   font-family: $font__family;
-  font-size: 40px;
-  color: $color__gray-dark;
+  color: $color__green;
 
   @media(--mobile) {
 
+    font-size: 54px;
     padding: 0 20px;
+    max-height: 150px;
 
   }
 
+}
+
+.title-not-link{
+  line-height: 40px;
+  font-family: $font__family;
+  font-size: 40px;
+  color: $color__gray;
+  cursor: default;
+  word-wrap: break-word;
+  @media(--mobile) {
+
+    font-size: 54px;
+    line-height: 65px;
+
+  }
+}
+
+.title-link {
+  line-height: 40px;
+  font-family: $font__family;
+  font-size: 40px;
+  color: $color__green;
+  cursor: pointer;
+  word-wrap: break-word;
+  @media(--mobile) {
+
+    font-size: 54px;
+    line-height: 65px;
+
+  }
 }
