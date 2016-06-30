@@ -103,7 +103,7 @@ export const flex = (() => {
 
         if ( tagsSlice.length > 0 ) {
 
-          return _flex( tagsSlice, baseWidth );
+          return _flex( tagsSlice, baseWidth, marginRight, padding, border );
 
         } else {
 

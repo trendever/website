@@ -43,7 +43,9 @@
             text-font-size="16px"
             text-line-height="19px"
             max-height="325px"
-            :base-height="65"
+            :base-height="50"
+            :margin-right="5"
+            :margin-bottom="5"
           ></tags>
         </div>
       </div>

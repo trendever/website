@@ -57,6 +57,14 @@
         type: String,
         default: null
       },
+      marginRight: {
+        type: Number,
+        default: 20
+      },
+      marginBottom: {
+        type: Number,
+        default: 12
+      },
       iconFontSize: {
         type: String,
         default: null
@@ -137,8 +145,10 @@
         }
       },
       tagStyle(){
+
         return {
-          height: this.itemHeight
+          height: this.itemHeight,
+          marginBottom: `${this.marginBottom}px`
         }
       },
       textStyle() {
@@ -170,6 +180,14 @@
 
             return `${this.fullHeight - 10}px`
 
+          }
+
+        }
+
+        if ( window.matchMedia( "(max-width: 750px)" ).matches ) {
+
+          if ( this.baseHeight < 170 ) {
+            return `170px`;
           }
 
         }
@@ -215,7 +233,12 @@
 
                 } );
 
-              this.$set( 'fullHeight', flex( Array.from( this.$els.tags.children ), this.$els.tags.clientWidth ) )
+              this.$set( 'fullHeight', flex(
+                Array.from( this.$els.tags.children ),
+                this.$els.tags.clientWidth,
+                this.marginRight
+                )
+              )
 
             }
 
