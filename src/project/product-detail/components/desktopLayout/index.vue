@@ -39,11 +39,11 @@
           <tags
             :tags="tags"
             :add-tag="goToHome"
-            item-height="25px"
+            item-height="20px"
             text-font-size="16px"
-            text-line-height="24px"
+            text-line-height="19px"
             max-height="325px"
-            :base-height="75"
+            :base-height="65"
           ></tags>
         </div>
       </div>
