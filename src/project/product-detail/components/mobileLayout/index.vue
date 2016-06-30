@@ -35,6 +35,7 @@
       <tags
         :tags="tags"
         :add-tag="goToHome"
+        :base-height="170"
       ></tags>
     </div>
   </div>
