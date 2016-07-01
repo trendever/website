@@ -26,6 +26,12 @@ export const loadTags = (() => {
 
     let neeLoad = false;
 
+    if ( lastSelectedTagsId.length === 0 && tags.length === 0 ) {
+
+      neeLoad = true;
+
+    }
+
     if ( lastSelectedTagsId.length === tags.length ) {
 
       for ( let i = 0; i < tags.length; i++ ) {
