@@ -5,13 +5,14 @@ var webpack = require('webpack')
 var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
+var VersionFile = require("webpack-version-file-plugin")
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var env = settings.build.env;
 
 module.exports = merge(baseWebpackConfig, {
   output: {
-    path: settings.build.assetsRoot,
+    path: settings.build.buildingRoot,
     filename: utils.assetsPath('js/[name].[chunkhash:7].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash:7].js'),
   },
@@ -87,6 +88,16 @@ module.exports = merge(baseWebpackConfig, {
       name: 'manifest',
       chunks: ['vendor']
     }),
+
+    new VersionFile({
+      packageFile:path.join(__dirname, '../package.json'),
+      template:path.join(__dirname, 'version.ejs'),
+      outputFile: path.join(settings.build.buildingRoot, 'version.json'),
+      extras: {
+        buildTimestamp: new Date().getTime()
+      }
+    })
+
 
   ]
 

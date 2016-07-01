@@ -1,7 +1,8 @@
 <style src='./styles/chat.pcss'></style>
 <template lang="jade">
-  .chat-cnt.scroll-cnt(v-el:scroll-cnt)
+  scroll-component(v-el:scroll-cnt, class="chat-cnt")
     chat-header(:notify-count='conversationNotifyCount')
+    .chat-shadow(v-if="getShowMenu || getShowStatusMenu")
     .section.top.bottom
       .chat.section__content
         .chat_messages
@@ -33,7 +34,9 @@
     conversationNotifyCount,
     getId,
     getCurrentMember,
-    getLengthList
+    getLengthList,
+    getShowMenu,
+    getShowStatusMenu
   } from 'vuex/getters/chat.js';
   import { isDone } from 'vuex/getters/lead.js';
   import { isAuth } from 'vuex/getters/user.js';
@@ -41,6 +44,8 @@
 
   import * as messages from 'services/message';
   import * as leads from 'services/leads';
+
+  import ScrollComponent from 'base/scroll/scroll.vue'
 
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgStatus from './chat-msg-status.vue';
@@ -51,12 +56,24 @@
 
   export default {
 
+    components: {
+      ScrollComponent,
+
+      ChatHeader,
+      ChatBar,
+      ChatMsg,
+      ChatMsgProduct,
+      ChatMsgStatus,
+      ChatMsgImg
+    },
+
     data(){
       return {
         needLoadMessage: true,
         lead_id: null
       }
     },
+
     watch: {
       isDone( done ){
         if ( done ) {
@@ -64,6 +81,7 @@
         }
       }
     },
+
     route: {
       data( { to: { params: { id:lead_id } } } ) {
         this.$set( 'lead_id', +lead_id );
@@ -76,6 +94,7 @@
         }
       },
     },
+
     ready(){
       if ( this.isAuth ) {
         this.onMessage      = this.onMessage.bind( this );
@@ -85,6 +104,7 @@
         this.$router.go( { name: 'signup' } );
       }
     },
+
     beforeDestroy() {
       if ( this.isAuth ) {
         this.scrollListener.remove();
@@ -92,6 +112,7 @@
         messages.offMsg( this.onMessage );
       }
     },
+
     vuex: {
       actions: {
         setConversation,
@@ -106,7 +127,9 @@
         conversationNotifyCount,
         getId,
         getCurrentMember,
-        getLengthList
+        getLengthList,
+        getShowMenu,
+        getShowStatusMenu
       },
     },
 
@@ -127,15 +150,65 @@
           .then(
             () => {
               this.clearNotify( this.lead_id );
-              this.$nextTick( () => {
-                this.goToBottom();
-              } );
+                this
+                  .runLoadingMessage()
+                  .then( () => {
+                    this.$nextTick( () => {
+                      this.goToBottom();
+                    } );
+                  } );
             },
             ( error ) => {
               console.error( `[ CONVERSATION_SET ERROR ]: `, error );
               this.$router.go( { name: 'home' } );
             }
           );
+      },
+
+      runLoadingMessage(){
+
+        return new Promise((resolve, reject) => {
+
+          const add = ( scrollHeight ) => {
+
+             if ( document.body.offsetHeight >= scrollHeight ) {
+
+                this
+                  .loadMessage()
+                  .then( ( messages ) => {
+
+                    if ( messages === null ) {
+
+                      resolve();
+
+                    } else {
+
+                      this.$nextTick( () => {
+
+                        add( this.$els.scrollCnt.scrollHeight )
+
+                      } );
+
+                    }
+
+                  });
+
+             } else {
+
+              resolve();
+
+             }
+
+          };
+
+          this.$nextTick( () => {
+
+            add( this.$els.scrollCnt.scrollHeight )
+
+          } );
+
+        });
+
       },
 
       onMessage(){
@@ -177,14 +250,6 @@
       goToBottom(){
         this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
       }
-    },
-    components: {
-      ChatHeader,
-      ChatBar,
-      ChatMsg,
-      ChatMsgProduct,
-      ChatMsgStatus,
-      ChatMsgImg
     },
   }
 </script>

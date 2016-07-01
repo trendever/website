@@ -3,6 +3,7 @@
 .profile-header {
   position: relative;
   height: 130px;
+  margin-bottom: 20px;
   text-align: left;
 
   &__close-menu {
@@ -36,21 +37,25 @@
       }
     }
   }
+
   &__menu {
     position: absolute;
     top: 0px;
-    right: 0;
+    left: 0;
     width: 250px;
     height: 100px;
 
     &-btn {
       display: block;
 
-      margin-top: 30px;
+      margin-top: 27px;
 
       cursor: pointer;
-      text-align: right;
+      text-align: left;
 
+      @media (--mobile) {
+         margin-top: 25px;
+      }
       //justify-content: flex-end;
       &-label {
         display: inline-block;
@@ -65,26 +70,39 @@
       }
       &-icon {
         display: inline-block;
-
+        color: #fff;
+        font-size: 46px;
         padding: 0 30px;
 
-        &:before {
-          display: block;
-          padding: 14px 0;
-          content: '';
-          border-top: 4px solid white;
-          border-bottom: 4px solid white;
-          background: white;
-          background-clip: content-box;
-          size: 40px 4px;
-        }
+
       }
     }
     &-links {
-      position: absolute 0 0 * *;
+      position: absolute 0 auto * 0;
+      z-index: 9999;
+
+      &.__normal{
+
+          & .profile-header__menu-link{
+            background: rgba(255, 255, 255, 1);
+            color: #595959;
+            border-color: rgba(191, 191, 191, 1);
+            &:hover {
+              background: rgba(240, 240, 240, 1);
+            }
+            &:last-of-type {
+               border-bottom-width: 1px;
+            }
+          }
+          & .profile-header__close-menu{
+            color: #339999;
+          }
+      }
     }
+
     &-link {
       display: block;
+      cursor:pointer;
 
       width: 750px;
       padding: 0 30px;
@@ -95,7 +113,7 @@
       color: white;
       border-bottom: 1px solid color(white a(.2));
       background: color(black a(.75));
-
+      background: rgba(18, 48, 45, .85);
       font-size: 24px;
       line-height: 50px;
 
@@ -105,10 +123,15 @@
       }
       &:hover {
         background: color(black a(.9));
+        background: rgba(18, 48, 45, .95);
       }
       &:last-of-type {
         border-bottom-width: 0;
       }
+
     }
+
   }
+
 }
+

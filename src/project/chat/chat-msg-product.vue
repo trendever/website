@@ -5,7 +5,7 @@
   .bubble_info.bubble_info_time {{ datetime }}
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
     i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
-  .bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
+  .bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest && !isAfterServiceMessage}')
     .chat-msg-product-wrap
       a.chat-msg-product(v-link="{name: 'product_detail', params: {id: product.id}}")
         .chat-msg-product-photo
@@ -63,6 +63,9 @@
           }
         }
         return `<b>${this.getShopName}</b> (${this.msg.user.name})`
+      },
+      isAfterServiceMessage(){
+        return !!this.msg.afterServiceMessage;
       },
       isCustomer(){
         return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;

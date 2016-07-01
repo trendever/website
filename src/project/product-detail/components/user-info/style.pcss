@@ -1,0 +1,133 @@
+@use postcss-autoreset {
+  reset: {
+    all: initial;
+    sizes: 0;
+  }
+}
+@use postcss-initial {
+  reset: inherited;
+}
+
+@import 'base/vars/vars.pcss';
+
+.user-info {
+  display: block;
+  width: 100%;
+  height: 46px;
+  padding: 3px 0 3px 0;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  @media(--mobile) {
+    height: 110px;
+    padding: 15px 0 15px 0;
+    margin-bottom: 0;
+  }
+
+}
+
+.avatar {
+  display: block;
+  float: left;
+  size: 40px;
+  margin-right: 20px;
+  border-radius: 40px;
+  cursor: pointer;
+  @media(--mobile) {
+    size: 70px;
+    margin-top: 5px;
+    border-radius: 70px;
+  }
+
+}
+
+.description {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border-right: 70px solid transparent;
+  margin-right: -70px;
+  border-left: 60px solid transparent;
+  margin-left: -60px;
+  float: left;
+  pointer-events: none;
+  @media(--mobile) {
+    border-right: 120px solid transparent;
+    margin-right: -120px;
+    border-left: 90px solid transparent;
+    margin-left: -90px;
+  }
+}
+
+.lastUpdate{
+  margin-top: 10px;
+  font-family: $font__family;
+  line-height: 19.2px;
+  font-size: 16px;
+  color: $color__gray;
+  float: right;
+  @media(--mobile) {
+    line-height: 38px;
+    font-size: 32px;
+    margin-top: 18px;
+  }
+}
+
+.userName{
+  display: block;
+  height: 19px;
+  @media(--mobile) {
+    height: 38px;
+  }
+}
+
+.title {
+  display: inline-block;
+  float: left;
+  font-family: $font__family;
+  line-height: 19.2px;
+  font-size: 16px;
+  color: $color__gray;
+  @media(--mobile) {
+    line-height: 38px;
+    font-size: 32px;
+  }
+}
+
+.name {
+  display: inline-block;
+  float: right;
+  width: 100%;
+  box-sizing: border-box;
+  border-left: 60px solid transparent;
+  margin-left: -60px;
+  font-family: $font__family;
+  line-height: 19.2px;
+  font-size: 16px;
+  color: $color__green;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  @media(--mobile) {
+    line-height: 38px;
+    font-size: 32px;
+    border-left: 110px solid transparent;
+    margin-left: -110px;
+  }
+}
+
+.code {
+  display: block;
+  width: 100%;
+  font-family: $font__family;
+  line-height: 19.2px;
+  font-size: 16px;
+  color: $color__gray;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  @media(--mobile) {
+    line-height: 38px;
+    font-size: 32px;
+  }
+}

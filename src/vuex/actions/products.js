@@ -1,6 +1,6 @@
 import * as types from '../mutation-types';
 import * as products from 'services/products.js';
-import { searchValue, selectedTags } from 'vuex/getters';
+import { searchValue, selectedTagsId } from 'vuex/getters/search.js';
 import { user } from 'vuex/getters/user.js';
 import {
   getLastProduct,
@@ -54,9 +54,9 @@ export const getSearchOptions = (
 
   if ( isTags ) {
 
-    const tags = selectedTags( state ).map( tag => tag.id );
+    const tags = selectedTagsId( state );
 
-    if ( tags ) {
+    if ( Array.isArray( tags ) ) {
 
       request.tags = tags;
 
@@ -94,6 +94,8 @@ export const loadProducts = (
 
     if ( items === null || force ) {
 
+      setAnimate( { dispatch, state }, true );
+
       products
         .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
         .then( data => {
@@ -122,6 +124,8 @@ export const loadProducts = (
 
         if ( hasMore( state ) ) {
 
+          setAnimate( { dispatch, state }, true );
+
           products
             .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
             .then( data => {
@@ -142,6 +146,8 @@ export const loadProducts = (
 
       } else {
 
+        setAnimate( { dispatch, state }, false );
+
         dispatch( types.PRODUCTS_INC_LENGTH_LIST );
         resolve();
 
@@ -155,53 +161,68 @@ export const loadProducts = (
 
 export const openProduct = ( { dispatch, state }, id ) => {
 
-  const product = getProduct( state, id );
+  /**
+   * Логика упростилась так как каждый раз при открытии продкута нужно его запрашивать
+   * не известно был ли установлени или снят @savetrend/
+   * TODO попросить сделать событие product.LIKE - позволит постоянно не запрашивать объект продукта.
+   * */
 
-  return new Promise( ( resolve, reject ) => {
+  return products
+    .get( id )
+    .then( ( product ) => {
+      dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+    } )
+    .catch( ( error ) => {
+      products.sendError( error, { state, id } );
+    } );
 
-    if ( product !== null ) {
+  /*  const product = getProduct( state, id );
 
-      if ( product.hasOwnProperty( 'liked_by' ) ) {
+   return new Promise( ( resolve, reject ) => {
 
-        dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-        resolve();
+   if ( product !== null ) {
 
-      } else {
+   if ( product.hasOwnProperty( 'liked_by' ) ) {
 
-        /**
-         * !!! Внимание
-         * Этот дублирущий запрос делается потому что сейчас в объектах ленты нет поля liked_by.
-         * */
+   dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+   resolve();
 
-        products
-          .get( id )
-          .then( ( product ) => {
-            dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-            resolve();
-          } )
-          .catch( ( error ) => {
-            products.sendError( error, { state, id } );
-            reject( error );
-          } );
+   } else {
 
-      }
+   /!**
+   * !!! Внимание
+   * Этот дублирущий запрос делается потому что сейчас в объектах ленты нет поля liked_by.
+   * *!/
 
-    } else {
+   products
+   .get( id )
+   .then( ( product ) => {
+   dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+   resolve();
+   } )
+   .catch( ( error ) => {
+   products.sendError( error, { state, id } );
+   reject( error );
+   } );
 
-      products
-        .get( id )
-        .then( ( product ) => {
-          dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-          resolve();
-        } )
-        .catch( ( error ) => {
-          products.sendError( error, { state, id } );
-          reject( error );
-        } );
+   }
 
-    }
+   } else {
 
-  } );
+   products
+   .get( id )
+   .then( ( product ) => {
+   dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
+   resolve();
+   } )
+   .catch( ( error ) => {
+   products.sendError( error, { state, id } );
+   reject( error );
+   } );
+
+   }
+
+   } );*/
 
 };
 
@@ -235,22 +256,22 @@ export const incLengthList = ( { dispatch }, count ) => {
 
 };
 
-export const setLike = ( { dispatch, state } ) => {
-
-  const product = getOpenedProduct( state );
+export const setLike = (
+  { dispatch, state },
+  product = getOpenedProduct( state ),
+  newLikeState = !isLiked( state )
+) => {
 
   if ( product !== null ) {
 
-    const newLikeState = !isLiked( state );
-
-    dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product.id, user( state ), newLikeState );
+    dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product, user( state ), newLikeState );
 
     products
       .like( product.id, newLikeState )
       .then( ( isLike ) => {
         if ( !isLike ) {
 
-          dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product.id, user( state ), false );
+          dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product, user( state ), false );
 
           console.warn( `Отрицательный ответ на установку
           like в ${ newLikeState }
@@ -269,6 +290,27 @@ export const setLike = ( { dispatch, state } ) => {
 export const setScroll = ( { dispatch }, scrollTop, scrollHeight ) => {
 
   dispatch( types.PRODUCTS_SET_SCROLL, scrollTop, scrollHeight );
+
+};
+
+export const setAnimate = ( { dispatch }, state ) => {
+
+  dispatch( types.PRODUCTS_SET_ANIMATE, state );
+
+};
+
+export const setCallBackAfterLoading = (
+  { dispatch }, callback = () => {
+  }
+) => {
+
+  dispatch( types.PRODUCTS_SET_CALL_BACK_AFTER_LOADING, callback )
+
+};
+
+export const setComeBack = ( { dispatch }, comeBack = false ) => {
+
+  dispatch( types.PRODUCTS_SET_COME_BACK, comeBack )
 
 };
 

@@ -1,6 +1,6 @@
 <style src='./styles/photos.pcss'></style>
 <template lang="jade">
-.photos
+.photos(v-bind:style="styleObject")
   .photo__title-row
     .photo__title-column( :class='{"active": getColumnCount === 2}', @click='setColumnNumber(2)')
       .photo__title-column-long
@@ -36,8 +36,8 @@ scroll-top
   import scrollTop from 'base/scroll-top/scroll-top.vue';
   import photoItem from './photo-item.vue';
 
-  import { clearSearch } from 'vuex/actions';
-  import { searchValue, selectedTags } from 'vuex/getters';
+  import { clearSearch } from 'vuex/actions/search.js';
+  import { searchValue, tags } from 'vuex/getters/search.js';
 
   import {
     setListId,
@@ -45,6 +45,7 @@ scroll-top
     incLengthList,
     setColumnNumber,
     closeProducts,
+    setAnimate,
     loadProducts,
   } from 'vuex/actions/products';
 
@@ -72,7 +73,7 @@ scroll-top
         isLoading,
         isAnimateShow,
         searchValue,
-        selectedTags
+        selectedTags : tags
       },
       actions: {
         setListId,
@@ -81,6 +82,7 @@ scroll-top
         setColumnNumber,
         clearSearch,
         closeProducts,
+        setAnimate,
         loadProducts
       }
     },
@@ -107,6 +109,14 @@ scroll-top
       infinityScroll: {
         type: Boolean,
         default: true
+      }
+    },
+
+    data(){
+      return {
+        styleObject: {
+          pointerEvents: 'auto'
+        }
       }
     },
 
@@ -140,6 +150,12 @@ scroll-top
 
     methods: {
 
+      emitIsRun(){
+
+        this.$dispatch('photosIsRun');
+
+      },
+
       run(){
 
         this.getProducts()
@@ -151,20 +167,21 @@ scroll-top
                     if ( this.isInfinity && this.infinityScroll ) {
 
                       this.enableInfinityScroll();
+                      this.emitIsRun();
 
                     }
 
                   } )
                   .catch( ( error ) => {
 
-                    console.error( new Error(error), this.listId );
+                    console.error( new Error( error ), this.listId );
 
                   } );
 
             } )
             .catch( ( error ) => {
 
-              console.error( new Error(error), this.listId );
+              console.error( new Error( error ), this.listId );
 
             } );
 
@@ -221,27 +238,67 @@ scroll-top
       getProducts( force = false ){
 
         const { search, tags, filterByUserName, filterByUserId } = this;
-        return this.loadProducts( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force );
+
+        return this
+          .loadProducts( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force )
+          .then( () => {
+
+            if ( this.isAnimateShow ) {
+
+              setTimeout( () => {
+
+                this.setAnimate(false);
+
+              }, 2000 )
+
+              /**
+               * 2 сек после получения данных, после 2 сек выключается анимация
+               * жду чтобы картинки успели загрузиться, не вешать же на каждую картинку onLoad
+               * */
+
+            }
+
+          } );
 
       },
 
       enableInfinityScroll() {
-        this.scrollEvent = listen( this.scrollCnt, 'scroll', () => {
+        this.scrollEvent = listen( this.scrollCnt, 'scroll', (() => {
 
-          this.setScroll( this.scrollCnt.scrollTop, this.scrollCnt.scrollHeight );
+          let timerId = null;
 
-          const full_scroll = (this.$els.photosList !== null) ? this.$els.photosList.offsetHeight : 0;
-          const diff_scroll = full_scroll - this.scrollCnt.scrollTop;
+          return () => {
 
-          if ( diff_scroll < 2500 && !this.isLoading ) {
-            this.showMore();
+            if ( timerId !== null ) {
+
+              clearTimeout( timerId );
+
+            }
+
+            this.$set( 'styleObject.pointerEvents', 'none' );
+
+            timerId = setTimeout( () => {
+
+              this.$set( 'styleObject.pointerEvents', 'auto' );
+
+            }, 200 );
+
+            this.setScroll( this.scrollCnt.scrollTop, this.scrollCnt.scrollHeight );
+
+            const full_scroll = (this.$els.photosList !== null) ? this.$els.photosList.offsetHeight : 0;
+            const diff_scroll = full_scroll - this.scrollCnt.scrollTop;
+
+            if ( diff_scroll < 2500 && !this.isLoading ) {
+              this.showMore();
+            }
+
           }
 
-        } );
+        })() );
       },
 
       showMore() {
-        if ( this.hasMore || this.getLengthList < this.items.length) {
+        if ( this.hasMore || this.getLengthList < this.items.length ) {
 
           this.getProducts();
 
@@ -271,9 +328,10 @@ scroll-top
       }
 
     },
+
     watch: {
-      listId(listId){
-        this.setListId(listId);
+      listId( listId ){
+        this.setListId( listId );
         this.run();
       },
       selectedTags() {

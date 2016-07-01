@@ -1,8 +1,7 @@
 /* globals Raven */
-import * as types from './mutation-types';
 import * as auth from 'services/auth';
-import * as tagsService from 'services/tags';
 import * as utils from 'utils';
+import * as types from './mutation-types';
 
 // Auth
 
@@ -58,31 +57,3 @@ export const executeCallbackOnSuccessAuth = ({ dispatch, state }) => {
   }
 };
 
-// Search
-
-export const setSearchValue = ({dispatch}, value) => {
-  dispatch(types.SET_SEARCH_VALUE, value);
-};
-
-export const loadTags = ({dispatch, state}) => {
-  let tags = state.search.selectedTags.map(tag => tag.id);
-  dispatch(types.RECEIVE_TAGS, []);
-  tagsService
-    .find({tags})
-    .then(tags => dispatch(types.RECEIVE_TAGS, tags));
-};
-
-export const selectTag = (store, tag) => {
-  store.dispatch(types.SELECT_TAG, tag);
-  loadTags(store);
-};
-
-export const removeTag = (store, tag) => {
-  store.dispatch(types.REMOVE_TAG, tag);
-  loadTags(store);
-};
-
-export const clearSearch = (store) => {
-  store.dispatch(types.CLEAR_SEARCH);
-  loadTags(store);
-};

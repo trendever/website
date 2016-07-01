@@ -1,15 +1,23 @@
 <style src="project/app/style.pcss"></style>
 
 <template lang="jade">
-popup-fast-signup(v-if="authIsDone")
-router-view(v-if="authIsDone")
-listener-component(v-if="authIsDone")
+.app(:class="{'standalone': isStandalone}")
+  popup-fast-signup(v-if="authIsDone")
+  router-view(v-if="authIsDone")
+  listener-component(v-if="authIsDone")
 </template>
 
 <script type='text/babel'>
-  import font from 'base/fonts/trendever-icons/trendever-icons.font';
-  import store from 'vuex/store';
-  import { authUser } from 'vuex/actions/user.js';
+  import 'base/fonts/trendever-icons/trendever-icons.font'
+
+  import listen from 'event-listener';
+
+  import { browser } from 'utils'
+
+  import { getStorage } from 'services/profile'
+
+  import store from 'vuex/store'
+  import { authUser } from 'vuex/actions/user.js'
 
   import PopupFastSignup from 'base/auth-popup/fast-signup.vue'
   import ListenerComponent from 'project/listener/index.vue'
@@ -17,7 +25,8 @@ listener-component(v-if="authIsDone")
   export default {
     data(){
       return {
-        authIsDone: false
+        authIsDone: false,
+        touchMoveY: 0
       }
     },
     vuex: {
@@ -27,24 +36,28 @@ listener-component(v-if="authIsDone")
     },
     ready() {
 
-      let token = null;
+      let token = null
 
       if ( this.$route.query ) {
         if ( this.$route.query.token ) {
-          token = this.$route.query.token;
+          token = this.$route.query.token
         }
       }
       this
         .authUser( null, token )
         .then( () => {
-          this.$set( 'authIsDone', true );
+          this.$set( 'authIsDone', true )
         } );
-      mixpanel.track( 'App Open' );
+      mixpanel.track( 'App Open' )
 
     },
+
     computed: {
       isNotWhy(){
-        return this.$route.name !== 'why';
+        return this.$route.name !== 'why'
+      },
+      isStandalone(){
+        return browser.standalone
       }
     },
     components: {

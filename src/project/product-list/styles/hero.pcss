@@ -5,48 +5,33 @@
   &__content {
     position: relative;
 
-    width: 750px;
     height: 615px;
 
     text-align: center;
 
-    @media (--mobile) {
-      overflow-x: hidden;
+    background: url(../img/hero.jpg) no-repeat 50% 50%;
 
-      width: auto;
-    }
-    &__img {
-      position: absolute;
-      top: 0;
-      left: -150px;
-
-      display: block;
-
-      width: calc(750px + 150px + 150px);
-      height: 615px;
-
-      content: '';
-
-      background: url(../img/hero.jpg);
-    }
     .profile-header {
       z-index: 2;
+      max-width:750px;
+      margin-left:auto;
+      margin-right:auto;
     }
+
     &__logo {
       position: relative;
       z-index: 1;
       display: inline-block;
 
-      background: url(../../../base/img/logo-beta.png);
+      background: url(../../../base/img/logo-beta.png) no-repeat 0 27px;
       background-size: 100%;
-      background-repeat: no-repeat;
-      background-position: 0 27px;
 
       width: 530px;
-      height: calc(163px + 27px);
+      height: calc(151px + 27px);
 
       padding-top: 27px;
     }
+
     &__description {
       position: relative;
       z-index: 1;
@@ -67,12 +52,14 @@
         border-bottom: 3px solid #fff;
         -webkit-transform: rotate(-41deg) skewX(8deg);
         transform: rotate(-43deg) skewX(4deg);
-        bottom: -61px;
+        bottom: -54px;
         left: 50%;
         margin-left: -28px;
       }
     }
+
     &__btn-cnt {
+
       position: relative;;
       z-index: 1;
 
@@ -83,7 +70,9 @@
 
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
       }
+
     }
+
   }
 }
 
@@ -100,6 +89,48 @@
 
   @media(--mobile){
     height: 100px;
+  }
+  .profile-header{
+
+    &__menu{
+      left: 0;
+      height: 50px;
+      width: 85px;
+
+      @media (--mobile) {
+         width: 106px;
+         height: 100px;
+      }
+
+      &-links{
+        position: absolute 0 auto * 50%;
+        margin-left: -375px;
+      }
+
+      &-btn{
+        margin: 0;
+        text-align: left;
+        height: 100%;
+
+        &:before{
+          content: "";
+          display: inline-block;
+          height: 100%;
+          vertical-align: middle;
+        }
+        &-icon{
+          font-size: 25px;
+          vertical-align: middle;
+          line-height: 0;
+
+          @media (--mobile) {
+             font-size: 46px;
+          }
+        }
+      }
+
+    }
+
   }
   &__logo{
     position: relative;
@@ -144,4 +175,5 @@
       }
     }
   }
+
 }

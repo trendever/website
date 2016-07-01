@@ -9,11 +9,9 @@
   focus = 'img/focus.jpg'
   earth = 'img/earth.png'
 
-.scroll-cnt
+scroll-component
     header-component(
-      title='Почему Trendever?',
-      show_on_elem='headerAnchor',
-      :back-link='{name: "home"}')
+      title='Почему Trendever?', show_on_elem='headerAnchor', :back-link='{name: "home"}')
 
     .section.top.why(style='width: 750px; margin: 0 auto;')
       .section.available#headerAnchor
@@ -108,10 +106,12 @@
 </template>
 
 <script>
+  import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
 
   export default {
     components: {
+      ScrollComponent,
       HeaderComponent
     }
   }

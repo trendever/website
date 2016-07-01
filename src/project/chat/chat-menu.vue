@@ -85,7 +85,7 @@ div
                 reader.result.substr( base64Prefix.length, reader.result.length ),
                 reader.result,
                 'image/base64',
-                ratioFit(image.width, image.height, 600, image.height)
+                ratioFit(image.width, image.height, 570, image.height)
               );
 
               this.setShowMenu( false );

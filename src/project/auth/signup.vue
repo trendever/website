@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-.scroll-cnt
+scroll-component
   div
     .signup(:style='{ height: height }')
       .signup__close.__hello(@click='closePage'): i.ic-close
@@ -16,6 +16,7 @@
                 .input.name
                   i.ic-insta-name
                   input(type='text',
+                    autocomplete="off",
                     :class=' {error: errorLogin} ',
                     @focus='onFocusLogin',
                     @keydown.enter='sendSMS()',
@@ -29,6 +30,7 @@
                 .input.phone
                   i.ic-mobile-phone
                   input(type='tel',
+                    autocomplete="off",
                     :class=' {error: errorPhone} ',
                     @focus='onFocusPhone',
                     @keydown.enter='sendSMS()',
@@ -56,7 +58,6 @@
 </style>
 
 <script type='text/ecmascript-6'>
-  ;
   import listen from 'event-listener';
   import {
     saveAuthData,
@@ -67,9 +68,13 @@
   } from 'vuex/getters';
   import { isAuth } from 'vuex/getters/user.js';
 
+
   import store from 'vuex/store';
   import * as auth from 'services/auth';
   import { formatPhone } from 'utils.js';
+
+  import ScrollComponent from 'base/scroll/scroll.vue'
+
   import Slider from './slider.vue';
 
   const TEXT_LINK = {
@@ -223,6 +228,7 @@
     },
 
     components: {
+      ScrollComponent,
       Slider,
     },
   }

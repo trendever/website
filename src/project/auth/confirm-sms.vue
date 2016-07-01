@@ -13,6 +13,7 @@ div
           .input-container
             .input.confirm-input
               input(type='tel',
+                autocomplete="off",
                 @keyup='onInput',
                 @focus='onFocus',
                 @keydown.enter='onButton()',
@@ -101,17 +102,12 @@ div
       },
 
       onButton() {
+
         if (this.isDisabled) {
           return;
         }
-        if (this.isCompleted) {
-          // go to back
-          if (!this.callbackOnSuccessAuth) {
-            this.$router.go({name: 'home'})
-          } else {
-            this.executeCallbackOnSuccessAuth()
-          }
-        } else {
+
+        if (!this.isCompleted) {
           this.onConfirm();
           setTimeout( () => this.$set('needNewSMS', true), 7000);
         }
@@ -130,9 +126,20 @@ div
 
       onComplete(user, token) {
         this.isCompleted = true;
-        this.authUser(user, token);
         this.$els.confirmBtn.focus();
-        setTimeout( () => this.$router.go({name: 'home'}), 1000);
+
+        this
+          .authUser(user, token)
+          .then(() => {
+
+            if (!this.callbackOnSuccessAuth) {
+              setTimeout( () => this.$router.go({name: 'home'}), 1000);
+            } else {
+              this.executeCallbackOnSuccessAuth()
+            }
+
+          });
+
       },
 
       onErrorCode() {

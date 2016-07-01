@@ -102,7 +102,19 @@ export const getColumnCount = ( { products } ) => products.columnCount;
 
 export const isLoading = ( { products } ) => products.loading;
 
-export const isAnimateShow = ( { products } ) => products.animateShow;
+export const isAnimateShow = ( state ) => {
+
+  const list = getList( state );
+
+  if ( list !== null ) {
+
+    return list.animateShow;
+
+  }
+
+  return true;
+
+};
 
 export const getScroll = ( state ) => {
 
@@ -123,7 +135,15 @@ export const getLengthList = ( state ) => (getList( state ) !== null) ?
   getList( state ).lengthList :
   state.products.ITEMS_PER_PAGE;
 
+export const callAfterLoading = (state) => {
 
+  return state.products.callBackAfterLoading;
 
+};
 
+export const getComeBack = (state) => {
+  
+  return state.products.comeBack;
+
+}
 

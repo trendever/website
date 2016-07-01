@@ -1,0 +1,78 @@
+@import 'base/vars/vars.pcss';
+
+@use postcss-autoreset {
+  reset: {
+    all: initial;
+    sizes: 0;
+  }
+}
+@use postcss-initial {
+  reset: inherited;
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  min-height: 100px;
+  width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
+  -webkit-line-clamp: 2;
+  margin-bottom: 5px;
+  box-sizing: border-box;
+  @media(--mobile) {
+    margin-bottom: 0;
+    padding-top: 10px;
+    padding-bottom: 25px;
+  }
+}
+
+.title {
+
+  display: -webkit-box;
+  overflow: hidden;
+  word-wrap: break-word;
+  width: 100%;
+  max-height: 105.267px;
+ // margin-top: 20px;
+  min-height: 47px;
+  font-size: 40px;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  box-sizing: border-box;
+  text-align: center;
+  -webkit-line-clamp: 2;
+  font-family: $font__family;
+  color: $color__green;
+
+  @media(--mobile) {
+    margin-top: 0;
+    padding: 0 20px;
+    max-height: 150px;
+
+  }
+
+}
+
+.title-not-link {
+  text-align: center;
+  line-height: 50px;
+  font-family: $font__family;
+  font-size: 40px;
+  color: $color__gray-dark;
+  cursor: default;
+  word-wrap: break-word;
+  margin-right: 4px;
+
+}
+
+.title-link {
+  text-align: center;
+  line-height: 50px;
+  font-family: $font__family;
+  font-size: 40px;
+  color: $color__green;
+  cursor: pointer;
+  word-wrap: break-word;
+
+}

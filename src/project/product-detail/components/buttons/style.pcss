@@ -1,0 +1,167 @@
+@use postcss-autoreset {
+  reset: {
+    all: initial;
+    sizes: 0;
+  }
+}
+
+@use postcss-initial {
+  reset: inherited;
+}
+
+
+@import 'base/vars/vars.pcss';
+
+.buttons {
+
+  display: block;
+  height: 70px;
+  margin-bottom: 15px;
+  position: relative;
+  min-width: 285px;
+  @media(--mobile){
+
+    height: 115px;
+
+  }
+
+}
+
+.button {
+
+  display: inline-block;
+  height: 100%;
+
+}
+
+.buttonLeft{
+  margin-right: 15px;
+  @media (--mobile) {
+    margin-right: 30px;
+  }
+  &:last-of-type{
+    margin-right: 0;
+  }
+}
+
+.buttonRight{
+  margin-left: 15px;
+  @media (--mobile) {
+    margin-left: 30px;
+  }
+  &:first-of-type{
+    margin-left: 0;
+  }
+}
+
+.leftSide{
+  margin-right: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.rightSide{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.icon-active{
+  &::before{
+    color:$color__red;
+  }
+}
+
+.icon-default{
+
+  &::before{
+    color:$color__green;
+  }
+
+}
+
+.icon{
+  display: block;
+  text-align: center;
+}
+
+.text-active{
+  color: $color__red;
+}
+
+.text-default{
+  color: $color__green;
+}
+
+.text{
+  display: block;
+  font-family: $font__family;
+  font-size: 14px;
+  margin-top: 2.5px;
+  @media(--mobile){
+    font-size: 24px;
+  }
+}
+
+.like {
+
+  font-size: 36px;
+
+  @media(--mobile) {
+
+    font-size: 64px;
+    height: 64px;
+  }
+
+}
+
+.buy {
+
+  font-size: 47px;
+
+
+  @media(--mobile) {
+
+    font-size: 85px;
+    height: 85px;
+  }
+
+}
+
+.know {
+
+  font-size: 36px;
+
+  @media(--mobile) {
+
+    font-size: 64px;
+    height: 64px;
+  }
+
+}
+
+.blogger {
+
+  font-size: 36px;
+
+  @media(--mobile) {
+
+    font-size: 64px;
+    height: 64px;
+  }
+
+}
+
+.instName {
+
+  font-size: 36px;
+
+
+  @media(--mobile) {
+
+    font-size: 64px;
+    height: 64px;
+  }
+
+}

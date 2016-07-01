@@ -9,7 +9,7 @@
 <script>
   import { getCurrentMember, getCustomerName } from 'vuex/getters/chat.js';
   import * as leads from 'services/leads';
-  import { formatMonth } from './utils';
+  import { statusString } from './utils';
 
   export default{
     props: {
@@ -40,56 +40,7 @@
 
         const { type, value } = JSON.parse( this.msg.parts[ 0 ].content );
 
-        if ( type === 'lead.state.date' ) {
-
-          return formatMonth( value );
-
-        }
-
-        if ( type === 'lead.state.changed' ) {
-
-          let name = null;
-
-          switch ( value ) {
-            case 'COMPLETED':
-              name = 'Выполнен';
-              break;
-            case 'ON_DELIVERY':
-              name = 'На доставке';
-              break;
-            case 'SUBMITTED':
-              name = 'Подтверждён';
-              break;
-            case 'CANCELLED':
-              name = 'Отменён';
-              break;
-          }
-
-          if ( name === null ) {
-            return name;
-          }
-
-          return `статус изменен на ${ name }`;
-
-        }
-
-        if ( type === 'suplier.called' ) {
-
-          return `отправлено уведомление поставщику`;
-
-        }
-
-        if ( type === 'customer.called' ) {
-
-          return `отправлено уведомление покупателю`;
-
-        }
-
-        if ( type === 'customer.phone.added' ) {
-
-          return `${this.getCustomerName} здесь впервые ;-)`;
-
-        }
+        return statusString(type, value, this.getCustomerName);
 
       }
     }

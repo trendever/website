@@ -1,20 +1,20 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-div.scroll-cnt(v-el:scroll-cnt)
+scroll-component(v-el:scroll-cnt)
   .chat-list-cnt(v-if='isDone')
     header-component(:title='getTitle', :left-btn-show='false')
       .header__nav(slot='content' v-if='getIsTab')
         .header__nav__i.header__text(
         :class='{_active: getTab === "customer"}', @click='setTab("customer");',
         @touch='setTab("customer");')
-          | Покупаю
+          | Шопинг - чаты
         .header__nav__i.header__text(
         :class='{_active: getTab === "seller"}', @click='setTab("seller");')
           | Продаю
 
     .section.top.bottom
       .section__content
-        .chat-list
+        .chat-list(v-bind:style="styleObject")
           template(v-for='lead in getLeads | orderBy "updated_at" -1 | cutList')
             chat-list-item(:lead='lead')
     .chat-list-cnt-is-empty(v-if='isEmptyLeads') У вас нет шопинг-чатов
@@ -24,6 +24,7 @@ div.scroll-cnt(v-el:scroll-cnt)
 <script type='text/babel'>
   import listen from 'event-listener';
 
+
   import {
     getLeads,
     getTab,
@@ -32,6 +33,9 @@ div.scroll-cnt(v-el:scroll-cnt)
     isEmptyLeads,
     isDone,
     getLengthList,
+    getScroll,
+    getHasMore,
+    getCountForLoading
   } from 'vuex/getters/lead.js';
 
   import { isAuth } from 'vuex/getters/user.js';
@@ -40,17 +44,25 @@ div.scroll-cnt(v-el:scroll-cnt)
     setTab,
     loadLeads,
     leadClose,
+    setScroll
   } from 'vuex/actions/lead.js';
 
   import * as leads from 'services/leads';
   import * as messages from 'services/message';
 
+  import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
   import NavbarComponent from 'base/navbar/navbar.vue';
 
   import ChatListItem from './chat-list-item.vue';
 
   export default {
+    components: {
+      ScrollComponent,
+      HeaderComponent,
+      NavbarComponent,
+      ChatListItem
+    },
     filters: {
       cutList( leads ){
         return leads.slice( 0, this.getLengthList );
@@ -65,23 +77,75 @@ div.scroll-cnt(v-el:scroll-cnt)
         getTitle,
         isEmptyLeads,
         isDone,
-        getLengthList
+        getLengthList,
+        getScroll,
+        getHasMore
       },
       actions: {
         setTab,
         loadLeads,
-        leadClose
+        leadClose,
+        setScroll
       }
     },
     data(){
       return {
         needLoadLeads: true,
-        hasMore: true
+        styleObject: {
+          pointerEvents: 'auto'
+        }
       }
     },
     ready(){
       if ( this.isAuth ) {
-        this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
+
+        this.scrollListener = listen( this.$els.scrollCnt, 'scroll', (() => {
+
+          let timerId = null;
+
+          return () => {
+
+            if ( timerId !== null ) {
+
+              clearTimeout( timerId );
+
+            }
+
+            this.$set( 'styleObject.pointerEvents', 'none' );
+
+            timerId = setTimeout( () => {
+
+              this.$set( 'styleObject.pointerEvents', 'auto' );
+
+            }, 200 );
+
+            this.setScroll( this.$els.scrollCnt.scrollTop, this.$els.scrollCnt.scrollHeight );
+
+            if ( this.needLoadLeads ) {
+
+              const full_scroll = this.$els.scrollCnt.scrollHeight;
+              const diff_scroll = full_scroll - this.$els.scrollCnt.scrollTop;
+
+              if ( diff_scroll < 2500 ) {
+
+                this.$set( 'needLoadLeads', false );
+
+                this.loadLeads().then( () => {
+
+                  this.$set( 'needLoadLeads', true );
+
+                } );
+
+              }
+
+            }
+
+          }
+
+        })() );
+
+        this.run();
+
       } else {
         this.$router.go( { name: 'signup' } );
       }
@@ -92,32 +156,124 @@ div.scroll-cnt(v-el:scroll-cnt)
         this.leadClose();
       }
     },
+
     methods: {
-      scrollHandler(){
-        if ( this.needLoadLeads && this.hasMore ) {
-          const full_scroll = this.$els.scrollCnt.scrollHeight;
-          const diff_scroll = full_scroll - this.$els.scrollCnt.scrollTop;
-          if ( diff_scroll < 2500 ) {
-            this.$set( 'needLoadLeads', false );
-            this.loadLeads().then( (count) => {
-              if(count <= 0){
-                this.$set('hasMore', false);
-              }
-              this.$set( 'needLoadLeads', true );
-            } );
+
+      run(){
+
+        this.runLoadingLeads().then( () => {
+
+          const { scrollTop } = this.getScroll;
+
+          if ( scrollTop > 0 ) {
+
+            this.restoreScroll()
+
           }
-        }
+
+        } )
+
       },
+
+      restoreScroll(){
+
+        return new Promise( ( resolve ) => {
+
+          const add = ( targetHeight ) => {
+
+            const { scrollTop } = this.getScroll;
+
+            /**
+             * Магическое 1000 это кол-во px после scrollTop;
+             * */
+
+            if ( targetHeight < ( scrollTop + 1000 ) ) {
+
+              setTimeout( () => {
+
+                this.loadLeads().then( () => {
+
+                  this.$nextTick( () => {
+                    add( this.$els.scrollCnt.scrollHeight );
+                  } );
+
+                } )
+
+              }, 1 );
+
+            } else {
+
+              this.$els.scrollCnt.scrollTop = scrollTop;
+
+              resolve();
+
+            }
+
+          };
+
+          this.$nextTick( () => {
+
+            add( this.$els.scrollCnt.scrollHeight );
+
+          } );
+
+        } );
+
+      },
+      runLoadingLeads(){
+
+        return new Promise( ( resolve ) => {
+
+          const add = ( scrollHeight ) => {
+
+            if ( document.body.offsetHeight >= scrollHeight ) {
+
+              this.loadLeads().then( () => {
+
+                if ( this.getHasMore ) {
+
+                  this.$nextTick( () => {
+
+                    add( this.$els.scrollCnt.scrollHeight );
+
+                  } );
+
+                } else {
+
+                  resolve()
+
+                }
+
+              } )
+
+            } else {
+
+              resolve();
+
+            }
+
+          };
+
+          this.$nextTick( () => {
+
+            add( this.$els.scrollCnt.scrollHeight )
+
+          } );
+
+        } );
+
+      },
+
     },
+
     watch: {
+
       getTab(){
-        this.$els.scrollCnt.scrollTop = 0;
+
+        this.run();
+
       }
-    },
-    components: {
-      HeaderComponent,
-      NavbarComponent,
-      ChatListItem,
+
     }
   }
 </script>

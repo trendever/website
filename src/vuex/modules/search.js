@@ -3,39 +3,114 @@ import {
   RECEIVE_TAGS,
   SELECT_TAG,
   REMOVE_TAG,
-  CLEAR_SEARCH
+  CLEAR_SEARCH,
+  SEARCH_SET_PENDING
 } from '../mutation-types';
 
+const storeString = localStorage.getItem( 'SEARCH' );
 
-const state = {
+let state = {
   value: '',
-  selectedTags: [],
-  tags: []
+  tags: [],
+  selected: [],
+  pending: true
 };
 
+if ( storeString !== null ) {
+
+  state = JSON.parse( localStorage.getItem( 'SEARCH' ) )
+
+}
+
 const mutations = {
-  [SET_SEARCH_VALUE] (state, value) {
+
+  [ SET_SEARCH_VALUE ] ( state, value ) {
+
     state.value = value;
-  },
-  
-  [RECEIVE_TAGS] (state, tags) {
-    state.tags = tags;
+
+    localStorage.setItem( 'SEARCH', JSON.stringify( state ) );
+
   },
 
-  [SELECT_TAG] (state, tag) {
-    if(!state.selectedTags.find(it => it.id === tag.id)) {
-      state.selectedTags.push(tag);
-    }
+  [ RECEIVE_TAGS ] ( state, tags ) {
+
+    state.tags    = tags;
+    state.pending = false;
+
+    localStorage.setItem( 'SEARCH', JSON.stringify( state ) );
+
   },
 
-  [REMOVE_TAG] (state, tag) {
-    state.selectedTags.$remove(tag);
+  [ SEARCH_SET_PENDING ] ( state, pending ) {
+
+    state.pending = pending;
+
   },
 
-  [CLEAR_SEARCH] (state) {
+  [ SELECT_TAG ] ( state, { id, name } ) {
+
+    state.tags = state.tags.filter( ( tag ) => {
+
+      if ( tag.id !== id ) {
+
+        return tag;
+
+      }
+
+    } );
+
+    state.selected.push( { id, name, active: true } );
+
+    localStorage.setItem( 'SEARCH', JSON.stringify( state ) );
+
+  },
+
+  [ REMOVE_TAG ] ( state, { id, name } ) {
+
+    state.tags = state.tags.map( ( tag ) => {
+
+      if ( tag.id === id ) {
+
+        return { id, name, active: false }
+
+      } else {
+
+        return tag
+
+      }
+
+    } )
+
+    state.selected = state.selected.filter( ( tag ) => {
+
+      if ( tag.id !== id ) {
+
+        return tag;
+
+      }
+
+    } );
+
+    localStorage.setItem( 'SEARCH', JSON.stringify( state ) );
+
+  },
+
+  [ CLEAR_SEARCH ] ( state ) {
+
     state.value = '';
-    state.selectedTags = [];
+
+    state.selected = [];
+
+    state.tags = state.tags.map( ( { id, name } ) => {
+
+      return { id, name, active: false };
+
+    } );
+
+    localStorage.setItem( 'SEARCH', JSON.stringify( state ) );
+
   }
+
 };
 
 export default {
