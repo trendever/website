@@ -1,3 +1,5 @@
+import linkify from 'ba-linkify'
+
 export const formatDatetime = unixtime => {
   let date    = new Date( unixtime * 1000 );
   let minutes = '0' + date.getMinutes();
@@ -144,56 +146,25 @@ export const escapeHtml = ( string ) => {
 
 export const wrapLink = ( text ) => {
 
-  const shortURL = /^(https?:\/\/)?([\w\.]+)\.([a-z]{2,6}\.?)(\/[\w\.]*)*\/?$/;
+  return linkify( text, {
 
-  if ( shortURL.test( text ) ) {
+    callback( textLink, link = null ){
 
-    const link     = (/(http|https|ftp)/.test( text )) ? text : `http://${ text }`;
-    const linkName = text.replace( /(http:\/\/|https:\/\/|ftp:\/\/|www.)/, '' );
+      if ( link === null ) {
 
-    return `<a class="link link_primary" href="${ link }" target="_blank">${ linkName }</a>`;
+        return textLink;
 
-  }
+      }
 
-  const emailRE = /^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$/;
-
-  if ( emailRE.test( text ) || text.indexOf( 'mailto:' ) !== -1 ) {
-
-    let link     = `mailto:${text}`;
-    let linkName = text;
-
-    if ( text.indexOf( 'mailto:' ) !== -1 ) {
-
-      link     = text;
-      linkName = text.substr( text.indexOf( ':' ) + 1, text.length );
+      return `<a class="link link_primary" href="${ link }" target="_blank">${ textLink }</a>`;
 
     }
 
-    return `<a class="link link_primary" href="${ link }" target="_blank">${ linkName }</a>`;
-
-  }
-
-  const longURL = /[a-zA-Z][-a-zA-Z0-9+.]+:\/\/(\w+:.+@)?[^ "<>@]+(:[0-9]+)?\/?(\w*)?\/?(\?\w+)?(#\w)?/;
-
-  if ( longURL.test( text ) ) {
-
-    return `<a class="link link_primary" href="${ text }" target="_blank">${ text }</a>`;
-
-  }
-
-  const wwwURL = /(www)(.*)/;
-
-  if ( wwwURL.test( text ) ) {
-
-    return `<a class="link link_primary" href="http://${ text }" target="_blank">${ text }</a>`;
-
-  }
-
-  return text;
+  } );
 
 };
 
-export const statusString = (type, value, customerName) => {
+export const statusString = ( type, value, customerName ) => {
 
   if ( type === 'lead.state.date' ) {
 
@@ -248,6 +219,5 @@ export const statusString = (type, value, customerName) => {
     return `${customerName} здесь впервые ;-)`;
 
   }
-
 
 };
