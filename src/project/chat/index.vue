@@ -2,6 +2,7 @@
 <template lang="jade">
   scroll-component(v-el:scroll-cnt, class="chat-cnt")
     chat-header(:notify-count='conversationNotifyCount')
+    .chat-shadow(v-if="getShowMenu || getShowStatusMenu")
     .section.top.bottom
       .chat.section__content
         .chat_messages
@@ -33,7 +34,9 @@
     conversationNotifyCount,
     getId,
     getCurrentMember,
-    getLengthList
+    getLengthList,
+    getShowMenu,
+    getShowStatusMenu
   } from 'vuex/getters/chat.js';
   import { isDone } from 'vuex/getters/lead.js';
   import { isAuth } from 'vuex/getters/user.js';
@@ -124,7 +127,9 @@
         conversationNotifyCount,
         getId,
         getCurrentMember,
-        getLengthList
+        getLengthList,
+        getShowMenu,
+        getShowStatusMenu
       },
     },
 

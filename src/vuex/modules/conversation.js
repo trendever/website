@@ -83,7 +83,7 @@ const addServiceMessage = (function() {
         MIME === 'text/plain' ||
         MIME === 'text/json' ||
         MIME === 'image/json' ||
-       // MIME === 'json/status' ||
+        MIME === 'json/status' ||
         MIME === 'image/base64'
       ) {
 
@@ -116,13 +116,23 @@ const addServiceMessage = (function() {
 
         }
 
-        /**
-         * Вот тут зависит от того как составлять массив, необходимо
-         * */
-
         if ( typeof messages[ i ].serviceMessage === 'undefined' ) {
 
           newMessage.push( messages[ i ] );
+
+        }
+
+        if ( newMessage[ i ].parts[ 0 ].mime_type === 'json/status' || newMessage[ i ].serviceMessage ) {
+
+          if ( newMessage.length !== (i + 1) ) {
+
+            if ( newMessage[ i + 1 ].parts[ 0 ].mime_type !== 'json/status' || !newMessage[ i + 1 ].serviceMessage ) {
+
+              newMessage[ i + 1 ].afterServiceMessage = true;
+
+            }
+
+          }
 
         }
 
@@ -185,7 +195,7 @@ const mutations = {
 
   [CONVERSATION_RECEIVE_MESSAGE] ( state, messages, id ) {
 
-    console.time('CONVERSATION_RECEIVE_MESSAGE');
+    console.time( 'CONVERSATION_RECEIVE_MESSAGE' );
 
     const { all } = state;
 
@@ -205,7 +215,7 @@ const mutations = {
 
     }
 
-    console.timeEnd('CONVERSATION_RECEIVE_MESSAGE');
+    console.timeEnd( 'CONVERSATION_RECEIVE_MESSAGE' );
 
   },
 
@@ -248,7 +258,7 @@ const mutations = {
 
   [CONVERSATION_CONFIRM_STATUS_MSG] ( state, messages, id ){
 
-    console.time('CONVERSATION_CONFIRM_STATUS_MSG');
+    console.time( 'CONVERSATION_CONFIRM_STATUS_MSG' );
 
     if ( Array.isArray( messages ) ) {
 
@@ -276,7 +286,7 @@ const mutations = {
 
         }
 
-        state.all = Object.assign( {}, state.all, { [id]: addServiceMessage( items.concat(messages) ) } );
+        state.all = Object.assign( {}, state.all, { [id]: addServiceMessage( items.concat( messages ) ) } );
 
       } else {
 
@@ -286,7 +296,7 @@ const mutations = {
 
     }
 
-    console.timeEnd('CONVERSATION_CONFIRM_STATUS_MSG');
+    console.timeEnd( 'CONVERSATION_CONFIRM_STATUS_MSG' );
 
   },
 

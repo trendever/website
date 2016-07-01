@@ -6,7 +6,7 @@
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
     i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
   .chat-msg.bubble(
-    :class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest}')
+    :class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest && !isAfterServiceMessage}')
     .chat-msg_t(
         v-link='{name: "user", params: {id: getUserNameLink}}',
         v-if='!isOwnMessage && !isClosest',
@@ -58,6 +58,9 @@
           return this.msg.loaded;
         }
         return true;
+      },
+      isAfterServiceMessage(){
+        return !!this.msg.afterServiceMessage;
       },
       getImg(){
         const cnt = this.msg.parts[ 0 ].content;
