@@ -1,0 +1,38 @@
+@import 'base/vars/vars.pcss';
+
+@use postcss-autoreset {
+  reset: {
+    all: initial;
+    sizes: 0;
+  }
+}
+
+@use postcss-initial {
+  reset: inherited;
+}
+
+.popup-container {
+
+  display: block;
+  position: absolute;
+  size: 100%;
+  background: rgba(26, 26, 26, 0.7);
+  z-index: $z-index-popup-container;
+
+  @media(--mobile){
+    background: rgba(26, 26, 26, 1);
+  }
+
+}
+
+.close {
+
+  size: 100px;
+
+}
+
+.back-arrow {
+
+  size: 40px;
+
+}

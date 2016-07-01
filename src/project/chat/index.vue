@@ -1,6 +1,7 @@
 <style src='./styles/chat.pcss'></style>
 <template lang="jade">
   scroll-component(v-el:scroll-cnt, class="chat-cnt")
+    popup-img
     chat-header(:notify-count='conversationNotifyCount')
     .chat-shadow(v-if="getShowMenu || getShowStatusMenu")
     .section.top.bottom
@@ -53,12 +54,13 @@
   import ChatMsgImg from './chat-msg-img.vue';
   import ChatBar from './chat-bar.vue';
   import ChatHeader from './chat-header.vue';
+  import popupImg from 'base/popup-img/index.vue';
 
   export default {
 
     components: {
       ScrollComponent,
-
+      popupImg,
       ChatHeader,
       ChatBar,
       ChatMsg,
