@@ -6,7 +6,7 @@
     .section.top.bottom
       .chat.section__content
         .chat_messages
-          template(v-for='msg in getMessages | list', track-by='$index')
+          div(v-for='msg in getMessages | list', track-by='$index')
             chat-msg-status(
               v-if='msg.parts[0].mime_type === "json/status"',
               :msg='msg')
