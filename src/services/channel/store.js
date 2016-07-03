@@ -1,4 +1,5 @@
 import SockJS from 'sockjs-client'
+import config from '../../../config';
 
 export default class {
   constructor() {
@@ -12,8 +13,8 @@ export default class {
 
   init(onOpen, onMessage) {
     var self = this;
-
-    self.sock = new SockJS(window.socket_url);
+    
+    self.sock = new SockJS(config.socket_server.url);
     self.sock.onmessage = function(data) {
         var ctx = JSON.parse(data.data);
         if (!ctx) {
