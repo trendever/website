@@ -37,7 +37,7 @@ scroll-component
 
     .footer
       p Нажмите 'Продолжить',#[br]чтобы открыть Instagram#[br]и вставить фото с текстом
-      a(href="instagram://camera", target="_blank", class='btn __primary __orange') Продолжить
+      a(href="instagram://camera", target="_blank", class='btn btn_primary __orange __xl fast__big__btn btn_fixed-bottom') Продолжить
 </template>
 
 <script type="text/babel">
@@ -54,7 +54,7 @@ scroll-component
         id: ''
       }
     },
-    
+
     components: {
       ScrollComponent,
     },
