@@ -7,7 +7,7 @@ scroll-component(v-el:scroll-cnt)
         .header__nav__i.header__text(
         :class='{_active: getTab === "customer"}', @click='setTab("customer");',
         @touch='setTab("customer");')
-          | Шопинг - чаты
+          | Покупаю
         .header__nav__i.header__text(
         :class='{_active: getTab === "seller"}', @click='setTab("seller");')
           | Продаю
@@ -15,15 +15,13 @@ scroll-component(v-el:scroll-cnt)
     .section.top.bottom
       .section__content
         .chat-list(v-bind:style="styleObject")
-          template(v-for='lead in getLeads | orderBy "updated_at" -1 | cutList')
-            chat-list-item(:lead='lead')
+          chat-list-item( v-for='lead in getLeads | orderBy "updated_at" -1 | cutList', :lead='lead')
     .chat-list-cnt-is-empty(v-if='isEmptyLeads') У вас нет шопинг-чатов
     navbar-component(current='chat')
 </template>
 
 <script type='text/babel'>
   import listen from 'event-listener';
-
 
   import {
     getLeads,
@@ -152,7 +150,7 @@ scroll-component(v-el:scroll-cnt)
     },
     beforeDestroy(){
       if ( this.isAuth ) {
-        this.scrollListener.remove();
+        //this.scrollListener.remove();
         this.leadClose();
       }
     },
