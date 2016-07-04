@@ -38,6 +38,7 @@ div(class="popup" v-if="show")
           'info-shop',
           'signup',
           '404',
+          'contest',
           'comfirm-sms'
         ];
         return excludePages.indexOf(this.$route.name) > -1;

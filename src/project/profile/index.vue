@@ -24,6 +24,18 @@ div.scroll-cnt(v-if="isDone")
 
         photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId" )
     navbar-component(:current='listId')
+
+.help-wrapper(v-if='isFirst')
+  .attention(v-if='isFirst')
+    p Для корректного отображения подсказок переверните устройство в портретную ориентацию
+  .help(@click='isFirst=false')
+    .help__profile
+      .help-conteiner
+        .help-text Это лента ваших трендов.#[br]  Сюда сохраняются все товары, которые вы:
+          ul
+            li 1. Лайкнули на Trendever
+            li 2. Отметили под постом в инсте
+        .help__profile-round
 </template>
 <script type='text/babel'>
   import { urlThumbnail } from 'utils';
@@ -45,6 +57,11 @@ div.scroll-cnt(v-if="isDone")
   import NavbarComponent from 'base/navbar/navbar.vue'
 
   export default {
+    data(){
+      return {
+        isFirst: false
+      }
+    },
     route: {
       data( { to: { params: { id } } } ) {
         if ( this.isAuth ) {

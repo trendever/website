@@ -3,7 +3,9 @@
 .scroll-cnt
   .section.header.u-fixed
     .section__content.header__content
-      .header__logo
+      .header__arrow(v-if='isAuth', @click='goBack()')
+        i.header__arrow__ic.ic-arrow-left
+      div(v-bind:class="{ 'center': isAuth}").header__logo
         a(v-link='{ name: "home" }')
           img(src='../../../base/img/logo-beta.png' alt='')
       a(href='#'
@@ -271,6 +273,10 @@
     },
 
     methods: {
+      goBack(){
+        history.back();
+      },
+
       pauseVideoOne(){
         if ( this.videoOnePlayed ) {
           this.$els.videoOne.pause()

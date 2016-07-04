@@ -3,12 +3,15 @@
 .scroll-cnt
   .section.header.u-fixed
     .section__content.header__content
-      .header__logo
+      .header__arrow(v-if='isAuth', @click='goBack()')
+        i.header__arrow__ic.ic-arrow-left
+      div(v-bind:class="{ 'center': isAuth}").header__logo
         a(v-link='{ name: "home" }')
           img(src='../../../base/img/logo-beta.png' alt='')
       a(href='#'
         v-if="!isAuth"
         v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
+
   .section.top
     .arithmetic.arithmetic-mission
       img(src='img/arithmetic.png' alt ='')
@@ -31,7 +34,7 @@
           p Трендскаут разрекламирует...
           span ...твои товары у подходящего блогера за счет Trendever.#[br] Подписчики покупают прямо в его ленте
             br(class='mobile-hidden')
-            | по комментарию
+            | &nbsp;по комментарию
             span.inform-item__answer__bold.wantit &nbsp;@wantit
 
   .section.inform-item
@@ -65,7 +68,7 @@
           ul.img-list
             li
               .img-list-stile.showcase
-              span Стильная и «живая» витрина#[br] товаров в Instagram
+              span Стильная и «живая» витрина#[br] товаров в Instagram.
             li
               .img-list-stile.time-saving
               span Дождаться пока Трендскаут#[br] заметит твой инста-шоп.
@@ -137,7 +140,11 @@
       }
     },
 
+
     methods: {
+      goBack(){
+        history.back();
+      },
       onBuyPromoProduct() {
         if ( !this.isAuth ) {
 

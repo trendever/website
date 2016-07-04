@@ -20,6 +20,13 @@ div.scroll-cnt(v-el:scroll-cnt)
     .chat-list-cnt-is-empty(v-if='isEmptyLeads')
       .chat-list-cnt-is-empty__container Нет сообщений#[br] Покупай и продавай в шопинг-чатах
     navbar-component(current='chat')
+
+.help-wrapper(v-if='isFirst')
+  .help(@click='isFirst=false')
+    .help__chat-list
+      .help-conteiner
+        .help-text Это шопинг-чаты, где можно напрямую#[br]  общаться с магазинами и заказывать
+        .help__chat-list-round
 </template>
 
 <script type='text/babel'>
@@ -56,6 +63,7 @@ div.scroll-cnt(v-el:scroll-cnt)
   import ChatListItem from './chat-list-item.vue';
 
   export default {
+
     components: {
       HeaderComponent,
       NavbarComponent,
@@ -89,6 +97,7 @@ div.scroll-cnt(v-el:scroll-cnt)
     data(){
       return {
         needLoadLeads: true,
+        isFirst: false,
         styleObject: {
           pointerEvents: 'auto'
         }
