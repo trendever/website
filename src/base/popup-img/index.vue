@@ -8,6 +8,9 @@
         <img class="picture" @load="resizeImg" :src="url" alt="">
 
       </div>
+
+      <div class="close-block" @click="onClose"></div>
+
     </div>
 
   </popup-container>
@@ -67,8 +70,11 @@
 
         const padding = 208;
 
-        let imgWidth = contWidth - padding;
-        let imgHeight = contHeight - padding;
+        const containerWidth  = ( contWidth - padding > this.width ) ? this.width : contWidth - padding;
+        const containerHeight = contHeight - padding;
+
+        let imgWidth  = containerWidth;
+        let imgHeight = containerHeight;
 
         if ( contWidth > 750 ) {
 
@@ -76,11 +82,19 @@
 
             imgHeight = ( this.height * imgWidth ) / this.width;
 
+            if ( imgHeight > containerHeight ) {
+
+              const res = ratioFit( this.width, this.height, imgWidth, containerHeight );
+
+              imgHeight = res.height;
+
+            }
+
           } else {
 
             const res = ratioFit( this.width, this.height, imgWidth, imgHeight );
 
-            imgWidth = res.width;
+            imgWidth  = res.width;
             imgHeight = res.height;
 
           }
@@ -96,14 +110,14 @@
 
             const res = ratioFit( this.width, this.height, contWidth, imgHeight );
 
-            imgWidth = res.width;
+            imgWidth  = res.width;
             imgHeight = res.height;
 
           }
 
         }
 
-        if ( imgHeight <= contHeight - padding ) {
+        if ( imgHeight <= containerHeight ) {
 
           this.$els.img.style.width  = `${imgWidth}px`;
           this.$els.img.style.height = `${imgHeight}px`;

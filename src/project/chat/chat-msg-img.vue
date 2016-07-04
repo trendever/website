@@ -66,11 +66,7 @@
       open(){
         if ( this.msg.parts[ 0 ].mime_type === 'image/json' ) {
 
-          const cnt = this.msg.parts[ 0 ].content;
-
-          let img = JSON.parse( cnt );
-
-          const {width, height} = ratioFit(img.width, img.height, 570, img.height);
+          let {width, height} = JSON.parse( this.msg.parts[ 0 ].content );
 
           this.openPopUp( this.getImg, width, height );
 
