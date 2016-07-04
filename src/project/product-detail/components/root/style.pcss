@@ -34,7 +34,7 @@
   word-wrap: break-word;
   width: 100%;
   max-height: 105.267px;
- // margin-top: 20px;
+  // margin-top: 20px;
   min-height: 47px;
   font-size: 40px;
   text-overflow: ellipsis;
@@ -58,21 +58,27 @@
   text-align: center;
   line-height: 50px;
   font-family: $font__family;
-  font-size: 40px;
+  font-size: 32px;
   color: $color__gray-dark;
   cursor: default;
   word-wrap: break-word;
   margin-right: 4px;
-
+  @media (--mobile) {
+    font-size: 40px;
+  }
 }
 
 .title-link {
   text-align: center;
   line-height: 50px;
   font-family: $font__family;
-  font-size: 40px;
+  font-size: 32px;
   color: $color__green;
   cursor: pointer;
   word-wrap: break-word;
+
+  @media (--mobile) {
+    font-size: 40px;
+  }
 
 }
