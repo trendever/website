@@ -9,6 +9,7 @@ import {
   CONVERSATION_CLOSE,
   CONVERSATION_SEND_STATUS,
   CONVERSATION_INC_LENGTH_LIST,
+  CONVERSATION_OPEN_IMG_POPUP
 } from '../mutation-types';
 
 // initial state
@@ -30,7 +31,10 @@ const state = {
   done: false,
   showMenu: false,
   showStatusMenu: false,
-  lengthList: 12
+  lengthList: 12,
+  imgPopUpUrl: false,
+  imgWidth: 0,
+  imgHeight: 0
 };
 
 function getDateMessage( date, id ) {
@@ -83,7 +87,7 @@ const addServiceMessage = (function() {
         MIME === 'text/plain' ||
         MIME === 'text/json' ||
         MIME === 'image/json' ||
-        MIME === 'json/status' ||
+        //MIME === 'json/status' ||
         MIME === 'image/base64'
       ) {
 
@@ -122,13 +126,17 @@ const addServiceMessage = (function() {
 
         }
 
-        if ( newMessage[ i ].parts[ 0 ].mime_type === 'json/status' || newMessage[ i ].serviceMessage ) {
+        if ( newMessage[ i ] ) {
 
-          if ( newMessage.length !== (i + 1) ) {
+          if ( newMessage[ i ].parts[ 0 ].mime_type === 'json/status' || newMessage[ i ].serviceMessage ) {
 
-            if ( newMessage[ i + 1 ].parts[ 0 ].mime_type !== 'json/status' || !newMessage[ i + 1 ].serviceMessage ) {
+            if ( newMessage.length !== (i + 1) ) {
 
-              newMessage[ i + 1 ].afterServiceMessage = true;
+              if ( newMessage[ i + 1 ].parts[ 0 ].mime_type !== 'json/status' || !newMessage[ i + 1 ].serviceMessage ) {
+
+                newMessage[ i + 1 ].afterServiceMessage = true;
+
+              }
 
             }
 
@@ -306,6 +314,14 @@ const mutations = {
 
   [CONVERSATION_SET_SHOW_STATUS_MENU] ( state, showStatusMenu ) {
     state.showStatusMenu = showStatusMenu;
+  },
+
+  [CONVERSATION_OPEN_IMG_POPUP] ( state, url, width, height ){
+
+    state.imgPopUpUrl = url;
+    state.imgWidth    = width;
+    state.imgHeight   = height;
+
   },
 
   [CONVERSATION_SEND_STATUS] ( state ) {

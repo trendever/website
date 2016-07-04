@@ -28,11 +28,42 @@
 .close {
 
   size: 100px;
+  display: block;
+  text-align: center;
+  padding-top: 42px;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  z-index: $z-index-popup-container;
+  &:hover{
+    .close-cross{
+      opacity: 1;
+    }
+  }
+}
 
+.close-cross {
+  cursor: pointer;
+  font-size: 21px;
+  color: #fff;
+  opacity: 0.5;
 }
 
 .back-arrow {
+  size: 100px;
+  display: block;
+  text-align: center;
+  padding-top: 32px;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  z-index: $z-index-popup-container;
+}
 
-  size: 40px;
-
+.back-arrow-ic {
+  color: #fff;
+  font-size: 42px;
+  cursor: pointer;
 }

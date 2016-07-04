@@ -3,11 +3,11 @@
   <div class="popup-container" v-if="isOpen">
 
     <div v-if="!isMobile" class="close" @click="onClose">
-      <i></i>
+      <i class="ic-close close-cross"></i>
     </div>
 
     <div v-if="isMobile" class="back-arrow" @click="onClose">
-      <i></i>
+      <i class="ic-arrow-left back-arrow-ic"></i>
     </div>
 
     <slot></slot>
@@ -32,6 +32,7 @@
       onClose: {
         type: Function,
         default: () => {
+          console.log( 'Вы можете обработать этот эвент закрытия popup-container' );
         }
       }
     },

@@ -13,13 +13,19 @@
         :class='{"chat-msg_t-customer-color":isCustomer}'
     )
       | {{{ getUsername }}}
-    a( :href='getImg', target='_blank')
-      img(:src='getImg', class='chat-msg-img', v-bind:class='{"chat-msg-img-opacity":!isLoaded }', v-bind:style="imgStyle")
+    img(
+        @click="open",
+        :src='getImg',
+        class='chat-msg-img',
+        v-bind:class='{"chat-msg-img-opacity":!isLoaded }',
+        v-bind:style="imgStyle"
+      )
 
 </template>
 
 <script type='text/babel'>
   import { getCurrentMember, getShopName, getLastMessageId } from 'vuex/getters/chat.js';
+  import { openPopUp } from 'vuex/actions/chat.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
   import { formatTime } from './utils';
@@ -35,6 +41,9 @@
     },
 
     vuex: {
+      actions:{
+        openPopUp
+      },
       getters: {
         getShopName,
         getCurrentMember,
@@ -52,31 +61,64 @@
       }
     },
 
-    computed: {
-      isLoaded(){
-        if( 'loaded' in this.msg){
-          return this.msg.loaded;
+    methods:{
+
+      open(){
+        if ( this.msg.parts[ 0 ].mime_type === 'image/json' ) {
+
+          const cnt = this.msg.parts[ 0 ].content;
+
+          let img = JSON.parse( cnt );
+
+          const {width, height} = ratioFit(img.width, img.height, 570, img.height);
+
+          this.openPopUp( this.getImg, width, height );
+
         }
+      }
+
+    },
+
+    computed: {
+
+      isLoaded(){
+
+        if( 'loaded' in this.msg){
+
+          return this.msg.loaded;
+
+        }
+
         return true;
+
       },
       isAfterServiceMessage(){
+
         return !!this.msg.afterServiceMessage;
+
       },
+
       getImg(){
+
         const cnt = this.msg.parts[ 0 ].content;
 
         if ( this.msg.parts[ 0 ].mime_type === 'image/json' ) {
 
           let img = JSON.parse( cnt );
+
           const {width, height} = ratioFit(img.width, img.height, 570, img.height);
 
           this.$set('imgStyle.width', `${width}px`);
           this.$set('imgStyle.height', `${height}px`);
 
           if (img.thumbs.big) {
+
             return img.thumbs.big;
+
           }
+
           return img.link;
+
         }
 
         if ( typeof cnt === 'string' ) {

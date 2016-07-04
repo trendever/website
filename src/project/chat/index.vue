@@ -1,7 +1,7 @@
 <style src='./styles/chat.pcss'></style>
 <template lang="jade">
   scroll-component(v-el:scroll-cnt, class="chat-cnt")
-    popup-img
+    popup-img(v-if="imgPopUpUrl", :url="imgPopUpUrl", :width="imgWidth", :height="imgHeight", :on-close="closePopUp")
     chat-header(:notify-count='conversationNotifyCount')
     .chat-shadow(v-if="getShowMenu || getShowStatusMenu")
     .section.top.bottom
@@ -29,6 +29,7 @@
     setConversation,
     loadMessage,
     closeConversation,
+    openPopUp
   } from 'vuex/actions/chat.js';
   import {
     getMessages,
@@ -37,7 +38,10 @@
     getCurrentMember,
     getLengthList,
     getShowMenu,
-    getShowStatusMenu
+    getShowStatusMenu,
+    imgPopUpUrl,
+    imgWidth,
+    imgHeight
   } from 'vuex/getters/chat.js';
   import { isDone } from 'vuex/getters/lead.js';
   import { isAuth } from 'vuex/getters/user.js';
@@ -121,8 +125,12 @@
         loadMessage,
         clearNotify,
         closeConversation,
+        openPopUp
       },
       getters: {
+        imgPopUpUrl,
+        imgWidth,
+        imgHeight,
         isAuth,
         isDone,
         getMessages,
@@ -145,6 +153,12 @@
     },
 
     methods: {
+
+      closePopUp(){
+
+        this.openPopUp();
+
+      },
 
       run(){
         return this
