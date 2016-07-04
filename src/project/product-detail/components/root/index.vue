@@ -47,6 +47,7 @@
 
       </div>
       <photos :list-id="listId" :filter-by-user-name="supplierName"></photos>
+      <navbar></navbar>
     </div>
   </div>
 </template>
@@ -59,6 +60,7 @@
   import mobileLayout from '../mobileLayout/index.vue'
   import desktopLayout from '../desktopLayout/index.vue'
   import photos from 'base/photos/photos.vue'
+  import navbar from 'base/navbar/navbar.vue'
   import { getOpenedProduct, isLiked, callAfterLoading } from 'vuex/getters/products'
   import { setLike, setCallBackAfterLoading, setComeBack } from 'vuex/actions/products'
   import { isAuth } from 'vuex/getters/user.js'
@@ -78,7 +80,8 @@
     components: {
       mobileLayout,
       desktopLayout,
-      photos
+      photos,
+      navbar
     },
     ready(){
 
