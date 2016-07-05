@@ -21,7 +21,7 @@
       v-link='{name: "info-mission"}') Наша миссия
     a(class='profile-header__menu-link',
       v-link='{name: "info-agreement"}') Условия
-    a(class='profile-header__menu-link', @click="logOut") Выход
+    a(class='profile-header__menu-link', @click="logout") Выход
   a(v-link='{ name: "info-user" }')
     i.smallHero__logo
       img(src='../../base/img/logo-beta.png')
@@ -94,6 +94,12 @@ export default {
   },
 
   methods: {
+    logout(){
+
+      this.$set('menuOpened', false);
+      this.logOut();
+
+    },
     goBack(){
       window.history.back();
     },
