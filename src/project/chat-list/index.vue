@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-div.scroll-cnt(v-el:scroll-cnt)
+scroll-component(v-el:scroll-cnt)
   .chat-list-cnt(v-if='isDone')
     header-component(:title='getTitle', :left-btn-show='false')
       .header__nav(slot='content' v-if='getIsTab')
@@ -57,6 +57,7 @@ div.scroll-cnt(v-el:scroll-cnt)
   import * as leads from 'services/leads';
   import * as messages from 'services/message';
 
+  import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
   import NavbarComponent from 'base/navbar/navbar.vue';
 
@@ -65,6 +66,7 @@ div.scroll-cnt(v-el:scroll-cnt)
   export default {
 
     components: {
+      ScrollComponent,
       HeaderComponent,
       NavbarComponent,
       ChatListItem
@@ -159,7 +161,7 @@ div.scroll-cnt(v-el:scroll-cnt)
     },
     beforeDestroy(){
       if ( this.isAuth ) {
-        this.scrollListener.remove();
+        //this.scrollListener.remove();
         this.leadClose();
       }
     },
@@ -191,7 +193,7 @@ div.scroll-cnt(v-el:scroll-cnt)
             const { scrollTop } = this.getScroll;
 
             /**
-             * Магическое 500 это кол-во px после scrollTop;
+             * Магическое 1000 это кол-во px после scrollTop;
              * */
 
             if ( targetHeight < ( scrollTop + 1000 ) ) {

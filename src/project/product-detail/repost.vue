@@ -1,6 +1,6 @@
 <style src='./repost.pcss'></style>
 <template lang="jade">
-.scroll-cnt
+scroll-component
   .repost(:style='{height: "100%"}')
     .repost__close(@click='back'): i.ic-close
     .crop
@@ -37,7 +37,7 @@
 
     .footer
       p Нажмите 'Продолжить',#[br]чтобы открыть Instagram#[br]и вставить фото с текстом
-      a(href="instagram://camera", target="_blank", class='btn __primary __orange') Продолжить
+      a(href="instagram://camera", target="_blank", class='btn btn_primary __orange __xl fast__big__btn btn_fixed-bottom') Продолжить
 </template>
 
 <script type="text/babel">
@@ -46,12 +46,19 @@
   import { getOpenedProduct } from 'vuex/getters/products';
   import { openProduct } from 'vuex/actions/products';
 
+  import ScrollComponent from 'base/scroll/scroll.vue'
+
   export default {
     data(){
       return {
         id: ''
       }
     },
+
+    components: {
+      ScrollComponent,
+    },
+
     route: {
       activate( { to: { params: { id } } } ) {
         return this.openProduct( +id ).catch( error => {

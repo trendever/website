@@ -4,31 +4,41 @@ export const isAuth = ( { user } ) => {
 
 };
 
-export const isDone = ( { user }) => {
+export const isDone = ( { user } ) => {
 
   return user.done;
 
 };
 
 export const user = ( { user } ) => {
-  
+
   if ( user.all.hasOwnProperty( user.id ) ) {
 
     return user.all[ user.id ];
 
-  } else {
+  }
 
-    console.warn( `[ GET USER ] - profile with id: ${user.id}, not found`, JSON.stringify(user) );
+  if ( user.all[ user.myId ] ) {
+
+    return user.all[ user.myId ];
 
   }
 
-  return user.all[ user.myId ];
+  return null
 
 };
 
 export const userID = ( state ) => {
 
-  return user( state ).id;
+  const userData = user( state );
+
+  if ( userData !== null ) {
+
+    return userData.id;
+
+  }
+
+  return null;
 
 };
 
@@ -60,7 +70,7 @@ export const getUserPhoto = ( state ) => {
 
 export const getUserCaption = ( state ) => {
 
-  const {caption} = user( state );
+  const { caption } = user( state );
 
   if ( typeof caption === 'string' ) {
     return caption;
@@ -68,9 +78,9 @@ export const getUserCaption = ( state ) => {
 
 };
 
-export const getSlogan = (state) => {
+export const getSlogan = ( state ) => {
 
-  const {slogan} = user( state );
+  const { slogan } = user( state );
 
   if ( typeof slogan === 'string' ) {
     return slogan;

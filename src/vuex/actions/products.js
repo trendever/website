@@ -1,6 +1,6 @@
 import * as types from '../mutation-types';
 import * as products from 'services/products.js';
-import { searchValue, selectedTags } from 'vuex/getters';
+import { searchValue, selectedTagsId } from 'vuex/getters/search.js';
 import { user } from 'vuex/getters/user.js';
 import {
   getLastProduct,
@@ -54,9 +54,9 @@ export const getSearchOptions = (
 
   if ( isTags ) {
 
-    const tags = selectedTags( state ).map( tag => tag.id );
+    const tags = selectedTagsId( state );
 
-    if ( tags ) {
+    if ( Array.isArray( tags ) ) {
 
       request.tags = tags;
 
@@ -94,8 +94,8 @@ export const loadProducts = (
 
     if ( items === null || force ) {
 
-      setAnimate({ dispatch, state }, true);
-      
+      setAnimate( { dispatch, state }, true );
+
       products
         .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
         .then( data => {
@@ -124,8 +124,8 @@ export const loadProducts = (
 
         if ( hasMore( state ) ) {
 
-          setAnimate({ dispatch, state }, true);
-          
+          setAnimate( { dispatch, state }, true );
+
           products
             .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
             .then( data => {
@@ -146,8 +146,8 @@ export const loadProducts = (
 
       } else {
 
-        setAnimate({ dispatch, state }, false);
-        
+        setAnimate( { dispatch, state }, false );
+
         dispatch( types.PRODUCTS_INC_LENGTH_LIST );
         resolve();
 
@@ -296,6 +296,21 @@ export const setScroll = ( { dispatch }, scrollTop, scrollHeight ) => {
 export const setAnimate = ( { dispatch }, state ) => {
 
   dispatch( types.PRODUCTS_SET_ANIMATE, state );
+
+};
+
+export const setCallBackAfterLoading = (
+  { dispatch }, callback = () => {
+  }
+) => {
+
+  dispatch( types.PRODUCTS_SET_CALL_BACK_AFTER_LOADING, callback )
+
+};
+
+export const setComeBack = ( { dispatch }, comeBack = false ) => {
+
+  dispatch( types.PRODUCTS_SET_COME_BACK, comeBack )
 
 };
 

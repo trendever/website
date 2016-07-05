@@ -82,6 +82,7 @@ TR.exvim
 
 build/
 build.tar.gz
+building/
 dist/
 
 # Website config.

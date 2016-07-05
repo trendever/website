@@ -8,9 +8,14 @@
 </template>
 
 <script type='text/babel'>
+  import 'base/fonts/trendever-icons/trendever-icons.font'
+
+  import listen from 'event-listener';
+
   import { browser } from 'utils'
 
-  import font from 'base/fonts/trendever-icons/trendever-icons.font'
+  import { getStorage } from 'services/profile'
+
   import store from 'vuex/store'
   import { authUser } from 'vuex/actions/user.js'
 
@@ -21,6 +26,7 @@
     data(){
       return {
         authIsDone: false,
+        touchMoveY: 0
       }
     },
     vuex: {
@@ -29,6 +35,7 @@
       }
     },
     ready() {
+
       let token = null
 
       if ( this.$route.query ) {
@@ -44,6 +51,7 @@
       mixpanel.track( 'App Open' )
 
     },
+
     computed: {
       isNotWhy(){
         return this.$route.name !== 'why'

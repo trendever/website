@@ -1,0 +1,50 @@
+@use postcss-autoreset {
+  reset: {
+    all: initial;
+    sizes: 0;
+  }
+}
+
+@use postcss-initial {
+  reset: inherited;
+}
+
+@import 'base/mixin/bubble.pcss';
+
+.desktopLayout {
+  display: block;
+  margin-top: 12px;
+  padding-right: 20px;
+}
+
+.product {
+  display: flex;
+}
+
+.leftSide {
+  display: block;
+}
+
+.rightSide {
+  display: block;
+}
+.description-wrapper{
+  display: block;
+  margin-left: 12px;
+}
+.userAndProducts {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 22px;
+}
+.tags-wrapper{
+  overflow-x: hidden;
+  margin-top: 12.5px;
+  width: calc(100% + 20px);
+  display: block;
+  float: left;
+  margin-left: -20px;
+  box-sizing: border-box;
+  padding-left: 20px;
+}

@@ -1,0 +1,69 @@
+@import 'base/vars/vars.pcss';
+
+@use postcss-autoreset {
+  reset: {
+    all: initial;
+    sizes: 0;
+  }
+}
+
+@use postcss-initial {
+  reset: inherited;
+}
+
+.popup-container {
+
+  display: block;
+  position: absolute;
+  size: 100%;
+  background: rgba(26, 26, 26, 0.7);
+  z-index: $z-index-popup-container;
+
+  @media(--mobile){
+    background: rgba(26, 26, 26, 1);
+  }
+
+}
+
+.close {
+
+  size: 100px;
+  display: block;
+  text-align: center;
+  padding-top: 42px;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  z-index: $z-index-popup-container;
+  &:hover{
+    .close-cross{
+      opacity: 1;
+    }
+  }
+}
+
+.close-cross {
+  cursor: pointer;
+  font-size: 21px;
+  color: #fff;
+  opacity: 0.5;
+}
+
+.back-arrow {
+  size: 100px;
+  display: block;
+  text-align: center;
+  padding-top: 32px;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  z-index: $z-index-popup-container;
+}
+
+.back-arrow-ic {
+  color: #fff;
+  font-size: 42px;
+  cursor: pointer;
+}

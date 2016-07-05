@@ -1,6 +1,7 @@
-/* globals env, rm, mkdir */
+/* globals env, rm, mkdir, mv */
 // https://github.com/shelljs/shelljs
 require('shelljs/global')
+var Rsync = require('rsync')
 env.NODE_ENV = 'production'
 
 var path = require('path')
@@ -18,8 +19,8 @@ console.log(
 var spinner = ora('building for production...')
 spinner.start()
 
-var assetsPath = path.join(settings.build.assetsRoot, settings.build.assetsSubDirectory)
-rm('-rf', settings.build.assetsRoot)
+var assetsPath = path.join(settings.build.buildingRoot, settings.build.assetsSubDirectory)
+rm('-rf', settings.build.buildingRoot)
 mkdir('-p', assetsPath)
 
 webpack(webpackConfig, function (err, stats) {
@@ -32,4 +33,9 @@ webpack(webpackConfig, function (err, stats) {
     chunks: false,
     chunkModules: false,
   }) + '\n')
+
+  console.log("Move building to", settings.build.assetsRoot);
+  rm('-rf', settings.build.assetsRoot)
+  mv(settings.build.buildingRoot, settings.build.assetsRoot)
+
 })

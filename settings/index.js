@@ -5,7 +5,8 @@ var config = require('../config')
 module.exports = {
   build: {
     env: require('./prod.env'),
-    index: path.resolve(__dirname, '../build/index.html'),
+    buildingRoot: path.resolve(__dirname, '../building'),
+    index: path.resolve(__dirname, '../building/index.html'),
     assetsRoot: path.resolve(__dirname, '../build'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

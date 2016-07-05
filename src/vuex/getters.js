@@ -7,8 +7,3 @@ export const authData = state => {
   };
 };
 export const callbackOnSuccessAuth = state => state.auth.callbackOnSuccess
-
-// Search
-export const searchValue = state => state.search.value;
-export const tags = state => state.search.tags;
-export const selectedTags = state => state.search.selectedTags;

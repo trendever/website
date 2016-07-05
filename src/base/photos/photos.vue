@@ -36,8 +36,8 @@ scroll-top
   import scrollTop from 'base/scroll-top/scroll-top.vue';
   import photoItem from './photo-item.vue';
 
-  import { clearSearch } from 'vuex/actions';
-  import { searchValue, selectedTags } from 'vuex/getters';
+  import { clearSearch } from 'vuex/actions/search.js';
+  import { searchValue, tags } from 'vuex/getters/search.js';
 
   import {
     setListId,
@@ -73,7 +73,7 @@ scroll-top
         isLoading,
         isAnimateShow,
         searchValue,
-        selectedTags
+        selectedTags : tags
       },
       actions: {
         setListId,
@@ -150,6 +150,12 @@ scroll-top
 
     methods: {
 
+      emitIsRun(){
+
+        this.$dispatch('photosIsRun');
+
+      },
+
       run(){
 
         this.getProducts()
@@ -161,6 +167,7 @@ scroll-top
                     if ( this.isInfinity && this.infinityScroll ) {
 
                       this.enableInfinityScroll();
+                      this.emitIsRun();
 
                     }
 

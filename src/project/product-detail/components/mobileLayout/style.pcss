@@ -1,0 +1,42 @@
+@use postcss-autoreset {
+  reset: {
+    all: initial;
+    sizes: 0;
+  }
+}
+
+@use postcss-initial {
+  reset: inherited;
+}
+
+@import 'base/mixin/bubble.pcss';
+
+.mobileLayout {
+  display: block;
+}
+
+.wrapper{
+  display: block;
+  box-sizing: border-box;
+  padding: 0 30px 0 30px;
+}
+
+.desc-wrapper{
+  display: block;
+  box-sizing: border-box;
+  padding: 0 30px 0 17px;
+}
+
+.picture-wrapper{
+  display: block;
+  margin-bottom: 20px;
+}
+
+.tags-wrapper{
+  margin-top: 15px;
+  overflow-x: hidden;
+  width: calc(100% + 20px);
+  display: block;
+  float: left;
+  margin-left: -20px;
+}

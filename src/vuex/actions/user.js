@@ -2,6 +2,7 @@ import * as userService from 'services/user';
 import * as profile from 'services/profile.js';
 import * as types from '../mutation-types';
 import { getUserName, getProfile } from 'vuex/getters/user.js';
+import { removeToken } from 'services/profile'
 
 export const getValidUserObject = ( user, user_id ) => {
 
@@ -211,5 +212,13 @@ export const openProfile = ( { dispatch, state }, id ) => {
 export const closeProfile = ( { dispatch } ) => {
 
   dispatch( types.USER_CLOSE_PROFILE );
+
+};
+
+export const logOut = ( { dispatch } ) => {
+
+  removeToken();
+  
+  dispatch( types.USER_LOGOUT )
 
 };

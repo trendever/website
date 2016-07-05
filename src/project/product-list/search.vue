@@ -5,7 +5,7 @@
     .search-stub(v-if='searchGlued')
 
     .search-input(:class='{"glued":searchGlued}')
-      .search-input__container(:class='{"__focused": inputFocused, "__active": searchValue.length || selectedTags.length}')
+      .search-input__container(:class='{"__focused": inputFocused, "__active": searchValue.length || selectedCount > 0}')
         .search-input__search-btn(@click='search()')
           i.ic-search.__mirror
 
@@ -16,12 +16,12 @@
           @focus='onFocusInput',
           @blur='onBlurInput',
           type='text',
-          placeholder='Поиск текстом...')
+          placeholder='Поиск текстом...'
+        )
 
         .search-input__clear-btn
-          span.badge(v-if='selectedTags.length') {{ selectedTags.length }}
-          span.close(v-show='searchValue.length || selectedTags.length',
-                     @click='clearSearch'): i.ic-close
+          span.badge(v-if='selectedCount > 0', @click='clear') {{ selectedCount }}
+          span.close(v-show='searchValue.length || selectedCount > 0', @click='clear'): i.ic-close
           span.change-col
             span.change-col__two-col( :class='{"active": getColumnCount === 3}', @click='setColumnNumber(2)')
               span.change-col__big
@@ -40,87 +40,95 @@
               span.change-col__sm
               span.change-col__sm
 
-    .search-tags(
-      :class='{"__open": showMoreTags}')
-      .search-tags__wrap
-        ul.search-tags__container(v-el:tags)
-
-          li.search-tags__item__selected(
-            v-for='tag in selectedTags | filterBy searchValue in "name"',
-            @click='removeTag(tag, $index)',
-            @touch='removeTag(tag, $index)')
-            span {{ tag.name }}&nbsp;
-            i.ic-close
-
-          li.search-tags__item.tag_list(
-            v-for='tag in tags | filterBy searchValue in "name"',
-            @click='selectTag(tag)') {{ tag.name }}
-
-        .search-tags__button(
-          v-if='showMoreButton',
-          @click='toggleShowMoreTags')
-
+    .tags-wrapper( v-el:tags )
+      tags-component(
+        :tags="tags",
+        :search-string="searchValue",
+        :del-tag="removeTag",
+        :add-tag="selectTag",
+        :is-open.sync="isOpenTags",
+        :is-pending="getPendingStatus"
+      )
 </template>
 
 <script type='text/babel'>
   import listen from 'event-listener';
-  import {
-    searchValue,
-    tags,
-    selectedTags,
-  } from 'vuex/getters';
-  import { isAuth } from 'vuex/getters/user.js';
-  import {
-    loadTags,
-    setSearchValue,
-    selectTag,
-    removeTag,
-    clearSearch
-  } from 'vuex/actions';
+  import tagsComponent from 'base/tags/index.vue';
 
+  import { searchValue, tags, selectedCount, getPendingStatus } from 'vuex/getters/search.js';
+  import { loadTags, setSearchValue, selectTag, removeTag, clearSearch } from 'vuex/actions/search.js';
+
+  import { isAuth } from 'vuex/getters/user.js';
   import { setColumnNumber } from 'vuex/actions/products';
   import { getColumnCount } from 'vuex/getters/products';
 
   export default {
+    components: {
+      tagsComponent
+    },
     data(){
       return {
-        showMoreTags: false,
-        showMoreButton: false,
         searchGlued: false,
         inputFocused: false,
+        isOpenTags: false
       }
     },
     ready(){
-      this.scrollCnt = document.querySelector('.scroll-cnt');
 
-      this.gluingSearch = listen( this.scrollCnt, 'scroll', () => {
-        if ( this.isAuth ) {
-          let searchHeight = 50;
-          if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
-            searchHeight = 100;
+      if ( this.isAuth ) {
+
+        this.scrollCnt = document.querySelector( '.scroll-cnt' );
+
+        this.gluingSearch = listen( this.scrollCnt, 'scroll', () => {
+
+          if ( this.isAuth ) {
+
+            let searchHeight = 50;
+
+            if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
+
+              searchHeight = 100;
+
+            }
+
+            if ( this.scrollCnt.scrollTop > searchHeight ) {
+
+              this.$set( 'searchGlued', true );
+
+            } else {
+
+              this.$set( 'searchGlued', false );
+
+            }
+
           }
 
-          if ( this.scrollCnt.scrollTop > searchHeight ) {
-            this.$set( 'searchGlued', true );
-          } else {
-            this.$set( 'searchGlued', false );
-          }
-        }
-      });
+        } );
+
+      }
 
     },
     beforeDestroy(){
+
       if ( this.isAuth ) {
-        this.gluingSearch.remove();
+
+        if ( this.gluingSearch ) {
+
+          this.gluingSearch.remove();
+
+        }
+
       }
+
     },
     vuex: {
       getters: {
         searchValue,
         tags,
-        selectedTags,
+        selectedCount,
         getColumnCount,
         isAuth,
+        getPendingStatus
       },
       actions: {
         loadTags,
@@ -132,103 +140,24 @@
       }
     },
     created() {
-      this.loadTags();
+      return this.loadTags();
     },
     methods: {
-      toggleShowMoreTags() {
-        this.$els.tags.scrollTop = 0;
-        this.showMoreTags = !this.showMoreTags;
-      },
 
-      scrollUp() {
+      clear(){
+        this.clearSearch();
         this.scrollCnt.scrollTop = 0;
       },
 
       search() {
-        this.setSearchValue(this.$els.input.value);
-        this.scrollToView();
+        this.setSearchValue( this.$els.input.value );
       },
-
-      scrollToView() {
-        if(this.searchValue.trim().length || this.selectedTags.length) {
-          // document.getElementById('tags').scrollIntoView();
-          //window.body.scrollTop = document.getElementById('tags').offsetTop;
-        }
-      },
-
-      detectHeightTags() {
-        this.$nextTick(() => {
-          // TODO - need detect this
-          this.showMoreButton = !!(this.$els.tags && (this.$els.tags.scrollHeight > this.$els.tags.clientHeight));
-        })
-      },
-
-      setPaddingTags(){
-        var tags = this.$els.tags.children;
-        var wrapWidth = this.$els.tags.offsetWidth;
-        var blocksWidth = 0;
-        var minPadding = 30;
-        for (var i = 0; i < tags.length; i++){
-          tags[i].style.width = 'auto';
-          tags[i].style.padding = 0;
-        }
-
-        for (var i = 0; i < tags.length; i++){
-          tags[i].style.width = tags[i].offsetWidth + 'px';
-        }
-
-        for(var i = 0, j = 0, count = 1; i < tags.length; i++, count++){
-          if ((blocksWidth + tags[i].offsetWidth + minPadding * count) > wrapWidth || i === tags.length - 1) {
-            var padding = ((wrapWidth - blocksWidth) / (count - 1)) / 2;
-
-            if (i === tags.length - 1) {
-              blocksWidth += tags[i].offsetWidth + 10;
-              var padding = ((wrapWidth - blocksWidth) / (count)) / 2;
-
-              for (;j <= i; j++) {
-                tags[j].style.padding =  '0 ' + padding + 'px';
-              }
-            } else {
-              for (;j < i; j++) {
-                tags[j].style.padding =  '0 ' + padding + 'px';
-              }
-            }
-
-            blocksWidth = 0;
-            count = 1;
-            blocksWidth += tags[i].offsetWidth + 10;
-          } else {
-            blocksWidth += tags[i].offsetWidth + 10;
-          }
-        }
-      },
-
       onFocusInput() {
-        this.showMoreTags = false;
+        this.$set('isOpenTags', false)
         this.inputFocused = true;
       },
-
       onBlurInput() {
         this.inputFocused = false;
-      }
-    },
-    watch: {
-      searchValue() {
-        this.scrollToView();
-        this.detectHeightTags();
-        this.setPaddingTags();
-      },
-
-      selectedTags() {
-        this.scrollToView();
-        this.detectHeightTags();
-        this.setPaddingTags();
-      },
-
-      tags() {
-        this.showMoreTags = false;
-        this.detectHeightTags();
-        this.setPaddingTags();
       }
     }
   }

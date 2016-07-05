@@ -1,5 +1,5 @@
 <template lang="jade">
-.scroll-cnt
+scroll-component
   header-component(title='Настройка отслеживания')
   .section.main(style='margin-top: 140px')
     .section__content(style='text-align:center;')
@@ -9,17 +9,18 @@
 </template>
 
 <script type='text/ecmascript-6'>
-
+import ScrollComponent from 'base/scroll/scroll.vue'
 import HeaderComponent from 'base/header/header.vue'
 
 export default {
     data: () => ({
     }),
     ready: function () {
-        window.mixpanel.register({'$ignore': 'true'});
+      window.mixpanel.register({'$ignore': 'true'});
     },
     components: {
-        HeaderComponent,
+      ScrollComponent,
+      HeaderComponent,
     }
 }
 </script>

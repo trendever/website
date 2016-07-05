@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-.scroll-cnt
+scroll-component
   .section.header.u-fixed
     .section__content.header__content
       .header__arrow(v-if='isAuth', @click='goBack()')
@@ -246,6 +246,8 @@
   import { isAuth } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
 
+  import ScrollComponent from 'base/scroll/scroll.vue'
+
   import mainVideo from 'base/main-video/index.vue';
 
   export default {
@@ -320,7 +322,9 @@
 
     components: {
       Swipe,
-      SwipeItem
+      SwipeItem,
+      
+      ScrollComponent,
     }
 
   }

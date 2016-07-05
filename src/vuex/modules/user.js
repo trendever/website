@@ -4,7 +4,8 @@ import {
   USER_SET_PROFILE,
   USER_SET_MY_ID,
   USER_SET_PHOTOS_CONFIG,
-  USER_CLOSE_PROFILE
+  USER_CLOSE_PROFILE,
+  USER_LOGOUT
 } from '../mutation-types';
 
 // initial state
@@ -81,8 +82,17 @@ const mutations = {
     }
   },
   [USER_CLOSE_PROFILE] ( state ) {
-    state.id = state.myId;
+    state.id   = state.myId;
     state.done = false;
+  },
+  [USER_LOGOUT] ( state ){
+    state.isAuth       = false;
+    state.token        = null;
+    state.id           = null; // string - current profile
+    state.myId         = null; // Id profile of current user.
+    state.all          = {};
+    state.photoConfigs = {};
+    state.done         = false;
   }
 };
 

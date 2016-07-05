@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-.scroll-cnt
+scroll-component
   .section.header.u-fixed
     .section__content.header__content
       .header__arrow(v-if='isAuth', @click='goBack()')
@@ -24,7 +24,8 @@
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Как это возможно?
-          span Знакомься! Это Трендскаут!#[br] Она наполнит твою витрину на Trendever,#[br] отсортирует все товары и укажет цены.
+          span(v-if="isMobile") Знакомься! Это Трендскаут!#[br] Она наполнит твою#[br] витрину на Trendever,#[br] отсортирует все товары и укажет цены.
+          span(v-if="!isMobile") Знакомься! Это Трендскаут!#[br] Она наполнит твою витрину на Trendever,#[br] отсортирует все товары и укажет цены.
 
   .section.inform-item
     .section__content
@@ -43,7 +44,7 @@
       .inform-item__answer
         div.inform-item__title.inform-item__answer__title
           p Трендскаут проконсультирует...
-          span ...покупателей по товарам и условиям покупки в шопинг-чате.#[br] Все это совершенно бесплатно!
+          span ...покупателей по товарам и условиям покупки в шопинг-чате.#[br]
 
   .section.inform-item
     .section__content
@@ -118,7 +119,10 @@
 </template>
 <script>
   import settings from 'settings'
+
+  import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
+
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import { createLead } from 'vuex/actions/lead';
   import { isAuth } from 'vuex/getters/user.js';
@@ -140,6 +144,13 @@
       }
     },
 
+    computed:{
+
+      isMobile(){
+        return window.browser.mobile;
+      }
+
+    },
 
     methods: {
       goBack(){
@@ -167,6 +178,7 @@
     },
 
     components: {
+      ScrollComponent,
       HeaderComponent
     }
 

@@ -4,8 +4,10 @@
   .profile-header__menu
     .profile-header__menu-btn
       .profile-header__menu-btn-label
-      .profile-header__menu-btn-icon(@click='menuOpened=true')
+      .profile-header__menu-btn-icon(v-if="!getComeBack", @click='menuOpened=!menuOpened')
         i(class='ic-info')
+      .profile-header__menu-btn-icon(v-if="getComeBack", @click='goBack')
+        i(class='ic-arrow-left')
   .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth }")
     a(class='profile-header__menu-link profile-header__close-menu',
       @click='menuOpened=false') Отмена
@@ -19,6 +21,7 @@
       v-link='{name: "info-mission"}') Наша миссия
     a(class='profile-header__menu-link',
       v-link='{name: "info-agreement"}') Условия
+    a(class='profile-header__menu-link', @click="logout") Выход
   a(v-link='{ name: "info-user" }')
     i.smallHero__logo
       img(src='../../base/img/logo-beta.png')
@@ -62,6 +65,8 @@ import settings from 'settings'
 import { setCallbackOnSuccessAuth } from 'vuex/actions'
 import { createLead } from 'vuex/actions/lead'
 import { isAuth } from 'vuex/getters/user.js'
+import { logOut } from 'vuex/actions/user.js'
+import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
 
 export default {
@@ -79,14 +84,25 @@ export default {
   vuex: {
     getters: {
       isAuth,
+      getComeBack
     },
     actions: {
+      logOut,
       createLead,
       setCallbackOnSuccessAuth,
     }
   },
 
   methods: {
+    logout(){
+
+      this.$set('menuOpened', false);
+      this.logOut();
+
+    },
+    goBack(){
+      window.history.back();
+    },
     onBuyPromoProduct() {
       if ( !this.isAuth ) {
 

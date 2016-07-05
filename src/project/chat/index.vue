@@ -1,11 +1,13 @@
 <style src='./styles/chat.pcss'></style>
 <template lang="jade">
-  .chat-cnt.scroll-cnt(v-el:scroll-cnt)
+  scroll-component(v-el:scroll-cnt, class="chat-cnt")
+    popup-img(v-if="imgPopUpUrl", :url="imgPopUpUrl", :width="imgWidth", :height="imgHeight", :on-close="closePopUp")
     chat-header(:notify-count='conversationNotifyCount')
+    .chat-shadow(v-if="getShowMenu || getShowStatusMenu")
     .section.top.bottom
       .chat.section__content
         .chat_messages
-          template(v-for='msg in getMessages | list', track-by='$index')
+          div(v-for='msg in getMessages | list', track-by='$index')
             chat-msg-status(
               v-if='msg.parts[0].mime_type === "json/status"',
               :msg='msg')
@@ -27,13 +29,19 @@
     setConversation,
     loadMessage,
     closeConversation,
+    openPopUp
   } from 'vuex/actions/chat.js';
   import {
     getMessages,
     conversationNotifyCount,
     getId,
     getCurrentMember,
-    getLengthList
+    getLengthList,
+    getShowMenu,
+    getShowStatusMenu,
+    imgPopUpUrl,
+    imgWidth,
+    imgHeight
   } from 'vuex/getters/chat.js';
   import { isDone } from 'vuex/getters/lead.js';
   import { isAuth } from 'vuex/getters/user.js';
@@ -42,16 +50,21 @@
   import * as messages from 'services/message';
   import * as leads from 'services/leads';
 
+  import ScrollComponent from 'base/scroll/scroll.vue'
+
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgStatus from './chat-msg-status.vue';
   import ChatMsg from './chat-msg.vue';
   import ChatMsgImg from './chat-msg-img.vue';
   import ChatBar from './chat-bar.vue';
   import ChatHeader from './chat-header.vue';
+  import popupImg from 'base/popup-img/index.vue';
 
   export default {
 
     components: {
+      ScrollComponent,
+      popupImg,
       ChatHeader,
       ChatBar,
       ChatMsg,
@@ -112,15 +125,21 @@
         loadMessage,
         clearNotify,
         closeConversation,
+        openPopUp
       },
       getters: {
+        imgPopUpUrl,
+        imgWidth,
+        imgHeight,
         isAuth,
         isDone,
         getMessages,
         conversationNotifyCount,
         getId,
         getCurrentMember,
-        getLengthList
+        getLengthList,
+        getShowMenu,
+        getShowStatusMenu
       },
     },
 
@@ -134,6 +153,12 @@
     },
 
     methods: {
+
+      closePopUp(){
+
+        this.openPopUp();
+
+      },
 
       run(){
         return this

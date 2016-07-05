@@ -10,7 +10,8 @@ import {
   LEAD_RECEIVE,
   LEAD_UPDATE,
   CONVERSATION_SEND_STATUS,
-  CONVERSATION_INC_LENGTH_LIST
+  CONVERSATION_INC_LENGTH_LIST,
+  CONVERSATION_OPEN_IMG_POPUP
 } from '../mutation-types'
 import * as messageService from 'services/message.js'
 import * as leads from 'services/leads.js'
@@ -550,5 +551,11 @@ export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
 export const closeConversation = ( { dispatch } ) => {
 
   dispatch( CONVERSATION_CLOSE )
+
+}
+
+export const openPopUp = ( { dispatch }, url = false, width = 0, height = 0 ) => {
+
+  dispatch( CONVERSATION_OPEN_IMG_POPUP, url, width, height )
 
 }
