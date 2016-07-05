@@ -21,6 +21,7 @@
       v-link='{name: "info-mission"}') Наша миссия
     a(class='profile-header__menu-link',
       v-link='{name: "info-agreement"}') Условия
+    a(class='profile-header__menu-link', @click="logOut") Выход
   a(v-link='{ name: "info-user" }')
     i.smallHero__logo
       img(src='../../base/img/logo-beta.png')
@@ -64,6 +65,7 @@ import settings from 'settings'
 import { setCallbackOnSuccessAuth } from 'vuex/actions'
 import { createLead } from 'vuex/actions/lead'
 import { isAuth } from 'vuex/getters/user.js'
+import { logOut } from 'vuex/actions/user.js'
 import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
 
@@ -85,6 +87,7 @@ export default {
       getComeBack
     },
     actions: {
+      logOut,
       createLead,
       setCallbackOnSuccessAuth,
     }
