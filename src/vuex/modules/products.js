@@ -3,10 +3,8 @@ import {
   PRODUCTS_LOADING,
   PRODUCTS_UPDATE_LIKED_BY,
   PRODUCTS_SET_LIST_ID,
-  PRODUCTS_SET_INFINITY,
   PRODUCTS_SET_COLUMN_NUMBER,
   PRODUCTS_SET_SCROLL,
-  PRODUCTS_INC_LENGTH_LIST,
   PRODUCTS_SET_ANIMATE,
   PRODUCTS_FORCE_RECEIVE,
   PRODUCTS_SET_OPENED_PRODUCT,
@@ -22,10 +20,15 @@ const state = {
   lists: {
     // "profile": {
     //   products: [],
+    //   viewHeight: 0,
     //   scrollTop: 0,
-    //   scrollHeight: 0,
-    //   lengthList: 9,
-    //   isInfinity: true,
+    //   scrollTopReal: 0,
+    //   rowHeight: 0,
+    //   topBlockHeight: 0,
+    //   bottomBlockHeight: 0,
+    //   idStart: 0,
+    //   idEnd: 0,
+    //   needLoadMore: false,
     //   animateShow: true,
     //   hasMore: true,
     // },
@@ -53,10 +56,15 @@ const mutations = {
         {
           [ state.listId ]: {
             products: Array.isArray( products ) ? products : [],
+            viewHeight: 0,
             scrollTop: 0,
-            scrollHeight: 0,
-            lengthList: ITEMS_PER_PAGE,
-            isInfinity: true,
+            scrollTopReal: 0,
+            rowHeight: 0,
+            topBlockHeight: 0,
+            bottomBlockHeight: 0,
+            idStart: 0,
+            idEnd: ITEMS_PER_PAGE,
+            needLoadMore: false,
             animateShow: true,
             hasMore: Array.isArray( products ) ? products.length >= ITEMS_PER_PAGE : false
           }
@@ -78,10 +86,15 @@ const mutations = {
         {
           [ state.listId ]: {
             products: [],
+            viewHeight: 0,
             scrollTop: 0,
-            scrollHeight: 0,
-            lengthList: ITEMS_PER_PAGE,
-            isInfinity: true,
+            scrollTopReal: 0,
+            rowHeight: 0,
+            topBlockHeight: 0,
+            bottomBlockHeight: 0,
+            idStart: 0,
+            idEnd: ITEMS_PER_PAGE,
+            needLoadMore: false,
             animateShow: true,
             hasMore: (Array.isArray( products )) ? products.length >= ITEMS_PER_PAGE : false
           }
@@ -93,7 +106,6 @@ const mutations = {
     if ( Array.isArray( products ) ) {
 
       state.lists[ state.listId ].hasMore  = products.length >= ITEMS_PER_PAGE;
-      state.lists[ state.listId ].lengthList += products.length;
       state.lists[ state.listId ].products = state.lists[ state.listId ].products.concat( products );
 
     } else {
@@ -241,10 +253,15 @@ const mutations = {
           {
             [ 'profile' ]: {
               products: [ Object.assign( {}, product ) ],
+              viewHeight: 0,
               scrollTop: 0,
-              scrollHeight: 0,
-              lengthList: ITEMS_PER_PAGE,
-              isInfinity: true,
+              scrollTopReal: 0,
+              rowHeight: 0,
+              topBlockHeight: 0,
+              bottomBlockHeight: 0,
+              idStart: 0,
+              idEnd: ITEMS_PER_PAGE,
+              needLoadMore: false,
               animateShow: true,
               hasMore: true
             }
@@ -263,17 +280,6 @@ const mutations = {
 
   },
 
-  [PRODUCTS_INC_LENGTH_LIST] ( state, count = ITEMS_PER_PAGE ) {
-
-    if ( state.lists.hasOwnProperty( state.listId ) ) {
-
-      state.lists[ state.listId ].lengthList += count;
-      state.loading = false;
-
-    }
-
-  },
-
   [PRODUCTS_LOADING] ( state, loading = true ) {
 
     state.loading = loading;
@@ -288,37 +294,34 @@ const mutations = {
 
   [PRODUCTS_CLOSE] ( state ) {
 
-    if ( state.lists.hasOwnProperty( state.listId ) ) {
-
-      state.lists[ state.listId ].lengthList = ITEMS_PER_PAGE;
-
-    }
-
     state.loading = true;
 
   },
 
-  [PRODUCTS_SET_SCROLL] ( state, scrollTop = 0, scrollHeight = 0 ) {
+  [PRODUCTS_SET_SCROLL] ( state, options ) {
 
     if ( state.lists.hasOwnProperty( state.listId ) ) {
 
-      state.lists[ state.listId ].scrollTop    = scrollTop;
-      state.lists[ state.listId ].scrollHeight = scrollHeight;
+      for ( const key in options ) {
+
+        if ( options.hasOwnProperty( key ) ) {
+
+          if ( state.lists[ state.listId ].hasOwnProperty( key ) ) {
+
+            state.lists[ state.listId ][ key ] = typeof options[ key ] === 'undefined' ?
+              state.lists[ state.listId ][ key ] :
+              options[ key ];
+
+          }
+
+        }
+
+      }
 
     }
 
   },
-
-  [PRODUCTS_SET_INFINITY] ( state, isInfinity = true ) {
-
-    if ( state.lists.hasOwnProperty( state.listId ) ) {
-
-      state.lists[ state.listId ].isInfinity = isInfinity;
-
-    }
-
-  },
-
+  
   [PRODUCTS_SET_ANIMATE] ( state, animateShow = true, listId = state.listId ) {
 
     if ( state.lists.hasOwnProperty( listId ) ) {
@@ -329,9 +332,7 @@ const mutations = {
 
   },
 
-  [PRODUCTS_SET_COME_BACK] (state, comeBack = false) {
-
-    console.log(comeBack);
+  [PRODUCTS_SET_COME_BACK] ( state, comeBack = false ) {
 
     state.comeBack = comeBack;
 

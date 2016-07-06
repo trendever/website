@@ -139,8 +139,12 @@
         clearSearch
       }
     },
-    created() {
-      return this.loadTags();
+    activate(done) {
+
+      this.loadTags().then(() => {
+        done();
+      });
+
     },
     methods: {
 

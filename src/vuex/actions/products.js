@@ -4,17 +4,238 @@ import { searchValue, selectedTagsId } from 'vuex/getters/search.js';
 import { user } from 'vuex/getters/user.js';
 import {
   getLastProduct,
-  getLengthList,
+  getColumnCount,
   getProducts,
-  getProduct,
   hasMore,
   getOpenedProduct,
-  isLiked
+  isLiked,
+  isAnimateShow,
+  _getScrollData,
+  getVirtualScrollData
 } from 'vuex/getters/products.js';
+
+export const setAnimate = ( { dispatch }, state ) => {
+
+  dispatch( types.PRODUCTS_SET_ANIMATE, state );
+
+};
+
+export const setListId = ( { dispatch }, listId ) => {
+
+  dispatch( types.PRODUCTS_SET_LIST_ID, listId );
+
+};
+
+export const setColumnNumber = ( { dispatch }, columnNumber ) => {
+
+  dispatch( types.PRODUCTS_SET_COLUMN_NUMBER, columnNumber );
+
+};
+
+export const closeProduct = ( { dispatch } ) => {
+
+  dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, null );
+
+};
+
+export const closeProducts = ( { dispatch } ) => {
+
+  dispatch( types.PRODUCTS_CLOSE );
+
+};
+
+export const setScroll = (() => {
+
+  let lastShift = 0;
+
+  let countOfViewElement = 18;
+
+  let searchOptions = {};
+
+  let loading = false;
+
+  return ( { dispatch, state }, options, initScroll = false, searchData = {} ) => {
+
+    const columnCount = getColumnCount( state );
+
+    if ( columnCount === 3 ) {
+
+      countOfViewElement = 18;
+
+    } else if ( columnCount === 2 ) {
+
+      countOfViewElement = 20;
+
+    }
+
+    const products = getProducts( state );
+
+    if ( initScroll ) {
+
+      searchOptions = searchData;
+
+      const { rowHeight, viewHeight } = options;
+
+      let rowsCount = 0;
+
+      if ( products !== null ) {
+
+        rowsCount = parseInt( products.length / columnCount )
+
+      }
+
+      const elementsHeight = rowsCount * rowHeight;
+
+      const freeHeight = (viewHeight - elementsHeight > 1) ? viewHeight - elementsHeight : 0;
+
+      let needRowsForCoverFreeSpace = 0;
+
+      if ( freeHeight > 0 ) {
+
+        needRowsForCoverFreeSpace = parseInt( freeHeight / rowHeight ) + 1;
+
+      }
+
+      /**
+       * Тут я добавляю вниз необходимое для пагинации кол-во строк.
+       * */
+
+      const needRowLoad = ( columnCount === 3 ) ?
+      needRowsForCoverFreeSpace + 6 :
+      needRowsForCoverFreeSpace + 8;
+
+      searchData.limit = needRowLoad * columnCount;
+
+      dispatch( types.PRODUCTS_SET_SCROLL, options );
+
+      return loadProducts( { dispatch, state }, searchData, false ).then( () => {
+
+        dispatch( types.PRODUCTS_SET_SCROLL, {
+          idEnd: getVirtualScrollData( state ).idEnd + columnCount * 3
+        } );
+
+      } )
+
+    }
+
+    const shift = parseInt( options.scrollTop / options.rowHeight );
+
+    if ( (shift ^ 0) === shift ) {
+
+      if ( lastShift !== shift ) {
+
+        const shiftDirection = lastShift < shift; // Если новый сдвиг больше то двигаемся вниз
+
+        if ( shiftDirection ) {
+
+          lastShift++;
+
+        } else {
+
+          lastShift--;
+
+        }
+
+        const idEnd         = shift * columnCount + countOfViewElement;
+        const productLength = products.slice( idEnd, products.length ).length / columnCount;
+
+        const newOptions = Object.assign( options, {
+          idStart: shift * columnCount,
+          idEnd,
+          topBlockHeight: shift * options.rowHeight,
+          bottomBlockHeight: parseInt( productLength ) * options.rowHeight
+        } );
+
+        if ( Array.isArray( products ) ) {
+
+          if ( products.slice( newOptions.idStart, newOptions.idEnd ).length === countOfViewElement ) {
+
+            dispatch( types.PRODUCTS_SET_SCROLL, newOptions );
+
+          } else {
+
+            if ( !loading ) {
+
+              loading = true;
+
+              searchData.limit = 21;
+
+              return loadProducts( { dispatch, state }, searchData, false ).then( () => {
+
+                loading = false;
+
+                const products = getProducts( state );
+
+                dispatch( types.PRODUCTS_SET_SCROLL, {
+                  idEnd: getVirtualScrollData( state ).idEnd + columnCount * 2,
+                  bottomBlockHeight: parseInt( products.slice( idEnd, products.length ).length / columnCount ) * options.rowHeight
+                } );
+
+              } )
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+})();
+
+export const setCallBackAfterLoading = (
+  { dispatch }, callback = () => {
+  }
+) => {
+
+  dispatch( types.PRODUCTS_SET_CALL_BACK_AFTER_LOADING, callback )
+
+};
+
+export const setComeBack = ( { dispatch }, comeBack = false ) => {
+
+  dispatch( types.PRODUCTS_SET_COME_BACK, comeBack )
+
+};
+
+export const setLike = (
+  { dispatch, state },
+  product = getOpenedProduct( state ),
+  newLikeState = !isLiked( state )
+) => {
+
+  if ( product !== null ) {
+
+    dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product, user( state ), newLikeState );
+
+    products
+      .like( product.id, newLikeState )
+      .then( ( isLike ) => {
+        if ( !isLike ) {
+
+          dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product, user( state ), false );
+
+          console.warn( `Отрицательный ответ на установку
+          like в ${ newLikeState }
+          от пользователя ${ user( state ).id }.
+          Id продкута ${ product.id }` );
+
+        }
+      } );
+
+  }
+
+  return null;
+
+};
 
 export const getSearchOptions = (
   { state },
-  { isSearch, isTags, filterByUserName, filterByUserId },
+  { isSearch, isTags, filterByUserName, filterByUserId, limit = state.products.ITEMS_PER_PAGE },
   force = false
 ) => {
 
@@ -22,7 +243,7 @@ export const getSearchOptions = (
     q: null,
     from_id: null,
     tags: null,
-    limit: state.products.ITEMS_PER_PAGE,
+    limit,
     offset: null,
     instagram_name: null,
     user_id: null
@@ -82,7 +303,7 @@ export const getSearchOptions = (
 
 export const loadProducts = (
   { dispatch, state },
-  { isSearch, isTags, filterByUserName, filterByUserId },
+  { isSearch, isTags, filterByUserName, filterByUserId, limit },
   force = false
 ) => {
 
@@ -97,7 +318,7 @@ export const loadProducts = (
       setAnimate( { dispatch, state }, true );
 
       products
-        .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
+        .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId, limit }, force ) )
         .then( data => {
 
           if ( force ) {
@@ -114,42 +335,29 @@ export const loadProducts = (
 
         } )
         .catch( ( error ) => {
-          products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
+          products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId, limit } );
           reject( error );
         } );
 
     } else {
 
-      if ( items.length < getLengthList( state ) ) {
+      if ( hasMore( state ) ) {
 
-        if ( hasMore( state ) ) {
+        setAnimate( { dispatch, state }, true );
 
-          setAnimate( { dispatch, state }, true );
+        products
+          .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId, limit }, force ) )
+          .then( data => {
 
-          products
-            .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId }, force ) )
-            .then( data => {
+            dispatch( types.PRODUCTS_RECEIVE, data.object_list );
 
-              dispatch( types.PRODUCTS_RECEIVE, data.object_list );
+            resolve();
 
-              resolve();
-
-            } )
-            .catch( ( error ) => {
-              products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId } );
-              reject( error );
-            } );
-
-        }
-
-        resolve();
-
-      } else {
-
-        setAnimate( { dispatch, state }, false );
-
-        dispatch( types.PRODUCTS_INC_LENGTH_LIST );
-        resolve();
+          } )
+          .catch( ( error ) => {
+            products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId, limit } );
+            reject( error );
+          } );
 
       }
 
@@ -226,96 +434,52 @@ export const openProduct = ( { dispatch, state }, id ) => {
 
 };
 
-export const setListId = ( { dispatch }, listId ) => {
+export const run = ( { dispatch, state }, options, force ) => {
 
-  dispatch( types.PRODUCTS_SET_LIST_ID, listId );
+  if ( !force ) {
 
-};
+    const items = getProducts( state );
 
-export const setColumnNumber = ( { dispatch }, columnNumber ) => {
+    // Stats
+    mixpanel.track( 'Show More Products', {
+      offset: items !== null ? items.length : null,
+      view: `${ getColumnCount( state ) }columns`
+    } );
 
-  dispatch( types.PRODUCTS_SET_COLUMN_NUMBER, columnNumber );
+  }
 
-};
+  const items = getProducts( state );
 
-export const closeProduct = ( { dispatch } ) => {
+  if ( items === null || force ) {
 
-  dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, null );
+    return loadProducts( { dispatch, state }, options, force )
+      .then( () => {
 
-};
+        if ( isAnimateShow( state ) ) {
 
-export const closeProducts = ( { dispatch } ) => {
+          setTimeout( () => {
 
-  dispatch( types.PRODUCTS_CLOSE );
+            setAnimate( { dispatch, state }, false );
 
-};
+          }, 2000 );
 
-export const incLengthList = ( { dispatch }, count ) => {
+          return 0;
 
-  dispatch( types.PRODUCTS_INC_LENGTH_LIST, count );
-
-};
-
-export const setLike = (
-  { dispatch, state },
-  product = getOpenedProduct( state ),
-  newLikeState = !isLiked( state )
-) => {
-
-  if ( product !== null ) {
-
-    dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product, user( state ), newLikeState );
-
-    products
-      .like( product.id, newLikeState )
-      .then( ( isLike ) => {
-        if ( !isLike ) {
-
-          dispatch( types.PRODUCTS_UPDATE_LIKED_BY, product, user( state ), false );
-
-          console.warn( `Отрицательный ответ на установку
-          like в ${ newLikeState }
-          от пользователя ${ user( state ).id }.
-          Id продкута ${ product.id }` );
+          /**
+           * 2 сек после получения данных, после 2 сек выключается анимация
+           * жду чтобы картинки успели загрузиться, не вешать же на каждую картинку onLoad
+           * */
 
         }
+
+        return 0;
+
       } );
 
+  } else {
+
+    return Promise.resolve( _getScrollData( state ).scrollTopReal );
+
   }
-
-  return null;
-
-};
-
-export const setScroll = ( { dispatch }, scrollTop, scrollHeight ) => {
-
-  dispatch( types.PRODUCTS_SET_SCROLL, scrollTop, scrollHeight );
-
-};
-
-export const setAnimate = ( { dispatch }, state ) => {
-
-  dispatch( types.PRODUCTS_SET_ANIMATE, state );
-
-};
-
-export const setCallBackAfterLoading = (
-  { dispatch }, callback = () => {
-  }
-) => {
-
-  dispatch( types.PRODUCTS_SET_CALL_BACK_AFTER_LOADING, callback )
-
-};
-
-export const setComeBack = ( { dispatch }, comeBack = false ) => {
-
-  dispatch( types.PRODUCTS_SET_COME_BACK, comeBack )
-
-};
-
-export const enableInfinityProducts = ( { dispatch } ) => {
-
-  dispatch( types.PRODUCTS_SET_INFINITY, true );
 
 };

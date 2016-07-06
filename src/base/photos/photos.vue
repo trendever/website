@@ -1,22 +1,17 @@
 <style src='./styles/photos.pcss'></style>
 <template lang="jade">
-.photos(v-bind:style="styleObject")
-  .photo__title-row
-    .photo__title-column( :class='{"active": getColumnCount === 2}', @click='setColumnNumber(2)')
-      .photo__title-column-long
-      .photo__title-column-long
-
-    .photo__title-column( :class='{"active": getColumnCount === 3}', @click='setColumnNumber(3)')
-      .photo__title-column-short
-      .photo__title-column-short
-      .photo__title-column-short
-
+.photos(v-bind:style="styleObject", v-el:container)
   .photos__list(v-el:photos-list, v-if='items')
+
+    .top-block-height(v-bind:style="{ height: topHeight }")
+
     template(v-for='item in items | list' track-by="id")
       photo-item( :product.once='item', :animate='isAnimateShow' )
 
+    .bottom-block-height(v-bind:style="{ height: bottomHeight }")
+
   .photos__more-wrap(v-if='hasMore')
-    .photos__more( :class='{"_active": isLoading}', @click='enableInfinityScroll(event, true)' )
+    .photos__more( :class='{"_active": isLoading}', @click='runScroll(event, true)' )
         .photos__more__base-ic: span еще
         .photos__more__anim-ic: i.ic-update
 
@@ -37,27 +32,21 @@ scroll-top
   import photoItem from './photo-item.vue';
 
   import { clearSearch } from 'vuex/actions/search.js';
-  import { searchValue, tags } from 'vuex/getters/search.js';
+  import { searchValue, tags, selectedTagsId } from 'vuex/getters/search.js';
 
   import {
+    run,
     setListId,
     setScroll,
-    incLengthList,
-    setColumnNumber,
-    closeProducts,
-    setAnimate,
-    loadProducts,
+    closeProducts
   } from 'vuex/actions/products';
 
   import {
     getProducts,
-    getColumnCount,
-    getScroll,
-    getLengthList,
     hasMore,
-    isInfinity,
     isLoading,
-    isAnimateShow
+    isAnimateShow,
+    getVirtualScrollData
   } from 'vuex/getters/products';
 
   export default {
@@ -66,24 +55,19 @@ scroll-top
       getters: {
         items: getProducts,
         hasMore,
-        isInfinity,
-        getColumnCount,
-        getScroll,
-        getLengthList,
+        getVirtualScrollData,
         isLoading,
         isAnimateShow,
         searchValue,
-        selectedTags : tags
+        selectedTags: tags,
+        selectedTagsId
       },
       actions: {
+        run,
         setListId,
         setScroll,
-        incLengthList,
-        setColumnNumber,
         clearSearch,
-        closeProducts,
-        setAnimate,
-        loadProducts
+        closeProducts
       }
     },
 
@@ -112,21 +96,38 @@ scroll-top
       }
     },
 
-    data(){
+    data() {
       return {
         styleObject: {
           pointerEvents: 'auto'
-        }
+        },
+        lastSelectedTagId: null,
+        globalTop: 0
       }
     },
 
-    ready(){
+    ready() {
 
       this.setListId( this.listId );
 
       this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
-      this.run();
+      this.$set( 'lastSelectedTagId', this.selectedTagsId.join( ',' ) );
+
+      this._run().then( ( scrollTop ) => {
+
+        this.scrollCnt.scrollTop = scrollTop;
+
+        this.$nextTick( () => {
+
+          this.$set('globalTop', Math.round( this.$els.container.getBoundingClientRect().top ) + 50);
+
+          this.runScroll();
+          this.emitIsRun();
+
+        } );
+
+      } );
 
     },
 
@@ -144,128 +145,55 @@ scroll-top
 
     filters: {
       list( value ){
-        return value.slice( 0, this.getLengthList );
+
+        const { idStart, idEnd } = this.getVirtualScrollData;
+
+        return value.slice( idStart, idEnd );
       }
     },
 
     methods: {
 
-      emitIsRun(){
-
-        this.$dispatch('photosIsRun');
-
-      },
-
-      run(){
-
-        this.getProducts()
-            .then( () => {
-
-              this.restore()
-                  .then( () => {
-
-                    if ( this.isInfinity && this.infinityScroll ) {
-
-                      this.enableInfinityScroll();
-                      this.emitIsRun();
-
-                    }
-
-                  } )
-                  .catch( ( error ) => {
-
-                    console.error( new Error( error ), this.listId );
-
-                  } );
-
-            } )
-            .catch( ( error ) => {
-
-              console.error( new Error( error ), this.listId );
-
-            } );
-
-      },
-
-      restore(){
-
-        return new Promise( ( resolve ) => {
-
-          const add = ( targetHeight ) => {
-
-            const { scrollTop } = this.getScroll;
-            /**
-             * Magic number
-             * 1000 - it is height after scrollTop.
-             * */
-            if ( targetHeight < scrollTop + 1000 ) {
-
-              setTimeout( () => {
-
-                /**
-                 * Magic number
-                 * 50 - it is step for get items.
-                 * */
-
-                this.incLengthList( 50 );
-
-                this.$nextTick( () => {
-                  add( this.scrollCnt.scrollHeight );
-                } );
-
-              }, 1 );
-
-            } else {
-
-              this.scrollCnt.scrollTop = scrollTop;
-
-              resolve();
-
-            }
-
-          };
-
-          this.$nextTick( () => {
-
-            add( this.scrollCnt.scrollHeight );
-
-          } );
-
-        } );
-
-      },
-
-      getProducts( force = false ){
+      initScrollData(){
 
         const { search, tags, filterByUserName, filterByUserId } = this;
 
-        return this
-          .loadProducts( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force )
-          .then( () => {
-
-            if ( this.isAnimateShow ) {
-
-              setTimeout( () => {
-
-                this.setAnimate(false);
-
-              }, 2000 )
-
-              /**
-               * 2 сек после получения данных, после 2 сек выключается анимация
-               * жду чтобы картинки успели загрузиться, не вешать же на каждую картинку onLoad
-               * */
-
-            }
-
-          } );
+        return this.setScroll( {
+          scrollTop: this.scrollTop,
+          rowHeight: this.rowHeight,
+          viewHeight: this.viewHeight,
+          scrollTopReal: this.scrollCnt.scrollTop
+        }, true, { isSearch: search, isTags: tags, filterByUserName, filterByUserId } );
 
       },
 
-      enableInfinityScroll() {
+      _run( force = false ) {
+
+        const { search, tags, filterByUserName, filterByUserId } = this;
+
+        return this.run( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force );
+
+      },
+
+      emitIsRun() {
+
+        this.$dispatch( 'photosIsRun' );
+
+      },
+
+      runScroll() {
+
+        if ( this.scrollEvent ) {
+
+          this.scrollEvent.remove();
+
+        }
+
         this.scrollEvent = listen( this.scrollCnt, 'scroll', (() => {
 
           let timerId = null;
+
+          this.initScrollData();
 
           return () => {
 
@@ -283,39 +211,66 @@ scroll-top
 
             }, 200 );
 
-            this.setScroll( this.scrollCnt.scrollTop, this.scrollCnt.scrollHeight );
-
-            const full_scroll = (this.$els.photosList !== null) ? this.$els.photosList.offsetHeight : 0;
-            const diff_scroll = full_scroll - this.scrollCnt.scrollTop;
-
-            if ( diff_scroll < 2500 && !this.isLoading ) {
-              this.showMore();
-            }
+            this.setScroll( {
+              rowHeight: this.rowHeight,
+              scrollTop: this.scrollTop,
+              scrollTopReal: this.scrollCnt.scrollTop
+            } );
 
           }
 
-        })() );
-      },
+        } )() );
 
-      showMore() {
-        if ( this.hasMore || this.getLengthList < this.items.length ) {
-
-          this.getProducts();
-
-          // Stats
-          mixpanel.track( 'Show More Products', {
-            offset: this.items !== null ? this.items.length : null,
-            view: `${ this.getColumnCount }columns`
-          } );
-
-        }
       }
 
     },
 
     computed: {
 
-      itemsLength(){
+      topHeight: {
+        cache: false,
+        get(){
+          return `${ this.getVirtualScrollData.topBlockHeight }px`
+        }
+      },
+
+      bottomHeight: {
+        cache: false,
+        get(){
+          return `${ this.getVirtualScrollData.bottomBlockHeight }px`
+        }
+      },
+
+      scrollTop: {
+        cache: false,
+        get(){
+
+          const scrollTop = this.scrollCnt.scrollTop - this.globalTop;
+
+          return ( scrollTop >= 0 ) ? scrollTop : 0;
+
+        }
+      },
+
+      rowHeight: {
+        cache: false,
+        get(){
+
+          return this.$els.photosList.children[ 1 ].offsetHeight;
+
+        }
+      },
+
+      viewHeight:{
+        cache: false,
+        get(){
+
+          return this.scrollCnt.offsetHeight - Math.round( this.$els.container.getBoundingClientRect().top );
+
+        }
+      },
+
+      itemsLength() {
 
         if ( Array.isArray( this.items ) ) {
 
@@ -330,19 +285,58 @@ scroll-top
     },
 
     watch: {
-      listId( listId ){
+      listId( listId ) {
+
         this.setListId( listId );
-        this.run();
+
+        this._run().then( ( scrollTop ) => {
+
+            this.scrollCnt.scrollTop = scrollTop;
+
+        });
+
       },
-      selectedTags() {
+      selectedTagsId( selectedTagsId ) {
+
         if ( this.tags ) {
-          this.getProducts( true );
+
+          const tagsString = selectedTagsId.join( ',' );
+
+          if ( this.lastSelectedTagId !== tagsString ) {
+
+            this.$set( 'lastSelectedTagId', tagsString );
+
+            this._run( true ).then(() => {
+
+              this.$nextTick( () => {
+
+                this.initScrollData();
+
+              });
+
+            });
+
+          }
+
         }
+
       },
       searchValue() {
+
         if ( this.search ) {
-          this.getProducts( true );
+
+          this._run( true ).then(() => {
+
+            this.$nextTick( () => {
+
+              this.initScrollData();
+
+            });
+
+          });
+
         }
+
       }
     },
 

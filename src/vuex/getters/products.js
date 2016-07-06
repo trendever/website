@@ -1,7 +1,7 @@
 import { userID } from 'vuex/getters/user.js'
 
 export const getList = ( { products } ) => {
-
+  
   if ( products.lists.hasOwnProperty( products.listId ) ) {
 
     return products.lists[ products.listId ];
@@ -26,27 +26,29 @@ export const getProducts = ( state ) => {
 
 };
 
-export const getProduct = ( state, product_id ) => {
+/*
+ export const getProduct = ( state, product_id ) => {
 
-  const products = getProducts( state );
+ const products = getProducts( state );
 
-  if ( Array.isArray( products ) ) {
+ if ( Array.isArray( products ) ) {
 
-    const result = products.filter( ( { id } ) => id === product_id )[ 0 ];
+ const result = products.filter( ( { id } ) => id === product_id )[ 0 ];
 
-    if ( typeof result === 'undefined' ) {
+ if ( typeof result === 'undefined' ) {
 
-      return null;
+ return null;
 
-    }
+ }
 
-    return result;
+ return result;
 
-  }
+ }
 
-  return null;
+ return null;
 
-};
+ };
+ */
 
 export const getLastProduct = ( state ) => {
 
@@ -96,8 +98,6 @@ export const isLiked = ( state ) => {
 
 export const hasMore = ( state ) => (getList( state ) !== null) ? getList( state ).hasMore : true;
 
-export const isInfinity = ( state ) => (getList( state ) !== null) ? getList( state ).isInfinity : null;
-
 export const getColumnCount = ( { products } ) => products.columnCount;
 
 export const isLoading = ( { products } ) => products.loading;
@@ -116,34 +116,63 @@ export const isAnimateShow = ( state ) => {
 
 };
 
-export const getScroll = ( state ) => {
-
-  const list = getList( state );
-
-  if ( list !== null ) {
-    return {
-      scrollTop: list.scrollTop,
-      scrollHeight: list.scrollHeight
-    }
-  }
-
-  return {};
-
-};
-
-export const getLengthList = ( state ) => (getList( state ) !== null) ?
-  getList( state ).lengthList :
-  state.products.ITEMS_PER_PAGE;
-
-export const callAfterLoading = (state) => {
+export const callAfterLoading = ( state ) => {
 
   return state.products.callBackAfterLoading;
 
 };
 
-export const getComeBack = (state) => {
-  
+export const getComeBack = ( state ) => {
+
   return state.products.comeBack;
 
-}
+};
+
+export const _getScrollData = (state) => {
+  
+  const list = getList( state );
+
+  if ( list !== null ) {
+
+    return {
+      scrollTop: list.scrollTop,
+      scrollTopReal: list.scrollTopReal,
+      rowHeight: list.rowHeight,
+      viewHeight: list.viewHeight
+    }
+
+  }
+
+  return {
+    scrollTop: 0,
+    scrollTopReal: 0,
+    rowHeight: 0,
+    viewHeight: 0
+  }
+  
+};
+
+export const getVirtualScrollData = ( state ) => {
+
+  const list = getList( state );
+  
+  if ( list !== null ) {
+
+    return {
+      topBlockHeight: list.topBlockHeight,
+      bottomBlockHeight: list.bottomBlockHeight,
+      idStart: list.idStart,
+      idEnd: list.idEnd
+    }
+
+  }
+
+  return {
+    topBlockHeight: 0,
+    bottomBlockHeight: 0,
+    idStart: 0,
+    idEnd: 0
+  }
+
+};
 
