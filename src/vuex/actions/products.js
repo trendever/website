@@ -46,13 +46,11 @@ export const closeProducts = ( { dispatch } ) => {
 
 export const setScroll = (() => {
 
-  let lastShift = 0;
-
+  let lastShift          = 0;
   let countOfViewElement = 18;
-
-  let searchOptions = {};
-
-  let loading = false;
+  let searchOptions      = {};
+  let loading            = false;
+  let limit              = 21;
 
   return ( { dispatch, state }, options, initScroll = false, searchData = {} ) => {
 
@@ -61,10 +59,12 @@ export const setScroll = (() => {
     if ( columnCount === 3 ) {
 
       countOfViewElement = 18;
+      limit              = 21;
 
     } else if ( columnCount === 2 ) {
 
-      countOfViewElement = 20;
+      countOfViewElement = 16;
+      limit              = 20;
 
     }
 
@@ -72,7 +72,7 @@ export const setScroll = (() => {
 
     if ( initScroll ) {
 
-      searchOptions = searchData;
+      Object.assign( searchOptions, searchData );
 
       const { rowHeight, viewHeight } = options;
 
@@ -124,17 +124,7 @@ export const setScroll = (() => {
 
       if ( lastShift !== shift ) {
 
-        const shiftDirection = lastShift < shift; // Если новый сдвиг больше то двигаемся вниз
-
-        if ( shiftDirection ) {
-
-          lastShift++;
-
-        } else {
-
-          lastShift--;
-
-        }
+        lastShift < shift ? lastShift++ : lastShift--;
 
         const idEnd         = shift * columnCount + countOfViewElement;
         const productLength = products.slice( idEnd, products.length ).length / columnCount;
@@ -158,9 +148,9 @@ export const setScroll = (() => {
 
               loading = true;
 
-              searchData.limit = 21;
+              searchOptions.limit = limit;
 
-              return loadProducts( { dispatch, state }, searchData, false ).then( () => {
+              return loadProducts( { dispatch, state }, searchOptions, false ).then( () => {
 
                 loading = false;
 
@@ -451,6 +441,15 @@ export const run = ( { dispatch, state }, options, force ) => {
   const items = getProducts( state );
 
   if ( items === null || force ) {
+
+    switch ( getColumnCount( state ) ) {
+      case 3:
+        options.limit = 9;
+        break;
+      case 2:
+        options.limit = 8;
+        break;
+    }
 
     return loadProducts( { dispatch, state }, options, force )
       .then( () => {

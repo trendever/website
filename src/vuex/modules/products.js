@@ -12,8 +12,8 @@ import {
   PRODUCTS_SET_CALL_BACK_AFTER_LOADING,
   PRODUCTS_SET_COME_BACK
 } from '../mutation-types';
-
-const ITEMS_PER_PAGE = 9;
+const columnCount    = document.body.offsetWidth <= 750 ? 2 : 3;
+const ITEMS_PER_PAGE = columnCount === 3 ? 9 : 8;
 
 // initial state
 const state = {
@@ -33,7 +33,7 @@ const state = {
     //   hasMore: true,
     // },
   },
-  columnCount: document.body.offsetWidth <= 750 ? 2 : 3,
+  columnCount,
   listId: null,
   loading: true,
   ITEMS_PER_PAGE,
@@ -321,7 +321,7 @@ const mutations = {
     }
 
   },
-  
+
   [PRODUCTS_SET_ANIMATE] ( state, animateShow = true, listId = state.listId ) {
 
     if ( state.lists.hasOwnProperty( listId ) ) {
