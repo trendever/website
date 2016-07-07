@@ -38,7 +38,7 @@ scroll-top
     run,
     setListId,
     initScroll,
-    setScroll,
+    updateScroll,
     closeProducts
   } from 'vuex/actions/products';
 
@@ -48,7 +48,7 @@ scroll-top
     isLoading,
     isAnimateShow,
     getVirtualScrollData,
-    getColumnCount
+    getColumnCount,
   } from 'vuex/getters/products';
 
   export default {
@@ -69,7 +69,7 @@ scroll-top
         run,
         setListId,
         initScroll,
-        setScroll,
+        updateScroll,
         clearSearch,
         closeProducts
       }
@@ -106,7 +106,6 @@ scroll-top
           pointerEvents: 'auto'
         },
         lastSelectedTagId: null,
-        globalTop: 0,
         memRowHeight: 0
       }
     },
@@ -127,12 +126,9 @@ scroll-top
 
       this._run().then( ( scrollTop ) => {
 
-        this.scrollCnt.scrollTop = scrollTop;
-
         this.$nextTick( () => {
 
-          this.$set('globalTop', Math.round( this.$els.container.getBoundingClientRect().top ) + 50);
-
+          this.scrollCnt.scrollTop = scrollTop;
           this.runScroll();
           this.emitIsRun();
 
@@ -169,7 +165,7 @@ scroll-top
 
     methods: {
 
-      initScrollData(){
+      _initScroll(){
 
         const { search, tags, filterByUserName, filterByUserId } = this;
 
@@ -189,8 +185,7 @@ scroll-top
 
         const { search, tags, filterByUserName, filterByUserId } = this;
 
-        this.setScroll( {
-          viewHeight: this.viewHeight,
+        this.updateScroll( {
           scrollTop: this.scrollTop,
           rowHeight: this.memRowHeight,
           scrollTopReal: this.scrollCnt.scrollTop,
@@ -203,9 +198,7 @@ scroll-top
 
         this.$set( 'memRowHeight', this.rowHeight );
 
-        this.setScroll( {
-          rowHeight: this.memRowHeight
-        } );
+        this.updateScroll( { rowHeight: this.memRowHeight } );
 
       },
 
@@ -235,7 +228,7 @@ scroll-top
 
           let timerId = null;
 
-          this.initScrollData();
+          this._initScroll();
 
           return () => {
 
@@ -283,9 +276,9 @@ scroll-top
         cache: false,
         get(){
 
-          const scrollTop = this.scrollCnt.scrollTop - this.globalTop;
+          const scrollTop = this.$els.container.getBoundingClientRect().top;
 
-          return ( scrollTop >= 0 ) ? scrollTop : 0;
+          return ( scrollTop > 0 ) ? 0 : Math.abs( scrollTop );
 
         }
       },
@@ -299,11 +292,19 @@ scroll-top
         }
       },
 
-      viewHeight:{
+      viewHeight: {
         cache: false,
         get(){
 
-          return this.scrollCnt.offsetHeight - Math.round( this.$els.container.getBoundingClientRect().top );
+          const scrollTop = this.$els.container.getBoundingClientRect().top;
+
+          if ( scrollTop > 0 ) {
+
+            return this.scrollCnt.offsetHeight - scrollTop;
+
+          }
+
+          return this.scrollCnt.offsetHeight;
 
         }
       },
@@ -324,18 +325,11 @@ scroll-top
 
     watch: {
       getColumnCount(){
-
-        this.$nextTick(() => {
-
-          this._updateScroll();
-
-        });
-
+        this._updateScroll();
+        this.scrollCnt.scrollTop = 0;
       },
       items(){
-
         this._setScroll();
-
       },
       listId( listId ) {
 
@@ -362,7 +356,7 @@ scroll-top
 
               this.$nextTick( () => {
 
-                this.initScrollData();
+                this._initScroll();
 
               });
 
@@ -381,7 +375,7 @@ scroll-top
 
             this.$nextTick( () => {
 
-              this.initScrollData();
+              this._initScroll();
 
             });
 

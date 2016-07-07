@@ -1,7 +1,7 @@
 import { userID } from 'vuex/getters/user.js'
 
 export const getList = ( { products } ) => {
-  
+
   if ( products.lists.hasOwnProperty( products.listId ) ) {
 
     return products.lists[ products.listId ];
@@ -129,11 +129,11 @@ export const getComeBack = ( state ) => {
 };
 
 export const _getScrollData = (state) => {
-  
+
   const list = getList( state );
 
   if ( list !== null ) {
-
+    
     return {
       scrollTop: list.scrollTop,
       scrollTopReal: list.scrollTopReal,
@@ -149,18 +149,19 @@ export const _getScrollData = (state) => {
     rowHeight: 0,
     viewHeight: 0
   }
-  
+
 };
 
 export const getVirtualScrollData = ( state ) => {
 
   const list = getList( state );
-  
-  if ( list !== null ) {
 
+  if ( list !== null ) {
+    
     return {
       topBlockHeight: list.topBlockHeight,
       bottomBlockHeight: list.bottomBlockHeight,
+      localScrollTop: list.localScrollTop,
       idStart: list.idStart,
       idEnd: list.idEnd
     }
@@ -170,6 +171,7 @@ export const getVirtualScrollData = ( state ) => {
   return {
     topBlockHeight: 0,
     bottomBlockHeight: 0,
+    localScrollTop: 0,
     idStart: 0,
     idEnd: 0
   }

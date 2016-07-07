@@ -21,6 +21,7 @@ const state = {
     // "profile": {
     //   products: [],
     //   viewHeight: 0,
+    //   localScrollTop: 0,
     //   scrollTop: 0,
     //   scrollTopReal: 0,
     //   rowHeight: 0,
@@ -57,6 +58,7 @@ const mutations = {
           [ state.listId ]: {
             products: Array.isArray( products ) ? products : [],
             viewHeight: 0,
+            localScrollTop: 0,
             scrollTop: 0,
             scrollTopReal: 0,
             rowHeight: 0,
@@ -87,6 +89,7 @@ const mutations = {
           [ state.listId ]: {
             products: [],
             viewHeight: 0,
+            localScrollTop: 0,
             scrollTop: 0,
             scrollTopReal: 0,
             rowHeight: 0,
@@ -254,6 +257,7 @@ const mutations = {
             [ 'profile' ]: {
               products: [ Object.assign( {}, product ) ],
               viewHeight: 0,
+              localScrollTop: 0,
               scrollTop: 0,
               scrollTopReal: 0,
               rowHeight: 0,

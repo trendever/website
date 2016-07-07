@@ -44,189 +44,305 @@ export const closeProducts = ( { dispatch } ) => {
 
 };
 
-/**
- * TODO После того как всё правильно заработает: 1) Декомпозировать 2) Сделать сущность которая считает данные для
- * виртуального кролла
- *
- * */
-
-export const initScroll = (
-  { dispatch, state }, {
-    searchData = {},
-    rowHeight = 0,
-    viewHeight = 0,
-    scrollTop = 0,
-    scrollTopReal = 0
-  }
+export const loadProducts = (
+  { dispatch, state },
+  { isSearch, isTags, filterByUserName, filterByUserId, limit },
+  force = false
 ) => {
+
+  dispatch( types.PRODUCTS_LOADING, true );
+
+  return new Promise( ( resolve, reject ) => {
+
+    const items = getProducts( state );
+
+    if ( items === null || force ) {
+
+      setAnimate( { dispatch, state }, true );
+
+      products
+        .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId, limit }, force ) )
+        .then( data => {
+
+          if ( force ) {
+
+            dispatch( types.PRODUCTS_FORCE_RECEIVE, data.object_list );
+
+          } else {
+
+            dispatch( types.PRODUCTS_RECEIVE, data.object_list );
+
+          }
+
+          resolve();
+
+        } )
+        .catch( ( error ) => {
+          products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId, limit } );
+          reject( error );
+        } );
+
+    } else {
+
+      if ( hasMore( state ) ) {
+
+        setAnimate( { dispatch, state }, true );
+
+        products
+          .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId, limit }, force ) )
+          .then( data => {
+
+            dispatch( types.PRODUCTS_RECEIVE, data.object_list );
+
+            resolve();
+
+          } )
+          .catch( ( error ) => {
+            products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId, limit } );
+            reject( error );
+          } );
+
+      }
+
+    }
+
+  } );
+
+};
+
+const getRows = ( state ) => {
 
   const columnCount = getColumnCount( state );
   const products    = getProducts( state );
 
-  let rowsCount = 0;
-
   if ( products !== null ) {
 
-    rowsCount = parseInt( products.length / columnCount )
+    return parseInt( products.length / columnCount )
 
   }
 
-  const elementsHeight = rowsCount * rowHeight;
-
-  const freeHeight = ( viewHeight - elementsHeight > 1 ) ? viewHeight - elementsHeight : 0;
-
-  let needRowsForCoverFreeSpace = 0;
-
-  if ( freeHeight > 0 ) {
-
-    needRowsForCoverFreeSpace = parseInt( freeHeight / rowHeight ) + 1;
-
-  }
-
-  let needRowLoad = ( columnCount === 3 ) ? needRowsForCoverFreeSpace + 6 : needRowsForCoverFreeSpace + 8;
-
-  const rowsOnDown = (rowsCount * rowHeight - ( scrollTop + viewHeight )) / rowHeight;
-
-  if ( rowsOnDown >= needRowLoad ) {
-
-    needRowLoad = 0;
-
-  }
-
-  searchData.limit = needRowLoad * columnCount;
-
-  return loadProducts( { dispatch, state }, searchData, false ).then( () => {
-
-    dispatch( types.PRODUCTS_SET_SCROLL, {
-      scrollTopReal,
-      scrollTop,
-      viewHeight,
-      rowHeight,
-      idEnd: getVirtualScrollData( state ).idEnd + columnCount * 3
-    } );
-
-  } )
+  return 0;
 
 };
 
-export const setScroll = (() => {
+const getRowsByCount = ( state, countElements ) => {
 
-  let countOfViewElement = 18;
-  let loading            = false;
-  let limit              = 21;
-  let lastShift          = 0;
-  let _scrollTop         = 0;
-  let _scrollTopReal     = 0;
-  let _searchOptions     = {};
+  return parseInt( countElements / getColumnCount( state ) );
 
-  return ( { dispatch, state }, { scrollTop, rowHeight, scrollTopReal, searchOptions, viewHeight } ) => {
+};
 
-    const columnCount = getColumnCount( state );
-    const products    = getProducts( state );
+const getCountElementOnPage = ( state ) => {
 
-    if ( columnCount === 3 ) {
+  const columnCount = getColumnCount( state );
 
-      countOfViewElement = 18;
-      limit              = 21;
+  switch ( columnCount ) {
+    case 3:
+      return 27;
+    case 2:
+      return 18;
+    default:
+      return 0
+  }
 
-    } else if ( columnCount === 2 ) {
+};
 
-      countOfViewElement = 16;
-      limit              = 20;
+const getCountRowsOnPage = ( state ) => {
 
-    }
+  const columnCount = getColumnCount( state );
 
-    if ( typeof scrollTop !== 'undefined' ) {
+  return parseInt( getCountElementOnPage( state ) / columnCount )
 
-      _scrollTop = scrollTop;
+};
 
-    }
+const getCountItemsByRows = ( state, rowsCount ) => {
 
-    if ( typeof scrollTopReal !== 'undefined' ) {
+  return getColumnCount( state ) * rowsCount;
 
-      _scrollTopReal = scrollTopReal;
+};
 
-    }
+const getNeedRows = ( state, viewHeight, rowHeight ) => {
 
-    if ( typeof searchOptions !== 'undefined' ) {
+  const columnCount = getColumnCount( state );
+  const coverHeight = getRows( state ) * rowHeight;
 
-      _searchOptions = searchOptions;
+  if ( coverHeight < viewHeight ) {
 
-    }
+    const needRows = parseInt( viewHeight / coverHeight );
 
-    const maxHeightOfProducts = (products.length / columnCount) * rowHeight;
+    if ( ( needRows + getRows( state ) ) < getCountRowsOnPage( state ) ) {
 
-    if ( maxHeightOfProducts < _scrollTop ) {
-
-      _scrollTop = (columnCount === 3) ? maxHeightOfProducts - 2000 : maxHeightOfProducts;
+      return getCountRowsOnPage( state ) - ( needRows + getRows( state ) ) + columnCount;
 
     }
 
-    const shift = parseInt( _scrollTop / rowHeight );
+    return needRows + columnCount;
 
-    if ( (shift ^ 0) === shift ) {
+  }
 
-      if ( lastShift !== shift ) {
+  return 0;
 
-        lastShift < shift ? lastShift++ : lastShift--;
+};
 
-        if ( lastShift < shift && shift <= 2 ) {
+export const initScroll = ( { dispatch, state }, options ) => {
 
-          return null;
+  /**
+   * Эта функция нужня для того чтобы добавить элементы на супер больших мониторах.
+   * */
+
+  const needRows = getNeedRows( state, options.viewHeight, options.rowHeight );
+
+  options.searchData.limit = getCountItemsByRows( state, needRows );
+
+  if ( options.searchData.limit > 0 ) {
+
+    return loadProducts( { dispatch, state }, options.searchData, false ).then( () => {
+
+      dispatch( types.PRODUCTS_SET_SCROLL, Object.assign( {}, options, {
+        idEnd: getCountItemsByRows( state, getRows( state ) + needRows )
+      } ) );
+
+    } )
+
+  }
+
+};
+
+const getLocalScrollTop = ( state, scrollTop ) => {
+
+  const { topBlockHeight } = getVirtualScrollData( state );
+
+  return scrollTop - topBlockHeight;
+
+};
+
+const getCurrentRow = ( state, scrollTop, rowHeight ) => {
+
+  return parseInt( scrollTop / rowHeight );
+
+};
+
+const getNeedLoadData = ( state ) => {
+
+  const { idEnd } = getVirtualScrollData( state );
+
+  return getRowsByCount( state, idEnd ) > ( getRows( state ) - getColumnCount( state ));
+
+};
+
+const getShift = (() => {
+
+  let lastScrollTop = 0;
+
+  const data = {
+    direction: true,
+    shift: 0
+  };
+
+  let lastBorder = 0;
+
+  return ( state, scrollTop, rowHeight ) => {
+
+    data.direction = scrollTop >= lastScrollTop;
+
+    lastScrollTop = scrollTop;
+
+    const border = getColumnCount( state );
+
+    const shift = getCurrentRow( state, scrollTop, rowHeight );
+
+    if ( Number.isInteger( shift / border ) && data.direction ) {
+
+      data.shift = shift;
+
+    }
+
+    if ( !data.direction && getLocalScrollTop( state, scrollTop ) < 0 ) {
+
+      data.shift -= border;
+
+    }
+
+    if ( lastBorder !== border ) {
+
+      lastBorder     = border;
+      data.shift     = 0;
+      data.direction = true;
+      lastScrollTop  = 0;
+
+    }
+
+    return data;
+
+  }
+
+})();
+
+export const updateScroll = (() => {
+
+  let _scrollTop     = 0;
+  let _scrollTopReal = 0;
+  let _searchOptions = {};
+  let _loading       = false;
+
+  return ( { dispatch, state }, { scrollTop, rowHeight, scrollTopReal, searchOptions } ) => {
+
+    if ( rowHeight > 0 ) {
+
+      if ( typeof scrollTop !== 'undefined' ) {
+
+        _scrollTop = scrollTop;
+
+      }
+
+      if ( typeof scrollTopReal !== 'undefined' ) {
+
+        _scrollTopReal = scrollTopReal;
+
+      }
+
+      if ( typeof searchOptions !== 'undefined' ) {
+
+        _searchOptions = searchOptions;
+
+      }
+
+      const { shift } = getShift( state, _scrollTop, rowHeight );
+
+      const needLoadData = getNeedLoadData( state, _scrollTop, rowHeight );
+
+      if ( needLoadData ) {
+
+        _searchOptions.limit = getCountElementOnPage( state );
+
+        if ( !_loading ) {
+
+          _loading = true;
+
+          loadProducts( { dispatch, state }, _searchOptions, false ).then( () => {
+
+            updateScroll( { dispatch, state }, { scrollTop, rowHeight, scrollTopReal, searchOptions } );
+
+            _loading = false;
+
+          } );
 
         }
 
-        const idEnd         = shift * columnCount + countOfViewElement;
-        const productLength = products.slice( idEnd, products.length ).length / columnCount;
+      } else {
 
-        const newOptions = Object.assign(
+        const idEnd = getCountElementOnPage( state ) + shift * getColumnCount( state );
+        
+        dispatch( types.PRODUCTS_SET_SCROLL, Object.assign(
+          {},
+          { scrollTop: _scrollTop, rowHeight, scrollTopReal: _scrollTopReal },
           {
-            scrollTop: _scrollTop,
-            rowHeight,
-            viewHeight,
-            scrollTopReal: _scrollTopReal
-          },
-          {
-            idStart: shift * columnCount,
-            idEnd,
+            localScrollTop: getLocalScrollTop( state, _scrollTop ),
             topBlockHeight: shift * rowHeight,
-            bottomBlockHeight: parseInt( productLength ) * rowHeight
+            bottomBlockHeight: ( getRows( state ) - getRowsByCount( state, idEnd ) ) * rowHeight,
+            idStart: shift * getColumnCount( state ),
+            idEnd
           }
-        );
-
-        if ( Array.isArray( products ) ) {
-
-          if ( products.slice( newOptions.idStart, newOptions.idEnd ).length === countOfViewElement ) {
-
-            dispatch( types.PRODUCTS_SET_SCROLL, newOptions );
-
-          } else {
-
-            if ( !loading ) {
-
-              loading = true;
-
-              _searchOptions.limit = limit;
-
-              return loadProducts( { dispatch, state }, _searchOptions, false ).then( () => {
-
-                loading = false;
-
-                const products = getProducts( state );
-                const columnCount = getColumnCount( state );
-
-                dispatch( types.PRODUCTS_SET_SCROLL, Object.assign( {}, newOptions, {
-                  idEnd: getVirtualScrollData( state ).idEnd + columnCount * 2,
-                  bottomBlockHeight: parseInt( products.slice( idEnd, products.length ).length / columnCount ) * rowHeight
-                } ) );
-
-              } )
-
-            }
-
-          }
-
-        }
+        ) );
 
       }
 
@@ -350,72 +466,6 @@ export const getSearchOptions = (
 
 };
 
-export const loadProducts = (
-  { dispatch, state },
-  { isSearch, isTags, filterByUserName, filterByUserId, limit },
-  force = false
-) => {
-
-  dispatch( types.PRODUCTS_LOADING, true );
-
-  return new Promise( ( resolve, reject ) => {
-
-    const items = getProducts( state );
-
-    if ( items === null || force ) {
-
-      setAnimate( { dispatch, state }, true );
-
-      products
-        .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId, limit }, force ) )
-        .then( data => {
-
-          if ( force ) {
-
-            dispatch( types.PRODUCTS_FORCE_RECEIVE, data.object_list );
-
-          } else {
-
-            dispatch( types.PRODUCTS_RECEIVE, data.object_list );
-
-          }
-
-          resolve();
-
-        } )
-        .catch( ( error ) => {
-          products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId, limit } );
-          reject( error );
-        } );
-
-    } else {
-
-      if ( hasMore( state ) ) {
-
-        setAnimate( { dispatch, state }, true );
-
-        products
-          .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId, limit }, force ) )
-          .then( data => {
-
-            dispatch( types.PRODUCTS_RECEIVE, data.object_list );
-
-            resolve();
-
-          } )
-          .catch( ( error ) => {
-            products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId, limit } );
-            reject( error );
-          } );
-
-      }
-
-    }
-
-  } );
-
-};
-
 export const openProduct = ( { dispatch, state }, id ) => {
 
   /**
@@ -485,6 +535,13 @@ export const openProduct = ( { dispatch, state }, id ) => {
 
 export const run = ( { dispatch, state }, options, force ) => {
 
+  /**
+   * Смысл в том что если в ленте нет элементов занчит это инициализация,
+   * я загружаю ленту и возвращаю позицию скрола.
+   *
+   * Если элементы есть я просто возвращаю позицию скролла из состояния.
+   * */
+
   if ( !force ) {
 
     const items = getProducts( state );
@@ -501,17 +558,14 @@ export const run = ( { dispatch, state }, options, force ) => {
 
   if ( items === null || force ) {
 
-    switch ( getColumnCount( state ) ) {
-      case 3:
-        options.limit = 9;
-        break;
-      case 2:
-        options.limit = 8;
-        break;
-    }
+    options.limit = getCountElementOnPage( state );
 
     return loadProducts( { dispatch, state }, options, force )
       .then( () => {
+
+        dispatch( types.PRODUCTS_SET_SCROLL, Object.assign( {}, options, {
+          idEnd: getCountItemsByRows( state, 9 )
+        } ) );
 
         if ( isAnimateShow( state ) ) {
 
@@ -522,11 +576,6 @@ export const run = ( { dispatch, state }, options, force ) => {
           }, 2000 );
 
           return 0;
-
-          /**
-           * 2 сек после получения данных, после 2 сек выключается анимация
-           * жду чтобы картинки успели загрузиться, не вешать же на каждую картинку onLoad
-           * */
 
         }
 
