@@ -37,6 +37,7 @@ scroll-top
   import {
     run,
     setListId,
+    initScroll,
     setScroll,
     closeProducts
   } from 'vuex/actions/products';
@@ -46,7 +47,8 @@ scroll-top
     hasMore,
     isLoading,
     isAnimateShow,
-    getVirtualScrollData
+    getVirtualScrollData,
+    getColumnCount
   } from 'vuex/getters/products';
 
   export default {
@@ -60,11 +62,13 @@ scroll-top
         isAnimateShow,
         searchValue,
         selectedTags: tags,
-        selectedTagsId
+        selectedTagsId,
+        getColumnCount
       },
       actions: {
         run,
         setListId,
+        initScroll,
         setScroll,
         clearSearch,
         closeProducts
@@ -102,7 +106,8 @@ scroll-top
           pointerEvents: 'auto'
         },
         lastSelectedTagId: null,
-        globalTop: 0
+        globalTop: 0,
+        memRowHeight: 0
       }
     },
 
@@ -111,6 +116,12 @@ scroll-top
       this.setListId( this.listId );
 
       this.scrollCnt = document.querySelector( '.scroll-cnt' );
+
+      this.resize = listen(window, 'optimizedResize', () => {
+
+        this._updateScroll();
+
+      });
 
       this.$set( 'lastSelectedTagId', this.selectedTagsId.join( ',' ) );
 
@@ -133,6 +144,8 @@ scroll-top
 
     beforeDestroy() {
 
+      this.resize.remove();
+
       if ( this.scrollEvent ) {
 
         this.scrollEvent.remove();
@@ -148,6 +161,8 @@ scroll-top
 
         const { idStart, idEnd } = this.getVirtualScrollData;
 
+        console.log( { idStart, idEnd } );
+
         return value.slice( idStart, idEnd );
       }
     },
@@ -158,12 +173,39 @@ scroll-top
 
         const { search, tags, filterByUserName, filterByUserId } = this;
 
-        return this.setScroll( {
-          scrollTop: this.scrollTop,
-          rowHeight: this.rowHeight,
+        this.$set( 'memRowHeight', this.rowHeight );
+
+        return this.initScroll( {
+          searchData: { isSearch: search, isTags: tags, filterByUserName, filterByUserId },
+          rowHeight: this.memRowHeight,
           viewHeight: this.viewHeight,
+          scrollTop: this.scrollTop,
           scrollTopReal: this.scrollCnt.scrollTop
-        }, true, { isSearch: search, isTags: tags, filterByUserName, filterByUserId } );
+        } );
+
+      },
+
+      _setScroll(){
+
+        const { search, tags, filterByUserName, filterByUserId } = this;
+
+        this.setScroll( {
+          viewHeight: this.viewHeight,
+          scrollTop: this.scrollTop,
+          rowHeight: this.memRowHeight,
+          scrollTopReal: this.scrollCnt.scrollTop,
+          searchOptions: { isSearch: search, isTags: tags, filterByUserName, filterByUserId }
+        } );
+
+      },
+
+      _updateScroll(){
+
+        this.$set( 'memRowHeight', this.rowHeight );
+
+        this.setScroll( {
+          rowHeight: this.memRowHeight
+        } );
 
       },
 
@@ -211,11 +253,7 @@ scroll-top
 
             }, 200 );
 
-            this.setScroll( {
-              rowHeight: this.rowHeight,
-              scrollTop: this.scrollTop,
-              scrollTopReal: this.scrollCnt.scrollTop
-            } );
+            this._setScroll();
 
           }
 
@@ -285,6 +323,20 @@ scroll-top
     },
 
     watch: {
+      getColumnCount(){
+
+        this.$nextTick(() => {
+
+          this._updateScroll();
+
+        });
+
+      },
+      items(){
+
+        this._setScroll();
+
+      },
       listId( listId ) {
 
         this.setListId( listId );

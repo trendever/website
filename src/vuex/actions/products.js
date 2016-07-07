@@ -44,17 +44,85 @@ export const closeProducts = ( { dispatch } ) => {
 
 };
 
+/**
+ * TODO После того как всё правильно заработает: 1) Декомпозировать 2) Сделать сущность которая считает данные для
+ * виртуального кролла
+ *
+ * */
+
+export const initScroll = (
+  { dispatch, state }, {
+    searchData = {},
+    rowHeight = 0,
+    viewHeight = 0,
+    scrollTop = 0,
+    scrollTopReal = 0
+  }
+) => {
+
+  const columnCount = getColumnCount( state );
+  const products    = getProducts( state );
+
+  let rowsCount = 0;
+
+  if ( products !== null ) {
+
+    rowsCount = parseInt( products.length / columnCount )
+
+  }
+
+  const elementsHeight = rowsCount * rowHeight;
+
+  const freeHeight = ( viewHeight - elementsHeight > 1 ) ? viewHeight - elementsHeight : 0;
+
+  let needRowsForCoverFreeSpace = 0;
+
+  if ( freeHeight > 0 ) {
+
+    needRowsForCoverFreeSpace = parseInt( freeHeight / rowHeight ) + 1;
+
+  }
+
+  let needRowLoad = ( columnCount === 3 ) ? needRowsForCoverFreeSpace + 6 : needRowsForCoverFreeSpace + 8;
+
+  const rowsOnDown = (rowsCount * rowHeight - ( scrollTop + viewHeight )) / rowHeight;
+
+  if ( rowsOnDown >= needRowLoad ) {
+
+    needRowLoad = 0;
+
+  }
+
+  searchData.limit = needRowLoad * columnCount;
+
+  return loadProducts( { dispatch, state }, searchData, false ).then( () => {
+
+    dispatch( types.PRODUCTS_SET_SCROLL, {
+      scrollTopReal,
+      scrollTop,
+      viewHeight,
+      rowHeight,
+      idEnd: getVirtualScrollData( state ).idEnd + columnCount * 3
+    } );
+
+  } )
+
+};
+
 export const setScroll = (() => {
 
-  let lastShift          = 0;
   let countOfViewElement = 18;
-  let searchOptions      = {};
   let loading            = false;
   let limit              = 21;
+  let lastShift          = 0;
+  let _scrollTop         = 0;
+  let _scrollTopReal     = 0;
+  let _searchOptions     = {};
 
-  return ( { dispatch, state }, options, initScroll = false, searchData = {} ) => {
+  return ( { dispatch, state }, { scrollTop, rowHeight, scrollTopReal, searchOptions, viewHeight } ) => {
 
     const columnCount = getColumnCount( state );
+    const products    = getProducts( state );
 
     if ( columnCount === 3 ) {
 
@@ -68,57 +136,33 @@ export const setScroll = (() => {
 
     }
 
-    const products = getProducts( state );
+    if ( typeof scrollTop !== 'undefined' ) {
 
-    if ( initScroll ) {
-
-      Object.assign( searchOptions, searchData );
-
-      const { rowHeight, viewHeight } = options;
-
-      let rowsCount = 0;
-
-      if ( products !== null ) {
-
-        rowsCount = parseInt( products.length / columnCount )
-
-      }
-
-      const elementsHeight = rowsCount * rowHeight;
-
-      const freeHeight = (viewHeight - elementsHeight > 1) ? viewHeight - elementsHeight : 0;
-
-      let needRowsForCoverFreeSpace = 0;
-
-      if ( freeHeight > 0 ) {
-
-        needRowsForCoverFreeSpace = parseInt( freeHeight / rowHeight ) + 1;
-
-      }
-
-      /**
-       * Тут я добавляю вниз необходимое для пагинации кол-во строк.
-       * */
-
-      const needRowLoad = ( columnCount === 3 ) ?
-      needRowsForCoverFreeSpace + 6 :
-      needRowsForCoverFreeSpace + 8;
-
-      searchData.limit = needRowLoad * columnCount;
-
-      dispatch( types.PRODUCTS_SET_SCROLL, options );
-
-      return loadProducts( { dispatch, state }, searchData, false ).then( () => {
-
-        dispatch( types.PRODUCTS_SET_SCROLL, {
-          idEnd: getVirtualScrollData( state ).idEnd + columnCount * 3
-        } );
-
-      } )
+      _scrollTop = scrollTop;
 
     }
 
-    const shift = parseInt( options.scrollTop / options.rowHeight );
+    if ( typeof scrollTopReal !== 'undefined' ) {
+
+      _scrollTopReal = scrollTopReal;
+
+    }
+
+    if ( typeof searchOptions !== 'undefined' ) {
+
+      _searchOptions = searchOptions;
+
+    }
+
+    const maxHeightOfProducts = (products.length / columnCount) * rowHeight;
+
+    if ( maxHeightOfProducts < _scrollTop ) {
+
+      _scrollTop = (columnCount === 3) ? maxHeightOfProducts - 2000 : maxHeightOfProducts;
+
+    }
+
+    const shift = parseInt( _scrollTop / rowHeight );
 
     if ( (shift ^ 0) === shift ) {
 
@@ -126,15 +170,29 @@ export const setScroll = (() => {
 
         lastShift < shift ? lastShift++ : lastShift--;
 
+        if ( lastShift < shift && shift <= 2 ) {
+
+          return null;
+
+        }
+
         const idEnd         = shift * columnCount + countOfViewElement;
         const productLength = products.slice( idEnd, products.length ).length / columnCount;
 
-        const newOptions = Object.assign( options, {
-          idStart: shift * columnCount,
-          idEnd,
-          topBlockHeight: shift * options.rowHeight,
-          bottomBlockHeight: parseInt( productLength ) * options.rowHeight
-        } );
+        const newOptions = Object.assign(
+          {
+            scrollTop: _scrollTop,
+            rowHeight,
+            viewHeight,
+            scrollTopReal: _scrollTopReal
+          },
+          {
+            idStart: shift * columnCount,
+            idEnd,
+            topBlockHeight: shift * rowHeight,
+            bottomBlockHeight: parseInt( productLength ) * rowHeight
+          }
+        );
 
         if ( Array.isArray( products ) ) {
 
@@ -148,18 +206,19 @@ export const setScroll = (() => {
 
               loading = true;
 
-              searchOptions.limit = limit;
+              _searchOptions.limit = limit;
 
-              return loadProducts( { dispatch, state }, searchOptions, false ).then( () => {
+              return loadProducts( { dispatch, state }, _searchOptions, false ).then( () => {
 
                 loading = false;
 
                 const products = getProducts( state );
+                const columnCount = getColumnCount( state );
 
-                dispatch( types.PRODUCTS_SET_SCROLL, {
+                dispatch( types.PRODUCTS_SET_SCROLL, Object.assign( {}, newOptions, {
                   idEnd: getVirtualScrollData( state ).idEnd + columnCount * 2,
-                  bottomBlockHeight: parseInt( products.slice( idEnd, products.length ).length / columnCount ) * options.rowHeight
-                } );
+                  bottomBlockHeight: parseInt( products.slice( idEnd, products.length ).length / columnCount ) * rowHeight
+                } ) );
 
               } )
 
