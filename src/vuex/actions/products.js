@@ -222,64 +222,58 @@ const getNeedLoadData = ( state ) => {
 
 };
 
-const getShift = (() => {
+const getShift = ( { dispatch, state }, scrollTop, rowHeight ) => {
 
-  /**
-   * УБРАТЬ ИЗ ЗАМЫКАНИЯ И ПОЛОЖИТЬ В СОСТОЯНИЕ, многопользовательские лданные
-   *
-   * */
 
-  let lastScrollTop = 0;
+  const { lastScrollTop, direction, shift, lastBorder } = _getScrollData( state );
 
   const data = {
-    direction: true,
-    shift: 0
+    direction,
+    shift
   };
 
-  let lastBorder = 0;
+  data.direction = scrollTop >= lastScrollTop;
 
-  return ( state, scrollTop, rowHeight ) => {
+  const border = getColumnCount( state );
 
-    data.direction = scrollTop >= lastScrollTop;
+  if ( data.direction ) {
 
-    lastScrollTop = scrollTop;
-
-    const border = getColumnCount( state );
-
-    const shift = getCurrentRow( state, scrollTop, rowHeight );
-
-    if ( data.direction ) {
-
-      data.shift = shift;
-
-    }
-
-    if ( !data.direction ) {
-
-      if ( getLocalScrollTop( state, scrollTop ) <= 0 ) {
-
-        data.shift = getCurrentRow( state, scrollTop, rowHeight );
-
-      }
-
-    }
-
-    if ( lastBorder !== border ) {
-
-      lastBorder     = border;
-      data.shift     = 0;
-      data.direction = true;
-      lastScrollTop  = 0;
-
-    }
-
-    console.log(data, shift, scrollTop, rowHeight );
-
-    return data;
+    data.shift = getCurrentRow( state, scrollTop, rowHeight );
 
   }
 
-})();
+  if ( !data.direction ) {
+
+    if ( getLocalScrollTop( state, scrollTop ) <= 0 ) {
+
+      data.shift = getCurrentRow( state, scrollTop, rowHeight );
+
+    }
+
+  }
+
+  if ( lastBorder !== border ) {
+
+    dispatch( types.PRODUCTS_SET_SCROLL, {
+      lastScrollTop: 0,
+      direction: true,
+      shift: 0
+    } );
+
+  }
+
+  console.log( data, shift, scrollTop, rowHeight );
+
+  dispatch( types.PRODUCTS_SET_SCROLL, {
+    lastScrollTop: scrollTop,
+    shift: data.shift,
+    direction: data.direction,
+    lastBorder: border
+  } );
+
+  return data;
+
+};
 
 /**
  *
@@ -318,7 +312,7 @@ export const updateScroll = (
 
   const isLoading = _getScrollData( state ).isLoading;
 
-  const { shift } = getShift( state, scrollTop, rowHeight );
+  const { shift } = getShift( { dispatch, state }, scrollTop, rowHeight );
 
   console.log( shift );
 
@@ -347,6 +341,7 @@ export const updateScroll = (
   } else {
 
     const idEnd = getCountElementOnPage( state ) + shift * getColumnCount( state );
+    const bottomBlockHeight = ( getRows( state ) - getRowsByCount( state, idEnd ) ) * rowHeight;
 
     dispatch( types.PRODUCTS_SET_SCROLL, {
       rowHeight,
@@ -354,7 +349,7 @@ export const updateScroll = (
       scrollTop,
       localScrollTop: getLocalScrollTop( state, scrollTop ),
       topBlockHeight: shift * rowHeight,
-      bottomBlockHeight: ( getRows( state ) - getRowsByCount( state, idEnd ) ) * rowHeight,
+      bottomBlockHeight: bottomBlockHeight > 0 ? bottomBlockHeight : 0,
       idStart: shift * getColumnCount( state ),
       idEnd
     } );

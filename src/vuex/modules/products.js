@@ -25,6 +25,10 @@ const state = {
   lists: {
     // "profile": {
     //   products: [],
+    //   lastScrollTop: 0,
+    //   direction: true,
+    //   shift: true,
+    //   lastBorder: 0,
     //   isLoading: false,
     //   searchOptions: {},
     //   viewHeight: 0,
@@ -64,6 +68,12 @@ const mutations = {
         {
           [ state.listId ]: {
             products: Array.isArray( products ) ? products : [],
+            
+            lastScrollTop: 0,
+            direction: true,
+            shift: true,
+            lastBorder: 0,
+            
             isLoading: false,
             viewHeight: 0,
             searchOptions: {},
@@ -97,6 +107,12 @@ const mutations = {
         {
           [ state.listId ]: {
             products: [],
+            
+            lastScrollTop: 0,
+            direction: true,
+            shift: true,
+            lastBorder: 0,
+            
             isLoading: false,
             viewHeight: 0,
             searchOptions: {},
@@ -267,6 +283,12 @@ const mutations = {
           {
             [ 'profile' ]: {
               products: [ Object.assign( {}, product ) ],
+
+              lastScrollTop: 0,
+              direction: true,
+              shift: true,
+              lastBorder: 0,
+              
               isLoading: false,
               viewHeight: 0,
               searchOptions: {},
