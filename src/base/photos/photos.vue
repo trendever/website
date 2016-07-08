@@ -307,7 +307,17 @@ scroll-top
         cache: false,
         get(){
 
-          return this.$els.photosList.children[ 1 ].offsetHeight;
+          if(this.$els){
+            if(this.$els.photosList){
+              if(this.$els.photosList.children){
+                if(this.$els.photosList.children[ 1 ]){
+                  return this.$els.photosList.children[ 1 ].offsetHeight
+                }
+              }
+            }
+          }
+
+          return 300;
 
         }
       },
