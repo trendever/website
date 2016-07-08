@@ -87,7 +87,7 @@ const addServiceMessage = (function() {
         MIME === 'text/plain' ||
         MIME === 'text/json' ||
         MIME === 'image/json' ||
-        //MIME === 'json/status' ||
+        MIME === 'json/status' ||
         MIME === 'image/base64'
       ) {
 
@@ -122,7 +122,21 @@ const addServiceMessage = (function() {
 
         if ( typeof messages[ i ].serviceMessage === 'undefined' ) {
 
-          newMessage.push( messages[ i ] );
+          if ( MIME === 'json/status' ) {
+
+            const { type } = JSON.parse( messages[ i ].parts[ 0 ].content );
+
+            if(type === 'suplier.called' || type === 'customer.called' || type === 'customer.phone.added'){
+
+              newMessage.push( messages[ i ] );
+              
+            }
+
+          } else {
+
+            newMessage.push( messages[ i ] );
+
+          }
 
         }
 
