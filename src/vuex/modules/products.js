@@ -10,7 +10,8 @@ import {
   PRODUCTS_SET_OPENED_PRODUCT,
   PRODUCTS_CLOSE,
   PRODUCTS_SET_CALL_BACK_AFTER_LOADING,
-  PRODUCTS_SET_COME_BACK
+  PRODUCTS_SET_COME_BACK,
+  PRODUCTS_SET_CONTAINER_WIDTH
 } from '../mutation-types';
 import { getCountElementOnPage } from 'vuex/getters/products.js'
 const columnCount    = document.body.offsetWidth <= 750 ? 2 : 3;
@@ -52,11 +53,18 @@ const state = {
   openedProduct: null,
   callBackAfterLoading: () => {
   },
-  comeBack: false
+  comeBack: false,
+  containerWidth: 0
 };
 
 // mutations
 const mutations = {
+
+  [PRODUCTS_SET_CONTAINER_WIDTH] ( state, width ){
+
+    state.containerWidth = width;
+
+  },
 
   [PRODUCTS_FORCE_RECEIVE] ( state, products ) {
 
@@ -68,12 +76,12 @@ const mutations = {
         {
           [ state.listId ]: {
             products: Array.isArray( products ) ? products : [],
-            
+
             lastScrollTop: 0,
             direction: true,
             shift: true,
             lastBorder: 0,
-            
+
             isLoading: false,
             viewHeight: 0,
             searchOptions: {},
@@ -107,12 +115,12 @@ const mutations = {
         {
           [ state.listId ]: {
             products: [],
-            
+
             lastScrollTop: 0,
             direction: true,
             shift: true,
             lastBorder: 0,
-            
+
             isLoading: false,
             viewHeight: 0,
             searchOptions: {},
@@ -288,7 +296,7 @@ const mutations = {
               direction: true,
               shift: true,
               lastBorder: 0,
-              
+
               isLoading: false,
               viewHeight: 0,
               searchOptions: {},
@@ -315,6 +323,27 @@ const mutations = {
 
   [PRODUCTS_SET_COLUMN_NUMBER] ( state, columnNumber = 3 ) {
 
+    if ( columnNumber === 3 ) {
+
+      const rowHeight = state.containerWidth / columnNumber;
+
+      for ( let listId in state.lists ) {
+
+        if ( state.lists.hasOwnProperty( listId ) ) {
+
+          const { scrollTop, scrollTopReal, idStart } = state.lists[ state.listId ];
+          
+          const newScrollTop     = parseInt( idStart / columnNumber ) * rowHeight;
+          const newScrollTopReal = newScrollTop + (scrollTopReal - scrollTop);
+
+          state.lists[ listId ].scrollTop     = newScrollTop;
+          state.lists[ listId ].scrollTopReal = newScrollTopReal;
+
+        }
+
+      }
+
+    }
     state.columnCount = columnNumber;
 
   },

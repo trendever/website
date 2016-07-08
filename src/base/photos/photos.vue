@@ -39,7 +39,8 @@ scroll-top
     setListId,
     initScroll,
     updateScroll,
-    closeProducts
+    closeProducts,
+    setContainerWidth
   } from 'vuex/actions/products';
 
   import {
@@ -49,6 +50,7 @@ scroll-top
     isAnimateShow,
     getVirtualScrollData,
     getColumnCount,
+    getScrollData,
   } from 'vuex/getters/products';
 
   export default {
@@ -63,7 +65,8 @@ scroll-top
         searchValue,
         selectedTags: tags,
         selectedTagsId,
-        getColumnCount
+        getColumnCount,
+        getScrollData
       },
       actions: {
         run,
@@ -71,7 +74,8 @@ scroll-top
         initScroll,
         updateScroll,
         clearSearch,
-        closeProducts
+        closeProducts,
+        setContainerWidth
       }
     },
 
@@ -112,11 +116,15 @@ scroll-top
 
     ready() {
 
+      this.setContainerWidth(this.$els.container.offsetWidth);
+
       this.setListId( this.listId );
 
       this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
       this.resize = listen(window, 'optimizedResize', () => {
+
+        this.setContainerWidth( this.$els.container.offsetWidth );
 
         this._updateScroll();
 
@@ -190,6 +198,7 @@ scroll-top
           this.updateScroll( {
             scrollTop: this.scrollTop,
             rowHeight: this.memRowHeight,
+            viewHeight: this.viewHeight,
             scrollTopReal: this.scrollCnt.scrollTop,
             searchOptions: { isSearch: search, isTags: tags, filterByUserName, filterByUserId }
           } );
@@ -200,13 +209,16 @@ scroll-top
 
       _updateScroll(){
 
-        this.$set( 'memRowHeight', this.rowHeight );
-
         if ( this.rowHeight > 0 ) {
 
-          this.updateScroll( { rowHeight: this.memRowHeight } );
+          this.$set( 'memRowHeight', this.rowHeight );
 
         }
+
+        this.updateScroll( {
+          rowHeight: this.memRowHeight,
+          viewHeight: this.viewHeight
+        } );
 
       },
 
@@ -333,8 +345,8 @@ scroll-top
 
     watch: {
       getColumnCount(){
+        this.scrollCnt.scrollTop = this.getScrollData.scrollTopReal;
         this._updateScroll();
-        this.scrollCnt.scrollTop = 0;
       },
       items(){
         this._setScroll();

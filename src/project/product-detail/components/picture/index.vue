@@ -1,5 +1,5 @@
 <template>
-  <div class="picture" v-bind:style='{ opacity: opacityImg }'>
+  <div class="picture" v-bind:style='{ opacity: opacityImg }' v-el:pic>
     <img :width="width" :height="height" :src="srcImg">
   </div>
 </template>
@@ -16,6 +16,7 @@
     },
     ready(){
       this.loadImg( this.img );
+      console.log(this.$els.pic.offsetWidth);
     },
     methods: {
 

@@ -128,7 +128,7 @@ export const getComeBack = ( state ) => {
 
 };
 
-export const _getScrollData = ( state ) => {
+export const getScrollData = ( state ) => {
 
   const list = getList( state );
 

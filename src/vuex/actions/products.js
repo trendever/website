@@ -10,7 +10,7 @@ import {
   getOpenedProduct,
   isLiked,
   isAnimateShow,
-  _getScrollData,
+  getScrollData,
   getVirtualScrollData,
   getCountElementOnPage
 } from 'vuex/getters/products.js';
@@ -224,8 +224,7 @@ const getNeedLoadData = ( state ) => {
 
 const getShift = ( { dispatch, state }, scrollTop, rowHeight ) => {
 
-
-  const { lastScrollTop, direction, shift, lastBorder } = _getScrollData( state );
+  const { lastScrollTop, direction, shift, lastBorder } = getScrollData( state );
 
   const data = {
     direction,
@@ -303,22 +302,19 @@ const getShift = ( { dispatch, state }, scrollTop, rowHeight ) => {
 
 export const updateScroll = (
   { dispatch, state }, {
-    scrollTop = _getScrollData( state ).scrollTop,
+    scrollTop = getScrollData( state ).scrollTop,
     rowHeight,
-    scrollTopReal = _getScrollData( state ).scrollTopReal,
-    searchOptions = _getScrollData( state ).searchOptions
+    scrollTopReal = getScrollData( state ).scrollTopReal,
+    searchOptions = getScrollData( state ).searchOptions,
+    viewHeight = getScrollData( state ).viewHeight,
   }
 ) => {
 
-  const isLoading = _getScrollData( state ).isLoading;
+  const isLoading = getScrollData( state ).isLoading;
 
   const { shift } = getShift( { dispatch, state }, scrollTop, rowHeight );
 
-  console.log( shift );
-
   const needLoadData = getNeedLoadData( state, scrollTop, rowHeight );
-
-  dispatch( types.PRODUCTS_SET_SCROLL, { scrollTopReal: scrollTopReal, scrollTop, rowHeight, searchOptions } );
 
   if ( needLoadData && hasMore( state ) ) {
 
@@ -338,23 +334,22 @@ export const updateScroll = (
 
     }
 
-  } else {
-
-    const idEnd = getCountElementOnPage( state ) + shift * getColumnCount( state );
-    const bottomBlockHeight = ( getRows( state ) - getRowsByCount( state, idEnd ) ) * rowHeight;
-
-    dispatch( types.PRODUCTS_SET_SCROLL, {
-      rowHeight,
-      scrollTopReal,
-      scrollTop,
-      localScrollTop: getLocalScrollTop( state, scrollTop ),
-      topBlockHeight: shift * rowHeight,
-      bottomBlockHeight: bottomBlockHeight > 0 ? bottomBlockHeight : 0,
-      idStart: shift * getColumnCount( state ),
-      idEnd
-    } );
-
   }
+
+  const idEnd             = getCountElementOnPage( state ) + shift * getColumnCount( state );
+  const bottomBlockHeight = ( getRows( state ) - getRowsByCount( state, idEnd ) ) * rowHeight;
+
+  dispatch( types.PRODUCTS_SET_SCROLL, {
+    rowHeight,
+    scrollTopReal,
+    scrollTop,
+    viewHeight,
+    localScrollTop: getLocalScrollTop( state, scrollTop ),
+    topBlockHeight: shift * rowHeight,
+    bottomBlockHeight: bottomBlockHeight > 0 ? bottomBlockHeight : 0,
+    idStart: shift * getColumnCount( state ),
+    idEnd
+  } );
 
 };
 
@@ -591,8 +586,14 @@ export const run = ( { dispatch, state }, options, force ) => {
 
   } else {
 
-    return Promise.resolve( _getScrollData( state ).scrollTopReal );
+    return Promise.resolve( getScrollData( state ).scrollTopReal );
 
   }
+
+};
+
+export const setContainerWidth = ( { dispatch, state }, width ) => {
+
+  dispatch( types.PRODUCTS_SET_CONTAINER_WIDTH, width );
 
 };
