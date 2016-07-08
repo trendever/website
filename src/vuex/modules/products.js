@@ -12,14 +12,21 @@ import {
   PRODUCTS_SET_CALL_BACK_AFTER_LOADING,
   PRODUCTS_SET_COME_BACK
 } from '../mutation-types';
+import { getCountElementOnPage } from 'vuex/getters/products.js'
 const columnCount    = document.body.offsetWidth <= 750 ? 2 : 3;
-const ITEMS_PER_PAGE = columnCount === 3 ? 9 : 8;
+const ITEMS_PER_PAGE = getCountElementOnPage( {
+  products: {
+    columnCount
+  }
+} );
 
 // initial state
 const state = {
   lists: {
     // "profile": {
     //   products: [],
+    //   isLoading: false,
+    //   searchOptions: {},
     //   viewHeight: 0,
     //   localScrollTop: 0,
     //   scrollTop: 0,
@@ -57,7 +64,9 @@ const mutations = {
         {
           [ state.listId ]: {
             products: Array.isArray( products ) ? products : [],
+            isLoading: false,
             viewHeight: 0,
+            searchOptions: {},
             localScrollTop: 0,
             scrollTop: 0,
             scrollTopReal: 0,
@@ -88,7 +97,9 @@ const mutations = {
         {
           [ state.listId ]: {
             products: [],
+            isLoading: false,
             viewHeight: 0,
+            searchOptions: {},
             localScrollTop: 0,
             scrollTop: 0,
             scrollTopReal: 0,
@@ -256,7 +267,9 @@ const mutations = {
           {
             [ 'profile' ]: {
               products: [ Object.assign( {}, product ) ],
+              isLoading: false,
               viewHeight: 0,
+              searchOptions: {},
               localScrollTop: 0,
               scrollTop: 0,
               scrollTopReal: 0,

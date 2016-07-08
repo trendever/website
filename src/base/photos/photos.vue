@@ -126,13 +126,9 @@ scroll-top
 
       this._run().then( ( scrollTop ) => {
 
-        this.$nextTick( () => {
-
-          this.scrollCnt.scrollTop = scrollTop;
-          this.runScroll();
-          this.emitIsRun();
-
-        } );
+        this.scrollCnt.scrollTop = scrollTop;
+        this.runScroll();
+        this.emitIsRun();
 
       } );
 
@@ -171,26 +167,34 @@ scroll-top
 
         this.$set( 'memRowHeight', this.rowHeight );
 
-        return this.initScroll( {
-          searchData: { isSearch: search, isTags: tags, filterByUserName, filterByUserId },
-          rowHeight: this.memRowHeight,
-          viewHeight: this.viewHeight,
-          scrollTop: this.scrollTop,
-          scrollTopReal: this.scrollCnt.scrollTop
-        } );
+        if ( this.rowHeight > 0 ) {
+
+          return this.initScroll( {
+            searchData: { isSearch: search, isTags: tags, filterByUserName, filterByUserId },
+            rowHeight: this.memRowHeight,
+            viewHeight: this.viewHeight,
+            scrollTop: this.scrollTop,
+            scrollTopReal: this.scrollCnt.scrollTop
+          } );
+
+        }
 
       },
 
       _setScroll(){
 
-        const { search, tags, filterByUserName, filterByUserId } = this;
+        if ( this.memRowHeight > 0 ) {
 
-        this.updateScroll( {
-          scrollTop: this.scrollTop,
-          rowHeight: this.memRowHeight,
-          scrollTopReal: this.scrollCnt.scrollTop,
-          searchOptions: { isSearch: search, isTags: tags, filterByUserName, filterByUserId }
-        } );
+          const { search, tags, filterByUserName, filterByUserId } = this;
+
+          this.updateScroll( {
+            scrollTop: this.scrollTop,
+            rowHeight: this.memRowHeight,
+            scrollTopReal: this.scrollCnt.scrollTop,
+            searchOptions: { isSearch: search, isTags: tags, filterByUserName, filterByUserId }
+          } );
+
+        }
 
       },
 
@@ -198,7 +202,11 @@ scroll-top
 
         this.$set( 'memRowHeight', this.rowHeight );
 
-        this.updateScroll( { rowHeight: this.memRowHeight } );
+        if ( this.rowHeight > 0 ) {
+
+          this.updateScroll( { rowHeight: this.memRowHeight } );
+
+        }
 
       },
 
@@ -352,15 +360,7 @@ scroll-top
 
             this.$set( 'lastSelectedTagId', tagsString );
 
-            this._run( true ).then(() => {
-
-              this.$nextTick( () => {
-
-                this._initScroll();
-
-              });
-
-            });
+            this._run( true );
 
           }
 
@@ -371,15 +371,7 @@ scroll-top
 
         if ( this.search ) {
 
-          this._run( true ).then(() => {
-
-            this.$nextTick( () => {
-
-              this._initScroll();
-
-            });
-
-          });
+          this._run( true );
 
         }
 

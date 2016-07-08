@@ -128,13 +128,15 @@ export const getComeBack = ( state ) => {
 
 };
 
-export const _getScrollData = (state) => {
+export const _getScrollData = ( state ) => {
 
   const list = getList( state );
 
   if ( list !== null ) {
-    
+
     return {
+      searchOptions: list.searchOptions,
+      isLoading: list.isLoading,
       scrollTop: list.scrollTop,
       scrollTopReal: list.scrollTopReal,
       rowHeight: list.rowHeight,
@@ -144,6 +146,8 @@ export const _getScrollData = (state) => {
   }
 
   return {
+    searchOptions: {},
+    isLoading: false,
     scrollTop: 0,
     scrollTopReal: 0,
     rowHeight: 0,
@@ -157,7 +161,7 @@ export const getVirtualScrollData = ( state ) => {
   const list = getList( state );
 
   if ( list !== null ) {
-    
+
     return {
       topBlockHeight: list.topBlockHeight,
       bottomBlockHeight: list.bottomBlockHeight,
@@ -178,3 +182,17 @@ export const getVirtualScrollData = ( state ) => {
 
 };
 
+export const getCountElementOnPage = ( state ) => {
+
+  const columnCount = getColumnCount( state );
+
+  switch ( columnCount ) {
+    case 3:
+      return 27;
+    case 2:
+      return 18;
+    default:
+      return 0
+  }
+
+};

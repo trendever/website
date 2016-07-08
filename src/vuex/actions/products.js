@@ -11,7 +11,8 @@ import {
   isLiked,
   isAnimateShow,
   _getScrollData,
-  getVirtualScrollData
+  getVirtualScrollData,
+  getCountElementOnPage
 } from 'vuex/getters/products.js';
 
 export const setAnimate = ( { dispatch }, state ) => {
@@ -88,7 +89,7 @@ export const loadProducts = (
 
         setAnimate( { dispatch, state }, true );
 
-        products
+        return products
           .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId, limit }, force ) )
           .then( data => {
 
@@ -103,6 +104,8 @@ export const loadProducts = (
           } );
 
       }
+
+      return Promise.resolve();
 
     }
 
@@ -125,27 +128,11 @@ const getRows = ( state ) => {
 
 };
 
-const getRowsByCount = ( state, countElements ) => {
+const getRowsByCount     = ( state, countElements ) => {
 
   return parseInt( countElements / getColumnCount( state ) );
 
 };
-
-const getCountElementOnPage = ( state ) => {
-
-  const columnCount = getColumnCount( state );
-
-  switch ( columnCount ) {
-    case 3:
-      return 27;
-    case 2:
-      return 18;
-    default:
-      return 0
-  }
-
-};
-
 const getCountRowsOnPage = ( state ) => {
 
   const columnCount = getColumnCount( state );
@@ -211,6 +198,12 @@ const getLocalScrollTop = ( state, scrollTop ) => {
 
   const { topBlockHeight } = getVirtualScrollData( state );
 
+  if ( topBlockHeight >= scrollTop ) {
+
+    return 0;
+
+  }
+
   return scrollTop - topBlockHeight;
 
 };
@@ -231,6 +224,11 @@ const getNeedLoadData = ( state ) => {
 
 const getShift = (() => {
 
+  /**
+   * УБРАТЬ ИЗ ЗАМЫКАНИЯ И ПОЛОЖИТЬ В СОСТОЯНИЕ, многопользовательские лданные
+   *
+   * */
+
   let lastScrollTop = 0;
 
   const data = {
@@ -250,15 +248,19 @@ const getShift = (() => {
 
     const shift = getCurrentRow( state, scrollTop, rowHeight );
 
-    if ( Number.isInteger( shift / border ) && data.direction ) {
+    if ( data.direction ) {
 
       data.shift = shift;
 
     }
 
-    if ( !data.direction && getLocalScrollTop( state, scrollTop ) < 0 ) {
+    if ( !data.direction ) {
 
-      data.shift -= border;
+      if ( getLocalScrollTop( state, scrollTop ) <= 0 ) {
+
+        data.shift = getCurrentRow( state, scrollTop, rowHeight );
+
+      }
 
     }
 
@@ -271,86 +273,95 @@ const getShift = (() => {
 
     }
 
+    console.log(data, shift, scrollTop, rowHeight );
+
     return data;
 
   }
 
 })();
 
-export const updateScroll = (() => {
+/**
+ *
+ isLoading: false,
 
-  let _scrollTop     = 0;
-  let _scrollTopReal = 0;
-  let _searchOptions = {};
-  let _loading       = false;
+ viewHeight: 0,
 
-  return ( { dispatch, state }, { scrollTop, rowHeight, scrollTopReal, searchOptions } ) => {
+ searchOptions: {},
 
-    if ( rowHeight > 0 ) {
+ localScrollTop: 0,
 
-      if ( typeof scrollTop !== 'undefined' ) {
+ scrollTop: 0,
 
-        _scrollTop = scrollTop;
+ scrollTopReal: 0,
 
-      }
+ rowHeight: 0,
 
-      if ( typeof scrollTopReal !== 'undefined' ) {
+ topBlockHeight: 0,
 
-        _scrollTopReal = scrollTopReal;
+ bottomBlockHeight: 0,
 
-      }
+ idStart: 0,
 
-      if ( typeof searchOptions !== 'undefined' ) {
+ idEnd: ITEMS_PER_PAGE,
 
-        _searchOptions = searchOptions;
+ * */
 
-      }
+export const updateScroll = (
+  { dispatch, state }, {
+    scrollTop = _getScrollData( state ).scrollTop,
+    rowHeight,
+    scrollTopReal = _getScrollData( state ).scrollTopReal,
+    searchOptions = _getScrollData( state ).searchOptions
+  }
+) => {
 
-      const { shift } = getShift( state, _scrollTop, rowHeight );
+  const isLoading = _getScrollData( state ).isLoading;
 
-      const needLoadData = getNeedLoadData( state, _scrollTop, rowHeight );
+  const { shift } = getShift( state, scrollTop, rowHeight );
 
-      if ( needLoadData ) {
+  console.log( shift );
 
-        _searchOptions.limit = getCountElementOnPage( state );
+  const needLoadData = getNeedLoadData( state, scrollTop, rowHeight );
 
-        if ( !_loading ) {
+  dispatch( types.PRODUCTS_SET_SCROLL, { scrollTopReal: scrollTopReal, scrollTop, rowHeight, searchOptions } );
 
-          _loading = true;
+  if ( needLoadData && hasMore( state ) ) {
 
-          loadProducts( { dispatch, state }, _searchOptions, false ).then( () => {
+    if ( !isLoading ) {
 
-            updateScroll( { dispatch, state }, { scrollTop, rowHeight, scrollTopReal, searchOptions } );
+      const _searchOptions = Object.assign( {}, searchOptions, { limit: getCountElementOnPage( state ) } );
 
-            _loading = false;
+      dispatch( types.PRODUCTS_SET_SCROLL, { isLoading: true } );
 
-          } );
+      loadProducts( { dispatch, state }, _searchOptions, false ).then( () => {
 
-        }
+        updateScroll( { dispatch, state }, { scrollTop, rowHeight, scrollTopReal, searchOptions: _searchOptions } );
 
-      } else {
+        dispatch( types.PRODUCTS_SET_SCROLL, { isLoading: false } );
 
-        const idEnd = getCountElementOnPage( state ) + shift * getColumnCount( state );
-        
-        dispatch( types.PRODUCTS_SET_SCROLL, Object.assign(
-          {},
-          { scrollTop: _scrollTop, rowHeight, scrollTopReal: _scrollTopReal },
-          {
-            localScrollTop: getLocalScrollTop( state, _scrollTop ),
-            topBlockHeight: shift * rowHeight,
-            bottomBlockHeight: ( getRows( state ) - getRowsByCount( state, idEnd ) ) * rowHeight,
-            idStart: shift * getColumnCount( state ),
-            idEnd
-          }
-        ) );
-
-      }
+      } );
 
     }
 
+  } else {
+
+    const idEnd = getCountElementOnPage( state ) + shift * getColumnCount( state );
+
+    dispatch( types.PRODUCTS_SET_SCROLL, {
+      rowHeight,
+      scrollTopReal,
+      scrollTop,
+      localScrollTop: getLocalScrollTop( state, scrollTop ),
+      topBlockHeight: shift * rowHeight,
+      bottomBlockHeight: ( getRows( state ) - getRowsByCount( state, idEnd ) ) * rowHeight,
+      idStart: shift * getColumnCount( state ),
+      idEnd
+    } );
+
   }
 
-})();
+};
 
 export const setCallBackAfterLoading = (
   { dispatch }, callback = () => {
