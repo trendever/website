@@ -7,7 +7,7 @@
   color: white;
   padding-top: 18px;
   text-align: center;
-  background: rgba(18,48,45,.85);
+  background: rgba(18, 48, 45, .85);
   border-radius: 50%;
   bottom: 60px;
   right: 203px;
@@ -19,20 +19,24 @@
   }
 
   @media(--smalldesktop) {
-    right:10px;
+    right: 10px;
   }
 
   @media(--tabletandless) {
-    right:10px;
+    right: 10px;
   }
   @media(--mobile) {
     bottom: 110px;
   }
 
-  &.__fly  {
+  &.__fly {
     bottom: 160px;
-    @media(--tabletandless){
-      bottom:250px;
+    @media(--tabletandless) {
+      bottom: 250px;
     }
   }
+}
+
+.arrow__down {
+  transform: rotate(180deg)  translateY(-3px) translateX(1px);
 }

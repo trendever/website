@@ -1,7 +1,7 @@
 <style src="./style.pcss"></style>
 <template lang='jade'>
 .scroll-top( @click='up()', v-show="is_visible", :class='{"__fly": !isAuth}' )
-  i.ic-arrow-up-thin
+  i.ic-arrow-up-thin(:class='{"arrow__down": !toUp}')
 </template>
 
 <script type="text/babel">
@@ -9,6 +9,14 @@
   import { isAuth } from 'vuex/getters/user.js';
 
   export default {
+    props:{
+
+      toUp:{
+        type: Boolean,
+        default: true
+      }
+
+    },
     data(){
       return {
         is_visible: false,
@@ -26,11 +34,33 @@
     },
     methods: {
       toggleBtnOnScroll(){
-        this.is_visible = this.scrollCnt.scrollTop - (document.body.offsetHeight * 2) >= 0;
+
+        if ( this.toUp ) {
+
+          this.is_visible = this.scrollCnt.scrollTop - (document.body.offsetHeight * 2) >= 0;
+
+        } else {
+
+          if(this.scrollCnt.scrollTop > 0){
+
+            this.is_visible = this.scrollCnt.scrollTop < ( document.body.offsetHeight * 2 );
+
+          }
+
+        }
+
       },
       up() {
 
-        this.scrollCnt.scrollTop = 0;
+        if(this.toUp){
+
+          this.scrollCnt.scrollTop = 0;
+
+        } else {
+
+          this.scrollCnt.scrollTop = this.scrollCnt.scrollHeight;
+
+        }
 
 /*        const step = ( scrollTop ) => {
 

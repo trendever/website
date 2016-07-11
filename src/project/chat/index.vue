@@ -21,10 +21,12 @@
               v-if='isImage(msg.parts[0].mime_type)',
               :msg='msg')
     chat-bar
+  scroll-top(:to-up="false")
 </template>
 
 <script type='text/babel'>
   import listen from 'event-listener';
+  import scrollTop from 'base/scroll-top/scroll-top.vue';
   import {
     setConversation,
     loadMessage,
@@ -70,7 +72,8 @@
       ChatMsg,
       ChatMsgProduct,
       ChatMsgStatus,
-      ChatMsgImg
+      ChatMsgImg,
+      scrollTop
     },
 
     data(){
