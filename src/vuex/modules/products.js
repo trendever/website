@@ -11,7 +11,8 @@ import {
   PRODUCTS_CLOSE,
   PRODUCTS_SET_CALL_BACK_AFTER_LOADING,
   PRODUCTS_SET_COME_BACK,
-  PRODUCTS_SET_CONTAINER_WIDTH
+  PRODUCTS_SET_CONTAINER_WIDTH,
+  PRODUCTS_RESET_SCROLL_BY_LIST_ID
 } from '../mutation-types';
 import { getCountElementOnPage } from 'vuex/getters/products.js'
 const columnCount    = document.body.offsetWidth <= 750 ? 2 : 3;
@@ -363,6 +364,28 @@ const mutations = {
   [PRODUCTS_CLOSE] ( state ) {
 
     state.loading = true;
+
+  },
+
+  [PRODUCTS_RESET_SCROLL_BY_LIST_ID] ( state, listId ){
+
+    if ( state.lists.hasOwnProperty( listId ) ) {
+      
+      state.lists[ listId ] = Object.assign( {}, state.lists[ listId ], {
+        isLoading: false,
+        viewHeight: 0,
+        searchOptions: {},
+        localScrollTop: 0,
+        scrollTop: 0,
+        scrollTopReal: 0,
+        rowHeight: 0,
+        topBlockHeight: 0,
+        bottomBlockHeight: 0,
+        idStart: 0,
+        idEnd: ITEMS_PER_PAGE,
+      } )
+
+    }
 
   },
 

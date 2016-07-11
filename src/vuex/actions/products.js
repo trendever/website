@@ -300,6 +300,12 @@ const getShift = ( { dispatch, state }, scrollTop, rowHeight ) => {
 
  * */
 
+export const resetScrollByListId = ( { dispatch }, listId ) => {
+
+  dispatch( types.PRODUCTS_RESET_SCROLL_BY_LIST_ID, listId );
+
+};
+
 export const updateScroll = (
   { dispatch, state }, {
     scrollTop = getScrollData( state ).scrollTop,

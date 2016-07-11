@@ -1,5 +1,5 @@
 <template>
-  <div class="description">
+  <div v-if="text.length > 0" class="description">
     <div class="bubble bubbleLeft">
       <p class="text">{{text}}</p>
     </div>
