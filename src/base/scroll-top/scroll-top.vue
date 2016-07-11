@@ -41,11 +41,7 @@
 
         } else {
 
-          if(this.scrollCnt.scrollTop > 0){
-
-            this.is_visible = this.scrollCnt.scrollTop < ( document.body.offsetHeight * 2 );
-
-          }
+          this.is_visible = (this.scrollCnt.scrollHeight - this.scrollCnt.scrollTop) > document.body.offsetHeight * 2;
 
         }
 
