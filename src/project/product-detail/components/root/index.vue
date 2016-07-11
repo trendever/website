@@ -62,7 +62,7 @@
   import photos from 'base/photos/photos.vue'
   import navbar from 'base/navbar/navbar.vue'
   import { getOpenedProduct, isLiked, callAfterLoading } from 'vuex/getters/products'
-  import { setLike, setCallBackAfterLoading, setComeBack } from 'vuex/actions/products'
+  import { setLike, setCallBackAfterLoading, setComeBack, resetScrollByListId } from 'vuex/actions/products'
   import { isAuth } from 'vuex/getters/user.js'
   import { createLead } from 'vuex/actions/lead.js'
   import { setCallbackOnSuccessAuth } from 'vuex/actions'
@@ -121,6 +121,8 @@
         this.selectTag( tag, true );
 
         this.setComeBack( true );
+
+        this.resetScrollByListId( 'home' );
 
         this.$router.go( { name: 'home' } );
 
@@ -421,6 +423,7 @@
         isAuth
       },
       actions: {
+        resetScrollByListId,
         selectTag,
         setLike,
         setComeBack,
