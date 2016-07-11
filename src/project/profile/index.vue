@@ -1,29 +1,28 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-scroll-component(v-if="isDone")
-  .profile-cnt
-    header-component(:title='getUserName', :left-btn-show='true')
+scroll-component(v-if="isDone", class="profile-cnt")
+  header-component(:title='getUserName', :left-btn-show='true')
 
-    .section.top.bottom
-      .section__content
-        .profile
-          .profile_info
+  .section.top.bottom
+    .section__content
+      .profile
+        .profile_info
 
-            //- .profile_info_count 1258
-            //-   .profile_info_count_t Подписчики
+          //- .profile_info_count 1258
+          //-   .profile_info_count_t Подписчики
 
-            .profile_info_img
-              img(:src="getUserPhoto")
+          .profile_info_img
+            img(:src="getUserPhoto")
 
-            //- .profile_info_count 53
-            //-   .profile_info_count_t Подписки
+          //- .profile_info_count 53
+          //-   .profile_info_count_t Подписки
 
-          .profile_desc
-            .profile_desc_t {{getSlogan}}
-            span(v-if="getUserCaption") {{ getUserCaption }}
+        .profile_desc
+          .profile_desc_t {{getSlogan}}
+          span(v-if="getUserCaption") {{ getUserCaption }}
 
-        photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId" )
-    navbar-component(:current='listId')
+      photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId" )
+  navbar-component(:current='listId')
 
 .help-wrapper(v-if='isFirst')
   .attention(v-if='isFirst')

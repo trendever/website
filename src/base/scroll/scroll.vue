@@ -43,8 +43,7 @@
     },
 
     ready(){
-      this.updateOnPanDown = true
-      // this.updateOnPanDown = browser.standalone
+      this.updateOnPanDown = browser.standalone
 
       if ( browser.ios ) {
         // Disable rubber scroll in ios devices
