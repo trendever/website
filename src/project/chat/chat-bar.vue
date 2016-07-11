@@ -10,7 +10,10 @@ div
                v-model='txtMsg',
                v-el:input-msg,
                @focus='focusInput',
-               @blur='blurInput($event)')
+               @blur='blurInput($event)',
+               autocomplete="off",
+               autocorrect="off",
+               spellcheck="false")
     .chat-bar_send-btn(v-on:mousedown='send($event)',
                        v-on:touchstart='send($event)',
                        :class='{"__active": !!txtMsg}')

@@ -17,6 +17,9 @@ scroll-component
                   i.ic-insta-name
                   input(type='text',
                     autocomplete="off",
+                    autocorrect="off",
+                    autocapitalize="off",
+                    spellcheck="false",
                     :class=' {error: errorLogin} ',
                     @focus='onFocusLogin',
                     @keydown.enter='sendSMS()',
@@ -31,6 +34,9 @@ scroll-component
                   i.ic-mobile-phone
                   input(type='tel',
                     autocomplete="off",
+                    autocorrect="off",
+                    autocapitalize="off",
+                    spellcheck="false",
                     :class=' {error: errorPhone} ',
                     @focus='onFocusPhone',
                     @keydown.enter='sendSMS()',

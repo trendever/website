@@ -16,6 +16,8 @@
 </template>
 
 <script type="text/babel">
+  import listen from 'event-listener'
+
   import { browser } from 'utils'
   import SplashSpinnerComponent from 'base/splash-spinner/splash-spinner.vue'
 
@@ -34,9 +36,34 @@
       SplashSpinnerComponent
     },
 
+    beforeDestroy() {
+      if ( this.rubberEvent ) {
+        this.rubberEvent.remove()
+      }
+    },
+
     ready(){
       this.updateOnPanDown = true
       // this.updateOnPanDown = browser.standalone
+
+      if ( browser.ios ) {
+        // Disable rubber scroll in ios devices
+        this.rubberEvent = listen(this.$els.scrollEl , "touchstart", () => {
+
+            var top = this.$els.scrollEl.scrollTop,
+                totalScroll = this.$els.scrollEl.scrollHeight,
+                currentScroll = top + this.$els.scrollEl.offsetHeight
+
+            if ( top === 0 ) {
+                this.$els.scrollEl.scrollTop = 1
+            } else if ( currentScroll === totalScroll ) {
+                this.$els.scrollEl.scrollTop = top - 1
+            }
+
+        } );
+
+      }
+
     },
 
     computed: {

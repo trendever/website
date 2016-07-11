@@ -13,13 +13,16 @@ div
           .input-container
             .input.confirm-input
               input(type='tel',
-                autocomplete="off",
                 @keyup='onInput',
                 @focus='onFocus',
                 @keydown.enter='onButton()',
                 v-el:confirm-field,
                 v-model='code',
-                placeholder='9999')
+                placeholder='9999',
+                autocomplete="off",
+                autocorrect="off",
+                autocapitalize="off",
+                spellcheck="false")
 
       .bottom-container.__fixed-width
           .btn-container
