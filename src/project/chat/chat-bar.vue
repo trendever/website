@@ -112,11 +112,20 @@ div
         }
 
         // Magic numbers
+        // disabled autocomplete
+        // var devices = [
+        //   { min: 446, max: 510, diff: 19 }, // iphone 6 plus, 6s plus
+        //   { min: 470, max: 536, diff: 20 }, // iphone 6, 6s
+        //   { min: 548, max: 616, diff: 24 } // iphone 5, 4s
+        // ]
+
+        // enabled autocomplete
         var devices = [
           { min: 446, max: 510, diff: 19 }, // iphone 6 plus, 6s plus
-          { min: 470, max: 536, diff: 20 }, // iphone 6, 6s
-          { min: 548, max: 616, diff: 24 } // iphone 5, 4s
+          { min: 452, max: 536, diff: 20 }, // iphone 6, 6s
+          { min: 530, max: 616, diff: 24 } // iphone 5, 4s
         ]
+
         if ( window.browser.iphone ) {
 
           for ( var item of devices ) {
