@@ -51,7 +51,7 @@
         return !!this.msg.afterServiceMessage;
       },
       getMessage() {
-       return wrapLink(escapeHtml(this.msg.parts[0].content).replace(/\n/g, '<br />'));
+       return wrapLink(escapeHtml(this.msg.parts[0].content).replace(/\n/g, '<br />')).replace(/₽/g, '&nbsp;<i class="ic-currency-rub"></i> ');
       },
       datetime() {
         return formatTime(this.msg.created_at);
