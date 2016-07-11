@@ -1,5 +1,6 @@
 <style src='./styles/hero.pcss'></style>
 <template lang="jade">
+.header__menu__overlay(v-show='menuOpened', @click='menuOpened=false', v-if='isAuth')
 .section.smallHero(v-if='isAuth')
   .profile-header__menu
     .profile-header__menu-btn
