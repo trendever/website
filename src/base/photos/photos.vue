@@ -177,6 +177,10 @@ scroll-top
 
         if ( this.rowHeight > 0 ) {
 
+          console.log(this.rowHeight);
+
+          debugger;
+
           return this.initScroll( {
             searchData: { isSearch: search, isTags: tags, filterByUserName, filterByUserId },
             rowHeight: this.memRowHeight,

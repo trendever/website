@@ -1,13 +1,14 @@
 <style src="./styles/photo-item.pcss"></style>
 <template lang="jade">
 .photo__container(class='{{ classForColumn }}', v-if='!error', @click="goToProduct")
-  img.photo__img(
-      :src='thumb',
-      v-on:load='showImage',
-      v-on:error='loadError',
-      v-bind:style='{ opacity: imageOpacity }',
-      :class='{"animate": animate}'
-    )
+  .photo__img-space
+    img.photo__img(
+        :src='thumb',
+        v-on:load='showImage',
+        v-on:error='loadError',
+        v-bind:style='{ opacity: imageOpacity }',
+        :class='{"animate": animate}'
+      )
   .photo__description
     .photo__title {{ title }}
     .photo__summ(v-if="discountPrice")
