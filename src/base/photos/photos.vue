@@ -3,12 +3,12 @@
 .photos(v-bind:style="styleObject", v-el:container)
   .photos__list(v-el:photos-list, v-if='items')
 
-    .top-block-height(v-bind:style="{ height: topHeight }")
+    .top-block-height(v-bind:style="{ height: topHeight }", v-show="this.getVirtualScrollData.topBlockHeight > 0")
 
     template(v-for='item in items | list' track-by="id")
       photo-item( :product.once='item', :animate='isAnimateShow' )
 
-    .bottom-block-height(v-bind:style="{ height: bottomHeight }")
+    .bottom-block-height(v-bind:style="{ height: bottomHeight }", v-show="this.getVirtualScrollData.bottomBlockHeight > 0")
 
   .photos__more-wrap(v-if='hasMore')
     .photos__more( :class='{"_active": isLoading}', @click='runScroll(event, true)' )
