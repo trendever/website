@@ -109,8 +109,7 @@ scroll-top
         styleObject: {
           pointerEvents: 'auto'
         },
-        lastSelectedTagId: null,
-        memRowHeight: 0
+        lastSelectedTagId: null
       }
     },
 
@@ -173,17 +172,11 @@ scroll-top
 
         const { search, tags, filterByUserName, filterByUserId } = this;
 
-        this.$set( 'memRowHeight', this.rowHeight );
-
         if ( this.rowHeight > 0 ) {
-
-          console.log(this.rowHeight);
-
-          debugger;
 
           return this.initScroll( {
             searchData: { isSearch: search, isTags: tags, filterByUserName, filterByUserId },
-            rowHeight: this.memRowHeight,
+            rowHeight: this.rowHeight,
             viewHeight: this.viewHeight,
             scrollTop: this.scrollTop,
             scrollTopReal: this.scrollCnt.scrollTop
@@ -195,13 +188,13 @@ scroll-top
 
       _setScroll(){
 
-        if ( this.memRowHeight > 0 ) {
+        if ( this.rowHeight > 0 ) {
 
           const { search, tags, filterByUserName, filterByUserId } = this;
 
           this.updateScroll( {
             scrollTop: this.scrollTop,
-            rowHeight: this.memRowHeight,
+            rowHeight: this.rowHeight,
             viewHeight: this.viewHeight,
             scrollTopReal: this.scrollCnt.scrollTop,
             searchOptions: { isSearch: search, isTags: tags, filterByUserName, filterByUserId }
@@ -213,14 +206,8 @@ scroll-top
 
       _updateScroll(){
 
-        if ( this.rowHeight > 0 ) {
-
-          this.$set( 'memRowHeight', this.rowHeight );
-
-        }
-
         this.updateScroll( {
-          rowHeight: this.memRowHeight,
+          rowHeight: this.rowHeight,
           viewHeight: this.viewHeight
         } );
 
