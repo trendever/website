@@ -299,7 +299,7 @@ export const updateScroll = (() => {
 
       oldShift = shift;
 
-      const allEls    = 81;
+      const allEls    = 27;
       const elsByPage = getCountElementOnPage( state );
 
       const isLoading = getScrollData( state ).isLoading;
