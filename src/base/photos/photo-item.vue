@@ -1,21 +1,21 @@
 <style src="./styles/photo-item.pcss"></style>
 <template lang="jade">
-.photo__container(class='{{ classForColumn }}', v-if='!error')
-  a.photo__link(
-    v-link='{name: "product_detail", params: {id: product.id}}')
-    div(v-bind:style='{ opacity: imageOpacity }',
-        :class='{"animate": animate}')
-      img.photo__img(:src='thumb',
-       v-on:load='showImage',
-       v-on:error='loadError')
+.photo__container(class='{{ classForColumn }}', v-if='!error', @click="goToProduct")
+  img.photo__img(
+      :src='thumb',
+      v-on:load='showImage',
+      v-on:error='loadError',
+      v-bind:style='{ opacity: imageOpacity }',
+      :class='{"animate": animate}'
+    )
   .photo__description
-    .photo__title {{ title | truncate 45 }}
+    .photo__title {{ title }}
     .photo__summ(v-if="discountPrice")
-      span {{ discountPrice | curency_spaces }}
+      {{ discountPrice | curency_spaces }}
       i.ic-currency-rub
 </template>
 
-<script type='text/ecmascript-6'>
+<script type='text/babel'>
   import pluralize from 'pluralize-ru';
   import { urlThumbnail } from 'utils';
   import { getColumnCount } from 'vuex/getters/products';
@@ -39,6 +39,11 @@
     ],
 
     methods: {
+      goToProduct(){
+
+        this.$router.go( { name: "product_detail", params: { id: this.product.id } } );
+
+      },
       showImage(){
         this.imageOpacity = 1;
       },
