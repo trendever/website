@@ -1,7 +1,7 @@
 import { userID } from 'vuex/getters/user.js'
 
 export const getList = ( { products } ) => {
-  
+
   if ( products.lists.hasOwnProperty( products.listId ) ) {
 
     return products.lists[ products.listId ];
@@ -140,12 +140,15 @@ export const getScrollData = ( state ) => {
       scrollTop: list.scrollTop,
       scrollTopReal: list.scrollTopReal,
       rowHeight: list.rowHeight,
-      viewHeight: list.viewHeight,
-
       lastScrollTop: list.lastScrollTop,
       direction:  list.direction,
       shift:  list.shift,
-      lastBorder:  list.lastBorder,
+      topBlockHeight: list.topBlockHeight,
+      bottomBlockHeight: list.bottomBlockHeight,
+      idStart: list.idStart,
+      idEnd: list.idEnd,
+      landingIdStart: list.landingIdStart,
+      landingIdEnd: list.landingIdEnd
 
     }
 
@@ -157,54 +160,22 @@ export const getScrollData = ( state ) => {
     scrollTop: 0,
     scrollTopReal: 0,
     rowHeight: 0,
-    viewHeight: 0,
-
     lastScrollTop: 0,
     direction: true,
     shift: true,
-    lastBorder: 0,
-
-  }
-
-};
-
-export const getVirtualScrollData = ( state ) => {
-
-  const list = getList( state );
-
-  if ( list !== null ) {
-
-    return {
-      topBlockHeight: list.topBlockHeight,
-      bottomBlockHeight: list.bottomBlockHeight,
-      localScrollTop: list.localScrollTop,
-      idStart: list.idStart,
-      idEnd: list.idEnd
-    }
-
-  }
-
-  return {
     topBlockHeight: 0,
     bottomBlockHeight: 0,
-    localScrollTop: 0,
     idStart: 0,
-    idEnd: 0
+    idEnd: 0 ,
+    landingIdStart: 0,
+    landingIdEnd: 0
+
   }
 
 };
 
-export const getCountElementOnPage = ( state ) => {
+export const getCountElementOnPage = () => {
 
-  const columnCount = getColumnCount( state );
-
-  switch ( columnCount ) {
-    case 3:
-      return 27;
-    case 2:
-      return 18;
-    default:
-      return 0
-  }
+  return 27;
 
 };

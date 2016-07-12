@@ -20,21 +20,30 @@ const ITEMS_PER_PAGE = getCountElementOnPage( {
   products: {
     columnCount
   }
-} );
+} ) * 3;
 
 // initial state
 const state = {
   lists: {
     // "profile": {
     //   products: [],
+    //   needLoadMore: false,
+    //   animateShow: true,
+    //   hasMore: true
+
+    // Это нужно для расчёта сдвига.
+
     //   lastScrollTop: 0,
     //   direction: true,
     //   shift: true,
-    //   lastBorder: 0,
+
+    // Это нужно для запроса данных.
+
     //   isLoading: false,
     //   searchOptions: {},
-    //   viewHeight: 0,
-    //   localScrollTop: 0,
+
+    // Это нужно для органи зации работа скрола.
+
     //   scrollTop: 0,
     //   scrollTopReal: 0,
     //   rowHeight: 0,
@@ -42,9 +51,9 @@ const state = {
     //   bottomBlockHeight: 0,
     //   idStart: 0,
     //   idEnd: 0,
-    //   needLoadMore: false,
-    //   animateShow: true,
-    //   hasMore: true,
+    //   landingIdStart: 0,
+    //   landingIdEnd: 0,
+
     // },
   },
   columnCount,
@@ -77,16 +86,17 @@ const mutations = {
         {
           [ state.listId ]: {
             products: Array.isArray( products ) ? products : [],
+            needLoadMore: false,
+            animateShow: true,
+            hasMore: Array.isArray( products ) ? products.length >= ITEMS_PER_PAGE / 3 : false,
 
             lastScrollTop: 0,
             direction: true,
             shift: true,
-            lastBorder: 0,
 
             isLoading: false,
-            viewHeight: 0,
             searchOptions: {},
-            localScrollTop: 0,
+
             scrollTop: 0,
             scrollTopReal: 0,
             rowHeight: 0,
@@ -94,9 +104,9 @@ const mutations = {
             bottomBlockHeight: 0,
             idStart: 0,
             idEnd: ITEMS_PER_PAGE,
-            needLoadMore: false,
-            animateShow: true,
-            hasMore: Array.isArray( products ) ? products.length >= ITEMS_PER_PAGE : false
+            landingIdStart: 0,
+            landingIdEnd: ITEMS_PER_PAGE
+
           }
         }
       );
@@ -115,17 +125,19 @@ const mutations = {
         state.lists,
         {
           [ state.listId ]: {
+
             products: [],
+            needLoadMore: false,
+            animateShow: true,
+            hasMore: (Array.isArray( products )) ? products.length >= ITEMS_PER_PAGE / 3 : false,
 
             lastScrollTop: 0,
             direction: true,
             shift: true,
-            lastBorder: 0,
 
             isLoading: false,
-            viewHeight: 0,
             searchOptions: {},
-            localScrollTop: 0,
+
             scrollTop: 0,
             scrollTopReal: 0,
             rowHeight: 0,
@@ -133,9 +145,9 @@ const mutations = {
             bottomBlockHeight: 0,
             idStart: 0,
             idEnd: ITEMS_PER_PAGE,
-            needLoadMore: false,
-            animateShow: true,
-            hasMore: (Array.isArray( products )) ? products.length >= ITEMS_PER_PAGE : false
+            landingIdStart: 0,
+            landingIdEnd: ITEMS_PER_PAGE
+
           }
         }
       )
@@ -144,7 +156,7 @@ const mutations = {
 
     if ( Array.isArray( products ) ) {
 
-      state.lists[ state.listId ].hasMore  = products.length >= ITEMS_PER_PAGE;
+      state.lists[ state.listId ].hasMore  = products.length >= ITEMS_PER_PAGE / 3;
       state.lists[ state.listId ].products = state.lists[ state.listId ].products.concat( products );
 
     } else {
@@ -291,17 +303,18 @@ const mutations = {
           state.lists,
           {
             [ 'profile' ]: {
+
               products: [ Object.assign( {}, product ) ],
+              needLoadMore: false,
+              animateShow: true,
+              hasMore: true,
 
               lastScrollTop: 0,
               direction: true,
               shift: true,
-              lastBorder: 0,
 
               isLoading: false,
-              viewHeight: 0,
               searchOptions: {},
-              localScrollTop: 0,
               scrollTop: 0,
               scrollTopReal: 0,
               rowHeight: 0,
@@ -309,9 +322,9 @@ const mutations = {
               bottomBlockHeight: 0,
               idStart: 0,
               idEnd: ITEMS_PER_PAGE,
-              needLoadMore: false,
-              animateShow: true,
-              hasMore: true
+              landingIdStart: 0,
+              landingIdEnd: ITEMS_PER_PAGE
+
             }
           }
         )
@@ -333,7 +346,7 @@ const mutations = {
         if ( state.lists.hasOwnProperty( listId ) ) {
 
           const { scrollTop, scrollTopReal, idStart } = state.lists[ state.listId ];
-          
+
           const newScrollTop     = parseInt( idStart / columnNumber ) * rowHeight;
           const newScrollTopReal = newScrollTop + (scrollTopReal - scrollTop);
 
@@ -370,12 +383,12 @@ const mutations = {
   [PRODUCTS_RESET_SCROLL_BY_LIST_ID] ( state, listId ){
 
     if ( state.lists.hasOwnProperty( listId ) ) {
-      
+
       state.lists[ listId ] = Object.assign( {}, state.lists[ listId ], {
+
         isLoading: false,
-        viewHeight: 0,
         searchOptions: {},
-        localScrollTop: 0,
+
         scrollTop: 0,
         scrollTopReal: 0,
         rowHeight: 0,
@@ -383,6 +396,9 @@ const mutations = {
         bottomBlockHeight: 0,
         idStart: 0,
         idEnd: ITEMS_PER_PAGE,
+        landingIdStart: 0,
+        landingIdEnd: ITEMS_PER_PAGE
+
       } )
 
     }
