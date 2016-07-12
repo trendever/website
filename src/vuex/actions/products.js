@@ -279,6 +279,8 @@ const recursivelyLoad = ( { dispatch, state }, count, data ) => {
 
 export const updateScroll = (() => {
 
+  let oldShift = null;
+
   return (
     { dispatch, state },
     {
@@ -293,53 +295,59 @@ export const updateScroll = (() => {
 
     dispatch( types.PRODUCTS_SET_SCROLL, { rowHeight, scrollTopReal, scrollTop } );
 
-    const allEls    = 81;
-    const elsByPage = getCountElementOnPage( state );
+    if ( oldShift !== shift ) {
 
-    const isLoading = getScrollData( state ).isLoading;
+      oldShift = shift;
 
-    const landingIdStart = shift * getColumnCount( state );
-    const landingIdEnd   = elsByPage + shift * getColumnCount( state );
+      const allEls    = 81;
+      const elsByPage = getCountElementOnPage( state );
 
-    const idStart = landingIdStart < ( allEls - elsByPage ) ? 0 : landingIdStart - ( allEls - elsByPage );
-    const idEnd   = landingIdEnd < allEls ? allEls : landingIdEnd;
+      const isLoading = getScrollData( state ).isLoading;
 
-    const bottomBlockHeight = ( getRows( state ) - getRowsByCount( state, idEnd ) ) * rowHeight;
+      const landingIdStart = shift * getColumnCount( state );
+      const landingIdEnd   = elsByPage + shift * getColumnCount( state );
 
-    if ( hasMore( state ) && direction && ( getRows( state ) - shift ) <= 18 ) {
+      const idStart = landingIdStart < ( allEls - elsByPage ) ? 0 : landingIdStart - ( allEls - elsByPage );
+      const idEnd   = landingIdEnd < allEls ? allEls : landingIdEnd;
 
-      if ( !isLoading ) {
+      const bottomBlockHeight = ( getRows( state ) - getRowsByCount( state, idEnd ) ) * rowHeight;
 
-        const _searchOptions = Object.assign( {}, searchOptions, { limit: elsByPage } );
+      if ( hasMore( state ) && direction && ( getRows( state ) - shift ) <= 18 ) {
 
-        dispatch( types.PRODUCTS_SET_SCROLL, { isLoading: true } );
+        if ( !isLoading ) {
 
-        recursivelyLoad( { dispatch, state }, 3, _searchOptions ).then().then( () => {
+          const _searchOptions = Object.assign( {}, searchOptions, { limit: elsByPage } );
 
-          updateScroll( { dispatch, state }, { scrollTop, rowHeight, scrollTopReal, searchOptions: _searchOptions } );
+          dispatch( types.PRODUCTS_SET_SCROLL, { isLoading: true } );
 
-          dispatch( types.PRODUCTS_SET_SCROLL, { isLoading: false } );
+          recursivelyLoad( { dispatch, state }, 3, _searchOptions ).then().then( () => {
 
-        } );
+            updateScroll( { dispatch, state }, { scrollTop, rowHeight, scrollTopReal, searchOptions: _searchOptions } );
+
+            dispatch( types.PRODUCTS_SET_SCROLL, { isLoading: false } );
+
+          } );
+
+        }
 
       }
+      dispatch( types.PRODUCTS_SET_SCROLL, {
+        rowHeight,
+        scrollTopReal,
+        scrollTop,
+        topBlockHeight: getRowsByCount( state, idStart ) * rowHeight,
+        bottomBlockHeight: bottomBlockHeight > 0 ? bottomBlockHeight : 0,
+        landingIdStart,
+        landingIdEnd,
+        idStart,
+        idEnd
+      } );
+
+      const { idStart: _idStart, idEnd:_idEnd } = getScrollData( state );
+
+      console.log( { _idStart, _idEnd } );
 
     }
-    dispatch( types.PRODUCTS_SET_SCROLL, {
-      rowHeight,
-      scrollTopReal,
-      scrollTop,
-      topBlockHeight: getRowsByCount( state, idStart ) * rowHeight,
-      bottomBlockHeight: bottomBlockHeight > 0 ? bottomBlockHeight : 0,
-      landingIdStart,
-      landingIdEnd,
-      idStart,
-      idEnd
-    } );
-
-    const { idStart: _idStart, idEnd:_idEnd } = getScrollData( state );
-
-    console.log({ _idStart, _idEnd });
 
   };
 
