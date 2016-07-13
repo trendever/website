@@ -28,27 +28,27 @@
     i.smallHero__logo
       img(src='../../base/img/logo-beta.png')
 
-.profile-header__menu(v-if='!isAuth')
-  .profile-header__menu-btn
-    .profile-header__menu-btn-label
-    .profile-header__menu-btn-icon(@click='menuOpened=true')
-      i(class='ic-info')
-
-.profile-header__menu-links(v-show='menuOpened', v-if='!isAuth')
-  a(class='profile-header__menu-link profile-header__close-menu',
-    @click='menuOpened=false') Отмена
-  a(class='profile-header__menu-link',
-    v-link='{name: "info-user"}') Покупателям
-  a(class='profile-header__menu-link',
-    v-link='{name: "info-shop"}') Магазинам
-  a(class='profile-header__menu-link',
-    @click="onBuyPromoProduct()") Блогерам
-  a(class='profile-header__menu-link',
-    v-link='{name: "info-mission"}') Наша миссия
-  a(class='profile-header__menu-link',
-    v-link='{name: "info-agreement"}') Условия
-
 .section.hero(v-if='!isAuth')
+  .profile-header__menu(v-if='!isAuth')
+    .profile-header__menu-btn
+    .profile-header__menu-btn-label
+      .profile-header__menu-btn-icon(@click='menuOpened=true')
+        i(class='ic-info')
+
+  .profile-header__menu-links(v-show='menuOpened', v-if='!isAuth')
+    a(class='profile-header__menu-link profile-header__close-menu',
+      @click='menuOpened=false') Отмена
+    a(class='profile-header__menu-link',
+      v-link='{name: "info-user"}') Покупателям
+    a(class='profile-header__menu-link',
+      v-link='{name: "info-shop"}') Магазинам
+    a(class='profile-header__menu-link',
+      @click="onBuyPromoProduct()") Блогерам
+    a(class='profile-header__menu-link',
+      v-link='{name: "info-mission"}') Наша миссия
+    a(class='profile-header__menu-link',
+      v-link='{name: "info-agreement"}') Условия
+
   .section__content.hero__content
     .profile-header
       .profile-header__center
