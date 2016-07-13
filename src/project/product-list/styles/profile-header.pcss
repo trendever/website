@@ -40,10 +40,10 @@
 
   &__menu {
     position: absolute;
-    top: 0px;
-    left: 0;
-    width: 250px;
-    height: 100px;
+    top: 0;
+    left: 50%;
+    z-index: $z-index-popup-container;
+    margin-left: -384px;
 
     &-btn {
       display: block;
@@ -77,9 +77,15 @@
 
       }
     }
+
     &-links {
-      position: absolute 0 auto * 0;
+
+      position: absolute;
       z-index: 9999;
+      top: 0;
+      right: auto;
+      left: 50%;
+      margin-left: -380px;
 
       &.__normal{
 

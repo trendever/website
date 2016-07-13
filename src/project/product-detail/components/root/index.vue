@@ -140,17 +140,17 @@
 
           this.setCallbackOnSuccessAuth( function( id, product, newLike ) {
 
-            this.$router.go( { name: "product_detail", params: { id } } )
+            this.$router.go( { name: "product_detail", params: { id } } );
 
             this.setCallBackAfterLoading( this.setLike.bind( this, product, newLike ) )
 
-          }.bind( this, this.productId, this.getOpenedProduct, true ) )
+          }.bind( this, this.productId, this.getOpenedProduct, true ) );
 
-          this.$router.go( { name: 'signup' } )
+          this.$router.go( { name: 'signup' } );
 
         } else {
 
-          this.setLike()
+          this.setLike();
 
         }
 
@@ -238,6 +238,7 @@
 
           if ( this.getOpenedProduct.mentioned ) {
 
+
             return this.getOpenedProduct.mentioned
 
           }
@@ -251,7 +252,7 @@
 
         if ( this.supplier !== null ) {
 
-          return this.supplier.instagram_caption
+          return this.getOpenedProduct.instagram_image_caption
 
         }
 

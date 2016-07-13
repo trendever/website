@@ -82,8 +82,13 @@
   size: 100%;
   position: absolute;
   z-index: 9998;
-  background-color: rgba(0,0,0,0.7);
 
+  &.color-black{
+    background-color: rgba(0,0,0,0.7);
+  }
+  &.color-green{
+    background-color: rgba(18,48,45,0.7);
+  }
 }
 
 .smallHero{
@@ -114,7 +119,7 @@
       left: 0;
       height: 50px;
       width: 85px;
-
+      margin-left: 0;
       @media (--mobile) {
          width: 106px;
          height: 100px;
