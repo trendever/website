@@ -358,8 +358,6 @@
 
           if ( Array.isArray( this.getOpenedProduct.items ) ) {
 
-            console.log(this.getOpenedProduct);
-
             return this.getOpenedProduct.items.map( ( { name = null, price = null, discount_price = null } ) => {
 
               return { name, price, discountPrice: discount_price }
