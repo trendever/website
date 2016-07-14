@@ -462,6 +462,12 @@ export const setCallBackAfterLoading = (
 
 };
 
+export const setScrollByProduct = ( { dispatch, state }, scrollTop ) => {
+
+  dispatch( types.PRODUCTS_SAVE_SCROLL_BY_PRODUCT, scrollTop, getOpenedProduct( state ).id );
+
+};
+
 export const setComeBack = ( { dispatch }, comeBack = false ) => {
 
   dispatch( types.PRODUCTS_SET_COME_BACK, comeBack )

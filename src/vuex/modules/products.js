@@ -12,7 +12,8 @@ import {
   PRODUCTS_SET_CALL_BACK_AFTER_LOADING,
   PRODUCTS_SET_COME_BACK,
   PRODUCTS_SET_CONTAINER_WIDTH,
-  PRODUCTS_RESET_SCROLL_BY_LIST_ID
+  PRODUCTS_RESET_SCROLL_BY_LIST_ID,
+  PRODUCTS_SAVE_SCROLL_BY_PRODUCT
 } from '../mutation-types';
 import { getCountElementOnPage } from 'vuex/getters/products.js'
 const columnCount    = document.body.offsetWidth <= 750 ? 2 : 3;
@@ -56,6 +57,9 @@ const state = {
 
     // },
   },
+  saveScrollByProduct:{
+
+  },
   columnCount,
   listId: null,
   loading: true,
@@ -69,6 +73,14 @@ const state = {
 
 // mutations
 const mutations = {
+
+  [PRODUCTS_SAVE_SCROLL_BY_PRODUCT] (state, scrollTop, productId){
+
+    state.saveScrollByProduct = Object.assign({}, state.saveScrollByProduct, { [ productId ] : scrollTop });
+
+    console.log();
+
+  },
 
   [PRODUCTS_SET_CONTAINER_WIDTH] ( state, width ){
 

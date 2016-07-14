@@ -66,6 +66,26 @@ export const getLastProduct = ( state ) => {
 
 export const getOpenedProduct = ( { products } ) => products.openedProduct;
 
+export const getScrollTopOfProduct = ( { products } ) => {
+
+  if ( products.openedProduct !== null ) {
+
+    if ( products.openedProduct.hasOwnProperty( 'id' ) ) {
+
+      if ( products.saveScrollByProduct.hasOwnProperty( products.openedProduct.id ) ) {
+
+        return products.saveScrollByProduct[ products.openedProduct.id ];
+
+      }
+
+    }
+
+  }
+
+  return 0;
+
+};
+
 export const isLiked = ( state ) => {
 
   const product = getOpenedProduct( state );
@@ -141,8 +161,8 @@ export const getScrollData = ( state ) => {
       scrollTopReal: list.scrollTopReal,
       rowHeight: list.rowHeight,
       lastScrollTop: list.lastScrollTop,
-      direction:  list.direction,
-      shift:  list.shift,
+      direction: list.direction,
+      shift: list.shift,
       topBlockHeight: list.topBlockHeight,
       bottomBlockHeight: list.bottomBlockHeight,
       idStart: list.idStart,
@@ -166,7 +186,7 @@ export const getScrollData = ( state ) => {
     topBlockHeight: 0,
     bottomBlockHeight: 0,
     idStart: 0,
-    idEnd: 0 ,
+    idEnd: 0,
     landingIdStart: 0,
     landingIdEnd: 0
 

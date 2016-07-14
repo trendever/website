@@ -11,12 +11,13 @@ scroll-component(v-el:scroll-cnt)
 </template>
 
 <script type="text/babel">
-  import { openProduct, closeProduct } from 'vuex/actions/products';
-  import { getOpenedProduct } from 'vuex/getters/products';
+  import { openProduct, closeProduct, setScrollByProduct } from 'vuex/actions/products';
+  import { getOpenedProduct, getScrollTopOfProduct } from 'vuex/getters/products';
 
   import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
   import PostComponent from './components/root/index.vue';
+  import listener from 'event-listener';
 
   export default {
     components: {
@@ -95,26 +96,39 @@ scroll-component(v-el:scroll-cnt)
     },
     vuex: {
       getters: {
-        getOpenedProduct
+        getOpenedProduct,
+        getScrollTopOfProduct
       },
       actions: {
         openProduct,
-        closeProduct
+        closeProduct,
+        setScrollByProduct
       }
     },
     route: {
       activate( { to: { params: { id } } } ) {
-        return this.openProduct( +id );
+
+        return this.openProduct( +id ).then(() => {
+
+          this.scrollListener = listener(this.$els.scrollCnt, 'scroll', () => {
+
+            this.setScrollByProduct(this.$els.scrollCnt.scrollTop);
+
+          });
+
+        });
+
       },
       canReuse( { to: { params: { id } } } ){
         this.openProduct( +id ).then( () => {
-          this.$els.scrollCnt.scrollTop = 0;
+          this.$els.scrollCnt.scrollTop = this.getScrollTopOfProduct;
           this.$broadcast( 'update' )
         } );
         return true;
       }
     },
     beforeDestroy(){
+      this.scrollListener.remove();
       this.closeProduct();
     }
   }
