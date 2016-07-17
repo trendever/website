@@ -129,7 +129,7 @@ scroll-top
 
         this.setContainerWidth( this.$els.container.offsetWidth );
 
-        this._updateRowHeight();
+        this._setScroll();
 
       } );
 
@@ -195,6 +195,8 @@ scroll-top
 
         }
 
+        console.log( _lines );
+
         return _lines;
 
       }
@@ -214,16 +216,6 @@ scroll-top
             scrollTopReal: this.scrollCnt.scrollTop,
             searchOptions: { isSearch: search, isTags: tags, filterByUserName, filterByUserId }
           } );
-
-        }
-
-      },
-
-      _updateRowHeight() {
-
-        if ( this.isRunning ) {
-
-          this.updateScroll( { rowHeight: this.rowHeight } );
 
         }
 
@@ -279,13 +271,6 @@ scroll-top
 
       },
 
-      getLines( value ){
-
-
-
-
-      },
-
     },
 
     computed: {
@@ -330,17 +315,7 @@ scroll-top
         cache: false,
         get(){
 
-          if ( this.$els ) {
-            if ( this.$els.photosList ) {
-              if ( this.$els.photosList.children ) {
-                if ( this.$els.photosList.children[ 0 ] ) {
-                  return this.$els.photosList.children[ 0 ].offsetHeight
-                }
-              }
-            }
-          }
-
-          return 300;
+          return this.$els.container.clientWidth / this.getColumnCount + 85;
 
         }
       },
@@ -363,10 +338,10 @@ scroll-top
 
       getColumnCount(){
         this.scrollCnt.scrollTop = this.getScrollData.scrollTop;
-        this._updateRowHeight();
+        this._setScroll();
       },
 
-      items(){
+      items() {
         const height = ( this.itemsLength / this.getColumnCount + 1) * this.rowHeight;
 
         this.$set( 'listStyle', {

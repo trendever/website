@@ -114,74 +114,14 @@ export const loadProducts = (
 
 };
 
-const getRows = ( state ) => {
-
-  const columnCount = getColumnCount( state );
-  const products    = getProducts( state );
-
-  if ( products !== null ) {
-
-    return parseInt( products.length / columnCount )
-
-  }
-
-  return 0;
-
-};
-
-const getRowsByCount = ( state, countElements ) => {
-
-  return parseInt( countElements / getColumnCount( state ) );
-
-};
-
-const getCountItemsByRows = ( state, rowsCount ) => {
-
-  return getColumnCount( state ) * rowsCount;
-
-};
-
-const getLocalScrollTop = ( state, scrollTop ) => {
-
-  const { topBlockHeight } = getScrollData( state );
-
-  if ( topBlockHeight >= scrollTop ) {
-
-    return 0;
-
-  }
-
-  return scrollTop - topBlockHeight;
-
-};
-
-const getCurrentRow = ( state, scrollTop, rowHeight ) => {
-
-  return parseInt( scrollTop / rowHeight );
-
-};
-
 const getShift = ( state, scrollTop, rowHeight ) => {
 
   const { lastScrollTop } = getScrollData( state );
 
-  let shift = getScrollData( state ).shift;
-
-  const direction = scrollTop >= lastScrollTop;
-
-  if ( direction ) {
-
-    shift = getCurrentRow( state, scrollTop, rowHeight );
-
-  }
-
-  if ( !direction ) {
-
-    shift = getCurrentRow( state, scrollTop, rowHeight );
-
-  }
-
-  return { shift, direction };
+  return {
+    shift: parseInt( scrollTop / rowHeight ),
+    direction: scrollTop >= lastScrollTop
+  };
 
 };
 
