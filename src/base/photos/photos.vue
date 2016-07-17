@@ -1,14 +1,12 @@
 <style src='./styles/photos.pcss'></style>
 <template lang="jade">
 .photos(v-bind:style="styleObject", v-el:container)
-  .photos__list(v-el:photos-list, v-if='items')
+  .photos__list(v-el:photos-list, v-if='items', v-bind:style="listStyle")
 
-    .top-block-height(v-bind:style="{ height: topHeight }", v-show="this.getScrollData.topBlockHeight > 0")
-
-    template(v-for='item in items | list' track-by="id")
-      photo-item( :product.once='item', :animate='isAnimateShow' )
-
-    .bottom-block-height(v-bind:style="{ height: bottomHeight }", v-show="this.getScrollData.bottomBlockHeight > 0")
+    template(v-for='line in items | lines' track-by="$index")
+      .photos__list__cell(v-bind:style="top[$index]")
+        template(v-for='item in line' track-by="id")
+          photo-item( :product.once='item', :animate='true' )
 
   .photos__more-wrap(v-if='hasMore')
     .photos__more( :class='{"_active": isLoading}' )
@@ -34,7 +32,13 @@ scroll-top
   import { clearSearch } from 'vuex/actions/search.js';
   import { searchValue, tags, selectedTagsId } from 'vuex/getters/search.js';
 
-  import { run, setListId, initScroll, updateScroll, closeProducts, setContainerWidth } from 'vuex/actions/products';
+  import {
+    run,
+    setListId,
+    updateScroll,
+    closeProducts,
+    setContainerWidth
+  } from 'vuex/actions/products';
 
   import {
     getProducts,
@@ -64,7 +68,6 @@ scroll-top
       actions: {
         run,
         setListId,
-        initScroll,
         updateScroll,
         clearSearch,
         closeProducts,
@@ -102,6 +105,10 @@ scroll-top
       return {
         styleObject: {
           pointerEvents: 'auto'
+        },
+        listStyle: {
+          height: '100px',
+          maxHeight: '100px'
         },
         lastSelectedTagId: null,
         isRunning: false
@@ -151,16 +158,45 @@ scroll-top
 
       this.closeProducts();
 
-      this.$set('isRunning', false);
+      this.$set( 'isRunning', false );
 
     },
 
     filters: {
-      list( value ){
+      lines( value ) {
 
         const { idStart, idEnd } = this.getScrollData;
 
-        return value.slice( idStart, idEnd );
+        const _lines = [];
+
+        let bundle = [];
+
+        const items = value.slice( idStart, idEnd );
+
+        items.forEach( ( item ) => {
+
+          bundle.push( item );
+
+          if ( bundle.length === this.getColumnCount ) {
+
+            _lines.push( bundle );
+
+            bundle = [];
+
+          }
+
+        } );
+
+        const elseItem = items.length - _lines.length * this.getColumnCount;
+
+        if ( elseItem > 0 ) {
+
+          _lines.push( items.slice( _lines.length * this.getColumnCount, items.length ) );
+
+        }
+
+        return _lines;
+
       }
     },
 
@@ -185,11 +221,9 @@ scroll-top
 
       _updateRowHeight() {
 
-        if( this.isRunning ){
+        if ( this.isRunning ) {
 
-          this.updateScroll( {
-            rowHeight: this.rowHeight
-          } );
+          this.updateScroll( { rowHeight: this.rowHeight } );
 
         }
 
@@ -219,11 +253,10 @@ scroll-top
 
         this.scrollEvent = listen( this.scrollCnt, 'scroll', (() => {
 
-          //let timerId = null;
+          let timerId = null;
 
           return () => {
 
-/*
             if ( timerId !== null ) {
 
               clearTimeout( timerId );
@@ -237,7 +270,6 @@ scroll-top
               this.$set( 'styleObject.pointerEvents', 'auto' );
 
             }, 200 );
-*/
 
             this._setScroll();
 
@@ -245,25 +277,18 @@ scroll-top
 
         })() );
 
-      }
+      },
+
+      getLines( value ){
+
+
+
+
+      },
 
     },
 
     computed: {
-
-      topHeight: {
-        cache: false,
-        get(){
-          return `${ this.getScrollData.topBlockHeight }px`
-        }
-      },
-
-      bottomHeight: {
-        cache: false,
-        get(){
-          return `${ this.getScrollData.bottomBlockHeight }px`
-        }
-      },
 
       scrollTop: {
         cache: false,
@@ -276,6 +301,31 @@ scroll-top
         }
       },
 
+      top: {
+        cache: false,
+        get(){
+
+          const { idStart, idEnd } = this.getScrollData;
+
+          const rowCount = ( idEnd - idStart ) / this.getColumnCount;
+
+          const rowHeight = idStart / this.getColumnCount * this.rowHeight;
+
+          const tops = [];
+
+          for ( let i = 0; i < rowCount; i++ ) {
+
+            tops.push( {
+              top: `${ rowHeight + i * this.rowHeight}px`
+            } );
+
+          }
+
+          return tops;
+
+        }
+      },
+
       rowHeight: {
         cache: false,
         get(){
@@ -283,8 +333,8 @@ scroll-top
           if ( this.$els ) {
             if ( this.$els.photosList ) {
               if ( this.$els.photosList.children ) {
-                if ( this.$els.photosList.children[ 1 ] ) {
-                  return this.$els.photosList.children[ 1 ].offsetHeight
+                if ( this.$els.photosList.children[ 0 ] ) {
+                  return this.$els.photosList.children[ 0 ].offsetHeight
                 }
               }
             }
@@ -310,13 +360,21 @@ scroll-top
     },
 
     watch: {
+
       getColumnCount(){
-        this.scrollCnt.scrollTop = this.getScrollData.scrollTopReal;
+        this.scrollCnt.scrollTop = this.getScrollData.scrollTop;
         this._updateRowHeight();
       },
+
       items(){
-        this._setScroll();
+        const height = ( this.itemsLength / this.getColumnCount + 1) * this.rowHeight;
+
+        this.$set( 'listStyle', {
+          height: `${ height }px`,
+          maxHeight: `${ height }px`
+        } )
       },
+
       listId( listId ) {
 
         this.setListId( listId );
@@ -328,6 +386,7 @@ scroll-top
         } );
 
       },
+
       selectedTagsId( selectedTagsId ) {
 
         if ( this.tags ) {
@@ -345,6 +404,7 @@ scroll-top
         }
 
       },
+
       searchValue() {
 
         if ( this.search ) {
@@ -354,11 +414,13 @@ scroll-top
         }
 
       }
+
     },
 
     components: {
       photoItem,
       scrollTop
     }
+
   }
 </script>
