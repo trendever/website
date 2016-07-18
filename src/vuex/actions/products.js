@@ -176,13 +176,15 @@ export const updateScroll = (() => {
       const isLoading = getScrollData( state ).isLoading;
 
       let idEnd   = elsByPage + shift * getColumnCount( state );
-      let idStart = shift * getColumnCount( state );
+      let idStart = shift * getColumnCount( state ) - elsByPage;
+
+      idStart = (idStart > 0) ? idStart : 0;
 
       if ( maxId - idEnd < 0 ) {
 
         idEnd   = maxId;
-        idStart = idEnd - elsByPage;
-
+        idStart = idEnd - ( elsByPage * 2 );
+        idStart = ( idStart > 0 ) ? idStart : 0
       }
 
       if ( hasMore( state ) && direction && ( maxId - idEnd <= 7 ) ) {

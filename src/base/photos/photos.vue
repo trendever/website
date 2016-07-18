@@ -165,6 +165,12 @@ scroll-top
     filters: {
       lines( value ) {
 
+        if( value.length === 1 ){
+
+          return [{ uid: 1, bundle:[value] }]
+
+        }
+
         const { idStart, idEnd } = this.getScrollData;
 
         const _lines = [];
@@ -197,6 +203,8 @@ scroll-top
           _lines.push( items.slice( _lines.length * this.getColumnCount, items.length ) );
 
         }
+
+        console.log(_lines);
 
         return _lines;
 
