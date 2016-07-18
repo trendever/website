@@ -3,9 +3,9 @@
 .photos(v-bind:style="styleObject", v-el:container)
   .photos__list(v-el:photos-list, v-if='items', v-bind:style="listStyle")
 
-    template(v-for='line in items | lines' track-by="$index")
+    template(v-for='line in items | lines' track-by="uid")
       .photos__list__cell(v-bind:style="top[$index]")
-        template(v-for='item in line' track-by="id")
+        template(v-for='item in line.bundle' track-by="id")
           photo-item( :product.once='item', :animate='true' )
 
   .photos__more-wrap(v-if='hasMore')
@@ -169,19 +169,22 @@ scroll-top
 
         const _lines = [];
 
-        let bundle = [];
-
-        const items = value.slice( idStart, idEnd );
+        let bundle   = [];
+        let bundleId = '';
+        const items  = value.slice( idStart, idEnd );
 
         items.forEach( ( item ) => {
+
+          bundleId += '' + item.id;
 
           bundle.push( item );
 
           if ( bundle.length === this.getColumnCount ) {
 
-            _lines.push( bundle );
+            _lines.push( { uid: bundleId, bundle } );
 
-            bundle = [];
+            bundle   = [];
+            bundleId = '';
 
           }
 
@@ -194,8 +197,6 @@ scroll-top
           _lines.push( items.slice( _lines.length * this.getColumnCount, items.length ) );
 
         }
-
-        console.log( _lines );
 
         return _lines;
 
