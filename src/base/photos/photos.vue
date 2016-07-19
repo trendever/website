@@ -219,11 +219,10 @@ scroll-top
 
         this.scrollEvent = listen( this.scrollCnt, 'scroll', (() => {
 
-          //let timerId = null;
+          let timerId = null;
 
           return () => {
 
-/*
             if ( timerId !== null ) {
 
               clearTimeout( timerId );
@@ -237,7 +236,6 @@ scroll-top
               this.$set( 'styleObject.pointerEvents', 'auto' );
 
             }, 200 );
-*/
 
             this._setScroll();
 
