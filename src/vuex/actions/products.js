@@ -164,26 +164,27 @@ export const updateScroll = (() => {
   ) => {
 
     const { shift, direction } = getShift( state, scrollTop, rowHeight );
-    const maxId     = getProducts( state ).length;
-    const elsByPage = getCountElementOnPage( state );
 
     dispatch( types.PRODUCTS_SET_SCROLL, { rowHeight, scrollTop: scrollTopReal, lastScrollTop: scrollTop, shift } );
 
-    let idEnd = elsByPage + shift * getColumnCount( state );
+    if ( oldShift !== shift ) {
 
-    if ( oldShift !== shift && direction && getScrollData( state ).idEnd < idEnd ) {
-
-      oldShift = shift;
+      oldShift        = shift;
+      const maxId     = getProducts( state ).length;
+      const elsByPage = getCountElementOnPage( state );
 
       const isLoading = getScrollData( state ).isLoading;
 
-      idEnd       = getScrollData( state ).idEnd > idEnd ? getScrollData( state ).idEnd : idEnd;
-      let idStart = 0;
+      let idEnd   = elsByPage + shift * getColumnCount( state );
+      let idStart = shift * getColumnCount( state ) - elsByPage;
+
+      idStart = (idStart > 0) ? idStart : 0;
 
       if ( maxId - idEnd < 0 ) {
 
-        idEnd = maxId;
-
+        idEnd   = maxId;
+        idStart = idEnd - ( elsByPage * 2 );
+        idStart = ( idStart > 0 ) ? idStart : 0
       }
 
       if ( hasMore( state ) && direction && ( maxId - idEnd <= 7 ) ) {
@@ -193,8 +194,6 @@ export const updateScroll = (() => {
           const _searchOptions = Object.assign( {}, searchOptions, { limit: 9 } );
 
           dispatch( types.PRODUCTS_SET_SCROLL, { isLoading: true } );
-
-          _searchOptions.limit = elsByPage;
 
           loadProducts( { dispatch, state }, _searchOptions, false ).then().then( () => {
 
@@ -207,6 +206,8 @@ export const updateScroll = (() => {
         }
 
       }
+
+      console.log( { idStart, idEnd } );
 
       dispatch( types.PRODUCTS_SET_SCROLL, { idStart, idEnd } )
 
