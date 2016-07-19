@@ -204,8 +204,6 @@ scroll-top
 
         }
 
-        console.log(_lines);
-
         return _lines;
 
       }
