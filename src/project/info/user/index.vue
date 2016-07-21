@@ -5,7 +5,7 @@ scroll-component
     .section__content.header__content
       .header__arrow(v-if='isAuth', @click='goBack()')
         i.header__arrow__ic.ic-arrow-left
-      div(v-bind:class="{ 'center': isAuth}").header__logo
+      div(v-bind:class="[isAuth ? 'center': 'left']").header__logo
         a(v-link='{ name: "home" }')
           img(src='../../../base/img/logo-beta.png' alt='')
       a(href='#'
