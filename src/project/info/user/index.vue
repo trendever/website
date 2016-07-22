@@ -2,17 +2,16 @@
 <template lang="jade">
 scroll-component
   .section__content
-    .header__container
-      .section.header
-        .section__content.header__content.u-fixed
-          .header__arrow(v-if='isAuth', @click='goBack()')
-            i.header__arrow__ic.ic-arrow-left
-          div(v-bind:class="[isAuth ? 'center': 'left']").header__logo
-            a(v-link='{ name: "home" }')
-              img(src='../../../base/img/logo-beta.png' alt='')
-          a(href='#'
-            v-if="!isAuth"
-            v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
+    .section.header
+      .section__content.header__content.u-fixed
+        .header__arrow(v-if='isAuth', @click='goBack()')
+          i.header__arrow__ic.ic-arrow-left
+        div(v-bind:class="[isAuth ? 'center': 'left']").header__logo
+          a(v-link='{ name: "home" }')
+            img(src='../../../base/img/logo-beta.png' alt='')
+        a(href='#'
+          v-if="!isAuth"
+          v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
 
     .section.top
       .arithmetic
