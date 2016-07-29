@@ -18,10 +18,10 @@
         img(:src="avatarUrl")
 
       //- .header__menu
-      .header__menu-icon
-      .header__menu-links
-        a.header__menu-link(href='#') Настройки
-        a.header__menu-link(href='#') Выйти
+      //- .header__menu-icon
+      //- .header__menu-links
+      //-   a.header__menu-link(href='#') Настройки
+      //-   a.header__menu-link(href='#') Выйти
 </template>
 
 <script type='text/babel'>
