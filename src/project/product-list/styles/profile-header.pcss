@@ -24,7 +24,7 @@
     justify-content: center;
 
     &__ic {
-      padding: 30px 10px;
+      margin: 30px 10px;
       transition: $btn-transition;
       text-decoration: none;
       color: $color__white;
@@ -73,6 +73,12 @@
         color: #fff;
         font-size: 46px;
         padding: 0 30px;
+        transition: $btn-transition;
+
+        &:hover{
+          cursor: pointer;
+          color: color($color__white shade(20%));
+        }
 
 
       }

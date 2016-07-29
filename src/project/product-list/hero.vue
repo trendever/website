@@ -52,11 +52,11 @@
   .section__content.hero__content
     .profile-header
       .profile-header__center
-        a(href='https://www.fb.com/trendevercom', class='profile-header__center__ic')
+        a(href='https://www.fb.com/trendevercom', class='profile-header__center__ic' target="_blank")
           i(class='ic-facebook-icon')
-        a(href='https://www.instagram.com/trendevercom', class='profile-header__center__ic')
+        a(href='https://www.instagram.com/trendevercom', class='profile-header__center__ic' target="_blank")
           i(class='ic-instagram-new-icon')
-        a(href='https://vk.com/trendever', class='profile-header__center__ic')
+        a(href='https://vk.com/trendever', class='profile-header__center__ic' target="_blank")
           i(class='ic-vkontakte-icon')
     .hero__content__logo
     .hero__content__description Шопинг в Instagram стал проще
