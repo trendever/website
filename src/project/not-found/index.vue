@@ -9,9 +9,9 @@
         .not-found__clip
           .not-found__text
             .not-found__text__wrap
-              Страницу похитили...
+              | Страницу похитили...
               span но&nbsp;
-                a(v-link='{name: "home"}')главная страница
+                a(v-link='{name: "home"}') главная страница
                 | &nbsp;осталась
 
 

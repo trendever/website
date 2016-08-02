@@ -146,7 +146,7 @@ $count-tags-open: 13;
 
   &.glued {
     position: fixed;
-    top: -2px;
+    top: 2px;
     z-index: 100;
     max-width: 1050px;
     width: 100%;
@@ -164,22 +164,16 @@ $count-tags-open: 13;
     text-align: center;
 
     &.__focused, &.__active {
-      display: table;
 
       & .search-input__input {
-        width: 100%;
-        display: table-cell;
         outline: none;
-        border-bottom: 1px solid transparent;
 
         @media (--mobile) {
           /* HACK: Не знаю почему, но рамка пропадает без этого */
           border-bottom: 5px solid transparent;
         }
       }
-      & .search-input__clear-btn,
-      & .search-input__search-btn {
-        display: table-cell;
+      & .search-input__clear-btn {
         width: 100px;
 
       }
@@ -192,7 +186,6 @@ $count-tags-open: 13;
     display: inline-block;
     box-sizing: border-box;
     padding: 0;
-    //width: 326px;
     width: 231px;
     height: 100%;
     border: none;
@@ -247,6 +240,7 @@ $count-tags-open: 13;
   }
   &__search-btn {
     padding: 0 30px;
+    color: #399;
   }
   &__clear-btn {
     position: absolute;
@@ -381,12 +375,15 @@ $count-tags-open: 13;
       }
     }
   }
-}*/
+  }*/
 
-.tags-wrapper {
-  display: inline-block;
-  width: calc(100% + 20px);
-  margin-left: -20px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
+  .tags-wrapper {
+    display: inline-block;
+    width: calc(100% + 20px);
+    margin-left: -20px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+  .tags-wrapper .tag{
+    border-radius: 5px;
+  }

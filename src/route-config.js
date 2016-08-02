@@ -79,6 +79,11 @@ export function configRouter(router) {
       name: 'profile',
       component: require('project/profile/index.vue')
     },
+    
+    '/payment':{
+      name: 'payment',
+      component: require('project/payment/index.vue'),
+    },
 
     '/:id': {
       // !important it must be last of the list.
