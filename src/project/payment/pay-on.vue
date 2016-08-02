@@ -20,18 +20,21 @@
         .check-card-text Выберите карту,#[br]  с которой будут списаны деньги
         .check-card-select-wrap
           i.ic-check-card
+            img(src="icons/card_1.png")
           select.check-card-select
             option Новая карта
             option Новая карта 2
         .check-card-input-wrap
           .check-card-input
             i.ic-card-new
+              img(src="icons/card_2.png")
             input(name='code' placeholder='1234' type='text').code
             input(name='date' placeholder='MM/YY' type='text').date
             input(name='cvc' placeholder='CVC' type='text').cvc
         .check-card-input-wrap
             .check-card-input.big
               i.ic-user-navbar
+                img(src='icons/person.png')
               input(name='name' placeholder='Имя и фамилия как на карте' type='text').name
 
       p.payment-note Прямая оплата на карту продавцу#[br]  через платежный сервис Payture.ru#[br]  Данные защищены.
