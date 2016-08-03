@@ -168,6 +168,10 @@ $count-tags-open: 13;
       & .search-input__input {
         outline: none;
 
+        & .change-col{
+          display: none;
+        }
+
         @media (--mobile) {
           /* HACK: Не знаю почему, но рамка пропадает без этого */
           border-bottom: 5px solid transparent;
