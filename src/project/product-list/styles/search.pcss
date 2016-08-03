@@ -165,6 +165,10 @@ $count-tags-open: 13;
 
     &.__focused, &.__active {
 
+      .change-col{
+        display: none;
+      }
+
       & .search-input__input {
         outline: none;
 
@@ -198,6 +202,7 @@ $count-tags-open: 13;
     font-size: 25px;
     font-family: $font__family;
 
+
     @media (--mobile) {
       margin-top: 3.6px;
       width: 100%;
@@ -225,7 +230,7 @@ $count-tags-open: 13;
       z-index: 99999;
       cursor: pointer;
       @media (--mobile) {
-        margin-left: -137px;
+        //margin-left: -137px;
         font-size: 40px;
       }
     }
