@@ -106,7 +106,7 @@ div
 
         } else {
 
-          alert(`Выберите картинку с разрешением: .png, .git, .jpg, .jpeg`);
+          alert(`Выберите картинку в формате: .png, .git, .jpg, .jpeg`);
 
         }
 
