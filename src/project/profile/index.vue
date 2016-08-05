@@ -16,7 +16,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
           //- .profile_info_count 53
           //-   .profile_info_count_t Подписки
-
+        .profile_toggle
+          .profile_toggle_trigger
         .profile_desc
           .profile_desc_t {{getSlogan}}
           span(v-if="getUserCaption") {{ getUserCaption }}
@@ -57,6 +58,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
   import NavbarComponent from 'base/navbar/navbar.vue'
 
   export default {
+/*    created(){
+      console.log(this.getUserCaption);
+    },*/
     data(){
       return {
         isFirst: false
