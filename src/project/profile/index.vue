@@ -16,7 +16,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
           //- .profile_info_count 53
           //-   .profile_info_count_t Подписки
-        .profile_filter(v-if="listId !== 'profile' ? false : true")
+        .profile_filter(v-if="isSelfPage")
           .profile_filter_trigger
             h1 FILTER TEST
         .profile_desc
@@ -101,6 +101,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     computed: {
+      isSelfPage(){
+        return this.listId !== 'profile' ? false : true;
+      },
       user_id(){
         return this.getPhotoConfig.photoFilter.user_id;
       },
