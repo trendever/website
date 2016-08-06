@@ -16,7 +16,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
           //- .profile_info_count 53
           //-   .profile_info_count_t Подписки
-        .profile_filter(v-if="isSelfPage")
+        .profile_filter(v-if="listId !== 'profile' ? false : true")
           .profile_filter_trigger
             h1 FILTER TEST
         .profile_desc
@@ -59,20 +59,13 @@ scroll-component(v-if="isDone", class="profile-cnt")
   import NavbarComponent from 'base/navbar/navbar.vue'
 
   export default {
-/*    created(){
-      console.log(this.getUserCaption);
-    },*/
     data(){
       return {
-        isFirst: false,
-        isSelfPage: false,
+        isFirst: false
       }
     },
     route: {
       data( { to: { params: { id } } } ) {
-        if(!id){
-          this.isSelfPage = true;
-        }
         if ( this.isAuth ) {
           return this.openProfile( id ).catch( () => {
             this.$router.go( { name: '404' } );
