@@ -16,8 +16,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
           //- .profile_info_count 53
           //-   .profile_info_count_t Подписки
-        .profile_toggle
-          .profile_toggle_trigger
+        .profile_filter(v-if="isSelfPage")
+          .profile_filter_trigger
+            h1 FILTER TEST
         .profile_desc
           .profile_desc_t {{getSlogan}}
           span(v-if="getUserCaption") {{ getUserCaption }}
@@ -63,11 +64,15 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },*/
     data(){
       return {
-        isFirst: false
+        isFirst: false,
+        isSelfPage: false,
       }
     },
     route: {
       data( { to: { params: { id } } } ) {
+        if(!id){
+          this.isSelfPage = true;
+        }
         if ( this.isAuth ) {
           return this.openProfile( id ).catch( () => {
             this.$router.go( { name: '404' } );
