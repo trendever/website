@@ -93,6 +93,8 @@ export function join({ lead_id, conversation_id }) {
   return new Promise( (resolve, reject) => {
 
     channel.req('join', 'chat', { lead_id, conversation_id }).then( data => {
+      console.log("HERE CHAT:");
+      console.log(data.response_map);
       resolve(data.response_map);
     }).catch( error => {
       if (error.log_map.code_key === '403') {
