@@ -55,5 +55,40 @@
         word-wrap: break-word;
       }
     }
+    &_filter {
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      &_trigger {
+        input {
+          display: none;
+          &:checked + label:after{
+            left: 39px;
+          }
+        }
+        label {
+          position: relative;
+          display: block;
+          width: 80px; 
+          height: 44px;
+          border-radius: 22px;
+          background: $color__green;
+          cursor: pointer;
+          &:after {
+            position: relative;
+            display: block;
+            content: '';
+            width: 38px; 
+            height: 38px;
+            top: 3px; 
+            left: 3px;
+            border-radius: 19px;
+            background: white;
+            pointer-events: none;
+            transition: all .3s ease-in-out;
+          }
+        }
+      }
+    }
   }
 }

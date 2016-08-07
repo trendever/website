@@ -17,8 +17,11 @@ scroll-component(v-if="isDone", class="profile-cnt")
           //- .profile_info_count 53
           //-   .profile_info_count_t Подписки
         .profile_filter(v-if="isSelfPage")
+          h1 товары  
           .profile_filter_trigger
-            h1 FILTER TEST
+            input(type="checkbox" id="trigger")
+            label(for="trigger")
+          h1 тренды
         .profile_desc
           .profile_desc_t {{getSlogan}}
           span(v-if="getUserCaption") {{ getUserCaption }}
@@ -61,7 +64,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
   export default {
     data(){
       return {
-        isFirst: false
+        isFirst: false,
+        photoType: ''
       }
     },
     route: {
