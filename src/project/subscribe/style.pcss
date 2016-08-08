@@ -7,8 +7,8 @@
 	color: #fff;
 	overflow: scroll;
 	@media(--mobile) {
-		background-position: center 100px;
-		background-size: 70%;
+		background-position: center 10px;
+		background-size: 75%;
 	}
 
 
@@ -47,27 +47,39 @@
 
 		@media(--mobile) {
 			width: 100%;
-			margin-top: 400px;
+			margin-top: 305px;
+			padding: 55px;
 		}
 	}
 
 	&-head{
 		font-size: 40px;
 		padding-bottom: 30px;
+
+		@media(--mobile) {
+			text-align: center;
+		}
 	}
 	&-note{
 		font-size: 24px;
 		margin-bottom: 20px;
 	}
+	&-input-wrapper{
+		@media(--mobile) {
+			margin-top: 50px;
+		}
+	}
 	&-input{
 		background: transparent;
 		border:none;
+		border-radius: 0;
 		width:300px;
 		margin-left: 10px;
 		color:#fff;
 		font-size:24px;
 		border-bottom: 1px solid #fff;
 		margin-bottom: 20px;
+		padding-bottom: 10px;
 
 		&:focus {
 			outline:none;
@@ -90,10 +102,11 @@
 		}
 
 		@media(--mobile) {
-			width: 83%;
-			position: absolute;
-			bottom: 180px;
+			width: 99%;
 			font-size: 30px;
+			position: fixed;
+			bottom: 170px;
+			left: 0;
 		}
 	}
 }
