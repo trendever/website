@@ -177,7 +177,6 @@ scroll-top
             return item.supplier_id === this.$store.state.user.id;
           })
         }
-        
       },  
       list( value ){
 
@@ -272,7 +271,22 @@ scroll-top
 
     computed: {
       checkPhotoType(){
-        return this.filterByPhotoType;
+        //check is there any product
+        if(this.itemsLength){
+          let products = this.items.filter(item=>{
+            return item.supplier_id === this.$store.state.user.id;
+          })
+          if(!products.length){
+
+            return this.filterByPhotoType = 'like';
+            
+          } else {
+
+            return this.filterByPhotoType;
+
+          }
+        }
+        return null;
       },
       topHeight: {
         cache: false,
@@ -329,7 +343,6 @@ scroll-top
         return 0;
 
       }
-
     },
 
     watch: {

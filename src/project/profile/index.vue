@@ -16,15 +16,20 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
           //- .profile_info_count 53
           //-   .profile_info_count_t Подписки
+
         .profile_filter(v-if="isSelfPage")
-          h1 товары  
-          
-          h1 тренды
+          span(v-bind:class="{'seleted': photoType === 'product'}") 
+            input(type="radio" value="product" v-model="photoType" id="filter-products")
+            label(for="filter-products") Товары 
+          span(v-bind:class="{'seleted': photoType === 'like'}")  
+            input(type="radio" value="like" v-model="photoType" id="filter-likes") 
+            label(for="filter-likes") Тренды
+
         .profile_desc
           .profile_desc_t {{getSlogan}}
           span(v-if="getUserCaption") {{ getUserCaption }}
 
-      photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId" filter-by-photo-type="like")
+      photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId", :filter-by-photo-type.sync="photoType")
   navbar-component(:current='listId')
 
 .help-wrapper(v-if='isFirst')
@@ -63,7 +68,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
     data(){
       return {
         isFirst: false,
-        photoType: ''
+        photoType: 'product'
       }
     },
     route: {
@@ -104,7 +109,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },
     computed: {
       isSelfPage(){
-        return this.listId !== 'profile' ? false : true;
+        return this.$store.state.user.id === this.$store.state.user.myId;
       },
       user_id(){
         return this.getPhotoConfig.photoFilter.user_id;
