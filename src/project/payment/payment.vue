@@ -14,7 +14,7 @@
           //- span. &#x20bd
 
       .check-card
-        .check-card-text Выберите карту, куда будут зачислены деньги
+        .check-card-text Выберите карту, #[br] куда будут зачислены деньги
         .check-card-select-wrap
           i.ic-check-card
             img(src='icons/card_1.png').ic-card_1
