@@ -10,7 +10,8 @@
         .payment-summ-text Введите сумму к оплате
         .payment-summ-input-wrapper
           i.ic-rouble
-          input(type='text' placeholder='0 ₽').payment-summ-input 
+          input(type='text' placeholder='0' value="0 ₽").payment-summ-input 
+          //- span. &#x20bd
 
       .check-card
         .check-card-text Выберите карту, куда будут зачислены деньги
