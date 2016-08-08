@@ -9,7 +9,7 @@
         <i class="ic-bag buy icon icon-default"></i>
         <span class="text text-default">купить</span>
       </div>
-      <div class="button buttonLeft">
+      <div class="button buttonLeft" @click="buy">
         <i class="ic-dialog know icon icon-default"></i>
         <span class="text text-default">узнать</span>
       </div>
