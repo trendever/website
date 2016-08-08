@@ -18,15 +18,13 @@ scroll-component(v-if="isDone", class="profile-cnt")
           //-   .profile_info_count_t Подписки
         .profile_filter(v-if="isSelfPage")
           h1 товары  
-          .profile_filter_trigger
-            input(type="checkbox" id="trigger")
-            label(for="trigger")
+          
           h1 тренды
         .profile_desc
           .profile_desc_t {{getSlogan}}
           span(v-if="getUserCaption") {{ getUserCaption }}
 
-      photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId" )
+      photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId" filter-by-photo-type="like")
   navbar-component(:current='listId')
 
 .help-wrapper(v-if='isFirst')

@@ -5,7 +5,7 @@
 
     .top-block-height(v-bind:style="{ height: topHeight }", v-show="this.getScrollData.topBlockHeight > 0")
 
-    template(v-for='item in items | list' track-by="id")
+    template(v-for='item in items | list | photoType checkPhotoType' track-by="id")
       photo-item( :product.once='item', :animate='isAnimateShow' )
 
     .bottom-block-height(v-bind:style="{ height: bottomHeight }", v-show="this.getScrollData.bottomBlockHeight > 0")
@@ -82,6 +82,10 @@ scroll-top
         type: Boolean,
         default: false
       },
+      filterByPhotoType:{
+        type: String,
+        default: null
+      },
       filterByUserName: {
         default: null
       },
@@ -156,6 +160,25 @@ scroll-top
     },
 
     filters: {
+      photoType(value, type) {
+
+        if(type === null){
+          return value;
+        }
+
+        if(type === 'like'){
+          return value.filter(item=>{
+            return item.supplier_id !== this.$store.state.user.id;
+          })
+        }
+
+        if(type === 'product'){
+          return value.filter(item=>{
+            return item.supplier_id === this.$store.state.user.id;
+          })
+        }
+        
+      },  
       list( value ){
 
         const { idStart, idEnd } = this.getScrollData;
@@ -248,7 +271,9 @@ scroll-top
     },
 
     computed: {
-
+      checkPhotoType(){
+        return this.filterByPhotoType;
+      },
       topHeight: {
         cache: false,
         get(){
