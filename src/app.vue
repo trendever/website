@@ -5,6 +5,9 @@
   popup-fast-signup(v-if="authIsDone")
   router-view(v-if="authIsDone")
   listener-component(v-if="authIsDone")
+//-get user for ios push actions logic
+input(type="hidden", value="", id="get-user-login")
+
 </template>
 
 <script type='text/babel'>
@@ -22,11 +25,18 @@
   import PopupFastSignup from 'base/auth-popup/fast-signup.vue'
   import ListenerComponent from 'project/listener/index.vue'
 
+
+
+  //get user for ios push actions logic
+  import {get as getUser} from 'services/user';
+
   export default {
+    store,
     data(){
       return {
         authIsDone: false,
-        touchMoveY: 0
+        touchMoveY: 0,
+        getUserLogin: ''
       }
     },
     vuex: {
@@ -34,8 +44,34 @@
         authUser
       }
     },
-    ready() {
 
+    //get user for ios push actions logic
+    created(){
+      let self = this;
+      let result=''; 
+      console.log(self.$store.state.user.id);
+      window.getUserLogin = function(){
+
+        let user = self.$store.state.user;
+        if(user.id !== null){
+          let userId = user.myId; 
+          let instagramUsername = user.all[user.myId].instagram_username;
+            getUser({
+              user_id: userId,
+              instagram_name: instagramUsername
+            }).then(data=>{
+              if(data.User.id === userId){
+                 result = true;
+              } else {
+                result = 0;
+              }
+              //set value to hidden input
+              document.getElementById('get-user-login').value = result;
+            });
+          }
+        }
+    },    
+    ready() {
       let token = null
 
       if ( this.$route.query ) {
@@ -63,7 +99,6 @@
     components: {
       ListenerComponent,
       PopupFastSignup,
-    },
-    store
+    }
   }
 </script>
