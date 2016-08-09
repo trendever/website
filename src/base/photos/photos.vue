@@ -277,8 +277,9 @@ scroll-top
             return item.supplier_id === this.$store.state.user.id;
           })
           if(!products.length){
-
-            return this.filterByPhotoType = 'like';
+            
+            this.filterByPhotoType = 'like';
+            return this.filterByPhotoType;
             
           } else {
 
