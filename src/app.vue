@@ -49,7 +49,7 @@ input(type="hidden", value="", id="get-user-login")
     created(){
       let self = this;
       let result=''; 
-      console.log(self.$store.state.user.id);
+      //console.log(self.$store.state.user.id);
       window.getUserLogin = function(){
 
         let user = self.$store.state.user;
@@ -61,7 +61,7 @@ input(type="hidden", value="", id="get-user-login")
               instagram_name: instagramUsername
             }).then(data=>{
               if(data.User.id === userId){
-                 result = true;
+                 result = data.User.id;
               } else {
                 result = 0;
               }
