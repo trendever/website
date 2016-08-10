@@ -45,6 +45,8 @@ scroll-top
     getScrollData,
   } from 'vuex/getters/products';
 
+  import { userID } from 'vuex/getters/user';
+
   export default {
 
     vuex: {
@@ -58,7 +60,8 @@ scroll-top
         selectedTags: tags,
         selectedTagsId,
         getColumnCount,
-        getScrollData
+        getScrollData,
+        userID
       },
 
       actions: {
@@ -283,7 +286,7 @@ scroll-top
       products(){
         if(this.checkPhotoType !== null){
           let products = this.items.filter(item=>{
-            return item.supplier_id === this.$store.state.user.id;
+            return item.supplier_id === this.userID;
           })
           if(!products.length) {
             this.$dispatch('setNoProducts', true);
@@ -299,7 +302,7 @@ scroll-top
       likes(){
         if(this.checkPhotoType !== null){
           let likes = this.items.filter(item=>{
-            return item.supplier_id !== this.$store.state.user.id;
+            return item.supplier_id !== this.userID;
           });
           if(!likes.length) {
             //alert('No likes');
