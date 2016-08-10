@@ -5,7 +5,7 @@
     i.ic-close
   .bottom-margin
     .payment-wrapper
-      .payment-head Оплата на карту#[br]  продавца
+      .payment-head Оплата на карту продавца
       span.transaction card2card транзакция
       .payment-result
         .for-pay
