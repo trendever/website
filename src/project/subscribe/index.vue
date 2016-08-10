@@ -2,7 +2,7 @@
 <template lang="jade">
 .subscribe
   a(href='#').subscribe-close
-   i.ic-close
+   i.ic-close(@click="exitSubscribe")
   .subscribe-wrapper
    .subscribe-head Вы на тестовом сайте
    .subscribe-note ...и бывают баги, о которых мы #[br] просим писать на hello@trendever.com #[br]#[br]Хотите помочь сделать шопинг #[br] в инсте таким же удобным как #[br] в магазине? Тогда оставьте свой email #[br] – no spam 
@@ -21,9 +21,17 @@
 
 
 <script>
-    export default{
-
+export default{
+  methods:{
+    exitSubscribe(){
+      if(window.history.length > 2){
+          window.history.back();
+      } else {
+        this.$router.go({name: 'home'});
+      }
     }
+  }
+}
 </script>
 
 

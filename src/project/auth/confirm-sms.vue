@@ -137,8 +137,18 @@ div
 
             if (!this.callbackOnSuccessAuth) {
               setTimeout( () => this.$router.go({name: 'home'}), 1000);
+              return true;
             } else {
               this.executeCallbackOnSuccessAuth()
+              return 0;
+            }
+
+          }).then((success)=>{
+            //show subscribe
+            if(success){
+              setTimeout(()=>{
+                this.$router.go({name: 'subscribe'});
+              },1000 * 60 * 2)
             }
 
           });
