@@ -5,7 +5,7 @@
 
     .top-block-height(v-bind:style="{ height: topHeight }", v-show="this.getScrollData.topBlockHeight > 0")
 
-    template(v-for='item in items | list | photoType checkPhotoType' track-by="id")
+    template(v-for='item in items | photoType checkPhotoType | list' track-by="id")
       photo-item( :product.once='item', :animate='isAnimateShow' )
 
     .bottom-block-height(v-bind:style="{ height: bottomHeight }", v-show="this.getScrollData.bottomBlockHeight > 0")
@@ -50,7 +50,7 @@ scroll-top
     vuex: {
 
       getters: {
-        items: getProducts,
+        items:getProducts,
         hasMore,
         isLoading,
         isAnimateShow,
@@ -82,8 +82,8 @@ scroll-top
         type: Boolean,
         default: false
       },
+      //photo types logic
       filterByPhotoType:{
-        type: String,
         default: null
       },
       filterByUserName: {
@@ -157,33 +157,6 @@ scroll-top
 
       this.$set('isRunning', false);
 
-    },
-
-    filters: {
-      photoType(value, type) {
-
-        if(type === null){
-          return value;
-        }
-
-        if(type === 'like'){
-          return value.filter(item=>{
-            return item.supplier_id !== this.$store.state.user.id;
-          })
-        }
-
-        if(type === 'product'){
-          return value.filter(item=>{
-            return item.supplier_id === this.$store.state.user.id;
-          })
-        }
-      },  
-      list( value ){
-
-        const { idStart, idEnd } = this.getScrollData;
-
-        return value.slice( idStart, idEnd );
-      }
     },
 
     methods: {
@@ -268,26 +241,77 @@ scroll-top
       }
 
     },
+    /**
+    /*
+    /*F I L T E R S 
+    /*
+    */
 
+    filters: {
+      //photo types logic
+      photoType(value, type) {
+        if(type === null || !type){
+          return value;
+        }
+
+        if(type === 'like'){
+          value = this.likes;
+          return value;
+        }
+
+        if(type === 'product'){
+          value = this.products;
+          return value;
+        }
+
+      },  
+      list( value ){
+
+        const { idStart, idEnd } = this.getScrollData;
+
+        return value.slice( idStart, idEnd );
+      }
+    },
+
+    /**
+    /*
+    /*C O M P U T E D  
+    /*
+    */
     computed: {
-      checkPhotoType(){
-        //check is there any product
-        if(this.itemsLength){
+      //photo types logic
+      products(){
+        if(this.checkPhotoType !== null){
           let products = this.items.filter(item=>{
             return item.supplier_id === this.$store.state.user.id;
           })
-          if(!products.length){
-            
-            this.filterByPhotoType = 'like';
-            return this.filterByPhotoType;
-            
-          } else {
-
-            return this.filterByPhotoType;
-
+          if(!products.length) {
+            this.$dispatch('setNoProducts', true);
+            //alert('No Products');
+            return [];
           }
+          this.$dispatch('setNoProducts', false);
+          return products;
         }
         return null;
+      },
+      //photo types logic
+      likes(){
+        if(this.checkPhotoType !== null){
+          let likes = this.items.filter(item=>{
+            return item.supplier_id !== this.$store.state.user.id;
+          });
+          if(!likes.length) {
+            //alert('No likes');
+          }
+          this.$dispatch('setNoLikes', false);
+          return likes;
+        }
+        return null;
+      },
+      //photo types logic
+      checkPhotoType(){
+        return this.filterByPhotoType;
       },
       topHeight: {
         cache: false,

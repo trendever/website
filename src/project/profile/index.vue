@@ -18,10 +18,14 @@ scroll-component(v-if="isDone", class="profile-cnt")
           //-   .profile_info_count_t Подписки
 
         .profile_filter(v-if="isSelfPage")
-          span(v-bind:class="{'seleted': photoType === 'product'}") 
+          span(v-bind:class="{'seleted': photoType === 'product'}" ,
+              v-if="!noProducts && !noLikes || noLikes && !noProducts"
+            ) 
             input(type="radio" value="product" v-model="photoType" id="filter-products")
             label(for="filter-products") Товары 
-          span(v-bind:class="{'seleted': photoType === 'like'}")  
+          span(v-bind:class="{'seleted': photoType === 'like'}" ,
+              v-if="!noLikes && !Products || !noLikes && noProducts"
+            )  
             input(type="radio" value="like" v-model="photoType" id="filter-likes") 
             label(for="filter-likes") Тренды
 
@@ -29,7 +33,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .profile_desc_t {{getSlogan}}
           span(v-if="getUserCaption") {{ getUserCaption }}
 
-      photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId", :filter-by-photo-type.sync="photoType")
+      photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId", :filter-by-photo-type="photoType")
   navbar-component(:current='listId')
 
 .help-wrapper(v-if='isFirst')
@@ -68,7 +72,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
     data(){
       return {
         isFirst: false,
-        photoType: 'product'
+        photoType: 'product',
+        noProducts: true,
+        noLikes: true
       }
     },
     route: {
@@ -81,6 +87,17 @@ scroll-component(v-if="isDone", class="profile-cnt")
           return Promise.resolve();
         }
       }
+    },
+    events:{
+      'setNoProducts':function(val){
+        this.noProducts = val;
+        if(val === true){
+          this.photoType = 'like';
+        }
+      },
+      'setNoLikes':function(val){
+        this.noLikes = val;
+      },
     },
     ready(){
       if ( !this.isAuth ) {
