@@ -5,11 +5,11 @@
         <i class="ic-heart like icon" :class="{ 'icon-active': isLiked, 'icon-default': !isLiked }"></i>
         <span class="text" :class="{ 'text-active': isLiked, 'text-default': !isLiked }">тренд</span>
       </div>
-      <div class="button buttonLeft" @click="buy">
+      <div v-if="supplierAvailable" class="button buttonLeft" @click="buy">
         <i class="ic-bag buy icon icon-default"></i>
         <span class="text text-default">купить</span>
       </div>
-      <div class="button buttonLeft" @click="buy">
+      <div v-else class="button buttonLeft" @click="buy">
         <i class="ic-dialog know icon icon-default"></i>
         <span class="text text-default">узнать</span>
       </div>
@@ -39,6 +39,10 @@
         default: false
       },
       isMobile: {
+        type: Boolean,
+        default: false
+      },
+      supplierAvailable: {
         type: Boolean,
         default: false
       },
