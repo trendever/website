@@ -155,12 +155,12 @@ div
               })
             }
           }).then(flag=>{
-              if(!flag){
+              /*if(!flag){
                 //alert('нету email'); -works
                 setTimeout(()=>{
                   this.$router.go({name: 'subscribe'});
                 },1000 * 60 * 2);
-              }
+              }*/
           })
       },
 
