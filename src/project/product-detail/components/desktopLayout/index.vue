@@ -27,6 +27,7 @@
             :is-liked="isLiked"
             :is-mobile="isMobile"
             :product-id="productId"
+            :supplier-available="supplierAvailable"
             :like="like"
             :buy="buy"
             :buy-promo-product="buyPromoProduct"
@@ -106,6 +107,10 @@
         default: false
       },
       isMobile: {
+        type: Boolean,
+        default: false
+      },
+      supplierAvailable: {
         type: Boolean,
         default: false
       },
