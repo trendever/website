@@ -45,6 +45,7 @@ div
   import { authData, callbackOnSuccessAuth } from 'vuex/getters';
   import store from 'vuex/store';
   import * as auth from 'services/auth';
+  import { get as getUser} from 'services/user';
 
   const TEXT_HEADER = {
     DEFAULT: 'Введите код из sms',
@@ -144,15 +145,23 @@ div
             }
 
           }).then((success)=>{
-            //show subscribe
             if(success){
-              setTimeout(()=>{
-                this.$router.go({name: 'subscribe'});
-              },1000 * 60 * 2)
+
+              let hasEmail = false;
+              return getUser({user_id:this.$store.state.user.myId}).then(data=>{
+                hasEmail = data.User.has_email;
+                return hasEmail;
+
+              })
             }
-
-          });
-
+          }).then(flag=>{
+              if(!flag){
+                //alert('нету email'); -works
+                setTimeout(()=>{
+                  this.$router.go({name: 'subscribe'});
+                },1000 * 60 * 2);
+              }
+          })
       },
 
       onErrorCode() {
