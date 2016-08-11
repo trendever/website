@@ -9,10 +9,10 @@
    .subscribe-input-wrapper
     i.subscribe-ic-mail
      img(src="icons/subscribe-mail.png")
-    input(type="text" placeholder="Введите email...").subscribe-input
+    input(type="email" placeholder="Введите email..." v-model="email").subscribe-input
    .btn-container
-    a(href="#").subscribe-not-now Не сейчас
-    button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom Поддержать
+    a(v-link="{name: home}").subscribe-not-now Не сейчас
+    button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(@click="subscribe") Поддержать
 
 </template>
 
@@ -20,7 +20,13 @@
 
 
 <script>
+import {setEmail} from 'services/user';
 export default{
+  data(){
+    return {
+      email: ''
+    }
+  },
   methods:{
     exitSubscribe(){
       if(window.history.length > 2){
@@ -28,6 +34,17 @@ export default{
       } else {
         this.$router.go({name: 'home'});
       }
+    },
+    subscribe(){
+      setEmail(this.email).then((success)=>{
+        console.log(success);
+        if(!success){
+          alert('ошибка');
+          return;
+        }
+        alert('Спасибо');
+        this.$router.go({name: 'home'});
+      })
     }
   }
 }
