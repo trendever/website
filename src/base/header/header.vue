@@ -1,27 +1,27 @@
 <style src='./header.pcss'></style>
 <template lang="jade">
-.section.header.u-fixed(v-show='is_visible')
-  .section__content.header__content
-    .header__arrow(@click='leftBtnAction' v-if='leftBtnShow')
-      i.header__arrow__ic.ic-arrow-left(
+.section.header.section__content
+    .header__content.u-fixed(v-show='is_visible')
+      .header__arrow(@click='leftBtnAction' v-if='leftBtnShow')
+        i.header__arrow__ic.ic-arrow-left(
         :class='{"_up": is_action_up}')
 
-    .header__notify-count(v-if='notifyCount')
-      span {{ notifyCount }}
+      .header__notify-count(v-if='notifyCount')
+        span {{ notifyCount }}
 
-    .header__center
-      .header__text(v-if="centerTextLink === null") {{ title }}
-      .header__text.active(v-if="centerTextLink !== null", v-link="centerTextLink") {{ title }}
-      slot(name='content')
+      .header__center
+        .header__text(v-if="centerTextLink === null") {{ title }}
+        .header__text.active(v-if="centerTextLink !== null", v-link="centerTextLink") {{ title }}
+        slot(name='content')
 
-    .header-right(v-if="avatarUrl !== null && centerTextLink !== null", v-link="centerTextLink")
-      img(:src="avatarUrl")
+      .header-right(v-if="avatarUrl !== null && centerTextLink !== null", v-link="centerTextLink")
+        img(:src="avatarUrl")
 
-    //- .header__menu
-      .header__menu-icon
-      .header__menu-links
-        a.header__menu-link(href='#') Настройки
-        a.header__menu-link(href='#') Выйти
+      //- .header__menu
+      //- .header__menu-icon
+      //- .header__menu-links
+      //-   a.header__menu-link(href='#') Настройки
+      //-   a.header__menu-link(href='#') Выйти
 </template>
 
 <script type='text/babel'>

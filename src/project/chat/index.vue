@@ -17,9 +17,13 @@
             chat-msg(
               v-if='msg.parts[0].mime_type === "text/plain"',
               :msg='msg')
+            chat-msg-info(
+              v-if='msg.parts[0].mime_type === "text/html"',
+              :msg='msg')
             chat-msg-img(
               v-if='isImage(msg.parts[0].mime_type)',
               :msg='msg')
+
     chat-bar
   scroll-top(:to-up="false")
 </template>
@@ -58,6 +62,7 @@
   import ChatMsgStatus from './chat-msg-status.vue';
   import ChatMsg from './chat-msg.vue';
   import ChatMsgImg from './chat-msg-img.vue';
+  import ChatMsgInfo from './chat-msg-info.vue';
   import ChatBar from './chat-bar.vue';
   import ChatHeader from './chat-header.vue';
   import popupImg from 'base/popup-img/index.vue';
@@ -73,6 +78,7 @@
       ChatMsgProduct,
       ChatMsgStatus,
       ChatMsgImg,
+      ChatMsgInfo,
       scrollTop
     },
 

@@ -2,12 +2,16 @@
 
 .photos {
   // elements
+  position: relative;
   &__ {
     &list {
       min-height: 400px;
       padding-bottom: 46px;
-
-      text-align: center;
+      position: relative;
+      &__cell{
+        width: 100%;
+        position: absolute;
+      }
     }
     &more-wrap {
       display: flex;
@@ -71,13 +75,24 @@
     }
   }
 }
+.photos__no-more-wrap{
+  position: absolute;
+  z-index: 100;
+  top: 200px;
+  left: 0;
+  right: 0;
 
+  @media(--mobile) {
+    top: 500px;
+  }
+}
 .photos__no-goods {
-  margin-top: 120px;
 
   text-align: center;
 
-  font-size: 36px;
+  font-size: 32px;
+
+  font-weight: bolder;
 }
 
 .main__bottom.__no-goods {

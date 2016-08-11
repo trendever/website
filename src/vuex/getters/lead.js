@@ -140,6 +140,14 @@ export const getLastMessage = ( state ) => {
 
           }
 
+          if (mime === 'text/html') {
+            messages[ id ] = {
+              message: data,
+              user_name
+            };
+
+          }
+
           if ( mime === 'json/status' ) {
 
             const { type, value } = JSON.parse( data );

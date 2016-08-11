@@ -247,6 +247,10 @@
       margin-right: auto;
     }
 
+    &.left {
+      margin-left: 25px;
+    }
+
      a {
       display:block;
       width: 150px;
@@ -267,7 +271,15 @@
 }
 
 .header__content {
+  
+  &.u-fixed{
+    width: 100%;
+    z-index: 100;
+    max-width: 1050px;
+  }
+
   @media(--mobile) {
     height:100px;
   }
 }
+

@@ -88,6 +88,7 @@ const addServiceMessage = (function() {
         MIME === 'text/json' ||
         MIME === 'image/json' ||
         MIME === 'json/status' ||
+        MIME === 'text/html' ||
         MIME === 'image/base64'
       ) {
 
@@ -98,7 +99,7 @@ const addServiceMessage = (function() {
             messages[ i ].closestMessage = true;
 
           } else {
-
+  
             lastUserId                   = messages[ i ].user.user_id;
             messages[ i ].closestMessage = false;
 

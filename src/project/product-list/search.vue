@@ -16,7 +16,7 @@
           @focus='onFocusInput',
           @blur='onBlurInput',
           type='text',
-          placeholder='Поиск текстом...'
+          placeholder='Ищи текстом или жми теги...'
         )
 
         .search-input__clear-btn

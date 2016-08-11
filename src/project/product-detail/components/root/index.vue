@@ -3,6 +3,7 @@
     <mobile-layout
       v-if="isSmall"
       :products="products"
+      :supplier-available="supplierAvailable"
       :avatar-url="avatarUrl"
       :code="code"
       :name="mentionedName"
@@ -21,6 +22,7 @@
     <desktop-layout
       v-if="!isSmall"
       :products="products"
+      :supplier-available="supplierAvailable"
       :avatar-url="avatarUrl"
       :code="code"
       :name="mentionedName"
@@ -230,6 +232,24 @@
 
         return null
 
+      },
+
+      supplierAvailable(){
+        if ( this.getOpenedProduct ) {
+
+          if ( this.getOpenedProduct.supplier ) {
+
+            if ( this.getOpenedProduct.supplier.available ) {
+
+              return this.getOpenedProduct.supplier.available
+
+            }
+
+          }
+
+        }
+
+        return null;
       },
 
       mentioned(){

@@ -24,7 +24,7 @@
     justify-content: center;
 
     &__ic {
-      padding: 30px 10px;
+      margin: 30px 10px;
       transition: $btn-transition;
       text-decoration: none;
       color: $color__white;
@@ -73,6 +73,12 @@
         color: #fff;
         font-size: 46px;
         padding: 0 30px;
+        transition: $btn-transition;
+
+        &:hover{
+          cursor: pointer;
+          color: color($color__white shade(20%));
+        }
 
 
       }
@@ -83,9 +89,11 @@
       position: absolute;
       z-index: 9999;
       top: 0;
-      right: auto;
-      left: 50%;
+      right: 0;
+      left: 0;
       margin-left: -380px;
+      margin: 0 auto;
+      width: 1050px;
 
       &.__normal{
 
@@ -101,7 +109,7 @@
             }
           }
           & .profile-header__close-menu{
-            color: #339999;
+            color: #31bebc;
           }
       }
     }
@@ -110,7 +118,7 @@
       display: block;
       cursor:pointer;
 
-      width: 750px;
+      width: 1050px;
       padding: 0 30px;
 
       text-align: center;
@@ -126,6 +134,7 @@
       @media (--mobile) {
         font-size: 31px;
         line-height: 100px;
+        width: 750px;
       }
       &:hover {
         background: color(black a(.9));

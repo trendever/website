@@ -156,20 +156,13 @@ export const getScrollData = ( state ) => {
 
     return {
       searchOptions: list.searchOptions,
+      lastScrollTop: list.lastScrollTop,
       isLoading: list.isLoading,
       scrollTop: list.scrollTop,
-      scrollTopReal: list.scrollTopReal,
       rowHeight: list.rowHeight,
-      lastScrollTop: list.lastScrollTop,
-      direction: list.direction,
       shift: list.shift,
-      topBlockHeight: list.topBlockHeight,
-      bottomBlockHeight: list.bottomBlockHeight,
       idStart: list.idStart,
-      idEnd: list.idEnd,
-      landingIdStart: list.landingIdStart,
-      landingIdEnd: list.landingIdEnd
-
+      idEnd: list.idEnd
     }
 
   }
@@ -178,18 +171,11 @@ export const getScrollData = ( state ) => {
     searchOptions: {},
     isLoading: false,
     scrollTop: 0,
-    scrollTopReal: 0,
-    rowHeight: 0,
     lastScrollTop: 0,
-    direction: true,
+    rowHeight: 0,
     shift: true,
-    topBlockHeight: 0,
-    bottomBlockHeight: 0,
     idStart: 0,
-    idEnd: 0,
-    landingIdStart: 0,
-    landingIdEnd: 0
-
+    idEnd: 0
   }
 
 };
