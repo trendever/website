@@ -296,25 +296,25 @@ scroll-top
       top: {
         cache: false,
         get(){
+          if(this.$els.container){
+            const { idStart, idEnd } = this.getScrollData;
 
-          const { idStart, idEnd } = this.getScrollData;
+            const rowCount = ( idEnd - idStart ) / this.getColumnCount;
 
-          const rowCount = ( idEnd - idStart ) / this.getColumnCount;
+            const rowHeight = idStart / this.getColumnCount * this.rowHeight;
 
-          const rowHeight = idStart / this.getColumnCount * this.rowHeight;
+            const tops = [];
 
-          const tops = [];
+            for ( let i = 0; i < rowCount; i++ ) {
 
-          for ( let i = 0; i < rowCount; i++ ) {
+              tops.push( {
+                top: `${ rowHeight + i * this.rowHeight}px`
+              } );
 
-            tops.push( {
-              top: `${ rowHeight + i * this.rowHeight}px`
-            } );
-
+            }
+            return tops;
           }
-
-          return tops;
-
+          return [];
         }
       },
 
