@@ -18,9 +18,9 @@
   float: left;
   box-sizing: border-box;
   overflow-x: hidden;
-  &-button{
+  /* &-button{
     padding-bottom: 22px;
-  }
+  } */
   &-open {
     .tags {
       height: auto;
@@ -28,7 +28,7 @@
       display: block;
       width: 100%;
       float: left;
-      margin-left: 20px;
+      margin-left: 12px;
     }
   }
 }
@@ -39,6 +39,10 @@
   float: left;
   margin-left: 20px;
   overflow: hidden;
+
+  @media(--mobile) {
+    margin-left: 0px;
+  }
 }
 
 .tag {
@@ -47,6 +51,7 @@
   float: left;
   box-sizing: content-box;
   border: 1px solid $color__green;
+  border-radius: 5px;
   cursor: pointer;
   text-align: center;
   height: 34px;
@@ -64,6 +69,8 @@
   @media(--mobile) {
     height: 43px;
     margin-left: 1px;
+    padding-right: 25px;
+    margin-right: 12px !important;
   }
 
   &-active {
@@ -81,6 +88,7 @@
         font-size: 36px;
         height: 43px;
         line-height: 36px;
+        text-transform: uppercase;
       }
     }
     .close {
@@ -106,6 +114,7 @@
     font-size: 36px;
     height: 43px;
     line-height: 36px;
+    text-transform: uppercase;
   }
 
 }
