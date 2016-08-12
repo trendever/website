@@ -5,7 +5,7 @@
 	background-size: 50%;
 	background-position: right 100px;
 	color: #fff;
-	overflow: scroll;
+	overflow: auto;
 	@media(--mobile) {
 		background-position: center 10px;
 		background-size: 75%;
@@ -49,6 +49,9 @@
 			width: 100%;
 			margin-top: 305px;
 			padding: 55px;
+		}
+		@media(--tablet) {
+			width: 58%;
 		}
 	}
 
@@ -102,6 +105,15 @@
 		}
 
 		@media(--mobile) {
+			width: 99%;
+			font-size: 30px;
+			position: fixed;
+			bottom: 135px;
+			left: 0;
+			padding-bottom: 20px;
+			padding-top: 20px;
+		}
+		@media(--tablet) {
 			width: 99%;
 			font-size: 30px;
 			position: fixed;
