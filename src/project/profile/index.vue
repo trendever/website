@@ -16,12 +16,25 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
           //- .profile_info_count 53
           //-   .profile_info_count_t Подписки
+        .profile_filter(v-if="isSelfPage")
+          span(v-bind:class="{'seleted': photoType === 'product'}") 
+            input(type="radio" value="product" v-model="photoType" id="filter-products")
+            label(for="filter-products") Товары 
+          span(v-bind:class="{'seleted': photoType === 'like'}")  
+            input(type="radio" value="like" v-model="photoType" id="filter-likes") 
+            label(for="filter-likes") Тренды
 
         .profile_desc
           .profile_desc_t {{getSlogan}}
           span(v-if="getUserCaption") {{ getUserCaption }}
 
-      photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId" )
+
+      
+      photos-component(
+        :filter-by-user-name.sync="userName", 
+        :list-id.sync="listId",
+        :filter-by-user-id.sync="user_id")
+
   navbar-component(:current='listId')
 
 .help-wrapper(v-if='isFirst')
@@ -42,6 +55,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
   import store from 'vuex/store'
   import { openProfile, closeProfile } from 'vuex/actions/user.js';
   import {
+    userID,
     getUserName,
     getUserPhoto,
     getUserCaption,
@@ -59,7 +73,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
   export default {
     data(){
       return {
-        isFirst: false
+        isFirst: false,
+        photoType: 'product'
       }
     },
     route: {
@@ -78,6 +93,11 @@ scroll-component(v-if="isDone", class="profile-cnt")
         this.$router.replace( { name: 'signup' } );
       }
     },
+    events:{
+      'setLikePhotoType'(){
+        this.photoType = 'like';
+      }
+    },
     beforeDestroy(){
       if ( this.isAuth ) {
         this.closeProfile();
@@ -89,6 +109,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
         closeProfile
       },
       getters: {
+        userID,
         isAuth,
         getUserName,
         getUserPhoto,
@@ -99,14 +120,25 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     computed: {
+      isSelfPage(){
+        //return this.$store.state.user.id === this.$store.state.user.myId;
+        return true;
+      },
       user_id(){
-        return this.getPhotoConfig.photoFilter.user_id;
+        //return this.getPhotoConfig.photoFilter.user_id;
+        if (this.photoType === 'like'){
+          return this.userID; 
+        }
+        return null;
       },
       listId(){
         console.log(this.getPhotoConfig.listId);
         return this.getPhotoConfig.listId;
       },
       userName(){
+        if (this.photoType !== 'product'){
+           return null;
+        }
         return this.getPhotoConfig.photoFilter.instagram_name;
       }
     },
