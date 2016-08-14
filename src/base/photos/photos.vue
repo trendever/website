@@ -163,6 +163,8 @@ scroll-top
 
       this.$set( 'isRunning', false );
 
+      //убираем баг подвисания загрузки "ЕЩЕ";
+      this.$store.state.products.listId = '';
 
     },
 
