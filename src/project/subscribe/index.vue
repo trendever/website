@@ -11,7 +11,7 @@
      img(src="icons/subscribe-mail.png")
     input(type="email" placeholder="Введите email..." v-model="email").subscribe-input
    .btn-container
-    a(v-link="{name: home}").subscribe-not-now Не сейчас
+    a(@click.prevent="exitSubscribe").subscribe-not-now Не сейчас
     button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(@click="subscribe") Поддержать
 
 </template>
