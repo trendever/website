@@ -150,6 +150,9 @@ $count-tags-open: 13;
     z-index: 100;
     max-width: 1050px;
     width: 100%;
+    //fix flickering sticky issue
+    //http://stackoverflow.com/questions/18185736/prevent-fixed-position-element-from-flickering-during-jquery-animation
+    transform: translateZ(0);
 
     background-color: white;
     @media (--mobile) {
