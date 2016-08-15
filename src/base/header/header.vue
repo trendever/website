@@ -5,7 +5,7 @@
       .header__arrow(@click='leftBtnAction' v-if='leftBtnShow')
         i.header__arrow__ic.ic-arrow-left(
         :class='{"_up": is_action_up}')
-
+      a(href="#").header_settings_btn
       .header__notify-count(v-if='notifyCount')
         span {{ notifyCount }}
 
