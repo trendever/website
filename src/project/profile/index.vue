@@ -19,15 +19,16 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
         .profile_desc
           .profile_desc_t {{getSlogan}} Слоган профиля
-          span(v-if="getUserCaption") {{ getUserCaption }} 
+          .profile_desc_caption(v-if="getUserCaption") 
+          | текст текст текст текст текст текст текст текст текст текст {{ getUserCaption }} 
 
         .profile_filter(v-if="isSelfPage")
           span(v-bind:class="{'seleted': photoType === 'product'}") 
             input(type="radio" value="product" v-model="photoType" id="filter-products")
-            label(for="filter-products") Товары 
+            label(for="filter-products") Мои Товары 
           span(v-bind:class="{'seleted': photoType === 'like'}")  
             input(type="radio" value="like" v-model="photoType" id="filter-likes") 
-            label(for="filter-likes") Тренды
+            label(for="filter-likes") Мои Тренды
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscribe") ПОДПИСАТЬСЯ
 
