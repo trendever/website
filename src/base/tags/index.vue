@@ -23,7 +23,7 @@
           v-bind:style="iconStyle"></i>
       </div>
     </div>
-    <div class="button" @click="open" v-if="hiddenContent && showMoreButton"></div>
+    <!-- <div class="button" @click="open" v-if="hiddenContent && showMoreButton"></div> -->
     <div class="pending" v-if="isPending"></div>
   </div>
 </template>
