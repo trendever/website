@@ -31,6 +31,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
             label(for="filter-likes") Мои Тренды
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscribe") ПОДПИСАТЬСЯ
+        
+        .profile_settings_btn
+         a(href="#")
+          img(src="icons/cogwheel.png")
 
 
       
