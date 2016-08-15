@@ -50,11 +50,10 @@ scroll-top
   } from 'vuex/getters/products';
 
   export default {
-
     vuex: {
 
       getters: {
-        items: getProducts,
+        items:getProducts,
         hasMore,
         isLoading,
         isAnimateShow,
@@ -141,9 +140,13 @@ scroll-top
         this.$set( 'isRunning', true );
 
         this.scrollCnt.scrollTop = scrollTop;
-
-      } );
-
+        //only for filter likes / products
+      } ).then(()=>{
+        if(!this.items.length){
+          this.$dispatch('setLikePhotoType');
+        }
+      })
+      
     },
 
     beforeDestroy() {
@@ -159,6 +162,9 @@ scroll-top
       this.closeProducts();
 
       this.$set( 'isRunning', false );
+
+      //убираем баг подвисания загрузки "ЕЩЕ";
+      this.$store.state.products.listId = '';
 
     },
 
@@ -281,7 +287,6 @@ scroll-top
     },
 
     computed: {
-
       scrollTop: {
         cache: false,
         get(){
@@ -332,9 +337,9 @@ scroll-top
         if ( Array.isArray( this.items ) ) {
 
           return this.items.length;
-
+         
         }
-
+        
         return 0;
 
       }
@@ -342,7 +347,14 @@ scroll-top
     },
 
     watch: {
-
+      filterByUserId(){
+        //для работы фильтров
+        this.setListId( this.listId + '_secondary' );
+        this._run(true);
+      },
+      filterByUserName(){
+        this._run(true);
+      },
       getColumnCount(){
         this.scrollCnt.scrollTop = this.getScrollData.scrollTop;
         this._setScroll();

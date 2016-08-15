@@ -55,5 +55,23 @@
         word-wrap: break-word;
       }
     }
+    &_filter {
+      height: 50px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      span{
+        font-size: 2rem;
+        label{
+          cursor: pointer;
+        }
+        input{
+          display: none;
+        }
+        &.seleted {
+          color: $color__green;
+        }
+      }
+    }
   }
 }
