@@ -140,7 +140,9 @@ scroll-top
         this.$set( 'isRunning', true );
 
         this.scrollCnt.scrollTop = scrollTop;
-        //only for filter likes / products
+
+        //only for filter when no products
+        
       } ).then(()=>{
         if(!this.items.length){
           this.$dispatch('setLikePhotoType');
@@ -349,11 +351,20 @@ scroll-top
     watch: {
       filterByUserId(){
         //для работы фильтров
-        this.setListId( this.listId + '_secondary' );
+        let listIdchanged = this.listId + '_secondary';
+
+        if(this.$store.state.products.listId !== listIdchanged){
+
+          this.setListId( this.listId + '_secondary' );
+
+        } else {
+
+          this.setListId( this.listId);
+
+        }
+
         this._run(true);
-      },
-      filterByUserName(){
-        this._run(true);
+
       },
       getColumnCount(){
         this.scrollCnt.scrollTop = this.getScrollData.scrollTop;
