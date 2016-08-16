@@ -151,13 +151,14 @@
       clear(){
         this.clearSearch();
         this.scrollCnt.scrollTop = 0;
+        this.$set('isOpenTags', false);
       },
 
       search() {
         this.setSearchValue( this.$els.input.value );
-      },
+      }, 
       onFocusInput() {
-        this.$set('isOpenTags', false)
+        this.$set('isOpenTags', true)
         this.inputFocused = true;
       },
       onBlurInput() {
