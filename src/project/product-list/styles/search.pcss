@@ -106,7 +106,7 @@ $count-tags-open: 13;
 
   @media (max-width: 750px) {
     height: calc($height__mobile + 155px + $height-tag-button);
-    margin-bottom: 33px;
+    margin-bottom: 50px;
   }
 }
 
@@ -150,6 +150,9 @@ $count-tags-open: 13;
     z-index: 100;
     max-width: 1050px;
     width: 100%;
+    //fix flickering sticky issue
+    //http://stackoverflow.com/questions/18185736/prevent-fixed-position-element-from-flickering-during-jquery-animation
+    transform: translateZ(0);
 
     background-color: white;
     @media (--mobile) {
@@ -201,7 +204,7 @@ $count-tags-open: 13;
     font-weight: 400;
     font-size: 25px;
     font-family: $font__family;
-  
+    
     @media (--mobile) {
       margin-top: 3.6px;
       width: 100%;
@@ -222,7 +225,7 @@ $count-tags-open: 13;
     line-height: $height__desktop;
 
     .close {
-      margin-left: -57px;
+      margin-left: -30px;
       position: relative;
       top: -4px;
       font-size: 23px;
@@ -395,7 +398,6 @@ $count-tags-open: 13;
     @media(--mobile) {
       width: 98%;
       margin-left: 15px;
-      margin-right: 12px;
     }
   }
   .tags-wrapper .tag{

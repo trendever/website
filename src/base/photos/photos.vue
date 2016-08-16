@@ -24,6 +24,7 @@ scroll-top
 </template>
 
 <script type='text/babel'>
+  import * as productsService from 'services/products';
   import listen from 'event-listener';
 
   import scrollTop from 'base/scroll-top/scroll-top.vue';
@@ -50,11 +51,10 @@ scroll-top
   } from 'vuex/getters/products';
 
   export default {
-
     vuex: {
 
       getters: {
-        items: getProducts,
+        items:getProducts,
         hasMore,
         isLoading,
         isAnimateShow,
@@ -77,6 +77,9 @@ scroll-top
     },
 
     props: {
+      testUserProfile: {
+        default: null
+      },
       tags: {
         type: Boolean,
         default: false
@@ -116,7 +119,51 @@ scroll-top
     },
 
     ready() {
+       //check how many likes or products
+      if(this.testUserProfile !== null) {
 
+        let { instagram_name, user_id } = this.testUserProfile;
+
+        //console.log(instagram_name +  ' ' + user_id);
+
+        productsService.find({
+          instagram_name: instagram_name,
+          user_id: user_id 
+        }).then((data)=>{
+
+          let products = [];
+          let likes = [];
+
+          data.object_list.forEach( item => {
+
+            if(item.supplier.supplier_id === user_id){
+              products.push(item);
+            } else {
+              likes.push(item);
+            }
+
+          });
+          return {
+            products: products,
+            likes: likes
+          }
+
+        }).then(({products, likes})=>{
+
+          if(!products.length){
+            //alert('no products')
+            this.$dispatch('noProducts');
+          }
+
+          if(!likes.length){
+            //alert('no likes')
+            this.$dispatch('noLikes');
+          }
+
+        });
+      }
+
+      //main logic 
       this.setContainerWidth( this.$els.container.offsetWidth );
 
       this.scrollCnt = document.querySelector( '.scroll-cnt' );
@@ -141,8 +188,8 @@ scroll-top
         this.$set( 'isRunning', true );
 
         this.scrollCnt.scrollTop = scrollTop;
-
-      } );
+        
+      } )
 
     },
 
@@ -159,6 +206,9 @@ scroll-top
       this.closeProducts();
 
       this.$set( 'isRunning', false );
+
+      //убираем баг подвисания загрузки "ЕЩЕ";
+      this.$store.state.products.listId = '';
 
     },
 
@@ -281,7 +331,6 @@ scroll-top
     },
 
     computed: {
-
       scrollTop: {
         cache: false,
         get(){
@@ -332,9 +381,9 @@ scroll-top
         if ( Array.isArray( this.items ) ) {
 
           return this.items.length;
-
+         
         }
-
+        
         return 0;
 
       }
@@ -342,7 +391,23 @@ scroll-top
     },
 
     watch: {
+      filterByUserId(){
+        //для работы фильтров
+        let listIdchanged = this.listId + '_secondary';
 
+        if(this.$store.state.products.listId !== listIdchanged){
+
+          this.setListId( this.listId + '_secondary' );
+
+        } else {
+
+          this.setListId( this.listId);
+
+        }
+
+        this._run(true);
+
+      },
       getColumnCount(){
         this.scrollCnt.scrollTop = this.getScrollData.scrollTop;
         this._setScroll();

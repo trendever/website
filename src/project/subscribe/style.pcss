@@ -5,10 +5,10 @@
 	background-size: 50%;
 	background-position: right 100px;
 	color: #fff;
-	overflow: scroll;
+	overflow: auto;
 	@media(--mobile) {
-		background-position: center 10px;
-		background-size: 75%;
+		background-position: center 60px;
+		background-size: 85%;
 	}
 
 
@@ -39,7 +39,10 @@
 			margin-right: 15px;
 		}
 	}
-
+	&-mail-link{
+		color: #ffdd1f;
+		font-size: 24px;
+	}
 	&-wrapper{
 		padding-top: 100px;
 		padding-left: 60px;
@@ -47,8 +50,8 @@
 
 		@media(--mobile) {
 			width: 100%;
-			margin-top: 305px;
-			padding: 55px;
+			margin-top: 430px;
+			padding: 40px;
 		}
 	}
 
@@ -62,11 +65,11 @@
 	}
 	&-note{
 		font-size: 24px;
-		margin-bottom: 20px;
 	}
 	&-input-wrapper{
+		margin-top: 50px;
 		@media(--mobile) {
-			margin-top: 50px;
+			margin-top: 30px;
 		}
 	}
 	&-input{
@@ -99,9 +102,19 @@
 
 		&:hover{
 			opacity: 1;
+			cursor: pointer;
 		}
 
 		@media(--mobile) {
+			width: 99%;
+			font-size: 30px;
+			position: fixed;
+			bottom: 135px;
+			left: 0;
+			padding-bottom: 20px;
+			padding-top: 20px;
+		}
+		@media(--tablet) {
 			width: 99%;
 			font-size: 30px;
 			position: fixed;

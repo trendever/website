@@ -11,7 +11,8 @@
            v-bind:style="tagStyle"
            v-for="tag of tags | filterBy searchString in 'name'"
            :class="{'tag-active': tag.active}"
-           @click.stop="addTag(tag)">
+           @click.stop="addTag(tag)"
+           @click="open">
         <span
           class="text"
           v-bind:style="textStyle">{{tag.name}}</span>
@@ -22,7 +23,7 @@
           v-bind:style="iconStyle"></i>
       </div>
     </div>
-    <div class="button" @click="open" v-if="hiddenContent && showMoreButton"></div>
+    <!-- <div class="button" @click="open" v-if="hiddenContent && showMoreButton"></div> -->
     <div class="pending" v-if="isPending"></div>
   </div>
 </template>
@@ -47,7 +48,7 @@
       },
       baseHeight: {
         type: Number,
-        default: 90
+        default: 110
       },
       itemHeight: {
         type: String,
