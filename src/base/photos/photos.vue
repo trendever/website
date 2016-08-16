@@ -145,8 +145,9 @@ scroll-top
         
       } ).then(()=>{
         if(!this.items.length){
-          this.$dispatch('setLikePhotoType');
+          this.$dispatch('setNoProducts');
         }
+
       })
       
     },
@@ -363,7 +364,11 @@ scroll-top
 
         }
 
-        this._run(true);
+        this._run(true). then(()=>{
+          if(!this.itemsLength){
+            this.$dispatch('setNoLikes');
+          }
+        })
 
       },
       getColumnCount(){

@@ -22,7 +22,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .profile_desc_caption(v-if="getUserCaption") 
           | текст текст текст текст текст текст текст текст текст текст {{ getUserCaption }} 
 
-        .profile_filter(v-if="isSelfPage")
+        .profile_filter(v-if="selfPage && !noProducts")
           span(v-bind:class="{'seleted': photoType === 'product'}") 
             input(type="radio" value="product" v-model="photoType" id="filter-products")
             label(for="filter-products") Мои Товары 
@@ -82,7 +82,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
     data(){
       return {
         isFirst: false,
-        photoType: 'product'
+        photoType: 'product',
+        noLikes: false,
+        noProducts: false
       }
     },
     route: {
@@ -102,8 +104,12 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     events:{
-      'setLikePhotoType'(){
+      'setNoProducts'(){
         this.photoType = 'like';
+        this.noProducts = true;
+      },
+      'setNoLikes'(){
+        this.noLikes = true;
       }
     },
     beforeDestroy(){
@@ -129,8 +135,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },
     computed: {
       isSelfPage(){
-        //return this.$store.state.user.id === this.$store.state.user.myId;
-        return true;
+
+        return this.$store.state.user.id === this.$store.state.user.myId;
+
       },
       user_id(){
         //return this.getPhotoConfig.photoFilter.user_id;
