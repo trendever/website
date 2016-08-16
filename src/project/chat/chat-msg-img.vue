@@ -67,11 +67,19 @@
 
       open(){
 
-        this.showLargeImg = !this.showLargeImg;
+        let msgParts = this.msg.parts[ 0 ];
 
-        if ( this.msg.parts[ 0 ].mime_type === 'image/json' ) {
+        if ( msgParts.mime_type === 'image/json') {
 
-          let {width, height} = JSON.parse( this.msg.parts[ 0 ].content );
+          let {width, height} = JSON.parse( msgParts.content );
+
+          this.openPopUp( this.getImg, width, height );
+
+        }
+
+        if (msgParts.mime_type  === 'image/base64')  {
+
+          let {width, height} = msgParts.content;
 
           this.openPopUp( this.getImg, width, height );
 
