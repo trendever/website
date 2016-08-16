@@ -48,7 +48,7 @@
       },
       baseHeight: {
         type: Number,
-        default: 110
+        default: 90
       },
       itemHeight: {
         type: String,
@@ -111,7 +111,6 @@
         fullHeight: 0
       }
     },
-
     ready(){
 
       this.onFlex = this.onFlex.bind( this );

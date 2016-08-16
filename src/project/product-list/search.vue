@@ -157,7 +157,7 @@
         this.setSearchValue( this.$els.input.value );
       },
       onFocusInput() {
-        this.$set('isOpenTags', false)
+        this.$set('isOpenTags', true)
         this.inputFocused = true;
       },
       onBlurInput() {
