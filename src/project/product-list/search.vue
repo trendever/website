@@ -61,6 +61,7 @@
   import { isAuth } from 'vuex/getters/user.js';
   import { setColumnNumber } from 'vuex/actions/products';
   import { getColumnCount } from 'vuex/getters/products';
+  
 
   export default {
     components: {
