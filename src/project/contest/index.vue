@@ -6,7 +6,7 @@
       i.header__arrow__ic.ic-arrow-left
     div(v-bind:class="{ 'center': isAuth}").header__logo
       a(v-link='{ name: "home" }')
-        img(src='../../base/img/logo-beta.png' alt='')
+        img(src='../../base/img/logo-main.svg' alt='')
     a(href='#'
       v-if="!isAuth"
       v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
