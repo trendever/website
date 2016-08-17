@@ -329,6 +329,7 @@ scroll-top
 
           return this.$els.container.clientWidth / this.getColumnCount + 85;
 
+
         }
       },
 
