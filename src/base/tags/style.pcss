@@ -29,6 +29,11 @@
         width: 100%;
         float: left;
         margin-left: 20px;
+        @media(--mobile) {
+          margin-left: 0px;
+          height: 350px !important;
+          max-height: 410 !important;
+        }
       }
     }
   }
@@ -39,6 +44,7 @@
     float: left;
     margin-left: 20px;
     overflow: hidden;
+    height: 135px !important;
 
     @media(--mobile) {
       margin-left: 0px;
@@ -86,7 +92,7 @@
         cursor: pointer;
         padding-right: 5px;
         @media(--mobile) {
-          font-size: 36px;  
+          font-size: 28px;  
           height: 43px;
           line-height: 36px;
           text-transform: uppercase;
@@ -99,7 +105,7 @@
         display: inline;
 
         @media(--mobile) {
-          font-size: 28px;
+          font-size: 22px;
         }
       }
     }
@@ -117,7 +123,7 @@
     cursor: pointer;
     padding-right: 5px;
     @media(--mobile) {
-      font-size: 36px;
+      font-size: 28px;
       height: 43px;
       line-height: 36px;
       text-transform: uppercase;
