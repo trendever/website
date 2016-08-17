@@ -26,7 +26,7 @@
     a(class='profile-header__menu-link', @click="logout") Выход
   a(v-link='{ name: "info-user" }')
     i.smallHero__logo
-      img(src='../../base/img/logo-beta.png')
+      img(src='../../base/img/logo-main.svg')
 
 .section.hero(v-if='!isAuth')
   .profile-header__menu(v-if='!isAuth')
