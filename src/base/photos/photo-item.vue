@@ -11,16 +11,18 @@
       )
   .photo__description
     .photo__title {{ title }}
-    .photo__summ(v-if="discountPrice")
+    .photo__row
+     .photo__shopTitle Shop Title
+     .photo__summ(v-if="discountPrice")
       | {{ discountPrice | curency_spaces }} 
       span ₽
-      i.ic-currency-rub 
 </template>
 
 <script type='text/babel'>
   import pluralize from 'pluralize-ru';
   import { urlThumbnail } from 'utils';
   import { getColumnCount } from 'vuex/getters/products';
+  import { truncate } from 'filters.js'
   export default {
     data(){
       return {
