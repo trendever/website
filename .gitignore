@@ -4,7 +4,7 @@
 */CACHE/*
 media/*
 
-npm-debug.log
+npm-debug.log.*
 
 *.sublime-workspace
 
