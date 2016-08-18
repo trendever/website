@@ -10,7 +10,7 @@
         :class='{"animate": animate}'
       )
   .photo__description
-    .photo__title {{ title }}
+    .photo__title {{ title | truncate '20'}}
     .photo__row
      .photo__shopTitle Shop Title
      .photo__summ(v-if="discountPrice")
@@ -22,7 +22,6 @@
   import pluralize from 'pluralize-ru';
   import { urlThumbnail } from 'utils';
   import { getColumnCount } from 'vuex/getters/products';
-  import { truncate } from 'filters.js'
   export default {
     data(){
       return {
@@ -41,6 +40,13 @@
         default: true
       }
     ],
+    filters: {
+  
+    truncate: function(string, value) {
+        return string.substring(0, value) + '...';
+    }
+  
+  },
 
     methods: {
       goToProduct(){
@@ -91,7 +97,7 @@
         } else if (items.length > 1) {
           return `${items[0].name} (+${pluralize(items.length-1, '', '%d товар', '%d товара', '%d товаров')})`
         }
-        return items[0].name
+        return items[0].name.substr(0,20)
       }
     },
 
