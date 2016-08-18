@@ -24,6 +24,7 @@ scroll-top
 </template>
 
 <script type='text/babel'>
+  import * as productsService from 'services/products';
   import listen from 'event-listener';
 
   import scrollTop from 'base/scroll-top/scroll-top.vue';
@@ -76,6 +77,9 @@ scroll-top
     },
 
     props: {
+      testUserProfile: {
+        default: null
+      },
       tags: {
         type: Boolean,
         default: false
@@ -115,7 +119,51 @@ scroll-top
     },
 
     ready() {
+       //check how many likes or products
+      if(this.testUserProfile !== null) {
 
+        let { instagram_name, user_id } = this.testUserProfile;
+
+        //console.log(instagram_name +  ' ' + user_id);
+
+        productsService.find({
+          instagram_name: instagram_name,
+          user_id: user_id 
+        }).then((data)=>{
+
+          let products = [];
+          let likes = [];
+
+          data.object_list.forEach( item => {
+
+            if(item.supplier.supplier_id === user_id){
+              products.push(item);
+            } else {
+              likes.push(item);
+            }
+
+          });
+          return {
+            products: products,
+            likes: likes
+          }
+
+        }).then(({products, likes})=>{
+
+          if(!products.length){
+            //alert('no products')
+            this.$dispatch('noProducts');
+          }
+
+          if(!likes.length){
+            //alert('no likes')
+            this.$dispatch('noLikes');
+          }
+
+        });
+      }
+
+      //main logic 
       this.setContainerWidth( this.$els.container.offsetWidth );
 
       this.scrollCnt = document.querySelector( '.scroll-cnt' );
@@ -140,13 +188,9 @@ scroll-top
         this.$set( 'isRunning', true );
 
         this.scrollCnt.scrollTop = scrollTop;
-        //only for filter likes / products
-      } ).then(()=>{
-        if(!this.items.length){
-          this.$dispatch('setLikePhotoType');
-        }
-      })
-      
+        
+      } )
+
     },
 
     beforeDestroy() {
@@ -330,6 +374,7 @@ scroll-top
           return this.$els.container.clientWidth / this.getColumnCount + 95;
 
 
+
         }
       },
 
@@ -350,11 +395,20 @@ scroll-top
     watch: {
       filterByUserId(){
         //для работы фильтров
-        this.setListId( this.listId + '_secondary' );
+        let listIdchanged = this.listId + '_secondary';
+
+        if(this.$store.state.products.listId !== listIdchanged){
+
+          this.setListId( this.listId + '_secondary' );
+
+        } else {
+
+          this.setListId( this.listId);
+
+        }
+
         this._run(true);
-      },
-      filterByUserName(){
-        this._run(true);
+
       },
       getColumnCount(){
         this.scrollCnt.scrollTop = this.getScrollData.scrollTop;

@@ -11,8 +11,7 @@
            v-bind:style="tagStyle"
            v-for="tag of tags | filterBy searchString in 'name'"
            :class="{'tag-active': tag.active}"
-           @click.stop="addTag(tag)"
-           @click="open">
+           @click.stop="addTag(tag), open()">
         <span
           class="text"
           v-bind:style="textStyle">{{tag.name}}</span>
@@ -48,7 +47,7 @@
       },
       baseHeight: {
         type: Number,
-        default: 110
+        default: 90
       },
       itemHeight: {
         type: String,
@@ -111,7 +110,6 @@
         fullHeight: 0
       }
     },
-
     ready(){
 
       this.onFlex = this.onFlex.bind( this );
@@ -212,8 +210,10 @@
     methods: {
 
       open(){
-        this.$set( 'isOpen', !this.isOpen );
-        this.$els.tags.scrollTop = 0;
+        if(!this.isOpen) {
+          this.$set( 'isOpen', true );
+          this.$els.tags.scrollTop = 0;
+        }
       },
 
       onFlex(){
