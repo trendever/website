@@ -371,7 +371,7 @@ scroll-top
         cache: false,
         get(){
 
-          return this.$els.container.clientWidth / this.getColumnCount + 85;
+          return this.$els.container.clientWidth / this.getColumnCount + 95;
 
 
         }
