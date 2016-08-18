@@ -97,7 +97,7 @@
         } else if (items.length > 1) {
           return `${items[0].name} (+${pluralize(items.length-1, '', '%d товар', '%d товара', '%d товаров')})`
         }
-        return items[0].name.substr(0,20)
+        return items[0].name
       }
     },
 
