@@ -40,13 +40,13 @@
         default: true
       }
     ],
-    filters: {
+  //   filters: {
   
-    truncate: function(string, value) {
-        return string.substring(0, value) + '...';
-    }
+  //   truncate: function(string, value) {
+  //       return string.substring(0, value) + '...';
+  //   }
   
-  },
+  // },
 
     methods: {
       goToProduct(){
