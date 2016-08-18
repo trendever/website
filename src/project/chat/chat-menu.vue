@@ -14,8 +14,11 @@ div
       .menu_i(v-if='canCallSupplier', @click='callSupplier()')
         .menu_i_t Позвать магазин в чат
 
-      .menu_i(v-if='isAdmin', @click='setShowStatusMenu(true)')
+      .menu_i(@click='setShowStatusMenu(true)')
         .menu_i_t Изменить статус заказа
+
+      .menu_i(v-if='isAdmin', @click='openPaymentMenu')
+        .menu_i_t Выставить счет
 
       label(class='menu_i menu_i-send-file') Отправить фото
         input(type='file', hidden, @change='selectedFile')
@@ -24,11 +27,13 @@ div
         .menu_i_t.__txt-green Отмена
 
   chat-menu-status( v-if='getShowStatusMenu')
+  payment-component(:set-open.sync="openPayment")
 
 </template>
 
 <script type='text/babel'>
   import {
+    getShopId,
     getCurrentMember,
     getLeadId,
     getShowMenu,
@@ -47,6 +52,7 @@ div
 
   import MenuComponent from 'base/menu/menu.vue';
   import ChatMenuStatus from './chat-menu-status.vue';
+  import PaymentComponent from 'project/payment/payment';
 
   export default{
     vuex: {
@@ -56,6 +62,7 @@ div
         addPreLoadMessage
       },
       getters: {
+        getShopId,
         getCurrentMember,
         getLeadId,
         getShowMenu,
@@ -64,8 +71,15 @@ div
         getInviteCustomer,
       }
     },
-
+    data(){
+      return {
+        openPayment: false
+      }
+    },
     methods: {
+      openPaymentMenu(){
+        this.openPayment = true;
+      },
       selectedFile( { target } ){
 
         const MIME = target.files[ 0 ].type;
@@ -142,7 +156,8 @@ div
 
     components: {
       MenuComponent,
-      ChatMenuStatus
+      ChatMenuStatus,
+      PaymentComponent
     }
 
   }
