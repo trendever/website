@@ -195,35 +195,48 @@ function getlastFour(string){
 import channel from 'services/channel/channel';
 import { getShopId } from 'vuex/getters/chat';
 export default{
-  props:['setOpen'],
+  props:{
+    setOpen:{
+      default: true
+    }
+  },
   vuex:{
     getters: {
       getShopId
     }
   },
   data(){
-      return {
-        cardName: '',
-        cardNumber: '',
-        billPrice: ''
-      }
-
+    return {
+      billPrice: '',
+      cardNumber: '',
+      cardName: ''
+    }
   },
   methods: {
     close(){
       this.setOpen = false;
     },
     cardCreate(){
-      channel.req('card','create',{
+      return channel.req('card','create',{
           card_name: this.cardName,
           card_number: this.cardNumber,
           shop_id: this.shopId
       })
     },
     cardRetrieve(){
-      channel.req('card','retrieve',{
-        shop_id: this.shopId
+      return channel.req('card','retrieve',{
+        shop_id: 0//this.getShopId
       })
+    }
+  },
+  watch:{
+    setOpen(val){
+      if(val === true){
+        // this.cardRetrieve().then(data=>{
+        //   console.log(data);
+        // });
+        alert('shop id: ' + this.getShopId);
+      }
     }
   }
 }
