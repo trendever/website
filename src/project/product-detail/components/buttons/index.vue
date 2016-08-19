@@ -1,30 +1,10 @@
 <template>
   <div class="buttons">
     <div class="leftSide">
-      <div class="button buttonLeft" @click="like">
-        <i class="ic-heart like icon" :class="{ 'icon-active': isLiked, 'icon-default': !isLiked }"></i>
-        <span class="text" :class="{ 'text-active': isLiked, 'text-default': !isLiked }">тренд</span>
-      </div>
-      <div v-if="supplierAvailable" class="button buttonLeft" @click="buy">
-        <i class="ic-bag buy icon icon-default"></i>
-        <span class="text text-default">купить</span>
-      </div>
-      <div v-else class="button buttonLeft" @click="buy">
-        <i class="ic-dialog know icon icon-default"></i>
-        <span class="text text-default">узнать</span>
-      </div>
+    <button class="save_btn">СОХРАНИТЬ</button>
     </div>
     <div class="rightSide">
-      <div v-if="false" class="button buttonRight" @click="buyPromoProduct">
-        <i class="ic-blogger blogger icon icon-default"></i>
-        <span class="text text-default">блогер</span>
-      </div>
-      <div class="button buttonRight"
-           v-if="isMobile"
-           v-link='{name:"product_repost", params: {id: productId}}'>
-        <i class="ic-instagram instName icon icon-default"></i>
-        <span class="text text-default">пост</span>
-      </div>
+      <button class="buy_btn">ГДЕ КУПИТЬ</button>
     </div>
   </div>
 </template>

@@ -8,7 +8,7 @@
       </div>
       <span class="code">Код тренда {{code}}</span>
     </div>
-    <span class="lastUpdate">{{lastUpdate}}</span>
+    <span class="lastUpdate">{{lastUpdate}} 1 день</span>
   </div>
 </template>
 
