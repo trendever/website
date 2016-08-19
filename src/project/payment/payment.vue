@@ -31,7 +31,6 @@
     button(@click="leadOrder").btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom Отправить
 </template>
 <script>
-<<<<<<< HEAD
 import * as cardService from 'services/card';
 import channel from 'services/channel/channel';     
 import { getShopId, getLeadId, getId } from 'vuex/getters/chat';
@@ -191,54 +190,3 @@ export default{
 function getlastFour(string){
   return string.split('').slice(12,16).join('');
 }
-=======
-import channel from 'services/channel/channel';
-import { getShopId } from 'vuex/getters/chat';
-export default{
-  props:{
-    setOpen:{
-      default: true
-    }
-  },
-  vuex:{
-    getters: {
-      getShopId
-    }
-  },
-  data(){
-    return {
-      billPrice: '',
-      cardNumber: '',
-      cardName: ''
-    }
-  },
-  methods: {
-    close(){
-      this.setOpen = false;
-    },
-    cardCreate(){
-      return channel.req('card','create',{
-          card_name: this.cardName,
-          card_number: this.cardNumber,
-          shop_id: this.shopId
-      })
-    },
-    cardRetrieve(){
-      return channel.req('card','retrieve',{
-        shop_id: 0//this.getShopId
-      })
-    }
-  },
-  watch:{
-    setOpen(val){
-      if(val === true){
-        // this.cardRetrieve().then(data=>{
-        //   console.log(data);
-        // });
-        alert('shop id: ' + this.getShopId);
-      }
-    }
-  }
-}
->>>>>>> add little payments functionality
-</script>
