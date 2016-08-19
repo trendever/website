@@ -31,8 +31,10 @@
     button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom Отправить
 </template>
 <script>
-import channel from 'services/channel/channel';
+import * as cardService from 'services/card';
+          
 import { getShopId } from 'vuex/getters/chat';
+
 export default{
   props:{
     setOpen:{
@@ -55,25 +57,26 @@ export default{
     close(){
       this.setOpen = false;
     },
-    cardCreate(){
-      return channel.req('card','create',{
+    newCard(){
+      cardService.create({
           card_name: this.cardName,
           card_number: this.cardNumber,
           shop_id: this.shopId
       })
     },
-    cardRetrieve(){
-      return channel.req('card','retrieve',{
-        shop_id: 0//this.getShopId
+
+    getCard(){
+      return cardService.retrieve({
+        shop_id: this.getShopId
       })
     }
   },
   watch:{
     setOpen(val){
       if(val === true){
-        // this.cardRetrieve().then(data=>{
-        //   console.log(data);
-        // });
+        this.getCard().then(data=>{
+          //console.log(data);
+        });
         alert('shop id: ' + this.getShopId);
       }
     }
