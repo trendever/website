@@ -12,10 +12,10 @@
   .photo__description
     .photo__title {{ title | truncate '20'}}
     .photo__row
-     .photo__shopTitle Shop Title
+     .photo__shopTitle
      .photo__summ(v-if="discountPrice")
       | {{ discountPrice | curency_spaces }} 
-      span ₽
+      span &#8381;
 </template>
 
 <script type='text/babel'>
