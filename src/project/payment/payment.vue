@@ -67,7 +67,7 @@ export default{
 
     getCard(){
       return cardService.retrieve({
-        shop_id: this.getShopId
+        shop_id: 0//this.getShopId
       })
     }
   },
