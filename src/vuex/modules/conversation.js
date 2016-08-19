@@ -31,7 +31,7 @@ const state = {
   done: false,
   showMenu: false,
   showStatusMenu: false,
-  lengthList: 12,
+  lengthList: 50,
   imgPopUpUrl: false,
   imgWidth: 0,
   imgHeight: 0
@@ -174,7 +174,7 @@ const addServiceMessage = (function() {
 // mutations
 const mutations = {
 
-  [CONVERSATION_SET] ( state, id, messages = null, lengthList = 20 ) {
+  [CONVERSATION_SET] ( state, id, messages = null, lengthList = 50 ) {
 
     if ( !state.all.hasOwnProperty( id ) ) {
       state.all[ id ]     = [];

@@ -19,6 +19,11 @@
   :focus::-moz-placeholder          {color:transparent;}
   :focus:-moz-placeholder           {color:transparent;}
   :focus:-ms-input-placeholder      {color:transparent;}
+  
+  &-summ-input::first-letter{
+    color: #fff;
+    opacity: .2;
+  }
 
   .bottom-margin {
     height: 100%;
@@ -34,14 +39,14 @@
   }
 
   &-wrapper {
-    padding:20px 0;
+    padding:50px 0;
     width: 100%;
     text-align: center;
     display: inline-block;
   }
 
   &-head {
-    font-size:32px;
+    font-size:40px;
   }
 
   &-summ {
@@ -49,7 +54,7 @@
   }
 
   &-summ-text {
-    font-size:28px;
+    font-size:36px;
     opacity:.2;
     margin-bottom: 130px;
   }
@@ -83,7 +88,6 @@
 
       img{
         width: 60px;
-        margin-left: 10px;
       }
       &.ic-card-new {
         top: 16px;
@@ -132,7 +136,7 @@
 
     &-text {
       opacity:.2;
-      font-size:18px;
+      font-size:36px;
       margin-bottom: 11px;
     }
 
@@ -160,6 +164,7 @@
       line-height: 68px;
       color: #fff;
       font-family: San-Francisco, 'arial narrow', arial;
+      padding-left: 15px;
       &.big {
         height:54px;
       }
@@ -172,7 +177,7 @@
     &-input{
       background: transparent;
       border-bottom:1px solid rgba(255,255,255, .2);
-      padding-left:3px;
+      padding-left:15px;
       border-radius: 0;
 
       input {
@@ -215,7 +220,7 @@
   }
 
   &-note {
-    font-size:20px;
+    font-size:36px;
     opacity:.2;
     margin-bottom: 30px;
   }
@@ -230,6 +235,8 @@
     right:0;
     top:0;
     z-index:10;
+    margin-top: 5px;
+    margin-right: 5px;
 
     i {
       line-height: 90px;

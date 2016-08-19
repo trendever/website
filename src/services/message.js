@@ -55,7 +55,7 @@ export function sendError( errorCode, state = null ) {
  * REJECT (one of ERROR_CODES) {NOT_EXISTS, UNATHORIZED}
  */
 
-export function find( conversation_id, from_message_id, limit = 12) {
+export function find( conversation_id, from_message_id, limit = 50) {
 
   return new Promise( (resolve, reject) => {
 

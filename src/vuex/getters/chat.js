@@ -286,7 +286,7 @@ export const isJoined = ( state, lead ) => {
 
 };
 
-export const getCountForLoading = (window.browser.mobile) ? 10 : 20;
+export const getCountForLoading = 50;//(window.browser.mobile) ? 10 : 20;
 
 export const imgPopUpUrl = ( state ) => state.conversation.imgPopUpUrl;
 
