@@ -5,7 +5,7 @@
   span(class='bubble_info bubble_info_time') {{ datetime }}
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
     i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
-  .chat-msg.bubble(
+  .chat-msg.bubble.bubble-img(
     :class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest && !isAfterServiceMessage}')
     .chat-msg_t(
         v-link='{name: "user", params: {id: getUserNameLink}}',
@@ -13,14 +13,13 @@
         :class='{"chat-msg_t-customer-color":isCustomer}'
     )
       | {{{ getUsername }}}
-    .chat-msg-img-wrapper
-      img(
-          @click="open",
-          :src='getImg',
-          class='chat-msg-img',
-          v-bind:class='{"chat-msg-img-opacity":!isLoaded }',
-          v-bind:style="imgStyle"
-        )
+    img(
+        @click="open",
+        :src='getImg',
+        class='chat-msg-img',
+        v-bind:class='{"chat-msg-img-opacity":!isLoaded }',
+        v-bind:style="imgStyle"
+      )
 
 </template>
 
