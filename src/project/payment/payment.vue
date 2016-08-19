@@ -10,7 +10,7 @@
         .payment-summ-text Введите сумму к оплате
         .payment-summ-input-wrapper
           i.ic-rouble
-          input(type='text' placeholder='0' value="0 ₽").payment-summ-input 
+          input(type='text' placeholder='' value="0 ₽").payment-summ-input 
           //- span. &#x20bd
 
       .check-card
@@ -28,7 +28,7 @@
       p.payment-note Деньги будут перечислены#[br]  прямо вам на карту с помощью#[br]  платежного сервиса Payture.ru
 
   .btn-container
-    button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom Отправить
+    button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom ОТПРАВИТЬ
 </template>
 <script>
     export default{

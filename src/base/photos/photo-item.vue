@@ -10,11 +10,12 @@
         :class='{"animate": animate}'
       )
   .photo__description
-    .photo__title {{ title }}
-    .photo__summ(v-if="discountPrice")
+    .photo__title {{ title | truncate '20'}}
+    .photo__row
+     .photo__shopTitle Shop Title
+     .photo__summ(v-if="discountPrice")
       | {{ discountPrice | curency_spaces }} 
       span ₽
-      i.ic-currency-rub 
 </template>
 
 <script type='text/babel'>
@@ -39,6 +40,13 @@
         default: true
       }
     ],
+  //   filters: {
+  
+  //   truncate: function(string, value) {
+  //       return string.substring(0, value) + '...';
+  //   }
+  
+  // },
 
     methods: {
       goToProduct(){

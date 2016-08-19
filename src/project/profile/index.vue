@@ -8,19 +8,19 @@ scroll-component(v-if="isDone", class="profile-cnt")
       .profile
         .profile_info
 
-          //.profile_info_count 1258
-          //.profile_info_count_t Подписчики
+          .profile_info_count 1258
+           .profile_info_count_t Подписчики
 
           .profile_info_img
             img(:src="getUserPhoto")
 
-          //.profile_info_count 53
-          //.profile_info_count_t Подписки 
+          .profile_info_count 53
+           .profile_info_count_t Подписки 
 
         .profile_desc
-          .profile_desc_t {{getSlogan}}
+          .profile_desc_t {{getSlogan}} Слоган Профиля
           .profile_desc_caption(v-if="getUserCaption") 
-          | {{ getUserCaption }} 
+          | {{ getUserCaption }} текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст  
 
         .profile_filter(v-if="selfPage && !noLikes && !noProducts")
           span(v-bind:class="{'seleted': photoType === 'product'}") 
@@ -30,7 +30,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
             input(type="radio" value="like" v-model="photoType" id="filter-likes") 
             label(for="filter-likes") Мои Тренды
 
-        //button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscrib//e") ПОДПИСАТЬСЯ
+        button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscrib//e") ПОДПИСАТЬСЯ
         
         //.profile_settings_btn
         //a(href="#")
