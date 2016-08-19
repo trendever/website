@@ -13,7 +13,7 @@
         :class='{"chat-msg_t-customer-color":isCustomer}'
     )
       | {{{ getUsername }}}
-    .chat-msg-img-wrapper(v-bind:class='{"chat-msg-img-wrapper-show-large-img" : showLargeImg }')
+    .chat-msg-img-wrapper
       img(
           @click="open",
           :src='getImg',

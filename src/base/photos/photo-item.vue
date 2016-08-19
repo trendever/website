@@ -12,8 +12,9 @@
   .photo__description
     .photo__title {{ title }}
     .photo__summ(v-if="discountPrice")
-      | {{ discountPrice | curency_spaces }}
-      i.ic-currency-rub
+      | {{ discountPrice | curency_spaces }} 
+      span ₽
+      i.ic-currency-rub 
 </template>
 
 <script type='text/babel'>
