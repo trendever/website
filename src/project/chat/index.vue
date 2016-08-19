@@ -174,14 +174,9 @@
           .setConversation( this.lead_id )
           .then(
             () => {
-              this.clearNotify( this.lead_id );
-                this
-                  .runLoadingMessage()
-                  .then( () => {
                     this.$nextTick( () => {
                       this.goToBottom();
                     } );
-                  } );
             },
             ( error ) => {
               console.error( `[ CONVERSATION_SET ERROR ]: `, error );
@@ -246,10 +241,10 @@
 
       scrollHandler(){
 
-        const SHAfter = this.$els.scrollCnt.scrollHeight;
+        /*const SHAfter = this.$els.scrollCnt.scrollHeight;
 
         if ( this.needLoadMessage ) {
-          if ( this.$els.scrollCnt.scrollTop < 1500 /*=== 0 */ ) {
+          if ( this.$els.scrollCnt.scrollTop < 1500 ) {
 
             this.$set( 'needLoadMessage', false );
 
@@ -269,7 +264,7 @@
             } );
 
           }
-        }
+        }*/
 
       },
       goToBottom(){
