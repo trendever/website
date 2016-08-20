@@ -229,6 +229,11 @@ const mutations = {
           return;
         }
       }
+      //решение против дублирования сообщений в чате
+      //почему то данная мутация в редких случаях вызывается дважды
+      if(!messages[0].beforeLoadId){
+        return;
+      }
 
       state.all = Object.assign( {}, all, { [id]: addServiceMessage( all[ id ].concat( messages ) ) } );
 
