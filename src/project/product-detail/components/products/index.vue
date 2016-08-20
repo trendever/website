@@ -1,6 +1,6 @@
 <template>
   <div class="products" v-if="isName">
-    <div class="name">{{name | truncate '30'}}</div>
+    <div class="name">{{name}}</div>
     <div class="numbers" v-if="!isNotPrice">
       <span class="price" v-if="price !== null && discountPrice !== null">{{price | curency_spaces}}</span>
       <span class="discountPrice" v-if="discountPrice !== null">{{discountPrice | curency_spaces}}</span>
