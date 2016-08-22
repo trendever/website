@@ -44,3 +44,18 @@ export function deleteCard({ shop_id }) {
             });
     })
 }
+
+
+export function createOrder({ amount, currency, lead_id, card }) {
+
+    return new Promise((resolve, reject)=>{
+
+        channel.req('create', 'order', { amount, currency, lead_id, card })
+            .then(data => {
+                resolve(data.response_map);
+            })
+            .catch(error => {
+                reject({ code: '', response: error })
+            });
+    })
+}
