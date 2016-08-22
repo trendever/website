@@ -24,7 +24,9 @@
         .check-card-input-wrap
           i.ic-card-new
             img(src='icons/card_2.png')
-          input(type='text' placeholder='**** **** ***** 0000' v-model="currentCardNumber").check-card-input
+          input(type='text',
+               placeholder='**** **** **** 0000',
+               v-model="currentCardNumber").check-card-input
       p.payment-note Деньги будут перечислены#[br]  прямо вам на карту с помощью#[br]  платежного сервиса Payture.ru
 
   .btn-container
@@ -61,15 +63,16 @@ export default{
     leadOrder(){
 
       let newCardNumber = null;
+      
+      //проверяем является ли карта новой
 
       this.userCards.forEach(card=>{
         if(card.number !== getlastFour(this.currentCardNumber)){
-          let newCardNumber = this.currentCardNumber;
+          newCardNumber = this.currentCardNumber;
         }
       });
-  
 
-      if(newCardNumber !== null){
+      if(newCardNumber !== null && this.currentCardNumber.length > 4){
         //создаем новую карту
         cardService.create({
             card_number: this.currentCardNumber,
@@ -79,30 +82,40 @@ export default{
         .then(data=>{
           if(data.success){
             //получаем карты пользователя
-            return this.getCard().then(data=>{
-              if(data !== null){
-                let cardToMakeOrder = data.filter(card=>{
-                  return card.number === getlastFour(this.currentCardNumber);
+            return this
+              ._getCards()
+              .then(cards=>{
+                if(cards !== null){
+      
+                  let cardToMakeOrder = cards.filter(card=>{
+                    return card.number === getlastFour(this.currentCardNumber);
+                  })
 
-                })
-                return cardToMakeOrder;
-              }
-            })
+                  this.userCards = cards;
+                  return cardToMakeOrder[0];
+                }
+
+              })
           }
         })
 
         .then(card=>{
 
           this.currentCardId = card.id;
-          this._makeOrder();
+
+        })
+
+        .then(()=>{
+
+          this.makeOrder();
 
         });
 
-        return;
+      } else {
+
+        this.makeOrder();
 
       }
-
-      this._makeOrder();
 
     },
 
@@ -110,7 +123,7 @@ export default{
       this.setOpen = false;
     },
 
-    _makeOrder(){
+    makeOrder(){
       cardService.createOrder({
         amount: this.billPrice, 
         card: this.currentCardId,
@@ -121,11 +134,25 @@ export default{
         this.setOpen = false;
       });
     },
-
-    _getCard(){
+    deleteCard(cardId){
+      return cardService.deleteCard({
+        card_id: cardId 
+      }).then(()=>{
+        alert('карта удалена');
+      });
+    },
+    _getCards(){
       return cardService.retrieve({
         shop_id: this.getShopId
       })
+    }
+  },
+  filters:{
+    stars(val){
+      if(val.length === 4){
+        return '**** **** **** **** ' + val;
+      }
+      return val;
     }
   },
   watch:{
@@ -143,7 +170,7 @@ export default{
     },
     setOpen(val){
       if(val === true){
-        this._getCard().then(data=>{
+        this._getCards().then(data=>{
           //console.log(JSON.parse(JSON.stringify(data)));
           if(data !== null){
             this.$set('userCards', data);
@@ -153,7 +180,7 @@ export default{
     }
   }
 }
-
+//helpers
 function getlastFour(string){
   return string.split('').slice(12,16).join('');
 }
