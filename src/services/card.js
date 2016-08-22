@@ -58,6 +58,7 @@ export function createOrder({ amount, currency, lead_id, card }) {
             });
     })
 }
+<<<<<<< HEAD
 
 export function createPayment({ id, lead_id }) {
 
@@ -71,3 +72,5 @@ export function createPayment({ id, lead_id }) {
             });
     })
 }
+=======
+>>>>>>> payments logic need to test and lead id

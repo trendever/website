@@ -10,22 +10,21 @@
         .payment-summ-text Введите сумму к оплате
         .payment-summ-input-wrapper
           i.ic-rouble
-          input(type='text' placeholder='0' value=" 0 ₽" v-model="billPrice").payment-summ-input 
+          input(type='text' placeholder='0' v-model="billPrice").payment-summ-input 
           //- span. &#x20bd
 
       .check-card
-        div(v-if="userCards")
+        div(v-if="userCards.length")
           .check-card-text Выберите карту, #[br] куда будут зачислены деньги
           .check-card-select-wrap
             i.ic-check-card
               img(src='icons/card_1.png').ic-card_1
-            select(v-model="cardName").check-card-select
-              option Новая карта
-              option Новая карта 2
+            select(v-model="cardNumber" v-if="userCards.length").check-card-select
+              option(v-for="card in userCards") {{ card.number }}
         .check-card-input-wrap
           i.ic-card-new
             img(src='icons/card_2.png')
-          input(type='text' placeholder='0000 0000 0000 0000' v-model="cardNumber").check-card-input
+          input(type='text' placeholder='0000 0000 0000 0000' v-model="currentCardNumber").check-card-input
       p.payment-note Деньги будут перечислены#[br]  прямо вам на карту с помощью#[br]  платежного сервиса Payture.ru
 
   .btn-container
@@ -85,9 +84,7 @@ export default{
         //создаем новую карту
         cardService.create({
             card_number: this.currentCardNumber,
-            shop_id: this.getShopId
-        })
-
+            shop_id: this.getShopId})
         .then(data=>{
           if(data.success){
             //получаем карты пользователя
@@ -130,7 +127,6 @@ export default{
         this.makeOrder();
 
       }
-
     },
 
     close(){
@@ -174,11 +170,12 @@ export default{
       this.$set('currentCardId',currentCard[0].id);
       this.$set('currentCardNumber',currentCard[0].number);
 
+
+
     },
     setOpen(val){
       if(val === true){
-        this.getCard().then(data=>{
-
+        this._getCard().then(data=>{
           if(data !== null){
             this.$set('userCards', data);
           }
