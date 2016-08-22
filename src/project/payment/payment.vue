@@ -24,16 +24,16 @@
         .check-card-input-wrap
           i.ic-card-new
             img(src='icons/card_2.png')
-          input(type='text' placeholder='0000 0000 0000 0000' v-model="currentCardNumber").check-card-input
+          input(type='text' placeholder='**** **** ***** 0000' v-model="currentCardNumber").check-card-input
       p.payment-note Деньги будут перечислены#[br]  прямо вам на карту с помощью#[br]  платежного сервиса Payture.ru
 
   .btn-container
-    button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom Отправить
+    button(@click="leadOrder").btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom Отправить
 </template>
 <script>
 import * as cardService from 'services/card';
 import channel from 'services/channel/channel';     
-import { getShopId } from 'vuex/getters/chat';
+import { getShopId, getLeadId } from 'vuex/getters/chat';
 import * as product from 'services/products';
 
 export default{
@@ -44,13 +44,15 @@ export default{
   },
   vuex:{
     getters: {
-      getShopId
+      getShopId,
+      getLeadId
     }
   },
   data(){
     return {
       billPrice: '',
       cardNumber: '',
+      currentCardNumber: '',
       currentCardId: '',
       userCards: [],
     }
@@ -61,16 +63,17 @@ export default{
       let newCardNumber = null;
 
       this.userCards.forEach(card=>{
-        if(card.number !== this.currentCardNumber){
+        if(card.number !== getlastFour(this.currentCardNumber)){
           let newCardNumber = this.currentCardNumber;
         }
       });
+  
 
       if(newCardNumber !== null){
         //создаем новую карту
         cardService.create({
-            card_number: this.cardNumber,
-            shop_id: this.shopId
+            card_number: this.currentCardNumber,
+            shop_id: this.getShopId
         })
 
         .then(data=>{
@@ -79,11 +82,10 @@ export default{
             return this.getCard().then(data=>{
               if(data !== null){
                 let cardToMakeOrder = data.filter(card=>{
-                  return card.number === this.currentCardNumber.split('').slice(0,11).join('');
+                  return card.number === getlastFour(this.currentCardNumber);
 
                 })
                 return cardToMakeOrder;
-                
               }
             })
           }
@@ -101,6 +103,7 @@ export default{
       }
 
       this._makeOrder();
+
     },
 
     close(){
@@ -140,18 +143,18 @@ export default{
     },
     setOpen(val){
       if(val === true){
-
         this._getCard().then(data=>{
-          console.log(JSON.parse(JSON.stringify(data)));
+          //console.log(JSON.parse(JSON.stringify(data)));
           if(data !== null){
             this.$set('userCards', data);
           }
-
         });
-
-        console.log('shop id: ' + this.getShopId);
       }
     }
   }
+}
+
+function getlastFour(string){
+  return string.split('').slice(12,16).join('');
 }
 </script>
