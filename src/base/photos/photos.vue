@@ -3,7 +3,7 @@
 .photos(v-bind:style="styleObject", v-el:container)
   .photos__list(v-el:photos-list, v-if='items', v-bind:style="listStyle")
 
-    template(v-for='line in items | lines' track-by="uid")
+    template(v-for='line in items | lines' track-by="$index")
       .photos__list__cell(v-bind:style="top[$index]")
         template(v-for='item in line.bundle' track-by="id")
           photo-item( :product.once='item', :animate='true' )
@@ -171,8 +171,29 @@ scroll-top
     filters: {
       lines( value ) {
 
-        if( value.length === 1 ){
+        const { idStart, idEnd } = this.getScrollData;
 
+        const _lines = [];
+
+        const items  = value.slice( idStart, idEnd );
+
+        let count = Math.ceil(items.length / this.getColumnCount);  
+
+        let interateCout = items.length < this.getColumnCount ? 1 : count;
+
+        for(let i = 0; i < interateCout; i++ ){
+
+          _lines.push({bundle: items.splice(0,this.getColumnCount)});
+
+        }
+
+        return _lines;
+
+
+        //Cтарая версия криво работающая
+
+/*        if( value.length === 1 ){
+  
           return [{ uid: 1, bundle:[value] }]
 
         }
@@ -210,7 +231,7 @@ scroll-top
 
         }
 
-        return _lines;
+        return _lines;*/
 
       }
     },
