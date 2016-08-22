@@ -24,7 +24,9 @@
         .check-card-input-wrap
           i.ic-card-new
             img(src='icons/card_2.png')
-          input(type='text' placeholder='**** **** ***** 0000' v-model="currentCardNumber").check-card-input
+          input(type='text',
+               placeholder='**** **** **** 0000',
+               v-model="currentCardNumber").check-card-input
       p.payment-note Деньги будут перечислены#[br]  прямо вам на карту с помощью#[br]  платежного сервиса Payture.ru
 
   .btn-container
@@ -62,6 +64,8 @@ export default{
     leadOrder(){
 
       let newCardNumber = null;
+      
+      //проверяем является ли карта новой
 
       //если нету карт
       if(!this.userCards.length && this.currentCardNumber.length === 16){
@@ -79,7 +83,6 @@ export default{
         });
       }
 
-      //если новая карта
       if(newCardNumber !== null && this.currentCardNumber.length > 4){
         //создаем новую карту
         cardService.create({
@@ -127,6 +130,8 @@ export default{
         this.makeOrder();
 
       }
+
+      }
     },
 
     close(){
@@ -146,7 +151,6 @@ export default{
         this.setOpen = false;
 
       });
-
     },
     deleteCard(cardId){
       return cardService.deleteCard({
@@ -159,6 +163,14 @@ export default{
       return cardService.retrieve({
         shop_id: this.getShopId
       })
+    }
+  },
+  filters:{
+    stars(val){
+      if(val.length === 4){
+        return '**** **** **** **** ' + val;
+      }
+      return val;
     }
   },
   watch:{
