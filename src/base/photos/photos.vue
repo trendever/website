@@ -188,51 +188,6 @@ scroll-top
         }
 
         return _lines;
-
-
-        //Cтарая версия криво работающая
-
-/*        if( value.length === 1 ){
-  
-          return [{ uid: 1, bundle:[value] }]
-
-        }
-
-        const { idStart, idEnd } = this.getScrollData;
-
-        const _lines = [];
-
-        let bundle   = [];
-        let bundleId = '';
-        const items  = value.slice( idStart, idEnd );
-
-        items.forEach( ( item ) => {
-
-          bundleId += '' + item.id;
-
-          bundle.push( item );
-
-          if ( bundle.length === this.getColumnCount ) {
-
-            _lines.push( { uid: bundleId, bundle } );
-
-            bundle   = [];
-            bundleId = '';
-
-          }
-
-        } );
-
-        const elseItem = items.length - _lines.length * this.getColumnCount;
-
-        if ( elseItem > 0 ) {
-
-          _lines.push( items.slice( _lines.length * this.getColumnCount, items.length ) );
-
-        }
-
-        return _lines;*/
-
       }
     },
 
@@ -347,12 +302,15 @@ scroll-top
       rowHeight: {
         cache: false,
         get(){
-
-          return this.$els.container.clientWidth / this.getColumnCount + 95;
-
-
+          if (window.browser.mobile && this.getColumnCount == 3){
+            return this.$els.container.clientWidth / this.getColumnCount;
+          }else{
+            return this.$els.container.clientWidth / this.getColumnCount + 95;
+          }
         }
       },
+
+
 
       itemsLength() {
 
