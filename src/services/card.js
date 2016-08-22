@@ -31,7 +31,7 @@ export function create({ shop_id, card_name, card_number }) {
 }
 
 
-export function deleteCard({ shop_id }) {
+export function deleteCard({ card_id }) {
 
     return new Promise((resolve, reject)=>{
 
