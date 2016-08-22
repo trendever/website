@@ -24,7 +24,7 @@
         .check-card-input-wrap
           i.ic-card-new
             img(src='icons/card_2.png')
-          input(type='text' placeholder='0000 0000 0000 0000' v-model="currentCardNumber").check-card-input
+          input(type='text' placeholder='**** **** ***** 0000' v-model="currentCardNumber").check-card-input
       p.payment-note Деньги будут перечислены#[br]  прямо вам на карту с помощью#[br]  платежного сервиса Payture.ru
 
   .btn-container
@@ -179,13 +179,11 @@ export default{
           if(data !== null){
             this.$set('userCards', data);
           }
-
         });
       }
     }
   }
 }
-//helpers
 function getlastFour(string){
   return string.split('').slice(12,16).join('');
 }
