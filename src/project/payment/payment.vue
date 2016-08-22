@@ -14,13 +14,14 @@
           //- span. &#x20bd
 
       .check-card
-        .check-card-text Выберите карту, #[br] куда будут зачислены деньги
-        .check-card-select-wrap
-          i.ic-check-card
-            img(src='icons/card_1.png').ic-card_1
-          select(v-model="cardName").check-card-select
-            option Новая карта
-            option Новая карта 2
+        div(v-if="userCards")
+          .check-card-text Выберите карту, #[br] куда будут зачислены деньги
+          .check-card-select-wrap
+            i.ic-check-card
+              img(src='icons/card_1.png').ic-card_1
+            select(v-model="cardName").check-card-select
+              option Новая карта
+              option Новая карта 2
         .check-card-input-wrap
           i.ic-card-new
             img(src='icons/card_2.png')
@@ -32,8 +33,9 @@
 </template>
 <script>
 import * as cardService from 'services/card';
-          
+import channel from 'services/channel/channel';     
 import { getShopId } from 'vuex/getters/chat';
+import * as product from 'services/products';
 
 export default{
   props:{
@@ -50,7 +52,9 @@ export default{
     return {
       billPrice: '',
       cardNumber: '',
-      cardName: ''
+      cardName: '',
+      //временно
+      userCards: true,
     }
   },
   methods: {
@@ -67,17 +71,23 @@ export default{
 
     getCard(){
       return cardService.retrieve({
-        shop_id: 0//this.getShopId
+        shop_id: this.getShopId
       })
     }
   },
   watch:{
     setOpen(val){
       if(val === true){
+
         this.getCard().then(data=>{
-          //console.log(data);
+
+          if(data !== null){
+            this.$set('userCards', data);
+          }
+
         });
-        alert('shop id: ' + this.getShopId);
+
+        console.log('shop id: ' + this.getShopId);
       }
     }
   }
