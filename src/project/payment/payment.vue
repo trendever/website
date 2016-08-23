@@ -63,7 +63,7 @@ export default{
     leadOrder(){
 
       let newCardNumber = null;
-      
+
       //проверяем является ли карта новой
 
       this.userCards.forEach(card=>{
@@ -125,7 +125,7 @@ export default{
 
     makeOrder(){
       cardService.createOrder({
-        amount: this.billPrice, 
+        amount: +this.billPrice, 
         card: this.currentCardId,
         currency: 0,
         lead_id: this.getLeadId
