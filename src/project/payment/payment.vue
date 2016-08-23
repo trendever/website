@@ -64,14 +64,23 @@ export default{
 
       let newCardNumber = null;
 
-      //проверяем является ли карта новой
+      //если нету карт
+      if(!this.userCards.length && this.currentCardNumber.length === 16){
+        newCardNumber = this.currentCardNumber;
+        alert("новая карта: " + this.currentCardNumber);
+      }
 
-      this.userCards.forEach(card=>{
-        if(card.number !== getlastFour(this.currentCardNumber)){
-          newCardNumber = this.currentCardNumber;
-        }
-      });
+      //если есть карты проверям является ли карта новой
+      if(this.userCards.length){
+        this.userCards.forEach(card=>{
+          if(card.number !== getlastFour(this.currentCardNumber) && this.currentCardNumber.length === 16){
+            newCardNumber = this.currentCardNumber;
+            alert("новая карта не из массива: " + this.currentCardNumber);
+          }
+        });
+      }
 
+      //если новая карта
       if(newCardNumber !== null && this.currentCardNumber.length > 4){
         //создаем новую карту
         cardService.create({
@@ -102,7 +111,7 @@ export default{
         .then(card=>{
 
           this.currentCardId = card.id;
-
+          alert(this.currentCardId);
         })
 
         .then(()=>{
@@ -155,9 +164,13 @@ export default{
       return val;
     }
   },
+  computed:{
+
+
+
+  },
   watch:{
     cardNumber(val){
-
       let currentCard = this.userCards.filter(card=>{
         return card.number === val;
       });
