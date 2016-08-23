@@ -64,7 +64,7 @@ export default{
     leadOrder(){
 
       let newCardNumber = null;
-      
+
       //проверяем является ли карта новой
 
       //если нету карт
