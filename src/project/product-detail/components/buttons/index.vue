@@ -15,16 +15,7 @@
       </div>
     </div>
     <div class="rightSide">
-      <div v-if="false" class="button buttonRight" @click="buyPromoProduct">
-        <i class="ic-blogger blogger icon icon-default"></i>
-        <span class="text text-default">блогер</span>
-      </div>
-      <div class="button buttonRight"
-           v-if="isMobile"
-           v-link='{name:"product_repost", params: {id: productId}}'>
-        <i class="ic-instagram instName icon icon-default"></i>
-        <span class="text text-default">пост</span>
-      </div>
+      <button class="buy_btn" @click="buy">ГДЕ КУПИТЬ</button>
     </div>
   </div>
 </template>

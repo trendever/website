@@ -15,13 +15,13 @@
 .buttons {
 
   display: block;
-  height: 90px;
-  margin-bottom: 30px;
+  height: 41px;
+  margin-bottom: 20px;
+  margin-top: 17px;
   position: relative;
   min-width: 285px;
   @media(--mobile){
-
-    height: 115px;
+    height: 88px;
 
   }
 
@@ -29,8 +29,8 @@
 
 .save_btn{
   display: inline-block;
-  width: 345px;
-  height: 88px;
+  width: 212px;
+  height: 40px;
   text-align: center;
   cursor: pointer;
   -webkit-transition: 64ms ease-in-out;
@@ -43,14 +43,19 @@
   line-height: 2.4;
   background: transparent;
   color: #31bebc;
-  border: 2px solid #31bebc;
+  border: 1px solid #31bebc;
   border-radius: 5px;
-  font-size: 28px;
+  font-size: 16px;
+  @media(--mobile) {
+    width: 345px;
+    height: 88px;
+    font-size: 28px;
+  }
 }
 .buy_btn{
   display: inline-block;
-  width: 345px;
-  height: 88px;
+  width: 212px;
+  height: 40px;
   text-align: center;
   cursor: pointer;
   -webkit-transition: 64ms ease-in-out;
@@ -63,9 +68,14 @@
   line-height: 2.4;
   background: $color-orange;
   color: #13302d;
-  border: 2px solid #fedc3b;
+  border: 1px solid #fedc3b;
   border-radius: 5px;
-  font-size: 28px;
+  font-size: 16px;
+  @media(--mobile) {
+    width: 345px;
+    height: 88px;
+    font-size: 28px;
+  }
 }
 .save_btn:hover, .save_btn:active{
   color: #fff;
@@ -76,144 +86,21 @@
   border-color: $color-orange-dark;
 }
 
-.button {
-
-  display: inline-block;
-  height: 100%;
-  cursor: pointer;
-
-}
-
-.buttonLeft{
-  margin-right: 15px;
-  @media (--mobile) {
-    margin-right: 30px;
-  }
-  &:last-of-type{
-    margin-right: 0;
-  }
-}
-
-.buttonRight{
-  margin-left: 15px;
-  @media (--mobile) {
-    margin-left: 30px;
-  }
-  &:first-of-type{
-    margin-left: 0;
-  }
-}
-
 .leftSide{
   margin-right: 10px;
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: -10px;
+  @media(--mobile) {
+    left: -10px;
+  }
 }
 
 .rightSide{
   position: absolute;
   right: 0;
   bottom: 0;
-}
-
-.icon-active{
-  &::before{
-    color:$color__red;
-  }
-}
-
-.icon-default{
-
-  &::before{
-    color:$color__green;
-  }
-
-}
-
-.icon{
-  display: block;
-  text-align: center;
-  cursor: pointer;
-}
-
-.text-active{
-  color: $color__red;
-}
-
-.text-default{
-  color: $color__green;
-}
-
-.text{
-  display: block;
-  font-family: $font__family;
-  font-size: 14px;
-  margin-top: 2.5px;
-  cursor: pointer;
-  @media(--mobile){
-    font-size: 24px;
-  }
-}
-
-.like {
-
-  font-size: 36px;
-
   @media(--mobile) {
-
-    font-size: 64px;
-    height: 64px;
+    right: -10px;
   }
-
-}
-
-.buy {
-
-  font-size: 47px;
-
-
-  @media(--mobile) {
-
-    font-size: 85px;
-    height: 85px;
-  }
-
-}
-
-.know {
-
-  font-size: 36px;
-
-  @media(--mobile) {
-
-    font-size: 64px;
-    height: 64px;
-  }
-
-}
-
-.blogger {
-
-  font-size: 36px;
-
-  @media(--mobile) {
-
-    font-size: 64px;
-    height: 64px;
-  }
-
-}
-
-.instName {
-
-  font-size: 36px;
-
-
-  @media(--mobile) {
-
-    font-size: 64px;
-    height: 64px;
-  }
-
 }
