@@ -3,7 +3,7 @@
 .photos(v-bind:style="styleObject", v-el:container)
   .photos__list(v-el:photos-list, v-if='items', v-bind:style="listStyle")
 
-    template(v-for='line in items | lines' track-by="$index")
+    template(v-for='line in items | lines' track-by="uid")
       .photos__list__cell(v-bind:style="top[$index]")
         template(v-for='item in line.bundle' track-by="id")
           photo-item( :product.once='item', :animate='true' )
@@ -177,13 +177,16 @@ scroll-top
 
         const items  = value.slice( idStart, idEnd );
 
-        let count = Math.ceil(items.length / this.getColumnCount);  
-
-        let interateCout = items.length < this.getColumnCount ? 1 : count;
+        let interateCout = Math.ceil(items.length / this.getColumnCount);  
 
         for(let i = 0; i < interateCout; i++ ){
 
-          _lines.push({bundle: items.splice(0,this.getColumnCount)});
+          let bundle = items.splice(0,this.getColumnCount);
+          //нужен id для того чтобы изображения постоянно показывались а не появлялись из ничего
+          //каждый раз при скролле
+          let bundleId = bundle[0].id;
+
+          _lines.push({uid: bundleId, bundle: bundle});
 
         }
 
