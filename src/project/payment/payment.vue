@@ -65,7 +65,11 @@ export default{
 
       let newCardNumber = null;
 
-      //проверяем является ли карта новой
+      //если нету карт
+      if(!this.userCards.length && this.currentCardNumber.length === 16){
+        newCardNumber = this.currentCardNumber;
+        alert("новая карта: " + this.currentCardNumber);
+      }
 
       //если нету карт
       if(!this.userCards.length && this.currentCardNumber.length === 16){
@@ -83,6 +87,7 @@ export default{
         });
       }
 
+      //если новая карта
       if(newCardNumber !== null && this.currentCardNumber.length > 4){
         //создаем новую карту
         cardService.create({
@@ -111,7 +116,7 @@ export default{
         .then(card=>{
 
           this.currentCardId = card.id;
-
+          alert(this.currentCardId);
         })
 
         .then(()=>{
@@ -172,6 +177,11 @@ export default{
       }
       return val;
     }
+  },
+  computed:{
+
+
+
   },
   watch:{
     cardNumber(val){
