@@ -42,9 +42,6 @@
         getLeadId
       }
     },
-    ready(){
-      alert(this.getLeadId);
-    },
     methods:{
       pay(){
 /*        if(!isCustomer){
