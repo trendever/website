@@ -81,7 +81,7 @@ export default{
           }
         });
       }
-
+      alert(this.currentCardNumber);
       //если новая карта
       if(newCardNumber !== null && this.currentCardNumber.length > 4){
         //создаем новую карту
@@ -92,6 +92,7 @@ export default{
 
         .then(data=>{
           if(data.success){
+            alert("карта создана");
             //получаем карты пользователя
             return this
               ._getCards()
