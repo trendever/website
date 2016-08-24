@@ -86,13 +86,19 @@
       top: 32px;
       @media(--mobile) {
         font-size: 28px;
-      word-spacing: -6px;
+        word-spacing: -6px;
       }
       span{
         font-weight: 100;
       }
       i{
         margin-left: 5px;
+        font-weight: lighter;
+        line-height: 18px;
+        margin-left: 3px;
+        @media(--mobile) {
+          line-height: 33px;
+        }
       }
     }
     &title {
@@ -119,7 +125,7 @@
       color: #ccc;
       font-size: 16px;
       @media(--mobile) {
-      font-size: 28px;
+        font-size: 28px;
       }
     }
   }
