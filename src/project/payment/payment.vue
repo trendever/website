@@ -36,7 +36,8 @@
 <script>
 import * as cardService from 'services/card';
 import channel from 'services/channel/channel';     
-import { getShopId, getLeadId } from 'vuex/getters/chat';
+import { getShopId, getLeadId, getId } from 'vuex/getters/chat';
+
 import * as product from 'services/products';
 
 export default{
@@ -112,7 +113,7 @@ export default{
         .then(card=>{
 
           this.currentCardId = card.id;
-          alert(this.currentCardId);
+
         })
 
         .then(()=>{
@@ -122,6 +123,11 @@ export default{
         });
 
       } else {
+
+        if(!this.currentCardId){
+          alert('Карта не выбрана');
+          return;
+        }
 
         this.makeOrder();
 
@@ -139,10 +145,14 @@ export default{
         card: this.currentCardId,
         currency: 0,
         lead_id: this.getLeadId
-      }).then(()=>{
+      }).then((order)=>{
+
         alert('Счет выставлен');
+        
         this.setOpen = false;
+
       });
+
     },
     deleteCard(cardId){
       return cardService.deleteCard({
@@ -157,19 +167,6 @@ export default{
       })
     }
   },
-  filters:{
-    stars(val){
-      if(val.length === 4){
-        return '**** **** **** **** ' + val;
-      }
-      return val;
-    }
-  },
-  computed:{
-
-
-
-  },
   watch:{
     cardNumber(val){
       let currentCard = this.userCards.filter(card=>{
@@ -179,13 +176,11 @@ export default{
       this.$set('currentCardId',currentCard[0].id);
       this.$set('currentCardNumber',currentCard[0].number);
 
-      //console.log(JSON.parse(JSON.stringify(currentCard)));
-
     },
     setOpen(val){
       if(val === true){
         this._getCards().then(data=>{
-          //console.log(JSON.parse(JSON.stringify(data)));
+          
           if(data !== null){
             this.$set('userCards', data);
           }

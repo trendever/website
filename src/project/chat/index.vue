@@ -20,6 +20,9 @@
             chat-msg-info(
               v-if='msg.parts[0].mime_type === "text/html"',
               :msg='msg')
+            chat-msg-order(
+              v-if='msg.parts[0].mime_type === "json/order"',
+              :msg='msg')
             chat-msg-img(
               v-if='isImage(msg.parts[0].mime_type)',
               :msg='msg')
@@ -31,12 +34,16 @@
 <script type='text/babel'>
   import listen from 'event-listener';
   import scrollTop from 'base/scroll-top/scroll-top.vue';
+  //actions
   import {
     setConversation,
     loadMessage,
     closeConversation,
     openPopUp
   } from 'vuex/actions/chat.js';
+  import { clearNotify } from 'vuex/actions/lead.js';
+
+  //getters
   import {
     getMessages,
     conversationNotifyCount,
@@ -51,13 +58,14 @@
   } from 'vuex/getters/chat.js';
   import { isDone } from 'vuex/getters/lead.js';
   import { isAuth } from 'vuex/getters/user.js';
-  import { clearNotify } from 'vuex/actions/lead.js';
 
+  //services
   import * as messages from 'services/message';
   import * as leads from 'services/leads';
 
   import ScrollComponent from 'base/scroll/scroll.vue'
-
+  //components
+  import ChatMsgOrder from './chat-msg-order.vue';
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgStatus from './chat-msg-status.vue';
   import ChatMsg from './chat-msg.vue';
@@ -75,6 +83,7 @@
       ChatHeader,
       ChatBar,
       ChatMsg,
+      ChatMsgOrder,
       ChatMsgProduct,
       ChatMsgStatus,
       ChatMsgImg,

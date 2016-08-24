@@ -59,3 +59,17 @@ export function createOrder({ amount, currency, lead_id, card }) {
             });
     })
 }
+
+export function createPayment({ id, lead_id }) {
+
+    return new Promise((resolve, reject)=>{
+
+        channel.req('create', 'payment', { id, lead_id })
+            .then(data => {
+                resolve(data.response_map);
+            })
+            .catch(error => {
+                reject({ code: '', response: error })
+            });
+    })
+}
