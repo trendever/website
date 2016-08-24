@@ -23,7 +23,7 @@
   export default {
     data(){
       return {
-        imageOpacity: 0,
+        imageOpacity: 1,
         error: false,
       };
     },
@@ -57,7 +57,7 @@
       thumb() {
         if (this.product && this.product.instagram_images) {
           return this.product.instagram_images
-          .find((img) => img.name === "M_square").url
+          .find((img) => img.name === "S_square").url
         }
         // return this.product.instagram_image_url
       },
