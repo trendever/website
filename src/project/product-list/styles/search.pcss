@@ -13,8 +13,12 @@ $count-tags-open: 13;
 }
 
 .__mirror {
-  font-weight: bold !important;
+  font-weight: bold;
   transform: scaleX(-1);
+  height: 30px;
+  @media(--mobile) {
+    height: 40px;
+  }
   &:before{
     font-weight: bold;
   }
