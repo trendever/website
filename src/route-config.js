@@ -84,6 +84,11 @@ export function configRouter(router) {
       name: 'payment',
       component: require('project/payment/payment.vue')
     },
+
+    '/list': {
+      name: 'payment',
+      component: require('base/list/index.vue')
+    },
     
     '/pay-on': {
      name: 'pay-on',

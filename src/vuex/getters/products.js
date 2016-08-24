@@ -18,6 +18,8 @@ export const getProducts = ( state ) => {
 
   if ( list !== null ) {
 
+    console.log(list.products);
+
     return list.products;
 
   }
