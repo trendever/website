@@ -35,7 +35,6 @@
 <script>
 import * as cardService from 'services/card';
 import channel from 'services/channel/channel';  
-import { getShopId, getLeadId, getId } from 'vuex/getters/chat';
 import * as product from 'services/products';
 
 export default{
@@ -116,7 +115,7 @@ export default{
         .then(card=>{
 
           this.currentCardId = card.id;
-          alert(this.currentCardId);
+
         })
 
         .then(()=>{
@@ -156,6 +155,7 @@ export default{
         this.setOpen = false;
 
       });
+
     },
     deleteCard(cardId){
       return cardService.deleteCard({
@@ -170,19 +170,6 @@ export default{
       })
     }
   },
-  filters:{
-    stars(val){
-      if(val.length === 4){
-        return '**** **** **** **** ' + val;
-      }
-      return val;
-    }
-  },
-  computed:{
-
-
-
-  },
   watch:{
     cardNumber(val){
       let currentCard = this.userCards.filter(card=>{
@@ -191,9 +178,6 @@ export default{
 
       this.$set('currentCardId',currentCard[0].id);
       this.$set('currentCardNumber',currentCard[0].number);
-
-
-
     },
     setOpen(val){
       if(val === true){
