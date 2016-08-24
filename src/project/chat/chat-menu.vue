@@ -3,9 +3,9 @@
 div
   menu-component(v-if='getShowMenu && !getShowStatusMenu')
     div(slot='items')
-      //-.menu_i
+      //.menu_i
         .menu_i_t Отправить условия доставки
-      //-.menu_i
+      //.menu_i
         .menu_i_t Отправить условия оплаты
 
       .menu_i(v-if='canCallCustomer', @click='callCustomer()')
@@ -16,10 +16,11 @@ div
 
       .menu_i(v-if='isAdmin', @click='setShowStatusMenu(true)')
         .menu_i_t Изменить статус заказа
-
       label(class='menu_i menu_i-send-file') Отправить фото
         input(type='file', hidden, @change='selectedFile')
-
+      
+      .menu_i
+        .menu_i_t Добавить шаблон
       .menu_i(@click='setShowMenu(false)')
         .menu_i_t.__txt-green Отмена
 
