@@ -223,18 +223,13 @@ const mutations = {
     const { all } = state;
 
     if ( all.hasOwnProperty( id ) ) {
-
+      //не всегда отрабатывает луп как надо
       for ( let i = all[ id ].length; i; i-- ) {
         if ( all[ id ][ i - 1 ].id === messages[ 0 ].id ) {
           return;
         }
       }
-      //решение против дублирования сообщений в чате
-      //почему то данная мутация в редких случаях вызывается дважды
-      if(!messages[0].beforeLoadId){
-        return;
-      }
-
+      
       state.all = Object.assign( {}, all, { [id]: addServiceMessage( all[ id ].concat( messages ) ) } );
 
     } else {
