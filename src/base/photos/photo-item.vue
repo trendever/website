@@ -56,8 +56,12 @@
     computed: {
       thumb() {
         if (this.product && this.product.instagram_images) {
-          return this.product.instagram_images
-          .find((img) => img.name === "S_square").url
+          if (window.browser.mobile){
+            return this.product.instagram_images.find((img) => img.name === "S_square").url  
+          }else{
+            return this.product.instagram_images.find((img) => img.name === "M_square").url  
+          }
+          
         }
         // return this.product.instagram_image_url
       },
