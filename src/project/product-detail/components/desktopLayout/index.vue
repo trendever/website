@@ -47,6 +47,7 @@
             :base-height="50"
             :margin-right="5"
             :margin-bottom="5"
+            :is-product="true"
           ></tags>
         </div>
       </div>
