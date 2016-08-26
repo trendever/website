@@ -17,20 +17,17 @@
       .header-right(v-if="avatarUrl !== null && centerTextLink !== null", v-link="centerTextLink")
         img(:src="avatarUrl")
 
-      .header__menu
-      .header__menu-icon
-       ._bullet
-      .header__menu-links.bubble.bubble--arrow.bubble--arrow-ne
-        a.header__menu-link(href='#' @click='setShowMenu(false)') Отмена
-        a.header__menu-link(href='#') Я блогер
-        a.header__menu-link(href='#') Найти блогера
-        a.header__menu-link(href='#') Пост в инста
+      productmenu-component(v-if="page == 'product'")
 </template>
 
 <script type='text/babel'>
   import listen from 'event-listener';
+  import ProductmenuComponent from '../productmenu/index.vue'
 
   export default {
+    components: {
+      ProductmenuComponent
+    },
     data(){
       return {
         is_visible: false,
@@ -95,6 +92,10 @@
       avatarUrl:{
         type: String,
         default : null
+      },
+      page:{
+        type: String,
+        default : 'home'
       }
     },
     beforeDestroy() {

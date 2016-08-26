@@ -1,7 +1,9 @@
 <template>
   <div class="buttons">
     <div class="leftSide">
-    <button class="save_btn" @click="like">СОХРАНИТЬ</button>
+    <button class="save_btn" @click="like" :class="{ 'active': isLiked, 'default': !isLiked}">
+    {{text}}
+    </button>
     </div>
     <div class="rightSide">
       <button class="buy_btn" @click="buy">ГДЕ КУПИТЬ</button>
@@ -13,6 +15,11 @@
 
 <script type="text/babel">
   export default {
+    computed: {
+      text(){
+        return (this.isLiked) ? 'СОХРАНИТЬ' : 'СОХРАНИТЬ';
+      }
+    },
     props: {
       isLiked: {
         type: Boolean,

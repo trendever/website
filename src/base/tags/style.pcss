@@ -11,6 +11,7 @@
   reset: inherited;
 }
 
+
 .tags-container {
   display: block;
   position: relative;
@@ -52,6 +53,12 @@
       //height: calc($height__mobile + $height-tag-button);
       margin-top: 2px;
       overflow-y: scroll;
+    }
+  }
+
+  .product_tags{
+    @media(--mobile) {
+      overflow-y: hidden;
     }
   }
 

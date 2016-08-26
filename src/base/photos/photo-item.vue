@@ -12,7 +12,7 @@
   .photo__description
     .photo__title {{ title | truncate '22'}}
     .photo__row
-     .photo__shopTitle Interior and De...
+     .photo__shopTitle {{suppliername | truncate '22'}}
      .photo__summ(v-if="discountPrice")
       | {{ discountPrice | curency_spaces }} 
       i.ic-currency-rub
@@ -95,6 +95,9 @@
           return `${items[0].name} (+${pluralize(items.length-1, '', '%d товар', '%d товара', '%d товаров')})`
         }
         return items[0].name
+      },
+      suppliername(){
+        return this.product.supplier.instagram_username;
       }
     },
 

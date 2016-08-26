@@ -2,9 +2,10 @@
   <div
     v-if="isShow"
     class="tags-container"
-    :class="{'tags-container-open': isOpen || !hiddenContent, 'tags-container-button': hiddenContent && showMoreButton,'product_page': isProduct}"
+    :class="{'tags-container-open': isOpen || !hiddenContent, 'tags-container-button': hiddenContent && showMoreButton}"
   >
     <div class="tags"
+         :class="{'product_tags' : isProduct}"
          v-el:tags
          v-bind:style="tagsStyle">
       <div class="tag"

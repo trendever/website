@@ -41,8 +41,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
       photos-component(
         :filter-by-user-name.sync="userName", 
         :list-id.sync="listId",
-        :filter-by-user-id.sync="user_id",
-        :test-user-profile="testUserProfile")
+        :filter-by-user-id.sync="user_id")
 
   navbar-component(:current='listId')
 
