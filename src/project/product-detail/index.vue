@@ -4,6 +4,7 @@ scroll-component(v-el:scroll-cnt)
     :title='title',
     :back-link='{name: "home"}',
     :center-text-link="centerTextLink",
+    :page="page",
     :avatar-url='avatarUrl')
   .section.main.top
     .section__content
@@ -31,6 +32,10 @@ scroll-component(v-el:scroll-cnt)
         if ( this.getOpenedProduct ) {
           return this.supplierName
         }
+      },
+
+      page(){
+        return "product";
       },
 
       supplier(){

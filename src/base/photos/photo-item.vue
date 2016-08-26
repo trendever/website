@@ -10,12 +10,12 @@
         :class='{"animate": animate}'
       )
   .photo__description
-    .photo__title {{ title | truncate '22'}}
+    .photo__row.photo__title {{ title}}
     .photo__row
-     .photo__shopTitle Interior and De...
      .photo__summ(v-if="discountPrice")
       | {{ discountPrice | curency_spaces }} 
       i.ic-currency-rub
+     .photo__shopTitle {{suppliername}}
 </template>
 
 <script type='text/babel'>
@@ -95,6 +95,9 @@
           return `${items[0].name} (+${pluralize(items.length-1, '', '%d товар', '%d товара', '%d товаров')})`
         }
         return items[0].name
+      },
+      suppliername(){
+        return this.product.supplier.instagram_username;
       }
     },
 
