@@ -10,7 +10,7 @@
         .payment-summ-text Введите сумму к оплате
         .payment-summ-input-wrapper
           i.ic-rouble
-          input(type='text' placeholder='0' v-model="billPrice").payment-summ-input 
+          input(type='text' placeholder='0' v-model="billPrice | rub").payment-summ-input 
           //- span. &#x20bd
 
       .check-card
@@ -21,12 +21,13 @@
               img(src='icons/card_1.png').ic-card_1
             select(v-model="cardNumber" v-if="userCards.length").check-card-select
               option(v-for="card in userCards") {{ card.number }}
-        .check-card-input-wrap
+        .check-card-input-wrap()
           i.ic-card-new
             img(src='icons/card_2.png')
           input(type='text',
-               placeholder='**** **** **** 0000',
+               v-if="!currentCardId",
                v-model="currentCardNumber").check-card-input
+          h1(v-if="currentCardId") **** **** **** {{ currentCardNumber }}
       p.payment-note Деньги будут перечислены#[br]  прямо вам на карту с помощью#[br]  платежного сервиса Payture.ru
 
   .btn-container
@@ -37,7 +38,7 @@
 import * as cardService from 'services/card';
 import channel from 'services/channel/channel';     
 import { getShopId, getLeadId, getId } from 'vuex/getters/chat';
-
+import { setShowMenu } from 'vuex/actions/chat';
 import * as product from 'services/products';
 
 export default{
@@ -47,6 +48,9 @@ export default{
     }
   },
   vuex:{
+    actions: {
+      setShowMenu
+    },
     getters: {
       getShopId,
       getLeadId
@@ -138,6 +142,7 @@ export default{
 
     close(){
       this.setOpen = false;
+      this.setShowMenu(false);
     },
 
     makeOrder(){
@@ -151,6 +156,7 @@ export default{
         alert('Счет выставлен');
         
         this.setOpen = false;
+        this.setShowMenu(false);
 
       });
 
@@ -168,12 +174,25 @@ export default{
       })
     }
   },
+  filters:{
+    rub:{
+      read(val) {
+        return + val + ' ₽';
+      },
+      // view -> model
+      // formats the value when writing to the data.
+      write(val, oldVal) {
+        var number = +val.replace(/[^\d.]/g, '')
+        return isNaN(number) ? 0 : parseFloat(number.toFixed(2))
+      }
+    }
+  },
   watch:{
     cardNumber(val){
       let currentCard = this.userCards.filter(card=>{
         return card.number === val;
       });
-
+      this.setShowMenu(false);
       this.$set('currentCardId',currentCard[0].id);
       this.$set('currentCardNumber',currentCard[0].number);
 

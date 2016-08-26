@@ -13,8 +13,12 @@
       )
       | {{{ getUsername }}}
     .chat-msg-wrap
-      p(@click="pay").chat-msg_order
-        | Счет выставлен
+      p(@click="pay", v-if="getCurrentMember.role === 1;").chat-msg_order
+        | Вам высталвен счет #[br] Кликните чтобы оплатить
+      p(v-else)
+        | Счет выставлен #[br] Ожидайте оплату
+
+
 
 </template>
 
@@ -44,9 +48,6 @@
     },
     methods:{
       pay(){
-/*        if(!isCustomer){
-          return;
-        }*/
         cardService.createPayment({
           id: this.payId,
           lead_id: this.getLeadId
@@ -91,6 +92,7 @@
         }
         return `<b>${this.getShopName}</b> (${this.msg.user.name})`
       },
+
       isCustomer(){
         return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
       },
