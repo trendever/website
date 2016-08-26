@@ -10,12 +10,12 @@
         :class='{"animate": animate}'
       )
   .photo__description
-    .photo__title {{ title | truncate '22'}}
+    .photo__row.photo__title {{ title}}
     .photo__row
-     .photo__shopTitle {{suppliername | truncate '22'}}
      .photo__summ(v-if="discountPrice")
       | {{ discountPrice | curency_spaces }} 
       i.ic-currency-rub
+     .photo__shopTitle {{suppliername}}
 </template>
 
 <script type='text/babel'>
