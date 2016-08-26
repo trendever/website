@@ -70,25 +70,51 @@
       text-align: left;
     }
     &summ {
-      width: 30%;
-      text-align: right;
-      white-space: nowrap;
+      padding-left: 20px;
       float: right;
+      color: #31bebc;
+      font-weight: 200;
+      font-size: 16px;
+      word-spacing: -3px;
+      @media(--mobile) {
+        font-size: 28px;
+        word-spacing: -6px;
+      }
+      span{
+        font-weight: 100;
+      }
       i{
         margin-left: 5px;
+        font-weight: lighter;
+        line-height: 18px;
+        margin-left: 3px;
+        @media(--mobile) {
+          line-height: 33px;
+        }
       }
     }
     &title {
-      display: -webkit-inline-box;
-      width: 70%;
-      float: left;
-      padding-right: 5px;
-      text-overflow: ellipsis;
       line-height: 21px;
+      font-size: 16px;
+      color: rgb(128, 128, 128);
+      @media(--mobile) {
+        height: 26px;
+        font-size: 28px;
+      }
+    }
+    &row{
       overflow: hidden;
-      word-wrap: break-word;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    &shopTitle{
+      display: inline;
+      padding-right: 5px;
+      color: #ccc;
+      font-size: 16px;
+      @media(--mobile) {
+        font-size: 28px;
+      }
     }
   }
 }

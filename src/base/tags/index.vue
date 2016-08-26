@@ -5,6 +5,7 @@
     :class="{'tags-container-open': isOpen || !hiddenContent, 'tags-container-button': hiddenContent && showMoreButton}"
   >
     <div class="tags"
+         :class="{'product_tags' : isProduct}"
          v-el:tags
          v-bind:style="tagsStyle">
       <div class="tag"
@@ -98,6 +99,10 @@
         default: false
       },
       isPending: {
+        type: Boolean,
+        default: false
+      },
+      isProduct:{
         type: Boolean,
         default: false
       }

@@ -11,6 +11,7 @@
   reset: inherited;
 }
 
+
 .tags-container {
   display: block;
   position: relative;
@@ -31,8 +32,8 @@
         margin-left: 20px;
         @media(--mobile) {
           margin-left: 0px;
-          height: 350px !important;
-          max-height: 410 !important;
+          height: 340px !important;
+          max-height: 410px !important;
         }
       }
     }
@@ -44,11 +45,20 @@
     float: left;
     margin-left: 20px;
     overflow: hidden;
-    height: 135px !important;
+    //height: 135px !important;
 
     @media(--mobile) {
       margin-left: 0px;
-      height: 205px !important;
+      height: 223px !important;
+      //height: calc($height__mobile + $height-tag-button);
+      margin-top: 2px;
+      overflow-y: scroll;
+    }
+  }
+
+  .product_tags{
+    @media(--mobile) {
+      overflow-y: hidden;
     }
   }
 
@@ -61,7 +71,7 @@
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
-    height: 34px;
+    height: 32px;
     padding-right: 19px;
     padding-left: 20px;
     &:hover {
@@ -74,7 +84,7 @@
       }
     }
     @media(--mobile) {
-      height: 58px;
+      height: 63px;
       margin-left: 1px;
       padding-right: 25px;
       margin-right: 12px !important;
@@ -88,15 +98,16 @@
         font-family: $font__family;
         height: 34px;
         line-height: 29px;
-        font-size: 28px;
+        font-size: 22px;
         cursor: pointer;
         padding-right: 5px;
+        text-transform: uppercase;
+        padding-top: 2px;
         @media(--mobile) {
           font-size: 28px;  
           height: 43px;
           line-height: 36px;
-          text-transform: uppercase;
-          padding-top: 10px;
+          padding-top: 14px;
         }
       }
       .close {
@@ -119,15 +130,16 @@
     color: $color__green;
     height: 34px;
     line-height: 29px;
-    font-size: 28px;
+    font-size: 22px;
     cursor: pointer;
     padding-right: 5px;
+    text-transform: uppercase;
+    padding-top: 2px;
     @media(--mobile) {
       font-size: 28px;
       height: 43px;
       line-height: 36px;
-      text-transform: uppercase;
-      padding-top: 10px;
+      padding-top: 14px;
     }
 
   }
@@ -175,4 +187,14 @@
     height: 100%;
     left: 20px;
 
+  }
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
   }

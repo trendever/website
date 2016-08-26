@@ -5,7 +5,7 @@
       .header__arrow(@click='leftBtnAction' v-if='leftBtnShow')
         i.header__arrow__ic.ic-arrow-left(
         :class='{"_up": is_action_up}')
-      //- a(href="#").header_settings_btn
+       //a(href="#").header_settings_btn
       .header__notify-count(v-if='notifyCount')
         span {{ notifyCount }}
 
@@ -17,17 +17,17 @@
       .header-right(v-if="avatarUrl !== null && centerTextLink !== null", v-link="centerTextLink")
         img(:src="avatarUrl")
 
-      //- .header__menu
-      //- .header__menu-icon
-      //- .header__menu-links
-      //-   a.header__menu-link(href='#') Настройки
-      //-   a.header__menu-link(href='#') Выйти
+      productmenu-component(v-if="page == 'product'")
 </template>
 
 <script type='text/babel'>
   import listen from 'event-listener';
+  import ProductmenuComponent from '../productmenu/index.vue'
 
   export default {
+    components: {
+      ProductmenuComponent
+    },
     data(){
       return {
         is_visible: false,
@@ -92,6 +92,10 @@
       avatarUrl:{
         type: String,
         default : null
+      },
+      page:{
+        type: String,
+        default : 'home'
       }
     },
     beforeDestroy() {

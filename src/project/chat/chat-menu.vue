@@ -3,10 +3,10 @@
 div
   menu-component(v-if='getShowMenu && !getShowStatusMenu')
     div(slot='items')
-      //-.menu_i
-        .menu_i_t Отправить условия доставки
-      //-.menu_i
-        .menu_i_t Отправить условия оплаты
+      .menu_i(v-if='false')
+        .menu_i_t Перечислить деньги
+      .menu_i(v-if='false')
+        .menu_i_t Выставить счет
 
       .menu_i(v-if='canCallCustomer', @click='callCustomer()')
         .menu_i_t Позвать покупателя в чат
@@ -22,7 +22,9 @@ div
 
       label(class='menu_i menu_i-send-file') Отправить фото
         input(type='file', hidden, @change='selectedFile')
-
+      
+      .menu_i(v-if='false')
+        .menu_i_t Добавить шаблон
       .menu_i(@click='setShowMenu(false)')
         .menu_i_t.__txt-green Отмена
 

@@ -298,9 +298,10 @@
 
           if ( this.getOpenedProduct.instagram_images ) {
 
+            console.log(this.getOpenedProduct.instagram_images);
             const picture = this.getOpenedProduct.instagram_images.find( ( item ) => {
 
-              return item.name === 'M_square'
+              return item.name === 'Max'
 
             } )
 
