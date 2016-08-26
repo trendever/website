@@ -5,9 +5,9 @@
   ._bullet
  .header__menu-links.bubble.bubble--arrow.bubble--arrow-ne(v-if="menuOpened")
   a.header__menu-link(@click="menuOpened=false") Отмена
-  a.header__menu-link(@click="buyPromoProduct") Я блогер
+  //a.header__menu-link(@click="buyPromoProduct") Я блогер
   //a.header__menu-link(href='#') Найти блогера
-  a.header__menu-link(v-link='{name:"product_repost", params: {id: productId}}') Пост в instagram
+  a.header__menu-link(v-link='{name:"product_repost", params: {id: productId}}') Пост в Instagram
 
 </template>
 
