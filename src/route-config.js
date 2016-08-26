@@ -29,6 +29,11 @@ export function configRouter(router) {
       component: require('project/chat/index.vue'),
     },
 
+    '/chat/:id/payed/:result': {
+      name: 'chatPayed',
+      component: require('project/chat/index.vue'),
+    },
+    
     '/settings/tracking': {
       name: 'settings-tracking',
       component: require('project/settings-tracking/index.vue'),

@@ -186,8 +186,8 @@ export default{
         lead_id: this.getLeadId
       }).then((order)=>{
 
-        alert('Счет выставлен');
-        
+        this.setMessage('Счет выставлен');
+
         this.setOpen = false;
         this.setShowMenu(false);
 
@@ -198,7 +198,7 @@ export default{
       return cardService.deleteCard({
         card_id: cardId 
       }).then(()=>{
-        alert('карта удалена');
+        console.log('карта удалена');
       });
     },
     _getCards(){
