@@ -25,8 +25,9 @@
           i.ic-card-new
             img(src='icons/card_2.png')
           input(type='text',
-               v-if="!currentCardId",
+               v-if="!currentCardId && !errorMessage",
                v-model="currentCardNumber").check-card-input
+          h1(v-if="errorMessage") {{ errorMessage }}
           h1(v-if="currentCardId") **** **** **** {{ currentCardNumber }}
       p.payment-note Деньги будут перечислены#[br]  прямо вам на карту с помощью#[br]  платежного сервиса Payture.ru
 
@@ -58,6 +59,9 @@ export default{
   },
   data(){
     return {
+      //error
+      errorMessage: '',
+      //card logic
       billPrice: '',
       cardNumber: '',
       currentCardNumber: '',
@@ -67,13 +71,16 @@ export default{
   },
   methods: {
     leadOrder(){
+      if(!this.currentCardNumber){
+        this.setMessage('Карта не выбрана')  
+      }
 
       let newCardNumber = null;
 
       //если нету карт
       if(!this.userCards.length && this.currentCardNumber.length === 16){
         newCardNumber = this.currentCardNumber;
-        alert("новая карта: " + this.currentCardNumber);
+        this.setMessage('Новая карта')
       }
 
       //если есть карты проверям является ли карта новой
@@ -81,13 +88,13 @@ export default{
         this.userCards.forEach(card=>{
           if(card.number !== getlastFour(this.currentCardNumber) && this.currentCardNumber.length === 16){
             newCardNumber = this.currentCardNumber;
-            alert("новая карта не из массива: " + this.currentCardNumber);
           }
         });
       }
 
       //если новая карта
-      if(newCardNumber !== null && this.currentCardNumber.length > 4){
+      if(newCardNumber !== null && this.currentCardNumber.length === 16){
+
         //создаем новую карту
         cardService.create({
             card_number: this.currentCardNumber,
@@ -96,8 +103,8 @@ export default{
 
         .then(data=>{
           if(data.success){
-            alert("карта создана");
-            //получаем карты пользователя
+
+            this.setMessage('Создана новая карта');
             return this
               ._getCards()
               .then(cards=>{
@@ -113,33 +120,59 @@ export default{
 
               })
           }
+        //
+        },err=>{
+          console.log(err);
+          this.setMessage('Не валидный RPC')
         })
 
         .then(card=>{
 
+          if(!card) {
+            this.setMessage('Не валидный RPC')
+            return null;
+          }
+
+          this.currentCardNumber = card.number;
           this.currentCardId = card.id;
+          return true;
 
         })
 
-        .then(()=>{
+        .then((action)=>{
+          
+          if(action !== null){
+            
+            this.makeOrder();
 
-          this.makeOrder();
-
+          }
         });
 
       } else {
 
+
+        if(newCardNumber === null && !this.currentCardId){
+          this.setMessage('Не валидная карта');
+          return;
+        }
+
         if(!this.currentCardId){
-          alert('Карта не выбрана');
+          this.setMessage('Карта не выбрана');
           return;
         }
 
         this.makeOrder();
 
       }
+    },
+    setMessage(message){
+      this.$set('errorMessage', message);
+
+      setTimeout(()=>{
+        this.$set('errorMessage', '');
+      },3000);
 
     },
-
     close(){
       this.setOpen = false;
       this.setShowMenu(false);
@@ -179,8 +212,6 @@ export default{
       read(val) {
         return + val + ' ₽';
       },
-      // view -> model
-      // formats the value when writing to the data.
       write(val, oldVal) {
         var number = +val.replace(/[^\d.]/g, '')
         return isNaN(number) ? 0 : parseFloat(number.toFixed(2))
