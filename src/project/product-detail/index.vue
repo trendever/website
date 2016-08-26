@@ -29,7 +29,7 @@ scroll-component(v-el:scroll-cnt)
 
       title(){
         if ( this.getOpenedProduct ) {
-          return 'Тренд от ' + this.supplierName
+          return this.supplierName
         }
       },
 

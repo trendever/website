@@ -13,8 +13,15 @@ $count-tags-open: 13;
 }
 
 .__mirror {
-  font-weight: 600;
+  font-weight: bold;
   transform: scaleX(-1);
+  height: 30px;
+  @media(--mobile) {
+    height: 40px;
+  }
+  &:before{
+    font-weight: bold;
+  }
 }
 
 .change-col {

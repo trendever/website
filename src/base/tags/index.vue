@@ -2,7 +2,7 @@
   <div
     v-if="isShow"
     class="tags-container"
-    :class="{'tags-container-open': isOpen || !hiddenContent, 'tags-container-button': hiddenContent && showMoreButton}"
+    :class="{'tags-container-open': isOpen || !hiddenContent, 'tags-container-button': hiddenContent && showMoreButton,'product_page': isProduct}"
   >
     <div class="tags"
          v-el:tags
@@ -98,6 +98,10 @@
         default: false
       },
       isPending: {
+        type: Boolean,
+        default: false
+      },
+      isProduct:{
         type: Boolean,
         default: false
       }

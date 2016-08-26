@@ -10,9 +10,11 @@
         :class='{"animate": animate}'
       )
   .photo__description
-    .photo__title {{ title }}
-    .photo__summ(v-if="discountPrice")
-      | {{ discountPrice | curency_spaces }}
+    .photo__title {{ title | truncate '22'}}
+    .photo__row
+     .photo__shopTitle Interior and De...
+     .photo__summ(v-if="discountPrice")
+      | {{ discountPrice | curency_spaces }} 
       i.ic-currency-rub
 </template>
 

@@ -40,13 +40,13 @@
           <tags
             :tags="tags"
             :add-tag="goToHome"
-            item-height="20px"
             text-font-size="16px"
-            text-line-height="19px"
+            text-line-height="27px"
             max-height="325px"
-            :base-height="50"
+            :base-height="191"
             :margin-right="5"
             :margin-bottom="5"
+            :is-product="true"
           ></tags>
         </div>
       </div>

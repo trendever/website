@@ -3,23 +3,24 @@
 div
   menu-component(v-if='getShowMenu && !getShowStatusMenu')
     div(slot='items')
-      //-.menu_i
-        .menu_i_t Отправить условия доставки
-      //-.menu_i
-        .menu_i_t Отправить условия оплаты
+      .menu_i
+        .menu_i_t Перечислить деньги
+      .menu_i
+        .menu_i_t Выставить счет
 
-      .menu_i(v-if='canCallCustomer', @click='callCustomer()')
-        .menu_i_t Позвать покупателя в чат
+      //.menu_i
+        //.menu_i_t Позвать покупателя в чат
 
-      .menu_i(v-if='canCallSupplier', @click='callSupplier()')
+      .menu_i
         .menu_i_t Позвать магазин в чат
 
-      .menu_i(v-if='isAdmin', @click='setShowStatusMenu(true)')
+      .menu_i
         .menu_i_t Изменить статус заказа
-
       label(class='menu_i menu_i-send-file') Отправить фото
         input(type='file', hidden, @change='selectedFile')
-
+      
+      .menu_i
+        .menu_i_t Добавить шаблон
       .menu_i(@click='setShowMenu(false)')
         .menu_i_t.__txt-green Отмена
 
