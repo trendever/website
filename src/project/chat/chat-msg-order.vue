@@ -13,13 +13,12 @@
       )
       | {{{ getUsername }}}
     .chat-msg-wrap
-      p(@click="pay", v-if="getCurrentMember.role === 1;").chat-msg_order
+      p(@click="pay" v-if="msg.user.user_id !== $store.state.user.myId").chat-msg_order
         | Вам высталвен счет #[br] Кликните чтобы оплатить
       p(v-else)
-        | Счет выставлен #[br] Ожидайте оплату
+        | Ожидайте оплаты счета
 
-
-
+    
 </template>
 
 <script type='text/babel'>
