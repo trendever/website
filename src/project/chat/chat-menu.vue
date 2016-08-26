@@ -81,6 +81,7 @@ div
     methods: {
       openPaymentMenu(){
         this.openPayment = true;
+        this.setShowMenu(false);
       },
       selectedFile( { target } ){
 
