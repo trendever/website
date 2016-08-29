@@ -1,12 +1,12 @@
 <style src='./navbar.pcss'></style>
 <template lang="jade">
 -
-  feed = '/static/img/feed.png'
-  feed_active = '/static/img/feed-active.png'
-  chat = '/static/img/chat.png'
-  chat_active = '/static/img/chat-active.png'
-  profile = '/static/img/profile.png'
-  profile_active = '/static/img/profile-active.png'
+  feed = '/static/img/rss.svg'
+  feed_active = '/static/img/rss_active.svg'
+  chat = '/static/img/chats_inactive.svg'
+  chat_active = '/static/img/chats_active.svg'
+  profile = '/static/img/user_inactive.svg'
+  profile_active = '/static/img/user_active.svg'
 
 .navbar-cnt(v-if='isAuth')
   .navbar.section__content
