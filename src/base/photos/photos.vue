@@ -142,11 +142,19 @@ scroll-top
         this.$set( 'isRunning', true );
 
         this.scrollCnt.scrollTop = scrollTop;
-        //only for filter likes / products
+       
       } ).then(()=>{
-        if(!this.items.length){
-          this.$dispatch('setLikePhotoType');
+        
+        if( this.$route.name === 'user') {
+
+          if( !this.items.length){
+
+            this.run( { filterByMentionerId: this.filterByShopId }, true);
+
+          }
+
         }
+
       })
       
     },
@@ -222,8 +230,7 @@ scroll-top
         if(this.getComeBack){
           force = true;
         }
-        
-        return this.run( { isSearch: search, isTags: tags, filterByShopId, filterByMentionerId }, force );
+        return this.run( { isSearch: search, isTags: tags, filterByShopId/*, filterByMentionerId */}, force );
 
       },
 
