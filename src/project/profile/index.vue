@@ -39,9 +39,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
       
       photos-component(
-        :filter-by-user-name.sync="userName", 
+        :filter-by-shop-id.sync="userID", 
         :list-id.sync="listId",
-        :filter-by-user-id.sync="user_id")
+        :filter-by-mentioner-id.sync="userID")
 
   navbar-component(:current='listId')
 

@@ -84,10 +84,10 @@ scroll-top
         type: Boolean,
         default: false
       },
-      filterByUserName: {
+      filterByShopId: {
         default: null
       },
-      filterByUserId: {
+      filterByMentionerId: {
         default: null
       },
       listId: {
@@ -200,13 +200,13 @@ scroll-top
 
         if ( this.rowHeight > 0 && this.isRunning ) {
 
-          const { search, tags, filterByUserName, filterByUserId } = this;
+          const { search, tags, filterByShopId, filterByMentionerId } = this;
 
           this.updateScroll( {
             scrollTop: this.scrollTop,
             rowHeight: this.rowHeight,
             scrollTopReal: this.scrollCnt.scrollTop,
-            searchOptions: { isSearch: search, isTags: tags, filterByUserName, filterByUserId }
+            searchOptions: { isSearch: search, isTags: tags, filterByShopId, filterByMentionerId }
           } );
 
         }
@@ -215,9 +215,9 @@ scroll-top
 
       _run( force = false ) {
 
-        const { search, tags, filterByUserName, filterByUserId } = this;
+        const { search, tags, filterByShopId, filterByMentionerId } = this;
 
-        return this.run( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force );
+        return this.run( { isSearch: search, isTags: tags, filterByShopId, filterByMentionerId }, force );
 
       },
 
@@ -330,12 +330,12 @@ scroll-top
     },
 
     watch: {
-      filterByUserId(){
+      filterByMentionerId(){
         //для работы фильтров
         this.setListId( this.listId + '_secondary' );
         this._run(true);
       },
-      filterByUserName(){
+      filterByShopId(){
         this._run(true);
       },
       getColumnCount(){

@@ -48,7 +48,7 @@
         </span>
 
       </div>
-      <photos :list-id="listId" :filter-by-user-name="supplierName"></photos>
+      <photos :list-id="listId" :filter-by-shop-id="supplier.id"></photos>
       <navbar></navbar>
     </div>
   </div>
