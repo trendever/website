@@ -46,7 +46,11 @@ input(type="hidden", value="", id="get-user-login")
         setToken(token,type).then(data => console.log(data));
       },
       window.authIsDone = function(){
-        return self.authIsDone;
+        if (self.$store.state.user.token != null){
+          return true;
+        }else{
+          return false;
+        }
       }
     },  
     ready() {
