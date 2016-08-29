@@ -31,6 +31,7 @@ scroll-top
 
   import { clearSearch } from 'vuex/actions/search.js';
   import { searchValue, tags, selectedTagsId } from 'vuex/getters/search.js';
+  import { getComeBack } from 'vuex/getters/products';
 
   import {
     run,
@@ -53,6 +54,7 @@ scroll-top
     vuex: {
 
       getters: {
+        getComeBack,
         items:getProducts,
         hasMore,
         isLoading,
@@ -216,6 +218,11 @@ scroll-top
       _run( force = false ) {
 
         const { search, tags, filterByUserName, filterByUserId } = this;
+
+        //fix для возврата по тегу после product-detail
+        if(this.getComeBack){
+          force = true;
+        }
 
         return this.run( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force );
 
