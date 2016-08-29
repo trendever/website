@@ -4,6 +4,8 @@
 */CACHE/*
 media/*
 
+npm-debug.log.*
+
 *.sublime-workspace
 
 # Temp database and dumps

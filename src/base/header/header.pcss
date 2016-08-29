@@ -13,7 +13,7 @@
 
     text-align: center;
 
-    background-color: #399;
+    background-color: #31bebc;
 
     justify-content: space-between;
 
@@ -23,7 +23,26 @@
       height: 102px;
     }
   }
+  &_settings_btn{
+    position: absolute;
+    top: 0px;
+    right: 25px;
+    background-image: url('icons/cogwheel.png');
+    background-repeat: no-repeat;
+    background-size: 55px;
+    width: 65px;
+    height: 65px;
+    @media(--mobile) {
+      background-size: 65px;
+      width: 65px;
+      height: 65px;
+      top: 20px;
+      right: 25px;
+    }
+  } 
   &__arrow {
+    /* display: none !important; */
+
     position: absolute 0 * 0 0;
 
     display: flex;
@@ -101,11 +120,12 @@
 
   &-right {
     position: absolute;
-    right: 30px;
+    right: 261px;
     top: 5px;
 
     @media(--mobile) {
       top: 16px;
+      right: 109px;
     }
 
     img {
@@ -140,7 +160,7 @@
 
     @media(--mobile) {
       //padding-top: 0.2125em; // 10% for centered
-      font-size: 2.125em;
+      font-size: 40px;
       line-height: 100px;
       height: 100px;
       max-width: calc(100% - 270px);
@@ -171,69 +191,9 @@
       }
     }
   }
-  &__ {
-    &menu {
-      &- {
-        &icon {
-          position: absolute 0 0 0 *;
-
-          display: flex;
-
-          padding: 0 20px;
-
-          cursor: pointer;
-
-          align-items: center;
-          &:before {
-            display: block;
-
-            padding: 5px 0;
-
-            content: '';
-
-            border-top: 4px solid white;
-            border-bottom: 4px solid white;
-            background: white;
-            background-clip: content-box;
-
-            size: 30px 4px;
-          }
-        }
-        &links:hover,
-        &icon:hover + &links {
-          display: block;
-        }
-        &links {
-          position: absolute 100% 0 * *;
-
-          display: none;
-        }
-        &link {
-          display: block;
-
-          box-sizing: border-box;
-          width: 250px;
-          padding: 0 30px;
-
-          text-align: right;
-          text-decoration: none;
-
-          color: white;
-
-          font-size: 31px;
-          line-height: 100px;
-
-          &:first-child {
-            background: color(black a(.75));
-          }
-          &:last-child {
-            background: color(black a(.5));
-          }
-        }
-      }
-    }
-  }
 }
+
+
 
 .header {
 
@@ -247,26 +207,39 @@
       margin-right: auto;
     }
 
-     a {
+    &.left {
+      margin-left: 25px;
+    }
+
+    a {
       display:block;
       width: 150px;
       height:32.14px;
 
-       @media(--mobile) {
-         width: 290px;
-       }
+      @media(--mobile) {
+       width: 290px;
      }
+   }
 
-    img{
-      width: 100%;
-    }
-    @media(--mobile) {
-      margin: 18px auto 7px auto;
-    }
+   img{
+    width: 100%;
   }
+  @media(--mobile) {
+    margin: 18px auto 7px auto;
+  }
+}
 }
 
 .header__content {
+  
+  max-width: none !important;
+
+  &.u-fixed{
+    width: 100%;
+    z-index: 100;
+    max-width: 1050px;
+  }
+
   @media(--mobile) {
     height:100px;
   }

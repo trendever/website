@@ -1,0 +1,144 @@
+@import 'base/vars/vars.pcss';
+.subscribe {
+	background: #12302d url('subscribe-bg.png') no-repeat;
+	height: 100%;
+	background-size: 50%;
+	background-position: right 100px;
+	color: #fff;
+	overflow: auto;
+	@media(--mobile) {
+		background-position: center 60px;
+		background-size: 85%;
+	}
+
+
+	::-webkit-input-placeholder {color:#fff;opacity:.2;}
+	::-moz-placeholder          {color:#fff;opacity:.2;}
+	:-moz-placeholder           {color:#fff;opacity:.2;}
+	:-ms-input-placeholder      {color:#fff;opacity:.2;}
+
+	:focus::-webkit-input-placeholder {color:transparent;}
+	:focus::-moz-placeholder          {color:transparent;}
+	:focus:-moz-placeholder           {color:transparent;}
+	:focus:-ms-input-placeholder
+
+
+
+	&-close .ic-close {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+		color: #fff;
+	}
+
+	&-ic-mail img{
+		width: 30px;
+
+		@media(--mobile) {
+			width: 50px;
+			margin-right: 15px;
+		}
+	}
+	&-mail-link{
+		color: #ffdd1f;
+		font-size: 24px;
+	}
+	&-wrapper{
+		padding-top: 100px;
+		padding-left: 60px;
+		width: 45%;
+
+		@media(--mobile) {
+			width: 100%;
+			margin-top: 430px;
+			padding: 40px;
+		}
+	}
+
+	&-head{
+		font-size: 40px;
+		padding-bottom: 30px;
+
+		@media(--mobile) {
+			text-align: center;
+		}
+	}
+	&-note{
+		font-size: 24px;
+	}
+	&-input-wrapper{
+		margin-top: 50px;
+		@media(--mobile) {
+			margin-top: 30px;
+		}
+	}
+	&-input{
+		background: transparent;
+		border:none;
+		border-radius: 0;
+		width:300px;
+		margin-left: 10px;
+		color:#fff;
+		font-size:24px;
+		border-bottom: 1px solid #fff;
+		margin-bottom: 20px;
+		padding-bottom: 10px;
+
+		&:focus {
+			outline:none;
+		}
+		@media(--mobile) {
+			width: 80%;
+			font-size: 40px;
+		}
+	}
+	&-not-now{
+		text-decoration: underline;
+		color: #fff;
+		opacity: .2;
+		text-align: center;
+		display: block;
+		width: 420px;
+
+		&:hover{
+			opacity: 1;
+			cursor: pointer;
+		}
+
+		@media(--mobile) {
+			width: 99%;
+			font-size: 30px;
+			position: fixed;
+			bottom: 135px;
+			left: 0;
+			padding-bottom: 20px;
+			padding-top: 20px;
+		}
+		@media(--tablet) {
+			width: 99%;
+			font-size: 30px;
+			position: fixed;
+			bottom: 135px;
+			left: 0;
+			padding-bottom: 20px;
+			padding-top: 20px;
+		}
+	}
+}
+
+
+.subscribe-close {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	color: #fff;
+
+	&:hover{
+		color: #ccc;
+	}
+	@media(--mobile) {
+		right: 20px;
+		top: 20px;
+		font-size: 40px;
+	}
+}

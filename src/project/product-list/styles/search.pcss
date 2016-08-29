@@ -13,8 +13,15 @@ $count-tags-open: 13;
 }
 
 .__mirror {
-  font-weight: 600;
+  font-weight: bold;
   transform: scaleX(-1);
+  height: 30px;
+  @media(--mobile) {
+    height: 40px;
+  }
+  &:before{
+    font-weight: bold;
+  }
 }
 
 .change-col {
@@ -92,7 +99,7 @@ $count-tags-open: 13;
   @media (--mobile) {
     width: 46px;
     height: 46px;
-    left: -105px;
+    left: -60px;
     top: 28px;
     font-size: 28px;
     line-height: 46px;
@@ -106,7 +113,7 @@ $count-tags-open: 13;
 
   @media (max-width: 750px) {
     height: calc($height__mobile + 155px + $height-tag-button);
-    margin-bottom: 33px;
+    margin-bottom: 50px;
   }
 }
 
@@ -146,10 +153,13 @@ $count-tags-open: 13;
 
   &.glued {
     position: fixed;
-    top: -2px;
+    top: 0px;
     z-index: 100;
     max-width: 1050px;
     width: 100%;
+    //fix flickering sticky issue
+    //http://stackoverflow.com/questions/18185736/prevent-fixed-position-element-from-flickering-during-jquery-animation
+    transform: translateZ(0);
 
     background-color: white;
     @media (--mobile) {
@@ -164,22 +174,24 @@ $count-tags-open: 13;
     text-align: center;
 
     &.__focused, &.__active {
-      display: table;
+
+      .change-col{
+        display: none;
+      }
 
       & .search-input__input {
-        width: 100%;
-        display: table-cell;
         outline: none;
-        border-bottom: 1px solid transparent;
+
+        & .change-col{
+          display: none;
+        }
 
         @media (--mobile) {
           /* HACK: Не знаю почему, но рамка пропадает без этого */
           border-bottom: 5px solid transparent;
         }
       }
-      & .search-input__clear-btn,
-      & .search-input__search-btn {
-        display: table-cell;
+      & .search-input__clear-btn {
         width: 100px;
 
       }
@@ -192,15 +204,14 @@ $count-tags-open: 13;
     display: inline-block;
     box-sizing: border-box;
     padding: 0;
-    //width: 326px;
-    width: 231px;
+    width: 400px;
     height: 100%;
     border: none;
     color: $color__gray-dark;
     font-weight: 400;
     font-size: 25px;
     font-family: $font__family;
-
+    
     @media (--mobile) {
       margin-top: 3.6px;
       width: 100%;
@@ -221,14 +232,14 @@ $count-tags-open: 13;
     line-height: $height__desktop;
 
     .close {
-      margin-left: -57px;
+      margin-left: -30px;
       position: relative;
       top: -4px;
       font-size: 23px;
       z-index: 99999;
       cursor: pointer;
       @media (--mobile) {
-        margin-left: -137px;
+        //margin-left: -137px;
         font-size: 40px;
       }
     }
@@ -247,6 +258,7 @@ $count-tags-open: 13;
   }
   &__search-btn {
     padding: 0 30px;
+    color: #31bebc;
   }
   &__clear-btn {
     position: absolute;
@@ -381,12 +393,20 @@ $count-tags-open: 13;
       }
     }
   }
-}*/
+  }*/
 
-.tags-wrapper {
-  display: inline-block;
-  width: calc(100% + 20px);
-  margin-left: -20px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
+  .tags-wrapper {
+    display: inline-block;
+    width: calc(100% + 20px);
+    margin-left: -20px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+
+    @media(--mobile) {
+      width: 98%;
+      margin-left: 15px;
+    }
+  }
+  .tags-wrapper .tag{
+    border-radius: 5px;
+  }

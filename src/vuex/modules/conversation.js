@@ -31,7 +31,7 @@ const state = {
   done: false,
   showMenu: false,
   showStatusMenu: false,
-  lengthList: 12,
+  lengthList: 50,
   imgPopUpUrl: false,
   imgWidth: 0,
   imgHeight: 0
@@ -88,7 +88,9 @@ const addServiceMessage = (function() {
         MIME === 'text/json' ||
         MIME === 'image/json' ||
         MIME === 'json/status' ||
-        MIME === 'image/base64'
+        MIME === 'text/html' ||
+        MIME === 'image/base64' ||
+        MIME === 'json/order'
       ) {
 
         if ( MIME !== 'json/status' ) {
@@ -98,7 +100,7 @@ const addServiceMessage = (function() {
             messages[ i ].closestMessage = true;
 
           } else {
-
+  
             lastUserId                   = messages[ i ].user.user_id;
             messages[ i ].closestMessage = false;
 
@@ -173,7 +175,7 @@ const addServiceMessage = (function() {
 // mutations
 const mutations = {
 
-  [CONVERSATION_SET] ( state, id, messages = null, lengthList = 20 ) {
+  [CONVERSATION_SET] ( state, id, messages = null, lengthList = 50 ) {
 
     if ( !state.all.hasOwnProperty( id ) ) {
       state.all[ id ]     = [];
@@ -222,13 +224,18 @@ const mutations = {
     const { all } = state;
 
     if ( all.hasOwnProperty( id ) ) {
-
+      
       for ( let i = all[ id ].length; i; i-- ) {
         if ( all[ id ][ i - 1 ].id === messages[ 0 ].id ) {
           return;
         }
       }
 
+      //fix double messages
+      if(messages[ 0 ].created_at === null){
+        return;
+      }
+      
       state.all = Object.assign( {}, all, { [id]: addServiceMessage( all[ id ].concat( messages ) ) } );
 
     } else {
@@ -291,8 +298,8 @@ const mutations = {
         for ( let i = items.length; i; i-- ) {
 
           const message = items[ i - 1 ];
-
-          if ( message.parts[ 0 ].mime_type === 'json/status' && message.dirty ) {
+                                                                //fast fix double status msg
+          if ( message.parts[ 0 ].mime_type === 'json/status' /*&& message.dirty*/ ) {
 
             if ( JSON.parse( message.parts[ 0 ].content ).value === JSON.parse( messages[ 0 ].parts[ 0 ].content ).value ) {
 

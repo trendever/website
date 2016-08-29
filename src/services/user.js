@@ -63,3 +63,15 @@ export function get({ user_id, instagram_name }) {
 
   });
 }
+
+export function setEmail(email){
+
+  return new Promise((resolve, reject)=>{
+    channel.req('set_email','user',{email})
+    .then( data => {
+      resolve(data.response_map.status);
+    }).catch( error => {
+      reject({ code: ERROR_CODES.NOT_FOUND, response: error });
+    });
+  })
+}

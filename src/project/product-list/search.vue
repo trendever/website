@@ -16,7 +16,7 @@
           @focus='onFocusInput',
           @blur='onBlurInput',
           type='text',
-          placeholder='Поиск текстом...'
+          placeholder='Ищи текстом или жми теги...'
         )
 
         .search-input__clear-btn
@@ -61,6 +61,7 @@
   import { isAuth } from 'vuex/getters/user.js';
   import { setColumnNumber } from 'vuex/actions/products';
   import { getColumnCount } from 'vuex/getters/products';
+  
 
   export default {
     components: {
@@ -151,13 +152,14 @@
       clear(){
         this.clearSearch();
         this.scrollCnt.scrollTop = 0;
+        this.$set('isOpenTags', false);
       },
 
       search() {
         this.setSearchValue( this.$els.input.value );
-      },
+      }, 
       onFocusInput() {
-        this.$set('isOpenTags', false)
+        this.$set('isOpenTags', true)
         this.inputFocused = true;
       },
       onBlurInput() {

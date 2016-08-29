@@ -6,14 +6,14 @@
     iframe(v-if='isMobile',
       v-el:iframe-video-mobile,
       v-bind:style="{ height: width, width: width }",
-      src="https://www.youtube.com/embed/IldZHx-naRA?autoplay=0&rel=1&vq=hd720",
+      src="https://www.youtube.com/embed/IldZHx-naRA?autoplay=0&rel=1&vq=hd720&amp;showinfo=0",
       frameborder="0",
       allowfullscreen)
 
     iframe(v-if='!isMobile',
       v-el:iframe-video,
       v-bind:style="{ height: height, width: width }",
-      src="https://www.youtube.com/embed/QPSw5RKJw3s?autoplay=0&rel=1",
+      src="https://www.youtube.com/embed/QPSw5RKJw3s?autoplay=0&rel=1&amp;showinfo=0",
       frameborder="0",
       allowfullscreen)
 

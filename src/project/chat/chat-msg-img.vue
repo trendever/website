@@ -5,7 +5,7 @@
   span(class='bubble_info bubble_info_time') {{ datetime }}
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
     i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
-  .chat-msg.bubble(
+  .chat-msg.bubble.bubble-img(
     :class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest && !isAfterServiceMessage}')
     .chat-msg_t(
         v-link='{name: "user", params: {id: getUserNameLink}}',
@@ -54,6 +54,7 @@
 
     data(){
       return {
+        showLargeImg: false,
         imgStyle:{
           width: `600px`,
           height: `600px`
@@ -64,9 +65,20 @@
     methods:{
 
       open(){
-        if ( this.msg.parts[ 0 ].mime_type === 'image/json' ) {
 
-          let {width, height} = JSON.parse( this.msg.parts[ 0 ].content );
+        let msgParts = this.msg.parts[ 0 ];
+
+        if ( msgParts.mime_type === 'image/json') {
+
+          let {width, height} = JSON.parse( msgParts.content );
+
+          this.openPopUp( this.getImg, width, height );
+
+        }
+
+        if (msgParts.mime_type  === 'image/base64')  {
+
+          let {width, height} = msgParts.content;
 
           this.openPopUp( this.getImg, width, height );
 

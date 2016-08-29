@@ -114,105 +114,14 @@ export const loadProducts = (
 
 };
 
-const getRows = ( state ) => {
+const getShift = ( state, scrollTop, rowHeight ) => {
 
-  const columnCount = getColumnCount( state );
-  const products    = getProducts( state );
+  const { lastScrollTop } = getScrollData( state );
 
-  if ( products !== null ) {
-
-    return parseInt( products.length / columnCount )
-
-  }
-
-  return 0;
-
-};
-
-const getRowsByCount = ( state, countElements ) => {
-
-  return parseInt( countElements / getColumnCount( state ) );
-
-};
-
-const getCountItemsByRows = ( state, rowsCount ) => {
-
-  return getColumnCount( state ) * rowsCount;
-
-};
-
-export const initScroll = ( { dispatch, state }, options ) => {
-
-  options.searchData.limit = 27;
-
-  if ( options.searchData.limit > 0 ) {
-
-    return loadProducts( { dispatch, state }, options.searchData, false ).then( () => {
-
-      dispatch( types.PRODUCTS_SET_SCROLL, Object.assign( {}, options, {
-        idEnd: getCountItemsByRows( state, getRows( state ) + 27 )
-      } ) );
-
-    } )
-
-  }
-
-};
-
-const getLocalScrollTop = ( state, scrollTop ) => {
-
-  const { topBlockHeight } = getScrollData( state );
-
-  if ( topBlockHeight >= scrollTop ) {
-
-    return 0;
-
-  }
-
-  return scrollTop - topBlockHeight;
-
-};
-
-const getCurrentRow = ( state, scrollTop, rowHeight ) => {
-
-  return parseInt( scrollTop / rowHeight );
-
-};
-
-const getShift = ( { dispatch, state }, scrollTop, rowHeight ) => {
-
-  const { lastScrollTop, direction, shift } = getScrollData( state );
-
-  const data = {
-    direction,
-    shift
+  return {
+    shift: parseInt( scrollTop / rowHeight ),
+    direction: scrollTop >= lastScrollTop
   };
-
-  data.direction = scrollTop >= lastScrollTop;
-
-  if ( data.direction ) {
-
-    data.shift = getCurrentRow( state, scrollTop, rowHeight );
-
-  }
-
-  if ( !data.direction ) {
-
-    if ( getLocalScrollTop( state, scrollTop ) <= 0 ) {
-
-      data.shift = getCurrentRow( state, scrollTop, rowHeight );
-
-    }
-
-  }
-
-  dispatch( types.PRODUCTS_SET_SCROLL, {
-    lastScrollTop: scrollTop,
-    shift: data.shift,
-    direction: data.direction
-  } );
-
-  return data;
 
 };
 
@@ -228,10 +137,6 @@ const getShift = ( { dispatch, state }, scrollTop, rowHeight ) => {
 
  rowHeight: 0,
 
- topBlockHeight: 0,
-
- bottomBlockHeight: 0,
-
  idStart: 0,
 
  idEnd: ITEMS_PER_PAGE,
@@ -244,39 +149,6 @@ export const resetScrollByListId = ( { dispatch }, listId ) => {
 
 };
 
-const recursivelyLoad = ( { dispatch, state }, count, data ) => {
-
-  let _count = count;
-
-  return new Promise( ( resolve, reject ) => {
-
-    const loading = () => {
-
-      loadProducts( { dispatch, state }, data, false )
-        .then( () => {
-
-          _count--;
-
-          if ( _count > 0 ) {
-
-            loading();
-
-          } else {
-
-            resolve();
-
-          }
-
-        }, reject );
-
-    };
-
-    loading();
-
-  } );
-
-};
-
 export const updateScroll = (() => {
 
   let oldShift = null;
@@ -284,68 +156,60 @@ export const updateScroll = (() => {
   return (
     { dispatch, state },
     {
-      scrollTop = getScrollData( state ).scrollTop,
+      scrollTop = 0,
       rowHeight,
-      scrollTopReal = getScrollData( state ).scrollTopReal,
+      scrollTopReal = getScrollData( state ).scrollTop,
       searchOptions = getScrollData( state ).searchOptions
     }
   ) => {
 
-    const { shift, direction } = getShift( { dispatch, state }, scrollTop, rowHeight );
+    const { shift, direction } = getShift( state, scrollTop, rowHeight );
 
-    dispatch( types.PRODUCTS_SET_SCROLL, { rowHeight, scrollTopReal, scrollTop } );
+    dispatch( types.PRODUCTS_SET_SCROLL, { rowHeight, scrollTop: scrollTopReal, lastScrollTop: scrollTop, shift } );
 
     if ( oldShift !== shift ) {
 
-      oldShift = shift;
-
-      const allEls    = 27;
+      oldShift        = shift;
+      const maxId     = getProducts( state ).length;
       const elsByPage = getCountElementOnPage( state );
 
       const isLoading = getScrollData( state ).isLoading;
 
-      const landingIdStart = shift * getColumnCount( state );
-      const landingIdEnd   = elsByPage + shift * getColumnCount( state );
+      let idEnd   = elsByPage + shift * getColumnCount( state );
+      let idStart = shift * getColumnCount( state ) - elsByPage;
 
-      const idStart = landingIdStart < ( allEls - elsByPage ) ? 0 : landingIdStart - ( allEls - elsByPage );
-      const idEnd   = landingIdEnd < allEls ? allEls : landingIdEnd;
+      idStart = (idStart > 0) ? idStart : 0;
 
-      const bottomBlockHeight = ( getRows( state ) - getRowsByCount( state, idEnd ) ) * rowHeight;
+      if ( maxId - idEnd < 0 ) {
 
-      if ( hasMore( state ) && direction && ( getRows( state ) - shift ) <= 18 ) {
+        idEnd   = maxId;
+        idStart = idEnd - ( elsByPage * 2 );
+        idStart = ( idStart > 0 ) ? idStart : 0
+      }
+
+      if ( hasMore( state ) && direction && ( maxId - idEnd <= 7 ) ) {
 
         if ( !isLoading ) {
 
-          const _searchOptions = Object.assign( {}, searchOptions, { limit: elsByPage } );
+          const _searchOptions = Object.assign( {}, searchOptions, { limit: 9 } );
 
           dispatch( types.PRODUCTS_SET_SCROLL, { isLoading: true } );
 
-          recursivelyLoad( { dispatch, state }, 3, _searchOptions ).then().then( () => {
+          loadProducts( { dispatch, state }, _searchOptions, false ).then().then( () => {
 
             updateScroll( { dispatch, state }, { scrollTop, rowHeight, scrollTopReal, searchOptions: _searchOptions } );
 
-            dispatch( types.PRODUCTS_SET_SCROLL, { isLoading: false } );
+            dispatch( types.PRODUCTS_SET_SCROLL, { isLoading: false, searchOptions: _searchOptions } );
 
           } );
 
         }
 
       }
-      dispatch( types.PRODUCTS_SET_SCROLL, {
-        rowHeight,
-        scrollTopReal,
-        scrollTop,
-        topBlockHeight: getRowsByCount( state, idStart ) * rowHeight,
-        bottomBlockHeight: bottomBlockHeight > 0 ? bottomBlockHeight : 0,
-        landingIdStart,
-        landingIdEnd,
-        idStart,
-        idEnd
-      } );
 
-      const { idStart: _idStart, idEnd:_idEnd } = getScrollData( state );
+      console.log( { idStart, idEnd } );
 
-      console.log( { _idStart, _idEnd } );
+      dispatch( types.PRODUCTS_SET_SCROLL, { idStart, idEnd } )
 
     }
 
@@ -378,76 +242,26 @@ export const run = ( { dispatch, state }, options, force ) => {
 
   if ( items === null || force ) {
 
-    /**
-     * Изначальная загрузка или загрузка с перезаписью.
-     * **/
+    options.limit = getCountElementOnPage( state );
 
-    return new Promise( ( resolve, reject ) => {
+    return loadProducts( { dispatch, state }, options, force )
+      .then( () => {
 
-      let count  = 2;
-      let _force = force;
+        if ( isAnimateShow( state ) ) {
 
-      const loading = () => {
+          setTimeout( () => {
 
-        options.limit = getCountElementOnPage( state );
+            setAnimate( { dispatch, state }, false );
 
-        loadProducts( { dispatch, state }, options, _force )
-          .then( () => {
+          }, 2000 );
 
-            if ( isAnimateShow( state ) ) {
+        }
 
-              setTimeout( () => {
-
-                setAnimate( { dispatch, state }, false );
-
-              }, 2000 );
-
-            }
-
-            _force = false;
-
-            count--;
-
-            if ( count > 0 ) {
-
-              loading();
-
-            } else {
-
-              dispatch( types.PRODUCTS_SET_SCROLL,
-                Object.assign(
-                  {},
-                  options, {
-                    idEnd: getCountItemsByRows( state, 27 ) // 27 - это кол-во строк.
-                  }
-                )
-              );
-
-              resolve( 0 ); // 0 - это scrollTop.
-
-            }
-
-          }, reject );
-
-      };
-
-      loading();
-
-    } );
+      } );
 
   } else {
 
-    /**
-     * Восстановление скролла.
-     * 1) Нужно быстро показать чтонибудь
-     * 2) Нужно добавить много элементов чтобы не мерцать скролл.
-     * */
-
-
-
-    console.log( getScrollData( state ) );
-
-    return Promise.resolve( getScrollData( state ).scrollTopReal );
+    return Promise.resolve( getScrollData( state ).scrollTop );
 
   }
 
@@ -590,57 +404,9 @@ export const openProduct = ( { dispatch, state }, id ) => {
       products.sendError( error, { state, id } );
     } );
 
-  /*  const product = getProduct( state, id );
-
-   return new Promise( ( resolve, reject ) => {
-
-   if ( product !== null ) {
-
-   if ( product.hasOwnProperty( 'liked_by' ) ) {
-
-   dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-   resolve();
-
-   } else {
-
-   /!**
-   * !!! Внимание
-   * Этот дублирущий запрос делается потому что сейчас в объектах ленты нет поля liked_by.
-   * *!/
-
-   products
-   .get( id )
-   .then( ( product ) => {
-   dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-   resolve();
-   } )
-   .catch( ( error ) => {
-   products.sendError( error, { state, id } );
-   reject( error );
-   } );
-
-   }
-
-   } else {
-
-   products
-   .get( id )
-   .then( ( product ) => {
-   dispatch( types.PRODUCTS_SET_OPENED_PRODUCT, product );
-   resolve();
-   } )
-   .catch( ( error ) => {
-   products.sendError( error, { state, id } );
-   reject( error );
-   } );
-
-   }
-
-   } );*/
-
 };
 
-export const setContainerWidth = ( { dispatch, state }, width ) => {
+export const setContainerWidth = ( { dispatch }, width ) => {
 
   dispatch( types.PRODUCTS_SET_CONTAINER_WIDTH, width );
 

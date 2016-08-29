@@ -39,8 +39,8 @@
     &_desc {
       color: $color__gray-dark;
       font-size: 28px;
-      padding: 16px 30px 32px;
-      border-bottom: 1px solid $color__gray-light;
+      padding: 16px 100px 32px;
+      /* border-bottom: 1px solid $color__gray-light; */
       text-align: center;
       word-wrap: break-word;
       &_t {
@@ -53,6 +53,40 @@
         width: 100%;
         margin-top: 8px;
         word-wrap: break-word;
+      }
+    }
+    &_filter {
+      height: 50px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-bottom: 20px;
+      span{
+        font-size: 2rem;
+        label{
+          cursor: pointer;
+          text-transform: uppercase;
+        }
+        input{
+          display: none;
+        }
+        &.seleted {
+          color: $color__green;
+        }
+      }
+    }
+    &-btn{
+      display: none;
+      bottom: 100px !important;
+    }
+    &_settings_btn{
+      position: absolute;
+      z-index: 1000;
+      top: 2px;
+      right: 225px;
+      @media(--mobile) {
+        top: 17px;
+        right: 15px;
       }
     }
   }

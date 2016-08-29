@@ -13,11 +13,20 @@
 
   &_menu-btn {
     display: table-cell;
-    padding: 12px 12px;
+    padding: 12px 30px;
     width:50px;
     height: 50px;
     vertical-align: middle;
     cursor: pointer;
+    background-image: url('../icons/chat-menu-icon.png');
+    background-size: 40px;
+    background-repeat: no-repeat;
+    background-position: 11px;
+    
+    @media(--mobile) {
+      background-size: 55px 55px;
+      background-position: 20px 15px;
+    }
 
     @media(--mobile){
       padding: 25px 30px;
@@ -34,7 +43,7 @@
       }
     }
     &:hover {
-      background: rgba(0, 0, 0, 0.02);
+      //background: rgba(0, 0, 0, 0.02);
     }
   }
   &_input {
@@ -48,6 +57,7 @@
     @media(--mobile){
       margin: 16px 0;
       min-height: 58px;
+      width: 530px;
     }
 
     textarea {
@@ -83,6 +93,7 @@
     height: 50px;
     vertical-align: middle;
     cursor: pointer;
+    padding-left: 27px;
 
     @media(--mobile){
       width: 120px;
@@ -104,4 +115,7 @@
       color: $color__green;
     }
   }
+}
+.ic-menu-light:before{
+  content: '' !important;
 }

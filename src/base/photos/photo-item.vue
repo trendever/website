@@ -10,10 +10,12 @@
         :class='{"animate": animate}'
       )
   .photo__description
-    .photo__title {{ title }}
-    .photo__summ(v-if="discountPrice")
-      {{ discountPrice | curency_spaces }}
+    .photo__row.photo__title {{ title}}
+    .photo__row
+     .photo__summ(v-if="discountPrice")
+      | {{ discountPrice | curency_spaces }} 
       i.ic-currency-rub
+     .photo__shopTitle {{suppliername}}
 </template>
 
 <script type='text/babel'>
@@ -23,7 +25,7 @@
   export default {
     data(){
       return {
-        imageOpacity: 0,
+        imageOpacity: 1,
         error: false,
       };
     },
@@ -56,8 +58,12 @@
     computed: {
       thumb() {
         if (this.product && this.product.instagram_images) {
-          return this.product.instagram_images
-          .find((img) => img.name === "M_square").url
+          if (window.browser.mobile){
+            return this.product.instagram_images.find((img) => img.name === "S_square").url  
+          }else{
+            return this.product.instagram_images.find((img) => img.name === "M_square").url  
+          }
+          
         }
         // return this.product.instagram_image_url
       },
@@ -89,6 +95,9 @@
           return `${items[0].name} (+${pluralize(items.length-1, '', '%d товар', '%d товара', '%d товаров')})`
         }
         return items[0].name
+      },
+      suppliername(){
+        return this.product.supplier.instagram_username;
       }
     },
 

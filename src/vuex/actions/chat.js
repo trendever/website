@@ -58,15 +58,17 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
     /**
      * Запучкает чат.
      * */
+    console.log('Вот это точно сробатывает');
 
     if ( lead.chat ) {
-
+      console.log(lead);
       if ( lead.chat.id ) {
 
         const { chat:{ id:conversation_id } } = lead
 
         if ( Array.isArray( messages ) ) {
-
+          console.log('MESSAGES:');
+          console.log(messages);
           if ( messages.length > 0 ) {
 
             const msg = messages[ messages.length - 1 ]
@@ -82,7 +84,7 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
                 ( customerRole === currentRole ) ||
                 ( ( msg.user ) ? ( msg.user.role === customerRole && currentRole !== customerRole ) : true )
               ) {
-
+                console.log('Обновление сообщений');
                 messageService
                   .update( conversation_id, msg.id )
                   .catch( ( error ) => {
@@ -128,7 +130,7 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
           if ( lead.chat ) {
 
             if ( lead.chat.id ) {
-
+               console.log('Из чатов');
               return messageService
                 .find( lead.chat.id, null, getCountForLoading )
                 .then(
@@ -204,18 +206,21 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
             }
 
           } else {
-
+            console.log('Запускается здесь');
             dispatch( LEAD_RECEIVE, [ lead ], getGroup( state, lead ) )
-
-            if ( Array.isArray( messages ) ) {
-
-              run( messages, lead )
-
-            } else {
-
-              run( null, lead )
-
-            }
+            return messageService
+                .find( lead.chat.id, null, getCountForLoading )
+                .then(
+                  ( messages ) => {
+                    if ( Array.isArray( messages ) ) {
+                      run( messages, lead )
+                    }
+                    resolve()
+                  } )
+                .catch( ( error ) => {
+                  messageService.sendError( error, state )
+                  reject( error, state )
+                } )
 
           }
 

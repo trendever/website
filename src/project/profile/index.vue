@@ -8,20 +8,41 @@ scroll-component(v-if="isDone", class="profile-cnt")
       .profile
         .profile_info
 
-          //- .profile_info_count 1258
-          //-   .profile_info_count_t Подписчики
+          //.profile_info_count 1258
+           //.profile_info_count_t Подписчики
 
           .profile_info_img
             img(:src="getUserPhoto")
 
-          //- .profile_info_count 53
-          //-   .profile_info_count_t Подписки
+          //.profile_info_count 53
+           //.profile_info_count_t Подписки 
 
         .profile_desc
-          .profile_desc_t {{getSlogan}}
-          span(v-if="getUserCaption") {{ getUserCaption }}
+          //.profile_desc_t {{getSlogan}} Слоган Профиля
+          .profile_desc_caption(v-if="getUserCaption") 
+          | {{ getUserCaption }}
 
-      photos-component( :filter-by-user-id.sync="user_id", :filter-by-user-name.sync="userName", :list-id.sync="listId" )
+        .profile_filter(v-if="selfPage && !noLikes && !noProducts")
+          span(v-bind:class="{'seleted': photoType === 'product'}") 
+            input(type="radio" value="product" v-model="photoType" id="filter-products")
+            label(for="filter-products") Мои Товары 
+          span(v-bind:class="{'seleted': photoType === 'like'}")  
+            input(type="radio" value="like" v-model="photoType" id="filter-likes") 
+            label(for="filter-likes") Мои Тренды
+
+        button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscrib//e") ПОДПИСАТЬСЯ
+        
+        //.profile_settings_btn
+        //a(href="#")
+        //img(src="icons/cogwheel.png")
+
+
+      
+      photos-component(
+        :filter-by-user-name.sync="userName", 
+        :list-id.sync="listId",
+        :filter-by-user-id.sync="user_id")
+
   navbar-component(:current='listId')
 
 .help-wrapper(v-if='isFirst')
@@ -42,6 +63,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
   import store from 'vuex/store'
   import { openProfile, closeProfile } from 'vuex/actions/user.js';
   import {
+    userID,
     getUserName,
     getUserPhoto,
     getUserCaption,
@@ -59,7 +81,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
   export default {
     data(){
       return {
-        isFirst: false
+        isFirst: false,
+        photoType: 'product',
+        noLikes: false,
+        noProducts: false
       }
     },
     route: {
@@ -74,6 +99,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     ready(){
+      //check auth
       if ( !this.isAuth ) {
         this.$router.replace( { name: 'signup' } );
       }
@@ -83,12 +109,22 @@ scroll-component(v-if="isDone", class="profile-cnt")
         this.closeProfile();
       }
     },
+    events:{
+      'noLikes'(){
+        this.noLikes = true;
+      },
+      'noProducts'(){
+        this.noProducts = true;
+        this.photoType = 'like';
+      } 
+    },
     vuex: {
       actions: {
         openProfile,
         closeProfile
       },
       getters: {
+        userID,
         isAuth,
         getUserName,
         getUserPhoto,
@@ -99,15 +135,33 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     computed: {
+      isSelfPage(){
+
+        return this.$store.state.user.id === this.$store.state.user.myId;
+
+      },
       user_id(){
-        return this.getPhotoConfig.photoFilter.user_id;
+        //return this.getPhotoConfig.photoFilter.user_id;
+        if (this.photoType === 'like'){
+          return this.userID; 
+        }
+        return null;
       },
       listId(){
-        console.log(this.getPhotoConfig.listId);
+        //console.log(this.getPhotoConfig.listId);
         return this.getPhotoConfig.listId;
       },
       userName(){
+        if (this.photoType !== 'product'){
+           return null;
+        }
         return this.getPhotoConfig.photoFilter.instagram_name;
+      },
+      testUserProfile(){
+        return {
+          instagram_name: this.getPhotoConfig.photoFilter.instagram_name,
+          user_id: this.userID
+        }
       }
     },
     components: {

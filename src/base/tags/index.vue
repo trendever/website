@@ -5,13 +5,14 @@
     :class="{'tags-container-open': isOpen || !hiddenContent, 'tags-container-button': hiddenContent && showMoreButton}"
   >
     <div class="tags"
+         :class="{'product_tags' : isProduct}"
          v-el:tags
          v-bind:style="tagsStyle">
       <div class="tag"
            v-bind:style="tagStyle"
            v-for="tag of tags | filterBy searchString in 'name'"
            :class="{'tag-active': tag.active}"
-           @click.stop="addTag(tag)">
+           @click.stop="addTag(tag), open()">
         <span
           class="text"
           v-bind:style="textStyle">{{tag.name}}</span>
@@ -22,7 +23,7 @@
           v-bind:style="iconStyle"></i>
       </div>
     </div>
-    <div class="button" @click="open" v-if="hiddenContent && showMoreButton"></div>
+    <!-- <div class="button" @click="open" v-if="hiddenContent && showMoreButton"></div> -->
     <div class="pending" v-if="isPending"></div>
   </div>
 </template>
@@ -100,6 +101,10 @@
       isPending: {
         type: Boolean,
         default: false
+      },
+      isProduct:{
+        type: Boolean,
+        default: false
       }
     },
 
@@ -110,7 +115,6 @@
         fullHeight: 0
       }
     },
-
     ready(){
 
       this.onFlex = this.onFlex.bind( this );
@@ -211,8 +215,10 @@
     methods: {
 
       open(){
-        this.$set( 'isOpen', !this.isOpen );
-        this.$els.tags.scrollTop = 0;
+        if(!this.isOpen) {
+          this.$set( 'isOpen', true );
+          this.$els.tags.scrollTop = 0;
+        }
       },
 
       onFlex(){

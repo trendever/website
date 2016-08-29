@@ -3,6 +3,7 @@
     <mobile-layout
       v-if="isSmall"
       :products="products"
+      :supplier-available="supplierAvailable"
       :avatar-url="avatarUrl"
       :code="code"
       :name="mentionedName"
@@ -21,6 +22,7 @@
     <desktop-layout
       v-if="!isSmall"
       :products="products"
+      :supplier-available="supplierAvailable"
       :avatar-url="avatarUrl"
       :code="code"
       :name="mentionedName"
@@ -41,7 +43,7 @@
       <div class="title-wrapper">
 
         <span class="title">
-          <p class="title-not-link">Больше трендов от </p>
+          <p class="title-not-link">Больше от </p>
           <p class="title-link" v-link='{name: "user", params: {id: supplierName}}'>{{supplierName}}</p>
         </span>
 
@@ -232,6 +234,24 @@
 
       },
 
+      supplierAvailable(){
+        if ( this.getOpenedProduct ) {
+
+          if ( this.getOpenedProduct.supplier ) {
+
+            if ( this.getOpenedProduct.supplier.available ) {
+
+              return this.getOpenedProduct.supplier.available
+
+            }
+
+          }
+
+        }
+
+        return null;
+      },
+
       mentioned(){
 
         if ( this.getOpenedProduct ) {
@@ -278,9 +298,10 @@
 
           if ( this.getOpenedProduct.instagram_images ) {
 
+            console.log(this.getOpenedProduct.instagram_images);
             const picture = this.getOpenedProduct.instagram_images.find( ( item ) => {
 
-              return item.name === 'M_square'
+              return item.name === 'Max'
 
             } )
 

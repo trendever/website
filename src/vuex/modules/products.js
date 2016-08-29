@@ -15,13 +15,16 @@ import {
   PRODUCTS_RESET_SCROLL_BY_LIST_ID,
   PRODUCTS_SAVE_SCROLL_BY_PRODUCT
 } from '../mutation-types';
-import { getCountElementOnPage } from 'vuex/getters/products.js'
-const columnCount    = document.body.offsetWidth <= 750 ? 2 : 3;
+
+import { getCountElementOnPage } from 'vuex/getters/products.js';
+
+const columnCount = document.body.offsetWidth <= 750 ? 2 : 3;
+
 const ITEMS_PER_PAGE = getCountElementOnPage( {
   products: {
     columnCount
   }
-} ) * 3;
+} );
 
 // initial state
 const state = {
@@ -32,34 +35,22 @@ const state = {
     //   animateShow: true,
     //   hasMore: true
 
-    // Это нужно для расчёта сдвига.
-
-    //   lastScrollTop: 0,
-    //   direction: true,
-    //   shift: true,
+    //   shift: 0, // Это сдвиг
 
     // Это нужно для запроса данных.
-
     //   isLoading: false,
     //   searchOptions: {},
 
-    // Это нужно для органи зации работа скрола.
-
+    // Это данные о высоте строки, данные о текущем реальном скроле и id начала и конца данных на экране;
     //   scrollTop: 0,
-    //   scrollTopReal: 0,
+    //   lastScrollTop: 0,
     //   rowHeight: 0,
-    //   topBlockHeight: 0,
-    //   bottomBlockHeight: 0,
     //   idStart: 0,
     //   idEnd: 0,
-    //   landingIdStart: 0,
-    //   landingIdEnd: 0,
 
     // },
   },
-  saveScrollByProduct:{
-
-  },
+  saveScrollByProduct: {},
   columnCount,
   listId: null,
   loading: true,
@@ -74,11 +65,9 @@ const state = {
 // mutations
 const mutations = {
 
-  [PRODUCTS_SAVE_SCROLL_BY_PRODUCT] (state, scrollTop, productId){
+  [PRODUCTS_SAVE_SCROLL_BY_PRODUCT] ( state, scrollTop, productId ){
 
-    state.saveScrollByProduct = Object.assign({}, state.saveScrollByProduct, { [ productId ] : scrollTop });
-
-    console.log();
+    state.saveScrollByProduct = Object.assign( {}, state.saveScrollByProduct, { [ productId ]: scrollTop } );
 
   },
 
@@ -102,22 +91,16 @@ const mutations = {
             animateShow: true,
             hasMore: Array.isArray( products ) ? products.length >= ITEMS_PER_PAGE / 3 : false,
 
-            lastScrollTop: 0,
-            direction: true,
-            shift: true,
+            shift: 0,
 
             isLoading: false,
             searchOptions: {},
 
             scrollTop: 0,
-            scrollTopReal: 0,
+            lastScrollTop: 0,
             rowHeight: 0,
-            topBlockHeight: 0,
-            bottomBlockHeight: 0,
             idStart: 0,
-            idEnd: ITEMS_PER_PAGE,
-            landingIdStart: 0,
-            landingIdEnd: ITEMS_PER_PAGE
+            idEnd: ITEMS_PER_PAGE
 
           }
         }
@@ -143,22 +126,16 @@ const mutations = {
             animateShow: true,
             hasMore: (Array.isArray( products )) ? products.length >= ITEMS_PER_PAGE / 3 : false,
 
-            lastScrollTop: 0,
-            direction: true,
-            shift: true,
+            shift: 0,
 
             isLoading: false,
             searchOptions: {},
 
             scrollTop: 0,
-            scrollTopReal: 0,
+            lastScrollTop: 0,
             rowHeight: 0,
-            topBlockHeight: 0,
-            bottomBlockHeight: 0,
             idStart: 0,
-            idEnd: ITEMS_PER_PAGE,
-            landingIdStart: 0,
-            landingIdEnd: ITEMS_PER_PAGE
+            idEnd: ITEMS_PER_PAGE
 
           }
         }
@@ -222,58 +199,6 @@ const mutations = {
 
     }
 
-    /*    if ( state.openedProduct !== null ) {
-
-     if ( state.openedProduct.hasOwnProperty( 'liked_by' ) ) {
-
-     const foundUser = state.openedProduct.liked_by.find( ( { id } ) => {
-
-     return id === user.id;
-
-     } );
-
-     if ( typeof foundUser === 'undefined' ) {
-
-     state.openedProduct = Object.assign(
-     {},
-     state.openedProduct,
-     {
-     liked_by: state.openedProduct.liked_by.concat( [ user ] )
-     }
-     );
-
-     } else {
-
-     if ( !like ) {
-
-     const liked_by = [];
-
-     state.openedProduct.liked_by.forEach( ( userItem ) => {
-
-     if ( userItem.id !== user.id ) {
-     liked_by.push( userItem );
-     }
-
-     } );
-
-     state.openedProduct = Object.assign( {}, state.openedProduct, {
-     liked_by
-     } );
-
-     }
-
-     }
-
-     } else {
-
-     state.openedProduct = Object.assign( {}, state.openedProduct, {
-     liked_by: [ user ]
-     } );
-
-     }
-
-     }*/
-
     if ( state.lists.hasOwnProperty( 'profile' ) ) {
 
       const { products } = state.lists.profile;
@@ -321,21 +246,16 @@ const mutations = {
               animateShow: true,
               hasMore: true,
 
-              lastScrollTop: 0,
-              direction: true,
-              shift: true,
+              shift: 0,
 
               isLoading: false,
               searchOptions: {},
+
               scrollTop: 0,
-              scrollTopReal: 0,
+              lastScrollTop: 0,
               rowHeight: 0,
-              topBlockHeight: 0,
-              bottomBlockHeight: 0,
               idStart: 0,
-              idEnd: ITEMS_PER_PAGE,
-              landingIdStart: 0,
-              landingIdEnd: ITEMS_PER_PAGE
+              idEnd: ITEMS_PER_PAGE
 
             }
           }
@@ -349,27 +269,6 @@ const mutations = {
 
   [PRODUCTS_SET_COLUMN_NUMBER] ( state, columnNumber = 3 ) {
 
-    if ( columnNumber === 3 ) {
-
-      const rowHeight = state.containerWidth / columnNumber;
-
-      for ( let listId in state.lists ) {
-
-        if ( state.lists.hasOwnProperty( listId ) ) {
-
-          const { scrollTop, scrollTopReal, idStart } = state.lists[ state.listId ];
-
-          const newScrollTop     = parseInt( idStart / columnNumber ) * rowHeight;
-          const newScrollTopReal = newScrollTop + (scrollTopReal - scrollTop);
-
-          state.lists[ listId ].scrollTop     = newScrollTop;
-          state.lists[ listId ].scrollTopReal = newScrollTopReal;
-
-        }
-
-      }
-
-    }
     state.columnCount = columnNumber;
 
   },
@@ -402,14 +301,10 @@ const mutations = {
         searchOptions: {},
 
         scrollTop: 0,
-        scrollTopReal: 0,
+        lastScrollTop: 0,
         rowHeight: 0,
-        topBlockHeight: 0,
-        bottomBlockHeight: 0,
         idStart: 0,
-        idEnd: ITEMS_PER_PAGE,
-        landingIdStart: 0,
-        landingIdEnd: ITEMS_PER_PAGE
+        idEnd: ITEMS_PER_PAGE
 
       } )
 

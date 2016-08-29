@@ -1,14 +1,12 @@
 <style src='./styles/photos.pcss'></style>
 <template lang="jade">
 .photos(v-bind:style="styleObject", v-el:container)
-  .photos__list(v-el:photos-list, v-if='items')
+  .photos__list(v-el:photos-list, v-if='items', v-bind:style="listStyle")
 
-    .top-block-height(v-bind:style="{ height: topHeight }", v-show="this.getScrollData.topBlockHeight > 0")
-
-    template(v-for='item in items | list' track-by="id")
-      photo-item( :product.once='item', :animate='isAnimateShow' )
-
-    .bottom-block-height(v-bind:style="{ height: bottomHeight }", v-show="this.getScrollData.bottomBlockHeight > 0")
+    template(v-for='line in items | lines' track-by="uid")
+      .photos__list__cell(v-bind:style="top[$index]")
+        template(v-for='item in line.bundle' track-by="id")
+          photo-item( :product.once='item', :animate='true' )
 
   .photos__more-wrap(v-if='hasMore')
     .photos__more( :class='{"_active": isLoading}' )
@@ -34,7 +32,13 @@ scroll-top
   import { clearSearch } from 'vuex/actions/search.js';
   import { searchValue, tags, selectedTagsId } from 'vuex/getters/search.js';
 
-  import { run, setListId, initScroll, updateScroll, closeProducts, setContainerWidth } from 'vuex/actions/products';
+  import {
+    run,
+    setListId,
+    updateScroll,
+    closeProducts,
+    setContainerWidth
+  } from 'vuex/actions/products';
 
   import {
     getProducts,
@@ -46,11 +50,10 @@ scroll-top
   } from 'vuex/getters/products';
 
   export default {
-
     vuex: {
 
       getters: {
-        items: getProducts,
+        items:getProducts,
         hasMore,
         isLoading,
         isAnimateShow,
@@ -64,7 +67,6 @@ scroll-top
       actions: {
         run,
         setListId,
-        initScroll,
         updateScroll,
         clearSearch,
         closeProducts,
@@ -103,6 +105,10 @@ scroll-top
         styleObject: {
           pointerEvents: 'auto'
         },
+        listStyle: {
+          height: '100px',
+          maxHeight: '100px'
+        },
         lastSelectedTagId: null,
         isRunning: false
       }
@@ -122,7 +128,7 @@ scroll-top
 
         this.setContainerWidth( this.$els.container.offsetWidth );
 
-        this._updateRowHeight();
+        this._setScroll();
 
       } );
 
@@ -134,9 +140,13 @@ scroll-top
         this.$set( 'isRunning', true );
 
         this.scrollCnt.scrollTop = scrollTop;
-
-      } );
-
+        //only for filter likes / products
+      } ).then(()=>{
+        if(!this.items.length){
+          this.$dispatch('setLikePhotoType');
+        }
+      })
+      
     },
 
     beforeDestroy() {
@@ -151,16 +161,36 @@ scroll-top
 
       this.closeProducts();
 
-      this.$set('isRunning', false);
+      this.$set( 'isRunning', false );
+
+      //убираем баг подвисания загрузки "ЕЩЕ";
+      this.$store.state.products.listId = '';
 
     },
 
     filters: {
-      list( value ){
+      lines( value ) {
 
         const { idStart, idEnd } = this.getScrollData;
 
-        return value.slice( idStart, idEnd );
+        const _lines = [];
+
+        const items  = value.slice( idStart, idEnd );
+
+        let interateCout = Math.ceil(items.length / this.getColumnCount);  
+
+        for(let i = 0; i < interateCout; i++ ){
+
+          let bundle = items.splice(0,this.getColumnCount);
+          //нужен id для того чтобы изображения постоянно показывались а не появлялись из ничего
+          //каждый раз при скролле
+          let bundleId = bundle[0].id;
+
+          _lines.push({uid: bundleId, bundle: bundle});
+
+        }
+
+        return _lines;
       }
     },
 
@@ -177,18 +207,6 @@ scroll-top
             rowHeight: this.rowHeight,
             scrollTopReal: this.scrollCnt.scrollTop,
             searchOptions: { isSearch: search, isTags: tags, filterByUserName, filterByUserId }
-          } );
-
-        }
-
-      },
-
-      _updateRowHeight() {
-
-        if( this.isRunning ){
-
-          this.updateScroll( {
-            rowHeight: this.rowHeight
           } );
 
         }
@@ -243,26 +261,11 @@ scroll-top
 
         })() );
 
-      }
+      },
 
     },
 
     computed: {
-
-      topHeight: {
-        cache: false,
-        get(){
-          return `${ this.getScrollData.topBlockHeight }px`
-        }
-      },
-
-      bottomHeight: {
-        cache: false,
-        get(){
-          return `${ this.getScrollData.bottomBlockHeight }px`
-        }
-      },
-
       scrollTop: {
         cache: false,
         get(){
@@ -274,33 +277,52 @@ scroll-top
         }
       },
 
+      top: {
+        cache: false,
+        get(){
+          if(this.$els.container){
+            const { idStart, idEnd } = this.getScrollData;
+
+            const rowCount = ( idEnd - idStart ) / this.getColumnCount;
+
+            const rowHeight = idStart / this.getColumnCount * this.rowHeight;
+
+            const tops = [];
+
+            for ( let i = 0; i < rowCount; i++ ) {
+
+              tops.push( {
+                top: `${ rowHeight + i * this.rowHeight}px`
+              } );
+
+            }
+            return tops;
+          }
+          return [];
+        }
+      },
+
       rowHeight: {
         cache: false,
         get(){
-
-          if ( this.$els ) {
-            if ( this.$els.photosList ) {
-              if ( this.$els.photosList.children ) {
-                if ( this.$els.photosList.children[ 1 ] ) {
-                  return this.$els.photosList.children[ 1 ].offsetHeight
-                }
-              }
-            }
+          if (window.browser.mobile && this.getColumnCount == 3){
+            return this.$els.container.clientWidth / this.getColumnCount;
+          }else{
+            return this.$els.container.clientWidth / this.getColumnCount + 95;
           }
-
-          return 300;
-
         }
       },
+
+
 
       itemsLength() {
 
         if ( Array.isArray( this.items ) ) {
 
           return this.items.length;
-
+         
         }
-
+        
         return 0;
 
       }
@@ -308,13 +330,28 @@ scroll-top
     },
 
     watch: {
-      getColumnCount(){
-        this.scrollCnt.scrollTop = this.getScrollData.scrollTopReal;
-        this._updateRowHeight();
+      filterByUserId(){
+        //для работы фильтров
+        this.setListId( this.listId + '_secondary' );
+        this._run(true);
       },
-      items(){
+      filterByUserName(){
+        this._run(true);
+      },
+      getColumnCount(){
+        this.scrollCnt.scrollTop = this.getScrollData.scrollTop;
         this._setScroll();
       },
+
+      items() {
+        const height = ( this.itemsLength / this.getColumnCount + 1) * this.rowHeight;
+
+        this.$set( 'listStyle', {
+          height: `${ height }px`,
+          maxHeight: `${ height }px`
+        } )
+      },
+
       listId( listId ) {
 
         this.setListId( listId );
@@ -326,6 +363,7 @@ scroll-top
         } );
 
       },
+
       selectedTagsId( selectedTagsId ) {
 
         if ( this.tags ) {
@@ -343,6 +381,7 @@ scroll-top
         }
 
       },
+
       searchValue() {
 
         if ( this.search ) {
@@ -352,11 +391,13 @@ scroll-top
         }
 
       }
+
     },
 
     components: {
       photoItem,
       scrollTop
     }
+
   }
 </script>

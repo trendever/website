@@ -1,5 +1,5 @@
 @import 'cosmetic/reset.pcss';
-@import 'base/fonts/comfortaa/style.pcss';
+@import 'base/fonts/san-francisco/style.pcss';
 @import 'base/vars/vars.pcss';
 @import 'base/btn/style.pcss';
 @import 'base/input/style.pcss';
@@ -39,6 +39,11 @@ body {
     @media(--mobile) {
       max-width: 750px;
     }
+  }
+  &.header{
+    width: 100%;
+    margin: 0px !important;
+    max-width: none !important;
   }
   &.top {
     padding-top: 50px;
