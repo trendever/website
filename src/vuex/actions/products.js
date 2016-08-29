@@ -66,11 +66,11 @@ export const loadProducts = (
 
           if ( force ) {
 
-            dispatch( types.PRODUCTS_FORCE_RECEIVE, data.object_list );
+            dispatch( types.PRODUCTS_FORCE_RECEIVE, data/*.object_list*/ );
 
           } else {
 
-            dispatch( types.PRODUCTS_RECEIVE, data.object_list );
+            dispatch( types.PRODUCTS_RECEIVE, data/*.object_list*/ );
 
           }
 
@@ -92,7 +92,7 @@ export const loadProducts = (
           .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId, limit }, force ) )
           .then( data => {
 
-            dispatch( types.PRODUCTS_RECEIVE, data.object_list );
+            dispatch( types.PRODUCTS_RECEIVE, data/*.object_list*/ );
 
             resolve();
 
@@ -325,7 +325,7 @@ export const getSearchOptions = (
   force = false
 ) => {
 
-  const request = {
+/*  const request = {
     q: null,
     from_id: null,
     tags: null,
@@ -333,7 +333,16 @@ export const getSearchOptions = (
     offset: null,
     instagram_name: null,
     user_id: null
-  };
+  };*/
+
+  const request = {
+    query: null,
+    tags: null,
+    shop_id: 0,
+    mentioner_id: 0,
+    limit,
+    offset: null
+  }
 
   if ( !force ) {
 
@@ -341,13 +350,14 @@ export const getSearchOptions = (
 
     if ( lastProduct !== null ) {
 
-      request.from_id = lastProduct.id
+      //request.from_id = lastProduct.id
+      request.offset = getProducts( state ).length - 1;
 
     }
 
   }
 
-  if ( isSearch ) {
+/*  if ( isSearch ) {
 
     const q = searchValue( state );
 
@@ -357,7 +367,20 @@ export const getSearchOptions = (
 
     }
 
+  }*/
+
+  if (isSearch) {
+
+    const query = searchValue( state );
+
+    if (typeof query === 'string') {
+      request.query = query.trim();
+
+    }
+
   }
+
+
 
   if ( isTags ) {
 

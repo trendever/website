@@ -32,6 +32,10 @@
 
     props: [
       {
+        name: 'productId',
+        required: true
+      },
+      {
         name: 'product',
         required: true
       },
@@ -44,7 +48,7 @@
     methods: {
       goToProduct(){
 
-        this.$router.go( { name: "product_detail", params: { id: this.product.id } } );
+        this.$router.go( { name: "product_detail", params: { id: this.productId } } );
 
       },
       showImage(){
@@ -57,13 +61,21 @@
 
     computed: {
       thumb() {
-        if (this.product && this.product.instagram_images) {
+        //product search
+        /*if (this.product && this.product.instagram_images) {
           if (window.browser.mobile){
             return this.product.instagram_images.find((img) => img.name === "S_square").url  
           }else{
             return this.product.instagram_images.find((img) => img.name === "M_square").url  
           }
-          
+  
+        }*/
+        if (this.product && this.product.images) {
+          if (window.browser.mobile){
+            return this.product.images.find((img) => img.name === "S_square").url  
+          }else{
+            return this.product.images.find((img) => img.name === "M_square").url  
+          }
         }
         // return this.product.instagram_image_url
       },
@@ -97,7 +109,8 @@
         return items[0].name
       },
       suppliername(){
-        return this.product.supplier.instagram_username;
+        //return this.product.supplier.instagram_username;
+        return this.product.shop.name;
       }
     },
 

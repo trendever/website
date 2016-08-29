@@ -6,7 +6,7 @@
     template(v-for='line in items | lines' track-by="uid")
       .photos__list__cell(v-bind:style="top[$index]")
         template(v-for='item in line.bundle' track-by="id")
-          photo-item( :product.once='item', :animate='true' )
+          photo-item( :product.once='item.data', :product-id.once="item.id", :animate='true' )
 
   .photos__more-wrap(v-if='hasMore')
     .photos__more( :class='{"_active": isLoading}' )
@@ -187,7 +187,7 @@ scroll-top
           //нужен id для того чтобы изображения постоянно показывались а не появлялись из ничего
           //каждый раз при скролле
           let bundleId = bundle[0].id;
-
+ 
           _lines.push({uid: bundleId, bundle: bundle});
 
         }
