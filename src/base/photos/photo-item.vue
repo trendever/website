@@ -61,15 +61,7 @@
 
     computed: {
       thumb() {
-        //product search
-        /*if (this.product && this.product.instagram_images) {
-          if (window.browser.mobile){
-            return this.product.instagram_images.find((img) => img.name === "S_square").url  
-          }else{
-            return this.product.instagram_images.find((img) => img.name === "M_square").url  
-          }
-  
-        }*/
+
         if (this.product && this.product.images) {
           if (window.browser.mobile){
             return this.product.images.find((img) => img.name === "S_square").url  
@@ -109,7 +101,6 @@
         return items[0].name
       },
       suppliername(){
-        //return this.product.supplier.instagram_username;
         return this.product.shop.name;
       }
     },

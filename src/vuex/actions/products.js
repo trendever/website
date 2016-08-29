@@ -46,7 +46,7 @@ export const closeProducts = ( { dispatch } ) => {
 
 export const loadProducts = (
   { dispatch, state },
-  { isSearch, isTags, filterByUserName, filterByUserId, limit },
+  { isSearch, isTags, filterByShopId, filterByMentionerId, limit },
   force = false
 ) => {
 
@@ -61,7 +61,7 @@ export const loadProducts = (
       setAnimate( { dispatch, state }, true );
 
       products
-        .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId, limit }, force ) )
+        .find( getSearchOptions( { state }, { isSearch, isTags, filterByShopId, filterByMentionerId, limit }, force ) )
         .then( data => {
 
           if ( force ) {
@@ -78,7 +78,7 @@ export const loadProducts = (
 
         } )
         .catch( ( error ) => {
-          products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId, limit } );
+          products.sendError( error, { state, isSearch, isTags, filterByShopId, filterByMentionerId, limit } );
           reject( error );
         } );
 
@@ -89,7 +89,7 @@ export const loadProducts = (
         setAnimate( { dispatch, state }, true );
 
         products
-          .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId, limit }, force ) )
+          .find( getSearchOptions( { state }, { isSearch, isTags, filterByShopId, filterByMentionerId, limit }, force ) )
           .then( data => {
 
             dispatch( types.PRODUCTS_RECEIVE, data/*.object_list*/ );
@@ -98,7 +98,7 @@ export const loadProducts = (
 
           } )
           .catch( ( error ) => {
-            products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId, limit } );
+            products.sendError( error, { state, isSearch, isTags, filterByShopId, filterByMentionerId, limit } );
             reject( error );
           } );
 
@@ -321,19 +321,10 @@ export const setLike = (
 
 export const getSearchOptions = (
   { state },
-  { isSearch, isTags, filterByUserName, filterByUserId, limit = state.products.ITEMS_PER_PAGE },
+  { isSearch, isTags, filterByShopId, filterByMentionerId, limit = state.products.ITEMS_PER_PAGE },
   force = false
 ) => {
 
-/*  const request = {
-    q: null,
-    from_id: null,
-    tags: null,
-    limit,
-    offset: null,
-    instagram_name: null,
-    user_id: null
-  };*/
 
   const request = {
     query: null,
@@ -350,24 +341,12 @@ export const getSearchOptions = (
 
     if ( lastProduct !== null ) {
 
-      //request.from_id = lastProduct.id
       request.offset = getProducts( state ).length - 1;
 
     }
 
   }
 
-/*  if ( isSearch ) {
-
-    const q = searchValue( state );
-
-    if ( typeof q === 'string' ) {
-
-      request.q = q.trim();
-
-    }
-
-  }*/
 
   if (isSearch) {
 
@@ -394,15 +373,15 @@ export const getSearchOptions = (
 
   }
 
-  if ( filterByUserName ) {
+  if ( filterByShopId ) {
 
-    request.instagram_name = filterByUserName;
+    request.shop_id = filterByShopId;
 
   }
 
-  if ( filterByUserId ) {
+  if ( filterByMentionerId ) {
 
-    request.user_id = filterByUserId;
+    request.mentioner_id = filterByMentionerId;
 
   }
 
