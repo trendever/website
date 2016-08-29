@@ -75,3 +75,14 @@ export function setEmail(email){
     });
   })
 }
+
+export function setToken(token,type){
+  return new Promise((resolve, reject)=>{
+    channel.req('add','push_tokens',{token,type})
+    .then( data => {
+      resolve(data.response_map.status);
+    }).catch( error => {
+      reject({ code: ERROR_CODES.NOT_FOUND, response: error });
+    });
+  })
+}

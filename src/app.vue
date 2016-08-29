@@ -25,6 +25,7 @@ input(type="hidden", value="", id="get-user-login")
   import ListenerComponent from 'project/listener/index.vue'
 
   import {get as getUser} from 'services/user';
+  import {setToken} from 'services/user';
 
   export default {
     data(){
@@ -41,28 +42,12 @@ input(type="hidden", value="", id="get-user-login")
     //get user for ios push actions logic
     created(){
       let self = this;
-      let result=''; 
-
-      window.getUserLogin = function(){
-
-        let user = self.$store.state.user;
-        let userId = user.myId; 
-        if(userId !== null){
-          let instagramUsername = user.all[userId].instagram_username;
-            getUser({
-              user_id: userId,
-              instagram_name: instagramUsername
-            }).then(data=>{
-              if(data.User.id === userId){
-                 result = data.User.id;
-              } else {
-                result = 0;
-              }
-              //set value to hidden input
-              document.getElementById('get-user-login').value = result;
-            });
-          }
-        }
+      window.setUserToken = function(token,type){
+        setToken(token,type).then(data => console.log(data));
+      },
+      window.authIsDone = function(){
+        return self.authIsDone;
+      }
     },  
     ready() {
 
