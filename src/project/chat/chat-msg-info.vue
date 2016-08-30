@@ -16,6 +16,9 @@
       p.chat-msg_txt
         | {{{ getMessage }}}
 
+
+button.payment-btn Оплатить 100 500 ₽
+
 </template>
 
 <script type='text/babel'>

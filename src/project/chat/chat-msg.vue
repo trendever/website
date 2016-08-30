@@ -15,6 +15,8 @@
     .chat-msg-wrap
       p.chat-msg_txt
         | {{{ getMessage }}}
+  
+  
 
 </template>
 
