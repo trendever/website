@@ -14,7 +14,10 @@
 .products {
   display: flex;
   justify-content: space-between;
-
+  margin-bottom: 16px;
+  @media(--mobile) {
+    margin-bottom: 25px;
+  }
 }
 
 .numbers {
@@ -53,7 +56,7 @@
 }
 
 .discountPrice {
-  color: $color__gray-dark;
+  color: #31bebc;
   font-family: $font__family;
 
   font-size: 16px;
@@ -67,7 +70,7 @@
 }
 
 .rub{
-  color: $color__gray-dark;
+  color: #31bebc;
   display: inline;
   @media(--mobile){
     &::before{
