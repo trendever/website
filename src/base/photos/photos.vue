@@ -25,6 +25,7 @@ scroll-top
 
 <script type='text/babel'>
   import listen from 'event-listener';
+  import * as productsService from 'services/products';
 
   import scrollTop from 'base/scroll-top/scroll-top.vue';
   import photoItem from './photo-item.vue';
@@ -78,6 +79,10 @@ scroll-top
     },
 
     props: {
+      photoType:{
+        type: String,
+        default: null
+      },
       tags: {
         type: Boolean,
         default: false
@@ -117,6 +122,35 @@ scroll-top
     },
 
     ready() {
+      //profilie logic to show filter buttons
+      if(this.$route.name === 'user' || this.$route.name === 'profile'){
+
+        Promise
+        .resolve()
+        .then(()=>{
+
+          productsService
+            .find({ shop_id: this.filterByShopId })
+            .then((data)=>{
+              if(!data.length){
+                this.$dispatch('noProducts');
+              }
+            });
+
+        })
+        .then(()=>{
+
+          productsService
+            .find({ mentioner_id: this.filterByShopId })
+            .then((data)=>{
+              if(!data.length){
+                this.$dispatch('noLikes');
+              }
+            });
+        })
+
+      }
+
 
       this.setContainerWidth( this.$els.container.offsetWidth );
 
@@ -142,9 +176,9 @@ scroll-top
         this.$set( 'isRunning', true );
 
         this.scrollCnt.scrollTop = scrollTop;
-       
+
       } ).then(()=>{
-        
+
         if( this.$route.name === 'user') {
 
           if( !this.items.length){
@@ -156,7 +190,7 @@ scroll-top
         }
 
       })
-      
+
     },
 
     beforeDestroy() {
@@ -187,7 +221,7 @@ scroll-top
 
         const items  = value.slice( idStart, idEnd );
 
-        let interateCout = Math.ceil(items.length / this.getColumnCount);  
+        let interateCout = Math.ceil(items.length / this.getColumnCount);
 
         for(let i = 0; i < interateCout; i++ ){
 
@@ -195,7 +229,7 @@ scroll-top
           //нужен id для того чтобы изображения постоянно показывались а не появлялись из ничего
           //каждый раз при скролле
           let bundleId = bundle[0].id;
- 
+
           _lines.push({uid: bundleId, bundle: bundle});
 
         }
@@ -216,7 +250,7 @@ scroll-top
             scrollTop: this.scrollTop,
             rowHeight: this.rowHeight,
             scrollTopReal: this.scrollCnt.scrollTop,
-            searchOptions: { isSearch: search, isTags: tags, filterByShopId, filterByMentionerId }
+            searchOptions: { isSearch: search, isTags: tags, filterByShopId/*, filterByMentionerId*/ }
           } );
 
         }
@@ -333,9 +367,9 @@ scroll-top
         if ( Array.isArray( this.items ) ) {
 
           return this.items.length;
-         
+
         }
-        
+
         return 0;
 
       }
@@ -343,13 +377,18 @@ scroll-top
     },
 
     watch: {
-      filterByMentionerId(){
-        //для работы фильтров
-        this.setListId( this.listId + '_secondary' );
-        this._run(true);
-      },
-      filterByShopId(){
-        this._run(true);
+      //photo filters logic for profile
+      photoType(val){
+        if(val === 'product'){
+          this.setListId(this.listId);
+          this.run({ filterByMentionerId: this.filterByShopId }, false);
+        }
+
+        if(val === 'like'){
+          this.setListId(this.listId + '_secondary');
+          this.run({ filterByMentionerId: this.filterByShopId }, true);
+        }
+
       },
       getColumnCount(){
         this.scrollCnt.scrollTop = this.getScrollData.scrollTop;
