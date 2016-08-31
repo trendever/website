@@ -34,6 +34,8 @@ scroll-top
   import { searchValue, tags, selectedTagsId } from 'vuex/getters/search.js';
   import { getComeBack } from 'vuex/getters/products';
 
+  import { userID } from 'vuex/getters/user';
+
   import {
     run,
     setListId,
@@ -56,6 +58,7 @@ scroll-top
 
       getters: {
         getComeBack,
+        userID,
         items:getProducts,
         hasMore,
         isLoading,
@@ -122,35 +125,19 @@ scroll-top
     },
 
     ready() {
-      //profilie logic to show filter buttons
+
+      //profile logic to show filter buttons
       if(this.$route.name === 'user' || this.$route.name === 'profile'){
 
-        Promise
-        .resolve()
-        .then(()=>{
-
-          productsService
-            .find({ shop_id: this.filterByShopId })
-            .then((data)=>{
-              if(!data.length){
-                this.$dispatch('noProducts');
-              }
-            });
-
-        })
-        .then(()=>{
-
-          productsService
-            .find({ mentioner_id: this.filterByShopId })
-            .then((data)=>{
-              if(!data.length){
-                this.$dispatch('noLikes');
-              }
-            });
-        })
+        productsService
+          .find({ mentioner_id: this.userID })
+          .then((data)=>{
+            if(!data.length){
+              this.$dispatch('noLikes');
+            }
+          });
 
       }
-
 
       this.setContainerWidth( this.$els.container.offsetWidth );
 
@@ -177,19 +164,7 @@ scroll-top
 
         this.scrollCnt.scrollTop = scrollTop;
 
-      } ).then(()=>{
-
-        if( this.$route.name === 'user') {
-
-          if( !this.items.length){
-
-            this.run( { filterByMentionerId: this.filterByShopId }, true);
-
-          }
-
-        }
-
-      })
+      } );
 
     },
 
@@ -250,7 +225,7 @@ scroll-top
             scrollTop: this.scrollTop,
             rowHeight: this.rowHeight,
             scrollTopReal: this.scrollCnt.scrollTop,
-            searchOptions: { isSearch: search, isTags: tags, filterByShopId/*, filterByMentionerId*/ }
+            searchOptions: { isSearch: search, isTags: tags, filterByShopId , filterByMentionerId }
           } );
 
         }
@@ -259,12 +234,24 @@ scroll-top
 
       _run( force = false ) {
 
+        if(this.$route.name === 'user' || this.$route.name === 'profile'){
+
+          if(this.filterByShopId === null) {
+            this.filterByMentionerId = this.userID;
+            this.$dispatch('noProducts');
+          }
+        }
+
         const { search, tags, filterByShopId, filterByMentionerId } = this;
 
+<<<<<<< HEAD
         if(this.getComeBack){
           force = true;
         }
         return this.run( { isSearch: search, isTags: tags, filterByShopId/*, filterByMentionerId */}, force );
+=======
+        return this.run( { isSearch: search, isTags: tags, filterByShopId, filterByMentionerId }, force );
+>>>>>>> adding seller_of id to filter
 
       },
 
@@ -381,14 +368,14 @@ scroll-top
       photoType(val){
         if(val === 'product'){
           this.setListId(this.listId);
-          this.run({ filterByMentionerId: this.filterByShopId }, false);
         }
 
         if(val === 'like'){
-          this.setListId(this.listId + '_secondary');
-          this.run({ filterByMentionerId: this.filterByShopId }, true);
-        }
 
+          this.setListId(this.listId + '_secondary');
+          this.run({ filterByMentionerId: this.userID }, true);
+
+        }
       },
       getColumnCount(){
         this.scrollCnt.scrollTop = this.getScrollData.scrollTop;

@@ -36,6 +36,23 @@ function picProfile( profile ) {
       email: profile.email,
       phone: profile.phone,
     },
+    (profile.supplier_of) ?
+    {
+      supplier_of: profile.supplier_of
+    }
+      :
+    {
+      supplier_of: null
+    }
+    ,
+    (profile.seller_of) ?
+    {
+      seller_of: profile.seller_of
+    }
+      :
+    {
+      seller_of: null
+    },
     (profile.supplier) ?
     {
       has_email: profile.supplier.has_email,
