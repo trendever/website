@@ -22,7 +22,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .profile_desc_caption(v-if="getUserCaption")
           | {{ getUserCaption }}
 
-        .profile_filter(v-if="isSelfPage && !noProducts && !noLikes")
+        .profile_filter(v-if="isSelfPage && !nolikes && !noProducts")
           span(v-bind:class="{'seleted': photoType === 'product'}")
             input(type="radio" value="product" v-model="photoType" id="filter-products")
             label(for="filter-products") Мои Товары
@@ -39,7 +39,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
 
       photos-component(
-        :filter-by-shop-id.sync="userID",
+        :filter-by-shop-id="shopId",
         :list-id.sync="listId",
         :photo-type="photoType")
 
@@ -63,7 +63,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
   import store from 'vuex/store'
   import { openProfile, closeProfile } from 'vuex/actions/user.js';
   import {
-    userID,
+    user,
     getUserName,
     getUserPhoto,
     getUserCaption,
@@ -110,6 +110,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     events:{
+      //logic for show switch buttons
       'noLikes'(){
         this.noLikes = true;
       },
@@ -124,7 +125,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
         closeProfile
       },
       getters: {
-        userID,
+        user,
         isAuth,
         getUserName,
         getUserPhoto,
@@ -135,20 +136,22 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     computed: {
+      shopId(){
+        if(this.user.supplier_of !== null){
+          return this.user.supplier_of[0];
+        }
+
+        if(this.user.seller_of !== null){
+          return this.user.seller_of[0];
+        }
+
+        return null;
+      },
       isSelfPage(){
-
         return this.$store.state.user.id === this.$store.state.user.myId;
-
       },
       listId(){
-        //console.log(this.getPhotoConfig.listId);
         return this.getPhotoConfig.listId;
-      },
-      testUserProfile(){
-        return {
-          instagram_name: this.getPhotoConfig.photoFilter.instagram_name,
-          user_id: this.userID
-        }
       }
     },
     components: {
