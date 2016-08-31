@@ -8,14 +8,14 @@ scroll-component(v-if="isDone", class="profile-cnt")
       .profile
         .profile_info
 
-          .profile_info_count 0
-           .profile_info_count_t Подписчики
+          //.profile_info_count 0
+          // .profile_info_count_t Подписчики
 
           .profile_info_img
             img(:src="getUserPhoto")
 
-          .profile_info_count 0
-           .profile_info_count_t Подписки 
+          //.profile_info_count 0
+          // .profile_info_count_t Подписки 
 
         .profile_desc
           //.profile_desc_t {{getSlogan}} Слоган Профиля
@@ -30,9 +30,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
             input(type="radio" value="like" v-model="photoType" id="filter-likes") 
             label(for="filter-likes") Мои Тренды
 
-        .profile_no-goods Здесь пусто, #[br]... потому что ты пока ничего не сохранил.
+        .profile_no-goods(v-if="noLikes && noProducts") Здесь пусто, #[br]... потому что ты пока ничего не сохранил.
         
-        .profile_no-goods-banner Нажми Сохранить под товаром #[br] или напиши @savetrend под постом в #[br] Instagram, чтобы добавить тренд сюда в ленту.
+        .profile_no-goods-banner(v-if="noLikes && noProducts") Нажми Сохранить под товаром #[br] или напиши @savetrend под постом в #[br] Instagram, чтобы добавить тренд сюда в ленту.
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscrib//e") ПОДПИСАТЬСЯ
         
