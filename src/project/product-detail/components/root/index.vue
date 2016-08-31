@@ -49,7 +49,7 @@
 
       </div>
       <photos :list-id="listId" :filter-by-user-name="supplierName"></photos>
-      <navbar></navbar>
+      <navbar v-if="false"></navbar>
     </div>
   </div>
 </template>
