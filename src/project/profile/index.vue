@@ -32,7 +32,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
         .profile_no-goods Здесь пусто, #[br]... потому что ты пока ничего не сохранил.
         
-        .profile_no-goods-banner Нажми Сохранить под товаром #[br] или напиши @savetrend под постом в #[br] Instagram, чтобы добавить тренд сюда в ленту.
+        .profile_no-goods-banner Нажми Сохранить под товаром #[br] или напиши @savetrend под постом в #[br] Instagram, #[br] чтобы добавить тренд сюда в ленту.
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscrib//e") ПОДПИСАТЬСЯ
         

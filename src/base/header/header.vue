@@ -6,10 +6,14 @@
         i.header__arrow__ic.ic-arrow-left(
         :class='{"_up": is_action_up}')
        //a(href="#").header_settings_btn
+
       .header__notify-count(v-if='notifyCount')
         span {{ notifyCount }}
 
       .header__center
+        .header__left-logo
+         a(href="#")
+          img(src="../img/logo-main.svg")
         .header__text(v-if="centerTextLink === null") {{ title }}
         .header__text.active(v-if="centerTextLink !== null", v-link="centerTextLink") {{ title }}
         slot(name='content')
