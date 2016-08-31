@@ -13,7 +13,7 @@
     background: #f7f7f7;
 
     @media(--mobile) {
-      height: 102px;
+      height: 98px;
     }
     align-items: center;
     &_i {
@@ -34,22 +34,22 @@
           margin-top: 6px;
           margin-bottom: 5px;
 
-          color: #b2b2b2;
+          color: #929292;
 
           font-size: 21px;
 
           size: 21px;
           @media(--mobile) {
             margin-top: 10px;
-            font-size: 38px;
+            font-size: 44px;
 
-            size: 38px;
+            size: 44px;
           }
         }
         &_t {
           transition: $btn-transition;
 
-          color: $color__gray;
+          color: #929292;
 
           font-size: 14px;
 
@@ -104,8 +104,8 @@
 
             vertical-align: middle;
 
-            background: url('../../base/img/logo.png');
-            background-size: 100%;
+            //background: url('../../base/img/chats_active.svg');
+            //background-size: 100%;
 
             size: 21px;
             &:before {
@@ -113,8 +113,12 @@
 
               content: '';
             }
+            &:after{
+              content: url(../../base/img/chats_active.svg);
+
+            }
             @media (--mobile) {
-              size: 38px;
+              size: 44px;
             }
           }
         }
