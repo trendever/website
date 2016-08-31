@@ -24,7 +24,7 @@ scroll-component(v-el:scroll-cnt)
        span под товаром #[br] или 
        span.want напиши @wantit 
        span под постом в Instagram, #[br] и здесь появится шопинг-чат.
-      navbar-component(current='chat')
+navbar-component(current='chat')
 
 .help-wrapper(v-if='isFirst')
   .help(@click='isFirst=false')
