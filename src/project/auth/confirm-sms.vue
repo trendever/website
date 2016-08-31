@@ -25,17 +25,18 @@ div
                 spellcheck="false")
 
       .bottom-container.__fixed-width
-          .btn-container
+          .link-container
+              a.link-bottom(href='#',
+                v-if='!isCompleted',
+                v-show='needNewSMS'
+                @click.prevent='sendSMS') Отправить новый код
+          .btn-container            
             button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
               :disabled='isDisabled',
               v-el:confirm-btn,
               @keydown.enter='onButton()',
               @click='onButton') {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
-            .link-container
-              a.link-bottom(href='#',
-                v-if='!isCompleted',
-                v-show='needNewSMS'
-                @click.prevent='sendSMS') Отправить новый код
+            
 </template>
 
 <script type="text/babel">
