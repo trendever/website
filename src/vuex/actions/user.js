@@ -218,7 +218,7 @@ export const closeProfile = ( { dispatch } ) => {
 export const logOut = ( { dispatch } ) => {
 
   removeToken();
-  
+
   dispatch( types.USER_LOGOUT )
 
 };

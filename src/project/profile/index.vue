@@ -4,7 +4,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
   header-component(:title='getUserName', :left-btn-show='true')
 
   .section.top.bottom
-    .section__content
+    .section__content(v-cloak)
       .profile
         .profile_info
 
@@ -22,7 +22,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .profile_desc_caption(v-if="getUserCaption")
           | {{ getUserCaption }}
 
-        .profile_filter(v-if="isSelfPage && !nolikes && !noProducts")
+        .profile_filter(v-if="isSelfPage && !noProducts && !noLikes")
           span(v-bind:class="{'seleted': photoType === 'product'}")
             input(type="radio" value="product" v-model="photoType" id="filter-products")
             label(for="filter-products") Мои Товары
@@ -42,11 +42,17 @@ scroll-component(v-if="isDone", class="profile-cnt")
         //img(src="icons/cogwheel.png")
 
 
-
+      //- товары
       photos-component(
+        v-if="photoType === 'product'",
         :filter-by-shop-id="shopId",
-        :list-id.sync="listId",
-        :photo-type="photoType")
+        :list-id.sync="listId")
+
+      //- лайки
+      photos-component(
+        v-if="photoType === 'like'",
+        :filter-by-mentioner-id="userID",
+        :list-id.sync="trendsListId")
 
   navbar-component(:current='listId')
 
@@ -63,11 +69,13 @@ scroll-component(v-if="isDone", class="profile-cnt")
         .help__profile-round
 </template>
 <script type='text/babel'>
+  import * as productsService from 'services/products';
   import { urlThumbnail } from 'utils';
 
   import store from 'vuex/store'
   import { openProfile, closeProfile } from 'vuex/actions/user.js';
   import {
+    userID,
     user,
     getUserName,
     getUserPhoto,
@@ -95,7 +103,20 @@ scroll-component(v-if="isDone", class="profile-cnt")
     route: {
       data( { to: { params: { id } } } ) {
         if ( this.isAuth ) {
-          return this.openProfile( id ).catch( () => {
+          return this.openProfile( id )
+          .then(()=>{
+            productsService
+            .find({ mentioner_id: this.userID })
+            .then((data)=>{
+              if(!data.length){
+                 this.$set('noLikes',true);
+                 //hack так как при преходе с дргого юзера
+                 //пропы остаются теми же, не совсем корректно работает Vue
+                 this.$set('photoType','product');
+              }
+            });
+          })
+          .catch( () => {
             this.$router.go( { name: '404' } );
           } );
         } else {
@@ -114,22 +135,13 @@ scroll-component(v-if="isDone", class="profile-cnt")
         this.closeProfile();
       }
     },
-    events:{
-      //logic for show switch buttons
-      'noLikes'(){
-        this.noLikes = true;
-      },
-      'noProducts'(){
-        this.noProducts = true;
-        this.photoType = 'like';
-      }
-    },
     vuex: {
       actions: {
         openProfile,
         closeProfile
       },
       getters: {
+        userID,
         user,
         isAuth,
         getUserName,
@@ -144,19 +156,25 @@ scroll-component(v-if="isDone", class="profile-cnt")
       shopId(){
         if(this.user.supplier_of !== null){
           return this.user.supplier_of[0];
+          this.$set('photoType','product');
         }
 
         if(this.user.seller_of !== null){
           return this.user.seller_of[0];
+          this.$set('photoType','product');
         }
 
-        return null;
+        this.$set('photoType','like');
+
       },
       isSelfPage(){
         return this.$store.state.user.id === this.$store.state.user.myId;
       },
       listId(){
         return this.getPhotoConfig.listId;
+      },
+      trendsListId(){
+        return this.listId + '_trends';
       }
     },
     components: {

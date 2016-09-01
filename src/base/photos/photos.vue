@@ -25,7 +25,6 @@ scroll-top
 
 <script type='text/babel'>
   import listen from 'event-listener';
-  import * as productsService from 'services/products';
 
   import scrollTop from 'base/scroll-top/scroll-top.vue';
   import photoItem from './photo-item.vue';
@@ -33,8 +32,6 @@ scroll-top
   import { clearSearch } from 'vuex/actions/search.js';
   import { searchValue, tags, selectedTagsId } from 'vuex/getters/search.js';
   import { getComeBack } from 'vuex/getters/products';
-
-  import { userID } from 'vuex/getters/user';
 
   import {
     run,
@@ -82,10 +79,6 @@ scroll-top
     },
 
     props: {
-      photoType:{
-        type: String,
-        default: null
-      },
       tags: {
         type: Boolean,
         default: false
@@ -125,19 +118,6 @@ scroll-top
     },
 
     ready() {
-
-      //profile logic to show filter buttons
-      if(this.$route.name === 'user' || this.$route.name === 'profile'){
-
-        productsService
-          .find({ mentioner_id: this.userID })
-          .then((data)=>{
-            if(!data.length){
-              this.$dispatch('noLikes');
-            }
-          });
-
-      }
 
       this.setContainerWidth( this.$els.container.offsetWidth );
 
@@ -181,9 +161,6 @@ scroll-top
       this.closeProducts();
 
       this.$set( 'isRunning', false );
-
-      //убираем баг подвисания загрузки "ЕЩЕ";
-      this.$store.state.products.listId = '';
 
     },
 
@@ -233,14 +210,6 @@ scroll-top
       },
 
       _run( force = false ) {
-
-        if(this.$route.name === 'user' || this.$route.name === 'profile'){
-
-          if(this.filterByShopId === null) {
-            this.filterByMentionerId = this.userID;
-            this.$dispatch('noProducts');
-          }
-        }
 
         const { search, tags, filterByShopId, filterByMentionerId } = this;
 
@@ -364,19 +333,6 @@ scroll-top
     },
 
     watch: {
-      //photo filters logic for profile
-      photoType(val){
-        if(val === 'product'){
-          this.setListId(this.listId);
-        }
-
-        if(val === 'like'){
-
-          this.setListId(this.listId + '_secondary');
-          this.run({ filterByMentionerId: this.userID }, true);
-
-        }
-      },
       getColumnCount(){
         this.scrollCnt.scrollTop = this.getScrollData.scrollTop;
         this._setScroll();
