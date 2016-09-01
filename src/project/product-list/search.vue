@@ -11,7 +11,7 @@
 
         input.search-input__input(
           v-el:input,
-          @keydown='search()',
+          @keyup='search()',
           :value='searchValue',
           @focus='onFocusInput',
           @blur='onBlurInput',
@@ -61,7 +61,7 @@
   import { isAuth } from 'vuex/getters/user.js';
   import { setColumnNumber } from 'vuex/actions/products';
   import { getColumnCount } from 'vuex/getters/products';
-  
+
 
   export default {
     components: {
@@ -157,7 +157,7 @@
 
       search() {
         this.setSearchValue( this.$els.input.value );
-      }, 
+      },
       onFocusInput() {
         this.$set('isOpenTags', true)
         this.inputFocused = true;
