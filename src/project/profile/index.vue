@@ -69,7 +69,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
   import { urlThumbnail } from 'utils';
 
   import store from 'vuex/store'
-  import { openProfile, closeProfile } from 'vuex/actions/user.js';
+  import { openProfile, closeProfile, setMyCurrentList } from 'vuex/actions/user.js';
   import {
     userID,
     user,
@@ -79,7 +79,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
     getSlogan,
     isDone,
     getPhotoConfig,
-    isAuth
+    isAuth,
+    getMyCurrentList
   } from 'vuex/getters/user.js';
 
   import ScrollComponent from 'base/scroll/scroll.vue'
@@ -106,7 +107,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
             .then((data)=>{
               if(!data.length){
                  this.$set('noLikes',true);
-                 console.log('нету лайков')
+                 //console.log('нету лайков')
                   //hack так как при преходе с дргого юзера
                   //пропы остаются теми же, не совсем корректно работает Vue
               }
@@ -126,6 +127,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },
     ready(){
       //check auth
+      if(this.getMyCurrentList){
+        this.$set('photoType',this.getMyCurrentList);
+      }
       if ( !this.isAuth ) {
         this.$router.replace( { name: 'signup' } );
       }
@@ -137,10 +141,12 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },
     vuex: {
       actions: {
+        setMyCurrentList,
         openProfile,
         closeProfile
       },
       getters: {
+        getMyCurrentList,
         userID,
         user,
         isAuth,
@@ -152,6 +158,19 @@ scroll-component(v-if="isDone", class="profile-cnt")
         getPhotoConfig
       }
     },
+    watch:{
+      photoType(val){
+        if(this.isSelfPage){
+          if(val === 'like'){
+            this.setMyCurrentList('like');
+          }
+
+          if(val === 'product'){
+            this.setMyCurrentList('product');
+          }
+        }
+      }
+    },
     computed: {
       shopId(){
         if(this.user.supplier_of !== null){
@@ -161,7 +180,6 @@ scroll-component(v-if="isDone", class="profile-cnt")
         }
 
         if(this.user.seller_of !== null){
-          alert(1);
           this.$set('photoType','product');
           return this.user.seller_of[0];
         }
