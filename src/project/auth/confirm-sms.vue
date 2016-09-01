@@ -149,19 +149,22 @@ div
             if(success){
 
               let hasEmail = false;
-              return getUser({user_id:this.$store.state.user.myId}).then(data=>{
-                hasEmail = data.User.has_email;
+              return getUser({user_id:this.$store.state.user.myId}).then(user=>{
+                console.log(user);
+
+                hasEmail = user.has_email;
+
                 return hasEmail;
 
               })
             }
           }).then(flag=>{
-              /*if(!flag){
-                //alert('нету email'); -works
+              if(!flag){
+                //alert('нету email');
                 setTimeout(()=>{
                   this.$router.go({name: 'subscribe'});
                 },1000 * 60 * 2);
-              }*/
+              }
           })
       },
 

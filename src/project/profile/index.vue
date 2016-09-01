@@ -22,7 +22,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .profile_desc_caption(v-if="getUserCaption")
           | {{ getUserCaption }}
 
-        .profile_filter(v-if="isSelfPage && !noProducts && !noLikes")
+        .profile_filter(v-if="isSelfPage && !noLikes && !noProducts")
           span(v-bind:class="{'seleted': photoType === 'product'}")
             input(type="radio" value="product" v-model="photoType" id="filter-products")
             label(for="filter-products") Мои Товары
@@ -42,17 +42,18 @@ scroll-component(v-if="isDone", class="profile-cnt")
         //img(src="icons/cogwheel.png")
 
 
-      //- товары
-      photos-component(
-        v-if="photoType === 'product'",
-        :filter-by-shop-id="shopId",
-        :list-id.sync="listId")
 
       //- лайки
       photos-component(
         v-if="photoType === 'like'",
         :filter-by-mentioner-id="userID",
         :list-id.sync="trendsListId")
+
+      //- товары
+      photos-component(
+        v-if="photoType === 'product'",
+        :filter-by-shop-id="shopId",
+        :list-id.sync="listId")
 
   navbar-component(:current='listId')
 
@@ -102,9 +103,6 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },
     route: {
       data( { to: { params: { id } } } ) {
-        //hack так как при преходе с дргого юзера
-        //пропы остаются теми же, не совсем корректно работает Vue
-        this.$set('photoType','product');
         if ( this.isAuth ) {
           return this.openProfile( id )
           .then(()=>{
@@ -113,6 +111,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
             .then((data)=>{
               if(!data.length){
                  this.$set('noLikes',true);
+                 console.log('нету лайков')
+                  //hack так как при преходе с дргого юзера
+                  //пропы остаются теми же, не совсем корректно работает Vue
               }
             });
           })
@@ -123,6 +124,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
           return Promise.resolve();
         }
       }
+    },
+    created(){
+      //Баг подвисания ещё
+      this.$store.state.products.listId = '';
     },
     ready(){
       //check auth
@@ -155,16 +160,23 @@ scroll-component(v-if="isDone", class="profile-cnt")
     computed: {
       shopId(){
         if(this.user.supplier_of !== null){
-          return this.user.supplier_of[0];
+          console.log(this.user);
           this.$set('photoType','product');
+          return this.user.supplier_of[0];
         }
 
         if(this.user.seller_of !== null){
-          return this.user.seller_of[0];
+          alert(1);
           this.$set('photoType','product');
+          return this.user.seller_of[0];
         }
 
         this.$set('photoType','like');
+        this.$set('noProducts', true);
+
+        //даем серверу несуществующий айди,
+        //так как надо чтобы сервер ничего не прислал
+        return 1;
 
       },
       isSelfPage(){
