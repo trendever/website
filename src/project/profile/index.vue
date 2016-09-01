@@ -102,6 +102,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },
     route: {
       data( { to: { params: { id } } } ) {
+        //hack так как при преходе с дргого юзера
+        //пропы остаются теми же, не совсем корректно работает Vue
+        this.$set('photoType','product');
         if ( this.isAuth ) {
           return this.openProfile( id )
           .then(()=>{
@@ -110,9 +113,6 @@ scroll-component(v-if="isDone", class="profile-cnt")
             .then((data)=>{
               if(!data.length){
                  this.$set('noLikes',true);
-                 //hack так как при преходе с дргого юзера
-                 //пропы остаются теми же, не совсем корректно работает Vue
-                 this.$set('photoType','product');
               }
             });
           })

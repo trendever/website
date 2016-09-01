@@ -174,13 +174,13 @@ scroll-top
         const items  = value.slice( idStart, idEnd );
 
         let interateCout = Math.ceil(items.length / this.getColumnCount);
-
+        let bundleId = 0;
         for(let i = 0; i < interateCout; i++ ){
 
           let bundle = items.splice(0,this.getColumnCount);
           //нужен id для того чтобы изображения постоянно показывались а не появлялись из ничего
           //каждый раз при скролле
-          let bundleId = bundle[0].id;
+          bundleId += +bundle[0].id;
 
           _lines.push({uid: bundleId, bundle: bundle});
 
@@ -308,10 +308,12 @@ scroll-top
       rowHeight: {
         cache: false,
         get(){
-          if (window.browser.mobile && this.getColumnCount == 3){
-            return this.$els.container.clientWidth / this.getColumnCount;
-          }else{
-            return this.$els.container.clientWidth / this.getColumnCount + 95;
+          if(this.$els.container !== null ) {
+            if (window.browser.mobile && this.getColumnCount == 3){
+              return this.$els.container.clientWidth / this.getColumnCount;
+            }else{
+              return this.$els.container.clientWidth / this.getColumnCount + 95;
+            }
           }
         }
       },
