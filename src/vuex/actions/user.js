@@ -222,3 +222,10 @@ export const logOut = ( { dispatch } ) => {
   dispatch( types.USER_LOGOUT )
 
 };
+
+
+export const setMyCurrentList = ( { dispatch }, list ) => {
+
+  dispatch(types.USER_SET_MY_CURRENT_LIST, list);
+
+};
