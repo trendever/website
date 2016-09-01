@@ -201,7 +201,7 @@ const mutations = {
 
     }
 
-    if ( state.lists.hasOwnProperty( 'profile' ) ) {
+    if ( state.lists.hasOwnProperty( 'profile_trends' ) ) {
 
       const { products } = state.lists.profile_trends;
 
