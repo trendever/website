@@ -141,7 +141,15 @@ scroll-top
 
         this.scrollCnt.scrollTop = scrollTop;
 
-      } );
+      } ).then(()=>{
+
+        if(this.$route.name === 'profile' || this.$route.name === 'user'){
+
+          this.scrollCnt.scrollTop = 0;
+
+        }
+
+      })
 
     },
 

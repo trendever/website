@@ -106,9 +106,6 @@ scroll-component(v-el:scroll-cnt)
     },
     ready(){
 
-      //убираем баг подвисания "ЕЩЕ";
-      this.$store.state.products.listId = '';
-
       if ( this.isAuth ) {
 
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', (() => {
