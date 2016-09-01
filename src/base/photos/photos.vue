@@ -6,7 +6,7 @@
     template(v-for='line in items | lines' track-by="uid")
       .photos__list__cell(v-bind:style="top[$index]")
         template(v-for='item in line.bundle' track-by="id")
-          photo-item( :product.once='item', :animate='true' )
+          photo-item( :product.once='item.data', :product-id.once="item.id", :animate='true' )
 
   .photos__more-wrap(v-if='hasMore')
     .photos__more( :class='{"_active": isLoading}' )
@@ -55,6 +55,7 @@ scroll-top
 
       getters: {
         getComeBack,
+        userID,
         items:getProducts,
         hasMore,
         isLoading,
@@ -86,10 +87,10 @@ scroll-top
         type: Boolean,
         default: false
       },
-      filterByUserName: {
+      filterByShopId: {
         default: null
       },
-      filterByUserId: {
+      filterByMentionerId: {
         default: null
       },
       listId: {
@@ -142,13 +143,17 @@ scroll-top
         this.$set( 'isRunning', true );
 
         this.scrollCnt.scrollTop = scrollTop;
-        //only for filter likes / products
+
       } ).then(()=>{
-        if(!this.items.length){
-          this.$dispatch('setLikePhotoType');
+
+        if(this.$route.name === 'profile' || this.$route.name === 'user'){
+
+          this.scrollCnt.scrollTop = 0;
+
         }
+
       })
-      
+
     },
 
     beforeDestroy() {
@@ -165,9 +170,6 @@ scroll-top
 
       this.$set( 'isRunning', false );
 
-      //убираем баг подвисания загрузки "ЕЩЕ";
-      this.$store.state.products.listId = '';
-
     },
 
     filters: {
@@ -179,14 +181,14 @@ scroll-top
 
         const items  = value.slice( idStart, idEnd );
 
-        let interateCout = Math.ceil(items.length / this.getColumnCount);  
-
+        let interateCout = Math.ceil(items.length / this.getColumnCount);
+        let bundleId = 0;
         for(let i = 0; i < interateCout; i++ ){
 
           let bundle = items.splice(0,this.getColumnCount);
           //нужен id для того чтобы изображения постоянно показывались а не появлялись из ничего
           //каждый раз при скролле
-          let bundleId = bundle[0].id;
+          bundleId += +bundle[0].id;
 
           _lines.push({uid: bundleId, bundle: bundle});
 
@@ -202,13 +204,13 @@ scroll-top
 
         if ( this.rowHeight > 0 && this.isRunning ) {
 
-          const { search, tags, filterByUserName, filterByUserId } = this;
+          const { search, tags, filterByShopId, filterByMentionerId } = this;
 
           this.updateScroll( {
             scrollTop: this.scrollTop,
             rowHeight: this.rowHeight,
             scrollTopReal: this.scrollCnt.scrollTop,
-            searchOptions: { isSearch: search, isTags: tags, filterByUserName, filterByUserId }
+            searchOptions: { isSearch: search, isTags: tags, filterByShopId , filterByMentionerId }
           } );
 
         }
@@ -217,14 +219,16 @@ scroll-top
 
       _run( force = false ) {
 
-        const { search, tags, filterByUserName, filterByUserId } = this;
+        const { search, tags, filterByShopId, filterByMentionerId } = this;
 
-        //fix для возврата по тегу после product-detail
+<<<<<<< HEAD
         if(this.getComeBack){
           force = true;
         }
-
-        return this.run( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force );
+        return this.run( { isSearch: search, isTags: tags, filterByShopId/*, filterByMentionerId */}, force );
+=======
+        return this.run( { isSearch: search, isTags: tags, filterByShopId, filterByMentionerId }, force );
+>>>>>>> adding seller_of id to filter
 
       },
 
@@ -312,10 +316,12 @@ scroll-top
       rowHeight: {
         cache: false,
         get(){
-          if (window.browser.mobile && this.getColumnCount == 3){
-            return this.$els.container.clientWidth / this.getColumnCount;
-          }else{
-            return this.$els.container.clientWidth / this.getColumnCount + 95;
+          if(this.$els.container !== null ) {
+            if (window.browser.mobile && this.getColumnCount == 3){
+              return this.$els.container.clientWidth / this.getColumnCount;
+            }else{
+              return this.$els.container.clientWidth / this.getColumnCount + 95;
+            }
           }
         }
       },
@@ -327,9 +333,9 @@ scroll-top
         if ( Array.isArray( this.items ) ) {
 
           return this.items.length;
-         
+
         }
-        
+
         return 0;
 
       }
@@ -337,14 +343,6 @@ scroll-top
     },
 
     watch: {
-      filterByUserId(){
-        //для работы фильтров
-        this.setListId( this.listId + '_secondary' );
-        this._run(true);
-      },
-      filterByUserName(){
-        this._run(true);
-      },
       getColumnCount(){
         this.scrollCnt.scrollTop = this.getScrollData.scrollTop;
         this._setScroll();

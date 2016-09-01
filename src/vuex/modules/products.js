@@ -176,6 +176,8 @@ const mutations = {
 
   [PRODUCTS_UPDATE_LIKED_BY] ( state, product, user, like ) {
 
+    product = { id: product.id + '' , data: product };
+
     /**
      * Если я лайкнул я просто одного себя ставлю в liked_by.
      * Всё ровно сейчас необходимо каждый раз запрашивать объект продукта.
@@ -199,13 +201,13 @@ const mutations = {
 
     }
 
-    if ( state.lists.hasOwnProperty( 'profile' ) ) {
+    if ( state.lists.hasOwnProperty( 'profile_trends' ) ) {
 
-      const { products } = state.lists.profile;
+      const { products } = state.lists.profile_trends;
 
       if ( like ) {
 
-        state.lists.profile = Object.assign( {}, state.lists.profile, {
+        state.lists.profile_trends = Object.assign( {}, state.lists.profile_trends, {
           products: [ product ].concat( products )
         } )
 
@@ -225,7 +227,7 @@ const mutations = {
 
         }
 
-        state.lists.profile = Object.assign( {}, state.lists.profile, {
+        state.lists.profile_trends = Object.assign( {}, state.lists.profile_trends, {
           products: newProducts
         } )
 
@@ -239,7 +241,7 @@ const mutations = {
           {},
           state.lists,
           {
-            [ 'profile' ]: {
+            [ 'profile_trends' ]: {
 
               products: [ Object.assign( {}, product ) ],
               needLoadMore: false,

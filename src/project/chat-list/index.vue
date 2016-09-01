@@ -111,6 +111,7 @@ navbar-component(current='chat')
       }
     },
     ready(){
+
       if ( this.isAuth ) {
 
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', (() => {
