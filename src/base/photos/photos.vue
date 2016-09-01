@@ -55,7 +55,6 @@ scroll-top
 
       getters: {
         getComeBack,
-        userID,
         items:getProducts,
         hasMore,
         isLoading,
