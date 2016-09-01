@@ -13,7 +13,7 @@
     .photo__row.photo__title {{ title}}
     .photo__row
      .photo__summ(v-if="discountPrice")
-      | {{ discountPrice | curency_spaces }} 
+      | {{ discountPrice | curency_spaces }}
       i.ic-currency-rub
      .photo__shopTitle {{suppliername}}
 </template>
@@ -62,11 +62,20 @@
     computed: {
       thumb() {
 
+        if (this.product && this.product.instagram_images) {
+          if (window.browser.mobile){
+            return this.product.instagram_images.find((img) => img.name === "S_square").url
+          }else{
+            return this.product.instagram_images.find((img) => img.name === "M_square").url
+          }
+
+        }
+
         if (this.product && this.product.images) {
           if (window.browser.mobile){
-            return this.product.images.find((img) => img.name === "S_square").url  
+            return this.product.images.find((img) => img.name === "S_square").url
           }else{
-            return this.product.images.find((img) => img.name === "M_square").url  
+            return this.product.images.find((img) => img.name === "M_square").url
           }
         }
         // return this.product.instagram_image_url
@@ -101,7 +110,15 @@
         return items[0].name
       },
       suppliername(){
-        return this.product.shop.name;
+        if(this.product.sho){
+
+          return this.product.shop.name;
+
+        }
+
+        return this.product.suppliername;
+
+
       }
     },
 
