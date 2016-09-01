@@ -110,13 +110,13 @@
         return items[0].name
       },
       suppliername(){
-        if(this.product.sho){
+        if(this.product.shop){
 
           return this.product.shop.name;
 
         }
 
-        return this.product.suppliername;
+        return this.product.supplier.instagram_username;
 
 
       }
