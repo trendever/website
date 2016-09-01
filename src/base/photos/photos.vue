@@ -221,14 +221,10 @@ scroll-top
 
         const { search, tags, filterByShopId, filterByMentionerId } = this;
 
-<<<<<<< HEAD
         if(this.getComeBack){
           force = true;
         }
-        return this.run( { isSearch: search, isTags: tags, filterByShopId/*, filterByMentionerId */}, force );
-=======
         return this.run( { isSearch: search, isTags: tags, filterByShopId, filterByMentionerId }, force );
->>>>>>> adding seller_of id to filter
 
       },
 
