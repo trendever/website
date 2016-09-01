@@ -28,7 +28,7 @@
                v-if="!currentCardId && !errorMessage",
                v-model="currentCardNumber").check-card-input
           h1(v-if="errorMessage") {{ errorMessage }}
-          h1(v-if="currentCardId") **** **** **** {{ currentCardNumber }}
+          h1(v-if="currentCardId && !errorMessage") **** **** **** {{ currentCardNumber }}
       p.payment-note Деньги будут перечислены#[br]  прямо вам на карту с помощью#[br]  платежного сервиса Payture.ru
 
   .btn-container
@@ -76,7 +76,8 @@ export default{
     leadOrder(){
 
       if(!this.currentCardNumber){
-        this.setMessage('Карта не выбрана')
+        this.setMessage('Карта не выбрана');
+        return;
       }
 
       let newCardNumber = null;
@@ -194,7 +195,7 @@ export default{
       cardService.createOrder({
         amount: +this.billPrice,
         card: this.currentCardId,
-        currency: 0,
+        currency: 0,//0 - рубли
         lead_id: this.getLeadId
       }).then((order)=>{
         this.setMessage('Счет выставлен');
@@ -203,8 +204,9 @@ export default{
         this.setOpen = false;
         this.setShowMenu(false);
 
+      },err=>{
+        this.setMessage('Укажите цену');
       });
-
     },
     //метод не используется в компоненте
     deleteCard(cardId){
@@ -243,11 +245,11 @@ export default{
   },
   watch:{
     cardNumber(val){
+
       let currentCard = this.userCards.find(card=>{
         return card.number === val;
       });
 
-      this.setShowMenu(false);
       this.$set('currentCardId',currentCard.id);
       this.$set('currentCardNumber',currentCard.number);
 
@@ -259,6 +261,7 @@ export default{
           if(data !== null){
             this.$set('userCards', data);
           }
+
         });
       }
     }
