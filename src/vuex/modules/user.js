@@ -19,7 +19,7 @@ const state = {
   all: {},
   photoConfigs: {},
   done: false,
-  myCurrentList: ''
+  myCurrentList: 'product'
 
 };
 

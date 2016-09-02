@@ -15,7 +15,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
             img(:src="getUserPhoto")
 
           //.profile_info_count 0
-          // .profile_info_count_t Подписки 
+          // .profile_info_count_t Подписки
 
         .profile_desc
           //.profile_desc_t {{getSlogan}} Слоган Профиля
@@ -101,21 +101,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     route: {
+      canReuse: false,
       data( { to: { params: { id } } } ) {
         if ( this.isAuth ) {
           return this.openProfile( id )
-          .then(()=>{
-            productsService
-            .find({ mentioner_id: this.userID })
-            .then((data)=>{
-              if(!data.length){
-                 this.$set('noLikes',true);
-                 //console.log('нету лайков')
-                  //hack так как при преходе с дргого юзера
-                  //пропы остаются теми же, не совсем корректно работает Vue
-              }
-            });
-          })
           .catch( () => {
             this.$router.go( { name: '404' } );
           } );
@@ -127,19 +116,71 @@ scroll-component(v-if="isDone", class="profile-cnt")
     created(){
       //Баг подвисания ещё
       this.$store.state.products.listId = '';
+
     },
     ready(){
-      //check auth
-      if(this.getMyCurrentList){
-        this.$set('photoType',this.getMyCurrentList);
-      }
       if ( !this.isAuth ) {
         this.$router.replace( { name: 'signup' } );
       }
+
+      this._setTab();
+
     },
     beforeDestroy(){
       if ( this.isAuth ) {
         this.closeProfile();
+      }
+    },
+    methods:{
+      _setTab(){
+        this._checkStaff().then(staff=>{
+          if(!staff.likes){
+            this.$set('noLikes',true);
+          } else {
+            this.$set('noLikes',false);
+          }
+
+          if(!staff.products){
+            this.$set('noProducts',true);
+            this.$set('photoType','like')
+          } else {
+            this.$set('noProducts',false);
+          }
+
+        }).then(()=>{
+          if(this.$route.name === 'profile' && this.isSelfPage) {
+            if(this.getMyCurrentList){
+              this.$set('photoType',this.getMyCurrentList);
+            }
+          }
+        })
+
+      },
+      _checkStaff(){
+        return new Promise((resolve,reject) => {
+          productsService
+            .find({ mentioner_id: this.userID })
+            .then((data)=>{
+              let staff = {};
+              if(!data.length){
+                staff.likes = false;
+              } else {
+                staff.likes = true;
+              }
+              return staff;
+            }).then(staff=>{
+              productsService
+                .find({ shop_id: this.shopId })
+                .then((data)=>{
+                  if(!data.length){
+                    staff.products = false;
+                  } else {
+                    staff.products = true;
+                  }
+                  resolve(staff);
+              });
+            })
+        })
       }
     },
     vuex: {
@@ -163,7 +204,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },
     watch:{
       photoType(val){
-        if(this.isSelfPage){
+        if(this.$route.name === 'profile' && this.isSelfPage){
           if(val === 'like'){
             this.setMyCurrentList('like');
           }
@@ -176,19 +217,19 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },
     computed: {
       shopId(){
+        let shopId = '';
+
         if(this.user.supplier_of !== null){
-          console.log(this.user);
-          this.$set('photoType','product');
-          return this.user.supplier_of[0];
+          shopId = this.user.supplier_of[0];
         }
 
         if(this.user.seller_of !== null){
-          this.$set('photoType','product');
-          return this.user.seller_of[0];
+          shopId = this.user.seller_of[0];
         }
 
-        this.$set('photoType','like');
-        this.$set('noProducts', true);
+        if(shopId){
+          return shopId;
+        }
 
         //даем серверу несуществующий айди,
         //так как надо чтобы сервер ничего не прислал
