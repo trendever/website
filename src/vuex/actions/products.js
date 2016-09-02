@@ -341,7 +341,7 @@ export const getSearchOptions = (
 
     if ( lastProduct !== null ) {
 
-      request.offset = getProducts( state ).length - 1;
+      request.offset = getProducts( state ).length;
 
     }
 
