@@ -95,7 +95,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
     data(){
       return {
         isFirst: false,
-        photoType: 'product',
+        photoType: '',
         noLikes: false,
         noProducts: false
       }
@@ -105,6 +105,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
       data( { to: { params: { id } } } ) {
         if ( this.isAuth ) {
           return this.openProfile( id )
+          .then(()=>{
+            this._setTab();
+          })
           .catch( () => {
             this.$router.go( { name: '404' } );
           } );
@@ -123,7 +126,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
         this.$router.replace( { name: 'signup' } );
       }
 
-      this._setTab();
+      //this._setTab();
 
     },
     beforeDestroy(){
@@ -142,10 +145,15 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
           if(!staff.products){
             this.$set('noProducts',true);
-            this.$set('photoType','like')
+            this.$set('photoType','like');
           } else {
             this.$set('noProducts',false);
+            this.$set('photoType','product');
           }
+
+        },err=>{
+
+          alert('Server error');
 
         }).then(()=>{
           if(this.$route.name === 'profile' && this.isSelfPage) {
