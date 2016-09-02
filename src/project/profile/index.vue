@@ -148,19 +148,26 @@ scroll-component(v-if="isDone", class="profile-cnt")
             this.$set('photoType','like');
           } else {
             this.$set('noProducts',false);
-            this.$set('photoType','product');
+
+            if(this.$route.name === 'profile' && this.isSelfPage) {
+
+              if(this.getMyCurrentList){
+
+                this.$set('photoType',this.getMyCurrentList);
+
+              }
+
+            } else {
+
+              this.$set('photoType','product');
+
+            }
           }
 
         },err=>{
 
           alert('Server error');
 
-        }).then(()=>{
-          if(this.$route.name === 'profile' && this.isSelfPage) {
-            if(this.getMyCurrentList){
-              this.$set('photoType',this.getMyCurrentList);
-            }
-          }
         })
 
       },
