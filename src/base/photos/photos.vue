@@ -112,11 +112,14 @@ scroll-top
           maxHeight: '100px'
         },
         lastSelectedTagId: null,
-        isRunning: false
+        isRunning: false,
+        containerClientWidth: ''
       }
     },
 
     ready() {
+      //need for no vue warning about container.clientWidth in rowHeight
+      this.$set('containerClientWidth',this.$els.container.clientWidth)
 
       this.setContainerWidth( this.$els.container.offsetWidth );
 
@@ -286,37 +289,38 @@ scroll-top
       top: {
         cache: false,
         get(){
-          if(this.$els.container){
-            const { idStart, idEnd } = this.getScrollData;
 
-            const rowCount = ( idEnd - idStart ) / this.getColumnCount;
+          const { idStart, idEnd } = this.getScrollData;
 
-            const rowHeight = idStart / this.getColumnCount * this.rowHeight;
+          const rowCount = ( idEnd - idStart ) / this.getColumnCount;
 
-            const tops = [];
+          const rowHeight = idStart / this.getColumnCount * this.rowHeight;
 
-            for ( let i = 0; i < rowCount; i++ ) {
+          const tops = [];
 
-              tops.push( {
-                top: `${ rowHeight + i * this.rowHeight}px`
-              } );
+          for ( let i = 0; i < rowCount; i++ ) {
 
-            }
-            return tops;
+            tops.push( {
+              top: `${ rowHeight + i * this.rowHeight}px`
+            } );
+
           }
-          return [];
+          return tops;
         }
       },
 
       rowHeight: {
         cache: false,
         get(){
-          if(this.$els.container !== null ) {
-            if (window.browser.mobile && this.getColumnCount == 3){
-              return this.$els.container.clientWidth / this.getColumnCount;
-            }else{
-              return this.$els.container.clientWidth / this.getColumnCount + 95;
-            }
+
+          if (window.browser.mobile && this.getColumnCount == 3){
+
+            return this.containerClientWidth / this.getColumnCount;
+
+          } else {
+
+            return this.containerClientWidth / this.getColumnCount + 95;
+
           }
         }
       },
