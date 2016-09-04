@@ -29,9 +29,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
           span(v-bind:class="{'seleted': photoType === 'like'}")
             input(type="radio" value="like" v-model="photoType" id="filter-likes")
             label(for="filter-likes") Мои Тренды
-
-       .profile_no-goods(v-if="noLikes && noProducts") Здесь пусто, #[br]... потому что ты пока ничего не сохранил.
-       .profile_no-goods-banner(v-if="noLikes && noProducts") Нажми Сохранить под товаром #[br] или напиши @savetrend под постом в #[br] Instagram, #[br] чтобы добавить тренд сюда в ленту.
+       template(v-if="loaded")
+        .profile_no-goods(v-if="noLikes && noProducts") Здесь пусто, #[br]... потому что ты пока ничего не сохранил.
+        .profile_no-goods-banner(v-if="noLikes && noProducts") Нажми Сохранить под товаром #[br] или напиши @savetrend под постом в #[br] Instagram, #[br] чтобы добавить тренд сюда в ленту.
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscrib//e") ПОДПИСАТЬСЯ
 
@@ -96,8 +96,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
       return {
         isFirst: false,
         photoType: '',
-        noLikes: false,
-        noProducts: false
+        noLikes: true,
+        noProducts: true,
+        loaded: false
       }
     },
     route: {
@@ -163,6 +164,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
             }
           }
+          this.$set('loaded',true);
 
         },err=>{
 
