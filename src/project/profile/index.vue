@@ -8,7 +8,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
       .profile
         .profile_info
 
-          //.profile_info_count 0
+          //.profile_info_count 01
           // .profile_info_count_t Подписчики
 
           .profile_info_img
