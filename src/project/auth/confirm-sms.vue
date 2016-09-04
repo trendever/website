@@ -30,13 +30,13 @@ div
                 v-if='!isCompleted',
                 v-show='needNewSMS'
                 @click.prevent='sendSMS') Отправить новый код
-          .btn-container            
+          .btn-container
             button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
               :disabled='isDisabled',
               v-el:confirm-btn,
               @keydown.enter='onButton()',
               @click='onButton') {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
-            
+
 </template>
 
 <script type="text/babel">
@@ -144,8 +144,8 @@ div
               this.executeCallbackOnSuccessAuth()
               return 0;
             }
-
-          }).then((success)=>{
+            //показываем сообщение о тестовом сайте
+          });/*.then((success)=>{
             if(success){
 
               let hasEmail = false;
@@ -160,12 +160,11 @@ div
             }
           }).then(flag=>{
               if(!flag){
-                //alert('нету email');
                 setTimeout(()=>{
                   this.$router.go({name: 'subscribe'});
                 },1000 * 60 * 2);
               }
-          })
+          })*/
       },
 
       onErrorCode() {
