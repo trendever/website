@@ -17,7 +17,7 @@ const state = {
 
   all: {
     /**
-     * 1: messages
+     * 1: messages []
      * */
   },
 
@@ -34,8 +34,64 @@ const state = {
   lengthList: 50,
   imgPopUpUrl: false,
   imgWidth: 0,
-  imgHeight: 0
+  imgHeight: 0,
+  action: ''
+
 };
+
+
+let chatService;
+let profileService;
+let productsServie;
+
+//A P P L I C T I O N  A C T I O N
+class stateAction {
+
+
+    constructor(){
+
+      this.chat = chatService;
+
+
+      /*develop*/
+      //this.profile = profileService;
+      //this.products = productsServie;
+
+
+    }
+
+    'pending'(){
+
+      this.chat.pend();
+
+    },
+
+    'approve'() {
+
+      this.chat.activate()
+
+    },
+
+    'payment'() {
+
+      this.chat
+        .pay()
+        .then(payment=>{
+          if(payment.message === 'success' && payment.token){
+
+            this.chat.activate();
+
+          } else {
+
+            this.chat.block();
+
+          }
+      })
+    }
+ }
+
+
+
 
 function getDateMessage( date, id ) {
   return {
@@ -100,7 +156,7 @@ const addServiceMessage = (function() {
             messages[ i ].closestMessage = true;
 
           } else {
-  
+
             lastUserId                   = messages[ i ].user.user_id;
             messages[ i ].closestMessage = false;
 
@@ -131,7 +187,7 @@ const addServiceMessage = (function() {
             if(type === 'suplier.called' || type === 'customer.called' || type === 'customer.phone.added'){
 
               newMessage.push( messages[ i ] );
-              
+
             }
 
           } else {
@@ -224,7 +280,7 @@ const mutations = {
     const { all } = state;
 
     if ( all.hasOwnProperty( id ) ) {
-      
+
       for ( let i = all[ id ].length; i; i-- ) {
         if ( all[ id ][ i - 1 ].id === messages[ 0 ].id ) {
           return;
@@ -235,7 +291,7 @@ const mutations = {
       if(messages[ 0 ].created_at === null){
         return;
       }
-      
+
       state.all = Object.assign( {}, all, { [id]: addServiceMessage( all[ id ].concat( messages ) ) } );
 
     } else {
