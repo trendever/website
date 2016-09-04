@@ -163,27 +163,7 @@ div
               this.executeCallbackOnSuccessAuth()
               return 0;
             }
-            //показываем сообщение о тестовом сайте
-          });/*.then((success)=>{
-            if(success){
-
-              let hasEmail = false;
-              return getUser({user_id:this.$store.state.user.myId}).then(user=>{
-                console.log(user);
-
-                hasEmail = user.has_email;
-
-                return hasEmail;
-
-              })
-            }
-          }).then(flag=>{
-              if(!flag){
-                setTimeout(()=>{
-                  this.$router.go({name: 'subscribe'});
-                },1000 * 60 * 2);
-              }
-          })*/
+          });
       },
 
       onErrorCode() {
