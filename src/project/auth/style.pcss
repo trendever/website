@@ -326,6 +326,27 @@
   height: 555px;
 }
 
+.btn-container-mobile{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  right: 0;
+
+  div.link-div{
+    padding-bottom: 15px;
+  }
+
+  button.btn.btn_fixed-bottom{
+    @media(--tabletandless) {
+      position: relative;
+      width: 100%;
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+  }
+}
+
 .btn-container button.btn.btn_fixed-bottom{
   @media(--tabletandless) {
     position: fixed !important;
