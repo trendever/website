@@ -11,7 +11,7 @@
 
       .header__center
         .header__left-logo
-         a(href="#")
+         a(v-link="{name: 'home'}")
           img(src="../img/logo-main.svg")
         .header__text(v-if="centerTextLink === null") {{ title }}
         .header__text.active(v-if="centerTextLink !== null", v-link="centerTextLink") {{ title }}

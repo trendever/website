@@ -7,7 +7,8 @@ scroll-component
     .section__content
       article.article
         header.article__header
-          img(src='../../../base/img/logo.svg')
+          a(v-link="{name: 'home'}")
+            img(src='../../../base/img/logo.svg')
         .article__content
           h3
             | 1. Срок действия, расторжение и изменение
