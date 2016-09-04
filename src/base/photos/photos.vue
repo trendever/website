@@ -14,7 +14,6 @@
         .photos__more__anim-ic: i.ic-update
 
   .photos__no-more-wrap(v-if='itemsLength === 0 && !hasMore')
-    .photos__no-goods Товаров не найдено
     .main__bottom.__no-goods: a.link.link_primary(
       @click.prevent.stop='clearSearch()',
       href='#',
