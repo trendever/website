@@ -61,3 +61,8 @@ export const LEAD_INC_LENGTH_LIST = 'LEAD_INC_LENGTH_LIST';
 export const LEAD_UPDATE = 'LEAD_UPDATE';
 export const LEAD_SET_SCROLL = 'LEAD_SET_SCROLL';
 export const LEAD_CLOSE = 'LEAD_CLOSE';
+
+
+//Action
+
+export const ACTION_SET_APPROVE = 'ACTION_SET_APPROVE';

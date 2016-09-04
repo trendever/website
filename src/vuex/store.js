@@ -10,6 +10,7 @@ import leads from './modules/leads';
 import conversation from './modules/conversation';
 import products from './modules/products';
 import search from './modules/search';
+import action from './modules/action';
 
 
 Vue.use(Vuex);
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     leads,
     products,
     search,
+    action
   },
   strict: config.debug,
   middlewares: config.debug ? [createLogger()] : []
