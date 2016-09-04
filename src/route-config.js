@@ -90,11 +90,6 @@ export function configRouter(router) {
      component: require('project/payment/pay-on.vue')
    },
 
-   'subscribe': {
-    name: 'subscribe',
-    component: require('project/subscribe/index.vue')
-  },
-
   '/:id': {
       // !important it must be last of the list.
       // (exlclude '*' not found)
