@@ -43,6 +43,8 @@
     .tags-wrapper( v-el:tags )
       tags-component(
         :tags="tags",
+        :text-font-size="tagsFontSize",
+        :text-line-height="tagsLineHeight",
         :search-string="searchValue",
         :del-tag="removeTag",
         :add-tag="selectTag",
@@ -146,6 +148,22 @@
         done();
       });
 
+    },
+    computed:{
+      tagsFontSize(){
+        if(window.browser.mobile){
+          return null;
+        }
+        return '16px';
+
+      },
+      tagsLineHeight(){
+        if(window.browser.mobile){
+          return null;
+        }
+        return '27px';
+
+      }
     },
     methods: {
 
