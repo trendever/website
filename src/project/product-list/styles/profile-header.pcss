@@ -1,10 +1,39 @@
 @import 'base/vars/vars.pcss';
 
 .profile-header {
-  position: relative;
+  /* position: relative;
   height: 130px;
   margin-bottom: 20px;
-  text-align: left;
+  text-align: left; */
+
+  &__mobile-slider{
+    width: 464px;
+    height: 366px;
+    padding-top: 25px;
+    background-image: url(../img/mob.png);
+    background-repeat: no-repeat;
+    background-size: 347px;
+    background-position: 61px 25px;
+    display: inline-block;
+    float: left;
+    img{
+      width: 276px;
+      height: 263px;
+    }
+    @media(--smalldesktop) {
+      width: 342px;
+      background-position: 0px 25px;
+    }
+  }
+
+  &__mobile-slider-slide{
+    width: 276px;
+    height: 263px;
+    display: inline-block;
+    margin-top: 78px;
+    /* background-image: url('../img/blue_slide.jpg');
+    background-repeat: no-repeat; */
+  }
 
   &__close-menu {
     cursor:pointer;
@@ -24,12 +53,23 @@
     justify-content: center;
 
     &__ic {
-      margin: 30px 10px;
+      margin: 0px 10px;
       transition: $btn-transition;
       text-decoration: none;
       color: $color__white;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-      font-size: 40px;
+      font-size: 26px;
+
+      i{
+        margin-top: 18px;
+      }
+
+      &:first-child{
+        margin-left: 3px;
+      }
+      &:nth-child(3){
+        margin-right: 0px;
+      }
 
       &:hover {
         cursor: pointer;
@@ -152,4 +192,3 @@
 }
 
 }
-
