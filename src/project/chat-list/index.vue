@@ -16,14 +16,15 @@ scroll-component(v-el:scroll-cnt)
       .section__content
         .chat-list(v-bind:style="styleObject")
             chat-list-item(v-for='lead in getLeads | orderBy "updated_at" -1 | cutList',:lead='lead')
-    .chat-list-cnt-is-empty(v-if='isEmptyLeads')
-      .chat-list-cnt-is-empty__container Нет чатов,#[br]
-      span  ... потому что ты пока ничего #[br] не покупаешь и не продаешь.
-    .chat-list-cnt-is-empty__banner Нажми Купить 
-     span под товаром #[br] или 
-     span.want напиши @wantit 
-     span под постом в Instagram, #[br] и здесь появится шопинг-чат.
-    navbar-component(current='chat')
+    template(v-if='isEmptyLeads')
+      .chat-list-cnt-is-empty
+        .chat-list-cnt-is-empty__container Нет чатов,#[br]
+        span  ... потому что ты пока ничего #[br] не покупаешь и не продаешь.
+      .chat-list-cnt-is-empty__banner Нажми Купить 
+       span под товаром #[br] или 
+       span.want напиши @wantit 
+       span под постом в Instagram, #[br] и здесь появится шопинг-чат.
+      navbar-component(current='chat')
 
 .help-wrapper(v-if='isFirst')
   .help(@click='isFirst=false')

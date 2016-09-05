@@ -182,7 +182,12 @@
               console.error( `[ CONVERSATION_SET ERROR ]: `, error );
               this.$router.go( { name: 'home' } );
             }
-          );
+          ).then(()=>{
+            //redirect if no chat room
+            if(this.$store.state.conversation.id === null){
+              this.$router.go( { name: '404'});
+            }
+          });
       },
 
       runLoadingMessage(){

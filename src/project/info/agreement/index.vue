@@ -2,7 +2,7 @@
 
 <template lang="jade">
 scroll-component
-  header-component(title='Условия использования', show_on_elem='headerAnchor')
+  header-component(title='Условия использования', show_on_elem='headerAnchor', :back-link="{name: 'home'}")
   .section.main.top
     .section__content
       article.article

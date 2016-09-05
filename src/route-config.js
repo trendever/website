@@ -80,12 +80,12 @@ export function configRouter(router) {
       component: require('project/profile/index.vue')
     },
     
-    '/payment': {
+    '/mpay': {
       name: 'payment',
       component: require('project/payment/payment.vue')
     },
     
-    '/pay-on': {
+    '/mpayon': {
      name: 'pay-on',
      component: require('project/payment/pay-on.vue')
    },
