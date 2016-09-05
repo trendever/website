@@ -2,7 +2,8 @@
 <template lang="jade">
 
 div
-  .chat-bar.section__content
+  .chat-approve-btn(v-if='getAction === "approve"', @click='approveChat') ПОДТВЕРДИТЬ
+  .chat-bar.section__content(v-if="getAction !== 'approve'")
     .chat-bar_menu-btn(@click='setShowMenu(true)')
       i.ic-menu-light
     .chat-bar_input
@@ -15,7 +16,6 @@ div
                        v-on:touchstart='send($event)',
                        :class='{"__active": !!txtMsg}')
       i.ic-send-plane
-
   chat-menu
 
 </template>
@@ -25,6 +25,7 @@ div
 
   import store from 'vuex/store'
   import {
+    getAction,
     getId,
     getCurrentMember,
     getStatus,
@@ -32,6 +33,7 @@ div
   } from 'vuex/getters/chat.js'
 
   import {
+    setConversationAction,
     createMessage,
     setShowMenu,
     setStatus
@@ -83,11 +85,13 @@ div
 
     vuex: {
       actions: {
+        setConversationAction,
         createMessage,
         setShowMenu,
         setStatus
       },
       getters: {
+        getAction,
         getId,
         getCurrentMember,
         getShowMenu,
@@ -160,8 +164,12 @@ div
       },
 
       send ( event ) {
-        event.stopPropagation()
-        event.preventDefault()
+        if(event) {
+
+          event.stopPropagation()
+          event.preventDefault()
+
+        }
 
         const txtMsg = this.txtMsg.trim()
         if ( !txtMsg.length ) {
@@ -178,6 +186,9 @@ div
           ) {
             this.setStatus( 'PROGRESS', 'lead.state.changed' )
           }
+
+          this.setConversationAction('base');
+
         } )
 
         promise.catch( ( { code, errData } ) => {
@@ -195,6 +206,13 @@ div
           } )
 
         } )
+      },
+      approveChat(){
+
+        this.txtMsg = 'Привет;) да, подтверждаю!';
+
+        this.send();
+
       }
     },
 
