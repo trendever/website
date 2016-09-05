@@ -58,10 +58,11 @@
       button(v-link='{ name: "signup" }').profile-header__auth-btn ВХОД И РЕГИСТРАЦИЯ
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
-        //slider
+        slider
         //.hero__content__logo
         //img(src="img/blue_slide.jpg")
     .hero__content__description Шопинг в Instagram стал проще!
+     //span.hero__content__description.scroll-to-anchor
     .hero__content__footer
      a(href='https://www.fb.com/trendevercom', class='fb' target="_blank")
       i(class='ic-fb social')
@@ -90,6 +91,7 @@ import { logOut } from 'vuex/actions/user.js'
 import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
 import RightNavComponent from 'base/right-nav/index';
+import Slider from './slider.vue';
 
 export default {
   components:{
@@ -103,7 +105,7 @@ export default {
   },
 
   components :{
-    //Slider
+    Slider
   },
 
   ready() {
