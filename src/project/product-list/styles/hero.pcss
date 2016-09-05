@@ -67,13 +67,13 @@
       z-index: 1;
       display: inline-block;
 
-      background: url(../../../base/img/Trendever_logo-white.svg) no-repeat 0 27px;
-      background-size: 100%;
+      background: url(../../../base/img/Trendever_logo-white.svg) no-repeat;
+      background-size: 250px;
 
-      width: 530px;
-      height: calc(151px + 27px);
+      width: 250px;
+      height: 57px;
 
-      padding-top: 27px;
+      margin-top: 53px;
     }
 
     &__description {
@@ -90,6 +90,9 @@
       text-align: left;
       @media(--smalldesktop) {
         margin-left: 15px;
+      }
+      @media(--tablet) {
+        width: 70%;
       }
 
       .scroll-to-anchor {
@@ -117,10 +120,17 @@
         width: 70%;
         margin-left: 15px;
       }
+      @media(--tablet) {
+        width: 73%;
+      }
       .fb, .insta, .vk{
         color: #fff;
         font-size: 26px;
         margin-right: 12px;
+
+        @media(--tablet) {
+          margin-right: 6px;
+        }
       }
       .vk{
         margin-right: 0px;
@@ -141,6 +151,7 @@
         background-image: url('../img/insta_color1.png');
         background-size: 28px;
         background-position: 0px 16px;
+        border-radius: 5px;
       }
       .vk i:hover{
         background-image: url('../img/vk_color.svg');
@@ -153,6 +164,26 @@
       //margin-left: 74px;
       float: right;
       margin-top: 30px;
+
+
+      .app_store, .g_play{
+        color: #000;
+        background-color: #fff;
+        font-size: 40px;
+        height: 35px;
+        border-radius: 5px;
+        margin-right: 4px;
+      }
+      .ic-appstore, .ic-google_play{
+        height: 40px;
+        border-radius: 5px;
+      }
+      .ic-appstore:hover{
+        background-image: url('../img/appstore_color.svg');
+      }
+      .ic-google_play:hover{
+        background-image: url('../img/google_play_color.svg');
+      }
     }
 
     &__input-wrap{
@@ -160,9 +191,18 @@
       margin-left: 74px;
       width: 395px;
 
+      @media(--tablet) {
+        width: 335px;
+        margin-left: 35px;
+      }
+
       label{
         font-size: 22px;
         color: #fff;
+        @media(--tablet) {
+          font-size: 20px;
+          margin-left: -25px;
+        }
       }
 
       input{
@@ -176,6 +216,11 @@
         font-size: 14px;
         color: #808080;
         background-color: rgba(255,255,255, 0.8);
+
+        @media(--tablet) {
+          width: 141px;
+          text-indent: 3px;
+        }
       }
       input:focus{
         outline: none;
@@ -185,6 +230,9 @@
         font-size: 16px;
         color: #808080;
         text-indent: 12px;
+        @media(--tablet) {
+          text-indent: 3px;
+        }
       }
 
       :-moz-placeholder {
@@ -217,6 +265,9 @@
       background-color: #FFDE1E;
       letter-spacing: -1px;
       font-weight: 400;
+      @media(--tablet) {
+        width: 169px;
+      }
     }
     &__get-link:hover{
       background-color: #DEBD00;
@@ -344,22 +395,4 @@
     font-size: 60px;
   }
 }
-}
-.app_store, .g_play{
-  color: #000;
-  background-color: #fff;
-  font-size: 40px;
-  height: 35px;
-  border-radius: 5px;
-  margin-right: 4px;
-}
-.ic-appstore, .ic-google_play{
-  height: 40px;
-  border-radius: 5px;
-}
-.ic-appstore:hover{
-  background-image: url('../img/appstore_color.svg');
-}
-.ic-google_play:hover{
-  background-image: url('../img/google_play_color.svg');
 }
