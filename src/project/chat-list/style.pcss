@@ -30,11 +30,24 @@
       }
     }
     &__banner{
-      display: none;
+      z-index: 9999;
+      display: block;
+      position: absolute;
+      font-size: 24px;
+      width: 100%;
+      text-align: center;
+      background-color: #ececec;
+      bottom: 0px;
+      //padding: 30px;
+      padding-top: 30px;
+      padding-bottom: 30px;
+      color: #595959;
+      font-weight: bolder;
+      line-height: 30px;
       @media(--mobile) {
         display: block;
         position: absolute;
-        font-size: 32px;
+        font-size: 22px;
         width: 100%;
         text-align: center;
         background-color: #ececec;
@@ -50,7 +63,7 @@
         font-weight: 100;
       }
       span.want{
-        font-weight: bolder;
+        font-weight: bold;
       }
     }
   }

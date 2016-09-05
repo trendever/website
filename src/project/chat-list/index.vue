@@ -20,9 +20,9 @@ scroll-component(v-el:scroll-cnt)
       .chat-list-cnt-is-empty
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
         span  ... потому что ты пока ничего #[br] не покупаешь и не продаешь.
-      .chat-list-cnt-is-empty__banner Нажми Купить 
-       span под товаром #[br] или 
-       span.want напиши @wantit 
+      .chat-list-cnt-is-empty__banner Нажми Купить&nbsp
+       span под товаром или&nbsp
+       span.want напиши @wantit&nbsp
        span под постом в Instagram, #[br] и здесь появится шопинг-чат.
 navbar-component(current='chat')
 
