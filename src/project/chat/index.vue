@@ -190,14 +190,14 @@
               this.$router.go( { name: '404'});
             }
           }).then(()=>{
-
+            //show approve btn if first chat
             return this.getMessages.find(message=>{
               return message.parts[0].mime_type === 'text/plain' && message.user.user_id === this.$store.state.user.myId;
 
             })
 
           }).then(flagMessage=>{
-            if(!flagMessage){
+            if(!flagMessage && this.getCurrentMember.role === 1){
               this.setConversationAction('approve');
             }
           })

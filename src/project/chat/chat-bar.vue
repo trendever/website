@@ -2,7 +2,7 @@
 <template lang="jade">
 
 div
-  .chat-approve-btn(v-if='getAction === "approve"', @click='approveChat') ПОДТВЕРДИТЬ
+  .chat-approve-btn(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat') ПОДТВЕРДИТЬ
   .chat-bar.section__content(v-if="getAction !== 'approve'")
     .chat-bar_menu-btn(@click='setShowMenu(true)')
       i.ic-menu-light
