@@ -4,31 +4,50 @@
     .chat-msg-date
       template(v-if='msg.user.user_id === $store.state.user.myId')
         span 
-         | Вы отправили запрос на получение {{ammount}}
+         | Вы отправили запрос на получение {{getAmmount | curency_spaces}}
          i.ic-currency-rub
       template(v-else)
         span 
-         | {{getUsernameRaw}} отправил запрос на получение {{ammount}}
+         | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
          i.ic-currency-rub
     
 </template>
 
 <script type='text/babel'>
   import { getCurrentMember, getShopName, getLastMessageId, getLeadId } from 'vuex/getters/chat.js';
+  import {setConversationAction} from 'vuex/actions/chat.js'
   import { user } from 'vuex/getters/user.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
   import { formatTime, formatDatetime, escapeHtml, wrapLink } from './utils';
-  import * as cardService from 'services/card';
+
 
   export default{
+    data() {
+      return {
+        payid : 0,
+        ammount: 0
+      }
+    },
     props: {
       msg: {
         type: Object,
         required: true
       }
     },
-    vuex: {
+    watch: {
+        msg : (val) => {
+          let _payid = JSON.parse(val.parts[0].content).pay_id;
+          let _ammount = JSON.parse(val.parts[0].content).amount;
+          this.$set('payid',_payid);
+          this.$set('ammount',_ammount);
+          this.setConversationAction({type:'pay'});
+        }
+    },
+    vuex: { 
+      actions: {
+        setConversationAction
+      },
       getters: {
         getShopName,
         getCurrentMember,
@@ -37,22 +56,13 @@
         getLeadId
       }
     },
-    methods:{
-      pay(){
-        cardService.createPayment({
-          id: this.payId,
-          lead_id: this.getLeadId
-        }).then(path=>{
-          window.location = path.redirect_url;
-        });
-      }
-    },
     computed: {
       payId(){
-        return JSON.parse(this.msg.parts[0].content).pay_id;
+        return this.payid
       },
-      ammount(){
-        return JSON.parse(this.msg.parts[0].content).amount;
+      getAmmount(){
+        let ammount = this.ammount;
+        return ammount/100;
       },
       isLoaded(){
         if( 'loaded' in this.msg){

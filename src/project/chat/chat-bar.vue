@@ -2,8 +2,9 @@
 <template lang="jade">
 
 div
+<<<<<<< HEAD
   .chat-approve-btn(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat') ПОДТВЕРДИТЬ
-  .chat-bar.section__content(v-if="getAction !== 'approve'")
+  .chat-bar.section__content(v-if="getAction !== 'approve' && getAction.type !== 'pay'")
     .chat-bar_menu-btn(@click='setShowMenu(true)')
       i.ic-menu-light
     .chat-bar_input
@@ -41,7 +42,7 @@ div
 
   import * as service from 'services/message'
   import * as leads from 'services/leads'
-
+  import * as cardService from 'services/card';
   import ChatMenu from './chat-menu.vue'
 
   export default{
@@ -187,7 +188,7 @@ div
             this.setStatus( 'PROGRESS', 'lead.state.changed' )
           }
 
-          this.setConversationAction('base');
+          this.setConversationAction({type:'base'});
 
         } )
 
@@ -213,6 +214,14 @@ div
 
         this.send();
 
+      },
+      pay(){
+        cardService.createPayment({
+          id: this.payId,
+          lead_id: this.getLeadId
+        }).then(path=>{
+          window.location = path.redirect_url;
+        });
       }
     },
 
