@@ -1,5 +1,6 @@
 import {
   CONVERSATION_SET,
+  CONVERSATION_SET_ACTION,
   CONVERSATION_RECEIVE_MESSAGE,
   CONVERSATION_LOAD_MESSAGE,
   CONVERSATION_SET_SHOW_MENU,
@@ -564,3 +565,9 @@ export const openPopUp = ( { dispatch }, url = false, width = 0, height = 0 ) =>
   dispatch( CONVERSATION_OPEN_IMG_POPUP, url, width, height )
 
 }
+
+export const setConversationAction = (({dispatch}, value)=>{
+
+  dispatch( CONVERSATION_SET_ACTION, value);
+
+})

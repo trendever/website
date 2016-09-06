@@ -108,11 +108,7 @@
   }
 
   @media(--mobile){
-    height: 100px;
-
-    .standalone & {
-      height:89px;
-    }
+    height:89px;
   }
   .profile-header{
 
@@ -123,7 +119,17 @@
       margin-left: 0;
       @media (--mobile) {
          width: 106px;
-         height: 100px;
+         height: 89px;
+      }
+
+      &-link{
+        font-weight: lighter!important;
+        line-height: 100px;
+        font-size:36px;
+        font-stretch:normal;
+        font-style:normal;
+        font-variant:normal;
+        font-weight:100;
       }
 
       &-links{
@@ -175,8 +181,8 @@
     }
 
     @media(--mobile){
-      width:290px;
-      padding-top: 18px;
+      width:257px;
+      padding-top: 15px;
       font-size: 60px;
     }
     &-apostrophe{

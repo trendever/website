@@ -38,7 +38,7 @@ if (config.raven.enabled) {
 window.mixpanel.init(config.mixpanel.token);
 window.socket_url = config.socket_server.url;
 
-Vue.config.debug = isDebug;
+Vue.config.debug = true;
 
 Vue.use(VueValidator);
 

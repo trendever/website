@@ -6,7 +6,7 @@
     </button>
     </div>
     <div class="rightSide">
-      <button class="buy_btn" @click="buy">ГДЕ КУПИТЬ</button>
+      <button class="buy_btn" @click="buy">КАК КУПИТЬ?</button>
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@
   export default {
     computed: {
       text(){
-        return (this.isLiked) ? 'СОХРАНИТЬ' : 'СОХРАНИТЬ';
+        return (this.isLiked) ? 'СОХРАНЕНО' : 'СОХРАНИТЬ';
       }
     },
     props: {

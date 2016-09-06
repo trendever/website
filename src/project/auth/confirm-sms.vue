@@ -25,17 +25,34 @@ div
                 spellcheck="false")
 
       .bottom-container.__fixed-width
+        template(v-if="isMobile")            
+          .btn-container-mobile
+            div.link-div
+              a.link-bottom(href='#',
+                v-if='!isCompleted',
+                v-show='needNewSMS'
+                @click.prevent='sendSMS') Отправить новый код
+            button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
+              :disabled='isDisabled',
+              v-el:confirm-btn,
+              @keydown.enter='onButton()',
+              @click='onButton') {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
+        template(v-else)
           .btn-container
             button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
               :disabled='isDisabled',
               v-el:confirm-btn,
               @keydown.enter='onButton()',
               @click='onButton') {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
-            .link-container
-              a.link-bottom(href='#',
-                v-if='!isCompleted',
-                v-show='needNewSMS'
-                @click.prevent='sendSMS') Отправить новый код
+          .link-container
+            a.link-bottom(href='#',
+              v-if='!isCompleted',
+              v-show='needNewSMS'
+              @click.prevent='sendSMS') Отправить новый код
+
+          
+          
+
 </template>
 
 <script type="text/babel">
@@ -93,6 +110,9 @@ div
       isDisabled() {
         return (this.code.length !== 4) && !this.isCompleted;
       },
+      isMobile(){
+        return window.browser.mobile;
+      }
     },
 
     methods: {
@@ -143,25 +163,7 @@ div
               this.executeCallbackOnSuccessAuth()
               return 0;
             }
-
-          }).then((success)=>{
-            if(success){
-
-              let hasEmail = false;
-              return getUser({user_id:this.$store.state.user.myId}).then(data=>{
-                hasEmail = data.User.has_email;
-                return hasEmail;
-
-              })
-            }
-          }).then(flag=>{
-              /*if(!flag){
-                //alert('нету email'); -works
-                setTimeout(()=>{
-                  this.$router.go({name: 'subscribe'});
-                },1000 * 60 * 2);
-              }*/
-          })
+          });
       },
 
       onErrorCode() {

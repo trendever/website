@@ -10,6 +10,7 @@ scroll-component
           a(v-link='{ name: "home" }')
             img(src='../../../base/img/logo-main.svg' alt='')
         a(href='#'
+          class="headersignup"
           v-if="!isAuth"
           v-link='{ name: "signup" }').btn-yellow.btn-yellow__s Войти
 

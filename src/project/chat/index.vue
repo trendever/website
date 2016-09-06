@@ -35,7 +35,8 @@
     setConversation,
     loadMessage,
     closeConversation,
-    openPopUp
+    openPopUp,
+    setConversationAction
   } from 'vuex/actions/chat.js';
   import {
     getMessages,
@@ -130,6 +131,7 @@
 
     vuex: {
       actions: {
+        setConversationAction,
         setConversation,
         loadMessage,
         clearNotify,
@@ -182,7 +184,23 @@
               console.error( `[ CONVERSATION_SET ERROR ]: `, error );
               this.$router.go( { name: 'home' } );
             }
-          );
+          ).then(()=>{
+            //redirect if no chat room
+            if(this.$store.state.conversation.id === null){
+              this.$router.go( { name: '404'});
+            }
+          }).then(()=>{
+            //show approve btn if first chat
+            return this.getMessages.find(message=>{
+              return message.parts[0].mime_type === 'text/plain' && message.user.user_id === this.$store.state.user.myId;
+
+            })
+
+          }).then(flagMessage=>{
+            if(!flagMessage && this.getCurrentMember.role === 1){
+              this.setConversationAction('approve');
+            }
+          })
       },
 
       runLoadingMessage(){

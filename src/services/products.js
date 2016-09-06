@@ -80,7 +80,8 @@ export const sendError = ( errorCode, state = null ) => {
  *
  * REJECT (one of ERROR_CODES)
  */
-export function find(
+//search product
+/*export function find(
   { limit, offset, from_id, direction, q, tags, instagram_name, user_id }
 ) {
 
@@ -103,6 +104,27 @@ export function find(
     } );
 
   } );
+}*/
+
+export function find( { query, tags, shop_id, mentioner_id, limit, offset } ) {
+
+  return new Promise( ( resolve, reject ) => {
+
+    channel.req('elastic_search', 'product', { query, tags, shop_id, mentioner_id, limit, offset })
+
+    .then(data => {
+
+      resolve(data.response_map);
+
+    })
+
+    .catch( error => {
+
+      console.error('products Find', error);
+      reject(ERROR_CODES.SERVER_ERROR);
+
+    });
+  })
 }
 
 /**

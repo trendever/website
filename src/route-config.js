@@ -79,21 +79,16 @@ export function configRouter(router) {
       name: 'profile',
       component: require('project/profile/index.vue')
     },
-    
-    '/payment': {
+
+    '/mpay': {
       name: 'payment',
       component: require('project/payment/payment.vue')
     },
-    
-    '/pay-on': {
+
+    '/mpayon': {
      name: 'pay-on',
      component: require('project/payment/pay-on.vue')
    },
-
-   'subscribe': {
-    name: 'subscribe',
-    component: require('project/subscribe/index.vue')
-  },
 
   '/:id': {
       // !important it must be last of the list.

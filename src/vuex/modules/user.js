@@ -5,7 +5,8 @@ import {
   USER_SET_MY_ID,
   USER_SET_PHOTOS_CONFIG,
   USER_CLOSE_PROFILE,
-  USER_LOGOUT
+  USER_LOGOUT,
+  USER_SET_MY_CURRENT_LIST
 } from '../mutation-types';
 
 // initial state
@@ -17,7 +18,8 @@ const state = {
   myId: null, // Id profile of current user.
   all: {},
   photoConfigs: {},
-  done: false
+  done: false,
+  myCurrentList: 'product'
 
 };
 
@@ -35,6 +37,23 @@ function picProfile( profile ) {
       name: profile.name,
       email: profile.email,
       phone: profile.phone,
+    },
+    (profile.supplier_of) ?
+    {
+      supplier_of: profile.supplier_of
+    }
+      :
+    {
+      supplier_of: null
+    }
+    ,
+    (profile.seller_of) ?
+    {
+      seller_of: profile.seller_of
+    }
+      :
+    {
+      seller_of: null
     },
     (profile.supplier) ?
     {
@@ -93,6 +112,9 @@ const mutations = {
     state.all          = {};
     state.photoConfigs = {};
     state.done         = false;
+  },
+  [USER_SET_MY_CURRENT_LIST]( state , list ){
+    state.myCurrentList = list;
   }
 };
 

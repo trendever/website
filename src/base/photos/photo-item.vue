@@ -13,7 +13,7 @@
     .photo__row.photo__title {{ title}}
     .photo__row
      .photo__summ(v-if="discountPrice")
-      | {{ discountPrice | curency_spaces }} 
+      | {{ discountPrice | curency_spaces }}
       i.ic-currency-rub
      .photo__shopTitle {{suppliername}}
 </template>
@@ -32,6 +32,10 @@
 
     props: [
       {
+        name: 'productId',
+        required: true
+      },
+      {
         name: 'product',
         required: true
       },
@@ -44,7 +48,7 @@
     methods: {
       goToProduct(){
 
-        this.$router.go( { name: "product_detail", params: { id: this.product.id } } );
+        this.$router.go( { name: "product_detail", params: { id: this.productId } } );
 
       },
       showImage(){
@@ -57,13 +61,22 @@
 
     computed: {
       thumb() {
+
         if (this.product && this.product.instagram_images) {
           if (window.browser.mobile){
-            return this.product.instagram_images.find((img) => img.name === "S_square").url  
+            return this.product.instagram_images.find((img) => img.name === "S_square").url
           }else{
-            return this.product.instagram_images.find((img) => img.name === "M_square").url  
+            return this.product.instagram_images.find((img) => img.name === "M_square").url
           }
-          
+
+        }
+
+        if (this.product && this.product.images) {
+          if (window.browser.mobile){
+            return this.product.images.find((img) => img.name === "S_square").url
+          }else{
+            return this.product.images.find((img) => img.name === "M_square").url
+          }
         }
         // return this.product.instagram_image_url
       },
@@ -97,7 +110,15 @@
         return items[0].name
       },
       suppliername(){
+        if(this.product.shop){
+
+          return this.product.shop.name;
+
+        }
+
         return this.product.supplier.instagram_username;
+
+
       }
     },
 

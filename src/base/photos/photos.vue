@@ -6,7 +6,7 @@
     template(v-for='line in items | lines' track-by="uid")
       .photos__list__cell(v-bind:style="top[$index]")
         template(v-for='item in line.bundle' track-by="id")
-          photo-item( :product.once='item', :animate='true' )
+          photo-item( :product.once='item.data', :product-id.once="item.id", :animate='true' )
 
   .photos__more-wrap(v-if='hasMore')
     .photos__more( :class='{"_active": isLoading}' )
@@ -14,7 +14,6 @@
         .photos__more__anim-ic: i.ic-update
 
   .photos__no-more-wrap(v-if='itemsLength === 0 && !hasMore')
-    .photos__no-goods Товаров не найдено
     .main__bottom.__no-goods: a.link.link_primary(
       @click.prevent.stop='clearSearch()',
       href='#',
@@ -31,6 +30,7 @@ scroll-top
 
   import { clearSearch } from 'vuex/actions/search.js';
   import { searchValue, tags, selectedTagsId } from 'vuex/getters/search.js';
+  import { getComeBack } from 'vuex/getters/products';
 
   import {
     run,
@@ -53,6 +53,7 @@ scroll-top
     vuex: {
 
       getters: {
+        getComeBack,
         items:getProducts,
         hasMore,
         isLoading,
@@ -84,10 +85,10 @@ scroll-top
         type: Boolean,
         default: false
       },
-      filterByUserName: {
+      filterByShopId: {
         default: null
       },
-      filterByUserId: {
+      filterByMentionerId: {
         default: null
       },
       listId: {
@@ -110,11 +111,14 @@ scroll-top
           maxHeight: '100px'
         },
         lastSelectedTagId: null,
-        isRunning: false
+        isRunning: false,
+        containerClientWidth: ''
       }
     },
 
     ready() {
+      //need for no vue warning about container.clientWidth in rowHeight
+      this.$set('containerClientWidth',this.$els.container.clientWidth)
 
       this.setContainerWidth( this.$els.container.offsetWidth );
 
@@ -140,13 +144,17 @@ scroll-top
         this.$set( 'isRunning', true );
 
         this.scrollCnt.scrollTop = scrollTop;
-        //only for filter likes / products
+
       } ).then(()=>{
-        if(!this.items.length){
-          this.$dispatch('setLikePhotoType');
+
+        if(this.$route.name === 'profile' || this.$route.name === 'user'){
+
+          this.scrollCnt.scrollTop = 0;
+
         }
+
       })
-      
+
     },
 
     beforeDestroy() {
@@ -163,9 +171,6 @@ scroll-top
 
       this.$set( 'isRunning', false );
 
-      //убираем баг подвисания загрузки "ЕЩЕ";
-      this.$store.state.products.listId = '';
-
     },
 
     filters: {
@@ -177,14 +182,14 @@ scroll-top
 
         const items  = value.slice( idStart, idEnd );
 
-        let interateCout = Math.ceil(items.length / this.getColumnCount);  
-
+        let interateCout = Math.ceil(items.length / this.getColumnCount);
+        let bundleId = 0;
         for(let i = 0; i < interateCout; i++ ){
 
           let bundle = items.splice(0,this.getColumnCount);
           //нужен id для того чтобы изображения постоянно показывались а не появлялись из ничего
           //каждый раз при скролле
-          let bundleId = bundle[0].id;
+          bundleId += +bundle[0].id;
 
           _lines.push({uid: bundleId, bundle: bundle});
 
@@ -200,13 +205,13 @@ scroll-top
 
         if ( this.rowHeight > 0 && this.isRunning ) {
 
-          const { search, tags, filterByUserName, filterByUserId } = this;
+          const { search, tags, filterByShopId, filterByMentionerId } = this;
 
           this.updateScroll( {
             scrollTop: this.scrollTop,
             rowHeight: this.rowHeight,
             scrollTopReal: this.scrollCnt.scrollTop,
-            searchOptions: { isSearch: search, isTags: tags, filterByUserName, filterByUserId }
+            searchOptions: { isSearch: search, isTags: tags, filterByShopId , filterByMentionerId }
           } );
 
         }
@@ -215,9 +220,12 @@ scroll-top
 
       _run( force = false ) {
 
-        const { search, tags, filterByUserName, filterByUserId } = this;
+        const { search, tags, filterByShopId, filterByMentionerId } = this;
 
-        return this.run( { isSearch: search, isTags: tags, filterByUserName, filterByUserId }, force );
+        if(this.getComeBack){
+          force = true;
+        }
+        return this.run( { isSearch: search, isTags: tags, filterByShopId, filterByMentionerId }, force );
 
       },
 
@@ -280,35 +288,38 @@ scroll-top
       top: {
         cache: false,
         get(){
-          if(this.$els.container){
-            const { idStart, idEnd } = this.getScrollData;
 
-            const rowCount = ( idEnd - idStart ) / this.getColumnCount;
+          const { idStart, idEnd } = this.getScrollData;
 
-            const rowHeight = idStart / this.getColumnCount * this.rowHeight;
+          const rowCount = ( idEnd - idStart ) / this.getColumnCount;
 
-            const tops = [];
+          const rowHeight = idStart / this.getColumnCount * this.rowHeight;
 
-            for ( let i = 0; i < rowCount; i++ ) {
+          const tops = [];
 
-              tops.push( {
-                top: `${ rowHeight + i * this.rowHeight}px`
-              } );
+          for ( let i = 0; i < rowCount; i++ ) {
 
-            }
-            return tops;
+            tops.push( {
+              top: `${ rowHeight + i * this.rowHeight}px`
+            } );
+
           }
-          return [];
+          return tops;
         }
       },
 
       rowHeight: {
         cache: false,
         get(){
+
           if (window.browser.mobile && this.getColumnCount == 3){
-            return this.$els.container.clientWidth / this.getColumnCount;
-          }else{
-            return this.$els.container.clientWidth / this.getColumnCount + 95;
+
+            return this.containerClientWidth / this.getColumnCount;
+
+          } else {
+
+            return this.containerClientWidth / this.getColumnCount + 95;
+
           }
         }
       },
@@ -320,9 +331,9 @@ scroll-top
         if ( Array.isArray( this.items ) ) {
 
           return this.items.length;
-         
+
         }
-        
+
         return 0;
 
       }
@@ -330,14 +341,6 @@ scroll-top
     },
 
     watch: {
-      filterByUserId(){
-        //для работы фильтров
-        this.setListId( this.listId + '_secondary' );
-        this._run(true);
-      },
-      filterByUserName(){
-        this._run(true);
-      },
       getColumnCount(){
         this.scrollCnt.scrollTop = this.getScrollData.scrollTop;
         this._setScroll();
