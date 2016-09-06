@@ -7,25 +7,26 @@
     .section.top.bottom
       .chat.section__content
         .chat_messages
-          div(v-for='msg in getMessages | list', track-by='$index')
-            chat-msg-status(
-              v-if='msg.parts[0].mime_type === "json/status"',
-              :msg='msg')
-            chat-msg-product(
-              v-if='msg.parts[0].mime_type === "text/json"',
-              :msg='msg')
-            chat-msg(
-              v-if='msg.parts[0].mime_type === "text/plain"',
-              :msg='msg')
-            chat-msg-info(
-              v-if='msg.parts[0].mime_type === "text/html"',
-              :msg='msg')
+          template(v-for='msg in getMessages | list', track-by='$index')
+            div
+              chat-msg-status(
+                v-if='msg.parts[0].mime_type === "json/status"',
+                :msg='msg')
+              chat-msg-product(
+                v-if='msg.parts[0].mime_type === "text/json"',
+                :msg='msg')
+              chat-msg(
+                v-if='msg.parts[0].mime_type === "text/plain"',
+                :msg='msg')
+              chat-msg-info(
+                v-if='msg.parts[0].mime_type === "text/html"',
+                :msg='msg')
+              chat-msg-img(
+                v-if='isImage(msg.parts[0].mime_type)',
+                :msg='msg')
             chat-msg-order(
-              v-if='msg.parts[0].mime_type === "json/order"',
-              :msg='msg')
-            chat-msg-img(
-              v-if='isImage(msg.parts[0].mime_type)',
-              :msg='msg')
+                v-if='msg.parts[0].mime_type === "json/order"',
+                :msg='msg')
 
     chat-bar
   scroll-top(:to-up="false")

@@ -11,8 +11,18 @@
       span 
        | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
        i.ic-currency-rub
+.chat-row.__center
+  .chat-msg-date(v-if="isDone")
+    template(v-if='msg.user.user_id === $store.state.user.myId')
+      span 
+       | Вы получите {{getAmmount | curency_spaces}}
+       i.ic-currency-rub
+    template(v-else)
+      span 
+       | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
+       i.ic-currency-rub
 
-.chat-approve-btn(v-if='msg.user.user_id !== $store.state.user.myId') ОПЛАТИТЬ
+.chat-approve-btn(v-if='msg.user.user_id !== $store.state.user.myId && !isDone' @click="pay") ОПЛАТИТЬ
     
 </template>
 
@@ -23,15 +33,14 @@
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
   import { formatTime, formatDatetime, escapeHtml, wrapLink } from './utils';
-
+  import * as cardService from 'services/card';
 
   export default{
     data() {
-      this.setConversationAction("pay");
-      return {
-        payid : 0,
-        ammount: 0
+      if (!this.msg.parts[1]){
+        this.setConversationAction("pay");
       }
+      return {}
     },
     props: {
       msg: {
@@ -51,7 +60,24 @@
         getLeadId
       }
     },
+    methods:{
+      pay(){
+        cardService.createPayment({
+          id: this.payId,
+          lead_id: this.getLeadId
+        }).then(path=>{
+          window.location = path.redirect_url;
+        });
+      }
+    },
     computed: {
+      isDone(){
+        if (this.msg.parts[1]){
+          return true;
+        }else{
+          return false;
+        }
+      },
       payId(){
         let _payid = JSON.parse(this.msg.parts[0].content).pay_id;
         return _payid;
