@@ -1,4 +1,14 @@
 <style src='./styles/hero.pcss'></style>
+<style>
+  .hero__content__logo{
+    /*display: none;*/
+  }
+  /*.hello__btn{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}*/
+</style>
 <template lang="jade">
 .header__menu__overlay(v-show='menuOpened', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
@@ -57,9 +67,9 @@
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
         slider
-        //.hero__content__logo
-        //img(src="img/blue_slide.jpg")
+     //.hero__content__logo
     .hero__content__description Шопинг в Instagram стал проще!
+    //button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }") Вход и регистрация
      //span.hero__content__description.scroll-to-anchor
     .hero__content__footer
      a(href='https://www.fb.com/trendevercom', class='fb' target="_blank")
@@ -76,7 +86,9 @@
       a(href="#", class="app_store")
        i(class="ic-appstore")
       a(href="#", class="g_play")
-       i(class="ic-google_play")      
+       i(class="ic-google_play") 
+  //.section__content.hero__content__2
+   //a(href="#") КАК ЭТО РАБОТАЕТ?
 </template>
 
 <script type='text/babel'>
