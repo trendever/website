@@ -1,15 +1,18 @@
 <style src='./styles/chat-msg-date.pcss'></style>
+<style src='./styles/chat-bar.pcss'></style>
 <template lang="jade">
-  .chat-row.__center
-    .chat-msg-date
-      template(v-if='msg.user.user_id === $store.state.user.myId')
-        span 
-         | Вы отправили запрос на получение {{getAmmount | curency_spaces}}
-         i.ic-currency-rub
-      template(v-else)
-        span 
-         | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
-         i.ic-currency-rub
+.chat-row.__center
+  .chat-msg-date
+    template(v-if='msg.user.user_id === $store.state.user.myId')
+      span 
+       | Вы отправили запрос на получение {{getAmmount | curency_spaces}}
+       i.ic-currency-rub
+    template(v-else)
+      span 
+       | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
+       i.ic-currency-rub
+
+.chat-approve-btn(v-if='msg.user.user_id !== $store.state.user.myId') ОПЛАТИТЬ
     
 </template>
 
@@ -24,6 +27,7 @@
 
   export default{
     data() {
+      this.setConversationAction("pay");
       return {
         payid : 0,
         ammount: 0
@@ -34,15 +38,6 @@
         type: Object,
         required: true
       }
-    },
-    watch: {
-        msg : (val) => {
-          let _payid = JSON.parse(val.parts[0].content).pay_id;
-          let _ammount = JSON.parse(val.parts[0].content).amount;
-          this.$set('payid',_payid);
-          this.$set('ammount',_ammount);
-          this.setConversationAction({type:'pay'});
-        }
     },
     vuex: { 
       actions: {
@@ -58,11 +53,12 @@
     },
     computed: {
       payId(){
-        return this.payid
+        let _payid = JSON.parse(this.msg.parts[0].content).pay_id;
+        return _payid;
       },
       getAmmount(){
-        let ammount = this.ammount;
-        return ammount/100;
+        let _ammount = JSON.parse(this.msg.parts[0].content).amount;
+        return _ammount/100;
       },
       isLoaded(){
         if( 'loaded' in this.msg){

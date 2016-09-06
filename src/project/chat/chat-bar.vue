@@ -2,7 +2,6 @@
 <template lang="jade">
 
 div
-<<<<<<< HEAD
   .chat-approve-btn(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat') ПОДТВЕРДИТЬ
   .chat-bar.section__content(v-if="getAction !== 'approve' && getAction.type !== 'pay'")
     .chat-bar_menu-btn(@click='setShowMenu(true)')
@@ -188,7 +187,7 @@ div
             this.setStatus( 'PROGRESS', 'lead.state.changed' )
           }
 
-          this.setConversationAction({type:'base'});
+          this.setConversationAction("base");
 
         } )
 
