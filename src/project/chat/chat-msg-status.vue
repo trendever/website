@@ -2,8 +2,8 @@
 <template lang="jade">
   .chat-row.__center(v-if="isHide && text !== null")
     .chat-msg-date
-      span {{text}}
-
+      span {{text}} 
+      
 </template>
 
 <script>

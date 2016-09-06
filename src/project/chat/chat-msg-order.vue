@@ -1,23 +1,15 @@
-<style src='./styles/chat-msg-order.pcss'></style>
+<style src='./styles/chat-msg-date.pcss'></style>
 <template lang="jade">
-
-.chat-row(:class='getSide')
-  span(class='bubble_info bubble_info_time') {{ datetime }}
-  .bubble_info.bubble_info_status(v-if='isOwnMessage')
-    i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
-  .chat-msg.bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest && !isAfterServiceMessage }')
-    .chat-msg_t(
-        v-if='!isOwnMessage && !isClosest',
-        :class='{"chat-msg_t-customer-color":isCustomer}'
-        v-link='{name: "user", params: {id: getUserNameLink}}',
-      )
-      | {{{ getUsername }}}
-    .chat-msg-wrap
-      p(@click="pay" v-if="msg.user.user_id !== $store.state.user.myId").chat-msg_order
-        | Вам высталвен счет #[br] Кликните чтобы оплатить
-      p(v-else)
-        | Ожидайте оплаты счета
-
+  .chat-row.__center
+    .chat-msg-date
+      template(v-if='msg.user.user_id === $store.state.user.myId')
+        span 
+         | Вы отправили запрос на получение {{ammount}}
+         i.ic-currency-rub
+      template(v-else)
+        span 
+         | {{getUsernameRaw}} отправил запрос на получение {{ammount}}
+         i.ic-currency-rub
     
 </template>
 
@@ -59,6 +51,9 @@
       payId(){
         return JSON.parse(this.msg.parts[0].content).pay_id;
       },
+      ammount(){
+        return JSON.parse(this.msg.parts[0].content).amount;
+      },
       isLoaded(){
         if( 'loaded' in this.msg){
           return this.msg.loaded;
@@ -91,6 +86,22 @@
         }
         return `<b>${this.getShopName}</b> (${this.msg.user.name})`
       },
+
+      getUsernameRaw() {
+        if (this.isCustomer) {
+          return `${this.msg.user.name}`
+        }
+        if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
+          return `${this.getShopName}`
+        }
+        if ( this.getCurrentMember !== null ) {
+          if(this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key){
+            return `${this.getShopName}`
+          }
+        }
+        return `${this.getShopName} (${this.msg.user.name})`
+      },
+
 
       isCustomer(){
         return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
