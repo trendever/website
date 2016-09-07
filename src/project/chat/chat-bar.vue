@@ -154,10 +154,6 @@ div
             this.scrollEvent.remove()
           }
         }
-        if (window.browser.mobile){
-          let hack = document.getElementById('chathack');
-          hack.style.padding = "50px 0 0 0"
-        }
       },
 
       focusInput(){
