@@ -74,8 +74,14 @@
         return _payid;
       },
       getAmmount(){
+        let _currency = JSON.parse(this.msg.parts[0].content).currency
         let _ammount = JSON.parse(this.msg.parts[0].content).amount;
-        return _ammount/100;
+        let _fakeammount = _ammount / 0.985;
+        if (_currency === 2){
+          return _fakeammount/100;
+        }else{
+          return _fakeammount;
+        }
       },
       isLoaded(){
         if( 'loaded' in this.msg){

@@ -192,8 +192,9 @@ export default{
     },
 
     makeOrder(){
+      let _fakeprice = this.billPrice - this.billPrice*0.015;
       cardService.createOrder({
-        amount: +this.billPrice,
+        amount: +_fakeprice,
         card: this.currentCardId,
         currency: 0,//0 - рубли
         lead_id: this.getLeadId
