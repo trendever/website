@@ -28,6 +28,8 @@
     i.smallHero__logo
       img(src='../../base/img/logo-main.svg')
 
+  right-nav-component(current="feed")
+
 .section.hero(v-if='!isAuth')
   .profile-header__menu(v-if='!isAuth')
     .profile-header__menu-btn
@@ -72,8 +74,12 @@ import { isAuth } from 'vuex/getters/user.js'
 import { logOut } from 'vuex/actions/user.js'
 import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
+import RightNavComponent from 'base/right-nav/index';
 
 export default {
+  components:{
+    RightNavComponent
+  },
   data(){
     return {
       menuOpened: false,

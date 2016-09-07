@@ -2,6 +2,7 @@
 <template lang="jade">
 scroll-component(v-if="isDone", class="profile-cnt")
   header-component(:title='getUserName', :left-btn-show='true')
+  right-nav-component(current="profile")
 
   .section.top.bottom
     .section__content(v-cloak)
@@ -68,6 +69,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
         .help__profile-round
 </template>
 <script type='text/babel'>
+  import RightNavComponent from 'base/right-nav/index';
   import * as productsService from 'services/products';
   import { urlThumbnail } from 'utils';
 
@@ -264,6 +266,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     components: {
+      RightNavComponent,
       ScrollComponent,
       HeaderComponent,
       PhotosComponent,

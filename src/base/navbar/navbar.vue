@@ -55,7 +55,7 @@
       }
     },
     methods:{
-      
+
       scrollTop(){
         document.querySelector('.scroll-cnt').scrollTop = 0;
       }

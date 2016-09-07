@@ -1,6 +1,7 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
 scroll-component(v-el:scroll-cnt)
+  right-nav-component(current="chat")
   .chat-list-cnt(v-if='isDone')
     header-component(:title='getTitle', :left-btn-show='false')
       .header__nav(slot='content' v-if='getIsTab')
@@ -35,6 +36,7 @@ navbar-component(current='chat')
 </template>
 
 <script type='text/babel'>
+  import RightNavComponent from 'base/right-nav/index';
   import listen from 'event-listener';
 
   import {
@@ -71,6 +73,7 @@ navbar-component(current='chat')
   export default {
 
     components: {
+      RightNavComponent,
       ScrollComponent,
       HeaderComponent,
       NavbarComponent,
