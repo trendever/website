@@ -52,9 +52,9 @@ function checkUnreadMessage( items ) {
 
 // mutations
 const mutations = {
-  
+
   [LEAD_INIT]( state, { seller, customer, countUnread, lengthList } ) {
-    
+
     state.seller              = seller;
     state.customer            = customer;
     state.done                = true;
@@ -158,7 +158,7 @@ const mutations = {
     state.lengthList = Object.assign( {}, state.lengthList, { [ tab ]: state.lengthList[ tab ] + lengthList } );
 
   },
-  
+
   [LEAD_UPDATE] ( state, { conversation_id = null, members = null, parts = null, updated_at = null, status = null } ) {
 
     if ( conversation_id !== null ) {
@@ -176,6 +176,10 @@ const mutations = {
                   lead.chat.members = members;
                 }
                 if ( parts !== null ) {
+                  //try to fix bug
+                  if(!lead.chat.recent_message){
+                    lead.chat.recent_message = {};
+                  }
                   lead.chat.recent_message.parts = parts;
                 }
                 if ( updated_at !== null ) {
