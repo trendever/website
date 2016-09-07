@@ -82,7 +82,7 @@
       a(href="#", class="app_store")
        i(class="ic-appstore")
       a(href="#", class="g_play")
-       i(class="ic-google_play") 
+       i(class="ic-google_play")
   .hero__content__2
    a(href="#", @click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
    p(id="how-it-work") Находи и покупай #[br] трендовые товары здесь #[br] или прямо в Instagram
@@ -106,9 +106,6 @@ import RightNavComponent from 'base/right-nav/index';
 import Slider from './slider.vue';
 
 export default {
-  components:{
-    RightNavComponent
-  },
   data(){
     return {
       menuOpened: false,
@@ -117,7 +114,8 @@ export default {
   },
 
   components :{
-    Slider
+    Slider,
+    RightNavComponent
   },
 
   ready() {
@@ -181,7 +179,7 @@ export default {
         }
       }
     },
-    
+
     scrollAnchorTags() {
       var block = document.querySelector( "#tags" );
       if ( block !== null ) {
