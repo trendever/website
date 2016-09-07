@@ -6,7 +6,7 @@
     .chat-shadow(v-if="getShowMenu || getShowStatusMenu")
     .section.top.bottom
       .chat.section__content
-        .chat_messages
+        .chat_messages#chathack
           div(v-for='msg in getMessages | list', track-by='$index')
             chat-msg-status(
               v-if='msg.parts[0].mime_type === "json/status"',
@@ -110,12 +110,11 @@
         }
       },
     },
-
     ready(){
       if ( this.isAuth ) {
         this.onMessage      = this.onMessage.bind( this );
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
-        messages.onMsg( this.onMessage );
+        messages.onMsg( this.onMessage );        
       } else {
         this.$router.go( { name: 'signup' } );
       }
@@ -258,7 +257,6 @@
       },
 
       scrollHandler(){
-
         /*const SHAfter = this.$els.scrollCnt.scrollHeight;
 
         if ( this.needLoadMessage ) {
