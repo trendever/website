@@ -161,10 +161,6 @@ div
           this.normalizeScroll()
           this.scrollEvent = listen( window, 'scroll', this.normalizeScroll.bind( this ) )
         }
-        if (window.browser.mobile){
-          let hack = document.getElementById('chathack');
-          hack.style.padding = "500px 0 0 0"
-        }
       },
 
       send ( event ) {

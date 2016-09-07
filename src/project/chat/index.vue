@@ -6,7 +6,7 @@
     .chat-shadow(v-if="getShowMenu || getShowStatusMenu")
     .section.top.bottom
       .chat.section__content
-        .chat_messages#chathack
+        .chat_messages
           div(v-for='msg in getMessages | list', track-by='$index')
             chat-msg-status(
               v-if='msg.parts[0].mime_type === "json/status"',
