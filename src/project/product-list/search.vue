@@ -158,10 +158,11 @@
 
       },
       tagsLineHeight(){
-        if(window.browser.mobile){
-          return null;
+        if(window.matchMedia('(max-width: 750px)').matches){
+          return '37px';
+        } else {
+          return '28px';
         }
-        return '27px';
 
       }
     },

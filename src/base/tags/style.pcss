@@ -90,6 +90,7 @@
       margin-right: 12px !important;
     }
 
+
     &-active {
       background: $color__green;
       .text {
@@ -104,7 +105,7 @@
         text-transform: uppercase;
         padding-top: 2px;
         @media(--mobile) {
-          font-size: 28px;  
+          font-size: 28px;
           height: 43px;
           line-height: 36px;
           padding-top: 14px;
@@ -113,9 +114,16 @@
       .close {
         color: $color__white;
         cursor: pointer;
-        display: inline;
-
+        display: inline-block;
+        transform: translateY(2px);
+        @media(--smalldesktop) {
+          transform: translateY(1px);
+        }
+        @media(--tablet) {
+          transform: translateY(1px);
+        }
         @media(--mobile) {
+          transform: translateY(5px);
           font-size: 22px;
         }
       }
