@@ -1,17 +1,17 @@
 <style src='./style.pcss' scoped></style>
 <template lang="jade">
 .payment(v-if="setOpen")
-  a(href='#').close
-    i(@click="close").ic-close
+  a(@click="close").close
+    i.ic-close
   .bottom-margin
     .payment-wrapper
       .payment-head Выставите счет на оплату
       .payment-summ
         .payment-summ-text Введите сумму к оплате
         .payment-summ-input-wrapper
-          i.ic-rouble
-          input(type='text' placeholder='0' v-model="billPrice | rub").payment-summ-input
+          input(type='text' placeholder='0' v-model="billPrice").payment-summ-input
           //- span. &#x20bd
+          i.ic-currency-rub
 
       .check-card
         div(v-if="userCards.length")
