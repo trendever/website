@@ -4,7 +4,7 @@
     class="tags-container"
     :class="{'tags-container-open': isOpen || !hiddenContent, 'tags-container-button': hiddenContent && showMoreButton}"
   >
-    <div class="tags"
+    <div class="tags" id="tags"
          :class="{'product_tags' : isProduct}"
          v-el:tags
          v-bind:style="tagsStyle">
