@@ -3,10 +3,10 @@ div(class="popup" v-if="show")
   popup-wrapper(:show="show" close="onClose")
     .column-desktop-50.column-desktop-right
       a.desktop-text-right.show-video( v-link="{ name: 'info-user' }", href='' )
-        | Зачем мне Trendever?
+        | КАК ЭТО РАБОТАЕТ?
     .column-desktop-50.column-desktop-left
       .container-left
-        button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }") Войти
+        button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }") Вход и регистрация
         .link-container
           a.link-bottom( v-link="{ name: 'signup' }", href='') Зачем мне это?
 </template>
