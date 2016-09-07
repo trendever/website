@@ -6,6 +6,9 @@
   @media(--mobile) {
     height: 208%;
   }
+  @media(--tabletandless) {
+    height: 208%;
+  }
   &__content {
     position: relative;
 
@@ -18,6 +21,11 @@
 
     background-size: 100% 100%;
     @media(--mobile) {
+      background: url(../img/Bgr_clg_mob.jpg) no-repeat;
+      background-size: cover;
+      height: 43%;
+    }
+    @media(--tabletandless) {
       background: url(../img/Bgr_clg_mob.jpg) no-repeat;
       background-size: cover;
       height: 43%;
@@ -43,6 +51,9 @@
         font-weight: 300;
         z-index: 100;
         @media(--mobile) {
+          display: none;
+        }
+        @media(--tabletandless) {
           display: none;
         }
       }
@@ -73,6 +84,9 @@
         @media(--mobile) {
           display: none;
         }
+        @media(--tabletandless) {
+          display: none;
+        }
       }
     }
 
@@ -82,13 +96,13 @@
       display: inline-block;
 
       background: url(../../../base/img/Trendever_logo-white.svg) no-repeat;
-      background-size: 250px;
+      background-size: 240px;
 
       width: 250px;
       height: 57px;
 
       margin-top: 53px;
-      margin-left: 19px;
+      margin-left: 32px;
       @media(--tablet) {
         background-size: 180px;
         width: 180px;
@@ -106,6 +120,15 @@
     &__logo__mobile{
       display: none;
       @media(--mobile) {
+        background: url(../../../base/img/Trendever_logo-white.svg) no-repeat;
+        display: inline-block !important;
+        width: 528px;
+        height: 112px;
+        background-size: 528px;
+        margin-top: 50%;
+        margin-left: 59px;
+      }
+      @media(--tabletandless) {
         background: url(../../../base/img/Trendever_logo-white.svg) no-repeat;
         display: inline-block !important;
         width: 528px;
@@ -143,6 +166,13 @@
         margin-top: 30px;
         padding: 0px 65px;
       }
+      @media(--tabletandless) {
+        width: 100%;
+        font-size: 54px;
+        text-align: center;
+        margin-top: 30px;
+        padding: 0px 65px;
+      }
 
       /* .scroll-to-anchor {
         position: absolute;
@@ -174,6 +204,9 @@
         width: 73%;
       }
       @media(--mobile) {
+        display: none;
+      }
+      @media(--tabletandless) {
         display: none;
       }
       .fb, .insta, .vk{
@@ -250,17 +283,21 @@
 
     &__input-wrap{
       display: inline-block;
-      margin-left: 74px;
+      margin-left: 69px;
       width: 395px;
+      padding-top: 30px;
+      position: relative;
 
       @media(--tablet) {
         width: 335px;
         margin-left: 35px;
       }
 
-      label{
+      p{
         font-size: 22px;
         color: #fff;
+        position: absolute;
+        top: -10px;
         @media(--tablet) {
           font-size: 20px;
           margin-left: -25px;
@@ -452,6 +489,11 @@
     padding-top: 18px;
     font-size: 60px;
   }
+  @media(--tabletandless){
+    width:290px;
+    padding-top: 18px;
+    font-size: 60px;
+  }
 }
 }
 .hero__content__2{
@@ -465,6 +507,15 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
+  @media(--tabletandless){
+    display: inline-block !important;
+    height: 60%;
+    width: 100%;
+    text-align: center;
+    background-image: url(../img/Bgr_clg02-blue.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+  } 
   a{
     font-size: 36px;
     color: #fff;
@@ -481,6 +532,12 @@
 .enter__btn{
   display: none !important;
   @media(--mobile) {
+    display: inline-block !important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  @media(--tabletandless) {
     display: inline-block !important;
     position: absolute;
     bottom: 0;
@@ -514,6 +571,17 @@
     border-radius: 5px;
     margin: 165px auto 0px auto;
   }
+  @media(--tabletandless) {
+    display: block;
+    font-size: 36px;
+    color: #fff;
+    border: 1px solid #fff;
+    background: transparent;
+    width: 550px;
+    height: 118px;
+    border-radius: 5px;
+    margin: 85px auto 0px auto;
+  }
 }
 .shopping_trends{
   display: none;
@@ -527,6 +595,16 @@
     bottom: 0;
     left: 0;
     background: #31bebc;
-
+  }
+  @media(--tabletandless) {
+    display: inline-block;
+    font-size: 36px;
+    color: #fff;
+    width: 100%;
+    height: 118px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #31bebc;
   }
 }

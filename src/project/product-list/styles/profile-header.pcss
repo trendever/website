@@ -10,10 +10,10 @@
     width: 464px;
     height: 366px;
     padding-top: 25px;
-    background-image: url(../img/mob.png);
+    background-image: url(../img/mob.png), url(../img/shadow.png);
     background-repeat: no-repeat;
-    background-size: 347px;
-    background-position: 61px 25px;
+    background-size: 347px, 330px;
+    background-position: 61px 25px, 80px -54px;
     display: inline-block;
     float: left;
     img{
@@ -22,14 +22,17 @@
     }
     @media(--smalldesktop) {
       width: 342px;
-      background-position: 0px 25px;
+      background-position: 0px 25px, 12px -65px;
     }
     @media(--tablet) {
       width: 260px;
-      background-position: 0px 25px;
-      background-size: 260px;
+      background-position: 0px 25px, 60px -30px;
+      background-size: 260px, 200px;
     }
     @media(--mobile) {
+      display: none;
+    }
+    @media(--tabletandless) {
       display: none;
     }
   }

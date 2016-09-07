@@ -75,7 +75,7 @@
      a(href='https://vk.com/trendever', class='vk' target="_blank")
       i(class='ic-vk social')
      .hero__content__input-wrap
-      label Приложение для шопинга в Instagram
+      p Приложение для шопинга в Instagram
       input(type="text" placeholder="Номер телефона")
       button.hero__content__get-link ПОЛУЧИТЬ ССЫЛКУ
      .hero__content__dwnld-btns
