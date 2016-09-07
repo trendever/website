@@ -54,7 +54,7 @@ export default {
     float: right;
     text-align: center;
     vertical-align:middle;
-    padding-top: 5px;
+    padding-top: 8px;
     cursor:pointer;
     &:hover {
       background: $color__dark-green;
@@ -62,8 +62,12 @@ export default {
     &.__active {
       background: $color__dark-green;
     }
+    i.ic-user_menu{
+      width: 50px;
+      height: 60px;
+    }
     i.ic-user_menu, i.ic-gallery_menu, i.ic-chats_menu  {
-      font-size: 40px;
+      font-size: 32px;
       color: white;
     }
   }
