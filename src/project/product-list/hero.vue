@@ -3,11 +3,6 @@
   .hero__content__logo{
     /*display: none;*/
   }
-  /*.hello__btn{
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}*/
 </style>
 <template lang="jade">
 .header__menu__overlay(v-show='menuOpened', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
@@ -67,10 +62,9 @@
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
         slider
-     //.hero__content__logo
+     .hero__content__logo__mobile
     .hero__content__description Шопинг в Instagram стал проще!
-    //button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }") Вход и регистрация
-     //span.hero__content__description.scroll-to-anchor
+    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }") ВХОД И РЕГИСТРАЦИЯ
     .hero__content__footer
      a(href='https://www.fb.com/trendevercom', class='fb' target="_blank")
       i(class='ic-fb social')
@@ -87,8 +81,14 @@
        i(class="ic-appstore")
       a(href="#", class="g_play")
        i(class="ic-google_play") 
-  //.section__content.hero__content__2
-   //a(href="#") КАК ЭТО РАБОТАЕТ?
+  .hero__content__2
+   a(href="#", @click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
+   p(id="how-it-work") Находи и покупай #[br] трендовые товары здесь #[br] или прямо в Instagram
+   .caption__play__mobile(v-link='{name: "main-video"}')
+     i.ic-play
+    .caption__description__mobile(v-link='{name: "main-video"}') (смотреть видео)
+    button(v-link='{ name: "info-shop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
+  button(@click="scrollAnchorTags()").shopping_trends ЗАГЛЯНУТЬ ВНУТРЬ
 </template>
 
 <script type='text/babel'>
@@ -162,6 +162,22 @@ export default {
 
     scrollAnchor() {
       var block = document.querySelector( "#how-it-work" );
+      if ( block !== null ) {
+        var scrollBlock = this.scrollCnt;
+
+        if ( !timer ) {
+          var timer = setInterval( function() {
+            if ( block.getBoundingClientRect().top < 80 ) {
+              clearInterval( timer );
+            }
+            scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
+          }, 20 );
+        }
+      }
+    },
+    
+    scrollAnchorTags() {
+      var block = document.querySelector( "#tags" );
       if ( block !== null ) {
         var scrollBlock = this.scrollCnt;
 

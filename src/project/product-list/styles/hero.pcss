@@ -4,7 +4,7 @@
 .hero {
   position: relative;
   @media(--mobile) {
-    height: 95%;
+    height: 208%;
   }
   &__content {
     position: relative;
@@ -19,8 +19,8 @@
     background-size: 100% 100%;
     @media(--mobile) {
       background: url(../img/Bgr_clg_mob.jpg) no-repeat;
-      background-size: 100% 100%;
-      height: 95%;
+      background-size: cover;
+      height: 43%;
     }
 
     .profile-header {
@@ -90,9 +90,10 @@
       margin-top: 53px;
       margin-left: 19px;
       @media(--tablet) {
-        background-size: 204px;
-        width: 204px;
-        height: 46px;
+        background-size: 180px;
+        width: 180px;
+        height: 40px;
+        margin-left: 0px;
       }
       @media(--mobile) {
         display: inline-block !important;
@@ -100,6 +101,18 @@
         height: 120px;
         background-size: 528px;
         margin-top: 50%;
+      }
+    }
+    &__logo__mobile{
+      display: none;
+      @media(--mobile) {
+        background: url(../../../base/img/Trendever_logo-white.svg) no-repeat;
+        display: inline-block !important;
+        width: 528px;
+        height: 112px;
+        background-size: 528px;
+        margin-top: 50%;
+        margin-left: 59px;
       }
     }
 
@@ -121,15 +134,17 @@
       }
       @media(--tablet) {
         width: 70%;
+        margin-left: 0px;
       }
       @media(--mobile) {
         width: 100%;
         font-size: 54px;
         text-align: center;
         margin-top: 30px;
+        padding: 0px 65px;
       }
 
-      .scroll-to-anchor {
+      /* .scroll-to-anchor {
         position: absolute;
         cursor:pointer;
         width: 56px;
@@ -141,7 +156,7 @@
         bottom: -54px;
         left: 50%;
         margin-left: -28px;
-      }
+      } */
     }
 
     &__footer{
@@ -173,6 +188,9 @@
       .fb{
         margin-left: 58px;
         @media(--smalldesktop) {
+          margin-left: 0px;
+        }
+        @media(--tablet) {
           margin-left: 0px;
         }
       }
@@ -443,9 +461,76 @@
 .hero__content__2{
   display: none;
   @media(--mobile) {
-    height: 100%;
+    display: inline-block !important;
+    height: 60%;
+    width: 100%;
+    text-align: center;
     background-image: url(../img/Bgr_clg02-blue.jpg);
     background-repeat: no-repeat;
+    background-size: cover;
   }
+  a{
+    font-size: 36px;
+    color: #fff;
+    margin-top: 20px;
+    line-height: 80px;
+  }
+  p{
+    font-size: 46px;
+    color: #fff;
+    margin-top: 130px;
+  }
+}
 
+.enter__btn{
+  display: none !important;
+  @media(--mobile) {
+    display: inline-block !important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+}
+.caption__play__mobile{
+  width: 160px;
+  height: 160px;
+  font-size: 160px;
+  margin: 162px auto 26px auto;
+  color: #fff;
+}
+.caption__play__mobile i:hover{
+  color: #d9d9d9;
+}
+.caption__description__mobile{
+  font-size: 32px;
+  color: #fff;
+}
+.sellers_auth_btn{
+  display: none;
+  @media(--mobile) {
+    display: block;
+    font-size: 36px;
+    color: #fff;
+    border: 1px solid #fff;
+    background: transparent;
+    width: 550px;
+    height: 118px;
+    border-radius: 5px;
+    margin: 165px auto 0px auto;
+  }
+}
+.shopping_trends{
+  display: none;
+  @media(--mobile) {
+    display: inline-block;
+    font-size: 36px;
+    color: #fff;
+    width: 100%;
+    height: 118px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #31bebc;
+
+  }
 }
