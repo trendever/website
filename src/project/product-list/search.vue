@@ -11,7 +11,7 @@
 
         input.search-input__input(
           v-el:input,
-          @keydown='search()',
+          @keyup='search()',
           :value='searchValue',
           @focus='onFocusInput',
           @blur='onBlurInput',
@@ -43,6 +43,8 @@
     .tags-wrapper( v-el:tags )
       tags-component(
         :tags="tags",
+        :text-font-size="tagsFontSize",
+        :text-line-height="tagsLineHeight",
         :search-string="searchValue",
         :del-tag="removeTag",
         :add-tag="selectTag",
@@ -61,7 +63,7 @@
   import { isAuth } from 'vuex/getters/user.js';
   import { setColumnNumber } from 'vuex/actions/products';
   import { getColumnCount } from 'vuex/getters/products';
-  
+
 
   export default {
     components: {
@@ -147,6 +149,22 @@
       });
 
     },
+    computed:{
+      tagsFontSize(){
+        if(window.browser.mobile){
+          return null;
+        }
+        return '16px';
+
+      },
+      tagsLineHeight(){
+        if(window.browser.mobile){
+          return null;
+        }
+        return '27px';
+
+      }
+    },
     methods: {
 
       clear(){
@@ -157,7 +175,7 @@
 
       search() {
         this.setSearchValue( this.$els.input.value );
-      }, 
+      },
       onFocusInput() {
         this.$set('isOpenTags', true)
         this.inputFocused = true;

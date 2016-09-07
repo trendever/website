@@ -54,10 +54,6 @@
 
   .btn-container {
     padding:0 50px;
-
-    @media(--mobile) {
-      margin-top:-14px;
-    }
   }
 
   .input__clear-btn {
@@ -331,6 +327,27 @@
   height: 555px;
 }
 
+.btn-container-mobile{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  right: 0;
+
+  div.link-div{
+    padding-bottom: 15px;
+  }
+
+  button.btn.btn_fixed-bottom{
+    @media(--tabletandless) {
+      position: relative;
+      width: 100%;
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+  }
+}
+
 .btn-container button.btn.btn_fixed-bottom{
   @media(--tabletandless) {
     position: fixed !important;
@@ -356,7 +373,6 @@
     width:580px;
     padding-left:0;
     margin-left:40px;
-    margin-bottom:38px;
   }
 
   i {

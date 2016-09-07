@@ -218,7 +218,14 @@ export const closeProfile = ( { dispatch } ) => {
 export const logOut = ( { dispatch } ) => {
 
   removeToken();
-  
+
   dispatch( types.USER_LOGOUT )
+
+};
+
+
+export const setMyCurrentList = ( { dispatch }, list ) => {
+
+  dispatch(types.USER_SET_MY_CURRENT_LIST, list);
 
 };

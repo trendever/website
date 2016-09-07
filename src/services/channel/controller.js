@@ -119,7 +119,7 @@ export default class {
        color_code_key,
        'color: #5E35B1',
        'color: #2196F3',
-       {response: ctx}
+       {response: JSON.parse(JSON.stringify(ctx))}
        );
     }
 

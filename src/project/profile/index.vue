@@ -2,51 +2,57 @@
 <template lang="jade">
 scroll-component(v-if="isDone", class="profile-cnt")
   header-component(:title='getUserName', :left-btn-show='true')
+  right-nav-component(current="profile")
 
   .section.top.bottom
-    .section__content
+    .section__content(v-cloak)
       .profile
         .profile_info
 
-          //.profile_info_count 0
+          //.profile_info_count 01
           // .profile_info_count_t Подписчики
 
           .profile_info_img
             img(:src="getUserPhoto")
 
           //.profile_info_count 0
-          // .profile_info_count_t Подписки 
+          // .profile_info_count_t Подписки
 
         .profile_desc
           //.profile_desc_t {{getSlogan}} Слоган Профиля
-          .profile_desc_caption(v-if="getUserCaption") 
+          .profile_desc_caption(v-if="getUserCaption")
           | {{ getUserCaption }}
 
-        .profile_filter(v-if="selfPage && !noLikes && !noProducts")
-          span(v-bind:class="{'seleted': photoType === 'product'}") 
+        .profile_filter(v-if="isSelfPage && !noLikes && !noProducts")
+          span(v-bind:class="{'seleted': photoType === 'product'}")
             input(type="radio" value="product" v-model="photoType" id="filter-products")
-            label(for="filter-products") Мои Товары 
-          span(v-bind:class="{'seleted': photoType === 'like'}")  
-            input(type="radio" value="like" v-model="photoType" id="filter-likes") 
+            label(for="filter-products") Мои Товары
+          span(v-bind:class="{'seleted': photoType === 'like'}")
+            input(type="radio" value="like" v-model="photoType" id="filter-likes")
             label(for="filter-likes") Мои Тренды
-
+       template(v-if="loaded")
         .profile_no-goods(v-if="noLikes && noProducts") Здесь пусто, #[br]... потому что ты пока ничего не сохранил.
-        
-
         .profile_no-goods-banner(v-if="noLikes && noProducts") Нажми Сохранить под товаром #[br] или напиши @savetrend под постом в #[br] Instagram, #[br] чтобы добавить тренд сюда в ленту.
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscrib//e") ПОДПИСАТЬСЯ
-        
+
         //.profile_settings_btn
         //a(href="#")
         //img(src="icons/cogwheel.png")
 
 
-      
+
+      //- лайки
       photos-component(
-        :filter-by-user-name.sync="userName", 
-        :list-id.sync="listId",
-        :filter-by-user-id.sync="user_id")
+        v-if="photoType === 'like'",
+        :filter-by-mentioner-id="userID",
+        :list-id.sync="trendsListId")
+
+      //- товары
+      photos-component(
+        v-if="photoType === 'product'",
+        :filter-by-shop-id="shopId",
+        :list-id.sync="listId")
 
   navbar-component(:current='listId')
 
@@ -63,19 +69,23 @@ scroll-component(v-if="isDone", class="profile-cnt")
         .help__profile-round
 </template>
 <script type='text/babel'>
+  import RightNavComponent from 'base/right-nav/index';
+  import * as productsService from 'services/products';
   import { urlThumbnail } from 'utils';
 
   import store from 'vuex/store'
-  import { openProfile, closeProfile } from 'vuex/actions/user.js';
+  import { openProfile, closeProfile, setMyCurrentList } from 'vuex/actions/user.js';
   import {
     userID,
+    user,
     getUserName,
     getUserPhoto,
     getUserCaption,
     getSlogan,
     isDone,
     getPhotoConfig,
-    isAuth
+    isAuth,
+    getMyCurrentList
   } from 'vuex/getters/user.js';
 
   import ScrollComponent from 'base/scroll/scroll.vue'
@@ -87,15 +97,21 @@ scroll-component(v-if="isDone", class="profile-cnt")
     data(){
       return {
         isFirst: false,
-        photoType: 'product',
-        noLikes: false,
-        noProducts: false
+        photoType: '',
+        noLikes: true,
+        noProducts: true,
+        loaded: false
       }
     },
     route: {
+      canReuse: false,
       data( { to: { params: { id } } } ) {
         if ( this.isAuth ) {
-          return this.openProfile( id ).catch( () => {
+          return this.openProfile( id )
+          .then(()=>{
+            this._setTab();
+          })
+          .catch( () => {
             this.$router.go( { name: '404' } );
           } );
         } else {
@@ -103,33 +119,99 @@ scroll-component(v-if="isDone", class="profile-cnt")
         }
       }
     },
+    created(){
+      //Баг подвисания ещё
+      this.$store.state.products.listId = '';
+
+    },
     ready(){
-      //check auth
       if ( !this.isAuth ) {
         this.$router.replace( { name: 'signup' } );
       }
+
+      //this._setTab();
+
     },
     beforeDestroy(){
       if ( this.isAuth ) {
         this.closeProfile();
       }
     },
-    events:{
-      'noLikes'(){
-        this.noLikes = true;
+    methods:{
+      _setTab(){
+        this._checkStaff().then(staff=>{
+          if(!staff.likes){
+            this.$set('noLikes',true);
+          } else {
+            this.$set('noLikes',false);
+          }
+
+          if(!staff.products){
+            this.$set('noProducts',true);
+            this.$set('photoType','like');
+          } else {
+            this.$set('noProducts',false);
+
+            if(this.$route.name === 'profile' && this.isSelfPage) {
+
+              if(this.getMyCurrentList){
+
+                this.$set('photoType',this.getMyCurrentList);
+
+              }
+
+            } else {
+
+              this.$set('photoType','product');
+
+            }
+          }
+          this.$set('loaded',true);
+
+        },err=>{
+
+          alert('Server error');
+
+        })
+
       },
-      'noProducts'(){
-        this.noProducts = true;
-        this.photoType = 'like';
-      } 
+      _checkStaff(){
+        return new Promise((resolve,reject) => {
+          productsService
+            .find({ mentioner_id: this.userID })
+            .then((data)=>{
+              let staff = {};
+              if(!data.length){
+                staff.likes = false;
+              } else {
+                staff.likes = true;
+              }
+              return staff;
+            }).then(staff=>{
+              productsService
+                .find({ shop_id: this.shopId })
+                .then((data)=>{
+                  if(!data.length){
+                    staff.products = false;
+                  } else {
+                    staff.products = true;
+                  }
+                  resolve(staff);
+              });
+            })
+        })
+      }
     },
     vuex: {
       actions: {
+        setMyCurrentList,
         openProfile,
         closeProfile
       },
       getters: {
+        getMyCurrentList,
         userID,
+        user,
         isAuth,
         getUserName,
         getUserPhoto,
@@ -139,37 +221,52 @@ scroll-component(v-if="isDone", class="profile-cnt")
         getPhotoConfig
       }
     },
-    computed: {
-      isSelfPage(){
+    watch:{
+      photoType(val){
+        if(this.$route.name === 'profile' && this.isSelfPage){
+          if(val === 'like'){
+            this.setMyCurrentList('like');
+          }
 
-        return this.$store.state.user.id === this.$store.state.user.myId;
-
-      },
-      user_id(){
-        //return this.getPhotoConfig.photoFilter.user_id;
-        if (this.photoType === 'like'){
-          return this.userID; 
-        }
-        return null;
-      },
-      listId(){
-        //console.log(this.getPhotoConfig.listId);
-        return this.getPhotoConfig.listId;
-      },
-      userName(){
-        if (this.photoType !== 'product'){
-           return null;
-        }
-        return this.getPhotoConfig.photoFilter.instagram_name;
-      },
-      testUserProfile(){
-        return {
-          instagram_name: this.getPhotoConfig.photoFilter.instagram_name,
-          user_id: this.userID
+          if(val === 'product'){
+            this.setMyCurrentList('product');
+          }
         }
       }
     },
+    computed: {
+      shopId(){
+        let shopId = '';
+
+        if(this.user.supplier_of !== null){
+          shopId = this.user.supplier_of[0];
+        }
+
+        if(this.user.seller_of !== null){
+          shopId = this.user.seller_of[0];
+        }
+
+        if(shopId){
+          return shopId;
+        }
+
+        //даем серверу несуществующий айди,
+        //так как надо чтобы сервер ничего не прислал
+        return 1;
+
+      },
+      isSelfPage(){
+        return this.$store.state.user.id === this.$store.state.user.myId;
+      },
+      listId(){
+        return this.getPhotoConfig.listId;
+      },
+      trendsListId(){
+        return this.listId + '_trends';
+      }
+    },
     components: {
+      RightNavComponent,
       ScrollComponent,
       HeaderComponent,
       PhotosComponent,

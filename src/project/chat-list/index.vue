@@ -1,6 +1,7 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
 scroll-component(v-el:scroll-cnt)
+  right-nav-component(current="chat")
   .chat-list-cnt(v-if='isDone')
     header-component(:title='getTitle', :left-btn-show='false')
       .header__nav(slot='content' v-if='getIsTab')
@@ -20,11 +21,11 @@ scroll-component(v-el:scroll-cnt)
       .chat-list-cnt-is-empty
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
         span  ... потому что ты пока ничего #[br] не покупаешь и не продаешь.
-      .chat-list-cnt-is-empty__banner Нажми Купить 
-       span под товаром #[br] или 
-       span.want напиши @wantit 
+      .chat-list-cnt-is-empty__banner Нажми Купить&nbsp
+       span под товаром или&nbsp
+       span.want напиши @wantit&nbsp
        span под постом в Instagram, #[br] и здесь появится шопинг-чат.
-      navbar-component(current='chat')
+navbar-component(current='chat')
 
 .help-wrapper(v-if='isFirst')
   .help(@click='isFirst=false')
@@ -35,6 +36,7 @@ scroll-component(v-el:scroll-cnt)
 </template>
 
 <script type='text/babel'>
+  import RightNavComponent from 'base/right-nav/index';
   import listen from 'event-listener';
 
   import {
@@ -71,6 +73,7 @@ scroll-component(v-el:scroll-cnt)
   export default {
 
     components: {
+      RightNavComponent,
       ScrollComponent,
       HeaderComponent,
       NavbarComponent,
@@ -111,6 +114,7 @@ scroll-component(v-el:scroll-cnt)
       }
     },
     ready(){
+
       if ( this.isAuth ) {
 
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', (() => {

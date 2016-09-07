@@ -8,7 +8,7 @@
   profile = '/static/img/user_inactive.svg'
   profile_active = '/static/img/user_active.svg'
 
-.navbar-cnt(v-if='isAuth')
+.navbar-cnt(v-if='isAuth && isMobile')
   .navbar.section__content
     .navbar_i(:class='{"__active": current=="feed"}', v-link='{name: "home"}', @click="scrollTop")
       .navbar_i_wrap
@@ -49,7 +49,13 @@
         getGlobalNotifyCount,
       },
     },
+    computed:{
+      isMobile(){
+        return window.browser.mobile;
+      }
+    },
     methods:{
+
       scrollTop(){
         document.querySelector('.scroll-cnt').scrollTop = 0;
       }

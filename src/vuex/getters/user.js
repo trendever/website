@@ -114,3 +114,11 @@ export const getPhotoConfig = ( { user } ) => {
   return user.photoConfigs[ user.myId ];
 
 };
+
+
+
+export const getMyCurrentList = ( { user } ) => {
+
+  return user.myCurrentList;
+
+}

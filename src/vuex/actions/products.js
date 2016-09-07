@@ -46,7 +46,7 @@ export const closeProducts = ( { dispatch } ) => {
 
 export const loadProducts = (
   { dispatch, state },
-  { isSearch, isTags, filterByUserName, filterByUserId, limit },
+  { isSearch, isTags, filterByShopId, filterByMentionerId, limit },
   force = false
 ) => {
 
@@ -61,16 +61,16 @@ export const loadProducts = (
       setAnimate( { dispatch, state }, true );
 
       products
-        .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId, limit }, force ) )
+        .find( getSearchOptions( { state }, { isSearch, isTags, filterByShopId, filterByMentionerId, limit }, force ) )
         .then( data => {
 
           if ( force ) {
 
-            dispatch( types.PRODUCTS_FORCE_RECEIVE, data.object_list );
+            dispatch( types.PRODUCTS_FORCE_RECEIVE, data/*.object_list*/ );
 
           } else {
 
-            dispatch( types.PRODUCTS_RECEIVE, data.object_list );
+            dispatch( types.PRODUCTS_RECEIVE, data/*.object_list*/ );
 
           }
 
@@ -78,7 +78,7 @@ export const loadProducts = (
 
         } )
         .catch( ( error ) => {
-          products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId, limit } );
+          products.sendError( error, { state, isSearch, isTags, filterByShopId, filterByMentionerId, limit } );
           reject( error );
         } );
 
@@ -89,16 +89,16 @@ export const loadProducts = (
         setAnimate( { dispatch, state }, true );
 
         products
-          .find( getSearchOptions( { state }, { isSearch, isTags, filterByUserName, filterByUserId, limit }, force ) )
+          .find( getSearchOptions( { state }, { isSearch, isTags, filterByShopId, filterByMentionerId, limit }, force ) )
           .then( data => {
 
-            dispatch( types.PRODUCTS_RECEIVE, data.object_list );
+            dispatch( types.PRODUCTS_RECEIVE, data/*.object_list*/ );
 
             resolve();
 
           } )
           .catch( ( error ) => {
-            products.sendError( error, { state, isSearch, isTags, filterByUserName, filterByUserId, limit } );
+            products.sendError( error, { state, isSearch, isTags, filterByShopId, filterByMentionerId, limit } );
             reject( error );
           } );
 
@@ -321,19 +321,19 @@ export const setLike = (
 
 export const getSearchOptions = (
   { state },
-  { isSearch, isTags, filterByUserName, filterByUserId, limit = state.products.ITEMS_PER_PAGE },
+  { isSearch, isTags, filterByShopId, filterByMentionerId, limit = state.products.ITEMS_PER_PAGE },
   force = false
 ) => {
 
+
   const request = {
-    q: null,
-    from_id: null,
+    query: null,
     tags: null,
+    shop_id: 0,
+    mentioner_id: 0,
     limit,
-    offset: null,
-    instagram_name: null,
-    user_id: null
-  };
+    offset: null
+  }
 
   if ( !force ) {
 
@@ -341,23 +341,25 @@ export const getSearchOptions = (
 
     if ( lastProduct !== null ) {
 
-      request.from_id = lastProduct.id
+      request.offset = getProducts( state ).length;
 
     }
 
   }
 
-  if ( isSearch ) {
 
-    const q = searchValue( state );
+  if (isSearch) {
 
-    if ( typeof q === 'string' ) {
+    const query = searchValue( state );
 
-      request.q = q.trim();
+    if (typeof query === 'string') {
+      request.query = query.trim();
 
     }
 
   }
+
+
 
   if ( isTags ) {
 
@@ -371,15 +373,15 @@ export const getSearchOptions = (
 
   }
 
-  if ( filterByUserName ) {
+  if ( filterByShopId ) {
 
-    request.instagram_name = filterByUserName;
+    request.shop_id = filterByShopId;
 
   }
 
-  if ( filterByUserId ) {
+  if ( filterByMentionerId ) {
 
-    request.user_id = filterByUserId;
+    request.mentioner_id = filterByMentionerId;
 
   }
 

@@ -23,6 +23,10 @@ scroll-component
 
 
   export default {
+    created(){
+      //Баг подвисания ещё
+      this.$store.state.products.listId = '';
+    },
     ready(){
       this.$once('photosIsRun', () => {
         this.$broadcast('update');

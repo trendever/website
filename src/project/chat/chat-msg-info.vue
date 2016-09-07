@@ -17,7 +17,7 @@
         | {{{ getMessage }}}
 
 
-button.payment-btn Оплатить 100 500
+button.payment-btn(v-if="false") Оплатить 100 500
  i.ic-currency-rub
 
 </template>

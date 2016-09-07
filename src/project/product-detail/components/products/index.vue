@@ -5,7 +5,6 @@
       <span class="price" v-if="price !== null && discountPrice !== null">{{price | curency_spaces}}</span>
       <span class="discountPrice" v-if="discountPrice !== null">{{discountPrice | curency_spaces}}</span>
       <span class="discountPrice" v-if="discountPrice === null && price !== null">{{price | curency_spaces}}</span>
-      <!--span class="price">?</span-->
       <i class="ic-currency-rub rub"></i>
     </div>
   </div>

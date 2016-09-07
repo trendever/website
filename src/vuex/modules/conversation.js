@@ -9,7 +9,8 @@ import {
   CONVERSATION_CLOSE,
   CONVERSATION_SEND_STATUS,
   CONVERSATION_INC_LENGTH_LIST,
-  CONVERSATION_OPEN_IMG_POPUP
+  CONVERSATION_OPEN_IMG_POPUP,
+  CONVERSATION_SET_ACTION
 } from '../mutation-types';
 
 // initial state
@@ -34,7 +35,8 @@ const state = {
   lengthList: 50,
   imgPopUpUrl: false,
   imgWidth: 0,
-  imgHeight: 0
+  imgHeight: 0,
+  action: ''
 };
 
 function getDateMessage( date, id ) {
@@ -100,7 +102,7 @@ const addServiceMessage = (function() {
             messages[ i ].closestMessage = true;
 
           } else {
-  
+
             lastUserId                   = messages[ i ].user.user_id;
             messages[ i ].closestMessage = false;
 
@@ -131,7 +133,7 @@ const addServiceMessage = (function() {
             if(type === 'suplier.called' || type === 'customer.called' || type === 'customer.phone.added'){
 
               newMessage.push( messages[ i ] );
-              
+
             }
 
           } else {
@@ -224,7 +226,7 @@ const mutations = {
     const { all } = state;
 
     if ( all.hasOwnProperty( id ) ) {
-      
+
       for ( let i = all[ id ].length; i; i-- ) {
         if ( all[ id ][ i - 1 ].id === messages[ 0 ].id ) {
           return;
@@ -235,7 +237,7 @@ const mutations = {
       if(messages[ 0 ].created_at === null){
         return;
       }
-      
+
       state.all = Object.assign( {}, all, { [id]: addServiceMessage( all[ id ].concat( messages ) ) } );
 
     } else {
@@ -360,6 +362,10 @@ const mutations = {
     state.done           = false;
     state.showMenu       = false;
     state.showStatusMenu = false;
+  },
+  [CONVERSATION_SET_ACTION] (state, value) {
+    state.action = value;
+
   }
 
 };
