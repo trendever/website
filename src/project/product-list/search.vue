@@ -49,7 +49,11 @@
         :del-tag="removeTag",
         :add-tag="selectTag",
         :is-open.sync="isOpenTags",
-        :is-pending="getPendingStatus"
+        :is-pending="getPendingStatus",
+        :margin-bottom="marginBottom",
+        :margin-right="marginRight",
+        :base-height="baseHeight"
+
       )
 </template>
 
@@ -150,6 +154,28 @@
 
     },
     computed:{
+      baseHeight(){
+        if(!window.matchMedia('(max-width: 750px)').matches){
+          return 78;
+        } else {
+          return;
+        }
+      },
+      marginBottom(){
+        if(window.matchMedia('(max-width: 750px)').matches){
+          return;
+        } else {
+          return 5;
+        }
+
+      },
+      marginRight(){
+        if(window.matchMedia('(max-width: 750px)').matches){
+          return;
+        } else {
+          return 5;
+        }
+      },
       tagsFontSize(){
         if(window.browser.mobile){
           return null;
