@@ -139,6 +139,7 @@ export default {
 
       this.$set('menuOpened', false);
       this.logOut();
+      window.location = '/';
 
     },
     goBack(){
