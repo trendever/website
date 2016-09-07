@@ -13,9 +13,9 @@ swipe.swipe-item-wrapper
     .caption__play(v-link='{name: "main-video"}')
      i.ic-play
     .caption__description(v-link='{name: "main-video"}') (смотреть видео)
-  swipe-item.slide.slide-wrapper-second
+  //swipe-item.slide.slide-wrapper-second
    img(src="img/second_slide.png")
-  swipe-item.slide.slide-wrapper-third
+  //swipe-item.slide.slide-wrapper-third
    img(src="img/third_slide.png")
 </template>
 
