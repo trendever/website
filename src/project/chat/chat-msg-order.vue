@@ -11,23 +11,13 @@
       span 
        | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
        i.ic-currency-rub
-.chat-row.__center
-  .chat-msg-date(v-if="isDone")
-    template(v-if='msg.user.user_id === $store.state.user.myId')
-      span 
-       | Вы получите {{getAmmount | curency_spaces}}
-       i.ic-currency-rub
-    template(v-else)
-      span 
-       | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
-       i.ic-currency-rub
 
 .chat-approve-btn(v-if='msg.user.user_id !== $store.state.user.myId && !isDone' @click="pay") ОПЛАТИТЬ
     
 </template>
 
 <script type='text/babel'>
-  import { getCurrentMember, getShopName, getLastMessageId, getLeadId } from 'vuex/getters/chat.js';
+  import { getCurrentMember, getShopName, getLastMessageId, getLeadId, getCustomerName } from 'vuex/getters/chat.js';
   import {setConversationAction} from 'vuex/actions/chat.js'
   import { user } from 'vuex/getters/user.js';
   import * as service from 'services/chat';
@@ -37,7 +27,7 @@
 
   export default{
     data() {
-      if (!this.msg.parts[1]){
+      if (!this.msg.parts[1] && this.msg.user.user_id !== this.getCurrentMember.user_id){
         this.setConversationAction("pay");
       }
       return {}
@@ -56,6 +46,7 @@
         getShopName,
         getCurrentMember,
         getLastMessageId,
+        getCustomerName,
         user,
         getLeadId
       }
@@ -103,6 +94,26 @@
           return this.msg.user.name;
         }
         return this.getShopName;
+      },
+      succes(){
+        if (this.msg.parts[1]){
+          var object = JSON.parse(this.msg.parts[1].content);
+          if (object.success){
+            return object.success
+          }
+        }
+        return false;
+      },
+      getPaymentNames(){
+        var _from, _to;
+        if (this.msg.user.role === 1){
+          _from = this.getShopName;
+          _to = this.msg.user.name;
+        }else{
+          _from = this.getCustomerName;
+          _to = this.getShopName;
+        }
+        return {from: _from,to: _to};
       },
       getUsername() {
         if (this.isCustomer) {

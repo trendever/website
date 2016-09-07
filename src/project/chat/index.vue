@@ -24,6 +24,9 @@
               chat-msg-img(
                 v-if='isImage(msg.parts[0].mime_type)',
                 :msg='msg')
+              chat-msg-payment(
+                v-if='msg.parts[0].mime_type === "json/payment"',
+                :msg='msg')
             chat-msg-order(
                 v-if='msg.parts[0].mime_type === "json/order"',
                 :msg='msg')
@@ -68,6 +71,7 @@
   import ScrollComponent from 'base/scroll/scroll.vue'
   //components
   import ChatMsgOrder from './chat-msg-order.vue';
+  import ChatMsgPayment from './chat-msg-payment.vue';
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgStatus from './chat-msg-status.vue';
   import ChatMsg from './chat-msg.vue';
@@ -86,6 +90,7 @@
       ChatBar,
       ChatMsg,
       ChatMsgOrder,
+      ChatMsgPayment,
       ChatMsgProduct,
       ChatMsgStatus,
       ChatMsgImg,
