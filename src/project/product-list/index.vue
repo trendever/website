@@ -20,7 +20,7 @@ scroll-component
     .section__content
      search-component
      photos-component(:tags="true", :search="true", list-id="home")
-     button(v-if="!isAuth").btn.btn_primary.__orange.__xl.hello__auth__btn.fast__big__btn( v-link="{ name: 'signup' }") Вход и регистрация
+     button(v-if="isAuth").btn.btn_primary.__orange.__xl.hello__auth__btn.fast__big__btn( v-link="{ name: 'signup' }") Вход и регистрация
      navbar-component(current='feed')
      helps-component
 </template>
