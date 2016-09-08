@@ -49,6 +49,24 @@
         font-size: 32px;
         margin-top: 150px;
       }
+      .empty{
+        font-weight: bolder;
+      }
+    }
+    &_no-goods-guest{
+      margin-top: 50px;
+      color: #595959;
+      text-align: center;
+      font-size: 24px;
+      @media(--mobile) {
+        width: 80%;
+        margin: 0 auto;
+        font-size: 32px;
+        margin-top: 150px;
+      }
+      .empty{
+        font-weight: bolder;
+      }
     }
 
     &_no-goods-banner{
@@ -57,11 +75,19 @@
       text-align: center;
       height: 100px;
       width: 100%;
-      max-width: 1050px;
       padding-top: 20px;
       font-size: 24px;
       position: absolute;
       bottom: 0;
+      left: 0;
+      font-weight: bolder;
+      z-index: 1000;
+      span{
+        font-weight: 100;
+      }
+      .save{
+        font-weight: bolder;
+      }
       @media(--mobile) {
         width: 100%;
         height: 200px;
@@ -70,17 +96,17 @@
         line-height: 40px;
         padding: 35px 16px 0px 16px;
       }
-    }
-    &_no-goods-banner br{
-      display: none;
-      @media(--mobile) {
-        display: inline;
-      }
-    }
-    &_no-goods-banner br:last-child{
-      display: inline;
-      @media(--mobile) {
+      .break_1, .break_2{
         display: none;
+        @media(--mobile) {
+          display: inline;
+        }
+      }
+      .break_3{
+        display: inline;
+        @media(--mobile) {
+          display: none;
+        }
       }
     }
 
