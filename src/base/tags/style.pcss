@@ -66,7 +66,7 @@
     width: auto;
     display: block;
     float: left;
-    box-sizing: content-box;
+    box-sizing: content-box !important;
     border: 1px solid $color__green;
     border-radius: 5px;
     cursor: pointer;
@@ -112,19 +112,22 @@
         }
       }
       .close {
+        text-align:center;
+        width: 24px;
+        font-size: .9rem;
         color: $color__white;
         cursor: pointer;
         display: inline-block;
-        transform: translateY(2px);
+        transform: translateY(1px);
         @media(--smalldesktop) {
-          transform: translateY(1px);
+         transform: translateY(1px);
         }
         @media(--tablet) {
           transform: translateY(1px);
         }
         @media(--mobile) {
-          transform: translateY(5px);
-          font-size: 22px;
+          transform: translateY(3px);
+          font-size: 1.1rem;
         }
       }
     }
