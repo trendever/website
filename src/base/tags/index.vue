@@ -15,12 +15,13 @@
            @click.stop="addTag(tag), open()">
         <span
           class="text"
-          v-bind:style="textStyle">{{tag.name}}</span>
+          v-bind:style="textStyle">{{tag.name}}
         <i
           class="ic-close close"
           v-if="tag.active"
           @click.stop="delTag(tag)"
           v-bind:style="iconStyle"></i>
+        </span>
       </div>
     </div>
     <!-- <div class="button" @click="open" v-if="hiddenContent && showMoreButton"></div> -->
