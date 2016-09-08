@@ -6,7 +6,8 @@ import {
   USER_SET_PHOTOS_CONFIG,
   USER_CLOSE_PROFILE,
   USER_LOGOUT,
-  USER_SET_MY_CURRENT_LIST
+  USER_SET_MY_CURRENT_LIST,
+  USER_SET_TOOLTIP
 } from '../mutation-types';
 
 // initial state
@@ -19,7 +20,11 @@ const state = {
   all: {},
   photoConfigs: {},
   done: false,
-  myCurrentList: 'product'
+  myCurrentList: 'product',
+  tooltips:{
+    profile: true,
+    chats: true
+  }
 
 };
 
@@ -115,6 +120,9 @@ const mutations = {
   },
   [USER_SET_MY_CURRENT_LIST]( state , list ){
     state.myCurrentList = list;
+  },
+  [USER_SET_TOOLTIP](state, name, value) {
+    state.tooltips[name] = value;
   }
 };
 

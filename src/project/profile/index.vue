@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-scroll-component(v-if="isDone", class="profile-cnt")
+scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile', false)")
   header-component(:title='getUserName', :left-btn-show='true')
   right-nav-component(current="profile")
 
@@ -32,7 +32,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
             label(for="filter-likes") Мои Тренды
        template(v-if="loaded")
         .profile_no-goods(v-if="noLikes && noProducts") Здесь пусто, #[br]... потому что ты пока ничего не сохранил.
-        .profile_no-goods-banner(v-if="noLikes && noProducts") Нажми Сохранить под товаром #[br] или напиши @savetrend под постом в #[br] Instagram, #[br] чтобы добавить тренд сюда в ленту.
+        .profile_no-goods-banner(v-if="showTooltip") Нажми Сохранить под товаром #[br] или напиши @savetrend под постом в #[br] Instagram, #[br] чтобы добавить тренд сюда в ленту.
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscrib//e") ПОДПИСАТЬСЯ
 
@@ -74,7 +74,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
   import { urlThumbnail } from 'utils';
 
   import store from 'vuex/store'
-  import { openProfile, closeProfile, setMyCurrentList } from 'vuex/actions/user.js';
+  import { openProfile, closeProfile, setMyCurrentList, setTooltip } from 'vuex/actions/user.js';
   import {
     userID,
     user,
@@ -85,7 +85,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
     isDone,
     getPhotoConfig,
     isAuth,
-    getMyCurrentList
+    getMyCurrentList,
+    getTooltips
   } from 'vuex/getters/user.js';
 
   import ScrollComponent from 'base/scroll/scroll.vue'
@@ -204,11 +205,13 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },
     vuex: {
       actions: {
+        setTooltip,
         setMyCurrentList,
         openProfile,
         closeProfile
       },
       getters: {
+        getTooltips,
         getMyCurrentList,
         userID,
         user,
@@ -235,6 +238,15 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     computed: {
+      showTooltip(){
+        if(this.noProducts && this.noLikes){
+          if(this.getTooltips.profile){
+            return true;
+          }
+          return false;
+        }
+        return false;
+      },
       shopId(){
         let shopId = '';
 
