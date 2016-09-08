@@ -1,3 +1,16 @@
+<style src="../../base/vars/vars.pcss"></style>
+<style>
+  .hello__auth__btn{
+    position: absolute;
+    bottom: 0;
+    z-index: 100;
+  }
+  @media only screen and (min-width: 752px) and (max-width: 2560px) {
+    button.hello__auth__btn{
+      display: none;
+    }
+  }
+</style>
 <template lang="jade">
 scroll-component
   hero-component
@@ -5,10 +18,11 @@ scroll-component
 
   .section.main
     .section__content
-      search-component
-      photos-component(:tags="true", :search="true", list-id="home")
-      navbar-component(current='feed')
-      helps-component
+     search-component
+     photos-component(:tags="true", :search="true", list-id="home")
+     button(v-if="!isAuth").btn.btn_primary.__orange.__xl.hello__auth__btn.fast__big__btn( v-link="{ name: 'signup' }") Вход и регистрация
+     navbar-component(current='feed')
+     helps-component
 </template>
 
 <script type='text/babel'>
