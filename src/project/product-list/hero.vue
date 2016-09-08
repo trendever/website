@@ -191,7 +191,7 @@ export default {
               clearInterval( timer );
             }
             scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
-          }, 20 );
+          }, 10 );
         }
       }
     }
