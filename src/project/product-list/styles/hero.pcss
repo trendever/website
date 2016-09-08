@@ -3,6 +3,7 @@
 
 .hero {
   position: relative;
+  z-index: 101;
   @media(--mobile) {
     height: 208%;
   }
@@ -101,7 +102,7 @@
       width: 250px;
       height: 57px;
 
-      margin-top: 53px;
+      margin-top: 60px;
       margin-left: 32px;
       @media(--tablet) {
         background-size: 180px;
@@ -198,6 +199,7 @@
         padding-right: 5px;
         @media(--smalldesktop) {
           margin-left: 15px;
+          width: 49%;
         }
         @media(--mobile) {
           display: none;
@@ -205,11 +207,23 @@
         @media(--tabletandless) {
           display: none;
         }
+        @media(--tablet){
+          width: 46%;
+        }
+        @media (min-width: 1500px) and (max-width: 1600px) {
+          width: 44%;
+        }
+        @media (min-width: 1601px) and (max-width: 1920px) {
+          width: 45%;
+        }
+        @media (min-width: 1921px) and (max-width: 2560px) {
+          width: 46%;
+        }
         .fb, .insta, .vk{
           color: #fff;
           font-size: 26px;
           margin-right: 12px;
-
+          padding-top: 27px;
           @media(--tablet) {
             margin-right: 6px;
           }
@@ -241,7 +255,7 @@
         .insta i:hover{
           background-image: url('../img/insta_c.svg');
           background-size: 28px;
-          background-position: 0px 16px;
+          background-position: -1px 16px;
           border-radius: 5px;
         }
         .vk i:hover{
@@ -285,7 +299,7 @@
         width: 395px;
         padding-top: 30px;
         position: relative;
-
+        float: right;
         @media(--tablet) {
           width: 335px;
           margin-left: 35px;
@@ -501,18 +515,20 @@
     height: 60%;
     width: 100%;
     text-align: center;
-    background-image: url(../img/Bgr_clg02-blue.jpg);
+    background-image: url(../img/blue_bgr.png);
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: -460px -80px;
   }
   @media(--tabletandless){
     display: inline-block !important;
     height: 60%;
     width: 100%;
     text-align: center;
-    background-image: url(../img/Bgr_clg02-blue.jpg);
+    background-image: url(../img/blue_bgr.png);
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: -460px -80px;
   } 
   a{
     font-size: 36px;
@@ -578,7 +594,7 @@
     width: 550px;
     height: 118px;
     border-radius: 5px;
-    margin: 85px auto 0px auto;
+    margin: 165px auto 0px auto;
   }
 }
 .shopping_trends{
