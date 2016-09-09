@@ -120,9 +120,12 @@
         cursor: pointer;
         display: inline-block;
         transform: translateY(1px);
+        @media(--tablet) {
+          transform: translateY(-1px);
+        }
         @media(--mobile) {
-          transform: translateY(3px);
-          font-size: 1.1rem;
+          transform: translateY(-1px);
+          font-size: 1.3rem;
         }
       }
     }
