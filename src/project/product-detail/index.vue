@@ -6,6 +6,7 @@ scroll-component(v-el:scroll-cnt)
     :center-text-link="centerTextLink",
     :page="page",
     :avatar-url='avatarUrl')
+    right-nav-component(slot="content", current="")
   .section.main.top
     .section__content
       post-component
@@ -15,6 +16,7 @@ scroll-component(v-el:scroll-cnt)
   import { openProduct, closeProduct, setScrollByProduct } from 'vuex/actions/products';
   import { getOpenedProduct, getScrollTopOfProduct } from 'vuex/getters/products';
 
+  import RightNavComponent from 'base/right-nav';
   import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
   import PostComponent from './components/root/index.vue';
@@ -22,6 +24,7 @@ scroll-component(v-el:scroll-cnt)
 
   export default {
     components: {
+      RightNavComponent,
       ScrollComponent,
       HeaderComponent,
       PostComponent
