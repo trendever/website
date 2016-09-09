@@ -1,6 +1,6 @@
 <style src='./menu.pcss'></style>
 <template lang="jade">
-.header__menu(v-if="mobile")
+.header__menu
  .header__menu-icon(@click='menuOpened = !menuOpened')
   ._bullet
  .header__menu-links.bubble.bubble--arrow.bubble--arrow-ne(v-if="menuOpened")
@@ -17,7 +17,7 @@
   import { getOpenedProduct } from 'vuex/getters/products';
   export default{
     data: function(){
-      
+
       return {
         menuOpened: false,
         mobile: window.browser.mobile
