@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-scroll-component(v-el:scroll-cnt)
+scroll-component(v-el:scroll-cnt, @click="setTooltip('chats',false)")
   right-nav-component(current="chat")
   .chat-list-cnt(v-if='isDone')
     header-component(:title='getTitle', :left-btn-show='false')
@@ -21,7 +21,7 @@ scroll-component(v-el:scroll-cnt)
       .chat-list-cnt-is-empty
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
         span  ... потому что ты пока ничего #[br] не покупаешь и не продаешь.
-      .chat-list-cnt-is-empty__banner Нажми Купить&nbsp
+      .chat-list-cnt-is-empty__banner(v-if="showTooltip") Нажми Купить&nbsp
        span под товаром или&nbsp
        span.want напиши @wantit&nbsp
        span под постом в Instagram, #[br] и здесь появится шопинг-чат.
@@ -52,7 +52,8 @@ navbar-component(current='chat')
     getCountForLoading
   } from 'vuex/getters/lead.js';
 
-  import { isAuth } from 'vuex/getters/user.js';
+  import { isAuth, getTooltips } from 'vuex/getters/user.js';
+  import { setTooltip } from 'vuex/actions/user.js';
 
   import {
     setTab,
@@ -86,6 +87,7 @@ navbar-component(current='chat')
     },
     vuex: {
       getters: {
+        getTooltips,
         isAuth,
         getLeads,
         getTab,
@@ -98,6 +100,7 @@ navbar-component(current='chat')
         getHasMore
       },
       actions: {
+        setTooltip,
         setTab,
         loadLeads,
         leadClose,
@@ -172,6 +175,18 @@ navbar-component(current='chat')
       if ( this.isAuth ) {
         //this.scrollListener.remove();
         this.leadClose();
+      }
+    },
+
+    computed:{
+      showTooltip(){
+        if(this.isEmptyLeads){
+          if(this.getTooltips.chats){
+            return true;
+          }
+          return false;
+        }
+        return false;
       }
     },
 

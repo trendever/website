@@ -229,3 +229,9 @@ export const setMyCurrentList = ( { dispatch }, list ) => {
   dispatch(types.USER_SET_MY_CURRENT_LIST, list);
 
 };
+
+export const setTooltip = ( { dispatch }, name, value) => {
+
+  dispatch(types.USER_SET_TOOLTIP, name, value);
+
+};

@@ -122,3 +122,10 @@ export const getMyCurrentList = ( { user } ) => {
   return user.myCurrentList;
 
 }
+
+
+export const getTooltips = ( { user } ) => {
+
+  return user.tooltips;
+
+}

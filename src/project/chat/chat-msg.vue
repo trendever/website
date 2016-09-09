@@ -15,8 +15,8 @@
     .chat-msg-wrap
       p.chat-msg_txt
         | {{{ getMessage }}}
-  
-  
+
+
 
 </template>
 
@@ -59,12 +59,20 @@
         return formatTime(this.msg.created_at);
       },
       getUserNameLink() {
+        //серисные сообшения
+        if(this.msg.user.name === 'trendever'){
+          return 'trendevercom';
+        }
         if (this.isCustomer) {
           return this.msg.user.name;
         }
         return this.getShopName;
       },
       getUsername() {
+        //сервисные сообщния
+        if(this.msg.user.name === 'trendever'){
+          return 'trendever';
+        }
         if (this.isCustomer) {
           return `<b>${this.msg.user.name}</b>`
         }
