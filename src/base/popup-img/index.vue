@@ -94,6 +94,7 @@
               const res = ratioFit( this.width, this.height, imgWidth, containerHeight );
 
               imgHeight = res.height;
+              imgWidth = res.width;
 
             }
 
