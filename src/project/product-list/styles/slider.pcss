@@ -72,8 +72,8 @@ $width-desktop: 936px;
 .swipe-item-wrapper{
   width: 283px !important;
   height: 313px;
-  @media(--tablet) {
-    width: 225px !important;
+  @media(--tabletH) {
+    width: 226px !important;
     margin-left: 26px;
   }
 }
@@ -169,10 +169,10 @@ $width-desktop: 936px;
   height: 263px;
   margin-top: 50px;
   position: relative;
-  @media(--tablet) {
+  @media(--tabletH) {
     margin-top: 32px;
     width: 208px;
-    height: 281px;
+    height: 222px;
   }
   &:after{
     content: url('../img/status_bar.svg');
@@ -180,7 +180,11 @@ $width-desktop: 936px;
     top: 0;
     left: 0;
     height: 20px;
-    width: 280px;  
+    width: 280px;
+    @media(--tabletH) {
+      top: -5px;
+      width: 210px;
+    }
   }
 }
 .swipe-item.slide-wrapper-second{
@@ -188,25 +192,42 @@ $width-desktop: 936px;
   width: 282px;
   height: 263px;
   margin-top: 50px;
-  @media(--tablet) {
+  @media(--tabletH) {
     margin-top: 32px;
-    width: 208px;
+    width: 210px;
     height: 281px;
   }
   img{
-    @media(--tablet) {
+    height: 250px;
+    margin-left: -1px;
+    @media(--tabletH) {
       width: 208px;
+      height: 186px;
+    }
+    @media(--smalldesktopH) {
+      height: 253px;
     }
   }
 }
 .swipe-item.slide-wrapper-third{
+  margin-top: 50px;
+  background-color: #fff;
+  height: 263px;
+  @media(--tabletH) {
+    margin-top: 32px;
+    width: 210px;
+    margin-left: -1px;
+  }
+  @media(--smalldesktopH) {
+    height: 263px;
+  }
   img{
     width: 283px;
-    margin-top: 50px !important;
-    @media(--tablet) {
-      margin-top: 32px !important;
-      width: 208px;
-      height: 281px;
+    @media(--tabletH) {
+      width: 211px;
+      height: 245px;
+      margin-left: 0px;
+      margin-top: -25px !important;
     }
   }
 }
