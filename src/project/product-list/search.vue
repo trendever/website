@@ -4,7 +4,7 @@
   #search
     .search-stub(v-if='searchGlued')
 
-    .search-input(:class='{"glued":searchGlued}', v-if="isAuth")
+    .search-input(v-if="isAuth && isMobile")
       .search-input__container(:class='{"__focused": inputFocused, "__active": searchValue.length || selectedCount > 0}')
         .search-input__search-btn(@click='search()')
           i.ic-search.__mirror
@@ -75,6 +75,7 @@
     },
     data(){
       return {
+        isMobile: window.browser.mobile,
         searchGlued: false,
         inputFocused: false,
         isOpenTags: false

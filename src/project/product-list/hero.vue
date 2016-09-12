@@ -7,7 +7,18 @@
 <template lang="jade">
 .header__menu__overlay(v-show='menuOpened', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
-.section.smallHero(v-if='isAuth')
+.section.smallHero(v-if='isAuth', :class="{'header-glued': headerGlued}")
+  //-до рекфакторинга тут
+  .input__container(v-if="!isMobile")
+    i.ic-search(@click="inputOpened = !inputOpened")
+    input(
+      v-el:input,
+      @keyup='search()',
+      :value='searchValue',
+      type='text',
+      placeholder='Ищи текстом или жми теги...',
+      :class="{'opened': inputOpened || searchValue}")
+
   .profile-header__menu
     .profile-header__menu-btn
       .profile-header__menu-btn-label
@@ -94,7 +105,7 @@
 </template>
 
 <script type='text/babel'>
-import listener from 'event-listener'
+import listen from 'event-listener'
 import settings from 'settings'
 import { setCallbackOnSuccessAuth } from 'vuex/actions'
 import { createLead } from 'vuex/actions/lead'
@@ -104,12 +115,17 @@ import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
 import RightNavComponent from 'base/right-nav/index';
 import Slider from './slider.vue';
+import { searchValue } from 'vuex/getters/search';
+import { setSearchValue } from 'vuex/actions/search.js';
 
 export default {
   data(){
     return {
+      inputOpened: false,
       menuOpened: false,
-      isStandalone: browser.standalone
+      isStandalone: browser.standalone,
+      isMobile: window.browser.mobile,
+      headerGlued: false
     }
   },
 
@@ -119,15 +135,35 @@ export default {
   },
 
   ready() {
-    this.scrollCnt = document.querySelector( '.scroll-cnt' );
-  },
+    if(!this.isMobile){
+      this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
+      this.addGlued = listen(this.scrollCnt, 'scroll',()=>{
+
+        if(this.scrollCnt.scrollTop > 50){
+
+          this.headerGlued = true;
+
+        } else {
+          this.headerGlued = false;
+        }
+
+
+      });
+
+    }
+  },
+  beforeDestroy(){
+    this.addGlued.remove;
+  },
   vuex: {
     getters: {
+      searchValue,
       isAuth,
       getComeBack
     },
     actions: {
+      setSearchValue,
       logOut,
       createLead,
       setCallbackOnSuccessAuth,
@@ -135,6 +171,9 @@ export default {
   },
 
   methods: {
+    search() {
+      this.setSearchValue( this.$els.input.value );
+    },
     logout(){
 
       this.$set('menuOpened', false);
