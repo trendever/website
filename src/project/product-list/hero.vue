@@ -68,12 +68,13 @@
     .hero__content__description Шопинг в Instagram стал проще!
     button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }") ВХОД И РЕГИСТРАЦИЯ
     .hero__content__footer
-     a(href='https://www.fb.com/trendevercom', class='fb' target="_blank")
-      i(class='ic-fb social')
-     a(href='https://www.instagram.com/trendevercom', class='insta' target="_blank")
-      i(class='ic-insta social')
-     a(href='https://vk.com/trendever', class='vk' target="_blank")
-      i(class='ic-vk social')
+     .hero__content__footer__social
+      a(href='https://www.fb.com/trendevercom', class='fb' target="_blank")
+       i(class='ic-fb social')
+      a(href='https://www.instagram.com/trendevercom', class='insta' target="_blank")
+       i(class='ic-insta social')
+      a(href='https://vk.com/trendever', class='vk' target="_blank")
+       i(class='ic-vk social')
      .hero__content__input-wrap
       p Приложение для шопинга в Instagram
       input(type="text" placeholder="Номер телефона")
