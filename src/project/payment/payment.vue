@@ -190,11 +190,13 @@ export default{
       this.setOpen = false;
       this.setShowMenu(false);
     },
-
+//сумма которую мы транслируем в Payture равна "сумма которую написал продавец" разделить на "1+процент комиссии"
     makeOrder(){
-      let _fakeprice = this.billPrice - this.billPrice*0.015;
+      console.log("Bill price"+this.billPrice);
+      let _trueprice = this.billPrice/1.015;
+      console.log("Order price to payture"+_trueprice);
       cardService.createOrder({
-        amount: +_fakeprice,
+        amount: +_trueprice,
         card: this.currentCardId,
         currency: 0,//0 - рубли
         lead_id: this.getLeadId

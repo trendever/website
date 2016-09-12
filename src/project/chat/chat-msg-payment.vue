@@ -13,6 +13,7 @@
 
 <script>
   import { getShopName, getCustomerName } from 'vuex/getters/chat.js';
+  import { getPaymentAmmount } from 'project/payment/functions.js';
 
   export default{
     props: {
@@ -43,14 +44,7 @@
         return {from: _from,to: _to};
       },
       getAmmount(){
-        let _currency = JSON.parse(this.msg.parts[0].content).currency
-        let _ammount = JSON.parse(this.msg.parts[0].content).amount;
-        let _fakeammount = _ammount / 0.985;
-        if (_currency === 2){
-          return _fakeammount/100;
-        }else{
-          return _fakeammount;
-        }
+        return getPaymentAmmount(this.msg);
       },
     }
   }

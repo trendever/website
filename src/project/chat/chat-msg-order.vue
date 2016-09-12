@@ -24,6 +24,7 @@
   import * as leads from 'services/leads';
   import { formatTime, formatDatetime, escapeHtml, wrapLink } from './utils';
   import * as cardService from 'services/card';
+  import { getPaymentAmmount } from 'project/payment/functions.js';
 
   export default{
     data() {
@@ -74,14 +75,7 @@
         return _payid;
       },
       getAmmount(){
-        let _currency = JSON.parse(this.msg.parts[0].content).currency
-        let _ammount = JSON.parse(this.msg.parts[0].content).amount;
-        let _fakeammount = _ammount / 0.985;
-        if (_currency === 2){
-          return _fakeammount/100;
-        }else{
-          return _fakeammount;
-        }
+        return getPaymentAmmount(this.msg);
       },
       isLoaded(){
         if( 'loaded' in this.msg){
@@ -159,13 +153,6 @@
         return this.msg.closestMessage;
       },
       isOwnMessage() {
-
-/*        if(this.msg.addDateStatus !== null){
-
-          console.log(formatDatetime(this.msg.addDateStatus));
-
-        }*/
-
         if ( this.getCurrentMember !== null ) {
           return this.getCurrentMember.user_id === this.msg.user.user_id;
         }
