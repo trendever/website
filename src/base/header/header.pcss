@@ -42,6 +42,46 @@
   }
   &__arrow {
     display: none;
+    //врtменная логика пока не ясно куда надо а куда не надо
+    &.show-desktop-arrow {
+
+      position: absolute 0 * 0 170px;
+      display: flex;
+      padding: 0 30px;
+
+      cursor: pointer;
+      text-decoration: none;
+
+      align-items: center;
+
+      @media(--mobile) {
+        position: absolute 0 * 0 0;
+      }
+
+      i {
+        width: 26px;
+        height: 26px;
+
+        transition: all 0.3s ease-in-out;
+
+        color: $color__white;
+
+        font-size: 26px;
+
+        @media(--mobile) {
+          width: 42px;
+          height: 42px;
+
+          font-size: 42px;
+        }
+        // mods
+        &._up {
+          transform: rotate(90deg);
+        }
+      }
+    }
+
+
     @media(--mobile) {
       position: absolute 0 * 0 0;
 
@@ -135,12 +175,16 @@
 
   &-right {
     position: absolute;
-    right: 261px;
+    right: 218px;
     top: 5px;
 
     @media(--mobile) {
       top: 10px;
       right: 109px;
+    }
+
+    @media(--tablet) {
+      right: 80px;
     }
 
     img {

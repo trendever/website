@@ -1,5 +1,6 @@
 @import 'base/vars/vars.pcss';
 
+
 .popup-wrapper {
   position: fixed;
   z-index: 100;
@@ -16,10 +17,13 @@
     font-size: 36px;
   }
   @media(--mobile) {
-    display: none;
+
+    padding: 0;
+
   }
   @media(--tabletandless) {
-    display: none;
+    padding: 0;
+    //display: none;
   }
   .emoji {
     width: 40px;
@@ -49,7 +53,7 @@
       text-align: center;
     }
     @media(--mobile) {
-      display: none;
+      //display: none;
     }
   }
   .column-desktop-right {

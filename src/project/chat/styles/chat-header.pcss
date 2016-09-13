@@ -3,9 +3,10 @@
   /*
   /*Стрелка и каунтер
   */
-  //Лучше сделать подругому
+  //дублирую так как нодо только в этом компоненте
   @media(--mobile) {
-    &_arrow,  &_notify-count {
+    .chat-header_arrow,
+    .chat-header_notify-count {
       display:none
     }
   }
@@ -37,13 +38,16 @@
     }
 
     &_notify-count {
-      position: absolute 11px * 0 234px;
-      min-width: 29px;
-      height: 29px;
-      padding-top: 2px;
+      position: absolute 12px * 0 234px;
+      min-width: 26px;
+      height: 26px;
+      padding: 1px 6px;
 
-      border-radius: 24px;
+      border-radius: 25px;
       background: white;
+
+      justify-content: center;
+      align-items: center;
 
       span {
         color: $color__green;

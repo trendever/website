@@ -2,11 +2,11 @@
 
 <template lang="jade">
 .app(:class="{'standalone': isStandalone}")
-  popup-fast-signup(v-if="authIsDone")
+  popup-fast-signup(v-if="authIsDone && showAuthBtn")
   router-view(v-if="authIsDone")
   listener-component(v-if="authIsDone")
 //-get user for ios push actions logic
-input(type="hidden", value="", id="get-user-login")  
+input(type="hidden", value="", id="get-user-login")
 </template>
 
 <script type='text/babel'>
@@ -31,7 +31,8 @@ input(type="hidden", value="", id="get-user-login")
     data(){
       return {
         authIsDone: false,
-        touchMoveY: 0
+        touchMoveY: 0,
+        showAuthBtn: false
       }
     },
     vuex: {
@@ -52,8 +53,13 @@ input(type="hidden", value="", id="get-user-login")
           return false;
         }
       }
-    },  
+    },
     ready() {
+
+      this.$on('showAuthBtn',()=>{
+        this.showAuthBtn = true;
+      })
+
 
       let token = null
 
