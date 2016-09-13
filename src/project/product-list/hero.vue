@@ -10,14 +10,14 @@
 .section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
 
   .input__container(v-if="!isMobile")
-    i.ic-search(@click="inputOpened = !inputOpened, $els.input.focus()")
+    i.ic-search(@click="openInput")
     input(
       v-el:input,
       @keyup='search()',
       :value='searchValue',
       type='text',
       placeholder='Ищи текстом или жми теги...',
-      :class="{'opened-input': inputOpened }")
+      v-if="inputOpened")
 
   .profile-header__menu
     .profile-header__menu-btn
@@ -155,6 +155,12 @@ export default {
   },
 
   methods: {
+    openInput(){
+      this.inputOpened = !this.inputOpened;
+      this.$nextTick(()=>{
+        this.$els.input.focus()
+      });
+    },
     search() {
       this.setSearchValue(this.$els.input.value);
     },
