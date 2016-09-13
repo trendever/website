@@ -340,7 +340,7 @@
               text-indent: 12px;
             }
 
-            :-ms-input-placeholder {  
+            :-ms-input-placeholder {
               font-size: 16px;
               color: #808080;
               text-indent: 12px;
@@ -400,7 +400,7 @@
         }
       }
 
-      .smallHero{
+      .smallHero {
         position: relative;
         height: 50px;
         margin: 0 auto;
@@ -408,6 +408,44 @@
         text-align: center;
 
         background-color: $color__green;
+
+        &.header-glued {
+          position: fixed;
+          width: 100%;
+          z-index: 9999;
+          transform: translateZ(0,0,0);
+        }
+
+        .input__container {
+          i.ic-search {
+            transform: scaleX(-1);
+            font-size: 26px;
+            color: white;
+            position: absolute 13px 190px * * ;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+          input {
+            position: absolute 9px 240px * * ;
+            height: 30px;
+            background: $color__green;
+            outline: none;
+            border: none;
+            border-bottom: 1px solid white;
+            color: white;
+            font-size: 1.1rem;
+            width: 0;
+            overflow: hidden;
+            &::placeholder {
+              font-weight: normal;
+              color: white;
+            }
+            &.opened {
+              width: 235px;
+            }
+          }
+        }
 
         .standalone & {
           height:89px;
@@ -506,7 +544,7 @@
       background-repeat: no-repeat;
       background-size: cover;
       background-position: -460px -80px;
-    } 
+    }
     a{
       font-size: 36px;
       color: #fff;

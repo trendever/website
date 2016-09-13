@@ -7,7 +7,18 @@
 <template lang="jade">
 .header__menu__overlay(v-show='menuOpened', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
-.section.smallHero(v-if='isAuth')
+.section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
+
+  .input__container(v-if="!isMobile")
+    i.ic-search(@click="inputOpened = !inputOpened, $els.input.focus()")
+    input(
+      v-el:input,
+      @keyup='search()',
+      :value='searchValue',
+      type='text',
+      placeholder='Ищи текстом или жми теги...',
+      :class="{'opened': inputOpened || searchValue}")
+
   .profile-header__menu
     .profile-header__menu-btn
       .profile-header__menu-btn-label
@@ -106,11 +117,17 @@ import * as leads from 'services/leads'
 import RightNavComponent from 'base/right-nav/index';
 import Slider from './slider.vue';
 
+//search logic
+import { searchValue } from 'vuex/getters/search';
+import { setSearchValue } from 'vuex/actions/search';
+
 export default {
   data(){
     return {
+      inputOpened: false,
       menuOpened: false,
-      isStandalone: browser.standalone
+      isStandalone: browser.standalone,
+      isMobile: window.browser.mobile
     }
   },
 
@@ -125,10 +142,12 @@ export default {
 
   vuex: {
     getters: {
+      searchValue,
       isAuth,
       getComeBack
     },
     actions: {
+      setSearchValue,
       logOut,
       createLead,
       setCallbackOnSuccessAuth,
@@ -136,6 +155,9 @@ export default {
   },
 
   methods: {
+    search() {
+      this.setSearchValue(this.$els.input.value);
+    },
     logout(){
 
       this.$set('menuOpened', false);
