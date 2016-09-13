@@ -1,7 +1,7 @@
 <style src='./styles/search.pcss'></style>
 <template lang="jade">
 .search-placeholder
-  #search(:class="{'desktop-topspace': !isMobile}")
+  #search(:class="{'desktop-topspace': !isMobile && isAuth}")
     //-.search-stub(v-if='searchGlued')
 
     .search-input(v-if="isAuth && isMobile")

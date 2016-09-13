@@ -441,8 +441,12 @@
               font-weight: normal;
               color: white;
             }
-            &.opened {
-              width: 235px;
+            &.opened-input {
+              width: 250px;
+              @media(--tabletH) {
+                font-size: 0.9rem;
+                width: 200px;
+              }
             }
           }
         }

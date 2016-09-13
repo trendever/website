@@ -17,7 +17,7 @@
       :value='searchValue',
       type='text',
       placeholder='Ищи текстом или жми теги...',
-      :class="{'opened': inputOpened || searchValue}")
+      :class="{'opened-input': inputOpened }")
 
   .profile-header__menu
     .profile-header__menu-btn
