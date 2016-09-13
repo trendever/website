@@ -36,13 +36,19 @@ scroll-component
         let scrollComp = document.querySelector('.scroll-cnt');
         this.showOnScroll = listen(scrollComp,'scroll',()=>{
           if(window.browser.mobile){
-            if(scrollComp.scrollTop > 1200){
+            if(scrollComp.scrollTop > 2000){
               this.$dispatch('showAuthBtn');
+            }
+            else if(scrollComp.scrollTop < 2000){
+              this.$dispatch('hideAuthBtn');
             }
           }
           if(!window.browser.mobile) {
-            if(scrollComp.scrollTop > 600){
+            if(scrollComp.scrollTop > 700){
               this.$dispatch('showAuthBtn');
+            }
+            else if(scrollComp.scrollTop < 700){
+              this.$dispatch('hideAuthBtn');
             }
           }
 
