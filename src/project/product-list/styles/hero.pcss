@@ -405,7 +405,7 @@
         height: 50px;
         margin: 0 auto;
 
-        text-align: center;
+        text-align: left;
 
         background-color: $color__green;
 
@@ -478,6 +478,9 @@
             margin: 0;
             text-align: left;
             height: 100%;
+            @media (min-width: 800px) {
+                margin: -37px 0 0 230px;
+            }
 
             &:before{
               content: "";
@@ -486,6 +489,7 @@
               vertical-align: middle;
             }
             &-icon{
+
               font-size: 25px;
               vertical-align: middle;
               line-height: 0;
@@ -506,7 +510,10 @@
       color: $color__white;
       width:150px;
       font-size: 32px;
-
+      @media (min-width: 800px) {
+        padding-left: 20px;
+        margin-left: 47px;
+      }
       img {
         display:block;
         width:100%;
@@ -518,10 +525,6 @@
       }
 
       @media(--mobile){
-        width:290px;
-        font-size: 60px;
-      }
-      @media(--tabletandless){
         width:290px;
         font-size: 60px;
       }
