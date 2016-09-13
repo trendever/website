@@ -38,16 +38,14 @@ scroll-component
           if(window.browser.mobile){
             if(scrollComp.scrollTop > 2000){
               this.$dispatch('showAuthBtn');
-            }
-            else if(scrollComp.scrollTop < 2000){
+            } else {
               this.$dispatch('hideAuthBtn');
             }
           }
           if(!window.browser.mobile) {
             if(scrollComp.scrollTop > 700){
               this.$dispatch('showAuthBtn');
-            }
-            else if(scrollComp.scrollTop < 700){
+            } else {
               this.$dispatch('hideAuthBtn');
             }
           }

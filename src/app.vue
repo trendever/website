@@ -60,6 +60,10 @@ input(type="hidden", value="", id="get-user-login")
         this.showAuthBtn = true;
       })
 
+      this.$on('hideAuthBtn',()=>{
+        this.showAuthBtn = false;
+      })
+
 
       let token = null
 
