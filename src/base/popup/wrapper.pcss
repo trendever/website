@@ -1,19 +1,29 @@
 @import 'base/vars/vars.pcss';
 
+
 .popup-wrapper {
   position: fixed;
   z-index: 100;
   bottom: 0;
   width: 100%;
   padding-top: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   text-align: center;
   color: #FFF;
-  background-color: rgba(24, 92, 90, .7);
+  background-color: rgba(24, 92, 90, .85);
   font-size: 24px;
   @media(--tabletandless){
     padding: 13px 0 0px;
     font-size: 36px;
+  }
+  @media(--mobile) {
+
+    padding: 0;
+
+  }
+  @media(--tabletandless) {
+    padding: 0;
+    //display: none;
   }
   .emoji {
     width: 40px;
@@ -35,15 +45,19 @@
     }
   }
   .column-desktop-left {
-    padding-right: 24px;
-    text-align: right;
+    text-align: center;
+    width: 100%;
 
     @media(--tabletandless){
       padding-right: 0;
       text-align: center;
     }
+    @media(--mobile) {
+      //display: none;
+    }
   }
   .column-desktop-right {
+    display: none;
     float: right;
     height: 110px;
     padding-top: 33px;
@@ -55,13 +69,17 @@
       -webkit-transition: 64ms ease-in-out;
       transition: 64ms ease-in-out;
     }
-
+    @media(--mobile) {
+      display: none;
+    }
     @media(--tabletandless){
-      text-align:center;
+      /* text-align:center;
       float: none;
       padding-top:19px;
       height: 93px;
       padding-left: 0;
+      displya: inline-block; */
+      display: none;
     }
   }
   .desktop-text-right {
@@ -80,12 +98,12 @@
 
 .btn.fast__big__btn {
   width: 420px;
-  height: auto;
-  margin: 10px 0;
+  height: 60px;
+  margin: 0;
 
   font-family: $font__family;
   font-size: 24px;
-  line-height: 73px;
+  line-height: 40px;
   @media(--tabletandless){
     width: 100%;
     height: auto;
@@ -93,6 +111,9 @@
     border-radius: 0;
     font-size: 36px;
     line-height: 118px;
+  }
+  @media(--mobile) {
+    //display: none;
   }
 }
 
@@ -174,6 +195,9 @@
 }
 
 .btn.fast__big__btn.btn_fixed-bottom{
+  .hello_btn{
+    height: 55px !important;
+  }
   @media(--mobile) {
     position: fixed;
     bottom: 0;

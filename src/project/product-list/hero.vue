@@ -1,8 +1,24 @@
 <style src='./styles/hero.pcss'></style>
+<style>
+  .hero__content__logo{
+    /*display: none;*/
+  }
+</style>
 <template lang="jade">
 .header__menu__overlay(v-show='menuOpened', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
-.section.smallHero(v-if='isAuth')
+.section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
+
+  .input__container(v-if="!isMobile")
+    i.ic-search(@click="openInput")
+    input(
+      v-el:input,
+      @keyup='search()',
+      :value='searchValue',
+      type='text',
+      placeholder='Ищи текстом или жми теги...',
+      v-if="inputOpened || searchValue")
+
   .profile-header__menu
     .profile-header__menu-btn
       .profile-header__menu-btn-label
@@ -28,8 +44,10 @@
     i.smallHero__logo
       img(src='../../base/img/logo-main.svg')
 
+  right-nav-component(current="feed")
+
 .section.hero(v-if='!isAuth')
-  .profile-header__menu(v-if='!isAuth')
+  .profile-header__menu(v-if='isAuth')
     .profile-header__menu-btn
     .profile-header__menu-btn-label
       .profile-header__menu-btn-icon(@click='menuOpened=true')
@@ -52,15 +70,39 @@
   .section__content.hero__content
     .profile-header
       .profile-header__center
-        a(href='https://www.fb.com/trendevercom', class='profile-header__center__ic' target="_blank")
-          i(class='ic-facebook-icon')
-        a(href='https://www.instagram.com/trendevercom', class='profile-header__center__ic' target="_blank")
-          i(class='ic-instagram-new-icon')
-        a(href='https://vk.com/trendever', class='profile-header__center__ic' target="_blank")
-          i(class='ic-vkontakte-icon')
-    .hero__content__logo
-    .hero__content__description Шопинг в Instagram стал проще
-      span(@click='scrollAnchor()').scroll-to-anchor
+      button(v-link='{ name: "info-shop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
+      button(v-link='{ name: "signup" }').profile-header__auth-btn ВХОД И РЕГИСТРАЦИЯ
+      .profile-header__mobile-slider
+       .profile-header__mobile-slider-slide
+        slider
+     .hero__content__logo__mobile
+    .hero__content__description Шопинг в Instagram стал проще!
+    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }") ВХОД И РЕГИСТРАЦИЯ
+    .hero__content__footer
+     .hero__content__footer__social
+      a(href='https://www.fb.com/trendevercom', class='fb' target="_blank")
+       i(class='ic-fb social')
+      a(href='https://www.instagram.com/trendevercom', class='insta' target="_blank")
+       i(class='ic-insta social')
+      a(href='https://vk.com/trendever', class='vk' target="_blank")
+       i(class='ic-vk social')
+     .hero__content__input-wrap
+      p Приложение для шопинга в Instagram
+      input(type="text" placeholder="Номер телефона")
+      button.hero__content__get-link ПОЛУЧИТЬ ССЫЛКУ
+     .hero__content__dwnld-btns
+      a(href="#", class="app_store")
+       i(class="ic-appstore")
+      a(href="#", class="g_play")
+       i(class="ic-google_play")
+  .hero__content__2
+   a(href="#", @click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
+   p(id="how-it-work") Находи и покупай #[br] трендовые товары здесь #[br] или прямо в Instagram
+   .caption__play__mobile(v-link='{name: "main-video"}')
+     i.ic-play
+    .caption__description__mobile(v-link='{name: "main-video"}') (смотреть видео)
+    button(v-link='{ name: "info-shop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
+  button(@click="scrollAnchorTags()").shopping_trends ЗАГЛЯНУТЬ ВНУТРЬ
 </template>
 
 <script type='text/babel'>
@@ -72,13 +114,26 @@ import { isAuth } from 'vuex/getters/user.js'
 import { logOut } from 'vuex/actions/user.js'
 import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
+import RightNavComponent from 'base/right-nav/index';
+import Slider from './slider.vue';
+
+//search logic
+import { searchValue } from 'vuex/getters/search';
+import { setSearchValue } from 'vuex/actions/search';
 
 export default {
   data(){
     return {
+      inputOpened: false,
       menuOpened: false,
-      isStandalone: browser.standalone
+      isStandalone: browser.standalone,
+      isMobile: window.browser.mobile
     }
+  },
+
+  components :{
+    Slider,
+    RightNavComponent
   },
 
   ready() {
@@ -87,10 +142,12 @@ export default {
 
   vuex: {
     getters: {
+      searchValue,
       isAuth,
       getComeBack
     },
     actions: {
+      setSearchValue,
       logOut,
       createLead,
       setCallbackOnSuccessAuth,
@@ -98,10 +155,20 @@ export default {
   },
 
   methods: {
+    openInput(){
+      this.inputOpened = !this.inputOpened;
+      this.$nextTick(()=>{
+        this.$els.input.focus()
+      });
+    },
+    search() {
+      this.setSearchValue(this.$els.input.value);
+    },
     logout(){
 
       this.$set('menuOpened', false);
       this.logOut();
+      window.location = '/';
 
     },
     goBack(){
@@ -139,6 +206,22 @@ export default {
             }
             scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
           }, 20 );
+        }
+      }
+    },
+
+    scrollAnchorTags() {
+      var block = document.querySelector( "#tags" );
+      if ( block !== null ) {
+        var scrollBlock = this.scrollCnt;
+
+        if ( !timer ) {
+          var timer = setInterval( function() {
+            if ( block.getBoundingClientRect().top < 80 ) {
+              clearInterval( timer );
+            }
+            scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
+          }, 10 );
         }
       }
     }

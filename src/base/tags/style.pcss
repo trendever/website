@@ -66,7 +66,7 @@
     width: auto;
     display: block;
     float: left;
-    box-sizing: content-box;
+    box-sizing: content-box !important;
     border: 1px solid $color__green;
     border-radius: 5px;
     cursor: pointer;
@@ -90,6 +90,7 @@
       margin-right: 12px !important;
     }
 
+
     &-active {
       background: $color__green;
       .text {
@@ -104,19 +105,22 @@
         text-transform: uppercase;
         padding-top: 2px;
         @media(--mobile) {
-          font-size: 28px;  
+          font-size: 28px;
           height: 43px;
           line-height: 36px;
           padding-top: 14px;
         }
       }
       .close {
+        text-align:right;
+        padding-left:5px;
+        width: 20px;
+        font-size: .83rem;
         color: $color__white;
         cursor: pointer;
-        display: inline;
-
+        display: inline-block;
         @media(--mobile) {
-          font-size: 22px;
+          font-size: 1.3rem;
         }
       }
     }

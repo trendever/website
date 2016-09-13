@@ -213,7 +213,7 @@ export const onMessageRead = ( { dispatch, state }, data ) => {
             dispatch( LEAD_UPDATE, {
               conversation_id: lead.chat.id,
               members: data.response_map.chat.members,
-              updated_at: lead.chat.recent_message.created_at * 1e9
+              updated_at: lead.chat.recent_message ? lead.chat.recent_message.created_at * 1e9 : null
             } );
 
           }

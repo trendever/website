@@ -2,7 +2,11 @@
 <template lang="jade">
 .section.header.section__content
     .header__content.u-fixed(v-show='is_visible')
-      .header__arrow(@click='leftBtnAction' v-if='leftBtnShow')
+      .header__arrow(
+        @click='leftBtnAction',
+        v-if='leftBtnShow',
+        :class="{'show-desktop-arrow': showDesktopArrow}")
+
         i.header__arrow__ic.ic-arrow-left(
         :class='{"_up": is_action_up}')
 
@@ -40,6 +44,10 @@
       }
     },
     props: {
+      showDesktopArrow:{
+        type: Boolean,
+        default: false
+      },
       // Title of header
       title: {
         type: String

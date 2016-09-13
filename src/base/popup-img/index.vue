@@ -30,15 +30,22 @@
   export default {
     data(){
 
-      return {}
+      return {
+        meta: document.querySelector('meta[name="viewport"]'),
+        zoomContent: 'width=device-width, initial-scale=1.0',
+        appContent: 'width=750, maximum-scale=1.0, user-scalable=no'
+      }
 
     },
     ready(){
+
+      this.meta.content = this.zoomContent;
+
       this.resize = listener( window, 'optimizedResize', this.resizeImg.bind( this ) );
       this.resizeImg();
     },
     beforeDestroy(){
-
+      this.meta.content = this.appContent;
       this.resize.remove()
 
     },
@@ -87,6 +94,7 @@
               const res = ratioFit( this.width, this.height, imgWidth, containerHeight );
 
               imgHeight = res.height;
+              imgWidth = res.width;
 
             }
 

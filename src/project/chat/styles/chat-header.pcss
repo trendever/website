@@ -1,5 +1,62 @@
 @import 'base/vars/vars.pcss';
 .chat-header {
+  /*
+  /*Стрелка и каунтер
+  */
+  //дублирую так как нодо только в этом компоненте
+  @media(--mobile) {
+    .chat-header_arrow,
+    .chat-header_notify-count {
+      display:none
+    }
+  }
+  @media screen and (min-width: 750px) {
+
+    &_arrow {
+
+      position: absolute 13px * * 170px;
+
+      display: flex;
+
+      padding: 0 30px;
+
+      cursor: pointer;
+      text-decoration: none;
+
+      align-items: center;
+
+      &_ic {
+        width: 26px;
+        height: 26px;
+
+        color: $color__white;
+
+        font-size: 26px;
+
+      }
+
+    }
+
+    &_notify-count {
+      position: absolute 12px * 0 234px;
+      min-width: 26px;
+      height: 26px;
+      padding: 1px 6px;
+
+      border-radius: 25px;
+      background: white;
+
+      justify-content: center;
+      align-items: center;
+
+      span {
+        color: $color__green;
+        font-size: 15px;
+      }
+    }
+  }
+  /****************************/
+
   &_cnt {
     color: white;
 

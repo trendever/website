@@ -1,10 +1,10 @@
 <style src='./styles/search.pcss'></style>
 <template lang="jade">
 .search-placeholder
-  #search
-    .search-stub(v-if='searchGlued')
+  #search(:class="{'desktop-topspace': !isMobile && isAuth}")
+    //-.search-stub(v-if='searchGlued')
 
-    .search-input(:class='{"glued":searchGlued}')
+    .search-input(v-if="isAuth && isMobile")
       .search-input__container(:class='{"__focused": inputFocused, "__active": searchValue.length || selectedCount > 0}')
         .search-input__search-btn(@click='search()')
           i.ic-search.__mirror
@@ -49,7 +49,11 @@
         :del-tag="removeTag",
         :add-tag="selectTag",
         :is-open.sync="isOpenTags",
-        :is-pending="getPendingStatus"
+        :is-pending="getPendingStatus",
+        :margin-bottom="marginBottom",
+        :margin-right="marginRight",
+        :base-height="baseHeight"
+
       )
 </template>
 
@@ -73,7 +77,8 @@
       return {
         searchGlued: false,
         inputFocused: false,
-        isOpenTags: false
+        isOpenTags: false,
+        isMobile: window.browser.mobile
       }
     },
     ready(){
@@ -150,6 +155,28 @@
 
     },
     computed:{
+      baseHeight(){
+        if(!window.matchMedia('(max-width: 750px)').matches){
+          return 78;
+        } else {
+          return;
+        }
+      },
+      marginBottom(){
+        if(window.matchMedia('(max-width: 750px)').matches){
+          return;
+        } else {
+          return 5;
+        }
+
+      },
+      marginRight(){
+        if(window.matchMedia('(max-width: 750px)').matches){
+          return;
+        } else {
+          return 5;
+        }
+      },
       tagsFontSize(){
         if(window.browser.mobile){
           return null;
@@ -158,10 +185,11 @@
 
       },
       tagsLineHeight(){
-        if(window.browser.mobile){
-          return null;
+        if(window.matchMedia('(max-width: 750px)').matches){
+          return '37px';
+        } else {
+          return '28px';
         }
-        return '27px';
 
       }
     },

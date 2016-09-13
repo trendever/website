@@ -555,7 +555,7 @@ export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
 }
 
 export const closeConversation = ( { dispatch } ) => {
-
+  dispatch(CONVERSATION_SET_ACTION, '');
   dispatch( CONVERSATION_CLOSE )
 
 }

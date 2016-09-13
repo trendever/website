@@ -17,7 +17,9 @@
 
 .chat_messages {
   padding-top: 78px;
-
+  @media(--mobile){
+    padding-top: 600px;
+  }
   .bubble {
     position: relative;
 
@@ -117,23 +119,30 @@
     }
 
     .bubble {
-
+      position: relative;
       margin-right: 21.75px;
-      background: #CAE6E1;
+      //background: #CAE6E1;
+      background: #C4E4E8;
+      border: 0.5px solid #85CCCB;
 
       &:before {
-        right: -11px;
-        border-right: 12px solid #CAE6E1;
-        border-bottom-right-radius: 20px 30px;
-        background: #CAE6E1;
+        content: url(../icons/curl-right.png);
+        position: absolute;
+        transform: scale(.27);
+        top: -4px;
+        right: -37px;
+        //right: -11px;
+        //border-right: 12px solid #C3F0EF;
+        //border-bottom-right-radius: 20px 30px;
+        //background: #CAE6E1;
       }
 
       &:after {
-        right: -13px;
-        width: 14px;
-        height: 20px;
-        border-bottom-right-radius: 20px 15px;
-        background: white;
+        //right: -13px;
+        //width: 14px;
+        //height: 20px;
+        //border-bottom-right-radius: 20px 15px;
+        //background: white;
       }
 
     }
@@ -182,22 +191,26 @@
 
       margin-left: 21.75px;
       background: #f0f0f0;
+      border: .5px solid #BFBFBF;
 
       &:before {
-        left: -11px;
-
-        border-left: 12px solid #f0f0f0;
-        border-bottom-left-radius: 20px 30px;
-        background: #f0f0f0;
+        content: url(../icons/curl-left.png);
+        position: absolute;
+        transform: scale(.27);
+        top: -4px;
+        left: -37px;
+        //left: -11px;
+        //border-left: 12px solid #f0f0f0;
+        //border-bottom-left-radius: 20px 30px;
+        //background: #f0f0f0;
       }
       &:after {
-        left: -13px;
 
-        width: 14px;
-        height: 20px;
-
-        border-bottom-left-radius: 20px 15px;
-        background: white;
+        //left: -13px;
+        //width: 14px;
+        //height: 20px;
+        //border-bottom-left-radius: 20px 15px;
+        //background: white;
       }
 
     }

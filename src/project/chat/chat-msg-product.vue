@@ -101,7 +101,7 @@
             } else if ( item.price ) {
               desc += `, ${item.price} <i class="ic-currency-rub"></i> `;
             } else {
-              desc += `, цена по запросу`;
+              desc += `, цена по запросу `;
             }
             return desc;
           }, '' )

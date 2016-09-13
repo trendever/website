@@ -4,6 +4,12 @@ div
   header-component(:notify-count='getGlobalNotifyCount', :back-link='{name: "chat_list"}')
 
     .chat-header(slot='content')
+      .chat-header_arrow(v-link="{name: 'chat_list'}")
+        i.chat-header_arrow_ic.ic-arrow-left
+
+      .chat-header_notify-count(v-if='getGlobalNotifyCount')
+        span {{ getGlobalNotifyCount }}
+
       .chat-header_cnt(v-show='getShopName')
         .chat-header_cnt_t(v-link='{name: "user", params: {id: getShopName}}') {{ getShopName }}
         .chat-header_cnt_info
