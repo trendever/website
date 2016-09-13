@@ -17,7 +17,7 @@
       :value='searchValue',
       type='text',
       placeholder='Ищи текстом или жми теги...',
-      v-if="inputOpened")
+      v-if="inputOpened || searchValue")
 
   .profile-header__menu
     .profile-header__menu-btn
