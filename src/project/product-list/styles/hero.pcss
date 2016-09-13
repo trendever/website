@@ -405,7 +405,13 @@
         height: 50px;
         margin: 0 auto;
 
-        text-align: left;
+
+        text-align: center;
+        @media (min-width: 800px) {
+
+          text-align: left;
+
+        }
 
         background-color: $color__green;
 
@@ -511,8 +517,9 @@
       width:150px;
       font-size: 32px;
       @media (min-width: 800px) {
-        padding-left: 20px;
-        margin-left: 47px;
+        width: 134px;
+        margin-left: 30px;
+        margin-top: 1px;
       }
       img {
         display:block;
