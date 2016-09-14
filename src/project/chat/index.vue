@@ -114,7 +114,8 @@
       if ( this.isAuth ) {
         this.onMessage      = this.onMessage.bind( this );
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
-        messages.onMsg( this.onMessage );        
+        messages.onMsg( this.onMessage );
+        this.clearNotify(this.lead_id);
       } else {
         this.$router.go( { name: 'signup' } );
       }
