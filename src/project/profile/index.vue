@@ -63,6 +63,8 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
 
   navbar-component(:current='listId')
 
+  .find-blogger-btn(v-if='isSelfPage && shopId !== 1 && isMobile && show', @click="show = false") Найти блоггера
+
 .help-wrapper(v-if='isFirst')
   .attention(v-if='isFirst')
     p Для корректного отображения подсказок переверните устройство в портретную ориентацию
@@ -74,6 +76,7 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
             li 1. Лайкнули на Trendever
             li 2. Отметили под постом в инсте
         .help__profile-round
+
 </template>
 <script type='text/babel'>
   import RightNavComponent from 'base/right-nav/index';
@@ -108,7 +111,9 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
         photoType: '',
         noLikes: true,
         noProducts: true,
-        loaded: false
+        loaded: false,
+        isMobile: window.browser.mobile,
+        show: true
       }
     },
     route: {
