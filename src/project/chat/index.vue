@@ -7,22 +7,28 @@
     .section.top.bottom
       .chat.section__content
         .chat_messages
-          div(v-for='msg in getMessages | list', track-by='$index')
-            chat-msg-status(
-              v-if='msg.parts[0].mime_type === "json/status"',
-              :msg='msg')
-            chat-msg-product(
-              v-if='msg.parts[0].mime_type === "text/json"',
-              :msg='msg')
-            chat-msg(
-              v-if='msg.parts[0].mime_type === "text/plain"',
-              :msg='msg')
-            chat-msg-info(
-              v-if='msg.parts[0].mime_type === "text/html"',
-              :msg='msg')
-            chat-msg-img(
-              v-if='isImage(msg.parts[0].mime_type)',
-              :msg='msg')
+          template(v-for='msg in getMessages | list', track-by='$index')
+            div
+              chat-msg-status(
+                v-if='msg.parts[0].mime_type === "json/status"',
+                :msg='msg')
+              chat-msg-product(
+                v-if='msg.parts[0].mime_type === "text/json"',
+                :msg='msg')
+              chat-msg(
+                v-if='msg.parts[0].mime_type === "text/plain"',
+                :msg='msg')
+              chat-msg-info(
+                v-if='msg.parts[0].mime_type === "text/html"',
+                :msg='msg')
+              chat-msg-img(
+                v-if='isImage(msg.parts[0].mime_type)',
+                :msg='msg')
+              chat-msg-payment(
+                v-if='msg.parts[0].mime_type === "json/payment" || msg.parts[0].mime_type === "json/cancel_order"', :msg='msg')
+            chat-msg-order(
+                v-if='msg.parts[0].mime_type === "json/order"',
+                :msg='msg')
 
     chat-bar
   scroll-top(:to-up="false")
@@ -31,6 +37,7 @@
 <script type='text/babel'>
   import listen from 'event-listener';
   import scrollTop from 'base/scroll-top/scroll-top.vue';
+  //actions
   import {
     setConversation,
     loadMessage,
@@ -38,6 +45,9 @@
     openPopUp,
     setConversationAction
   } from 'vuex/actions/chat.js';
+  import { clearNotify } from 'vuex/actions/lead.js';
+
+  //getters
   import {
     getMessages,
     conversationNotifyCount,
@@ -52,13 +62,15 @@
   } from 'vuex/getters/chat.js';
   import { isDone } from 'vuex/getters/lead.js';
   import { isAuth } from 'vuex/getters/user.js';
-  import { clearNotify } from 'vuex/actions/lead.js';
 
+  //services
   import * as messages from 'services/message';
   import * as leads from 'services/leads';
 
   import ScrollComponent from 'base/scroll/scroll.vue'
-
+  //components
+  import ChatMsgOrder from './chat-msg-order.vue';
+  import ChatMsgPayment from './chat-msg-payment.vue';
   import ChatMsgProduct from './chat-msg-product.vue';
   import ChatMsgStatus from './chat-msg-status.vue';
   import ChatMsg from './chat-msg.vue';
@@ -76,6 +88,8 @@
       ChatHeader,
       ChatBar,
       ChatMsg,
+      ChatMsgOrder,
+      ChatMsgPayment,
       ChatMsgProduct,
       ChatMsgStatus,
       ChatMsgImg,
