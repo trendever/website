@@ -25,8 +25,7 @@
                 v-if='isImage(msg.parts[0].mime_type)',
                 :msg='msg')
               chat-msg-payment(
-                v-if='msg.parts[0].mime_type === "json/payment"',
-                :msg='msg')
+                v-if='msg.parts[0].mime_type === "json/payment" || msg.parts[0].mime_type === "json/cancel_order"', :msg='msg')
             chat-msg-order(
                 v-if='msg.parts[0].mime_type === "json/order"',
                 :msg='msg')

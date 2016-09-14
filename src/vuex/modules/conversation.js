@@ -93,7 +93,8 @@ const addServiceMessage = (function() {
         MIME === 'text/html' ||
         MIME === 'image/base64' ||
         MIME === 'json/order' ||
-        MIME === 'json/payment'
+        MIME === 'json/payment' ||
+        MIME === 'json/cancel_order'
       ) {
 
         if ( MIME !== 'json/status' ) {

@@ -71,3 +71,16 @@ export function createPayment({ id, lead_id }) {
             });
     })
 }
+
+export function cancelPayment({ lead_id, id  }) {
+
+    return new Promise((resolve, reject)=>{
+        channel.req('cancel', 'order', { lead_id, id })
+            .then(data => {
+                resolve(data.response_map);
+            })
+            .catch(error => {
+                reject({ code: '', response: error })
+            });
+    })
+}

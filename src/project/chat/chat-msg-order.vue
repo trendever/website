@@ -12,12 +12,14 @@
        | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
        i.ic-currency-rub
 
-.chat-approve-btn(v-if='msg.user.user_id !== $store.state.user.myId && !isDone' @click="pay") ОПЛАТИТЬ
+.chat-approve-btn(v-if='showPayButton' )
+  .btn-cancel(@click="cancel") X
+  .btn-payment(@click="pay") ОПЛАТИТЬ
     
 </template>
 
 <script type='text/babel'>
-  import { getCurrentMember, getShopName, getLastMessageId, getLeadId, getCustomerName } from 'vuex/getters/chat.js';
+  import { getCurrentMember, getShopName, getLastMessageId, getLeadId, getCustomerName,getCustomerId } from 'vuex/getters/chat.js';
   import {setConversationAction} from 'vuex/actions/chat.js'
   import { user } from 'vuex/getters/user.js';
   import * as service from 'services/chat';
@@ -48,6 +50,7 @@
         getCurrentMember,
         getLastMessageId,
         getCustomerName,
+        getCustomerId,
         user,
         getLeadId
       }
@@ -55,10 +58,16 @@
     methods:{
       pay(){
         cardService.createPayment({
-          id: this.payId,
-          lead_id: this.getLeadId
+          id: +this.payId,
+          lead_id: +this.getLeadId
         }).then(path=>{
           window.location = path.redirect_url;
+        });
+      },
+      cancel(){
+        cardService.cancelPayment({
+          lead_id: +this.getLeadId,
+          id: +this.payId
         });
       }
     },
@@ -115,6 +124,13 @@
         }
         return {from: _from,to: _to};
       },
+      showPayButton(){
+        if (this.msg.user.role === 1){
+          return this.msg.user.user_id !== this.$store.state.user.myId && !this.isDone;
+        }else{
+          return this.getCustomerId === this.$store.state.user.myId && !this.isDone;
+        }
+      },
       getUsername() {
         if (this.isCustomer) {
           return `<b>${this.msg.user.name}</b>`
@@ -144,8 +160,6 @@
         }
         return `${this.getShopName} (${this.msg.user.name})`
       },
-
-
       isCustomer(){
         return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
       },

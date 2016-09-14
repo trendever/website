@@ -2,12 +2,16 @@
 <template lang="jade">
 .chat-row.__center
   .chat-msg-date
-    span(v-if="succes")
-     | {{getPaymentNames.from}} отправил {{getAmmount | curency_spaces}}
-     i.ic-currency-rub
-     |  на карту {{getPaymentNames.to}}
-    span(v-else)
-     | Перевод не удался
+    template(v-if='this.msg.parts[0].mime_type === "json/payment"')
+      span(v-if="succes")
+       | {{getPaymentNames.from}} отправил {{getAmmount | curency_spaces}}
+       i.ic-currency-rub
+       |  на карту {{getPaymentNames.to}}
+      span(v-else)
+       | Перевод не удался
+    template(v-else)
+      span
+        | {{getPaymentNames.from}} отменил перевод
       
 </template>
 

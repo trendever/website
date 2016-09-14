@@ -58,6 +58,42 @@ export const getCustomerName = ( state ) => {
 
 };
 
+export const getCustomerId = ( state ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead ) {
+
+    if ( lead.chat ) {
+
+      if ( lead.chat.members ) {
+
+        const user = lead.chat.members.find( ( user ) => {
+
+          return user.role === chat.MEMBER_ROLES.CUSTOMER;
+
+        } );
+
+        if ( typeof user !== 'undefined' ) {
+
+          /**
+           * Это имя запоминается на момент создания чата.
+           * */
+
+          return user.user_id;
+
+        }
+
+      }
+
+    }
+
+  }
+
+  return null;
+
+};
+
 export const getMessageByLead = ( { conversation }, lead ) => {
 
   if ( lead.chat ) {
