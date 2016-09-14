@@ -86,15 +86,15 @@
        i(class='ic-insta social')
       a(href='https://vk.com/trendever', class='vk' target="_blank")
        i(class='ic-vk social')
-     .hero__content__input-wrap
-      p Приложение для шопинга в Instagram
-      input(type="text" placeholder="Номер телефона")
-      button.hero__content__get-link ПОЛУЧИТЬ ССЫЛКУ
+     //.hero__content__input-wrap
+      //p Приложение для шопинга в Instagram
+      //input(type="text" placeholder="Номер телефона")
+      //button.hero__content__get-link ПОЛУЧИТЬ ССЫЛКУ
      .hero__content__dwnld-btns
-      a(href="#", class="app_store")
+      a(href="https://itunes.apple.com/ru/app/trendever/id1124212231", class="app_store")
        i(class="ic-appstore")
-      a(href="#", class="g_play")
-       i(class="ic-google_play")
+      //a(href="#", class="g_play")
+       //i(class="ic-google_play")
   .hero__content__2
    a(href="#", @click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
    p(id="how-it-work") Находи и покупай #[br] трендовые товары здесь #[br] или прямо в Instagram
@@ -220,7 +220,7 @@ export default {
             if ( block.getBoundingClientRect().top < 80 ) {
               clearInterval( timer );
             }
-            scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
+            scrollBlock.scrollTop = scrollBlock.scrollTop + 45;
           }, 10 );
         }
       }
