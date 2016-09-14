@@ -12,7 +12,7 @@
   .navbar.section__content
     .navbar_i(:class='{"__active": current=="feed"}', v-link='{name: "home"}', @click="scrollTop")
       .navbar_i_wrap
-        i.ic-feed.navbar_i_wrap_ic
+        i.ic-gallery_menu_new.navbar_i_wrap_ic
         .navbar_i_wrap_t Лента
 
     .navbar_i(:class='{"__active": current=="chat"}', v-link='{name: "chat_list"}', @click="scrollTop")
