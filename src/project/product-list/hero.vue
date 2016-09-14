@@ -220,7 +220,7 @@ export default {
             if ( block.getBoundingClientRect().top < 80 ) {
               clearInterval( timer );
             }
-            scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
+            scrollBlock.scrollTop = scrollBlock.scrollTop + 45;
           }, 10 );
         }
       }
