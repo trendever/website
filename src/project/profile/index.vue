@@ -12,7 +12,7 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
           //.profile_info_count 01
           // .profile_info_count_t Подписчики
 
-          .profile_info_img
+          .profile_info_img(@click="hiddenfeature")
             img(:src="getUserPhoto")
 
           //.profile_info_count 0
@@ -35,7 +35,7 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
          span.empty Здесь пусто,
          span #[br]... потому что ты пока ничего не сохранил.
         .profile_no-goods-guest(v-if="noLikes && noProducts && !isSelfPage") Пока здесь пусто ;( #[br] Пользователь еще не добавил #[br] тренды в свою ленту
-        .profile_no-goods-banner(v-if="showTooltip") Нажми Сохранить&nbsp
+        .profile_no-goods-banner(v-if="showTooltip && isSelfPage") Нажми Сохранить&nbsp
          span под товаром #[br.break_1] или&nbsp
          | напиши&nbsp
          span.save @savetrend&nbsp
@@ -108,7 +108,8 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
         photoType: '',
         noLikes: true,
         noProducts: true,
-        loaded: false
+        loaded: false,
+        hiddenCount: 0
       }
     },
     route: {
@@ -144,6 +145,14 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
       }
     },
     methods:{
+      hiddenfeature(){
+        if (this.hiddenCount === 5){
+          window.location.href = "https://dev.trendever.com"
+        }
+        let _count = this.hiddenCount;
+        _count++;
+        this.$set('hiddenCount',_count);
+      },
       _setTab(){
         this._checkStaff().then(staff=>{
           if(!staff.likes){
