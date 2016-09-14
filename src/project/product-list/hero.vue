@@ -1,11 +1,33 @@
 <style src='./styles/hero.pcss'></style>
-<style>
-  .hero__content__logo{
-    /*display: none;*/
-  }
+<style lang="postcss">
+@import 'base/vars/vars.pcss';
+
+.profile-header__menu-links.__desktop {
+    position: absolute 50px * * 167px;
+    margin: initial;
+    max-width: 210px;
+    border: 1px solid #BFBFBF;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 1px 1px 3px grey;
+
+    .profile-header__menu-link {
+      text-align: left;
+      line-height: 2.8rem;
+      font-size: 1.5rem;
+      background-color: #F0F0F0;
+      width: 210px;
+      border: initial;
+      &:hover {
+        color: $color__green;
+        background: #D9D9D9;
+      }
+    }
+}
+
 </style>
 <template lang="jade">
-.header__menu__overlay(v-show='menuOpened', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
+.header__menu__overlay(v-show='menuOpened && isMoblie', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
 .section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
 
@@ -26,7 +48,7 @@
         i(class='ic-info')
       .profile-header__menu-btn-icon(v-if="getComeBack", @click='goBack')
         i(class='ic-arrow-left')
-  .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth }")
+  .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth, '__desktop': !isMobile }")
     a(class='profile-header__menu-link profile-header__close-menu',
       @click='menuOpened=false') Отмена
     a(class='profile-header__menu-link',
