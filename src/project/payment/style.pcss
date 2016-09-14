@@ -10,9 +10,6 @@
   color: #fff;
   font-size:38px;
   padding-bottom:123px;
-  @media(--mobile) {
-    position: relative;
-  }
 
   ::-webkit-input-placeholder {color:#fff;opacity:.2;}
   ::-moz-placeholder          {color:#fff;opacity:.2;}
@@ -60,7 +57,7 @@
   &-summ-text {
     font-size:36px;
     opacity:.2;
-    margin-bottom: 130px;
+    margin-bottom: 63px;
   }
 
   &-summ-input {
@@ -71,7 +68,7 @@
     text-align: right;
     color:#fff;
     font-size:58px;
-    margin-bottom: 85px;
+    margin-bottom: 50px;
     &-wrapper {
       position: relative;
     }
@@ -277,6 +274,16 @@
 
   .btn-container {
     text-align: center;
+    &:after{
+      content: url(./img/pay_cards.svg);
+      position: absolute;
+      width: 505px;
+      height: 45px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      bottom: 150px;
+    }
   }
 
   .ic-currency-rub {
