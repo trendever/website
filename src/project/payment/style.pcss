@@ -48,6 +48,7 @@
 
   &-head {
     font-size:40px;
+    font-weight: bold;
   }
 
   &-summ {
@@ -55,7 +56,7 @@
   }
 
   &-summ-text {
-    font-size:36px;
+    font-size:30px;
     opacity:.2;
     margin-bottom: 63px;
   }
@@ -64,7 +65,7 @@
     background: transparent;
     border:none;
     width: 300px;
-    padding:0 40px;
+    padding:0 7px;
     text-align: right;
     color:#fff;
     font-size:58px;
@@ -137,7 +138,7 @@
 
     &-text {
       opacity:.2;
-      font-size:36px;
+      font-size:30px;
       margin-bottom: 11px;
     }
 
@@ -221,13 +222,16 @@
   }
 
   &-note {
-    font-size:36px;
+    font-size:30px;
     opacity:.2;
     margin-bottom: 30px;
-    width: 600px;
+    width: 820px;
     margin: 0 auto;
     img {
       padding-top: 50px;
+    }
+    @media(--mobile) {
+      width: 400px;
     }
   }
 
@@ -282,8 +286,8 @@
   }
 
   .ic-currency-rub {
-    margin-top: 7px;
-    font-size: 46px;
+    margin-top: -8px;
+    font-size: 61px;
   }
 
   &.pay-on {
