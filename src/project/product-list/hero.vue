@@ -39,6 +39,9 @@
       v-link='{name: "info-mission"}') Наша миссия
     a(class='profile-header__menu-link',
       v-link='{name: "info-agreement"}') Условия
+    a(class='profile-header__menu-link',
+      href="https://trendever.payture.com/",
+      target="_blank") Денежный перевод
     a(class='profile-header__menu-link', @click="logout") Выход
   a(v-link='{ name: "info-user" }')
     i.smallHero__logo
