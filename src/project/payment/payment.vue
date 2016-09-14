@@ -5,9 +5,9 @@
     i.ic-close
   .bottom-margin
     .payment-wrapper
-      .payment-head Выставите счет на оплату
+      .payment-head Запрос на получение денег
       .payment-summ
-        .payment-summ-text Введите сумму к оплате
+        .payment-summ-text Введите сумму к получению
         .payment-summ-input-wrapper
           input(type='text' placeholder='0' v-model="billPrice").payment-summ-input
           //- span. &#x20bd
@@ -15,7 +15,7 @@
 
       .check-card
         div(v-if="userCards.length")
-          .check-card-text Выберите карту, #[br] куда будут зачислены деньги
+          .check-card-text Выберите карту, куда будут зачислены деньги
           .check-card-select-wrap
             i.ic-check-card
               img(src='icons/card_1.png').ic-card_1
@@ -30,7 +30,7 @@
           h1(v-if="errorMessage") {{ errorMessage }}
           h1(v-if="currentCardId && !errorMessage") **** **** **** {{ currentCardNumber }}
       p.payment-note 
-        | Деньги будут перечислены#[br]  прямо вам на карту с помощью#[br]  платежного сервиса Payture.ru
+        | Деньги будут перечислены на указанную карту за вычетом#[br]комиссии платежной системы - 15% Payture.ru
         img(src='img/pay_cards.svg')
 
   .btn-container
