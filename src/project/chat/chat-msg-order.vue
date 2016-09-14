@@ -33,7 +33,9 @@
       if (!this.msg.parts[1] && this.msg.user.user_id !== this.getCurrentMember.user_id){
         this.setConversationAction("pay");
       }
-      return {}
+      return {
+        canceled: false
+      }
     },
     props: {
       msg: {
@@ -68,12 +70,15 @@
         cardService.cancelPayment({
           lead_id: +this.getLeadId,
           id: +this.payId
+        }).then(data=>{
+          this.$set('canceled', true);
+          this.setConversationAction("base");
         });
       }
     },
     computed: {
       isDone(){
-        if (this.msg.parts[1]){
+        if (this.msg.parts[1] || this.canceled){
           return true;
         }else{
           return false;

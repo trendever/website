@@ -29,7 +29,9 @@
                v-model="currentCardNumber").check-card-input
           h1(v-if="errorMessage") {{ errorMessage }}
           h1(v-if="currentCardId && !errorMessage") **** **** **** {{ currentCardNumber }}
-      p.payment-note Деньги будут перечислены#[br]  прямо вам на карту с помощью#[br]  платежного сервиса Payture.ru
+      p.payment-note 
+        | Деньги будут перечислены#[br]  прямо вам на карту с помощью#[br]  платежного сервиса Payture.ru
+        img(src='img/pay_cards.svg')
 
   .btn-container
     button(@click="leadOrder").btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom Отправить
