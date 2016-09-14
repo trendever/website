@@ -1,0 +1,102 @@
+@import 'base/vars/vars.pcss';
+
+.section{
+	&__content{
+		.header{
+			&__title{
+				font-size: 40px;
+				font-weight: 600;
+				color: #fff;
+				margin: 15px auto 0px auto;
+			}
+		}
+		.top{
+			text-align: center;
+			padding: 102px 30px 0px 30px;
+			&__header{
+				font-size: 64px;
+				color: #595959;
+				margin: 60px auto 0px auto;
+			}
+			&__logo{
+				background-image: url('./img/Trendever-logo-green.svg');
+				background-repeat: no-repeat;
+				background-size: 450px;
+				width: 450px;
+				height: 96px;
+				margin: 60px auto 90px auto;
+			}
+			&__info-block{
+				text-align: left;
+				&__title{
+					font-size: 65px;
+					color: #595959;
+					margin-bottom: 33px;
+				}
+				&__paragraph{
+					font-size: 36px;
+					color: #595959;
+					padding-left: 55px;
+					position: relative;
+					&:before{
+						content: url(./img/point.svg);
+						position: absolute;
+						width: 33px;
+						height: 25px;
+						left: 0;
+					}
+				}
+				&__paragraph:nth-child(1n){
+					margin-bottom: 44px;
+				}
+				&__slide{
+					position: relative;
+					background-image: url('./img/mob_1.svg');
+					background-repeat: no-repeat;
+					width: 481px;
+					height: 872px;
+					margin: 22px auto 94px auto;
+
+					&__comment{
+						position: absolute;
+						right: -94px;
+						top: 71px;
+						color: #31BEBC;
+						font-size: 26px;
+						font-weight: bolder;
+						text-align: center;
+						width: 245px;
+						height: 245px;
+						border: 1px solid #31BEBC;
+						border-radius: 50%;
+						background-color: #fff;
+						padding-top: 70px;
+						&:after{
+							content: url(./img/point_2.svg);
+							position: absolute;
+							top: 276px;
+							right: 50px;
+							width: 113px;
+							height: 125px;
+						}
+					}
+					&:before{
+						content: url(./img/search.svg);
+						position: absolute;
+						bottom: 250px;
+						left: 39px;
+						width: 167px;
+						height: 200px;
+					}
+				}
+				&__advant-box{
+					border: 3px solid #8C8C8C;
+					border-radius: 10px;
+					font-size: 36px;
+					color: #595959;
+					padding-left: 19px;
+				}
+			}
+		}
+	}
+}
