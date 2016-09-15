@@ -2,7 +2,7 @@
 <template lang="jade">
 .header__menu
  .header__menu-icon(@click='menuOpened = !menuOpened')
-  ._bullet
+  i.ic-menu_bullets
  .header__menu-links.bubble.bubble--arrow.bubble--arrow-ne(v-if="menuOpened")
   a.header__menu-link(@click="menuOpened=false") Отмена
   a.header__menu-link(@click="buyPromoProduct") Я блогер
