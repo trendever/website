@@ -1,6 +1,6 @@
 <style src='./menu.pcss'></style>
 <template lang="jade">
-.menu-cnt
+.menu-cnt(:class="{'desktop-style': !isMoblie }")
   .menu.section__content
     slot(name='items')
       .menu_i
@@ -10,7 +10,10 @@
 
 <script>
   export default{
-    data: () => ({
-    }),
+    data(){
+      return {
+        isMoblie: window.browser.mobile
+      }
+    }
   }
 </script>

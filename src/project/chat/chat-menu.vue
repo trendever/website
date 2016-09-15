@@ -2,7 +2,7 @@
 <template lang="jade">
 div
   menu-component(v-if='getShowMenu && !getShowStatusMenu')
-    div(slot='items')
+    div.menu-items(slot='items')
       .menu_i(v-if='false')
         .menu_i_t Перечислить деньги
       .menu_i(v-if='false')
@@ -18,7 +18,7 @@ div
         .menu_i_t Изменить статус заказа
       label(class='menu_i menu_i-send-file') Отправить фото
         input(type='file', hidden, @change='selectedFile')
-      
+
       .menu_i(v-if='false')
         .menu_i_t Добавить шаблон
       .menu_i(@click='setShowMenu(false)')
