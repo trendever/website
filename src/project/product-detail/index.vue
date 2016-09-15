@@ -1,5 +1,5 @@
 <template lang="jade">
-scroll-component(v-el:scroll-cnt)
+scroll-component(v-el:scroll-cnt, @click="closePoductMenu($event)")
   header-component(
     :title='title',
     :back-link='{name: "home"}',
@@ -29,6 +29,21 @@ scroll-component(v-el:scroll-cnt)
       ScrollComponent,
       HeaderComponent,
       PostComponent
+    },
+    methods: {
+      closePoductMenu(e){
+        if(!window.browser.mobile) {
+          let list = e.target.classList;
+          if(list.contains('header__menu')
+            ||
+            list.contains('header__menu-icon')
+            ||
+            list.contains('ic-menu_bullets') ) {
+            return;
+          }
+          this.$broadcast('closeProductMenu');
+        }
+      }
     },
     computed: {
 
