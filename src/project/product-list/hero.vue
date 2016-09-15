@@ -5,7 +5,7 @@
 .profile-header__menu-links.__desktop {
     position: absolute 54px * * 230px;
     margin: initial;
-    max-width: 210px;
+    max-width: 261px;
     border: 1px solid #BFBFBF;
     border-radius: 5px;
     box-shadow: 1px 1px 3px grey;
@@ -46,7 +46,7 @@
       line-height: 2.8rem;
       font-size: 1.4rem;
       background-color: initial;
-      width: 208px;
+      width: 259px;
       border: initial;
       &:hover {
         color: $color__green;

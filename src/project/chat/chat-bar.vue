@@ -16,7 +16,8 @@ div
                        v-on:touchstart='send($event)',
                        :class='{"__active": !!txtMsg}')
       i.ic-send-plane
-  chat-menu
+    chat-menu(v-if="!isMobile")
+  chat-menu(v-if="isMobile")
 
 </template>
 
@@ -48,6 +49,7 @@ div
     data(){
       return {
         txtMsg: '',
+        isMobile: window.browser.mobile
       }
     },
 
