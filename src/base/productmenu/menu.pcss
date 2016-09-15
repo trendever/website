@@ -13,17 +13,16 @@ i.ic-menu_bullets {
     &menu {
       &- {
         &icon {
-        position: absolute 6px 174px 0 *;
 
-        @media (--mobile) {
-          position: absolute 11px 28px 0 *;
+        @media screen and (max-width: 750px) {
+          position: absolute 13px 28px 0 *;
           padding-left: 10px;
           height: 70px;
           width: 50px;
         }
 
-        @media (max-width:1023px) and (min-width: 750px) {
-          position: absolute 7px 28px 0 *;
+        @media screen and (max-width:1026px) and (min-width: 751px) {
+          position: absolute 6px 33px 0 *;
         }
 
          display: block;
@@ -70,7 +69,7 @@ i.ic-menu_bullets {
             right: 0;
             margin-right: 30px;
           }
-          @media(--tablet) {
+          @media screen and (max-width:1026px) and (min-width: 751px) {
             position: absolute 100% 3px * *;
           }
           @media(--mobile) {
