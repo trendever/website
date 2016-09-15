@@ -57,7 +57,7 @@
 
 </style>
 <template lang="jade">
-.header__menu
+.header__menu(v-if="isMobile")
  .header__menu-icon(@click='menuOpened = !menuOpened')
   i.ic-menu_bullets
  .header__menu-links.bubble.bubble--arrow.bubble--arrow-ne(v-if="menuOpened")
@@ -65,8 +65,7 @@
   a.header__menu-link(@click="buyPromoProduct") Я блогер
   //a.header__menu-link(href='#') Найти блогера
   a.header__menu-link(
-  v-link='{name:"product_repost", params: {id: productId}}',
-  v-if="isMobile") Пост в Instagram
+  v-link='{name:"product_repost", params: {id: productId}}') Пост в Instagram
 
 </template>
 
@@ -79,12 +78,7 @@
 
       return {
         menuOpened: false,
-        mobile: window.browser.mobile
-      }
-    },
-    events:{
-      'closeProductMenu'(){
-        this.menuOpened = false;
+        isMobile: window.browser.mobile
       }
     },
     vuex: {
