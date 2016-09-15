@@ -3,20 +3,50 @@
 @import 'base/vars/vars.pcss';
 
 .profile-header__menu-links.__desktop {
-    position: absolute 50px * * 167px;
+    position: absolute 54px * * 230px;
     margin: initial;
     max-width: 210px;
     border: 1px solid #BFBFBF;
     border-radius: 5px;
-    overflow: hidden;
     box-shadow: 1px 1px 3px grey;
+    background-color: #F0F0F0;
+
+    &::before {
+      content: '';
+      position: absolute -13px * * 30px;
+      size: 0;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-bottom: 13px solid #BFBFBF;
+
+    }
+
+    &::after {
+      content: '';
+      position: absolute -12px * * 30px;
+      size: 0;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-bottom: 13px solid #F0F0F0;
+
+    }
+
+    :first-child{
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+    }
+
+    :last-child {
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
 
     .profile-header__menu-link {
       text-align: left;
       line-height: 2.8rem;
-      font-size: 1.5rem;
-      background-color: #F0F0F0;
-      width: 210px;
+      font-size: 1.4rem;
+      background-color: initial;
+      width: 208px;
       border: initial;
       &:hover {
         color: $color__green;
@@ -49,7 +79,7 @@
       .profile-header__menu-btn-icon(v-if="getComeBack", @click='goBack')
         i(class='ic-arrow-left')
   .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth, '__desktop': !isMobile }")
-    a(class='profile-header__menu-link profile-header__close-menu',
+    a(class='profile-header__menu-link profile-header__close-menu first',
       @click='menuOpened=false') Отмена
     a(class='profile-header__menu-link',
       v-link='{name: "info-user"}') Покупателям
