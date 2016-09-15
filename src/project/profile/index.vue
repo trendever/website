@@ -63,7 +63,7 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
 
   navbar-component(:current='listId')
 
-  .find-blogger-btn(v-if='isSelfPage && shopId !== 1 && isMobile && show', @click="show = false") Найти блоггера
+  .find-bloger-btn(v-if='isSelfPage && shopId !== 1 && isMobile && show', @click="show = false") Найти блогера
 
 .help-wrapper(v-if='isFirst')
   .attention(v-if='isFirst')
