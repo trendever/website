@@ -45,6 +45,71 @@
         }
       }
 
+      .status-items {
+          .menu_i {
+            font-size: 1.4rem;
+            line-height: 3rem;
+            text-align: left;
+            background:#F0F0F0;
+
+            line-height: 100px;
+            height: 50px;
+            padding-left: 10px;
+            border: none;
+
+            &_t {
+              color: $color__gray-dark;
+              text-align: left;
+              font-size: 1.4rem;
+              line-height: 3rem;
+
+              &.__txt-white {
+                color: white;
+              }
+              &.__txt-green {
+                color: $color__green;
+              }
+              &.__txt-red {
+                color: $color__red;
+              }
+            }
+            // Mods
+            &:hover {
+              background: #f0f0f0;
+            }
+            &.__bg-green {
+              background: #61A96F;
+
+              &:hover {
+                background: color(#61A96F shade(7%));
+              }
+            }
+            &.__bg-blue {
+              background: #5E8BCE;
+
+              &:hover {
+                background: color(#5E8BCE shade(7%));
+              }
+            }
+            &.__bg-orange {
+              background: #FBD150;
+
+              &:hover {
+                background: color(#FBD150 shade(7%));
+              }
+            }
+            &.__bg-red {
+              background: #EF3758;
+
+              &:hover {
+                background: color(#EF3758 shade(7%));
+              }
+            }
+
+        }
+
+      }
+
       &::before {
         content: '';
         position: absolute * * -13px 30px;

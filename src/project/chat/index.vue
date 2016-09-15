@@ -3,7 +3,7 @@
   scroll-component(v-el:scroll-cnt, class="chat-cnt")
     popup-img(v-if="imgPopUpUrl", :url="imgPopUpUrl", :width="imgWidth", :height="imgHeight", :on-close="closePopUp")
     chat-header(:notify-count='conversationNotifyCount')
-    .chat-shadow(v-if="isMobile && getShowMenu || getShowStatusMenu")
+    .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu")
     .section.top.bottom
       .chat.section__content
         .chat_messages
