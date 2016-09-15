@@ -2,6 +2,7 @@
 .payment {
   background: #12302d;
   position: fixed;
+  z-index: 99999;
   top:0;
   left:0;
   right:0;
@@ -9,9 +10,6 @@
   color: #fff;
   font-size:38px;
   padding-bottom:123px;
-  @media(--mobile) {
-    position: relative;
-  }
 
   ::-webkit-input-placeholder {color:#fff;opacity:.2;}
   ::-moz-placeholder          {color:#fff;opacity:.2;}
@@ -50,6 +48,7 @@
 
   &-head {
     font-size:40px;
+    font-weight: bold;
   }
 
   &-summ {
@@ -57,20 +56,20 @@
   }
 
   &-summ-text {
-    font-size:36px;
+    font-size:30px;
     opacity:.2;
-    margin-bottom: 130px;
+    margin-bottom: 63px;
   }
 
   &-summ-input {
     background: transparent;
     border:none;
     width: 300px;
-    padding:0 40px;
-    text-align: center;
+    padding:0 7px;
+    text-align: right;
     color:#fff;
     font-size:58px;
-    margin-bottom: 85px;
+    margin-bottom: 50px;
     &-wrapper {
       position: relative;
     }
@@ -139,7 +138,7 @@
 
     &-text {
       opacity:.2;
-      font-size:36px;
+      font-size:30px;
       margin-bottom: 11px;
     }
 
@@ -223,12 +222,21 @@
   }
 
   &-note {
-    font-size:36px;
+    font-size:30px;
     opacity:.2;
     margin-bottom: 30px;
+    width: 820px;
+    margin: 0 auto;
+    img {
+      padding-top: 50px;
+    }
+    @media(--mobile) {
+      width: 400px;
+    }
   }
 
   .close {
+    cursor: pointer;
     color: #fff;
     font-size:36px;
     width: 90px;
@@ -277,15 +285,9 @@
     text-align: center;
   }
 
-  .ic-rouble {
-    position: absolute;
-    right:0;
-    top:50%;
-    margin-top: -34px;
-    margin-left: 24px;
-    font-size:55px;
-    left:50%;
-    width:40px;
+  .ic-currency-rub {
+    margin-top: -8px;
+    font-size: 61px;
   }
 
   &.pay-on {
