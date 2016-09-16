@@ -34,6 +34,8 @@ div
 </template>
 
 <script type='text/babel'>
+  import listen from 'event-listener';
+  import { targetClass } from 'utils';
   import {
     getShopId,
     getCurrentMember,
@@ -77,6 +79,22 @@ div
       return {
         openPayment: false
       }
+    },
+    ready(){
+      let scrollCnt = document.querySelector('.scroll-cnt');
+      this.outerCloseMenu = listen(scrollCnt, 'click',(e)=>{
+
+        targetClass(e, 'menu-cnt', ()=>{
+          if(getShowMenu) {
+             this.setShowMenu(false);
+          }
+
+        });
+
+      })
+    },
+    beforeDestroy(){
+      this.outerCloseMenu.remove();
     },
     methods: {
       openPaymentMenu(){
