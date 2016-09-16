@@ -1,7 +1,7 @@
 <style src='./menu.pcss'></style>
 <template lang="jade">
 .header__menu(v-if="isMobile")
- .header__menu-icon(@click='menuOpened = !menuOpened')
+ .header__menu-icon(@click.stop='menuOpened = !menuOpened')
   i.ic-menu_bullets
  .header__menu-links.bubble.bubble--arrow.bubble--arrow-ne(v-if="menuOpened")
   a.header__menu-link(@click="menuOpened=false") Отмена
@@ -13,6 +13,9 @@
 </template>
 
 <script>
+  import listen from 'event-listener';
+  import { targetClass } from 'utils';
+
   import settings from 'settings';
   import { createLead } from 'vuex/actions/lead';
   import { getOpenedProduct } from 'vuex/getters/products';
@@ -23,6 +26,22 @@
         menuOpened: false,
         isMobile: window.browser.mobile
       }
+    },
+    ready(){
+      let scrollCnt = document.querySelector('.scroll-cnt');
+      this.outerCloseMenu = listen(scrollCnt, 'click',(e)=>{
+
+        targetClass(e, 'menu-cnt', ()=>{
+          if(this.menuOpened) {
+             this.menuOpened = false;
+          }
+
+        });
+
+      })
+    },
+    beforeDestroy(){
+      this.outerCloseMenu.remove();
     },
     vuex: {
       getters: {
