@@ -1,61 +1,4 @@
 <style src='./styles/hero.pcss'></style>
-<style lang="postcss">
-@import 'base/vars/vars.pcss';
-
-.profile-header__menu-links.__desktop {
-    position: absolute 54px * * 230px;
-    margin: initial;
-    max-width: 261px;
-    border: 1px solid #BFBFBF;
-    border-radius: 5px;
-    box-shadow: 1px 1px 3px grey;
-    background-color: #F0F0F0;
-
-    &::before {
-      content: '';
-      position: absolute -13px * * 30px;
-      size: 0;
-      border-left: 11px solid transparent;
-      border-right: 11px solid transparent;
-      border-bottom: 13px solid #BFBFBF;
-
-    }
-
-    &::after {
-      content: '';
-      position: absolute -12px * * 30px;
-      size: 0;
-      border-left: 11px solid transparent;
-      border-right: 11px solid transparent;
-      border-bottom: 13px solid #F0F0F0;
-
-    }
-
-    :first-child{
-      border-top-right-radius: 4px;
-      border-top-left-radius: 4px;
-    }
-
-    :last-child {
-      border-bottom-right-radius: 5px;
-      border-bottom-left-radius: 5px;
-    }
-
-    .profile-header__menu-link {
-      text-align: left;
-      line-height: 2.8rem;
-      font-size: 1.4rem;
-      background-color: initial;
-      width: 259px;
-      border: initial;
-      &:hover {
-        color: $color__green;
-        background: #D9D9D9;
-      }
-    }
-}
-
-</style>
 <template lang="jade">
 .header__menu__overlay(v-show='menuOpened && isMoblie', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
@@ -74,7 +17,7 @@
   .profile-header__menu
     .profile-header__menu-btn
       .profile-header__menu-btn-label
-      .profile-header__menu-btn-icon(v-if="!getComeBack", @click='menuOpened=!menuOpened')
+      .profile-header__menu-btn-icon(v-if="!getComeBack", @click.stop='menuOpened=!menuOpened')
         i(class='ic-info')
       .profile-header__menu-btn-icon(v-if="getComeBack", @click='goBack')
         i(class='ic-arrow-left')
@@ -161,7 +104,7 @@
 </template>
 
 <script type='text/babel'>
-import listener from 'event-listener'
+import listen from 'event-listener'
 import settings from 'settings'
 import { setCallbackOnSuccessAuth } from 'vuex/actions'
 import { createLead } from 'vuex/actions/lead'
@@ -175,6 +118,8 @@ import Slider from './slider.vue';
 //search logic
 import { searchValue } from 'vuex/getters/search';
 import { setSearchValue } from 'vuex/actions/search';
+
+import { targetClass } from 'utils';
 
 export default {
   data(){
@@ -192,7 +137,22 @@ export default {
   },
 
   ready() {
+
     this.scrollCnt = document.querySelector( '.scroll-cnt' );
+
+
+    this.outerCloseMenu = listen(this.scrollCnt, 'click',(event)=>{
+
+        targetClass(event, 'profile-header__menu-links',()=>{
+            if(this.menuOpened){
+              this.menuOpened = false;
+            }
+        });
+    })
+
+  },
+  beforeDestroy(){
+    this.outerCloseMenu.remove();
   },
 
   vuex: {
