@@ -47,33 +47,25 @@
 
   &_menu-btn {
     display: table-cell;
-    padding: 12px 30px;
+    padding: 12px 15px 12px 15px;
     width:50px;
     height: 50px;
-    vertical-align: middle;
+    vertical-align: bottom;
     cursor: pointer;
-    background-image: url('../icons/chat-menu-icon.png');
-    background-size: 40px;
-    background-repeat: no-repeat;
-    background-position: 11px;
 
-    @media(--mobile) {
-      background-size: 55px 55px;
-      background-position: 20px 15px;
-    }
-
-    @media(--mobile){
-      padding: 25px 30px;
+    @media (--mobile) {
+      padding: 20px 30px;
       width:100px;
       height: 90px;
+      vertical-align: bottom;
     }
 
     i {
-      color: $color__gray-dark;
-      font-size: 26px;
+      color: #31BEBC;
+      font-size: 33px;
 
       @media(--mobile){
-        font-size: 40px;
+        font-size: 55px;
       }
     }
     &:hover {
@@ -92,6 +84,7 @@
       margin: 16px 0;
       min-height: 58px;
       width: 530px;
+      padding: 17px 0;
     }
 
     textarea {
@@ -125,14 +118,16 @@
     padding: 0 15px;
     width: 60px;
     height: 50px;
-    vertical-align: middle;
+    vertical-align: bottom;
+    padding-bottom: 13px;
     cursor: pointer;
     padding-left: 27px;
 
     @media(--mobile){
-      vertical-align: top;
+      vertical-align: bottom;
       width: 120px;
       height: 90px;
+      padding-bottom: 20px;
     }
 
     i {
@@ -153,6 +148,4 @@
     }
   }
 }
-.ic-menu-light:before{
-  content: '' !important;
-}
+

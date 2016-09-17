@@ -5,7 +5,7 @@ div
   .chat-approve-btn(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat') ПОДТВЕРДИТЬ
   .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay'")
     .chat-bar_menu-btn(@click.stop='setShowMenu(true)')
-      i.ic-menu-light
+      i.ic-chat_menu
     .chat-bar_input
       textarea(placeholder='Введите сообщение',
                v-model='txtMsg',
