@@ -118,7 +118,9 @@
         this.$set( 'lead_id', +lead_id );
         if ( this.isDone ) {
           if ( this.isAuth ) {
-            return this.run();
+            return this.run().then(()=>{
+              this.clearNotify(this.lead_id);
+            })
           } else {
             return Promise.resolve()
           }
@@ -130,7 +132,7 @@
         this.onMessage      = this.onMessage.bind( this );
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
         messages.onMsg( this.onMessage );
-        this.clearNotify(this.lead_id);
+
       } else {
         this.$router.go( { name: 'signup' } );
       }
