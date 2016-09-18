@@ -207,11 +207,19 @@
               this.$router.go( { name: '404'});
             }
           }).then(()=>{
-            //show approve btn if first chat
-            return this.getMessages.find(message=>{
-              return message.parts[0].mime_type === 'text/plain' && message.user.user_id === this.$store.state.user.myId;
 
-            })
+            return messages
+              .find(this.getId, null, 10, false)
+              .then((data)=>{
+                return data.find(message=>{
+                  return message.parts[0].content === 'Привет;) да, подтверждаю!'
+                })
+              });
+
+            //show approve btn if first chat
+           /* return this.getMessages.find(message=>{
+              return message.parts[0].mime_type === 'text/plain' && message.user.user_id === this.$store.state.user.myId;
+            })*/
 
           }).then(flagMessage=>{
             if(!flagMessage && this.getCurrentMember.role === 1){
