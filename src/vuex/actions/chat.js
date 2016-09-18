@@ -131,7 +131,7 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
             if ( lead.chat.id ) {
                console.log('Из чатов');
               return messageService
-                .find( lead.chat.id, null, getCountForLoading )
+                .find( lead.chat.id, null, getCountForLoading, true )
                 .then(
                   ( messages ) => {
                     if ( Array.isArray( messages ) ) {
