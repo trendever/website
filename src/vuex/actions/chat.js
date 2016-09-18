@@ -80,10 +80,10 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
               // TODO Объединить в функцию #logicReading
 
-              if (
-                ( customerRole === currentRole ) ||
-                ( ( msg.user ) ? ( msg.user.role === customerRole && currentRole !== customerRole ) : true )
-              ) {
+          //    if (
+          //      ( customerRole === currentRole ) ||
+          //      ( ( msg.user ) ? ( msg.user.role === customerRole && currentRole !== customerRole ) : true )
+          //    ) {
                 messageService
                   .update( conversation_id, msg.id )
                   .catch( ( error ) => {
@@ -94,7 +94,7 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
                     } )
                   } )
                 console.log('%cОбновление Сообщений!','font-size:1.4rem; color: blue');
-              }
+          //    }
 
             }
 
