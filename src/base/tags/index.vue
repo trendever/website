@@ -175,7 +175,7 @@
 
           if ( this.fullHeight < 170 ) {
 
-            return `${this.fullHeight - 10}px`
+            return `${this.fullHeight - 10}px !important`
 
           }
 
