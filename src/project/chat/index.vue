@@ -120,6 +120,9 @@
           if ( this.isAuth ) {
             return this.run().then(()=>{
               this.clearNotify(this.lead_id);
+              this.$nextTick( () => {
+                      this.goToBottom();
+                    } );
             })
           } else {
             return Promise.resolve()
@@ -209,7 +212,7 @@
           }).then(()=>{
 
             return messages
-              .find(this.getId, null, 10, false)
+              .find(this.getId, null, 50, false)
               .then((data)=>{
                 return data.find(message=>{
                   return message.parts[0].content === 'Привет;) да, подтверждаю!'
