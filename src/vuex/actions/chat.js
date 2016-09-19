@@ -124,7 +124,7 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
         const messages = getMessageByLead( state, lead )
 
-        if ( messages === null ) {
+        if ( /*messages === null*/ !state.conversation.allInit[lead.chat.id] ) {
 
           if ( lead.chat ) {
 
