@@ -5,8 +5,14 @@
     <div class="img-container" v-el:container>
       <div class="img-keeper" v-el:img>
 
-        <img class="picture" @load="resizeImg" :src="url" alt="">
-
+        <img v-el:picture class="picture" @load="resizeImg"
+         :src="url" alt=""
+         v-touch:pinchMove="pinchMove($event)"
+         v-touch:pinchEnd="pinchEnd($event)"
+         v-touch:panMove="panMove($event)"
+         v-touch:panEnd="panEnd($event)"
+         v-touch-options:pan="{ threshold: 20 }"
+         v-touch:doubletap="imgSizeBack">
       </div>
 
       <div class="close-block" @click="onClose"></div>
@@ -31,23 +37,22 @@
     data(){
 
       return {
-        meta: document.querySelector('meta[name="viewport"]'),
-        zoomContent: 'width=device-width, initial-scale=1.0, maximum-scale=2.5',
-        appContent: 'width=750, maximum-scale=1.0, user-scalable=no'
+        deltaY: 0,
+        deltaX: 0,
+        currentScale: 1
       }
 
     },
     ready(){
       this.scrollcnt = document.querySelector('.scroll-cnt');
       this.scrollcnt.style.overflow = 'hidden';
-      this.meta.content = this.zoomContent;
+
 
       this.resize = listener( window, 'optimizedResize', this.resizeImg.bind( this ) );
       this.resizeImg();
     },
     beforeDestroy(){
       this.scrollcnt.style.overflow = 'auto';
-      this.meta.content = this.appContent;
       this.resize.remove();
 
     },
@@ -72,7 +77,35 @@
       }
     },
     methods: {
+      imgSizeBack(){
 
+        this.$els.picture.style.transform = 'translate(0,0) scale(1)';
+
+      },
+      pinchMove(e){
+
+        let scale = getRelativeScale(e.scale, this.currentScale);
+        event.target.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${scale})`;
+      },
+      pinchEnd(e){
+
+        let scale = getRelativeScale(e.scale, this.currentScale);
+        this.currentScale = scale;
+      },
+      panMove(event){
+        if(!window.browser.mobile){
+          return;
+        }
+        let DeltaX = this.deltaX + event.deltaX;
+        let DeltaY = this.deltaY + event.deltaY;
+        event.target.style.transform = `translate(${DeltaX}px,${DeltaY}px) scale(${this.currentScale})`;
+
+      },
+      panEnd(event){
+        this.deltaX += event.deltaX;
+        this.deltaY += event.deltaY;
+
+      },
       resizeImg(){
 
         const { clientWidth: contWidth, clientHeight: contHeight } = this.$els.container;
@@ -143,5 +176,10 @@
     components: {
       popupContainer
     }
+  }
+
+
+  function getRelativeScale(scale,currentScale) {
+    return scale * currentScale;
   }
 </script>

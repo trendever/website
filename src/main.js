@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import VueTouch from 'vue-touch';
 import VueValidator from 'vue-validator';
 import FastClick from 'fastclick';
 import config from '../config';
@@ -44,6 +45,14 @@ Vue.use(VueValidator);
 
 InitValidators();
 InitFilters();
+
+// add touch
+Vue.use(VueTouch)
+VueTouch.registerCustomEvent('doubletap', {
+  type: 'tap',
+  taps: 2,
+  time: 150
+})
 
 // install router
 Vue.use(VueRouter);
