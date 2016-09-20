@@ -5,13 +5,14 @@
     <div class="img-container" v-el:container>
       <div class="img-keeper" v-el:img>
 
-        <img class="picture" @load="resizeImg"
+        <img v-el:picture class="picture" @load="resizeImg"
          :src="url" alt=""
          v-touch:pinchMove="pinchMove($event)"
          v-touch:pinchEnd="pinchEnd($event)"
          v-touch:panMove="panMove($event)"
          v-touch:panEnd="panEnd($event)"
-         v-touch-options:pan="{ threshold: 20 }">
+         v-touch-options:pan="{ threshold: 20 }"
+         v-touch:doubletap="imgSizeBack">
       </div>
 
       <div class="close-block" @click="onClose"></div>
@@ -76,6 +77,11 @@
       }
     },
     methods: {
+      imgSizeBack(){
+
+        this.$els.picture.style.transform = 'translate(0,0) scale(1)';
+
+      },
       pinchMove(e){
 
         let scale = getRelativeScale(e.scale, this.currentScale);
