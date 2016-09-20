@@ -87,7 +87,9 @@
         this.currentScale = scale;
       },
       panMove(event){
-
+        if(!window.browser.mobile){
+          return;
+        }
         let DeltaX = this.deltaX + event.deltaX;
         let DeltaY = this.deltaY + event.deltaY;
         event.target.style.transform = `translate(${DeltaX}px,${DeltaY}px) scale(${this.currentScale})`;
