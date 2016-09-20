@@ -5,8 +5,14 @@
     <div class="img-container" v-el:container>
       <div class="img-keeper" v-el:img>
 
-        <img class="picture" @load="resizeImg" :src="url" alt="">
-
+        <img class="picture" @load="resizeImg"
+         :src="url" alt=""
+         v-touch:pinchMove="pinchMove($event)"
+         v-touch:pinchEnd="pinchEnd($event)"
+         v-touch:panMove="panMove($event)"
+         v-touch:panEnd="panEnd($event)"
+         v-touch-options:pan="{ threshold: 20 }">
+        {{ parameters | json }}
       </div>
 
       <div class="close-block" @click="onClose"></div>
@@ -31,23 +37,25 @@
     data(){
 
       return {
-        meta: document.querySelector('meta[name="viewport"]'),
-        zoomContent: 'width=device-width, initial-scale=1.0, maximum-scale=2.5',
-        appContent: 'width=750, maximum-scale=1.0, user-scalable=no'
+        parameters: {
+          scale: 1,
+          deltaY: 0,
+          deltaX: 0,
+          type: ''
+        }
       }
 
     },
     ready(){
       this.scrollcnt = document.querySelector('.scroll-cnt');
       this.scrollcnt.style.overflow = 'hidden';
-      this.meta.content = this.zoomContent;
+
 
       this.resize = listener( window, 'optimizedResize', this.resizeImg.bind( this ) );
       this.resizeImg();
     },
     beforeDestroy(){
       this.scrollcnt.style.overflow = 'auto';
-      this.meta.content = this.appContent;
       this.resize.remove();
 
     },
@@ -72,7 +80,27 @@
       }
     },
     methods: {
+      pinchOut(event){
+        event.target.style.transform = `scale(${this.parameters.scale + event.scale})`;
+      },
+      pinchIn(event){
+        event.target.style.transform = `scale(${this.parameters.scale - event.scale})`;
+      },
+      pinchEnd(event){
+        return;
+      },
+      panMove(event){
 
+        let DeltaX = this.parameters.deltaX + event.deltaX;
+        let DeltaY = this.parameters.deltaY + event.deltaY;
+        event.target.style.transform = `translate(${DeltaX}px,${DeltaY}px) scale(${this.parameters.scale})`;
+
+      },
+      panEnd(event){
+        this.parameters.deltaX += event.deltaX;
+        this.parameters.deltaY += event.deltaY;
+
+      },
       resizeImg(){
 
         const { clientWidth: contWidth, clientHeight: contHeight } = this.$els.container;
