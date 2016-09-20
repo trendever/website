@@ -12,7 +12,7 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
           //.profile_info_count 01
           // .profile_info_count_t Подписчики
 
-          .profile_info_img
+          .profile_info_img(@click="hiddenfeature")
             img(:src="getUserPhoto")
 
           //.profile_info_count 0
@@ -35,7 +35,7 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
          span.empty Здесь пусто,
          span #[br]... потому что ты пока ничего не сохранил.
         .profile_no-goods-guest(v-if="noLikes && noProducts && !isSelfPage") Пока здесь пусто ;( #[br] Пользователь еще не добавил #[br] тренды в свою ленту
-        .profile_no-goods-banner(v-if="showTooltip") Нажми Сохранить&nbsp
+        .profile_no-goods-banner(v-if="showTooltip && isSelfPage") Нажми Сохранить&nbsp
          span под товаром #[br.break_1] или&nbsp
          | напиши&nbsp
          span.save @savetrend&nbsp
@@ -63,6 +63,8 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
 
   navbar-component(:current='listId')
 
+  .find-bloger-btn(v-if='isSelfPage && shopId !== 1 && isMobile && show', @click="buyServiceProduct") Найти блогера
+
 .help-wrapper(v-if='isFirst')
   .attention(v-if='isFirst')
     p Для корректного отображения подсказок переверните устройство в портретную ориентацию
@@ -74,11 +76,14 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
             li 1. Лайкнули на Trendever
             li 2. Отметили под постом в инсте
         .help__profile-round
+
 </template>
 <script type='text/babel'>
   import RightNavComponent from 'base/right-nav/index';
   import * as productsService from 'services/products';
   import { urlThumbnail } from 'utils';
+  import { createLead } from 'vuex/actions/lead';
+  import config from '../../../config';
 
   import store from 'vuex/store'
   import { openProfile, closeProfile, setMyCurrentList, setTooltip } from 'vuex/actions/user.js';
@@ -108,7 +113,10 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
         photoType: '',
         noLikes: true,
         noProducts: true,
-        loaded: false
+        loaded: false,
+        isMobile: window.browser.mobile,
+        show: true,
+        hiddenCount: 0
       }
     },
     route: {
@@ -133,6 +141,7 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
 
     },
     ready(){
+
       if ( !this.isAuth ) {
         this.$router.replace( { name: 'signup' } );
       }
@@ -144,6 +153,35 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
       }
     },
     methods:{
+      buyServiceProduct(){
+
+        let productId = config.service_product_id === null ? 7833 : config.service_product_id;
+
+        this
+          .createLead( productId )
+          .then(
+            ( lead ) => {
+              if ( lead !== undefined && lead !== null ) {
+                this.$router.go( { name: 'chat', params: { id: lead.id } } )
+              }
+            }
+          )
+          .catch(
+            ( error ) => {
+              if ( error === leads.ERROR_CODES.UNATHORIZED ) {
+                this.$router.go( { name: 'signup' } )
+              }
+            }
+          )
+      },
+      hiddenfeature(){
+        if (this.hiddenCount === 5){
+          window.location.href = "https://dev.trendever.com"
+        }
+        let _count = this.hiddenCount;
+        _count++;
+        this.$set('hiddenCount',_count);
+      },
       _setTab(){
         this._checkStaff().then(staff=>{
           if(!staff.likes){
@@ -210,6 +248,7 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
     },
     vuex: {
       actions: {
+        createLead,
         setTooltip,
         setMyCurrentList,
         openProfile,

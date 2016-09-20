@@ -25,7 +25,7 @@ div
                 spellcheck="false")
 
       .bottom-container.__fixed-width
-        template(v-if="isMobile")            
+        template(v-if="isMobile")
           .btn-container-mobile
             div.link-div
               a.link-bottom(href='#',
@@ -50,8 +50,8 @@ div
               v-show='needNewSMS'
               @click.prevent='sendSMS') Отправить новый код
 
-          
-          
+
+
 
 </template>
 
@@ -157,7 +157,7 @@ div
           .then(() => {
 
             if (!this.callbackOnSuccessAuth) {
-              setTimeout( () => this.$router.go({name: 'home'}), 1000);
+              setTimeout( () => this.$router.go({name: 'chat_list'}), 1000);
               return true;
             } else {
               this.executeCallbackOnSuccessAuth()

@@ -26,6 +26,7 @@ scroll-component(v-el:scroll-cnt, @click="setTooltip('chats',false)")
        span.want напиши @wantit&nbsp
        span под постом в Instagram, #[br] и здесь появится шопинг-чат.
 navbar-component(current='chat')
+scroll-top
 
 .help-wrapper(v-if='isFirst')
   .help(@click='isFirst=false')
@@ -65,6 +66,7 @@ navbar-component(current='chat')
   import * as leads from 'services/leads';
   import * as messages from 'services/message';
 
+  import ScrollTop from 'base/scroll-top/scroll-top';
   import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
   import NavbarComponent from 'base/navbar/navbar.vue';
@@ -74,6 +76,7 @@ navbar-component(current='chat')
   export default {
 
     components: {
+      ScrollTop,
       RightNavComponent,
       ScrollComponent,
       HeaderComponent,

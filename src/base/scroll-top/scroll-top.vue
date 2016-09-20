@@ -1,5 +1,5 @@
 <style src="./style.pcss"></style>
-<template lang='jade'>
+<template lang="jade">
 .scroll-top( @click='up()', v-show="is_visible", :class='{"__fly": !isAuth}' )
   i.ic-arrow-up-thin(:class='{"arrow__down": !toUp}')
 </template>

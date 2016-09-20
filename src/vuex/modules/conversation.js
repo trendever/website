@@ -92,7 +92,9 @@ const addServiceMessage = (function() {
         MIME === 'json/status' ||
         MIME === 'text/html' ||
         MIME === 'image/base64' ||
-        MIME === 'json/order'
+        MIME === 'json/order' ||
+        MIME === 'json/payment' ||
+        MIME === 'json/cancel_order'
       ) {
 
         if ( MIME !== 'json/status' ) {
@@ -226,7 +228,6 @@ const mutations = {
     const { all } = state;
 
     if ( all.hasOwnProperty( id ) ) {
-
       for ( let i = all[ id ].length; i; i-- ) {
         if ( all[ id ][ i - 1 ].id === messages[ 0 ].id ) {
           return;

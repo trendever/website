@@ -5,11 +5,11 @@
   .bubble_info.bubble_info_time {{ datetime }}
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
     i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
-  .bubble(:class='{"chat-msg-not-closest":!isClosest && !isAfterServiceMessage}')
+  .bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest && !isAfterServiceMessage}')
     .chat-msg-product-wrap
       a.chat-msg-product(v-link="{name: 'product_detail', params: {id: product.id}}")
         .chat-msg-product-photo
-          img(:src="product.image")
+          img(:src="photo")
       .chat-msg-description
         .chat-msg_t(
             v-link='{name: "user", params: {id: getUserNameLink}}',
@@ -21,14 +21,19 @@
             v-link='{name: "product_detail", params: {id: product.id}}'
           )
           .chat-msg-product-txt(:class="{'-closest':isClosest}")
-            |{{{ getMessage }}}
+            a(v-link='{name: "product_detail", params: {id: product.id}}')
+              |{{{ titles }}}
+            br(v-if="titles")
+            span
+              |{{{ description }}}
 </template>
 
 <script type='text/babel'>
-  import { formatTime, formatDatetime, escapeHtml, wrapLink } from './utils';
+  import { formatDatetime } from 'utils';
+  import { formatTime } from './utils';
   import { user } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
-  import { getCurrentMember, getLastMessageId, getCustomerName, getCustomerId, getShopName } from 'vuex/getters/chat.js';
+  import { getCurrentMember, getLastMessageId, getShopName } from 'vuex/getters/chat.js';
   export default{
     props: {
       msg: {
@@ -40,25 +45,24 @@
       getters: {
         getShopName,
         getCurrentMember,
-        getCustomerId,
-        getCustomerName,
         getLastMessageId,
         user
       }
     },
     computed: {
-      getUserNameLink() {
-        //серисные сообшения
-        if(this.msg.user.name === 'trendever'){
-          return 'trendevercom';
-        }
-        if (this.isCustomer) {
-          return this.msg.user.name;
-        }
-        return this.getShopName;
-      },
       getUsername() {
-        return `<b>${this.getCustomerName}</b>`
+        if ( this.isCustomer ) {
+          return `<b>${this.msg.user.name}</b>`
+        }
+        if ( this.msg.user.role === leads.USER_ROLES.SUPPLIER.key ) {
+          return `<b>${this.getShopName}</b>`
+        }
+        if ( this.getCurrentMember !== null ) {
+          if ( this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key ) {
+            return `<b>${this.getShopName}</b>`
+          }
+        }
+        return `<b>${this.getShopName}</b> (${this.msg.user.name})`
       },
       isAfterServiceMessage(){
         return !!this.msg.afterServiceMessage;
@@ -69,12 +73,8 @@
       datetime () {
         return formatTime( this.msg.created_at );
       },
-      getMessage() {
-        return wrapLink(this.msg.parts[0].content);
-      },
       product() {
-        let data = this.msg.parts[1].content.split("~");
-        return {image: data[0], id: +data[1]};
+        return JSON.parse( this.msg.parts[ 0 ].content );
       },
       photo() {
         if ( Array.isArray( this.product.instagram_images ) ) {
@@ -105,19 +105,17 @@
             }
             return desc;
           }, '' )
-
         }
         return '';
       },
       isClosest(){
-        return false;
+        return this.msg.closestMessage;
       },
       isOwnMessage() {
-        if (this.getCustomerId === this.$store.state.user.myId){
-          return true;
-        }else{
-          return false;
+        if ( this.getCurrentMember !== null ) {
+          return this.getCurrentMember.user_id === this.msg.user.user_id;
         }
+        return false;
       },
       isSent() {
         return !this.isRead;

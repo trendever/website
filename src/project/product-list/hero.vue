@@ -1,22 +1,28 @@
 <style src='./styles/hero.pcss'></style>
-<style>
-  .hero__content__logo{
-    /*display: none;*/
-  }
-</style>
 <template lang="jade">
-.header__menu__overlay(v-show='menuOpened', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
+.header__menu__overlay(v-show='menuOpened && isMobile', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
-.section.smallHero(v-if='isAuth')
+.section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
+
+  .input__container(v-if="!isMobile")
+    i.ic-search(@click="openInput")
+    input(
+      v-el:input,
+      @keyup='search()',
+      :value='searchValue',
+      type='text',
+      placeholder='Ищи текстом или жми теги...',
+      v-if="inputOpened || searchValue")
+
   .profile-header__menu
     .profile-header__menu-btn
       .profile-header__menu-btn-label
-      .profile-header__menu-btn-icon(v-if="!getComeBack", @click='menuOpened=!menuOpened')
+      .profile-header__menu-btn-icon(v-if="!getComeBack", @click.stop='menuOpened=!menuOpened')
         i(class='ic-info')
       .profile-header__menu-btn-icon(v-if="getComeBack", @click='goBack')
         i(class='ic-arrow-left')
-  .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth }")
-    a(class='profile-header__menu-link profile-header__close-menu',
+  .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth, '__desktop': !isMobile }")
+    a(class='profile-header__menu-link profile-header__close-menu first',
       @click='menuOpened=false') Отмена
     a(class='profile-header__menu-link',
       v-link='{name: "info-user"}') Покупателям
@@ -28,6 +34,9 @@
       v-link='{name: "info-mission"}') Наша миссия
     a(class='profile-header__menu-link',
       v-link='{name: "info-agreement"}') Условия
+    a(class='profile-header__menu-link',
+      href="https://trendever.payture.com/",
+      target="_blank") Денежный перевод
     a(class='profile-header__menu-link', @click="logout") Выход
   a(v-link='{ name: "info-user" }')
     i.smallHero__logo
@@ -75,15 +84,15 @@
        i(class='ic-insta social')
       a(href='https://vk.com/trendever', class='vk' target="_blank")
        i(class='ic-vk social')
-     .hero__content__input-wrap
-      p Приложение для шопинга в Instagram
-      input(type="text" placeholder="Номер телефона")
-      button.hero__content__get-link ПОЛУЧИТЬ ССЫЛКУ
+     //.hero__content__input-wrap
+      //p Приложение для шопинга в Instagram
+      //input(type="text" placeholder="Номер телефона")
+      //button.hero__content__get-link ПОЛУЧИТЬ ССЫЛКУ
      .hero__content__dwnld-btns
-      a(href="#", class="app_store")
+      a(href="https://itunes.apple.com/ru/app/trendever/id1124212231", class="app_store")
        i(class="ic-appstore")
-      a(href="#", class="g_play")
-       i(class="ic-google_play")
+      //a(href="#", class="g_play")
+       //i(class="ic-google_play")
   .hero__content__2
    a(@click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
    p(id="how-it-work") Находи и покупай #[br] трендовые товары здесь #[br] или прямо в Instagram
@@ -95,7 +104,7 @@
 </template>
 
 <script type='text/babel'>
-import listener from 'event-listener'
+import listen from 'event-listener'
 import settings from 'settings'
 import { setCallbackOnSuccessAuth } from 'vuex/actions'
 import { createLead } from 'vuex/actions/lead'
@@ -106,11 +115,19 @@ import * as leads from 'services/leads'
 import RightNavComponent from 'base/right-nav/index';
 import Slider from './slider.vue';
 
+//search logic
+import { searchValue } from 'vuex/getters/search';
+import { setSearchValue } from 'vuex/actions/search';
+
+import { targetClass } from 'utils';
+
 export default {
   data(){
     return {
+      inputOpened: false,
       menuOpened: false,
-      isStandalone: browser.standalone
+      isStandalone: browser.standalone,
+      isMobile: window.browser.mobile
     }
   },
 
@@ -120,15 +137,32 @@ export default {
   },
 
   ready() {
+
     this.scrollCnt = document.querySelector( '.scroll-cnt' );
+
+
+    this.outerCloseMenu = listen(this.scrollCnt, 'click',(event)=>{
+
+        targetClass(event, 'profile-header__menu-links',()=>{
+            if(this.menuOpened){
+              this.menuOpened = false;
+            }
+        });
+    })
+
+  },
+  beforeDestroy(){
+    this.outerCloseMenu.remove();
   },
 
   vuex: {
     getters: {
+      searchValue,
       isAuth,
       getComeBack
     },
     actions: {
+      setSearchValue,
       logOut,
       createLead,
       setCallbackOnSuccessAuth,
@@ -136,6 +170,15 @@ export default {
   },
 
   methods: {
+    openInput(){
+      this.inputOpened = !this.inputOpened;
+      this.$nextTick(()=>{
+        this.$els.input.focus()
+      });
+    },
+    search() {
+      this.setSearchValue(this.$els.input.value);
+    },
     logout(){
 
       this.$set('menuOpened', false);

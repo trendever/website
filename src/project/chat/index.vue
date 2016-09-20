@@ -3,26 +3,35 @@
   scroll-component(v-el:scroll-cnt, class="chat-cnt")
     popup-img(v-if="imgPopUpUrl", :url="imgPopUpUrl", :width="imgWidth", :height="imgHeight", :on-close="closePopUp")
     chat-header(:notify-count='conversationNotifyCount')
-    .chat-shadow(v-if="getShowMenu || getShowStatusMenu")
+    .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu")
     .section.top.bottom
       .chat.section__content
         .chat_messages
-          div(v-for='msg in getMessages | list', track-by='$index')
-            chat-msg-status(
-              v-if='msg.parts[0].mime_type === "json/status"',
-              :msg='msg')
-            chat-msg-product(
-              v-if='msg.parts[0].mime_type === "text/json"',
-              :msg='msg')
-            chat-msg(
-              v-if='msg.parts[0].mime_type === "text/plain"',
-              :msg='msg')
-            chat-msg-info(
-              v-if='msg.parts[0].mime_type === "text/html"',
-              :msg='msg')
-            chat-msg-img(
-              v-if='isImage(msg.parts[0].mime_type)',
-              :msg='msg')
+          template(v-for='msg in getMessages | list', track-by='$index')
+            div
+              chat-msg-status(
+                v-if='msg.parts[0].mime_type === "json/status"',
+                :msg='msg')
+              chat-msg-product-old(
+                v-if='msg.parts[0].mime_type === "text/json"',
+                :msg='msg')
+              chat-msg-product(
+                v-if='msg.parts[0].mime_type === "text/plain" && hasData(msg) ',
+                :msg='msg')
+              chat-msg(
+                v-if='msg.parts[0].mime_type === "text/plain" && !hasData(msg)',
+                :msg='msg')
+              chat-msg-info(
+                v-if='msg.parts[0].mime_type === "text/html"',
+                :msg='msg')
+              chat-msg-img(
+                v-if='isImage(msg.parts[0].mime_type)',
+                :msg='msg')
+              chat-msg-payment(
+                v-if='msg.parts[0].mime_type === "json/payment" || msg.parts[0].mime_type === "json/cancel_order"', :msg='msg')
+            chat-msg-order(
+                v-if='msg.parts[0].mime_type === "json/order"',
+                :msg='msg')
 
     chat-bar
   scroll-top(:to-up="false")
@@ -31,6 +40,7 @@
 <script type='text/babel'>
   import listen from 'event-listener';
   import scrollTop from 'base/scroll-top/scroll-top.vue';
+  //actions
   import {
     setConversation,
     loadMessage,
@@ -38,6 +48,9 @@
     openPopUp,
     setConversationAction
   } from 'vuex/actions/chat.js';
+  import { clearNotify } from 'vuex/actions/lead.js';
+
+  //getters
   import {
     getMessages,
     conversationNotifyCount,
@@ -52,14 +65,17 @@
   } from 'vuex/getters/chat.js';
   import { isDone } from 'vuex/getters/lead.js';
   import { isAuth } from 'vuex/getters/user.js';
-  import { clearNotify } from 'vuex/actions/lead.js';
 
+  //services
   import * as messages from 'services/message';
   import * as leads from 'services/leads';
 
   import ScrollComponent from 'base/scroll/scroll.vue'
-
+  //components
+  import ChatMsgOrder from './chat-msg-order.vue';
+  import ChatMsgPayment from './chat-msg-payment.vue';
   import ChatMsgProduct from './chat-msg-product.vue';
+  import ChatMsgProductOld from './chat-msg-product-old.vue';
   import ChatMsgStatus from './chat-msg-status.vue';
   import ChatMsg from './chat-msg.vue';
   import ChatMsgImg from './chat-msg-img.vue';
@@ -76,7 +92,10 @@
       ChatHeader,
       ChatBar,
       ChatMsg,
+      ChatMsgOrder,
+      ChatMsgPayment,
       ChatMsgProduct,
+      ChatMsgProductOld,
       ChatMsgStatus,
       ChatMsgImg,
       ChatMsgInfo,
@@ -86,7 +105,8 @@
     data(){
       return {
         needLoadMessage: true,
-        lead_id: null
+        lead_id: null,
+        isMobile: window.browser.mobile
       }
     },
 
@@ -97,13 +117,17 @@
         }
       }
     },
-
     route: {
       data( { to: { params: { id:lead_id } } } ) {
         this.$set( 'lead_id', +lead_id );
         if ( this.isDone ) {
           if ( this.isAuth ) {
-            return this.run();
+            return this.run().then(()=>{
+              this.clearNotify(this.lead_id);
+              this.$nextTick( () => {
+                      this.goToBottom();
+                    } );
+            })
           } else {
             return Promise.resolve()
           }
@@ -114,7 +138,8 @@
       if ( this.isAuth ) {
         this.onMessage      = this.onMessage.bind( this );
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
-        messages.onMsg( this.onMessage );        
+        messages.onMsg( this.onMessage );
+
       } else {
         this.$router.go( { name: 'signup' } );
       }
@@ -189,11 +214,19 @@
               this.$router.go( { name: '404'});
             }
           }).then(()=>{
-            //show approve btn if first chat
-            return this.getMessages.find(message=>{
-              return message.parts[0].mime_type === 'text/plain' && message.user.user_id === this.$store.state.user.myId;
 
-            })
+            return messages
+              .find(this.getId, null, 50, false)
+              .then((data)=>{
+                return data.find(message=>{
+                  return message.parts[0].content === 'Привет;) да, подтверждаю!'
+                })
+              });
+
+            //show approve btn if first chat
+           /* return this.getMessages.find(message=>{
+              return message.parts[0].mime_type === 'text/plain' && message.user.user_id === this.$store.state.user.myId;
+            })*/
 
           }).then(flagMessage=>{
             if(!flagMessage && this.getCurrentMember.role === 1){
@@ -254,6 +287,13 @@
 
       isImage( mime ){
         return mime.indexOf( 'image' ) !== -1;
+      },
+
+      hasData(msg){
+        if (msg.parts[1] && msg.parts[1].mime_type === 'text/data'){
+          return true;
+        }
+        return false;
       },
 
       scrollHandler(){

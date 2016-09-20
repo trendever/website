@@ -27,8 +27,10 @@ var config = {
   /**
    * Other
    */
+  service_product_id: null,
+
   promo_product_id: 21499
-  
+
 };
 
 module.exports = config;

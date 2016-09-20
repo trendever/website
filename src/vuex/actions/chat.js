@@ -59,17 +59,16 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
     /**
      * Запучкает чат.
      * */
-    console.log('Вот это точно сробатывает');
+    console.log('%cChat Run!','font-size:1.4rem; color: blue');
 
     if ( lead.chat ) {
-      console.log(lead);
+      console.log('%cLead:','font-size:1.4rem; color: blue',JSON.parse(JSON.stringify(lead)));
       if ( lead.chat.id ) {
 
         const { chat:{ id:conversation_id } } = lead
 
         if ( Array.isArray( messages ) ) {
-          console.log('MESSAGES:');
-          console.log(messages);
+          console.log('%cMessages:','font-size:1.4rem; color: blue',JSON.parse(JSON.stringify(messages)));
           if ( messages.length > 0 ) {
 
             const msg = messages[ messages.length - 1 ]
@@ -81,11 +80,10 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
               // TODO Объединить в функцию #logicReading
 
-              if (
-                ( customerRole === currentRole ) ||
-                ( ( msg.user ) ? ( msg.user.role === customerRole && currentRole !== customerRole ) : true )
-              ) {
-                console.log('Обновление сообщений');
+          //    if (
+          //      ( customerRole === currentRole ) ||
+          //      ( ( msg.user ) ? ( msg.user.role === customerRole && currentRole !== customerRole ) : true )
+          //    ) {
                 messageService
                   .update( conversation_id, msg.id )
                   .catch( ( error ) => {
@@ -95,8 +93,8 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
                       lastMessageId: msg.id
                     } )
                   } )
-
-              }
+                console.log('%cОбновление Сообщений!','font-size:1.4rem; color: blue');
+          //    }
 
             }
 
@@ -126,14 +124,14 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
         const messages = getMessageByLead( state, lead )
 
-        if ( messages === null ) {
+        if ( /*messages === null*/ !state.conversation.allInit[lead.chat.id] ) {
 
           if ( lead.chat ) {
 
             if ( lead.chat.id ) {
                console.log('Из чатов');
               return messageService
-                .find( lead.chat.id, null, getCountForLoading )
+                .find( lead.chat.id, null, getCountForLoading, true )
                 .then(
                   ( messages ) => {
                     if ( Array.isArray( messages ) ) {

@@ -3,9 +3,9 @@
 
 div
   .chat-approve-btn(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat') ПОДТВЕРДИТЬ
-  .chat-bar.section__content(v-else)
-    .chat-bar_menu-btn(@click='setShowMenu(true)')
-      i.ic-menu-light
+  .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay'")
+    .chat-bar_menu-btn(@click.stop='setShowMenu(true)')
+      i.ic-chat_menu
     .chat-bar_input
       textarea(placeholder='Введите сообщение',
                v-model='txtMsg',
@@ -16,7 +16,8 @@ div
                        v-on:touchstart='send($event)',
                        :class='{"__active": !!txtMsg}')
       i.ic-send-plane
-  chat-menu
+    chat-menu(v-if="!isMobile")
+  chat-menu(v-if="isMobile")
 
 </template>
 
@@ -41,13 +42,14 @@ div
 
   import * as service from 'services/message'
   import * as leads from 'services/leads'
-
+  import * as cardService from 'services/card';
   import ChatMenu from './chat-menu.vue'
 
   export default{
     data(){
       return {
         txtMsg: '',
+        isMobile: window.browser.mobile
       }
     },
 
@@ -187,7 +189,7 @@ div
             this.setStatus( 'PROGRESS', 'lead.state.changed' )
           }
 
-          this.setConversationAction('base');
+          this.setConversationAction("base");
 
         } )
 
@@ -213,6 +215,14 @@ div
 
         this.send();
 
+      },
+      pay(){
+        cardService.createPayment({
+          id: this.payId,
+          lead_id: this.getLeadId
+        }).then(path=>{
+          window.location = path.redirect_url;
+        });
       }
     },
 
