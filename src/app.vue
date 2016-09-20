@@ -75,6 +75,15 @@ input(type="hidden", value="", id="get-user-login")
         } );
       mixpanel.track( 'App Open' )
 
+      // When ready...
+window.addEventListener("load",function() {
+  // Set a timeout...
+  setTimeout(function(){
+    // Hide the address bar!
+    window.scrollTo(0, 1);
+  }, 0);
+});
+
     },
 
     computed: {
@@ -82,6 +91,7 @@ input(type="hidden", value="", id="get-user-login")
         return this.$route.name !== 'why'
       },
       isStandalone(){
+        alert(browser.standalone)
         return browser.standalone
       }
     },
