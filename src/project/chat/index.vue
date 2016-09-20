@@ -12,8 +12,11 @@
               chat-msg-status(
                 v-if='msg.parts[0].mime_type === "json/status"',
                 :msg='msg')
+              chat-msg-product-old(
+                v-if='msg.parts[0].mime_type === "text/json"',
+                :msg='msg')
               chat-msg-product(
-                v-if='msg.parts[0].mime_type === "text/plain" && hasData(msg)',
+                v-if='msg.parts[0].mime_type === "text/plain" && hasData(msg) ',
                 :msg='msg')
               chat-msg(
                 v-if='msg.parts[0].mime_type === "text/plain" && !hasData(msg)',
@@ -72,6 +75,7 @@
   import ChatMsgOrder from './chat-msg-order.vue';
   import ChatMsgPayment from './chat-msg-payment.vue';
   import ChatMsgProduct from './chat-msg-product.vue';
+  import ChatMsgProductOld from './chat-msg-product-old.vue';
   import ChatMsgStatus from './chat-msg-status.vue';
   import ChatMsg from './chat-msg.vue';
   import ChatMsgImg from './chat-msg-img.vue';
@@ -91,6 +95,7 @@
       ChatMsgOrder,
       ChatMsgPayment,
       ChatMsgProduct,
+      ChatMsgProductOld,
       ChatMsgStatus,
       ChatMsgImg,
       ChatMsgInfo,
