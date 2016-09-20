@@ -17,8 +17,8 @@ div
       .menu_i(v-if='isAdmin', @click='setShowStatusMenu(true)')
         .menu_i_t Изменить статус заказа
 
-      .menu_i(@click='openPaymentMenu')
-        .menu_i_t Выставить счет
+      //.menu_i(@click='openPaymentMenu')
+      //.menu_i_t Выставить счет
 
       label(class='menu_i menu_i-send-file') Отправить фото
         input(type='file', hidden, @change='selectedFile')
