@@ -13,10 +13,10 @@
                 v-if='msg.parts[0].mime_type === "json/status"',
                 :msg='msg')
               chat-msg-product(
-                v-if='msg.parts[0].mime_type === "text/json"',
+                v-if='msg.parts[0].mime_type === "text/plain" && hasData(msg)',
                 :msg='msg')
               chat-msg(
-                v-if='msg.parts[0].mime_type === "text/plain"',
+                v-if='msg.parts[0].mime_type === "text/plain" && !hasData(msg)',
                 :msg='msg')
               chat-msg-info(
                 v-if='msg.parts[0].mime_type === "text/html"',
@@ -112,7 +112,6 @@
         }
       }
     },
-
     route: {
       data( { to: { params: { id:lead_id } } } ) {
         this.$set( 'lead_id', +lead_id );
@@ -283,6 +282,13 @@
 
       isImage( mime ){
         return mime.indexOf( 'image' ) !== -1;
+      },
+
+      hasData(msg){
+        if (msg.parts[1] && msg.parts[1].mime_type === 'text/data'){
+          return true;
+        }
+        return false;
       },
 
       scrollHandler(){
