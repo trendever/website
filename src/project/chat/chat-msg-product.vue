@@ -5,7 +5,7 @@
   .bubble_info.bubble_info_time {{ datetime }}
   .bubble_info.bubble_info_status(v-if='isOwnMessage')
     i(:class='{"ic-check": isSent, "ic-check-double": isRead}')
-  .bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest && !isAfterServiceMessage}')
+  .bubble(:class='{"chat-msg-not-closest":!isClosest && !isAfterServiceMessage}')
     .chat-msg-product-wrap
       a.chat-msg-product(v-link="{name: 'product_detail', params: {id: product.id}}")
         .chat-msg-product-photo
@@ -21,15 +21,14 @@
             v-link='{name: "product_detail", params: {id: product.id}}'
           )
           .chat-msg-product-txt(:class="{'-closest':isClosest}")
-            a(v-link='{name: "product_detail", params: {id: product.id}}')
-              |{{{ getMessage }}}
+            |{{{ getMessage }}}
 </template>
 
 <script type='text/babel'>
   import { formatTime, formatDatetime, escapeHtml, wrapLink } from './utils';
   import { user } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
-  import { getCurrentMember, getLastMessageId, getShopName } from 'vuex/getters/chat.js';
+  import { getCurrentMember, getLastMessageId, getCustomerName, getCustomerId, getShopName } from 'vuex/getters/chat.js';
   export default{
     props: {
       msg: {
@@ -41,6 +40,8 @@
       getters: {
         getShopName,
         getCurrentMember,
+        getCustomerId,
+        getCustomerName,
         getLastMessageId,
         user
       }
@@ -57,22 +58,7 @@
         return this.getShopName;
       },
       getUsername() {
-        //сервисные сообщния
-        if(this.msg.user.name === 'trendever'){
-          return 'trendever';
-        }
-        if (this.isCustomer) {
-          return `<b>${this.msg.user.name}</b>`
-        }
-        if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {
-          return `<b>${this.getShopName}</b>`
-        }
-        if ( this.getCurrentMember !== null ) {
-          if(this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key){
-            return `<b>${this.getShopName}</b>`
-          }
-        }
-        return `<b>${this.getShopName}</b> (${this.msg.user.name})`
+        return `<b>${this.getCustomerName}</b>`
       },
       isAfterServiceMessage(){
         return !!this.msg.afterServiceMessage;
@@ -84,7 +70,7 @@
         return formatTime( this.msg.created_at );
       },
       getMessage() {
-       return wrapLink(escapeHtml(this.msg.parts[0].content).replace(/\n/g, '<br />')).replace(/₽/g, '&nbsp;<i class="ic-currency-rub"></i> ');
+        return wrapLink(this.msg.parts[0].content);
       },
       product() {
         let data = this.msg.parts[1].content.split("~");
@@ -124,13 +110,14 @@
         return '';
       },
       isClosest(){
-        return this.msg.closestMessage;
+        return false;
       },
       isOwnMessage() {
-        if ( this.getCurrentMember !== null ) {
-          return this.getCurrentMember.user_id === this.msg.user.user_id;
+        if (this.getCustomerId === this.$store.state.user.myId){
+          return true;
+        }else{
+          return false;
         }
-        return false;
       },
       isSent() {
         return !this.isRead;
