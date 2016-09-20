@@ -243,3 +243,22 @@ window.Image.prototype.load = function(url, onprogress, onerror, onload) {
 };
 
 window.Image.prototype.completedPercentage = 0;
+
+
+//close menu outside
+
+export const targetClass = ( event , className , callback ) => {
+
+  let target = event.target;
+
+  while(target.parentNode){
+
+    if(target.classList.contains(className)){
+      return;
+    }
+    target = target.parentNode;
+  }
+
+  callback();
+
+}

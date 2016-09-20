@@ -2,7 +2,7 @@
 <template lang="jade">
 div
   menu-component(v-if='getShowMenu && !getShowStatusMenu')
-    div(slot='items')
+    div.menu-items(slot='items')
       .menu_i(v-if='false')
         .menu_i_t Перечислить деньги
       .menu_i(v-if='false')
@@ -16,20 +16,28 @@ div
 
       .menu_i(v-if='isAdmin', @click='setShowStatusMenu(true)')
         .menu_i_t Изменить статус заказа
+
+      //.menu_i(@click='openPaymentMenu')
+      //.menu_i_t Выставить счет
+
       label(class='menu_i menu_i-send-file') Отправить фото
         input(type='file', hidden, @change='selectedFile')
-      
+
       .menu_i(v-if='false')
         .menu_i_t Добавить шаблон
       .menu_i(@click='setShowMenu(false)')
         .menu_i_t.__txt-green Отмена
 
   chat-menu-status( v-if='getShowStatusMenu')
+  payment-component(:set-open.sync="openPayment")
 
 </template>
 
 <script type='text/babel'>
+  import listen from 'event-listener';
+  import { targetClass } from 'utils';
   import {
+    getShopId,
     getCurrentMember,
     getLeadId,
     getShowMenu,
@@ -48,6 +56,7 @@ div
 
   import MenuComponent from 'base/menu/menu.vue';
   import ChatMenuStatus from './chat-menu-status.vue';
+  import PaymentComponent from 'project/payment/payment';
 
   export default{
     vuex: {
@@ -57,6 +66,7 @@ div
         addPreLoadMessage
       },
       getters: {
+        getShopId,
         getCurrentMember,
         getLeadId,
         getShowMenu,
@@ -65,8 +75,32 @@ div
         getInviteCustomer,
       }
     },
+    data(){
+      return {
+        openPayment: false
+      }
+    },
+    ready(){
+      let scrollCnt = document.querySelector('.scroll-cnt');
+      this.outerCloseMenu = listen(scrollCnt, 'click',(e)=>{
 
+        targetClass(e, 'menu-cnt', ()=>{
+          if(getShowMenu) {
+             this.setShowMenu(false);
+          }
+
+        });
+
+      })
+    },
+    beforeDestroy(){
+      this.outerCloseMenu.remove();
+    },
     methods: {
+      openPaymentMenu(){
+        this.openPayment = true;
+        this.setShowMenu(false);
+      },
       selectedFile( { target } ){
 
         const MIME = target.files[ 0 ].type;
@@ -143,7 +177,8 @@ div
 
     components: {
       MenuComponent,
-      ChatMenuStatus
+      ChatMenuStatus,
+      PaymentComponent
     }
 
   }

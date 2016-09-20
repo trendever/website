@@ -16,10 +16,6 @@
       p.chat-msg_txt
         | {{{ getMessage }}}
 
-
-button.payment-btn(v-if="false") Оплатить 100 500
- i.ic-currency-rub
-
 </template>
 
 <script type='text/babel'>

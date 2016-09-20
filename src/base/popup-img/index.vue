@@ -32,21 +32,23 @@
 
       return {
         meta: document.querySelector('meta[name="viewport"]'),
-        zoomContent: 'width=device-width, initial-scale=1.0',
+        zoomContent: 'width=device-width, initial-scale=1.0, maximum-scale=2.5',
         appContent: 'width=750, maximum-scale=1.0, user-scalable=no'
       }
 
     },
     ready(){
-
+      this.scrollcnt = document.querySelector('.scroll-cnt');
+      this.scrollcnt.style.overflow = 'hidden';
       this.meta.content = this.zoomContent;
 
       this.resize = listener( window, 'optimizedResize', this.resizeImg.bind( this ) );
       this.resizeImg();
     },
     beforeDestroy(){
+      this.scrollcnt.style.overflow = 'auto';
       this.meta.content = this.appContent;
-      this.resize.remove()
+      this.resize.remove();
 
     },
     props: {

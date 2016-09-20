@@ -19,9 +19,10 @@
           img(src="../img/logo-main.svg")
         .header__text(v-if="centerTextLink === null") {{ title }}
         .header__text.active(v-if="centerTextLink !== null", v-link="centerTextLink") {{ title }}
+          img.center-avatar(:src="avatarUrl", v-if="page == 'product' && !isMobile")
         slot(name='content')
 
-      .header-right(v-if="avatarUrl !== null && centerTextLink !== null", v-link="centerTextLink")
+      .header-right(v-if="avatarUrl !== null && centerTextLink !== null && isMobile", v-link="centerTextLink")
         img(:src="avatarUrl")
 
       productmenu-component(v-if="page == 'product'")
@@ -41,6 +42,7 @@
         is_action_up: false,
         scrollEvent: null,
         showOnEl: null,
+        isMobile: window.browser.mobile
       }
     },
     props: {

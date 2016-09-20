@@ -58,6 +58,42 @@ export const getCustomerName = ( state ) => {
 
 };
 
+export const getCustomerId = ( state ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead ) {
+
+    if ( lead.chat ) {
+
+      if ( lead.chat.members ) {
+
+        const user = lead.chat.members.find( ( user ) => {
+
+          return user.role === chat.MEMBER_ROLES.CUSTOMER;
+
+        } );
+
+        if ( typeof user !== 'undefined' ) {
+
+          /**
+           * Это имя запоминается на момент создания чата.
+           * */
+
+          return user.user_id;
+
+        }
+
+      }
+
+    }
+
+  }
+
+  return null;
+
+};
+
 export const getMessageByLead = ( { conversation }, lead ) => {
 
   if ( lead.chat ) {
@@ -147,6 +183,20 @@ export const getShopName = ( state ) => {
   if ( lead !== null ) {
 
     return lead.shop.instagram_username;
+
+  }
+
+  return null;
+
+};
+
+export const getShopId = ( state ) => {
+
+  const lead = getLeadByConversationId( state, state.conversation.id );
+
+  if ( lead !== null ) {
+
+    return lead.shop.id;
 
   }
 
@@ -286,7 +336,11 @@ export const isJoined = ( state, lead ) => {
 
 };
 
-export const getAction = ( state ) => state.conversation.action;
+export const getAction = ( state ) => {
+  console.log('ATATATAT');
+  console.log(state.conversation.action);
+  return state.conversation.action;
+}
 
 export const getCountForLoading = 50;//(window.browser.mobile) ? 10 : 20;
 

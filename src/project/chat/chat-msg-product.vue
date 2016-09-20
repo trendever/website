@@ -9,7 +9,7 @@
     .chat-msg-product-wrap
       a.chat-msg-product(v-link="{name: 'product_detail', params: {id: product.id}}")
         .chat-msg-product-photo
-          img(:src="photo")
+          img(:src="product.image")
       .chat-msg-description
         .chat-msg_t(
             v-link='{name: "user", params: {id: getUserNameLink}}',
@@ -22,15 +22,11 @@
           )
           .chat-msg-product-txt(:class="{'-closest':isClosest}")
             a(v-link='{name: "product_detail", params: {id: product.id}}')
-              |{{{ titles }}}
-            br(v-if="titles")
-            span
-              |{{{ description }}}
+              |{{{ getMessage }}}
 </template>
 
 <script type='text/babel'>
-  import { formatDatetime } from 'utils';
-  import { formatTime } from './utils';
+  import { formatTime, formatDatetime, escapeHtml, wrapLink } from './utils';
   import { user } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
   import { getCurrentMember, getLastMessageId, getShopName } from 'vuex/getters/chat.js';
@@ -73,8 +69,12 @@
       datetime () {
         return formatTime( this.msg.created_at );
       },
+      getMessage() {
+       return wrapLink(escapeHtml(this.msg.parts[0].content).replace(/\n/g, '<br />')).replace(/₽/g, '&nbsp;<i class="ic-currency-rub"></i> ');
+      },
       product() {
-        return JSON.parse( this.msg.parts[ 0 ].content );
+        let data = this.msg.parts[1].content.split("~");
+        return {image: data[0], id: +data[1]};
       },
       photo() {
         if ( Array.isArray( this.product.instagram_images ) ) {

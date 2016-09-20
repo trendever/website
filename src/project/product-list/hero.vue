@@ -1,11 +1,6 @@
 <style src='./styles/hero.pcss'></style>
-<style>
-  .hero__content__logo{
-    /*display: none;*/
-  }
-</style>
 <template lang="jade">
-.header__menu__overlay(v-show='menuOpened', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
+.header__menu__overlay(v-show='menuOpened && isMobile', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
 .section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
 
@@ -22,12 +17,12 @@
   .profile-header__menu
     .profile-header__menu-btn
       .profile-header__menu-btn-label
-      .profile-header__menu-btn-icon(v-if="!getComeBack", @click='menuOpened=!menuOpened')
+      .profile-header__menu-btn-icon(v-if="!getComeBack", @click.stop='menuOpened=!menuOpened')
         i(class='ic-info')
       .profile-header__menu-btn-icon(v-if="getComeBack", @click='goBack')
         i(class='ic-arrow-left')
-  .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth }")
-    a(class='profile-header__menu-link profile-header__close-menu',
+  .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth, '__desktop': !isMobile }")
+    a(class='profile-header__menu-link profile-header__close-menu first',
       @click='menuOpened=false') Отмена
     a(class='profile-header__menu-link',
       v-link='{name: "info-user"}') Покупателям
@@ -39,6 +34,9 @@
       v-link='{name: "info-mission"}') Наша миссия
     a(class='profile-header__menu-link',
       v-link='{name: "info-agreement"}') Условия
+    a(class='profile-header__menu-link',
+      href="https://trendever.payture.com/",
+      target="_blank") Денежный перевод
     a(class='profile-header__menu-link', @click="logout") Выход
   a(v-link='{ name: "info-user" }')
     i.smallHero__logo
@@ -106,7 +104,7 @@
 </template>
 
 <script type='text/babel'>
-import listener from 'event-listener'
+import listen from 'event-listener'
 import settings from 'settings'
 import { setCallbackOnSuccessAuth } from 'vuex/actions'
 import { createLead } from 'vuex/actions/lead'
@@ -120,6 +118,8 @@ import Slider from './slider.vue';
 //search logic
 import { searchValue } from 'vuex/getters/search';
 import { setSearchValue } from 'vuex/actions/search';
+
+import { targetClass } from 'utils';
 
 export default {
   data(){
@@ -137,7 +137,22 @@ export default {
   },
 
   ready() {
+
     this.scrollCnt = document.querySelector( '.scroll-cnt' );
+
+
+    this.outerCloseMenu = listen(this.scrollCnt, 'click',(event)=>{
+
+        targetClass(event, 'profile-header__menu-links',()=>{
+            if(this.menuOpened){
+              this.menuOpened = false;
+            }
+        });
+    })
+
+  },
+  beforeDestroy(){
+    this.outerCloseMenu.remove();
   },
 
   vuex: {

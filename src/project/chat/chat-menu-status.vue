@@ -1,7 +1,7 @@
 <style src='./styles/chat-bar.pcss'></style>
 <template lang="jade">
 menu-component
-  div(slot='items')
+  div.status-items(slot='items')
     .menu_i.__bg-green(@click='setStatus("COMPLETE", "lead.state.changed")')
       .menu_i_t.__txt-white Выполнен
     .menu_i.__bg-blue(@click='setStatus("DELIVERY", "lead.state.changed")')

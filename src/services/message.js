@@ -55,15 +55,22 @@ export function sendError( errorCode, state = null ) {
  * REJECT (one of ERROR_CODES) {NOT_EXISTS, UNATHORIZED}
  */
 
-export function find( conversation_id, from_message_id, limit = 50) {
+export function find( conversation_id, from_message_id, limit = 50, direction) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req('search', 'message', { conversation_id, from_message_id, limit })
+    channel.req('search', 'message', { conversation_id, from_message_id, limit, direction })
     .then( data => {
       if (!data.response_map.error) {
 
+        if (direction) {
+
+          resolve(data.response_map.messages.reverse());
+
+        }
+
         resolve(data.response_map.messages);
+
 
       } else if (data.response_map.error.code === ERROR_CODES.FORBIDDEN) {
         reject(data.response_map.error);

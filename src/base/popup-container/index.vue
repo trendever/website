@@ -57,7 +57,7 @@
 
     },
     beforeDestroy(){
-
+      this.onClose();
       this.resize.remove();
 
     }
