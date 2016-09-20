@@ -1,6 +1,6 @@
 <style src='./styles/hero.pcss'></style>
 <template lang="jade">
-.header__menu__overlay(v-show='menuOpened && isMoblie', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
+.header__menu__overlay(v-show='menuOpened && isMobile', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
 .section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
 
