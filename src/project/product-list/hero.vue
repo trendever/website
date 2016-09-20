@@ -94,7 +94,7 @@
       //a(href="#", class="g_play")
        //i(class="ic-google_play")
   .hero__content__2
-   a(href="#", @click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
+   a(@click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
    p(id="how-it-work") Находи и покупай #[br] трендовые товары здесь #[br] или прямо в Instagram
    .caption__play__mobile(v-link='{name: "main-video"}')
      i.ic-play
@@ -219,8 +219,8 @@ export default {
             if ( block.getBoundingClientRect().top < 80 ) {
               clearInterval( timer );
             }
-            scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
-          }, 20 );
+            scrollBlock.scrollTop = scrollBlock.scrollTop + 80;
+          }, 10 );
         }
       }
     },
@@ -235,11 +235,16 @@ export default {
             if ( block.getBoundingClientRect().top < 80 ) {
               clearInterval( timer );
             }
-            scrollBlock.scrollTop = scrollBlock.scrollTop + 45;
+            scrollBlock.scrollTop = scrollBlock.scrollTop + 50;
           }, 10 );
         }
       }
-    }
+    },
+
+    isStandalone(){
+        alert(browser.standalone)
+        return browser.standalone
+      }
   },
 };
 </script>
