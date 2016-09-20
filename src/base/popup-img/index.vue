@@ -12,7 +12,6 @@
          v-touch:panMove="panMove($event)"
          v-touch:panEnd="panEnd($event)"
          v-touch-options:pan="{ threshold: 20 }">
-        {{ parameters | json }}
       </div>
 
       <div class="close-block" @click="onClose"></div>
@@ -37,12 +36,9 @@
     data(){
 
       return {
-        parameters: {
-          scale: 1,
-          deltaY: 0,
-          deltaX: 0,
-          type: ''
-        }
+        deltaY: 0,
+        deltaX: 0,
+        currentScale: 1
       }
 
     },
@@ -80,25 +76,26 @@
       }
     },
     methods: {
-      pinchOut(event){
-        event.target.style.transform = `scale(${this.parameters.scale + event.scale})`;
+      pinchMove(e){
+
+        let scale = getRelativeScale(e.scale, this.currentScale);
+        event.target.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${scale})`;
       },
-      pinchIn(event){
-        event.target.style.transform = `scale(${this.parameters.scale - event.scale})`;
-      },
-      pinchEnd(event){
-        return;
+      pinchEnd(e){
+
+        let scale = getRelativeScale(e.scale, this.currentScale);
+        this.currentScale = scale;
       },
       panMove(event){
 
-        let DeltaX = this.parameters.deltaX + event.deltaX;
-        let DeltaY = this.parameters.deltaY + event.deltaY;
-        event.target.style.transform = `translate(${DeltaX}px,${DeltaY}px) scale(${this.parameters.scale})`;
+        let DeltaX = this.deltaX + event.deltaX;
+        let DeltaY = this.deltaY + event.deltaY;
+        event.target.style.transform = `translate(${DeltaX}px,${DeltaY}px) scale(${this.currentScale})`;
 
       },
       panEnd(event){
-        this.parameters.deltaX += event.deltaX;
-        this.parameters.deltaY += event.deltaY;
+        this.deltaX += event.deltaX;
+        this.deltaY += event.deltaY;
 
       },
       resizeImg(){
@@ -171,5 +168,10 @@
     components: {
       popupContainer
     }
+  }
+
+
+  function getRelativeScale(scale,currentScale) {
+    return scale * currentScale;
   }
 </script>
