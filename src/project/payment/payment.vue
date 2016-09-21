@@ -12,19 +12,24 @@
         .payment-summ-text Введите сумму к получению
         .payment-summ-input-wrapper
           .phantom-input(v-if="!activateInput" @click="startInput")
-            span 0
+            span(v-if="!billPrice") 0
+            span.bill-price(v-if="billPrice") {{ billPrice }}
             i.ic-currency-rub
-          input(type='text' v-el:price v-model="billPrice | rub" v-if="activateInput").payment-summ-input
+          input(type='text',
+                v-el:price,
+                v-model="billPrice | rub",
+                v-if="activateInput",
+                @blur="activateInput=false").payment-summ-input
           //- span. &#x20bd
           //-i.ic-currency-rub
 
       .check-card
-        div(v-if="userCards.length")
+        div
           .check-card-text Выберите карту, куда будут зачислены деньги
           .check-card-select-wrap
             i.ic-check-card
               img(src='icons/card_1.png').ic-card_1
-            select(v-model="cardNumber" v-if="userCards.length").check-card-select
+            select(v-model="cardNumber").check-card-select
               option(v-for="card in userCards") {{card.name}} {{ card.number }}
         .check-card-input-wrap()
           i.ic-card-new
@@ -246,11 +251,12 @@ export default{
   filters:{
     rub:{
       read(val) {
-        if(val === ''){
-          return val;
-        } else {
-          return val + ' ₽';
+
+        if(!val){
+          return '';
         }
+        return val;
+        //return val + ' ₽';
       },
       write(val) {
         var number = +val.replace(/[^\d.]/g, '')
