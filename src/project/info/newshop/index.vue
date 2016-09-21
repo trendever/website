@@ -1,4 +1,4 @@
-<!-- <style src="./style.pcss"></style> -->
+<style src="./style.pcss"></style>
 <template lang="jade">
 scroll-component
   .section__content
