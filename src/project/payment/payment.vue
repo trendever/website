@@ -6,7 +6,7 @@
   .bottom-margin
     .payment-wrapper
       .payment-head Запрос на получение денег
-      .error-message 
+      .error-message
       //(v-if="errorMessage") {{ errorMessage }}
       .payment-summ
         .payment-summ-text Введите сумму к получению
@@ -34,7 +34,7 @@
                v-model="currentCardNumber").check-card-input
           h1(v-if="currentCardId && !errorMessage") **** **** **** {{ currentCardNumber }}
       p.payment-note
-        | Деньги будут перечислены на указанную карту за вычетом#[br]комиссии платежной системы - 15% Payture.ru
+        | Деньги будут перечислены на твою карту за вычетом#[br]комиссии - 1.48%, но не менее 50 руб. Payture.ru
         img(src='img/pay_cards.svg')
 
   .btn-container
@@ -212,7 +212,7 @@ export default{
       if ( this.billPrice - _trueprice < 50){
         _trueprice = (this.billPrice > 50) ? this.billPrice - 50 : this.billPrice;
       }
-      
+
       cardService.createOrder({
         amount: +_trueprice,
         card: this.currentCardId,
