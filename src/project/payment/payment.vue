@@ -6,14 +6,14 @@
   .bottom-margin
     .payment-wrapper
       .payment-head Запрос на получение денег
-      .error-message привет 
+      .error-message привет
       //(v-if="errorMessage") {{ errorMessage }}
       .payment-summ
         .payment-summ-text Введите сумму к получению
         .payment-summ-input-wrapper
-          input(type='text' placeholder='0' v-model="billPrice").payment-summ-input
+          input(type='text' placeholder='' v-model="billPrice | rub").payment-summ-input
           //- span. &#x20bd
-          i.ic-currency-rub
+          //i.ic-currency-rub
 
       .check-card
         div(v-if="userCards.length")
@@ -30,7 +30,7 @@
                v-if="!currentCardId && !errorMessage",
                v-model="currentCardNumber").check-card-input
           h1(v-if="currentCardId && !errorMessage") **** **** **** {{ currentCardNumber }}
-      p.payment-note 
+      p.payment-note
         | Деньги будут перечислены на указанную карту за вычетом#[br]комиссии платежной системы - 15% Payture.ru
         img(src='img/pay_cards.svg')
 
