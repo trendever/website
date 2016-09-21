@@ -89,26 +89,34 @@
 
           return;
         }
-        this.$set('currentScale', 1 );
-        this.$set('deltaX', 0 );
-        this.$set('deltaY', 0 );
-        this.$set('isScaled', false);
-
-        this.$els.picture.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${this.currentScale})`;
+        this.resetTransform();
 
       },
       pinchMove(e){
 
         let scale = getRelativeScale(e.scale, this.currentScale);
-        event.target.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${scale})`;
+        if(scale >= 1){
+          event.target.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${scale})`;
+        }
       },
       pinchEnd(e){
 
         let scale = getRelativeScale(e.scale, this.currentScale);
+
+        if(scale < 1){
+          this.resetTransform();
+          return;
+        }
+
         this.currentScale = scale;
         this.$set('isScaled', true);
       },
       panMove(event){
+
+        if(this.currentScale < 1){
+          return;
+        }
+
         if(!window.browser.mobile){
           return;
         }
@@ -120,6 +128,15 @@
       panEnd(event){
         this.deltaX += event.deltaX;
         this.deltaY += event.deltaY;
+
+      },
+      resetTransform(){
+        this.$set('currentScale', 1 );
+        this.$set('deltaX', 0 );
+        this.$set('deltaY', 0 );
+        this.$set('isScaled', false);
+
+        this.$els.picture.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${this.currentScale})`;
 
       },
       resizeImg(){
