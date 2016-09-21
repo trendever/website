@@ -95,7 +95,7 @@ window.addEventListener("load",function() {
         return this.$route.name !== 'why'
       },
       isStandalone(){
-        alert(browser.standalone)
+        //alert(browser.standalone)
         return browser.standalone
       }
     },
