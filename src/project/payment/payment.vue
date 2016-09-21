@@ -11,9 +11,12 @@
       .payment-summ
         .payment-summ-text Введите сумму к получению
         .payment-summ-input-wrapper
-          input(type='text' placeholder='' v-model="billPrice | rub").payment-summ-input
+          .phantom-input(v-if="!activateInput" @click="startInput")
+            span 0
+            i.ic-currency-rub
+          input(type='text' v-el:price v-model="billPrice | rub" v-if="activateInput").payment-summ-input
           //- span. &#x20bd
-          //i.ic-currency-rub
+          //-i.ic-currency-rub
 
       .check-card
         div(v-if="userCards.length")
@@ -64,6 +67,7 @@ export default{
   },
   data(){
     return {
+      activateInput: false,
       //error
       errorMessage: '',
       //card logic
@@ -75,7 +79,14 @@ export default{
     }
   },
   methods: {
+    startInput(){
+      this.activateInput = true;
 
+      this.$nextTick(()=>{
+        this.$els.price.focus();
+      });
+
+    },
     leadOrder(){
 
       if(!this.currentCardNumber){
@@ -231,7 +242,11 @@ export default{
   filters:{
     rub:{
       read(val) {
-        return + val + ' ₽';
+        if(val === ''){
+          return val;
+        } else {
+          return val + ' ₽';
+        }
       },
       write(val) {
         var number = +val.replace(/[^\d.]/g, '')
