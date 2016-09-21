@@ -18,7 +18,7 @@ div
         .menu_i_t Изменить статус заказа
 
       .menu_i(@click='openPaymentMenu')
-        .menu_i_t Выставить счет
+        .menu_i_t Запросить деньги
 
       label(class='menu_i menu_i-send-file') Отправить фото
         input(type='file', hidden, @change='selectedFile')

@@ -6,7 +6,7 @@
   .bottom-margin
     .payment-wrapper
       .payment-head Запрос на получение денег
-      .error-message привет
+      .error-message 
       //(v-if="errorMessage") {{ errorMessage }}
       .payment-summ
         .payment-summ-text Введите сумму к получению
@@ -207,8 +207,12 @@ export default{
 //сумма которую мы транслируем в Payture равна "сумма которую написал продавец" разделить на "1+процент комиссии"
     makeOrder(){
       console.log("Bill price"+this.billPrice);
-      let _trueprice = this.billPrice/1.015;
-      console.log("Order price to payture"+_trueprice);
+      let _trueprice = Math.round(this.billPrice/1.015);
+
+      if ( this.billPrice - _trueprice < 50){
+        _trueprice = (this.billPrice > 50) ? this.billPrice - 50 : this.billPrice;
+      }
+      
       cardService.createOrder({
         amount: +_trueprice,
         card: this.currentCardId,
@@ -266,9 +270,9 @@ export default{
   },
   watch:{
     cardNumber(val){
-
+      let newval = val.split(" ");
       let currentCard = this.userCards.find(card=>{
-        return card.number === val;
+        return card.number === newval[1];
       });
 
       this.$set('currentCardId',currentCard.id);
