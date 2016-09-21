@@ -20,7 +20,7 @@
   :focus::-moz-placeholder          {color:transparent;}
   :focus:-moz-placeholder           {color:transparent;}
   :focus:-ms-input-placeholder      {color:transparent;}
-  
+
   &-summ-input::first-letter{
     color: #fff;
     opacity: .2;
@@ -72,6 +72,13 @@
     margin-bottom: 50px;
     &-wrapper {
       position: relative;
+      input {
+        text-align: center;
+
+        &::placeholder {
+          color: red;
+        }
+      }
     }
 
     &:focus {
