@@ -12,7 +12,7 @@
          v-touch:panMove="panMove($event)"
          v-touch:panEnd="panEnd($event)"
          v-touch-options:pan="{ threshold: 20 }"
-         v-touch:doubletap="imgSizeBack">
+         v-touch:doubletap="imgTaps">
       </div>
 
       <div class="close-block" @click="onClose"></div>
@@ -39,7 +39,8 @@
       return {
         deltaY: 0,
         deltaX: 0,
-        currentScale: 1
+        currentScale: 1,
+        isScaled: false
       }
 
     },
@@ -77,9 +78,23 @@
       }
     },
     methods: {
-      imgSizeBack(){
+      imgTaps(){
+        if(!window.browser.mobile){
+          return;
+        }
+        if(!this.isScaled){
+          this.$set('isScaled', true);
+          this.$set('currentScale', 2 );
+          this.$els.picture.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${this.currentScale})`;
 
-        this.$els.picture.style.transform = 'translate(0,0) scale(1)';
+          return;
+        }
+        this.$set('currentScale', 1 );
+        this.$set('deltaX', 0 );
+        this.$set('deltaY', 0 );
+        this.$set('isScaled', false);
+
+        this.$els.picture.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${this.currentScale})`;
 
       },
       pinchMove(e){
@@ -91,6 +106,7 @@
 
         let scale = getRelativeScale(e.scale, this.currentScale);
         this.currentScale = scale;
+        this.$set('isScaled', true);
       },
       panMove(event){
         if(!window.browser.mobile){
