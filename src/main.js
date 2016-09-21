@@ -48,11 +48,6 @@ InitFilters();
 
 // add touch
 Vue.use(VueTouch)
-VueTouch.registerCustomEvent('doubletap', {
-  type: 'tap',
-  taps: 2,
-  time: 150
-})
 
 // install router
 Vue.use(VueRouter);

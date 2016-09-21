@@ -11,8 +11,10 @@
          v-touch:pinchEnd="pinchEnd($event)"
          v-touch:panMove="panMove($event)"
          v-touch:panEnd="panEnd($event)"
-         v-touch-options:pan="{ threshold: 20 }"
-         v-touch:doubletap="imgTaps">
+         v-touch-options:pan="{ threshold: 40 }"
+         v-touch:tap="imgTaps"
+         v-touch-options:tap="{ taps:2, interval:500, threshold:2, time:300, posThreshold: 50 }">
+
       </div>
 
       <div class="close-block" @click="onClose"></div>
@@ -84,7 +86,7 @@
         }
         if(!this.isScaled){
           this.$set('isScaled', true);
-          this.$set('currentScale', 2 );
+          this.$set('currentScale', 2.25 );
           this.$els.picture.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${this.currentScale})`;
 
           return;
@@ -113,7 +115,7 @@
       },
       panMove(event){
 
-        if(this.currentScale < 1){
+        if(this.currentScale <= 1){
           return;
         }
 
