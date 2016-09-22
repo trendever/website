@@ -1,6 +1,6 @@
 <template lang="jade">
 #app-loader
-  .spinner
+  .loader-wrapper
     .bounce1
     .bounce2
     .bounce3
@@ -10,20 +10,20 @@
 <script type='text/babel'>
 
 
-
 </script>
 
 <style lang="postcss">
+@import 'base/vars/vars.pcss';
+
 #app-loader {
-  .spinner {
-    margin: 100px auto 0;
+  .loader-wrapper {
     width: 70px;
     text-align: center;
 
     & > div {
       width: 18px;
       height: 18px;
-      background-color: #333;
+      background-color: $color__green;
 
       border-radius: 100%;
       display: inline-block;
@@ -58,6 +58,9 @@
     transform: scale(1.0);
   }
 }
+
+
+
 
 
 </style>
