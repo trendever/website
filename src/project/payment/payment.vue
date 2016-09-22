@@ -18,9 +18,8 @@
                 v-el:price,
                 v-model="billPrice",
                 v-if="activateInput",
+                onkeypress='return event.charCode >= 48 && event.charCode <= 57',
                 @blur="activateInput=false").payment-summ-input
-          //- span. &#x20bd
-          //-i.ic-currency-rub
 
       .check-card
         div
@@ -37,6 +36,7 @@
           input(type='text',
                maxlength="22",
                v-if="selectedCardId == 0",
+               onkeypress='return event.charCode >= 48 && event.charCode <= 57',
                v-on:input="onChangeNumber").check-card-input
           h1(v-if="selectedCardId > 0") **** **** **** {{ currentCardNumber }}
       p.payment-note
@@ -209,20 +209,6 @@ export default{
       return cardService.retrieve({
         shop_id: this.shopId
       })
-    }
-  },
-  filters:{
-    isDigit:{
-      read(val) {
-        if(!val){
-          return '';
-        }
-        return val;
-      },
-      write(val) {
-        var number = +val.replace(/[^\d.]/g, '')
-        return isNaN(number) ? '' : parseFloat(number.toFixed(2))
-      }
     }
   },
   computed:{

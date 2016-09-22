@@ -13,8 +13,9 @@
        i.ic-currency-rub
 
 .chat-approve-btn(v-if='showPayButton' )
-  .btn-cancel(@click="cancel") X
-  .btn-payment(@click="pay") ОПЛАТИТЬ
+  .btn-payment(@click="pay") 
+    span ОТПРАВИТЬ {{getAmmount}}
+  .btn-cancel(@click="cancel") <i class="ic-close"></i>
     
 </template>
 
