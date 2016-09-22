@@ -3,56 +3,56 @@
 
 
 .profile-header__menu-links.__desktop {
-    position: absolute 54px * * 230px;
-    margin: initial;
-    max-width: 261px;
-    border: 1px solid #BFBFBF;
-    border-radius: 5px;
-    box-shadow: 1px 1px 3px grey;
-    background-color: #F0F0F0;
+  position: absolute 54px * * 230px;
+  margin: initial;
+  max-width: 261px;
+  border: 1px solid #BFBFBF;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px grey;
+  background-color: #F0F0F0;
 
-    &::before {
-      content: '';
-      position: absolute -13px * * 30px;
-      size: 0;
-      border-left: 11px solid transparent;
-      border-right: 11px solid transparent;
-      border-bottom: 13px solid #BFBFBF;
+  &::before {
+    content: '';
+    position: absolute -13px * * 30px;
+    size: 0;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-bottom: 13px solid #BFBFBF;
 
+  }
+
+  &::after {
+    content: '';
+    position: absolute -12px * * 30px;
+    size: 0;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-bottom: 13px solid #F0F0F0;
+
+  }
+
+  :first-child{
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+  }
+
+  :last-child {
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+
+  .profile-header__menu-link {
+    text-align: left;
+    line-height: 2.8rem;
+    font-size: 1.4rem;
+    background-color: initial;
+    width: 259px;
+    border: initial;
+    &:hover {
+      color: $color__green;
+      background: #D9D9D9;
     }
-
-    &::after {
-      content: '';
-      position: absolute -12px * * 30px;
-      size: 0;
-      border-left: 11px solid transparent;
-      border-right: 11px solid transparent;
-      border-bottom: 13px solid #F0F0F0;
-
-    }
-
-    :first-child{
-      border-top-right-radius: 4px;
-      border-top-left-radius: 4px;
-    }
-
-    :last-child {
-      border-bottom-right-radius: 5px;
-      border-bottom-left-radius: 5px;
-    }
-
-    .profile-header__menu-link {
-      text-align: left;
-      line-height: 2.8rem;
-      font-size: 1.4rem;
-      background-color: initial;
-      width: 259px;
-      border: initial;
-      &:hover {
-        color: $color__green;
-        background: #D9D9D9;
-      }
-    }
+  }
 }
 
 
@@ -63,10 +63,10 @@
   position: relative;
   z-index: 101;
   @media(--mobile) {
-    height: 208%;
+    height: 199%;
   }
   @media(--tabletandless) {
-    height: 208%;
+    height: 199%;
   }
   &__content {
     position: relative;
@@ -82,12 +82,12 @@
     @media(--mobile) {
       background: url(../img/Bgr_clg_mob.jpg) no-repeat;
       background-size: cover;
-      height: 43%;
+      height: 46%;
     }
     @media(--tabletandless) {
       background: url(../img/Bgr_clg_mob.jpg) no-repeat;
       background-size: cover;
-      height: 43%;
+      height: 46%;
     }
 
     .profile-header {
@@ -182,7 +182,7 @@
         width: 528px;
         height: 112px;
         background-size: 528px;
-        margin-top: 50%;
+        margin-top: 52.1%;
         margin-left: 59px;
       }
       @media(--tabletandless) {
@@ -191,7 +191,7 @@
         width: 528px;
         height: 112px;
         background-size: 528px;
-        margin-top: 50%;
+        margin-top: 52.1%;
         margin-left: 59px;
       }
     }
@@ -207,7 +207,6 @@
       top: 155px;
       left: 510px;
       margin-left: 0;
-      width: 100%;
       @media(--smalldesktopH) {
         left: 423px;
       }
@@ -219,16 +218,17 @@
         width: 100%;
         font-size: 54px;
         text-align: center;
-        margin-top: 30px;
+        margin-top: 45px;
         padding: 0px 80px;
         position: relative;
+        line-height: 60px;
       }
       @media(--tabletandless) {
         width: 100%;
         font-size: 54px;
         text-align: center;
-        margin-top: 30px;
-        padding: 0px 65px;
+        margin-top: 45px;
+        padding: 0px 80px;
         top: 0;
         left: 0;
       }
@@ -537,7 +537,7 @@
             text-align: left;
             height: 100%;
             @media (min-width: 800px) {
-                margin: -37px 0 0 230px;
+              margin: -37px 0 0 230px;
             }
 
             &:before{
@@ -593,7 +593,7 @@
     display: none;
     @media(--mobile) {
       display: inline-block !important;
-      height: 60%;
+      height: 53%;
       width: 100%;
       text-align: center;
       background-image: url(../img/blue_bgr.png);
@@ -603,7 +603,7 @@
     }
     @media(--tabletandless){
       display: inline-block !important;
-      height: 60%;
+      height: 53%;
       width: 100%;
       text-align: center;
       background-image: url(../img/blue_bgr.png);
@@ -614,13 +614,14 @@
     a{
       font-size: 36px;
       color: #fff;
-      margin-top: 20px;
-      line-height: 80px;
+      margin-top: 30px;
+      //line-height: 100px;
     }
     p{
       font-size: 46px;
       color: #fff;
-      margin-top: 130px;
+      padding-top: 80px;
+      line-height: 55px;
     }
   }
 
@@ -643,7 +644,7 @@
     width: 160px;
     height: 160px;
     font-size: 160px;
-    margin: 162px auto 26px auto;
+    margin: 152px auto 26px auto;
     color: #fff;
   }
   .caption__play__mobile i:hover{
@@ -664,7 +665,7 @@
       width: 550px;
       height: 118px;
       border-radius: 5px;
-      margin: 165px auto 0px auto;
+      margin: 160px auto 0px auto;
     }
     @media(--tabletandless) {
       display: block;
@@ -675,7 +676,7 @@
       width: 550px;
       height: 118px;
       border-radius: 5px;
-      margin: 165px auto 0px auto;
+      margin: 155px auto 0px auto;
     }
   }
   .shopping_trends{
@@ -704,4 +705,13 @@
       background: #31bebc;
       border: none;
     }
+  }
+  .cnt_app{
+    height: 46% !important;
+  }
+  .cnt2_app{
+    height: 53% !important;
+  }
+  .cnt2_app p{
+    padding-top: 190px !important;
   }
