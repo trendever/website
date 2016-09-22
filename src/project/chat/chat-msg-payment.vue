@@ -11,7 +11,7 @@
        | Перевод не удался
     template(v-else)
       span
-        | {{getPaymentNames.from}} отменил перевод
+        | <b>{{getPaymentNames.from}}</b> отменил перевод
       
 </template>
 

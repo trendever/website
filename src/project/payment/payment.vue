@@ -15,9 +15,9 @@
             span(v-if="!billPrice") 0
             span.bill-price(v-if="billPrice") {{ billPrice }}
             i.ic-currency-rub
-          input(type='text',
+          input(type='number',
                 v-el:price,
-                v-model="billPrice | isDigit",
+                v-model="billPrice",
                 v-if="activateInput",
                 @blur="activateInput=false").payment-summ-input
           //- span. &#x20bd
@@ -29,15 +29,17 @@
           .check-card-select-wrap
             i.ic-check-card
               img(src='icons/card_1.png').ic-card_1
-            select(v-model="cardNumber").check-card-select
-              option(v-for="card in userCards") {{card.name}} {{ card.number }}
+            select(v-model="selectedCardId").check-card-select
+              option(v-for="card in userCards" v-bind:value="card.id") {{card.name}} {{ card.number }}
+              option(value="0") Новая карта
         .check-card-input-wrap()
           i.ic-card-new
             img(src='icons/card_2.png')
           input(type='text',
-               v-if="!currentCardId && !errorMessage",
-               v-model="currentCardNumber | isDigit").check-card-input
-          h1(v-if="currentCardId && !errorMessage") **** **** **** {{ currentCardNumber }}
+               maxlength="22",
+               v-if="selectedCardId == 0",
+               v-on:input="onChangeNumber").check-card-input
+          h1(v-if="selectedCardId > 0 && !errorMessage") **** **** **** {{ currentCardNumber }}
       p.payment-note
         | Деньги будут перечислены на#[br(v-if="isMobile")] твою карту за вычетом#[br(v-if="!isMobile")]комиссии -#[br(v-if="isMobile")] 1.48%, но не менее 50 руб. Payture.ru
       img.note-img(src='img/pay_cards.svg' v-if="isMobile")
@@ -84,9 +86,27 @@ export default{
       currentCardNumber: '',
       currentCardId: '',
       userCards: [],
+      selectedCardId: 0
     }
   },
   methods: {
+    onChangeNumber(e){
+      e.target.value = e.target.value.replace(/\s+/g, '');
+      this.$set('currentCardNumber',e.target.value);
+        var result = '';
+        var last_one = 0;
+        for (var i = 0; i < e.target.value.length; i++){
+          var input_number = 0;
+          var temp_result = "";
+          if (i%4 === 0 && i >0 && i < 14){
+            temp_result += e.target.value.slice(i-4,i) + " ";
+            last_one = i;
+            input_number++;
+          }
+          result += temp_result;
+        }
+        e.target.value = result + e.target.value.slice(last_one,e.target.value.length);
+    },
     startInput(){
       this.activateInput = true;
 
@@ -96,7 +116,7 @@ export default{
 
     },
     leadOrder(){
-
+      console.log("HJAHAHA");
       if(!this.currentCardNumber){
         this.setMessage('Карта не выбрана');
         return;
@@ -276,21 +296,25 @@ export default{
     }
   },
   watch:{
-    cardNumber(val){
-      let newval = val.split(" ");
-      let currentCard = this.userCards.find(card=>{
-        return card.number === newval[1];
-      });
-
-      this.$set('currentCardId',currentCard.id);
-      this.$set('currentCardNumber',currentCard.number);
-
+    selectedCardId(val){
+      if (val > 0){
+        let currentCard = this.userCards.find(card=>{
+          return card.id === val;
+        });
+        this.$set('currentCardId',currentCard.id);
+        this.$set('currentCardNumber',currentCard.number);
+      }else{
+        this.$set('currentCardId','');
+        this.$set('currentCardNumber','');
+      }
     },
     setOpen(val){
       if(val === true){
         this._getCards().then(data=>{
 
           if(data !== null){
+            console.log("userCards:");
+            console.log(data);
             this.$set('userCards', data);
           }
 
