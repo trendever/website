@@ -2,15 +2,13 @@
 .payment {
   font-family: $font__family__light;
   background: #12302d;
-  position: fixed;
-  z-index: 99999;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
   color: #fff;
   font-size:38px;
   padding-bottom:123px;
+
+  @media (--desktop) {
+     padding-bottom:26px;
+  }
 
   ::-webkit-input-placeholder {color:#fff;opacity:.2;}
   ::-moz-placeholder          {color:#fff;opacity:.2;}
@@ -22,15 +20,27 @@
   :focus:-moz-placeholder           {color:transparent;}
   :focus:-ms-input-placeholder      {color:transparent;}
 
+  &.pay-fixed {
+    position: fixed;
+    z-index: 101;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+  }
+
   &-summ-input::first-letter{
     color: #fff;
     opacity: .2;
   }
 
   .bottom-margin {
-    height: 100%;
+    height: auto;
     overflow: auto;
     position: relative;
+    @media (--desktop){
+      height: auto;
+    }
 
     &:before {
       display: inline-block;
@@ -45,6 +55,9 @@
     width: 100%;
     text-align: center;
     display: inline-block;
+    @media (--mobile) {
+      padding-top: 70px;
+    }
   }
 
   &-head {
@@ -74,8 +87,8 @@
     &-wrapper {
       position: relative;
       .phantom-input {
-        height: 67px;
-        margin-bottom: 50px;
+        height: 66px;
+        margin-bottom: 53px;
         cursor: pointer;
         text-align: center;
         span {
@@ -91,9 +104,10 @@
       }
       input {
         text-align: center;
+        font-family: $font__family__light;
 
         &::placeholder {
-          color: red;
+
         }
       }
     }
@@ -252,10 +266,22 @@
     width: 820px;
     margin: 0 auto;
     img {
-      padding-top: 50px;
+      padding-top: 30px;
     }
     @media(--mobile) {
-      width: 400px;
+      font-size:24px;
+      padding: 40px 20px 0 20px;
+      line-height: 50px;
+      width: 100%;
+    }
+  }
+  .note-img {
+    max-width: 600px;
+    padding-top: 50px;
+
+    @media (--mobile){
+      width: 90%;
+
     }
   }
 
@@ -307,6 +333,14 @@
 
   .btn-container {
     text-align: center;
+    @media (--desktop) {
+      .note-img {
+
+      }
+      button {
+
+      }
+    }
   }
 
   .ic-currency-rub {

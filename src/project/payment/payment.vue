@@ -1,6 +1,6 @@
 <style src='./style.pcss' scoped></style>
 <template lang="jade">
-.payment(v-if="setOpen")
+.payment.pay-fixed(v-if="setOpen")
   a(@click="close").close
     i.ic-close
   .bottom-margin
@@ -39,11 +39,13 @@
                v-model="currentCardNumber").check-card-input
           h1(v-if="currentCardId && !errorMessage") **** **** **** {{ currentCardNumber }}
       p.payment-note
-        | Деньги будут перечислены на твою карту за вычетом#[br]комиссии - 1.48%, но не менее 50 руб. Payture.ru
-        img(src='img/pay_cards.svg')
+        | Деньги будут перечислены на#[br(v-if="isMobile")] твою карту за вычетом#[br(v-if="!isMobile")]комиссии -#[br(v-if="isMobile")] 1.48%, но не менее 50 руб. Payture.ru
+      img.note-img(src='img/pay_cards.svg' v-if="isMobile")
 
   .btn-container
     button(@click="leadOrder").btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom Отправить
+    div
+      img.note-img(src='img/pay_cards.svg' v-if="!isMobile")
 
 </template>
 <script>
@@ -72,6 +74,7 @@ export default{
   },
   data(){
     return {
+      isMobile: window.browser.mobile,
       activateInput: false,
       //error
       errorMessage: '',
