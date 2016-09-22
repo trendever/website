@@ -92,8 +92,6 @@ export default{
     onChangeNumber(e){
       e.target.value = e.target.value.replace(/\s+/g, '');
       this.$set('currentCardNumber',e.target.value);
-
-      console.log(e.target.value.length);
       //если есть карты, проверям является ли карта новой
       if(this.userCards.length && e.target.value.length >= 15){
         let oldCard = this.userCards.find(card=>{
@@ -129,7 +127,7 @@ export default{
 
     },
     leadOrder(){
-      
+
       if(!this.billPrice){
         this.setMessage('Введите сумму');
         return;
@@ -150,39 +148,17 @@ export default{
         })
         .then(data=>{
           if(data.success){
-            console.log('card created');
-            return data;
-          }
-        },err=>{
-          console.log(err);
-        })
-        .then(card=>{
-
-          if(!card) {
-            this.setMessage('Не валидный RPC')
-            return null;
-          }
-          this.currentCardId = card.id;
-          return true;
-
-        })
-        .then( action => {
-
-          if(action !== null){
+            this.currentCardId = data.id;
             this.makeOrder();
           }
-
+        },err=>{
+          this.setMessage('Не валидный RPC')
+          console.log(err);
+          return false;
         });
 
-      } else {
-
-        if(!this.currentCardId){
-          this.setMessage('Карта не выбрана');
-          return;
-        }
-
+      }else{ 
         this.makeOrder();
-
       }
     },
 
@@ -280,8 +256,6 @@ export default{
         this._getCards().then(data=>{
 
           if(data !== null){
-            console.log("userCards:");
-            console.log(data);
             this.$set('userCards', data);
           }
 
