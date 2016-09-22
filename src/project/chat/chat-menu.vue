@@ -1,7 +1,7 @@
 <style src='./styles/chat-bar.pcss'></style>
 <template lang="jade">
 div
-  .loader(v-if="imgLoader"): i.ic-update
+  .loader-center(v-if="imgLoader"): app-loader
   menu-component(v-if='getShowMenu && !getShowStatusMenu')
     div.menu-items(slot='items')
       .menu_i(v-if='false')
@@ -62,6 +62,7 @@ div
   import MenuComponent from 'base/menu/menu.vue';
   import ChatMenuStatus from './chat-menu-status.vue';
   import PaymentComponent from 'project/payment/payment';
+  import AppLoader from 'base/loader/loader';
 
   export default{
     vuex: {
@@ -185,6 +186,7 @@ div
     },
 
     components: {
+      AppLoader,
       MenuComponent,
       ChatMenuStatus,
       PaymentComponent

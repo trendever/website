@@ -20,6 +20,11 @@ export default function() {
       component: require('./shop/index.vue'),
     },
 
+    '/newshop': {
+      name: 'info-newshop',
+      component: require('./newshop/index.vue')
+    },
+
   }
 
 }
