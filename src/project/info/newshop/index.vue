@@ -16,7 +16,6 @@ scroll-component
       .section.top__info-block__paragraph Скачай приложение Trendever и оно #[br] мгновенно интегрируется с твоим #[br.break_2] Instagram
       .section.top__info-block__paragraph Теперь, стоит клиенту написать #[br.break_3] @wantit #[br.break_4] в комментариях под твоим #[br.break_5] постом, в твоем Trendever #[br.break_6] появится #[br.break_7] шопинг-чат с ним
       .section.top__info-block__slide
-       .section.top__info-block__slide__comment
       .section.top__info-block__title.get Общайся и получай деньги в чате
       .section.top__info-block__advant-box
        span.orders Согласовывай заказы,
