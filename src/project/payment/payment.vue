@@ -6,8 +6,7 @@
   .bottom-margin
     .payment-wrapper
       .payment-head Запрос на получение денег
-      .error-message
-      //(v-if="errorMessage") {{ errorMessage }}
+      .error-message(v-if="errorMessage") {{ errorMessage }}
       .payment-summ
         .payment-summ-text Введите сумму к получению
         .payment-summ-input-wrapper
@@ -39,7 +38,7 @@
                maxlength="22",
                v-if="selectedCardId == 0",
                v-on:input="onChangeNumber").check-card-input
-          h1(v-if="selectedCardId > 0 && !errorMessage") **** **** **** {{ currentCardNumber }}
+          h1(v-if="selectedCardId > 0") **** **** **** {{ currentCardNumber }}
       p.payment-note
         | Деньги будут перечислены на#[br(v-if="isMobile")] твою карту за вычетом#[br(v-if="!isMobile")]комиссии -#[br(v-if="isMobile")] 1.48%, но не менее 50 руб. Payture.ru
       img.note-img(src='img/pay_cards.svg' v-if="isMobile")
@@ -93,19 +92,33 @@ export default{
     onChangeNumber(e){
       e.target.value = e.target.value.replace(/\s+/g, '');
       this.$set('currentCardNumber',e.target.value);
-        var result = '';
-        var last_one = 0;
-        for (var i = 0; i < e.target.value.length; i++){
-          var input_number = 0;
-          var temp_result = "";
-          if (i%4 === 0 && i >0 && i < 14){
-            temp_result += e.target.value.slice(i-4,i) + " ";
-            last_one = i;
-            input_number++;
-          }
-          result += temp_result;
+
+      console.log(e.target.value.length);
+      //если есть карты, проверям является ли карта новой
+      if(this.userCards.length && e.target.value.length >= 15){
+        let oldCard = this.userCards.find(card=>{
+          return card.number === getlastFour(this.currentCardNumber);
+        })
+
+        if(oldCard){
+          this.$set('selectedCardId',oldCard.id);
+        } 
+
+      }
+
+      var result = '';
+      var last_one = 0;
+      for (var i = 0; i < e.target.value.length; i++){
+        var input_number = 0;
+        var temp_result = "";
+        if (i%4 === 0 && i >0 && i < 14){
+          temp_result += e.target.value.slice(i-4,i) + " ";
+          last_one = i;
+          input_number++;
         }
-        e.target.value = result + e.target.value.slice(last_one,e.target.value.length);
+        result += temp_result;
+      }
+      e.target.value = result + e.target.value.slice(last_one,e.target.value.length);
     },
     startInput(){
       this.activateInput = true;
@@ -116,99 +129,52 @@ export default{
 
     },
     leadOrder(){
-      console.log("HJAHAHA");
+      
+      if(!this.billPrice){
+        this.setMessage('Введите сумму');
+        return;
+      }
       if(!this.currentCardNumber){
         this.setMessage('Карта не выбрана');
         return;
       }
 
-      let newCardNumber = null;
-
-      //если нету карт
-      if(!this.userCards.length && this.currentCardNumber.length === 16){
-        newCardNumber = this.currentCardNumber;
-        this.setMessage('Новая карта')
-      }
-
-      //если есть карты, проверям является ли карта новой
-      if(this.userCards.length && this.currentCardNumber.length === 16){
-
-        let oldCard = this.userCards.find(card=>{
-          return card.number === getlastFour(this.currentCardNumber);
-        })
-
-        if(!oldCard){
-          newCardNumber = this.currentCardNumber;
-        } else {
-          this.setMessage('Карта уже зарегистрированна');
-          return;
-        }
-
-      }
 
       //если новая карта
-      if(newCardNumber !== null && this.currentCardNumber.length === 16) {
+      if(this.selectedCardId === 0 && this.currentCardNumber.length >= 16) {
 
         //создаем новую карту
         cardService.create({
             card_number: this.currentCardNumber,
             shop_id: this.shopId
         })
-
         .then(data=>{
           if(data.success){
-
-            this.setMessage('Создана новая карта');
-            return this
-              ._getCards()
-              .then(cards=>{
-                if(cards !== null){
-
-                  let cardToMakeOrder = cards.filter(card=>{
-                    return card.number === getlastFour(this.currentCardNumber);
-                  })
-
-                  this.userCards = cards;
-                  return cardToMakeOrder[0];
-                }
-
-              })
+            console.log('card created');
+            return data;
           }
         },err=>{
-
           console.log(err);
-
         })
-
         .then(card=>{
 
           if(!card) {
             this.setMessage('Не валидный RPC')
             return null;
           }
-
-          this.currentCardNumber = card.number;
           this.currentCardId = card.id;
           return true;
 
         })
-
         .then( action => {
 
           if(action !== null){
-
             this.makeOrder();
-
           }
 
         });
 
       } else {
-
-        if(newCardNumber === null && !this.currentCardId){
-          this.setMessage('Не валидная карта');
-          return;
-        }
 
         if(!this.currentCardId){
           this.setMessage('Карта не выбрана');
@@ -232,9 +198,7 @@ export default{
       this.setOpen = false;
       this.setShowMenu(false);
     },
-//сумма которую мы транслируем в Payture равна "сумма которую написал продавец" разделить на "1+процент комиссии"
     makeOrder(){
-      console.log("Bill price"+this.billPrice);
       let _trueprice = Math.round(this.billPrice/1.015);
 
       if ( this.billPrice - _trueprice < 50){
