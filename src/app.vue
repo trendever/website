@@ -1,5 +1,4 @@
 <style src="project/app/style.pcss"></style>
-
 <template lang="jade">
 .app(:class="{'standalone': isStandalone}")
   popup-fast-signup(v-if="authIsDone && showAuthBtn")
@@ -87,6 +86,8 @@ window.addEventListener("load",function() {
     window.scrollTo(0, 1);
   }, 0);
 });
+
+
 
     },
 

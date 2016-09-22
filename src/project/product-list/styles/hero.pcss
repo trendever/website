@@ -3,56 +3,56 @@
 
 
 .profile-header__menu-links.__desktop {
-    position: absolute 54px * * 230px;
-    margin: initial;
-    max-width: 261px;
-    border: 1px solid #BFBFBF;
-    border-radius: 5px;
-    box-shadow: 1px 1px 3px grey;
-    background-color: #F0F0F0;
+  position: absolute 54px * * 230px;
+  margin: initial;
+  max-width: 261px;
+  border: 1px solid #BFBFBF;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px grey;
+  background-color: #F0F0F0;
 
-    &::before {
-      content: '';
-      position: absolute -13px * * 30px;
-      size: 0;
-      border-left: 11px solid transparent;
-      border-right: 11px solid transparent;
-      border-bottom: 13px solid #BFBFBF;
+  &::before {
+    content: '';
+    position: absolute -13px * * 30px;
+    size: 0;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-bottom: 13px solid #BFBFBF;
 
+  }
+
+  &::after {
+    content: '';
+    position: absolute -12px * * 30px;
+    size: 0;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-bottom: 13px solid #F0F0F0;
+
+  }
+
+  :first-child{
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+  }
+
+  :last-child {
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+
+  .profile-header__menu-link {
+    text-align: left;
+    line-height: 2.8rem;
+    font-size: 1.4rem;
+    background-color: initial;
+    width: 259px;
+    border: initial;
+    &:hover {
+      color: $color__green;
+      background: #D9D9D9;
     }
-
-    &::after {
-      content: '';
-      position: absolute -12px * * 30px;
-      size: 0;
-      border-left: 11px solid transparent;
-      border-right: 11px solid transparent;
-      border-bottom: 13px solid #F0F0F0;
-
-    }
-
-    :first-child{
-      border-top-right-radius: 4px;
-      border-top-left-radius: 4px;
-    }
-
-    :last-child {
-      border-bottom-right-radius: 5px;
-      border-bottom-left-radius: 5px;
-    }
-
-    .profile-header__menu-link {
-      text-align: left;
-      line-height: 2.8rem;
-      font-size: 1.4rem;
-      background-color: initial;
-      width: 259px;
-      border: initial;
-      &:hover {
-        color: $color__green;
-        background: #D9D9D9;
-      }
-    }
+  }
 }
 
 
@@ -228,7 +228,7 @@
         font-size: 54px;
         text-align: center;
         margin-top: 45px;
-        padding: 0px 65px;
+        padding: 0px 80px;
         top: 0;
         left: 0;
       }
@@ -537,7 +537,7 @@
             text-align: left;
             height: 100%;
             @media (min-width: 800px) {
-                margin: -37px 0 0 230px;
+              margin: -37px 0 0 230px;
             }
 
             &:before{
@@ -620,7 +620,7 @@
     p{
       font-size: 46px;
       color: #fff;
-      padding-top: 190px;
+      padding-top: 80px;
       line-height: 55px;
     }
   }
@@ -705,4 +705,13 @@
       background: #31bebc;
       border: none;
     }
+  }
+  .cnt_app{
+    height: 46% !important;
+  }
+  .cnt2_app{
+    height: 53% !important;
+  }
+  .cnt2_app p{
+    padding-top: 190px !important;
   }
