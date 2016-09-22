@@ -19,6 +19,7 @@
   .loader-wrapper {
     width: 70px;
     text-align: center;
+    margin: 0 auto;
 
     & > div {
       width: 18px;
