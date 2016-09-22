@@ -1,6 +1,7 @@
 <style src='./styles/chat-bar.pcss'></style>
 <template lang="jade">
 div
+  .loader(v-if="imgLoader"): i.ic-update
   menu-component(v-if='getShowMenu && !getShowStatusMenu')
     div.menu-items(slot='items')
       .menu_i(v-if='false')
@@ -44,7 +45,11 @@ div
     getShowStatusMenu,
     getInviteShop,
     getInviteCustomer,
+    imgLoader,
   } from 'vuex/getters/chat.js';
+
+  import { setConversationImgLoader } from 'vuex/actions/chat';
+
   import {
     setShowMenu,
           setShowStatusMenu,
@@ -61,11 +66,13 @@ div
   export default{
     vuex: {
       actions: {
+        setConversationImgLoader,
         setShowMenu,
         setShowStatusMenu,
         addPreLoadMessage
       },
       getters: {
+        imgLoader,
         getShopId,
         getCurrentMember,
         getLeadId,
@@ -77,7 +84,8 @@ div
     },
     data(){
       return {
-        openPayment: false
+        openPayment: false,
+        loadImg: false
       }
     },
     ready(){
@@ -102,7 +110,7 @@ div
         this.setShowMenu(false);
       },
       selectedFile( { target } ){
-
+        this.setConversationImgLoader(true);
         const MIME = target.files[ 0 ].type;
         const file = target.files[ 0 ];
         if ( MIME in { 'image/png': true, 'image/gif': true, 'image/jpg': true, 'image/jpeg': true } ) {
@@ -134,6 +142,7 @@ div
             });
 
             image.src = reader.result;
+
 
           } );
 

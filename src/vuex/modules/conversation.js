@@ -10,7 +10,8 @@ import {
   CONVERSATION_SEND_STATUS,
   CONVERSATION_INC_LENGTH_LIST,
   CONVERSATION_OPEN_IMG_POPUP,
-  CONVERSATION_SET_ACTION
+  CONVERSATION_SET_ACTION,
+  CONVERSATION_SET_IMG_LOADER
 } from '../mutation-types';
 
 // initial state
@@ -36,7 +37,8 @@ const state = {
   imgPopUpUrl: false,
   imgWidth: 0,
   imgHeight: 0,
-  action: ''
+  action: '',
+  imgLoader: false
 };
 
 function getDateMessage( date, id ) {
@@ -247,7 +249,12 @@ const mutations = {
 
     }
 
+
     console.timeEnd( 'CONVERSATION_RECEIVE_MESSAGE' );
+
+    if(state.imgLoader){
+      state.imgLoader = false;
+    }
 
   },
 
@@ -366,7 +373,9 @@ const mutations = {
   },
   [CONVERSATION_SET_ACTION] (state, value) {
     state.action = value;
-
+  },
+  [CONVERSATION_SET_IMG_LOADER] (state, value) {
+    state.imgLoader = value;
   }
 
 };
