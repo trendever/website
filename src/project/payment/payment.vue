@@ -309,7 +309,10 @@ export default{
       }
     },
     setOpen(val){
+      let fixed = document.querySelector('.u-fixed');
+
       if(val === true){
+        fixed.style.zIndex = 0;
         this._getCards().then(data=>{
 
           if(data !== null){
@@ -319,7 +322,10 @@ export default{
           }
 
         });
+      } else {
+        fixed.style.zIndex = 100;
       }
+
     }
   }
 }
