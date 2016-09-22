@@ -17,7 +17,7 @@
             i.ic-currency-rub
           input(type='text',
                 v-el:price,
-                v-model="billPrice | rub",
+                v-model="billPrice | isDigit",
                 v-if="activateInput",
                 @blur="activateInput=false").payment-summ-input
           //- span. &#x20bd
@@ -36,7 +36,7 @@
             img(src='icons/card_2.png')
           input(type='text',
                v-if="!currentCardId && !errorMessage",
-               v-model="currentCardNumber").check-card-input
+               v-model="currentCardNumber | isDigit").check-card-input
           h1(v-if="currentCardId && !errorMessage") **** **** **** {{ currentCardNumber }}
       p.payment-note
         | Деньги будут перечислены на#[br(v-if="isMobile")] твою карту за вычетом#[br(v-if="!isMobile")]комиссии -#[br(v-if="isMobile")] 1.48%, но не менее 50 руб. Payture.ru
@@ -252,18 +252,16 @@ export default{
     }
   },
   filters:{
-    rub:{
+    isDigit:{
       read(val) {
-
         if(!val){
           return '';
         }
         return val;
-        //return val + ' ₽';
       },
       write(val) {
         var number = +val.replace(/[^\d.]/g, '')
-        return isNaN(number) ? 0 : parseFloat(number.toFixed(2))
+        return isNaN(number) ? '' : parseFloat(number.toFixed(2))
       }
     }
   },
