@@ -7,8 +7,8 @@
 
 </template>
 
-<script type='text/babel'>
 
+<script type='text/babel'>
 
 </script>
 
@@ -59,9 +59,6 @@
     transform: scale(1.0);
   }
 }
-
-
-
 
 
 </style>
