@@ -84,10 +84,10 @@
        i(class='ic-insta social')
       a(href='https://vk.com/trendever', class='vk' target="_blank")
        i(class='ic-vk social')
-     //.hero__content__input-wrap
-      //p Приложение для шопинга в Instagram
-      //input(type="text" placeholder="Номер телефона")
-      //button.hero__content__get-link ПОЛУЧИТЬ ССЫЛКУ
+     .hero__content__input-wrap
+      p Приложение для шопинга в Instagram
+      input(type="text" placeholder="Номер телефона" v-model="phoneNumber")
+      button.hero__content__get-link(@click="getLink()" v-bind:disabled="disableButton") {{getLinkTitle}}
      .hero__content__dwnld-btns
       a(href="https://itunes.apple.com/ru/app/trendever/id1124212231", class="app_store")
        i(class="ic-appstore")
@@ -114,6 +114,7 @@ import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
 import RightNavComponent from 'base/right-nav/index';
 import Slider from './slider.vue';
+import * as commonService from 'services/common';
 
 //search logic
 import { searchValue } from 'vuex/getters/search';
@@ -127,7 +128,10 @@ export default {
       inputOpened: false,
       menuOpened: false,
       isStandalone: browser.standalone,
-      isMobile: window.browser.mobile
+      isMobile: window.browser.mobile,
+      phoneNumber: '',
+      smsSent: false,
+      phoneError: false
     }
   },
 
@@ -156,6 +160,23 @@ export default {
         //alert(navigator.standalone)
         return browser.standalone
         //return navigator.standalone
+      },
+      getLinkTitle(){
+        if (this.phoneError){
+          return "НЕВЕРНЫЙ НОМЕР";
+        }
+        if (this.smsSent){
+          return "ОТПРАВЛЕНО";
+        }else{
+          return "ПОЛУЧИТЬ ССЫЛКУ";
+        }
+      },
+      disableButton(){
+        if (this.phoneNumber.length >= 11 && !this.phoneError){
+          return false;
+        }else{
+          return true;
+        }
       }
     },
   beforeDestroy(){
@@ -212,10 +233,20 @@ export default {
                 }
               }
             );
-
       }
     },
+    getLink(){
 
+      commonService.marketSms({phone: this.phoneNumber }).then(data=>{
+          this.$set('smsSent', true);
+          this.$set('phoneNumber','');
+          setTimeout( () => this.$set('smsSent', false), 3000);
+        },err=>{
+          this.$set('phoneError',true);
+          setTimeout( () => this.$set('phoneError', false), 3000);
+        }
+      );
+    },
     scrollAnchor() {
       var block = document.querySelector( "#how-it-work" );
       if ( block !== null ) {
@@ -249,9 +280,8 @@ export default {
     },
 
     isStandalone(){
-        alert(browser.standalone)
-        return browser.standalone
-      }
+      return browser.standalone
+    }
   },
 };
 </script>

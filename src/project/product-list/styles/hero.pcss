@@ -366,6 +366,7 @@
               text-indent: 12px;
               font-size: 14px;
               color: #808080;
+              padding-left: 6px;
               background-color: rgba(255,255,255, 0.8);
 
               @media(--tabletH) {
@@ -406,6 +407,7 @@
           }
 
           &__get-link{
+            cursor: pointer;
             width: 197.5px;
             height: 40px;
             border: none;
@@ -420,9 +422,13 @@
               width: 169px;
             }
           }
-          &__get-link:hover{
+          &__get-link:hover,&__get-link:disabled{
             background-color: #DEBD00;
-            cursor:pointer;
+          }
+
+          &__get-link:disabled{
+            cursor: default;
+            background-color: #DEBD00;
           }
 
           &__btn-cnt {
