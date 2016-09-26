@@ -107,7 +107,7 @@
 
         let scale = getRelativeScale(e.scale, this.currentScale);
 
-       if(Math.abs(coors.top)>= window.innerHeight && scale <= 3 || Math.abs(coors.left)>= window.innerWidth && scale <= 3 ){
+       if(Math.abs(coors.top)>= window.innerHeight && scale <= 4 || Math.abs(coors.left)>= window.innerWidth && scale <= 4 ){
           this.resetTransform();
           return;
         }
