@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-scroll-component(v-el:scroll-cnt, @click="setTooltip('chats',false)")
+scroll-component(v-el:scroll-cnt)
   right-nav-component(current="chat")
   .chat-list-cnt(v-if='isDone')
     header-component(:title='getTitle', :left-btn-show='false')
@@ -21,7 +21,7 @@ scroll-component(v-el:scroll-cnt, @click="setTooltip('chats',false)")
       .chat-list-cnt-is-empty
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
         span  ... потому что ты пока ничего #[br] не покупаешь и не продаешь.
-      .chat-list-cnt-is-empty__banner(v-if="showTooltip") Нажми Купить&nbsp
+      .chat-list-cnt-is-empty__banner(v-if="isEmptyLeads") Нажми Купить&nbsp
        span под товаром или&nbsp
        span.want напиши @wantit&nbsp
        span под постом в Instagram, #[br] и здесь появится шопинг-чат.
