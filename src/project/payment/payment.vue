@@ -34,7 +34,7 @@
           i.ic-card-new
             img(src='icons/card_2.png')
           input(type='tel',
-               maxlength="22",
+               maxlength="19",
                v-if="selectedCardId == 0",
                onkeypress='return event.charCode >= 48 && event.charCode <= 57',
                v-on:input="onChangeNumber").check-card-input
