@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile', false)")
+scroll-component(v-if="isDone", class="profile-cnt")
   header-component(:title='getUserName', :left-btn-show='true')
   right-nav-component(current="profile")
 
@@ -35,7 +35,7 @@ scroll-component(v-if="isDone", class="profile-cnt", @click="setTooltip('profile
          span.empty Здесь пусто,
          span #[br]... потому что ты пока ничего не сохранил.
         .profile_no-goods-guest(v-if="noLikes && noProducts && !isSelfPage") Пока здесь пусто ;( #[br] Пользователь еще не добавил #[br] тренды в свою ленту
-        .profile_no-goods-banner(v-if="showTooltip && isSelfPage") Нажми Сохранить&nbsp
+        .profile_no-goods-banner(v-if="noLikes && noProducts && isSelfPage") Нажми Сохранить&nbsp
          span под товаром #[br.break_1] или&nbsp
          | напиши&nbsp
          span.save @savetrend&nbsp
