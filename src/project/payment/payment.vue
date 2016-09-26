@@ -1,6 +1,6 @@
 <style src='./style.pcss' scoped></style>
 <template lang="jade">
-.payment.pay-fixed(v-if="setOpen")
+.payment.pay-fixed
   a(@click="close").close
     i.ic-close
   .bottom-margin
@@ -23,7 +23,7 @@
 
       .check-card
         div
-          .check-card-text Выберите карту, куда будут зачислены деньги
+          .check-card-text Выберите карту<br/>куда будут зачислены деньги
           .check-card-select-wrap
             i.ic-check-card
               img(src='icons/card_1.png').ic-card_1
@@ -40,7 +40,7 @@
                v-on:input="onChangeNumber").check-card-input
           h1(v-if="selectedCardId > 0") **** **** **** {{ currentCardNumber }}
       p.payment-note
-        | Деньги будут перечислены на#[br(v-if="isMobile")] твою карту за вычетом#[br(v-if="!isMobile")]комиссии -#[br(v-if="isMobile")] 1.48%, но не менее 50 руб. Payture.ru
+        | Деньги будут перечислены на#[br(v-if="isMobile")] твою карту за вычетом#[br(v-if="!isMobile")] комиссии -#[br(v-if="isMobile")] 1.48%, но не менее 50 руб. Payture.ru
       img.note-img(src='img/pay_cards.svg' v-if="isMobile")
 
   .btn-container
@@ -52,25 +52,17 @@
 <script>
 import * as cardService from 'services/card';
 import channel from 'services/channel/channel';
-import { getShopId, getLeadId, getId } from 'vuex/getters/chat';
-import { setShowMenu } from 'vuex/actions/chat';
-import { getCurrentMember } from 'vuex/getters/chat';
+import { getPayment} from 'vuex/getters/user';
 import * as product from 'services/products';
+import store from 'vuex/store';
 
 export default{
   props:{
-    setOpen:{
-      default: true
-    }
+
   },
   vuex:{
-    actions: {
-      setShowMenu
-    },
     getters: {
-      getCurrentMember,
-      getShopId,
-      getLeadId
+      getPayment
     }
   },
   data(){
@@ -88,7 +80,17 @@ export default{
       selectedCardId: 0
     }
   },
+  ready() {
+    this.setOpen();
+  },
   methods: {
+    setOpen(){
+      this._getCards().then(data=>{
+        if(data !== null){
+          this.$set('userCards', data);
+        }
+      });
+    },
     onChangeNumber(e){
       e.target.value = e.target.value.replace(/\s+/g, '');
       this.$set('currentCardNumber',e.target.value);
@@ -127,9 +129,13 @@ export default{
 
     },
     leadOrder(){
-
+      this.billPrice =+this.billPrice;
       if(!this.billPrice){
         this.setMessage('Введите сумму');
+        return;
+      }
+      if(this.billPrice < 250){
+        this.setMessage('Минимальная сумма - 250');
         return;
       }
       if(!this.currentCardNumber){
@@ -144,7 +150,7 @@ export default{
         //создаем новую карту
         cardService.create({
             card_number: this.currentCardNumber,
-            shop_id: this.shopId
+            shop_id: this.getPayment.shopId
         })
         .then(data=>{
           if(data.success){
@@ -171,8 +177,7 @@ export default{
 
     },
     close(){
-      this.setOpen = false;
-      this.setShowMenu(false);
+      this.$router.go(window.history.back());
     },
     makeOrder(){
       let _trueprice = Math.round(this.billPrice/1.015);
@@ -185,14 +190,9 @@ export default{
         amount: +_trueprice,
         card: this.currentCardId,
         currency: 0,//0 - рубли
-        lead_id: this.getLeadId
+        lead_id: this.getPayment.leadId
       }).then((order)=>{
-        this.setMessage('Счет выставлен');
-
-        //закрываем компонент
-        this.setOpen = false;
-        this.setShowMenu(false);
-
+        this.$router.go(window.history.back());
       },err=>{
         this.setMessage('Укажите цену');
       });
@@ -207,18 +207,8 @@ export default{
     },
     _getCards(){
       return cardService.retrieve({
-        shop_id: this.shopId
+        shop_id: this.getPayment.shopId
       })
-    }
-  },
-  computed:{
-    shopId(){
-      //если простой покупатель
-      if(this.getCurrentMember.role === 1){
-        return 0;
-      }
-      //если селлер или shop
-      return this.getShopId;
     }
   },
   watch:{
@@ -233,24 +223,8 @@ export default{
         this.$set('currentCardId','');
         this.$set('currentCardNumber','');
       }
-    },
-    setOpen(val){
-      let fixed = document.querySelector('.u-fixed');
-
-      if(val === true){
-        fixed.style.zIndex = 0;
-        this._getCards().then(data=>{
-
-          if(data !== null){
-            this.$set('userCards', data);
-          }
-
-        });
-      } else {
-        fixed.style.zIndex = 100;
-      }
-
     }
+   
   }
 }
 //helpers

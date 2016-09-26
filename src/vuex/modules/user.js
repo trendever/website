@@ -7,7 +7,8 @@ import {
   USER_CLOSE_PROFILE,
   USER_LOGOUT,
   USER_SET_MY_CURRENT_LIST,
-  USER_SET_TOOLTIP
+  USER_SET_TOOLTIP,
+  USER_SET_PAYMENT
 } from '../mutation-types';
 
 // initial state
@@ -24,7 +25,8 @@ const state = {
   tooltips:{
     profile: true,
     chats: true
-  }
+  },
+  payment: {}
 
 };
 
@@ -123,7 +125,10 @@ const mutations = {
   },
   [USER_SET_TOOLTIP](state, name, value) {
     state.tooltips[name] = value;
-  }
+  },
+  [USER_SET_PAYMENT](state,value){
+    state.payment = value;
+  },
 };
 
 export default {

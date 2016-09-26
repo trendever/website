@@ -129,3 +129,9 @@ export const getTooltips = ( { user } ) => {
   return user.tooltips;
 
 }
+
+export const getPayment = ( { user } ) => {
+
+  return user.payment;
+
+}
