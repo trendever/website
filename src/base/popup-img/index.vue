@@ -100,10 +100,17 @@
         if(scale >= 1){
           event.target.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${scale})`;
         }
+
       },
       pinchEnd(e){
+        let coors = this.$els.picture.getBoundingClientRect();
 
         let scale = getRelativeScale(e.scale, this.currentScale);
+
+       if(Math.abs(coors.top)>= window.innerHeight && scale <= 4 || Math.abs(coors.left)>= window.innerWidth && scale <= 4 ){
+          this.resetTransform();
+          return;
+        }
 
         if(scale < 1){
           this.resetTransform();

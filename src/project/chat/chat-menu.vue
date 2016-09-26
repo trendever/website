@@ -119,10 +119,12 @@ div
         return this.getShopId;
       },
       selectedFile( { target } ){
-        this.setConversationImgLoader(true);
         const MIME = target.files[ 0 ].type;
         const file = target.files[ 0 ];
         if ( MIME in { 'image/png': true, 'image/gif': true, 'image/jpg': true, 'image/jpeg': true } ) {
+
+          this.setShowMenu( false );
+          this.setConversationImgLoader(true);
 
           const reader = new FileReader();
           const image  = new Image();
@@ -140,7 +142,7 @@ div
                 ratioFit(image.width, image.height, 570, image.height)
               );
 
-              this.setShowMenu( false );
+
 
               this.$nextTick( () => {
 
