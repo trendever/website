@@ -44,7 +44,7 @@
 
   right-nav-component(current="feed")
 
-.section.hero(v-if='!isAuth')
+.section.hero(v-if='!isAuth', :class="{'cnt_app_hero': isStandalone}")
   .profile-header__menu(v-if='isAuth')
     .profile-header__menu-btn
     .profile-header__menu-btn-label
@@ -242,7 +242,7 @@ export default {
             if ( block.getBoundingClientRect().top < 80 ) {
               clearInterval( timer );
             }
-            scrollBlock.scrollTop = scrollBlock.scrollTop + 50;
+            scrollBlock.scrollTop = scrollBlock.scrollTop + 45;
           }, 10 );
         }
       }
