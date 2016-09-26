@@ -24,7 +24,7 @@
     & > div {
       width: 18px;
       height: 18px;
-      background-color: $color__green;
+      background-color: $color__green !important;
 
       border-radius: 100%;
       display: inline-block;
