@@ -1,6 +1,9 @@
 <template lang="jade">
-.chat-list-i(v-link='{name: "chat", params: {id: lead.id}}', track-by='id')
-  .chat-list-i-photo
+.chat-list-i(v-link='{name: "chat", params: {id: lead.id}}',
+            track-by='id',
+            v-touch:swipeleft="showDelete = true",
+            v-touch:swiperight="showDelete = false")
+  .chat-list-i-photo(v-if="!showDelete")
     img(:src='getPhoto()')
 
   .chat-list-i-body
@@ -17,6 +20,7 @@
         | {{{ recentMessage.message }}}
       .body-notify(v-if='unreadCount')
         span {{ unreadCount }}
+  .chat-list-i-delete(:class="{'open-delete': showDelete}", @click.stop="deleteChat") Удалить
 
 </template>
 
@@ -30,6 +34,7 @@
     data(){
       return {
         title: null,
+        showDelete: false
       };
     },
     props: {
@@ -45,6 +50,13 @@
       }
     },
     methods: {
+      deleteChat(){
+        alert(1);
+        return;
+
+        service.deleteChat();
+
+      },
       getPhoto() {
 
         if ( Array.isArray( this.lead.products ) ) {
