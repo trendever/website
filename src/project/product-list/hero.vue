@@ -99,7 +99,7 @@
    .caption__play__mobile(v-link='{name: "main-video"}')
      i.ic-play
     .caption__description__mobile(v-link='{name: "main-video"}') (смотреть видео)
-    button(v-link='{ name: "info-newshop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
+    button(v-link='{ name: "info-shop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
   button(@click="scrollAnchorTags()").shopping_trends ЗАГЛЯНУТЬ ВНУТРЬ
 </template>
 
