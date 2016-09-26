@@ -14,7 +14,7 @@
             span(v-if="!billPrice") 0
             span.bill-price(v-if="billPrice") {{ billPrice }}
             i.ic-currency-rub
-          input(type='number',
+          input(type='tel',
                 v-el:price,
                 v-model="billPrice",
                 v-if="activateInput",
@@ -33,7 +33,7 @@
         .check-card-input-wrap()
           i.ic-card-new
             img(src='icons/card_2.png')
-          input(type='text',
+          input(type='tel',
                maxlength="22",
                v-if="selectedCardId == 0",
                onkeypress='return event.charCode >= 48 && event.charCode <= 57',
