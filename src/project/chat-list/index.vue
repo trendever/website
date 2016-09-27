@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-scroll-component(v-el:scroll-cnt)
+scroll-component(v-el:scroll-cnt, v-touch:panup="panup", v-touch:pandown="pandown", v-touch:panend="panend")
   right-nav-component(current="chat")
   .chat-list-cnt(v-if='isDone')
     header-component(:title='getTitle', :left-btn-show='false')
@@ -116,7 +116,8 @@ scroll-top
         isFirst: false,
         styleObject: {
           pointerEvents: 'auto'
-        }
+        },
+        currentPan: 0
       }
     },
     ready(){
@@ -194,7 +195,17 @@ scroll-top
     },
 
     methods: {
-
+      panup(e){
+        this.$els.scrollCnt.scrollTop = this.currentPan + Math.abs(e.deltaY);
+        this.setScroll( this.$els.scrollCnt.scrollTop, this.$els.scrollCnt.scrollHeight );
+      },
+      pandown(e){
+        this.$els.scrollCnt.scrollTop = this.currentPan - Math.abs(e.deltaY);
+        this.setScroll( this.$els.scrollCnt.scrollTop, this.$els.scrollCnt.scrollHeight );
+      },
+      panend(e){
+        this.currentPan = this.$els.scrollCnt.scrollTop;
+      },
       run(){
 
         this.runLoadingLeads().then( () => {
