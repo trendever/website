@@ -20,8 +20,74 @@
   margin-top: 17px;
   position: relative;
   min-width: 285px;
-  @media(--mobile){
+  @media (--mobile) {
     height: 88px;
+
+  }
+
+  &.glued-btns {
+    position: fixed * 0 2px 0;
+    height: 103px;
+    z-index: 2;
+    width: 100%;
+    .save_btn{
+      font-family: $font__family__light !important;
+      display: inline-block;
+      width: calc(100% - 1px);
+      height: 103px;
+      font-size: 35px;
+      text-align: center;
+      cursor: pointer;
+      -webkit-transition: 64ms ease-in-out;
+      transition: 64ms ease-in-out;
+      text-decoration: none;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+      font-family: San-Francisco, arial, arial;
+      line-height: 2.4;
+      background: transparent;
+      color: #31bebc;
+      border: 1px solid #31bebc;
+      background: white;
+    }
+    .buy_btn{
+      font-family: $font__family__light !important;
+      float: right;
+      display: inline-block;
+      width: calc(100% - 4px);
+      height: 103px;
+      font-size: 35px;
+      text-align: center;
+      cursor: pointer;
+      -webkit-transition: 64ms ease-in-out;
+      transition: 64ms ease-in-out;
+      text-decoration: none;
+      font-family: San-Francisco, arial, arial;
+      line-height: 2.4;
+      background: $color-orange;
+      color: #13302d;
+      border: 1px solid #fedc3b;
+    }
+    .save_btn:hover,.save_btn.active{
+      color: #fff;
+      background: #3bbebb;
+    }
+
+    .buy_btn:hover, .buy_btn:active{
+      background: $color-orange-dark;
+      border-color: $color-orange-dark;
+    }
+
+    .leftSide{
+      float: left;
+      width: 50%;
+    }
+
+    .rightSide{
+      float: right;
+      width: 50%;
+    }
 
   }
 
