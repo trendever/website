@@ -137,7 +137,7 @@ export default{
         return;
       }
       if(this.billPrice < 250){
-        this.setMessage('Минимальная сумма - 250');
+        this.setMessage('Минимальная сумма 250₽');
         return;
       }
       if(!this.currentCardNumber){
@@ -166,6 +166,10 @@ export default{
         });
 
       }else{ 
+        if (this.selectedCardId ===0 ){
+          this.setMessage('Введите полный номер карты');
+          return false;
+        }
         this.makeOrder();
       }
     },
