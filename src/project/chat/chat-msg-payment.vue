@@ -2,7 +2,7 @@
 <template lang="jade">
 .chat-row.__center
   .chat-msg-status
-    template(v-if='this.msg.parts[0].mime_type === "json/payment"')
+    template(v-if='donePayment')
       span(v-if="succes")
        | {{getPaymentNames.from}} отправил {{getAmmount | curency_spaces}}
        i.ic-currency-rub
@@ -33,7 +33,17 @@
       }
     },
     computed: {
+      donePayment(){
+        return this.msg.parts[0].mime_type === 'json/payment';
+      },
       succes(){
+        let message = JSON.parse(this.msg.parts[0].content);
+        if (message.succes){
+          return true;
+        }
+        if (message.failure){
+          return false;
+        }
         return true;
       },
       getPaymentNames(){
