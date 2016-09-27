@@ -6,9 +6,11 @@
   .bottom-margin
     .payment-wrapper
       .payment-head Запрос на получение денег
-      .error-message(v-if="errorMessage") {{ errorMessage }}
       .payment-summ
-        .payment-summ-text Введите сумму к получению
+        .payment-summ-text
+          .error-message(v-if="errorMessage") {{ errorMessage }}
+          .transparent(v-else)
+            Введите сумму к получению
         .payment-summ-input-wrapper
           .phantom-input(v-if="!activateInput" @click="startInput")
             span(v-if="!billPrice") 0
@@ -23,7 +25,7 @@
 
       .check-card
         div
-          .check-card-text Выберите карту<br/>куда будут зачислены деньги
+          .check-card-text Выберите карту#[br(v-if="isMobile")] куда будут зачислены деньги
           .check-card-select-wrap
             i.ic-check-card
               img(src='icons/card_1.png').ic-card_1
