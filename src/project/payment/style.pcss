@@ -72,12 +72,31 @@ input[type=number]::-webkit-outer-spin-button {
 
   &-summ {
     margin-top: 40px;
+    @media(--desktop){
+      margin-top: 20px;
+    }
   }
 
   &-summ-text {
-    font-size:30px;
-    opacity:.2;
-    margin-bottom: 63px;
+    font-size:30px;    
+    margin-bottom: 30px;
+
+    @media(--desktop){
+      margin-bottom: 15px;
+    }
+
+    .transparent{
+      opacity:.2;
+    }
+
+    .error-message{
+      color: #ffde1e;
+    }
+
+    @media(--mobile){
+      margin-bottom: 63px;
+    }
+    
   }
 
   &-summ-input {
@@ -89,6 +108,9 @@ input[type=number]::-webkit-outer-spin-button {
     color:#fff;
     font-size:58px;
     margin-bottom: 50px;
+    @media(--desktop){
+      margin-bottom: 5px;
+    }
     &-wrapper {
       position: relative;
       .phantom-input {
@@ -96,6 +118,9 @@ input[type=number]::-webkit-outer-spin-button {
         margin-bottom: 53px;
         cursor: pointer;
         text-align: center;
+        @media(--desktop){
+          margin-bottom: 5px;
+        }
         span {
           color: white;
           opacity: .2;
@@ -170,6 +195,10 @@ input[type=number]::-webkit-outer-spin-button {
       margin:0 auto;
       width: 685px;
       margin-bottom: 37px;
+
+      @media(--desktop){
+        margin-bottom: 10px;
+      }
       position: relative;
 
       &:after {
@@ -289,6 +318,11 @@ input[type=number]::-webkit-outer-spin-button {
     max-width: 600px;
     padding-top: 50px;
 
+    @media (--desktop){
+      width: 400px;
+      padding-top: 30px;
+    }
+
     @media (--mobile){
       width: 90%;
 
@@ -348,7 +382,8 @@ input[type=number]::-webkit-outer-spin-button {
 
       }
       button {
-
+        width: 579px;
+        height: 81px;
       }
     }
   }
