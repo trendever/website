@@ -1,7 +1,7 @@
-<style src='./styles/chat-msg-date.pcss'></style>
+<style src='./styles/chat-msg-order.pcss'></style>
 <template lang="jade">
 .chat-row.__center
-  .chat-msg-date
+  .chat-msg-order
     template(v-if='this.msg.parts[0].mime_type === "json/payment"')
       span(v-if="succes")
        | {{getPaymentNames.from}} отправил {{getAmmount | curency_spaces}}
