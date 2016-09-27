@@ -1,8 +1,8 @@
-<style src='./styles/chat-msg-order.pcss'></style>
+<style src='./styles/chat-msg-status.pcss'></style>
 <style src='./styles/chat-bar.pcss'></style>
 <template lang="jade">
 .chat-row.__center
-  .chat-msg-order
+  .chat-msg-status
     template(v-if='msg.user.user_id === $store.state.user.myId')
       span 
        | Вы отправили запрос на получение {{getAmmount | curency_spaces}}
