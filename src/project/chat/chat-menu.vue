@@ -18,7 +18,7 @@ div
       .menu_i(v-if='isAdmin', @click='setShowStatusMenu(true)')
         .menu_i_t Изменить статус заказа
 
-      .menu_i(@click='openPaymentMenu')
+      .menu_i(@click='openPayment()')
         .menu_i_t Запросить деньги
 
       label(class='menu_i menu_i-send-file') Отправить фото
@@ -30,12 +30,12 @@ div
         .menu_i_t.__txt-green Отмена
 
   chat-menu-status( v-if='getShowStatusMenu')
-  payment-component(:set-open.sync="openPayment")
 
 </template>
 
 <script type='text/babel'>
   import listen from 'event-listener';
+  import store from 'vuex/store';
   import { targetClass } from 'utils';
   import {
     getShopId,
@@ -49,11 +49,12 @@ div
   } from 'vuex/getters/chat.js';
 
   import { setConversationImgLoader } from 'vuex/actions/chat';
+  import { setPayment} from 'vuex/actions/user';
 
   import {
     setShowMenu,
-          setShowStatusMenu,
-          addPreLoadMessage
+    setShowStatusMenu,
+    addPreLoadMessage
   } from 'vuex/actions/chat.js';
   import * as leads from 'services/leads';
   import * as service from 'services/chat';
@@ -61,7 +62,6 @@ div
 
   import MenuComponent from 'base/menu/menu.vue';
   import ChatMenuStatus from './chat-menu-status.vue';
-  import PaymentComponent from 'project/payment/payment';
   import AppLoader from 'base/loader/loader';
 
   export default{
@@ -70,7 +70,8 @@ div
         setConversationImgLoader,
         setShowMenu,
         setShowStatusMenu,
-        addPreLoadMessage
+        addPreLoadMessage,
+        setPayment
       },
       getters: {
         imgLoader,
@@ -85,7 +86,6 @@ div
     },
     data(){
       return {
-        openPayment: false,
         loadImg: false
       }
     },
@@ -106,9 +106,17 @@ div
       this.outerCloseMenu.remove();
     },
     methods: {
-      openPaymentMenu(){
-        this.openPayment = true;
-        this.setShowMenu(false);
+      openPayment(){
+        this.setPayment({shopId: this.paymentShopId(),leadId: this.getLeadId});
+        this.$router.go( { name: 'payment'} );
+      },
+      paymentShopId(){
+        //если простой покупатель
+        if(this.getCurrentMember.role === 1){
+          return 0;
+        }
+        //если селлер или shop
+        return this.getShopId;
       },
       selectedFile( { target } ){
         const MIME = target.files[ 0 ].type;
@@ -165,7 +173,7 @@ div
       callSupplier() {
         service.callSupplier(this.getLeadId);
         this.setShowMenu(false);
-      },
+      }
     },
 
     computed: {
@@ -190,8 +198,7 @@ div
     components: {
       AppLoader,
       MenuComponent,
-      ChatMenuStatus,
-      PaymentComponent
+      ChatMenuStatus
     }
 
   }
