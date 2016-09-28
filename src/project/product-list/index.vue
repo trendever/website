@@ -1,6 +1,6 @@
 <style src="../../base/vars/vars.pcss"></style>
 <template lang="jade">
-.status_bar(v-if='isAuth')
+.status_bar(v-if='isAuth || showStatusBar')
 
 scroll-component
   hero-component
@@ -28,6 +28,9 @@ scroll-component
 
   import { isAuth } from 'vuex/getters/user';
   export default {
+    data(){
+      return {showStatusBar: false};
+    },
     created(){
       //Баг подвисания ещё
       this.$store.state.products.listId = '';
@@ -36,12 +39,19 @@ scroll-component
       //показываем Auth button
       if( !this.isAuth ) {
         let scrollComp = document.querySelector('.scroll-cnt');
+        let lookinside_button = document.getElementById('lookinside');
         this.showOnScroll = listen(scrollComp,'scroll',()=>{
           if(window.browser.mobile){
-            if(scrollComp.scrollTop > 2000){
+            if(scrollComp.scrollTop > 2000){              
               this.$dispatch('showAuthBtn');
             } else {
               this.$dispatch('hideAuthBtn');
+            }
+
+            if(lookinside_button.getBoundingClientRect().top < 0){
+              this.showStatusBar = true;
+            }else{
+              this.showStatusBar = false;
             }
           }
           if(!window.browser.mobile) {
