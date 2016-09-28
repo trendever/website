@@ -1,5 +1,6 @@
 <style src="../../base/vars/vars.pcss"></style>
 <template lang="jade">
+.status_bar(v-if='isAuth')
 scroll-component
   hero-component
   caption-component

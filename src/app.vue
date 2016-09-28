@@ -97,7 +97,7 @@ window.addEventListener("load",function() {
       },
       isStandalone(){
         //alert(browser.standalone)
-        return true;
+        return browser.standalone;
       }
     },
     components: {
