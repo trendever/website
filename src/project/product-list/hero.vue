@@ -46,9 +46,7 @@
 
 .section.hero(v-if='!isAuth',
             :class="{'cnt_app_hero': isStandalone}",
-            @touchstart="swipeStart($event)",
-            @touchend="swipeEnd($event)",
-            @touchmove="swipeMove($event)")
+            @touchmove="touchMove($event)")
   .profile-header__menu(v-if='isAuth')
     .profile-header__menu-btn
     .profile-header__menu-btn-label
@@ -108,6 +106,8 @@
 </template>
 
 <script type='text/babel'>
+import Hammer from 'hammerjs';
+
 import listen from 'event-listener'
 import settings from 'settings'
 import { setCallbackOnSuccessAuth } from 'vuex/actions'
@@ -172,6 +172,28 @@ export default {
         });
     })
 
+    let el = document.querySelector('.hero');
+
+
+    //SWIPE LOGIC
+    var swipeAction = new Hammer(el,{touchAction: 'auto'});
+    swipeAction.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+
+/*    swipeAction.on('swipeup', ()=> {
+      if(this.scrollCnt.scrollTop < window.innerHeight){
+        this.scrollAnchor();
+      }
+    });*/
+
+    swipeAction.on('swipeup swipedown', ()=> {
+      if(this.scrollCnt.scrollTop < window.innerHeight){
+        this.scrollAnchor();
+      }
+      if(this.scrollCnt.scrollTop > window.innerHeight && this.scrollCnt.scrollTop < 2 * window.innerHeight){
+        this.scrollAnchorTags();
+      }
+    });
+
   },
   computed: {
       isStandalone(){
@@ -216,54 +238,9 @@ export default {
   },
 
   methods: {
-    swipeStart(e){
-      e = e ? e : window.event;
-      e = ('changedTouches' in e)?e.changedTouches[0] : e;
-      touchStartCoords = {'x':e.pageX, 'y':e.pageY};
-      startTime = new Date().getTime();
-    },
-    swipeMove(e){
+    touchMove(e){
       if(this.scrollCnt.scrollTop < 2 * window.innerHeight ) {
         e.preventDefault();
-      }
-    },
-    swipeEnd(e){
-
-      e = e ? e : window.event;
-      e = ('changedTouches' in e)?e.changedTouches[0] : e;
-      touchEndCoords = {'x':e.pageX - touchStartCoords.x, 'y':e.pageY - touchStartCoords.y};
-      elapsedTime = new Date().getTime() - startTime;
-      if (elapsedTime <= maxAllowedTime){
-        if (Math.abs(touchEndCoords.y) >= minDistanceYAxis && Math.abs(touchEndCoords.x) <= maxDistanceXAxis){
-          direction = (touchEndCoords.y < 0) ? 'top' : 'down';
-
-          switch(direction){
-            case 'down':
-
-              if(this.scrollCnt.scrollTop < window.innerHeight){
-
-                this.scrollAnchor();
-
-              }
-
-              if(this.scrollCnt.scrollTop > window.innerHeight && this.scrollCnt.scrollTop < 2 * window.innerHeight){
-
-                this.scrollAnchorTags();
-
-              }
-
-              break;
-
-            case 'top':
-              if(this.scrollCnt.scrollTop < window.innerHeight){
-
-                this.scrollAnchor();
-
-              }
-
-              break;
-          }
-        }
       }
     },
     openInput(){
@@ -289,7 +266,7 @@ export default {
       if ( !this.isAuth ) {
         this.setCallbackOnSuccessAuth( this.onBuyPromoProduct.bind( this ) );
         this.$router.go( { name: 'signup' } );
-        
+
 
       } else {
 
