@@ -4,6 +4,8 @@ div
   .loader-center(v-if="imgLoader"): app-loader
   menu-component(v-if='getShowMenu && !getShowStatusMenu')
     div.menu-items(slot='items')
+      .menu_i
+        .menu_i_t.__txt-red Удалить чат
       .menu_i(v-if='false')
         .menu_i_t Перечислить деньги
       .menu_i(v-if='false')

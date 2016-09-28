@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-scroll-component(v-el:scroll-cnt, v-touch:panup="panup", v-touch:pandown="pandown", v-touch:panend="panend")
+scroll-component(v-el:scroll-cnt)
   right-nav-component(current="chat")
   .chat-list-cnt(v-if='isDone')
     header-component(:title='getTitle', :left-btn-show='false')

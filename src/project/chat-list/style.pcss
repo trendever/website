@@ -1,5 +1,6 @@
 @import 'base/vars/vars.pcss';
 
+
 .chat-list-cnt {
   &-is-empty {
     position: absolute;
@@ -120,8 +121,9 @@
         font-size: 2rem;
         line-height: 230px;
         float: right;
-        width: 0px;
+        width: 0;
         line-height: 174px;
+        overflow: hidden;
 
         @media (--mobile) {
           line-height: 220px;
@@ -131,8 +133,7 @@
           line-height: 130px;
           font-size: 1.4rem;
         }
-
-        &.open-delete{
+        &.open-delete {
           width: 230px;
         }
       }
