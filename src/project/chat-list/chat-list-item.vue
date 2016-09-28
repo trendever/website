@@ -1,8 +1,6 @@
 <template lang="jade">
 .chat-list-i(v-link='{name: "chat", params: {id: lead.id}}',
-            track-by='id',
-            @touchstart="swipeStart($event)",
-            @touchend="swipeEnd($event)")
+            track-by='id')
   .chat-list-i-photo(v-if="!showDelete")
     img(:src='getPhoto()')
 
