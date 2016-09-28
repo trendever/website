@@ -1,6 +1,13 @@
 @import 'base/vars/vars.pcss';
 @import './profile-header.pcss';
 
+.standalone .profile-header__menu{
+  top: 40px;
+}
+
+.standalone .profile-header__menu-links{
+  top: 40px;
+}
 
 .profile-header__menu-links.__desktop {
   position: absolute 54px * * 230px;
@@ -518,7 +525,8 @@
         }
 
         .standalone & {
-          height:89px;
+          padding-top: 40px;
+          height:129px;
         }
 
         @media(--mobile){

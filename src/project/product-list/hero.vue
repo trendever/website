@@ -219,9 +219,9 @@ export default {
     },
     onBuyPromoProduct() {
       if ( !this.isAuth ) {
-
+        this.setCallbackOnSuccessAuth( this.onBuyPromoProduct.bind( this ) );
         this.$router.go( { name: 'signup' } );
-        this.setCallbackOnSuccessAuth( this.onBuyPromoProduct.bind( this ) )
+        
 
       } else {
 
