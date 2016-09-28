@@ -44,7 +44,11 @@
 
   right-nav-component(current="feed")
 
-.section.hero(v-if='!isAuth', :class="{'cnt_app_hero': isStandalone}")
+.section.hero(v-if='!isAuth',
+            :class="{'cnt_app_hero': isStandalone}",
+            @touchstart="swipeStart($event)",
+            @touchend="swipeEnd($event)",
+            @touchmove="swipeMove($event)")
   .profile-header__menu(v-if='isAuth')
     .profile-header__menu-btn
     .profile-header__menu-btn-label
@@ -122,6 +126,20 @@ import { setSearchValue } from 'vuex/actions/search';
 
 import { targetClass } from 'utils';
 
+
+/*
+/*swipe vars
+*/
+var touchStartCoords =  {'x':-1, 'y':-1}, // X and Y coordinates on mousedown or touchstart events.
+  touchEndCoords = {'x':-1, 'y':-1},// X and Y coordinates on mouseup or touchend events.
+  direction = 'undefined',// Swipe direction
+  minDistanceYAxis = 20,// Min distance on mousemove or touchmove on the X axis
+  maxDistanceXAxis = 30,// Max distance on mousemove or touchmove on the Y axis
+  maxAllowedTime = 1500,// Max allowed time between swipeStart and swipeEnd
+  startTime = 0,// Time on swipeStart
+  elapsedTime = 0;// Elapsed time between swipeStart and swipeEnd
+
+
 export default {
   data(){
     return {
@@ -198,6 +216,56 @@ export default {
   },
 
   methods: {
+    swipeStart(e){
+      e = e ? e : window.event;
+      e = ('changedTouches' in e)?e.changedTouches[0] : e;
+      touchStartCoords = {'x':e.pageX, 'y':e.pageY};
+      startTime = new Date().getTime();
+    },
+    swipeMove(e){
+      if(this.scrollCnt.scrollTop < 2 * window.innerHeight ) {
+        e.preventDefault();
+      }
+    },
+    swipeEnd(e){
+
+      e = e ? e : window.event;
+      e = ('changedTouches' in e)?e.changedTouches[0] : e;
+      touchEndCoords = {'x':e.pageX - touchStartCoords.x, 'y':e.pageY - touchStartCoords.y};
+      elapsedTime = new Date().getTime() - startTime;
+      if (elapsedTime <= maxAllowedTime){
+        if (Math.abs(touchEndCoords.y) >= minDistanceYAxis && Math.abs(touchEndCoords.x) <= maxDistanceXAxis){
+          direction = (touchEndCoords.y < 0) ? 'top' : 'down';
+
+          switch(direction){
+            case 'down':
+
+              if(this.scrollCnt.scrollTop < window.innerHeight){
+
+                this.scrollAnchor();
+
+              }
+
+              if(this.scrollCnt.scrollTop > window.innerHeight && this.scrollCnt.scrollTop < 2 * window.innerHeight){
+
+                this.scrollAnchorTags();
+
+              }
+
+              break;
+
+            case 'top':
+              if(this.scrollCnt.scrollTop < window.innerHeight){
+
+                this.scrollAnchor();
+
+              }
+
+              break;
+          }
+        }
+      }
+    },
     openInput(){
       this.inputOpened = !this.inputOpened;
       this.$nextTick(()=>{
@@ -258,7 +326,7 @@ export default {
               clearInterval( timer );
             }
             scrollBlock.scrollTop = scrollBlock.scrollTop + 80;
-          }, 30 );
+          }, 10 );
         }
       }
     },
@@ -273,8 +341,8 @@ export default {
             if ( block.getBoundingClientRect().top < 80 ) {
               clearInterval( timer );
             }
-            scrollBlock.scrollTop = scrollBlock.scrollTop + 45;
-          }, 10 );
+            scrollBlock.scrollTop = scrollBlock.scrollTop + 40;
+          }, 1 );
         }
       }
     },
