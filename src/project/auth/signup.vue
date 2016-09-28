@@ -15,7 +15,7 @@ scroll-component
               .input-container
                 .input.name
                   i.ic-insta-name
-                  input(type='text',
+                  input(type='email',
                     autocomplete="off",
                     autocorrect="off",
                     autocapitalize="off",
