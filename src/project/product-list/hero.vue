@@ -98,7 +98,7 @@
       //a(href="#", class="g_play")
        //i(class="ic-google_play")
   .hero__content__2(:class="{'cnt2_app': isStandalone}")
-   a(@click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
+   a.how-btn(@click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
    p(id="how-it-work") Находи и покупай #[br] трендовые товары здесь #[br] или прямо в Instagram
    .caption__play__mobile(v-link='{name: "main-video"}')
      i.ic-play
