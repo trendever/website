@@ -2,8 +2,6 @@
 <template lang="jade">
 .header__menu__overlay(v-show='menuOpened && isMobile', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
-.status_bar(v-if='isAuth')
-
 .section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
 
   .input__container(v-if="!isMobile")
