@@ -1,9 +1,7 @@
 <style src='./styles/chat-msg-status.pcss'></style>
 <template lang="jade">
   .chat-row.__center(v-if="isHide && text !== null")
-    .chat-msg-date(v-if="date")
-      span {{text}} 
-    .chat-msg-status(v-else)
+    .chat-msg-status
       span {{text}} 
       
 </template>
