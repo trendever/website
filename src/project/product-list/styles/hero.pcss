@@ -64,11 +64,11 @@
 .hero {
   position: relative;
   z-index: 101;
-  @media(--mobile) {
-    height: 201%;
-  }
+/*   @media(--mobile) {
+  height: 201%;
+} */
   @media(--tabletandless) {
-    height: 201%;
+    height: 202%;
   }
   &__content {
     position: relative;
@@ -81,15 +81,15 @@
     background: url(../img/hero.jpg) no-repeat;
 
     background-size: cover;
-    @media(--mobile) {
-      background: url(../img/Bgr_clg_mob.jpg) no-repeat;
-      background-size: cover;
-      height: 46%;
-    }
+/*     @media(--mobile) {
+  background: url(../img/Bgr_clg_mob.jpg) no-repeat;
+  background-size: cover;
+  height: 46%;
+} */
     @media(--tabletandless) {
       background: url(../img/Bgr_clg_mob.jpg) no-repeat;
       background-size: cover;
-      height: 46%;
+      height: 45.5%;
     }
 
     .profile-header {
@@ -600,7 +600,7 @@
   }
   .hero__content__2{
     display: none;
-    @media(--mobile) {
+    /*@media(--mobile) {
       display: inline-block !important;
       height: 53%;
       width: 100%;
@@ -609,7 +609,7 @@
       background-repeat: no-repeat;
       background-size: cover;
       //background-position: -460px -80px;
-    }
+    }*/
     @media(--tabletandless){
       display: inline-block !important;
       height: 53%;
@@ -639,12 +639,12 @@
 
   .enter__btn{
     display: none !important;
-    @media(--mobile) {
+   /* @media(--mobile) {
       display: inline-block !important;
       position: absolute;
       bottom: 0;
       left: 0;
-    }
+    }*/
     @media(--tabletandless) {
       display: inline-block !important;
       position: absolute;
@@ -668,7 +668,7 @@
   }
   .sellers_auth_btn{
     display: none;
-    @media(--mobile) {
+    /*@media(--mobile) {
       display: block;
       font-size: 36px;
       color: #fff;
@@ -678,7 +678,7 @@
       height: 118px;
       border-radius: 5px;
       margin: 160px auto 0px auto;
-    }
+    }*/
     @media(--tabletandless) {
       display: block;
       font-size: 36px;
@@ -693,7 +693,7 @@
   }
   .shopping_trends{
     display: none;
-    @media(--mobile) {
+    /*@media(--mobile) {
       display: inline-block;
       font-size: 36px;
       color: #fff;
@@ -704,7 +704,7 @@
       left: 0;
       background: #31bebc;
       border: none;
-    }
+    }*/
     @media(--tabletandless) {
       display: inline-block;
       font-size: 36px;
@@ -712,7 +712,7 @@
       width: 100%;
       height: 118px;
       position: absolute;
-      bottom: 0;
+      bottom: 1px;
       left: 0;
       background: #31bebc;
       border: none;
