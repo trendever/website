@@ -14,7 +14,12 @@
 				margin: 4px auto 0px auto;
 				@media(--mobile) {
 					font-size: 40px;
-					margin: 15px auto 0px auto;
+					margin: 19px auto 0px auto;
+				}
+			}
+			&__logo{
+				@media(--mobile) {
+					display: none;
 				}
 			}
 		}
@@ -28,10 +33,11 @@
 				font-size: 60px;
 				color: #595959;
 				margin: 48px auto 0px auto;
-				letter-spacing: -2px;
 				@media(--mobile) {
-					margin: 60px auto 0px auto;
+					margin: 50px auto 0px auto;
 					font-size: 64px;
+					line-height: 75px;
+					font-family: "San Francisco Thin";
 				}
 			}
 			&__logo{
@@ -45,7 +51,7 @@
 					background-size: 450px;
 					width: 450px;
 					height: 96px;
-					margin: 60px auto 90px auto;
+					margin: 50px auto 75px auto;
 				}
 			}
 			&__info-block{
@@ -54,10 +60,11 @@
 				&__title{
 					font-size: 60px;
 					color: #595959;
-					margin-bottom: 31px;
+					margin-bottom: 20px;
 					@media(--mobile) {
-						font-size: 65px;
-
+						font-size: 64px;
+						line-height: 78px;
+						font-family: "San Francisco Thin";
 						br.break_1{
 							display: none;
 						}
@@ -73,21 +80,26 @@
 						width: 100%;
 					}
 				}
+				.how-sell{
+					margin-top: 65px;
+					text-align: center;
+				}
+				.cost{
+					text-align: center;
+				}
 				&__paragraph{
 					font-size: 24px;
 					color: #595959;
 					padding-left: 55px;
 					position: relative;
-					margin-bottom: 24px;
+					margin-bottom: 22px;
+					font-family: "San Francisco Light";
 					@media(--mobile) {
 						font-size: 36px;
 						display: block;
-
+						line-height: 55px;
 						br.break_4, br.break_6{
 							display: none;
-						}
-						&:nth-child(1n){
-							margin-bottom: 44px;
 						}
 					}
 					br.break_2, br.break_3, br.break_5, br.break_7{
@@ -100,15 +112,9 @@
 						height: 25px;
 						left: 0;
 					}
-					&__comment-4{
-						position: absolute;
-						right: -28px;
-						top: -180px;
-						background-image: url(./img/comment-4.png);
-						background-repeat: no-repeat;
-						width: 214px;
-						height: 245px;
-					}
+				}
+				.want{
+					font-family: "San Francisco Semibold";
 				}
 				&__slide{
 					background-image: url(./img/mob_1_desktop.png);
@@ -124,66 +130,19 @@
 						background-repeat: no-repeat;
 						width: 580px;
 						height: 888px;
-						margin: 22px 0px 94px;
+						margin: 55px 0px 79px;
 						top: 0;
 						right: 0;
 					}
 				}
 				&__advant-box{
-					width: 481px;
-					margin-left: 507px;
-					border: 3px solid #8C8C8C;
-					border-radius: 10px;
-					font-size: 24px;
-					color: #595959;
-					padding-left: 19px;
-					padding-top: 28px;
-					padding-bottom: 25px;
-					margin-bottom: 80px;
-					position: relative;
-					span{
-						position: relative;
-					}
-					@media(--mobile) {
-						width: 100%;
-						font-size: 36px;
-						margin-left: 0px;
-					}
-
-					.orders{
-						padding-left: 40px;
-						&:before{
-							content: url(./img/orders.svg);
-							position: absolute;
-							top: 0;
-							left: 0;
-							width: 34px;
-							height: 50px;
-						}
-					}
-					.money{
-						display: inline-block;
-						padding-left: 60px;
-						&:before{
-							content: url(./img/money.svg);
-							position: absolute;
-							top: 0;
-							left: 0px;
-							width: 54px;
-							height: 33px;
-						}
-					}
-					.delivery{
-						padding-left: 45px;
-						&:before{
-							content: url(./img/delivery.svg);
-							position: absolute;
-							top: 10px;
-							left: 5px;
-							width: 37px;
-							height: 37px;
-						}
-					}
+					background-image: url(./img/advant_box.png);
+					background-repeat:no-repeat;
+					width: 703px;
+					height: 202px;
+					margin-left: -10px;
+					margin-bottom: 71px;
+					margin-top: -2px;
 				}
 				&__slide-2{
 					background-image: url(./img/mob_2_desktop.png);
@@ -197,27 +156,11 @@
 						position: relative;
 						background-image: url(./img/mob_2.png);
 						background-repeat: no-repeat;
-						width: 481px;
-						height: 870px;
-						margin: 0px auto 40px auto;
+						background-position-x: 8px;
+						width: 678px;
+						height: 1045px;
+						margin: 0px 0px 40px 15px;
 						top:0;
-						&__comment-2{
-							position: absolute;
-							left: -120px;
-							top: 56px;
-							width: 245px;
-							height: 245px;
-							background-image: url(./img/comment-2.png);
-							background-repeat: no-repeat;
-						}
-						&:after{
-							content: url(./img/point_3.svg);
-							position: absolute;
-							bottom: -25px;
-							left: 83px;
-							width: 33px;
-							height: 162px;
-						}
 					}
 				}
 				&__desc{
@@ -230,29 +173,7 @@
 					@media(--mobile) {
 						font-size: 54px;
 						text-align: center;
-					}
-					position: relative;
-					background-image: url(./img/mob_2.png);
-					background-repeat: no-repeat;
-					width: 481px;
-					height: 870px;
-					margin: 0px auto 40px auto;
-					&__comment-2{
-						position: absolute;
-						left: -120px;
-						top: 56px;
-						width: 245px;
-						height: 245px;
-						background-image: url(./img/comment-2.png);
-						background-repeat: no-repeat;
-					}
-					&:after{
-						content: url(./img/point_3.svg);
-						position: absolute;
-						bottom: -25px;
-						left: 83px;
-						width: 33px;
-						height: 162px;
+						margin-left: 0px;
 					}
 				}
 				&__desc{
@@ -260,7 +181,7 @@
 					font-size: 54px;
 					font-family: GradeFive;
 					color: #31BEBC;
-					margin-bottom: 58px;
+					margin-bottom: 46px;
 					.bonus{
 						font-weight: bolder;
 
@@ -276,120 +197,173 @@
 					position: relative;
 					background-image: url(./img/mob_3.png);
 					background-repeat: no-repeat;
-					width: 450px;
-					height: 888px;
-					margin: 22px auto 50px auto;
-					&__comment-3{
-						position: absolute;
-						right: -105px;
-						top: 87px;
-						width: 245px;
-						height: 245px;
-						background-image: url(./img/comment-3.png);
-						background-repeat: no-repeat;
-					}
-					&:after{
-						content: url(./img/point_3.svg);
-						position: absolute;
-						bottom: -21px;
-						left: 67px;
-						width: 33px;
-						height: 162px;
+					width: 671px;
+					height: 1055px;
+					margin: 40px auto 65px auto;
+				}
+				&__prices-block{
+					&__box{
+						text-align: center;
+						&__price{
+							font-size: 80px;
+							color: #31BEBC;
+							font-family: "San Francisco Semibold";
+							.ic-currency-rub{
+								font-size: 52px;
+								padding-top: 22px;
+								padding-left: 5px;
+								font-family: "San Francisco Bold";
+							}
+							.percent{
+								font-size: 80px;
+								font-family: "San Francisco Semibold";
+							}
+						}
+						&__description{
+							font-size: 36px;
+							color: #595959;
+							line-height: 52px;
+						}
+						&:last-child{
+							margin-left: auto;
+							margin-right: auto;
+							margin-bottom: 20px;
+						}
 					}
 				}
-				/* .line{
-					background-image: url(./img/line.png);
+				.present{
+					margin-top: 110px;
+					margin-bottom: 82px;
+				}
+				&__sub-title{
+					text-align: center;
+					font-size: 36px;
+					color: #595959;
+					margin-top: -25px;
+					margin-bottom: 75px;
+					font-family: "San Francisco Light";
+				}
+				&__list-title{
+					font-size: 54px;
+					color: #595959;
+					margin-bottom: 24px;
+					font-family: "San Francisco Light";
+				}
+				&__list-description{
+					padding-left: 150px;
+					font-size: 36px;
+					color: #595959;
+					//margin-bottom: 120px;
+					line-height: 55px;
+					font-family: "San Francisco Light";
+				}
+				.download{
+					background-image: url(./img/download.png);
 					background-repeat: no-repeat;
-					width: 555px;
-					height: 1px;
-					}*/
-					&__prices-block{
-						height: 745px;
-						padding: 0px 14px 0px 6px;
-						display: flex;
-						flex-wrap: wrap;
-						flex-direction: row;
-						justify-content: space-between;
-						&__box{
-							text-align: center;
-							width: 295px;
-							height: 200px;
-							margin-bottom: 95px;
-							&__price{
-								font-size: 80px;
-								color: #31BEBC;
+					background-size: 109px;
+					background-position: 0px 15px;
+					margin-bottom: 90px !important;
+				}
+				.download-btns{
+					padding-left: 0px;
+					margin-top: 40px;
+					margin-left: -60px;
+					.app_store{
+						width: 245px;
+						height: 70px;
+						background-image: url(./img/app_store.png);
+						background-repeat: no-repeat;
+						margin-right: 12px;
+					}
+					.g_play{
+						width: 204px;
+						height: 70px;
+						background-image: url(./img/g_play.png);
+						background-repeat: no-repeat;
+					}
+				}
+				.add-goods{
+					background-image: url(./img/add-goods.png);
+					background-repeat: no-repeat;
+					background-position: 0px 10px;
+					letter-spacing: -1px;
+					margin-bottom: 30px;
+				}
+				.wantit, .wantit2{
+					display: inline-block;
+					padding-left: 30px;
+					margin-top: 28px;
+					margin-bottom: 35px;
+					//border-left: 2px solid #31BEBC;
+					position: relative;
 
-								.ic-trendcoin-green{
-									font-size: 40px;
-									padding-top: 45px;
-								}
-								.percent{
-									font-size: 60px;
-								}
-							}
-							&__description{
-								font-size: 36px;
-								color: #595959;
-							}
-						}
-					}
-					.present{
-						margin-top: 110px;
-						margin-bottom: 82px;
-					}
-					&__sub-title{
-						text-align: center;
-						font-size: 36px;
-						color: #595959;
-						margin-top: -10px;
-						margin-bottom: 107px;
-					}
-					&__list-title{
-						font-size: 54px;
-						color: #595959;
-						margin-bottom: 42px;
-					}
-					&__list-description{
-						padding-left: 150px;
-						font-size: 36px;
-						color: #595959;
-						margin-bottom: 120px;
-					}
-					.download{
-						background-image: url(./img/download.png);
-						background-repeat: no-repeat;
-						height: 172px;
-					}
-					.add-goods{
-						background-image: url(./img/add-goods.png);
-						background-repeat: no-repeat;
-						height: 196px;
-						letter-spacing: -1px;
-					}
-					.tell-clients{
-						background-image: url(./img/tell-clients.png);
-						background-repeat: no-repeat;
-						height: 165px;
-						margin-bottom: 342px;
-					}
-					&__download-btn{
-						margin-top: 100px;
-						width: 100%;
-						text-align: center;
-						position: fixed;
-						bottom: 0;
+					&:before{
+						content: '';
+						position: absolute;
+						top: 15px;
 						left: 0;
-						button{
-							background: #FFDE1E;
-							width: 100%;
-							height: 118px;
-							font-size: 36px;
-							font-weight: 100;
-							color: #0E3333;
-							border: none;
-						}
+						width: 3px;
+						height: 84px;
+						background-color: #31BEBC;
+					}
+				}
+				.wantit{
+					&:before{
+						content: '';
+						position: absolute;
+						top: 15px;
+						left: 0;
+						width: 3px;
+						height: 139px;
+						background-color: #31BEBC;
+					}
+				}
+				&__add-goods-slide{
+					width: 555px;
+					height: 555px;
+					margin: 0 auto;
+					background-image: url(./img/add-goods-slide.png);
+					background-repeat: no-repeat;
+					margin-bottom: 90px;
+				}
+				.padding{
+					padding-left: 50px;
+				}
+				.tell-clients{
+					background-image: url(./img/tell-clients.png);
+					background-repeat: no-repeat;
+					background-position: 0px 10px;
+					margin-bottom: 44px;
+				}
+				&__tell-clients-slide{
+					width: 555px;
+					height: 555px;
+					background-image: url(./img/tell-clients-slide.png);
+					background-repeat: no-repeat;
+					margin: 0 auto 100px auto;
+				}
+				.done{
+					margin-bottom: 200px;
+				}
+				&__download-btn{
+					//display: none;
+					margin-top: 100px;
+					width: 100%;
+					text-align: center;
+					position: fixed;
+					bottom: 0;
+					left: 0;
+					button{
+						background: #FFDE1E;
+						width: 100%;
+						height: 118px;
+						font-size: 36px;
+						font-weight: 100;
+						color: #0E3333;
+						border: none;
 					}
 				}
 			}
 		}
-	} 
+	}
+} 

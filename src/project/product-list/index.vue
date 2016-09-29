@@ -47,7 +47,6 @@ scroll-component
             } else {
               this.$dispatch('hideAuthBtn');
             }
-
             if(lookinside_button.getBoundingClientRect().top < 0){
               this.showStatusBar = true;
             }else{
