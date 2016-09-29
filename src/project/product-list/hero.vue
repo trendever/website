@@ -45,9 +45,7 @@
   right-nav-component(current="feed")
 
 .section.hero(v-if='!isAuth',
-            :class="{'cnt_app_hero': isStandalone}",
-            @touchmove="touchMove($event)",
-            v-el:hero)
+            :class="{'cnt_app_hero': isStandalone}")
   .profile-header__menu(v-if='isAuth')
     .profile-header__menu-btn
     .profile-header__menu-btn-label
@@ -68,7 +66,7 @@
     a(class='profile-header__menu-link',
       v-link='{name: "info-agreement"}') Условия
 
-  .section__content.hero__content(:class="{'cnt_app': isStandalone}")
+  .section__content.hero__content(:class="{'cnt_app': isStandalone}", v-el:hero-one)
     .profile-header
       .profile-header__center
       button(v-link='{ name: "info-shop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
@@ -96,7 +94,7 @@
        i(class="ic-appstore")
       //a(href="#", class="g_play")
        //i(class="ic-google_play")
-  .hero__content__2(:class="{'cnt2_app': isStandalone}")
+  .hero__content__2(:class="{'cnt2_app': isStandalone}", v-el:hero-two)
    a.how-btn(@click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
    p(id="how-it-work") Находи и покупай #[br] трендовые товары здесь #[br] или прямо в Instagram
    .caption__play__mobile(v-link='{name: "main-video"}')
@@ -108,7 +106,7 @@
 
 <script type='text/babel'>
 import Hammer from 'hammerjs';
-
+import JQuery from 'jquery';
 import listen from 'event-listener'
 import settings from 'settings'
 import { setCallbackOnSuccessAuth } from 'vuex/actions'
@@ -162,19 +160,29 @@ export default {
 
 
     //SWIPE LOGIC
-    if(this.$els.hero) {
+    if(this.$els.heroOne && this.$els.heroTwo) {
 
-      let swipeAction = new Hammer(this.$els.hero,{touchAction: 'auto'});
-      swipeAction.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
-      swipeAction.on('swipeup swipedown', ()=> {
-        if(this.scrollCnt.scrollTop < window.innerHeight){
-          this.scrollAnchor();
-        }
-        if(this.scrollCnt.scrollTop >= window.innerHeight && this.scrollCnt.scrollTop < 2 * window.innerHeight){
-          this.scrollAnchorTags();
-        }
+      let heroOne = new Hammer(this.$els.heroOne,{touchAction: 'none'});
+      heroOne.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+
+      heroOne.on('swipeup', ()=> {
+        JQuery('.scroll-cnt').animate({scrollTop: window.innerHeight},250);
       });
 
+      heroOne.on('swipedown', ()=> {
+        //JQuery('.scroll-cnt').animate({scrollTop: window.innerHeight},400);
+      });
+
+      let heroTwo = new Hammer(this.$els.heroTwo,{touchAction: 'none'});
+      heroTwo.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+
+      heroTwo.on('swipeup', ()=> {
+        JQuery('.scroll-cnt').animate({scrollTop: 2 * window.innerHeight},250);
+      });
+
+      heroTwo.on('swipedown', ()=> {
+        JQuery('.scroll-cnt').animate({scrollTop: 0 },250);
+      });
 
     }
 
@@ -277,6 +285,7 @@ export default {
       );
     },
     scrollAnchor() {
+
       var block = document.querySelector( "#how-it-work" );
       if ( block !== null ) {
         var scrollBlock = this.scrollCnt;
@@ -300,6 +309,7 @@ export default {
     },
 
     scrollAnchorTags() {
+
       var block = document.querySelector( "#tags" );
       if ( block !== null ) {
         var scrollBlock = this.scrollCnt;
