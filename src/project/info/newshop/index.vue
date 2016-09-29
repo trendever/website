@@ -4,13 +4,14 @@ scroll-component
   .section__content
     .section.header
       .section__content.header__content.u-fixed
-        .header__arrow(v-if='!isAuth', @click='goBack()')
-          i.header__arrow__ic.ic-arrow-left
-        .header__logo
-          a(v-link='{ name: "home" }', v-if="!isMobile")
-            img(src='../../../base/img/logo-main.svg' alt='')
-        .header__title Брендам
-        right-nav-component(current="feed", v-if="!isMobile")
+        .wrapper
+          .header__arrow(v-if='!isAuth', @click='goBack()')
+            i.header__arrow__ic.ic-arrow-left
+          .header__logo
+            a(v-link='{ name: "home" }', v-if="!isMobile")
+              img(src='../../../base/img/logo-main.svg' alt='')
+          .header__title Брендам
+          right-nav-component(current="feed", v-if="!isMobile")
 
     .section.top
      .section.top__header Хочешь быть успешним в Instagram?
