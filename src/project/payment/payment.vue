@@ -1,68 +1,76 @@
 <style src='./style.pcss' scoped></style>
 <template lang="jade">
-.payment(v-if="setOpen")
+.payment.pay-fixed
   a(@click="close").close
     i.ic-close
   .bottom-margin
     .payment-wrapper
       .payment-head Запрос на получение денег
       .payment-summ
-        .payment-summ-text Введите сумму к получению
+        .payment-summ-text
+          .error-message(v-if="errorMessage") {{ errorMessage }}
+          .transparent(v-else)
+            Введите сумму к получению
         .payment-summ-input-wrapper
-          input(type='text' placeholder='0' v-model="billPrice").payment-summ-input
-          //- span. &#x20bd
-          i.ic-currency-rub
+          .phantom-input(v-if="!activateInput" @click="startInput")
+            span(v-if="!billPrice") 0
+            span.bill-price(v-if="billPrice") {{ billPrice }}
+            i.ic-currency-rub
+          input(type='tel',
+                v-el:price,
+                v-model="billPrice",
+                v-if="activateInput",
+                onkeypress='return event.charCode >= 48 && event.charCode <= 57',
+                @blur="activateInput=false").payment-summ-input
 
       .check-card
-        div(v-if="userCards.length")
-          .check-card-text Выберите карту, куда будут зачислены деньги
+        div
+          .check-card-text Выберите карту#[br(v-if="isMobile")] куда будут зачислены деньги
           .check-card-select-wrap
             i.ic-check-card
               img(src='icons/card_1.png').ic-card_1
-            select(v-model="cardNumber" v-if="userCards.length").check-card-select
-              option(v-for="card in userCards") {{ card.number }}
+            select(v-model="selectedCardId").check-card-select
+              option(v-for="card in userCards" v-bind:value="card.id") {{card.name}} {{ card.number }}
+              option(value="0") Новая карта
         .check-card-input-wrap()
           i.ic-card-new
             img(src='icons/card_2.png')
-          input(type='text',
-               v-if="!currentCardId && !errorMessage",
-               v-model="currentCardNumber").check-card-input
-          h1(v-if="errorMessage") {{ errorMessage }}
-          h1(v-if="currentCardId && !errorMessage") **** **** **** {{ currentCardNumber }}
-      p.payment-note 
-        | Деньги будут перечислены на указанную карту за вычетом#[br]комиссии платежной системы - 15% Payture.ru
-        img(src='img/pay_cards.svg')
+          input(type='tel',
+               maxlength="19",
+               v-if="selectedCardId == 0",
+               onkeypress='return event.charCode >= 48 && event.charCode <= 57',
+               v-on:input="onChangeNumber").check-card-input
+          h1(v-if="selectedCardId > 0") **** **** **** {{ currentCardNumber }}
+      p.payment-note
+        | Деньги будут перечислены на#[br(v-if="isMobile")] твою карту за вычетом#[br(v-if="!isMobile")] комиссии -#[br(v-if="isMobile")] 1.48%, но не менее 50 руб. Payture.ru
+      img.note-img(src='img/pay_cards.svg' v-if="isMobile")
 
   .btn-container
     button(@click="leadOrder").btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom Отправить
+    div
+      img.note-img(src='img/pay_cards.svg' v-if="!isMobile")
 
 </template>
 <script>
 import * as cardService from 'services/card';
 import channel from 'services/channel/channel';
-import { getShopId, getLeadId, getId } from 'vuex/getters/chat';
-import { setShowMenu } from 'vuex/actions/chat';
-import { getCurrentMember } from 'vuex/getters/chat';
+import { getPayment} from 'vuex/getters/user';
 import * as product from 'services/products';
+import store from 'vuex/store';
 
 export default{
   props:{
-    setOpen:{
-      default: true
-    }
+
   },
   vuex:{
-    actions: {
-      setShowMenu
-    },
     getters: {
-      getCurrentMember,
-      getShopId,
-      getLeadId
+      getPayment
     }
   },
   data(){
     return {
+      isMobile: window.browser.mobile,
+      activateInput: false,
       //error
       errorMessage: '',
       //card logic
@@ -71,112 +79,98 @@ export default{
       currentCardNumber: '',
       currentCardId: '',
       userCards: [],
+      selectedCardId: 0
     }
   },
+  ready() {
+    this.setOpen();
+  },
   methods: {
+    setOpen(){
+      this._getCards().then(data=>{
+        if(data !== null){
+          this.$set('userCards', data);
+        }
+      });
+    },
+    onChangeNumber(e){
+      e.target.value = e.target.value.replace(/\s+/g, '');
+      this.$set('currentCardNumber',e.target.value);
+      //если есть карты, проверям является ли карта новой
+      if(this.userCards.length && e.target.value.length >= 15){
+        let oldCard = this.userCards.find(card=>{
+          return card.number === getlastFour(this.currentCardNumber);
+        })
 
+        if(oldCard){
+          this.$set('selectedCardId',oldCard.id);
+        } 
+
+      }
+
+      var result = '';
+      var last_one = 0;
+      for (var i = 0; i < e.target.value.length; i++){
+        var input_number = 0;
+        var temp_result = "";
+        if (i%4 === 0 && i >0 && i < 14){
+          temp_result += e.target.value.slice(i-4,i) + " ";
+          last_one = i;
+          input_number++;
+        }
+        result += temp_result;
+      }
+      e.target.value = result + e.target.value.slice(last_one,e.target.value.length);
+    },
+    startInput(){
+      this.activateInput = true;
+
+      this.$nextTick(()=>{
+        this.$els.price.focus();
+      });
+
+    },
     leadOrder(){
-
+      this.billPrice =+this.billPrice;
+      if(!this.billPrice){
+        this.setMessage('Введите сумму');
+        return;
+      }
+      if(this.billPrice < 250){
+        this.setMessage('Минимальная сумма 250₽');
+        return;
+      }
       if(!this.currentCardNumber){
         this.setMessage('Карта не выбрана');
         return;
       }
 
-      let newCardNumber = null;
-
-      //если нету карт
-      if(!this.userCards.length && this.currentCardNumber.length === 16){
-        newCardNumber = this.currentCardNumber;
-        this.setMessage('Новая карта')
-      }
-
-      //если есть карты, проверям является ли карта новой
-      if(this.userCards.length && this.currentCardNumber.length === 16){
-
-        let oldCard = this.userCards.find(card=>{
-          return card.number === getlastFour(this.currentCardNumber);
-        })
-
-        if(!oldCard){
-          newCardNumber = this.currentCardNumber;
-        } else {
-          this.setMessage('Карта уже зарегистрированна');
-          return;
-        }
-
-      }
 
       //если новая карта
-      if(newCardNumber !== null && this.currentCardNumber.length === 16) {
+      if(this.selectedCardId === 0 && this.currentCardNumber.length >= 16) {
 
         //создаем новую карту
         cardService.create({
             card_number: this.currentCardNumber,
-            shop_id: this.shopId
+            shop_id: this.getPayment.shopId
         })
-
         .then(data=>{
           if(data.success){
-
-            this.setMessage('Создана новая карта');
-            return this
-              ._getCards()
-              .then(cards=>{
-                if(cards !== null){
-
-                  let cardToMakeOrder = cards.filter(card=>{
-                    return card.number === getlastFour(this.currentCardNumber);
-                  })
-
-                  this.userCards = cards;
-                  return cardToMakeOrder[0];
-                }
-
-              })
+            this.currentCardId = data.id;
+            this.makeOrder();
           }
         },err=>{
-
+          this.setMessage('Не валидный RPC')
           console.log(err);
-
-        })
-
-        .then(card=>{
-
-          if(!card) {
-            this.setMessage('Не валидный RPC')
-            return null;
-          }
-
-          this.currentCardNumber = card.number;
-          this.currentCardId = card.id;
-          return true;
-
-        })
-
-        .then( action => {
-
-          if(action !== null){
-
-            this.makeOrder();
-
-          }
-
+          return false;
         });
 
-      } else {
-
-        if(newCardNumber === null && !this.currentCardId){
-          this.setMessage('Не валидная карта');
-          return;
+      }else{ 
+        if (this.selectedCardId ===0 ){
+          this.setMessage('Введите полный номер карты');
+          return false;
         }
-
-        if(!this.currentCardId){
-          this.setMessage('Карта не выбрана');
-          return;
-        }
-
         this.makeOrder();
-
       }
     },
 
@@ -189,26 +183,22 @@ export default{
 
     },
     close(){
-      this.setOpen = false;
-      this.setShowMenu(false);
+      this.$router.go(window.history.back());
     },
-//сумма которую мы транслируем в Payture равна "сумма которую написал продавец" разделить на "1+процент комиссии"
     makeOrder(){
-      console.log("Bill price"+this.billPrice);
-      let _trueprice = this.billPrice/1.015;
-      console.log("Order price to payture"+_trueprice);
+      let _trueprice = Math.round(this.billPrice/1.015);
+
+      if ( this.billPrice - _trueprice < 50){
+        _trueprice = (this.billPrice > 50) ? this.billPrice - 50 : this.billPrice;
+      }
+
       cardService.createOrder({
         amount: +_trueprice,
         card: this.currentCardId,
         currency: 0,//0 - рубли
-        lead_id: this.getLeadId
+        lead_id: this.getPayment.leadId
       }).then((order)=>{
-        this.setMessage('Счет выставлен');
-
-        //закрываем компонент
-        this.setOpen = false;
-        this.setShowMenu(false);
-
+        this.$router.go(window.history.back());
       },err=>{
         this.setMessage('Укажите цену');
       });
@@ -223,53 +213,24 @@ export default{
     },
     _getCards(){
       return cardService.retrieve({
-        shop_id: this.shopId
+        shop_id: this.getPayment.shopId
       })
     }
   },
-  filters:{
-    rub:{
-      read(val) {
-        return + val + ' ₽';
-      },
-      write(val) {
-        var number = +val.replace(/[^\d.]/g, '')
-        return isNaN(number) ? 0 : parseFloat(number.toFixed(2))
-      }
-    }
-  },
-  computed:{
-    shopId(){
-      //если простой покупатель
-      if(this.getCurrentMember.role === 1){
-        return 0;
-      }
-      //если селлер или shop
-      return this.getShopId;
-    }
-  },
   watch:{
-    cardNumber(val){
-
-      let currentCard = this.userCards.find(card=>{
-        return card.number === val;
-      });
-
-      this.$set('currentCardId',currentCard.id);
-      this.$set('currentCardNumber',currentCard.number);
-
-    },
-    setOpen(val){
-      if(val === true){
-        this._getCards().then(data=>{
-
-          if(data !== null){
-            this.$set('userCards', data);
-          }
-
+    selectedCardId(val){
+      if (val > 0){
+        let currentCard = this.userCards.find(card=>{
+          return card.id === val;
         });
+        this.$set('currentCardId',currentCard.id);
+        this.$set('currentCardNumber',currentCard.number);
+      }else{
+        this.$set('currentCardId','');
+        this.$set('currentCardNumber','');
       }
     }
+   
   }
 }
 //helpers

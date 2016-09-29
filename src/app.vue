@@ -1,5 +1,4 @@
 <style src="project/app/style.pcss"></style>
-
 <template lang="jade">
 .app(:class="{'standalone': isStandalone}")
   popup-fast-signup(v-if="authIsDone && showAuthBtn")
@@ -79,6 +78,17 @@ input(type="hidden", value="", id="get-user-login")
         } );
       mixpanel.track( 'App Open' )
 
+      // When ready...
+window.addEventListener("load",function() {
+  // Set a timeout...
+  setTimeout(function(){
+    // Hide the address bar!
+    window.scrollTo(0, 1);
+  }, 0);
+});
+
+
+
     },
 
     computed: {
@@ -86,7 +96,7 @@ input(type="hidden", value="", id="get-user-login")
         return this.$route.name !== 'why'
       },
       isStandalone(){
-        return browser.standalone
+        return browser.standalone;
       }
     },
     components: {

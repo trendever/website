@@ -349,3 +349,5 @@ export const imgPopUpUrl = ( state ) => state.conversation.imgPopUpUrl;
 export const imgWidth = ( state ) => state.conversation.imgWidth;
 
 export const imgHeight = ( state ) => state.conversation.imgHeight;
+
+export const imgLoader = ( state ) => state.conversation.imgLoader;

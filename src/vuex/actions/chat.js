@@ -12,7 +12,8 @@ import {
   LEAD_UPDATE,
   CONVERSATION_SEND_STATUS,
   CONVERSATION_INC_LENGTH_LIST,
-  CONVERSATION_OPEN_IMG_POPUP
+  CONVERSATION_OPEN_IMG_POPUP,
+  CONVERSATION_SET_IMG_LOADER
 } from '../mutation-types'
 import * as messageService from 'services/message.js'
 import * as leads from 'services/leads.js'
@@ -569,3 +570,7 @@ export const setConversationAction = (({dispatch}, value)=>{
   dispatch( CONVERSATION_SET_ACTION, value);
 
 })
+
+export const setConversationImgLoader = ({dispatch}, value) => {
+  dispatch( CONVERSATION_SET_IMG_LOADER, value);
+}

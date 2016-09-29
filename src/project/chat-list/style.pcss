@@ -1,5 +1,6 @@
 @import 'base/vars/vars.pcss';
 
+
 .chat-list-cnt {
   &-is-empty {
     position: absolute;
@@ -81,6 +82,11 @@
       @media (--mobile) {
         height: 230px;
         padding: 20px 20px 20px 10px;
+        //padding: 0;
+      }
+      @media (--ipad) {
+        padding: 20px 20px 20px 10px;
+        padding: 0;
       }
 
       &-photo {
@@ -107,6 +113,31 @@
           background: #fafafa;
         }
       }
+      &-delete {
+        transition: .2s all ease;
+        font-family: $font__family__light;
+        color: #FFFFFF;
+        background: #EF3758;
+        text-align: center;
+        font-size: 2rem;
+        line-height: 230px;
+        float: right;
+        width: 0;
+        line-height: 174px;
+        overflow: hidden;
+
+        @media (--mobile) {
+          line-height: 220px;
+        }
+
+        @media (--ipad) {
+          line-height: 130px;
+          font-size: 1.4rem;
+        }
+        &.open-delete {
+          width: 230px;
+        }
+      }
 
       &-body {
 
@@ -118,6 +149,11 @@
         @media (--mobile) {
           padding: 20px 15px;
           width: calc(100% - 190px);
+        }
+
+        @media (--ipad) {
+          padding: 20px 15px;
+          //width: calc(100% - 190px);
         }
 
         .body-title {
@@ -206,7 +242,7 @@
           height: 26px;
 
           border-radius: 25px;
-          background: #399;
+          background: #EF3758;
 
           flex-shrink: 0;
           @media(--mobile) {

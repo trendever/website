@@ -1,9 +1,9 @@
 <template>
-  <div class="buttons">
+  <div class="buttons" :class="{'glued-btns': isMobile}">
     <div class="leftSide">
-    <button class="save_btn" @click="like" :class="{ 'active': isLiked, 'default': !isLiked}">
-    {{text}}
-    </button>
+      <button class="save_btn" @click="like" :class="{ 'active': isLiked, 'default': !isLiked}">
+      {{text}}
+      </button>
     </div>
     <div class="rightSide">
       <button class="buy_btn" @click="buy">КАК КУПИТЬ?</button>
@@ -15,6 +15,11 @@
 
 <script type="text/babel">
   export default {
+    data(){
+      return {
+        isMobile: window.browser.mobile
+      }
+    },
     computed: {
       text(){
         return (this.isLiked) ? 'СОХРАНЕНО' : 'СОХРАНИТЬ';

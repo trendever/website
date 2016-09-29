@@ -2,6 +2,14 @@
 .btn {
   text-transform: uppercase;
 }
+
+.standalone .signup{
+  padding-top: 89px;
+
+  .signup__close{
+    top: 50px;
+  }
+}
 .signup {
   position:relative;
   overflow:hidden;
@@ -13,6 +21,8 @@
   line-height: 1.2;
   min-height:100vh;
   height:auto !important;
+  font-family: $font__family__light;
+
 
   .signup__close {
     position: absolute;
@@ -74,11 +84,11 @@
   .input input {
     height: 3rem;
     font-size: 24px;
-
-    &::-webkit-input-placeholder{opacity: .2; color: #fff;}
-    &::-moz-placeholder{opacity: .2; color: #fff;}
-    &:-moz-placeholder{opacity: .2; color: #fff;}
-    &:-ms-input-placeholder{opacity: .2; color: #fff;}
+    font-family: $font__family__light;
+    &::-webkit-input-placeholder{opacity: .2; color: #fff;font-family: $font__family__light;}
+    &::-moz-placeholder{opacity: .2; color: #fff;font-family: $font__family__light;}
+    &:-moz-placeholder{opacity: .2; color: #fff;font-family: $font__family__light;}
+    &:-ms-input-placeholder{opacity: .2; color: #fff;font-family: $font__family__light;}
 
     @media(--mobile) {
       height: 4rem;
@@ -269,8 +279,8 @@
     height: 77px;
     margin: 10px 0;
 
-    font-family: $font__family;
-    font-size: 24px;
+    font-family: $font__family__light;
+    font-size: 26px;
     line-height: 1em;
 
     @media(--mobile) {

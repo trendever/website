@@ -1,5 +1,7 @@
 @import 'cosmetic/reset.pcss';
 @import 'base/fonts/san-francisco/style.pcss';
+@import 'base/fonts/san-francisco/ui-display-regular/font.pcss';
+@import 'base/fonts/san-francisco/ui-display-light/font.pcss';
 @import 'base/vars/vars.pcss';
 @import 'base/btn/style.pcss';
 @import 'base/input/style.pcss';
@@ -48,8 +50,11 @@ body {
   &.top {
     padding-top: 50px;
 
-    @media(--mobile) {
+    @media (--mobile) {
       padding-top: 102px;
+    }
+    @media (--ipad) {
+      padding-top: 60px;
     }
   }
   &.bottom {

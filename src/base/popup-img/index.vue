@@ -5,7 +5,15 @@
     <div class="img-container" v-el:container>
       <div class="img-keeper" v-el:img>
 
-        <img class="picture" @load="resizeImg" :src="url" alt="">
+        <img v-el:picture class="picture" @load="resizeImg"
+         :src="url" alt=""
+         v-touch:pinchMove="pinchMove($event)"
+         v-touch:pinchEnd="pinchEnd($event)"
+         v-touch:panMove="panMove($event)"
+         v-touch:panEnd="panEnd($event)"
+         v-touch-options:pan="{ threshold: 40 }"
+         v-touch:tap="imgTaps"
+         v-touch-options:tap="{ taps:2, interval:500, threshold:2, time:300, posThreshold: 50 }">
 
       </div>
 
@@ -31,23 +39,23 @@
     data(){
 
       return {
-        meta: document.querySelector('meta[name="viewport"]'),
-        zoomContent: 'width=device-width, initial-scale=1.0, maximum-scale=2.5',
-        appContent: 'width=750, maximum-scale=1.0, user-scalable=no'
+        deltaY: 0,
+        deltaX: 0,
+        currentScale: 1,
+        isScaled: false
       }
 
     },
     ready(){
       this.scrollcnt = document.querySelector('.scroll-cnt');
       this.scrollcnt.style.overflow = 'hidden';
-      this.meta.content = this.zoomContent;
+
 
       this.resize = listener( window, 'optimizedResize', this.resizeImg.bind( this ) );
       this.resizeImg();
     },
     beforeDestroy(){
       this.scrollcnt.style.overflow = 'auto';
-      this.meta.content = this.appContent;
       this.resize.remove();
 
     },
@@ -72,7 +80,74 @@
       }
     },
     methods: {
+      imgTaps(){
+        if(!window.browser.mobile){
+          return;
+        }
+        if(!this.isScaled){
+          this.$set('isScaled', true);
+          this.$set('currentScale', 2.25 );
+          this.$els.picture.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${this.currentScale})`;
 
+          return;
+        }
+        this.resetTransform();
+
+      },
+      pinchMove(e){
+
+        let scale = getRelativeScale(e.scale, this.currentScale);
+        if(scale >= 1){
+          event.target.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${scale})`;
+        }
+
+      },
+      pinchEnd(e){
+        let coors = this.$els.picture.getBoundingClientRect();
+
+        let scale = getRelativeScale(e.scale, this.currentScale);
+
+       if(Math.abs(coors.top)>= window.innerHeight && scale <= 4 || Math.abs(coors.left)>= window.innerWidth && scale <= 4 ){
+          this.resetTransform();
+          return;
+        }
+
+        if(scale < 1){
+          this.resetTransform();
+          return;
+        }
+
+        this.currentScale = scale;
+        this.$set('isScaled', true);
+      },
+      panMove(event){
+
+        if(this.currentScale <= 1){
+          return;
+        }
+
+        if(!window.browser.mobile){
+          return;
+        }
+        let DeltaX = this.deltaX + event.deltaX;
+        let DeltaY = this.deltaY + event.deltaY;
+        event.target.style.transform = `translate(${DeltaX}px,${DeltaY}px) scale(${this.currentScale})`;
+
+      },
+      panEnd(event){
+        this.deltaX += event.deltaX;
+        this.deltaY += event.deltaY;
+
+      },
+      resetTransform(){
+        this.$set('currentScale', 1 );
+        this.$set('deltaX', 0 );
+        this.$set('deltaY', 0 );
+        this.$set('isScaled', false);
+
+        this.$els.picture.style.transform = `translate(${this.deltaX}px,${this.deltaY}px) scale(${this.currentScale})`;
+
+      },
       resizeImg(){
 
         const { clientWidth: contWidth, clientHeight: contHeight } = this.$els.container;
@@ -143,5 +218,10 @@
     components: {
       popupContainer
     }
+  }
+
+
+  function getRelativeScale(scale,currentScale) {
+    return scale * currentScale;
   }
 </script>
