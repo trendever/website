@@ -166,7 +166,7 @@ export default {
       heroOne.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
 
       heroOne.on('swipeup', ()=> {
-        JQuery('.scroll-cnt').animate({scrollTop: window.innerHeight},250);
+        this.scrollAnchor()
       });
 
       heroOne.on('swipedown', ()=> {
@@ -177,11 +177,11 @@ export default {
       heroTwo.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
 
       heroTwo.on('swipeup', ()=> {
-        JQuery('.scroll-cnt').animate({scrollTop: 2 * window.innerHeight},250);
+        this.scrollAnchorTags();
       });
 
       heroTwo.on('swipedown', ()=> {
-        JQuery('.scroll-cnt').animate({scrollTop: 0 },250);
+        JQuery('.scroll-cnt').animate({scrollTop: 0 },450);
       });
 
     }
@@ -285,8 +285,8 @@ export default {
       );
     },
     scrollAnchor() {
-
-      var block = document.querySelector( "#how-it-work" );
+      JQuery('.scroll-cnt').animate({scrollTop: window.innerHeight},450);
+/*      var block = document.querySelector( "#how-it-work" );
       if ( block !== null ) {
         var scrollBlock = this.scrollCnt;
 
@@ -305,12 +305,12 @@ export default {
 
           }, 10 );
         }
-      }
+      }*/
     },
 
     scrollAnchorTags() {
-
-      var block = document.querySelector( "#tags" );
+      JQuery('.scroll-cnt').animate({scrollTop: 2 * window.innerHeight},450);
+/*      var block = document.querySelector( "#tags" );
       if ( block !== null ) {
         var scrollBlock = this.scrollCnt;
 
@@ -329,7 +329,7 @@ export default {
 
           }, 1 );
         }
-      }
+      }*/
     },
 
     isStandalone(){
