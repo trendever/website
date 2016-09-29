@@ -170,7 +170,7 @@ export default {
         if(this.scrollCnt.scrollTop < window.innerHeight){
           this.scrollAnchor();
         }
-        if(this.scrollCnt.scrollTop > window.innerHeight && this.scrollCnt.scrollTop < 2 * window.innerHeight){
+        if(this.scrollCnt.scrollTop >= window.innerHeight && this.scrollCnt.scrollTop < 2 * window.innerHeight){
           this.scrollAnchorTags();
         }
       });
@@ -286,7 +286,14 @@ export default {
             if ( block.getBoundingClientRect().top < 80 ) {
               clearInterval( timer );
             }
-            scrollBlock.scrollTop = scrollBlock.scrollTop + 80;
+
+            for (let i = 1; i < 80; i++){
+              if(scrollBlock.scrollTop >= window.innerHeight) {
+                break;
+              }
+              scrollBlock.scrollTop += 1;
+            }
+
           }, 10 );
         }
       }
@@ -302,7 +309,14 @@ export default {
             if ( block.getBoundingClientRect().top < 80 ) {
               clearInterval( timer );
             }
-            scrollBlock.scrollTop = scrollBlock.scrollTop + 36;
+
+            for (let i = 1; i < 80; i++){
+              if(scrollBlock.scrollTop >=  2 * window.innerHeight) {
+                break;
+              }
+              scrollBlock.scrollTop += 1;
+            }
+
           }, 1 );
         }
       }
