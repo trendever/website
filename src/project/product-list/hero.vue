@@ -60,7 +60,7 @@
     a(class='profile-header__menu-link',
       v-link='{name: "info-user"}') Покупателям
     a(class='profile-header__menu-link',
-      v-link='{name: "info-shop"}') Магазинам
+      v-link='{name: "info-newshop"}') Магазинам
     a(class='profile-header__menu-link',
       @click="onBuyPromoProduct()") Блогерам
     a(class='profile-header__menu-link',
@@ -71,7 +71,7 @@
   .section__content.hero__content(:class="{'cnt_app': isStandalone}")
     .profile-header
       .profile-header__center
-      button(v-link='{ name: "info-shop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
+      button(v-link='{ name: "info-newshop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
       button(v-link='{ name: "signup" }').profile-header__auth-btn ВХОД И РЕГИСТРАЦИЯ
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
