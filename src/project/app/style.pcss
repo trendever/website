@@ -32,6 +32,17 @@ body {
   box-sizing: border-box;
 }
 
+
+.standalone .section{
+  &.top {
+    padding-top: 0px;
+
+    @media (--mobile) {
+      padding-top: 10px;
+    }
+  }
+}
+
 .section {
   &__content {
     box-sizing: border-box;
