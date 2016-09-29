@@ -17,6 +17,11 @@
 					margin: 19px auto 0px auto;
 				}
 			}
+			&__logo{
+				@media(--mobile) {
+					display: none;
+				}
+			}
 		}
 		.top{
 			text-align: center;
@@ -28,11 +33,11 @@
 				font-size: 60px;
 				color: #595959;
 				margin: 48px auto 0px auto;
-				letter-spacing: -2px;
 				@media(--mobile) {
-					margin: 47px auto 0px auto;
+					margin: 50px auto 0px auto;
 					font-size: 64px;
 					line-height: 75px;
+					font-family: "San Francisco Thin";
 				}
 			}
 			&__logo{
@@ -55,10 +60,11 @@
 				&__title{
 					font-size: 60px;
 					color: #595959;
-					margin-bottom: 31px;
+					margin-bottom: 20px;
 					@media(--mobile) {
-						font-size: 65px;
+						font-size: 64px;
 						line-height: 78px;
+						font-family: "San Francisco Thin";
 						br.break_1{
 							display: none;
 						}
@@ -76,6 +82,7 @@
 				}
 				.how-sell{
 					margin-top: 65px;
+					text-align: center;
 				}
 				.cost{
 					text-align: center;
@@ -86,6 +93,7 @@
 					padding-left: 55px;
 					position: relative;
 					margin-bottom: 22px;
+					font-family: "San Francisco Light";
 					@media(--mobile) {
 						font-size: 36px;
 						display: block;
@@ -105,6 +113,9 @@
 						left: 0;
 					}
 				}
+				.want{
+					font-family: "San Francisco Semibold";
+				}
 				&__slide{
 					background-image: url(./img/mob_1_desktop.png);
 					background-repeat: no-repeat;
@@ -119,7 +130,7 @@
 						background-repeat: no-repeat;
 						width: 580px;
 						height: 888px;
-						margin: 50px 0px 79px;
+						margin: 55px 0px 79px;
 						top: 0;
 						right: 0;
 					}
@@ -148,7 +159,7 @@
 						background-position-x: 8px;
 						width: 678px;
 						height: 1045px;
-						margin: 0px auto 40px auto;
+						margin: 0px 0px 40px 15px;
 						top:0;
 					}
 				}
@@ -188,30 +199,24 @@
 					background-repeat: no-repeat;
 					width: 671px;
 					height: 1055px;
-					margin: 42px auto 50px auto;
+					margin: 40px auto 65px auto;
 				}
 				&__prices-block{
-					height: 745px;
-					padding: 0px 14px 0px 6px;
-					display: flex;
-					flex-wrap: wrap;
-					flex-direction: row;
-					justify-content: space-between;
 					&__box{
 						text-align: center;
-						width: 295px;
-						height: 200px;
-						margin-bottom: 70px;
 						&__price{
 							font-size: 80px;
 							color: #31BEBC;
-
+							font-family: "San Francisco Semibold";
 							.ic-currency-rub{
 								font-size: 52px;
 								padding-top: 22px;
+								padding-left: 5px;
+								font-family: "San Francisco Bold";
 							}
 							.percent{
-								font-size: 60px;
+								font-size: 80px;
+								font-family: "San Francisco Semibold";
 							}
 						}
 						&__description{
@@ -222,7 +227,7 @@
 						&:last-child{
 							margin-left: auto;
 							margin-right: auto;
-							margin-bottom: 35px;
+							margin-bottom: 20px;
 						}
 					}
 				}
@@ -236,25 +241,28 @@
 					color: #595959;
 					margin-top: -25px;
 					margin-bottom: 75px;
+					font-family: "San Francisco Light";
 				}
 				&__list-title{
 					font-size: 54px;
 					color: #595959;
 					margin-bottom: 24px;
+					font-family: "San Francisco Light";
 				}
 				&__list-description{
 					padding-left: 150px;
 					font-size: 36px;
 					color: #595959;
-					margin-bottom: 120px;
+					//margin-bottom: 120px;
 					line-height: 55px;
+					font-family: "San Francisco Light";
 				}
 				.download{
 					background-image: url(./img/download.png);
 					background-repeat: no-repeat;
 					background-size: 109px;
 					background-position: 0px 15px;
-					margin-bottom: 110px;
+					margin-bottom: 90px !important;
 				}
 				.download-btns{
 					padding-left: 0px;
@@ -279,14 +287,36 @@
 					background-repeat: no-repeat;
 					background-position: 0px 10px;
 					letter-spacing: -1px;
-					margin-bottom: 40px;
+					margin-bottom: 30px;
 				}
-				.wantit{
+				.wantit, .wantit2{
 					display: inline-block;
 					padding-left: 30px;
-					margin-top: 37px;
-					margin-bottom: 45px;
-					border-left: 2px solid #31BEBC;
+					margin-top: 28px;
+					margin-bottom: 35px;
+					//border-left: 2px solid #31BEBC;
+					position: relative;
+
+					&:before{
+						content: '';
+						position: absolute;
+						top: 15px;
+						left: 0;
+						width: 3px;
+						height: 84px;
+						background-color: #31BEBC;
+					}
+				}
+				.wantit{
+					&:before{
+						content: '';
+						position: absolute;
+						top: 15px;
+						left: 0;
+						width: 3px;
+						height: 139px;
+						background-color: #31BEBC;
+					}
 				}
 				&__add-goods-slide{
 					width: 555px;
@@ -294,7 +324,7 @@
 					margin: 0 auto;
 					background-image: url(./img/add-goods-slide.png);
 					background-repeat: no-repeat;
-					margin-bottom: 100px;
+					margin-bottom: 90px;
 				}
 				.padding{
 					padding-left: 50px;
@@ -310,9 +340,13 @@
 					height: 555px;
 					background-image: url(./img/tell-clients-slide.png);
 					background-repeat: no-repeat;
-					margin: 0 auto 200px auto;
+					margin: 0 auto 100px auto;
+				}
+				.done{
+					margin-bottom: 200px;
 				}
 				&__download-btn{
+					//display: none;
 					margin-top: 100px;
 					width: 100%;
 					text-align: center;
