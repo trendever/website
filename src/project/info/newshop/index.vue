@@ -6,75 +6,64 @@ scroll-component
       .section__content.header__content.u-fixed
         .header__arrow(v-if='!isAuth', @click='goBack()')
           i.header__arrow__ic.ic-arrow-left
+        .header__logo
+          a(v-link='{ name: "home" }', v-if="!isMobile")
+            img(src='../../../base/img/logo-main.svg' alt='')
         .header__title Брендам
+        right-nav-component(current="feed", v-if="!isMobile")
 
     .section.top
      .section.top__header Хочешь быть успешним в Instagram?
      .section.top__logo
      .section.top__info-block
-      .section.top__info-block__title Преврати #[br.break_1] свой Instagram #[br] в удобный магазин
+      .section.top__info-block__title Преврати свой Instagram в настоящий магазин
       .section.top__info-block__paragraph Скачай приложение Trendever и оно #[br] мгновенно интегрируется с твоим #[br.break_2] Instagram
-      .section.top__info-block__paragraph Теперь, стоит клиенту написать #[br.break_3] @wantit #[br.break_4] в комментариях под твоим #[br.break_5] постом, в твоем Trendever #[br.break_6] появится #[br.break_7] шопинг-чат с ним
+      .section.top__info-block__paragraph Теперь, стоит клиенту написать #[br.break_3] 
+       span.want @wantit #[br.break_4] 
+       span в комментариях под твоим #[br.break_5] постом, в приложении Trendever #[br.break_6] появится #[br.break_7] шопинг-чат с ним
       .section.top__info-block__slide
       .section.top__info-block__title.get Общайся и получай деньги в чате
       .section.top__info-block__advant-box
-       span.orders Согласовывай заказы,
-       span.money принимай #[br] 
-       span деньги и 
-       span.delivery назначай доставку #[br] 
-       span во встроенном чате Trendever.
       .section.top__info-block__slide-2
-       .section.top__info-block__slide-2__comment-2
-      .section.top__info-block__desc Деньги будут моментально #[br] зачислены на карту получателя
       .section.top__info-block__title Заказывай фото #[br] и рекламу у блогеров
       .section.top__info-block__paragraph Проверенные блогеры #[br] сфотографируют и покажут #[br] твой товар своей аудитории
-      .section.top__info-block__paragraph Вечная проблема нехватки трендовых и виральных фоток для ленты решена ;)
+      .section.top__info-block__paragraph Вечная проблема нехватки трендовых и виральных фоток для ленты решена;)
       .section.top__info-block__slide-3
-       .section.top__info-block__slide-3__comment-3
-      .section.top__info-block__desc Найти блогера можно по кнопке #[br] в профиле своего магазина
-      .section.top__info-block__title Сколько стоит твой #[br] магазин в Trendever?
-      .section.top__info-block__paragraph Плати только за результат, #[br] а остальное бесплатно
-      .section.top__info-block__paragraph Оплачивай услуги #[br] Trendever внутренней валютой - #[br]трендкоинами
-        i.ic-trendcoin-grey 
-        span .Коины можно #[br] получить или купить в магазине
-        .section.top__info-block__paragraph__comment-4
+      .section.top__info-block__title.cost Оплачивай #[br] услуги Trendever, #[br] как выгоднее тебе
       .section.top__info-block__prices-block
        .section.top__info-block__prices-block__box
-        .section.top__info-block__prices-block__box__price 0
-           i.ic-trendcoin-green
-          .top__info-block__prices-block__box__description размещение #[br] на Trendever
-       .section.top__info-block__prices-block__box
-        .section.top__info-block__prices-block__box__price 0
-           i.ic-trendcoin-green
-          .top__info-block__prices-block__box__description помощь и #[br] сопровождение
-       .section.top__info-block__prices-block__box
-        .section.top__info-block__prices-block__box__price 0
-           i.ic-trendcoin-green
-          .top__info-block__prices-block__box__description интеграция #[br] с Instagram
-       .section.top__info-block__prices-block__box
-        .section.top__info-block__prices-block__box__price 3
-           i.ic-trendcoin-green
-          .top__info-block__prices-block__box__description чат с новым #[br] клиентом
-       .section.top__info-block__prices-block__box
-        .section.top__info-block__prices-block__box__price 5
+        .section.top__info-block__prices-block__box__price 5.5
          i.percent %
-        .top__info-block__prices-block__box__description комиссия за #[br] успешную сделку
-       .section.top__info-block__prices-block__box
-        .section.top__info-block__prices-block__box__price 9
-           i.ic-trendcoin-green
-          .top__info-block__prices-block__box__description поиск #[br] блогера
-      .section.top__info-block__desc.present Регистрируйся сейчас и получишь #[br] бонус - 
-       span.bonus еще 30
-        i.ic-trendcoin-green
-       span.bonus на счет.
-      .section.top__info-block__title Как начать продавать?
+         span  за сделку #[br]
+         span или #[br]
+         span 1 990
+         i.ic-currency-rub
+         span  в месяц
+      .section.top__info-block__desc Первый месяц бесплатно  
+      .section.top__info-block__title.how-sell Как начать продавать?
       .section.top__info-block__sub-title Выполни 3 простых шага:
       .section.top__info-block__list-title 1. Cкачай приложение
-      .section.top__info-block__list-description.download Для регистрации укажи #[br] название своего Instagram - #[br] аккаунта и номер телефона
-      .section.top__info-block__list-title 2. Добавь свои товары
-      .section.top__info-block__list-description.add-goods Напиши @savetrend в описании #[br] или комментариях к фото своих #[br] товаров, чтобы они попали на #[br] твою витрину в Trendever
-      .section.top__info-block__list-title 3. Расскажи клиентам
-      .section.top__info-block__list-description.tell-clients Теперь твои товары можно #[br] купить, используя тег @wantit. Не забудь рассказать об этой #[br]возможности своим клиентам #[br] в описании фото или в профиле
+      .section.top__info-block__list-description.download Не важно какой телефон у тебя или твоих клиентов, Trendever доступен на iPhone и Android устройствах
+       .section.top__info-block__list-description.download-btns
+        a(href="#").app_store
+        a(href="#").g_play
+      .section.top__info-block__list-title 2. Расскажи клиентам
+      .section.top__info-block__list-description.add-goods Добавь текст в профиль #[br] своего Instagram: #[br]
+        .wantit Напиши  
+         span.want @wantit 
+         span и товар #[br] попадет в шопинг- #[br]приложение по ссылке ниже
+        span Укажи в профиле ссылку #[br] на свою витрину в Trendever
+      .section.top__info-block__add-goods-slide
+      .section.top__info-block__list-title 3. Добавляй описание #[br] 
+       span.padding к товарам
+      .section.top__info-block__list-description.tell-clients При размещении #[br] новых товаров в Instagram, #[br] напиши в начале описания:
+        .wantit2 Покупай по комментарию #[br]
+         span.want @wantit
+        span Кстати, товар с 
+         span.want @wantit #[br] 
+         span в описании попадет в твой #[br] Trendever
+      .section.top__info-block__tell-clients-slide
+      .section.top__info-block__desc.done Готово! #[br] Принимай заказы #[br] в одном приложении #[br] и получи доступ к клиентам #[br] всех Instagram-магазинов
       .section.top__info-block__download-btn 
        button(v-if="isMobile") СКАЧАТЬ ПРИЛОЖЕНИЕ
 
@@ -89,6 +78,7 @@ scroll-component
   import { createLead } from 'vuex/actions/lead';
   import { isAuth } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
+  import RightNavComponent from 'base/right-nav/index';
 
   export default {
     data(){
@@ -141,7 +131,8 @@ scroll-component
 
     components: {
       ScrollComponent,
-      HeaderComponent
+      HeaderComponent,
+      RightNavComponent
     }
 
   }
