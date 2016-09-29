@@ -46,7 +46,8 @@
 
 .section.hero(v-if='!isAuth',
             :class="{'cnt_app_hero': isStandalone}",
-            @touchmove="touchMove($event)")
+            @touchmove="touchMove($event)",
+            v-el:hero)
   .profile-header__menu(v-if='isAuth')
     .profile-header__menu-btn
     .profile-header__menu-btn-label
@@ -126,20 +127,6 @@ import { setSearchValue } from 'vuex/actions/search';
 
 import { targetClass } from 'utils';
 
-
-/*
-/*swipe vars
-*/
-var touchStartCoords =  {'x':-1, 'y':-1}, // X and Y coordinates on mousedown or touchstart events.
-  touchEndCoords = {'x':-1, 'y':-1},// X and Y coordinates on mouseup or touchend events.
-  direction = 'undefined',// Swipe direction
-  minDistanceYAxis = 20,// Min distance on mousemove or touchmove on the X axis
-  maxDistanceXAxis = 30,// Max distance on mousemove or touchmove on the Y axis
-  maxAllowedTime = 1500,// Max allowed time between swipeStart and swipeEnd
-  startTime = 0,// Time on swipeStart
-  elapsedTime = 0;// Elapsed time between swipeStart and swipeEnd
-
-
 export default {
   data(){
     return {
@@ -172,27 +159,24 @@ export default {
         });
     })
 
-    let el = document.querySelector('.hero');
 
 
     //SWIPE LOGIC
-    var swipeAction = new Hammer(el,{touchAction: 'auto'});
-    swipeAction.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+    if(this.$els.hero) {
 
-/*    swipeAction.on('swipeup', ()=> {
-      if(this.scrollCnt.scrollTop < window.innerHeight){
-        this.scrollAnchor();
-      }
-    });*/
+      let swipeAction = new Hammer(this.$els.hero,{touchAction: 'auto'});
+      swipeAction.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+      swipeAction.on('swipeup swipedown', ()=> {
+        if(this.scrollCnt.scrollTop < window.innerHeight){
+          this.scrollAnchor();
+        }
+        if(this.scrollCnt.scrollTop > window.innerHeight && this.scrollCnt.scrollTop < 2 * window.innerHeight){
+          this.scrollAnchorTags();
+        }
+      });
 
-    swipeAction.on('swipeup swipedown', ()=> {
-      if(this.scrollCnt.scrollTop < window.innerHeight){
-        this.scrollAnchor();
-      }
-      if(this.scrollCnt.scrollTop > window.innerHeight && this.scrollCnt.scrollTop < 2 * window.innerHeight){
-        this.scrollAnchorTags();
-      }
-    });
+
+    }
 
   },
   computed: {
