@@ -6,7 +6,7 @@ scroll-component(v-el:scroll-cnt)
     :center-text-link="centerTextLink",
     :page="page",
     :avatar-url='avatarUrl',
-    :show-desktop-arrow="true")
+    :show-desktop-arrow="false")
     right-nav-component(slot="content", current="")
   .section.main.top
     .section__content
