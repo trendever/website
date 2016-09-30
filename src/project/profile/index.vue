@@ -2,6 +2,8 @@
 <template lang="jade">
 scroll-component(v-if="isDone", class="profile-cnt")
   header-component(:title='getUserName', :left-btn-show='true')
+    div.profile-right-menu(slot="content", v-if="isMobile && $route.name === 'profile'")
+      i.ic-options_menu(@click="buyTg")
   right-nav-component(current="profile")
 
   .section.top.bottom
@@ -161,6 +163,26 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     methods:{
+      buyTg(){
+        this
+          .createLead( 21499 )
+          .then(
+            ( lead ) => {
+              if ( lead !== undefined && lead !== null ) {
+                this.$router.go( { name: 'chat', params: { id: lead.id } } )
+              }
+            }
+          )
+          .catch(
+            ( error ) => {
+              if ( error === leads.ERROR_CODES.UNATHORIZED ) {
+                this.$router.go( { name: 'signup' } )
+              }
+            }
+          )
+
+      },
+
       buyServiceProduct(){
 
         let productId = config.service_product_id === null ? 7833 : config.service_product_id;
