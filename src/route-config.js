@@ -4,6 +4,10 @@ import InfoRoutes from 'project/info/routes'
 
 export function configRouter(router) {
   router.map({
+    'app':{
+      name: 'app',
+      component: require('project/applink/index.vue')
+    },
     '/': {
       name: 'home',
       component: require('project/product-list/index.vue')
