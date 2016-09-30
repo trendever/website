@@ -51,7 +51,7 @@
     },
     ready(){
 
-      new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
+     /* new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
 
       .on('swipeleft',()=>{
         this.$set('showDelete', true);
@@ -60,7 +60,7 @@
       .on('swiperight',()=>{
         this.$set('showDelete', false);
 
-      });
+      });*/
 
     },
     methods: {
