@@ -33,10 +33,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
             input(type="radio" value="like" v-model="photoType" id="filter-likes")
             label(for="filter-likes") Мои Тренды
        template(v-if="loaded")
-        .profile_no-goods(v-if="noLikes && noProducts")
+        .profile_no-goods(v-if="noLikes && noProducts && $route.name === 'profile'")
          span.empty Здесь пусто,
          span #[br]... потому что ты пока ничего не сохранил.
-        .profile_no-goods-guest(v-if="noLikes && noProducts && !isSelfPage") Пока здесь пусто ;( #[br] Пользователь еще не добавил #[br] тренды в свою ленту
+        .profile_no-goods-guest(v-if="noLikes && noProducts && $route.name === 'user'") Пока здесь пусто ;( #[br] Пользователь еще не добавил #[br] тренды в свою ленту
         .profile_no-goods-banner(v-if="noLikes && noProducts && isSelfPage") Нажми Сохранить&nbsp
          span под товаром #[br.break_1] или&nbsp
          | напиши&nbsp
