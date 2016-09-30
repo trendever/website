@@ -158,6 +158,21 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
         }
 
       })
+      if(this.$route.name === 'profile') {
+
+        this.showBlogerBtn = listen(this.scrollCnt, 'scroll', ()=>{
+
+          if(this.scrollCnt.scrollTop >= window.innerHeight * 2){
+
+            this.$dispatch('hide-bloger-btn');
+
+          } else {
+            this.$dispatch('show-bloger-btn');
+          }
+
+        });
+
+      }
 
     },
 
@@ -174,6 +189,11 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
       this.closeProducts();
 
       this.$set( 'isRunning', false );
+
+
+      if(this.showBlogerBtn){
+        this.showBloger.remove();
+      }
 
     },
 

@@ -63,7 +63,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
   navbar-component(:current='listId')
 
-  .find-bloger-btn(v-if='isSelfPage && shopId !== 1 && isMobile && show', @click="buyServiceProduct") Найти блогера
+  .find-bloger-btn(v-if='isSelfPage && shopId !== 1 && isMobile && showBloger', @click="buyServiceProduct") Найти блогера
 
 .help-wrapper(v-if='isFirst')
   .attention(v-if='isFirst')
@@ -115,7 +115,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
         noProducts: true,
         loaded: false,
         isMobile: window.browser.mobile,
-        show: true,
+        showBloger: true,
         hiddenCount: 0
       }
     },
@@ -146,6 +146,14 @@ scroll-component(v-if="isDone", class="profile-cnt")
         this.$router.replace( { name: 'signup' } );
       }
 
+    },
+    events:{
+      'show-bloger-btn'(){
+        this.$set('showBloger', true);
+      },
+      'hide-bloger-btn'(){
+        this.$set('showBloger', false);
+      }
     },
     beforeDestroy(){
       if ( this.isAuth ) {
