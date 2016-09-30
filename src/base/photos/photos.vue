@@ -192,7 +192,7 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
 
       if(this.showBlogerBtn){
-        this.showBloger.remove();
+        this.showBlogerBtn.remove();
       }
 
     },
