@@ -1,5 +1,5 @@
 <template>
-  <div class="buttons" :class="{'glued-btns': isMobile}">
+  <div class="buttons" :class="{'glued-btns': isMobile && !authSellerProduct}">
     <div class="leftSide">
       <button class="save_btn" @click="like" :class="{ 'active': isLiked, 'default': !isLiked}">
       {{text}}
@@ -9,6 +9,7 @@
       <button class="buy_btn" @click="buy">КАК КУПИТЬ?</button>
     </div>
   </div>
+  <div class="find-bloger" v-if="authSellerProduct">Найти блогера</div>
 </template>
 
 <style src="./style.pcss" scoped lang="postcss"></style>
@@ -26,6 +27,10 @@
       }
     },
     props: {
+      authSellerProduct: {
+        type: Boolean,
+        default: false
+      },
       isLiked: {
         type: Boolean,
         default: false

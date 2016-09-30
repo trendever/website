@@ -107,8 +107,7 @@
         }
 
       }).then(()=>{
-
-        alert(this.authSellerProduct);
+        //alert(this.authSellerProduct);
       });
 
     },
