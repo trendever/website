@@ -14,7 +14,7 @@ scroll-component
           right-nav-component(current="feed", v-if="!isMobile")
 
     .section.top
-     .section.top__header Хочешь быть успешним в Instagram?
+     .section.top__header Хочешь быть успешным в Instagram?
      .section.top__logo
      .section.top__info-block
       .section.top__info-block__title Преврати свой Instagram в настоящий магазин
