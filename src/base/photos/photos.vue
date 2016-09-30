@@ -21,7 +21,7 @@
       href='#',
       v-if="tags || search" ) Сбросить поиск
 
-scroll-top
+scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMobile}")
 </template>
 
 <script type='text/babel'>
@@ -106,6 +106,7 @@ scroll-top
 
     data() {
       return {
+        isMobile: window.browser.mobile,
         styleObject: {
           pointerEvents: 'auto'
         },

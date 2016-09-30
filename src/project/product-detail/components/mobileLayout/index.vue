@@ -26,7 +26,7 @@
         :supplier-available="supplierAvailable"
         :like="like"
         :buy="buy"
-        :buy-promo-product="buyPromoProduct",
+        :buy-promo-product="buyPromoProduct"
         :auth-seller-product="authSellerProduct"
       ></buttons>
     </div>

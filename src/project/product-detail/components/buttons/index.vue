@@ -9,16 +9,41 @@
       <button class="buy_btn" @click="buy">КАК КУПИТЬ?</button>
     </div>
   </div>
-  <div class="find-bloger" v-if="authSellerProduct">Найти блогера</div>
+  <div class="find-bloger" v-if="authSellerProduct" @click="buyServiceProduct">Найти блогера</div>
 </template>
 
 <style src="./style.pcss" scoped lang="postcss"></style>
 
 <script type="text/babel">
+  import { createLead } from 'vuex/actions/lead';
+  import config from '../../../../../config';
   export default {
-    data(){
-      return {
-        isMobile: window.browser.mobile
+    vuex: {
+      actions: {
+        createLead
+      }
+    },
+    methods:{
+      buyServiceProduct(){
+
+        let productId = config.service_product_id === null ? 7833 : config.service_product_id;
+
+        this
+          .createLead( productId )
+          .then(
+            ( lead ) => {
+              if ( lead !== undefined && lead !== null ) {
+                this.$router.go( { name: 'chat', params: { id: lead.id } } )
+              }
+            }
+          )
+          .catch(
+            ( error ) => {
+              if ( error === leads.ERROR_CODES.UNATHORIZED ) {
+                this.$router.go( { name: 'signup' } )
+              }
+            }
+          )
       }
     },
     computed: {
