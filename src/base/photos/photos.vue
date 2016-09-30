@@ -151,7 +151,7 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
       } ).then(()=>{
 
-        if(this.$route.name === 'profile' || this.$route.name === 'user'){
+        if(this.$route.name === 'profile'){
 
           this.scrollCnt.scrollTop = 0;
 
