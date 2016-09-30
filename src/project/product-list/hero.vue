@@ -44,7 +44,8 @@
 
   right-nav-component(current="feed")
 
-.section.hero(v-if='!isAuth')
+.section.hero(v-if='!isAuth',
+            :class="{'cnt_app_hero': isStandalone}")
   .profile-header__menu(v-if='isAuth')
     .profile-header__menu-btn
     .profile-header__menu-btn-label
@@ -65,7 +66,7 @@
     a(class='profile-header__menu-link',
       v-link='{name: "info-agreement"}') Условия
 
-  .section__content.hero__content
+  .section__content.hero__content(:class="{'cnt_app': isStandalone}", v-el:hero-one)
     .profile-header
       .profile-header__center
       button(v-link='{ name: "info-shop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
@@ -84,26 +85,28 @@
        i(class='ic-insta social')
       a(href='https://vk.com/trendever', class='vk' target="_blank")
        i(class='ic-vk social')
-     //.hero__content__input-wrap
-      //p Приложение для шопинга в Instagram
-      //input(type="text" placeholder="Номер телефона")
-      //button.hero__content__get-link ПОЛУЧИТЬ ССЫЛКУ
+     .hero__content__input-wrap
+      p Приложение для шопинга в Instagram
+      input(type="text" placeholder="Номер телефона" v-model="phoneNumber")
+      button.hero__content__get-link(@click="getLink()" v-bind:disabled="disableButton") {{getLinkTitle}}
      .hero__content__dwnld-btns
       a(href="https://itunes.apple.com/ru/app/trendever/id1124212231", class="app_store")
        i(class="ic-appstore")
       //a(href="#", class="g_play")
        //i(class="ic-google_play")
-  .hero__content__2
-   a(href="#", @click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
+  .hero__content__2(:class="{'cnt2_app': isStandalone}", v-el:hero-two)
+   a.how-btn(@click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
    p(id="how-it-work") Находи и покупай #[br] трендовые товары здесь #[br] или прямо в Instagram
    .caption__play__mobile(v-link='{name: "main-video"}')
      i.ic-play
     .caption__description__mobile(v-link='{name: "main-video"}') (смотреть видео)
     button(v-link='{ name: "info-shop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
-  button(@click="scrollAnchorTags()").shopping_trends ЗАГЛЯНУТЬ ВНУТРЬ
+  button(@click="scrollAnchorTags()" id="lookinside").shopping_trends ЗАГЛЯНУТЬ ВНУТРЬ
 </template>
 
 <script type='text/babel'>
+import Hammer from 'hammerjs';
+import JQuery from 'jquery';
 import listen from 'event-listener'
 import settings from 'settings'
 import { setCallbackOnSuccessAuth } from 'vuex/actions'
@@ -114,6 +117,7 @@ import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
 import RightNavComponent from 'base/right-nav/index';
 import Slider from './slider.vue';
+import * as commonService from 'services/common';
 
 //search logic
 import { searchValue } from 'vuex/getters/search';
@@ -127,7 +131,10 @@ export default {
       inputOpened: false,
       menuOpened: false,
       isStandalone: browser.standalone,
-      isMobile: window.browser.mobile
+      isMobile: window.browser.mobile,
+      phoneNumber: '',
+      smsSent: false,
+      phoneError: false
     }
   },
 
@@ -150,7 +157,60 @@ export default {
         });
     })
 
+
+
+    //SWIPE LOGIC
+    if(this.$els.heroOne && this.$els.heroTwo) {
+
+      let heroOne = new Hammer(this.$els.heroOne,{touchAction: 'none'});
+      heroOne.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+
+      heroOne.on('swipeup', ()=> {
+        this.scrollAnchor()
+      });
+
+      heroOne.on('swipedown', ()=> {
+        //JQuery('.scroll-cnt').animate({scrollTop: window.innerHeight},400);
+      });
+
+      let heroTwo = new Hammer(this.$els.heroTwo,{touchAction: 'none'});
+      heroTwo.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+
+      heroTwo.on('swipeup', ()=> {
+        this.scrollAnchorTags();
+      });
+
+      heroTwo.on('swipedown', ()=> {
+        JQuery('.scroll-cnt').animate({scrollTop: 0 },450);
+      });
+
+    }
+
   },
+  computed: {
+      isStandalone(){
+        //alert(navigator.standalone)
+        return browser.standalone
+        //return navigator.standalone
+      },
+      getLinkTitle(){
+        if (this.phoneError){
+          return "НЕВЕРНЫЙ НОМЕР";
+        }
+        if (this.smsSent){
+          return "ОТПРАВЛЕНО";
+        }else{
+          return "ПОЛУЧИТЬ ССЫЛКУ";
+        }
+      },
+      disableButton(){
+        if (this.phoneNumber.length >= 11 && !this.phoneError){
+          return false;
+        }else{
+          return true;
+        }
+      }
+    },
   beforeDestroy(){
     this.outerCloseMenu.remove();
   },
@@ -170,6 +230,11 @@ export default {
   },
 
   methods: {
+    touchMove(e){
+      if(this.scrollCnt.scrollTop < 2 * window.innerHeight ) {
+        e.preventDefault();
+      }
+    },
     openInput(){
       this.inputOpened = !this.inputOpened;
       this.$nextTick(()=>{
@@ -191,9 +256,9 @@ export default {
     },
     onBuyPromoProduct() {
       if ( !this.isAuth ) {
-
+        this.setCallbackOnSuccessAuth( this.onBuyPromoProduct.bind( this ) );
         this.$router.go( { name: 'signup' } );
-        this.setCallbackOnSuccessAuth( this.onBuyPromoProduct.bind( this ) )
+
 
       } else {
 
@@ -205,12 +270,23 @@ export default {
                 }
               }
             );
-
       }
     },
+    getLink(){
 
+      commonService.marketSms({phone: this.phoneNumber }).then(data=>{
+          this.$set('smsSent', true);
+          this.$set('phoneNumber','');
+          setTimeout( () => this.$set('smsSent', false), 3000);
+        },err=>{
+          this.$set('phoneError',true);
+          setTimeout( () => this.$set('phoneError', false), 3000);
+        }
+      );
+    },
     scrollAnchor() {
-      var block = document.querySelector( "#how-it-work" );
+      JQuery('.scroll-cnt').animate({scrollTop: window.innerHeight},450);
+/*      var block = document.querySelector( "#how-it-work" );
       if ( block !== null ) {
         var scrollBlock = this.scrollCnt;
 
@@ -219,14 +295,22 @@ export default {
             if ( block.getBoundingClientRect().top < 80 ) {
               clearInterval( timer );
             }
-            scrollBlock.scrollTop = scrollBlock.scrollTop + 30;
-          }, 20 );
+
+            for (let i = 1; i < 80; i++){
+              if(scrollBlock.scrollTop >= window.innerHeight) {
+                break;
+              }
+              scrollBlock.scrollTop += 1;
+            }
+
+          }, 10 );
         }
-      }
+      }*/
     },
 
     scrollAnchorTags() {
-      var block = document.querySelector( "#tags" );
+      JQuery('.scroll-cnt').animate({scrollTop: 2 * window.innerHeight},450);
+/*      var block = document.querySelector( "#tags" );
       if ( block !== null ) {
         var scrollBlock = this.scrollCnt;
 
@@ -235,10 +319,21 @@ export default {
             if ( block.getBoundingClientRect().top < 80 ) {
               clearInterval( timer );
             }
-            scrollBlock.scrollTop = scrollBlock.scrollTop + 45;
-          }, 10 );
+
+            for (let i = 1; i < 80; i++){
+              if(scrollBlock.scrollTop >=  2 * window.innerHeight) {
+                break;
+              }
+              scrollBlock.scrollTop += 1;
+            }
+
+          }, 1 );
         }
-      }
+      }*/
+    },
+
+    isStandalone(){
+      return browser.standalone
     }
   },
 };

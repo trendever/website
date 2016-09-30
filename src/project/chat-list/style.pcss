@@ -1,5 +1,6 @@
 @import 'base/vars/vars.pcss';
 
+
 .chat-list-cnt {
   &-is-empty {
     position: absolute;
@@ -10,6 +11,7 @@
     text-align:center;
     color: $color__gray;
     font-size: 24px;
+    font-family: "San Francisco Light";
     margin-top: -25px;
     padding-top: 240px;
     background: url("img/chats_inactive.svg") no-repeat 50% 0;
@@ -23,7 +25,7 @@
       max-width:1050px;
       margin:0 auto;
       text-align: center;
-      font-weight: bolder;
+      font-family: "San Francisco Semibold";
       img {
         display: inline-block;
         margin-bottom: 45px;
@@ -42,7 +44,7 @@
       padding-top: 30px;
       padding-bottom: 30px;
       color: #595959;
-      font-weight: bolder;
+      font-family: "San Francisco Semibold";
       line-height: 30px;
       @media(--mobile) {
         display: block;
@@ -60,10 +62,10 @@
         line-height: 38px;
       }
       span{
-        font-weight: 100;
+        font-family: "San Francisco Light";
       }
       span.want{
-        font-weight: bold;
+        font-family: "San Francisco Semibold";
       }
     }
   }
@@ -81,6 +83,11 @@
       @media (--mobile) {
         height: 230px;
         padding: 20px 20px 20px 10px;
+        //padding: 0;
+      }
+      @media (--ipad) {
+        padding: 20px 20px 20px 10px;
+        padding: 0;
       }
 
       &-photo {
@@ -107,6 +114,31 @@
           background: #fafafa;
         }
       }
+      &-delete {
+        transition: .2s all ease;
+        font-family: $font__family__light;
+        color: #FFFFFF;
+        background: #EF3758;
+        text-align: center;
+        font-size: 2rem;
+        line-height: 230px;
+        float: right;
+        width: 0;
+        line-height: 174px;
+        overflow: hidden;
+
+        @media (--mobile) {
+          line-height: 220px;
+        }
+
+        @media (--ipad) {
+          line-height: 130px;
+          font-size: 1.4rem;
+        }
+        &.open-delete {
+          width: 230px;
+        }
+      }
 
       &-body {
 
@@ -118,6 +150,11 @@
         @media (--mobile) {
           padding: 20px 15px;
           width: calc(100% - 190px);
+        }
+
+        @media (--ipad) {
+          padding: 20px 15px;
+          //width: calc(100% - 190px);
         }
 
         .body-title {
@@ -133,11 +170,13 @@
             height: 47.5px;
             font-size: 38px;
             line-height: 45.6px;
+            font-family: "San Francisco Light";
           }
         }
         .body-status-time{
           display: flex;
           justify-content: space-between;
+          font-family: "San Francisco Light";
         }
 
         .body-status {
@@ -147,6 +186,7 @@
           @media (--mobile) {
             font-size: 24px;
             line-height: 36px;
+            font-family: "San Francisco Light";
           }
         }
         .body-time{
@@ -206,7 +246,7 @@
           height: 26px;
 
           border-radius: 25px;
-          background: #399;
+          background: #EF3758;
 
           flex-shrink: 0;
           @media(--mobile) {

@@ -27,6 +27,7 @@
         :like="like"
         :buy="buy"
         :buy-promo-product="buyPromoProduct"
+        :auth-seller-product="authSellerProduct"
       ></buttons>
     </div>
     <div class="desc-wrapper">
@@ -53,8 +54,69 @@
   import buttons from '../buttons/index.vue';
   import description from '../description/index.vue';
   import tags from 'base/tags/index.vue'
+  import { getOpenedProduct } from 'vuex/getters/products'
+  import { authUserId } from 'vuex/getters/user';
+  import * as userService from 'services/user';
 
   export default {
+
+    data(){
+      return {
+        authSellerProduct: false,
+      }
+
+    },
+    ready(){
+
+      userService
+      .get({user_id: this.authUserId })
+      .then((res)=>{
+        let isProductSupplier, isProductSeller;
+
+        if(res.supplier_of){
+          console.log(res.supplier_of);
+
+          isProductSupplier = res.supplier_of.some((item)=>{
+
+            return item === this.getOpenedProduct.supplier.id;
+
+          })
+
+          if(isProductSupplier) {
+            this.$set('authSellerProduct', true);
+          }
+
+          return;
+
+        }
+
+        if(res.seller_of) {
+
+          isProductSeller = res.seller_of.some(item=>{
+
+            return item === this.getOpenedProduct.supplier.id;
+
+          });
+
+          if(isProductSeller) {
+            this.$set('authSellerProduct', true);
+          }
+
+          return;
+
+        }
+
+      }).then(()=>{
+        //alert(this.authSellerProduct);
+      });
+
+    },
+    vuex: {
+      getters: {
+        getOpenedProduct,
+        authUserId
+      }
+    },
     components: {
       picture,
       userInfo,

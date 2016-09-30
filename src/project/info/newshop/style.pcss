@@ -1,0 +1,369 @@
+@import 'base/vars/vars.pcss';
+@font-face {
+	font-family: GradeFive;
+	src: url(./font/PFKidsPro-GradeFive.ttf);
+}
+
+.section{
+	&__content{
+		.header{
+			&__title{
+				font-size: 28px;
+				font-weight: 600;
+				color: #fff;
+				margin: 4px auto 0px auto;
+				@media(--mobile) {
+					font-size: 40px;
+					margin: 19px auto 0px auto;
+				}
+			}
+			&__logo{
+				@media(--mobile) {
+					display: none;
+				}
+			}
+		}
+		.top{
+			text-align: center;
+			padding: 102px 0px;
+			@media(--mobile) {
+				padding: 102px 30px 0px 30px;
+			}
+			&__header{
+				font-size: 60px;
+				color: #595959;
+				margin: 48px auto 0px auto;
+				@media(--mobile) {
+					margin: 50px auto 0px auto;
+					font-size: 64px;
+					line-height: 75px;
+					font-family: "San Francisco Thin";
+				}
+			}
+			&__logo{
+				background-image: url('./img/Trendever-logo-green.svg');
+				background-repeat: no-repeat;
+				background-size: 360px;
+				width: 360px;
+				height: 77px;
+				margin: 37px auto 211px auto;
+				@media(--mobile) {
+					background-size: 450px;
+					width: 450px;
+					height: 96px;
+					margin: 50px auto 75px auto;
+				}
+			}
+			&__info-block{
+				text-align: left;
+				position: relative;
+				&__title{
+					font-size: 60px;
+					color: #595959;
+					margin-bottom: 20px;
+					@media(--mobile) {
+						font-size: 64px;
+						line-height: 78px;
+						font-family: "San Francisco Thin";
+						br.break_1{
+							display: none;
+						}
+					}
+				}
+				.get{
+					margin-top: 375px;
+					margin-left: 507px;
+					width: 378px;
+					@media(--mobile) {
+						margin-top: 0px;
+						margin-left: 0px;
+						width: 100%;
+					}
+				}
+				.how-sell{
+					margin-top: 65px;
+					text-align: center;
+				}
+				.cost{
+					text-align: center;
+				}
+				&__paragraph{
+					font-size: 24px;
+					color: #595959;
+					padding-left: 55px;
+					position: relative;
+					margin-bottom: 22px;
+					font-family: "San Francisco Light";
+					@media(--mobile) {
+						font-size: 36px;
+						display: block;
+						line-height: 55px;
+						br.break_4, br.break_6{
+							display: none;
+						}
+					}
+					br.break_2, br.break_3, br.break_5, br.break_7{
+						display: none;
+					}
+					&:before{
+						content: url(./img/point.svg);
+						position: absolute;
+						width: 33px;
+						height: 25px;
+						left: 0;
+					}
+				}
+				.want{
+					font-family: "San Francisco Semibold";
+				}
+				&__slide{
+					background-image: url(./img/mob_1_desktop.png);
+					background-repeat: no-repeat;
+					width: 490px;
+					height: 714px;
+					position: absolute;
+					top: -150px;
+					right: -50px;
+					@media(--mobile) {
+						position: relative;
+						background-image: url('./img/mob_1.png');
+						background-repeat: no-repeat;
+						width: 580px;
+						height: 888px;
+						margin: 55px 0px 79px;
+						top: 0;
+						right: 0;
+					}
+				}
+				&__advant-box{
+					background-image: url(./img/advant_box.png);
+					background-repeat:no-repeat;
+					width: 703px;
+					height: 202px;
+					margin-left: -10px;
+					margin-bottom: 71px;
+					margin-top: -2px;
+				}
+				&__slide-2{
+					background-image: url(./img/mob_2_desktop.png);
+					background-repeat: no-repeat;
+					margin-top: 215px;
+					width: 475px;
+					height: 713px;
+					position: absolute;
+					top: 460px;
+					@media(--mobile) {
+						position: relative;
+						background-image: url(./img/mob_2.png);
+						background-repeat: no-repeat;
+						background-position-x: 8px;
+						width: 678px;
+						height: 1045px;
+						margin: 0px 0px 40px 15px;
+						top:0;
+					}
+				}
+				&__desc{
+					text-align: left;
+					font-size: 38px;
+					font-family: GradeFive;
+					color: #31BEBC;
+					margin-bottom: 58px;
+					margin-left: 507px;
+					@media(--mobile) {
+						font-size: 54px;
+						text-align: center;
+						margin-left: 0px;
+					}
+				}
+				&__desc{
+					text-align: center;
+					font-size: 54px;
+					font-family: GradeFive;
+					color: #31BEBC;
+					margin-bottom: 46px;
+					.bonus{
+						font-weight: bolder;
+
+						.ic-trendcoin-green{
+							font-size: 40px;
+							padding-top: 10px;
+							font-family: GradeFive;
+						}
+					}
+
+				}
+				&__slide-3{
+					position: relative;
+					background-image: url(./img/mob_3.png);
+					background-repeat: no-repeat;
+					width: 671px;
+					height: 1055px;
+					margin: 40px auto 65px auto;
+				}
+				&__prices-block{
+					&__box{
+						text-align: center;
+						&__price{
+							font-size: 80px;
+							color: #31BEBC;
+							font-family: "San Francisco Semibold";
+							.ic-currency-rub{
+								font-size: 52px;
+								padding-top: 22px;
+								padding-left: 5px;
+								font-family: "San Francisco Bold";
+							}
+							.percent{
+								font-size: 80px;
+								font-family: "San Francisco Semibold";
+							}
+						}
+						&__description{
+							font-size: 36px;
+							color: #595959;
+							line-height: 52px;
+						}
+						&:last-child{
+							margin-left: auto;
+							margin-right: auto;
+							margin-bottom: 20px;
+						}
+					}
+				}
+				.present{
+					margin-top: 110px;
+					margin-bottom: 82px;
+				}
+				&__sub-title{
+					text-align: center;
+					font-size: 36px;
+					color: #595959;
+					margin-top: -25px;
+					margin-bottom: 75px;
+					font-family: "San Francisco Light";
+				}
+				&__list-title{
+					font-size: 54px;
+					color: #595959;
+					margin-bottom: 24px;
+					font-family: "San Francisco Light";
+				}
+				&__list-description{
+					padding-left: 150px;
+					font-size: 36px;
+					color: #595959;
+					//margin-bottom: 120px;
+					line-height: 55px;
+					font-family: "San Francisco Light";
+				}
+				.download{
+					background-image: url(./img/download.png);
+					background-repeat: no-repeat;
+					background-size: 109px;
+					background-position: 0px 15px;
+					margin-bottom: 90px !important;
+				}
+				.download-btns{
+					padding-left: 0px;
+					margin-top: 40px;
+					margin-left: -60px;
+					.app_store{
+						width: 245px;
+						height: 70px;
+						background-image: url(./img/app_store.png);
+						background-repeat: no-repeat;
+						margin-right: 12px;
+					}
+					.g_play{
+						width: 204px;
+						height: 70px;
+						background-image: url(./img/g_play.png);
+						background-repeat: no-repeat;
+					}
+				}
+				.add-goods{
+					background-image: url(./img/add-goods.png);
+					background-repeat: no-repeat;
+					background-position: 0px 10px;
+					letter-spacing: -1px;
+					margin-bottom: 30px;
+				}
+				.wantit, .wantit2{
+					display: inline-block;
+					padding-left: 30px;
+					margin-top: 28px;
+					margin-bottom: 35px;
+					//border-left: 2px solid #31BEBC;
+					position: relative;
+
+					&:before{
+						content: '';
+						position: absolute;
+						top: 15px;
+						left: 0;
+						width: 3px;
+						height: 84px;
+						background-color: #31BEBC;
+					}
+				}
+				.wantit{
+					&:before{
+						content: '';
+						position: absolute;
+						top: 15px;
+						left: 0;
+						width: 3px;
+						height: 139px;
+						background-color: #31BEBC;
+					}
+				}
+				&__add-goods-slide{
+					width: 555px;
+					height: 555px;
+					margin: 0 auto;
+					background-image: url(./img/add-goods-slide.png);
+					background-repeat: no-repeat;
+					margin-bottom: 90px;
+				}
+				.padding{
+					padding-left: 50px;
+				}
+				.tell-clients{
+					background-image: url(./img/tell-clients.png);
+					background-repeat: no-repeat;
+					background-position: 0px 10px;
+					margin-bottom: 44px;
+				}
+				&__tell-clients-slide{
+					width: 555px;
+					height: 555px;
+					background-image: url(./img/tell-clients-slide.png);
+					background-repeat: no-repeat;
+					margin: 0 auto 100px auto;
+				}
+				.done{
+					margin-bottom: 200px;
+				}
+				&__download-btn{
+					//display: none;
+					margin-top: 100px;
+					width: 100%;
+					text-align: center;
+					position: fixed;
+					bottom: 0;
+					left: 0;
+					button{
+						background: #FFDE1E;
+						width: 100%;
+						height: 118px;
+						font-size: 36px;
+						font-weight: 100;
+						color: #0E3333;
+						border: none;
+					}
+				}
+			}
+		}
+	}
+} 

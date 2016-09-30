@@ -235,3 +235,10 @@ export const setTooltip = ( { dispatch }, name, value) => {
   dispatch(types.USER_SET_TOOLTIP, name, value);
 
 };
+
+export const setPayment = ( { dispatch }, value) => {
+
+  dispatch(types.USER_SET_PAYMENT, value);
+
+};
+

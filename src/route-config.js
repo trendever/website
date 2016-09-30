@@ -4,6 +4,10 @@ import InfoRoutes from 'project/info/routes'
 
 export function configRouter(router) {
   router.map({
+    'app':{
+      name: 'app',
+      component: require('project/applink/index.vue')
+    },
     '/': {
       name: 'home',
       component: require('project/product-list/index.vue')
@@ -84,18 +88,12 @@ export function configRouter(router) {
       name: 'profile',
       component: require('project/profile/index.vue')
     },
-
-    '/mpay': {
+    '/payment': {
       name: 'payment',
       component: require('project/payment/payment.vue')
     },
 
-    '/mpayon': {
-     name: 'pay-on',
-     component: require('project/payment/pay-on.vue')
-   },
-
-  '/:id': {
+    '/:id': {
       // !important it must be last of the list.
       // (exlclude '*' not found)
       name: 'user',

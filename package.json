@@ -92,6 +92,7 @@
     "es6-promise": "^3.2.1",
     "event-listener": "^1.1.0",
     "fastclick": "^1.0.6",
+    "jquery": "^3.1.1",
     "jwt-decode": "^2.0.1",
     "pluralize-ru": "^1.0.1",
     "raven-js": "^3.0.4",
@@ -99,6 +100,7 @@
     "vue": "^1.0.24",
     "vue-router": "^0.7.13",
     "vue-swipe": "^0.2.5",
+    "vue-touch": "^1.1.0",
     "vue-validator": "^2.1.1",
     "vuex": "^0.6.3"
   }

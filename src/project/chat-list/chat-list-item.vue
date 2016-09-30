@@ -1,6 +1,8 @@
 <template lang="jade">
-.chat-list-i(v-link='{name: "chat", params: {id: lead.id}}', track-by='id')
-  .chat-list-i-photo
+.chat-list-i(v-link='{name: "chat", params: {id: lead.id}}',
+            track-by='id',
+            v-el:chat-item)
+  .chat-list-i-photo(v-if="!showDelete")
     img(:src='getPhoto()')
 
   .chat-list-i-body
@@ -17,6 +19,7 @@
         | {{{ recentMessage.message }}}
       .body-notify(v-if='unreadCount')
         span {{ unreadCount }}
+  .chat-list-i-delete(:class="{'open-delete': showDelete}", @click.stop="deleteChat") Удалить
 
 </template>
 
@@ -25,11 +28,13 @@
   import { formatPastTime } from 'project/chat/utils';
   import * as service from 'services/leads';
   import { getNotifyCountList, getLastMessage } from 'vuex/getters/lead.js';
+  import Hammer from 'hammerjs';
 
   export default {
     data(){
       return {
         title: null,
+        showDelete: false
       };
     },
     props: {
@@ -44,7 +49,28 @@
         getLastMessage
       }
     },
+    ready(){
+
+     /* new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
+
+      .on('swipeleft',()=>{
+        this.$set('showDelete', true);
+
+      })
+      .on('swiperight',()=>{
+        this.$set('showDelete', false);
+
+      });*/
+
+    },
     methods: {
+      deleteChat(){
+        alert(1);
+        return;
+
+        service.deleteChat();
+
+      },
       getPhoto() {
 
         if ( Array.isArray( this.lead.products ) ) {

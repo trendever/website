@@ -2,28 +2,29 @@
 <template lang="jade">
 .section.header.section__content
     .header__content.u-fixed(v-show='is_visible')
-      .header__arrow(
-        @click='leftBtnAction',
-        v-if='leftBtnShow',
-        :class="{'show-desktop-arrow': showDesktopArrow}")
+      .wrapper
+        .header__arrow(
+          @click='leftBtnAction',
+          v-if='leftBtnShow',
+          :class="{'show-desktop-arrow': showDesktopArrow}")
 
-        i.header__arrow__ic.ic-arrow-left(
-        :class='{"_up": is_action_up}')
+          i.header__arrow__ic.ic-arrow-left(
+          :class='{"_up": is_action_up}')
 
-      .header__notify-count(v-if='notifyCount')
-        span {{ notifyCount }}
+        .header__notify-count(v-if='notifyCount')
+          span {{ notifyCount }}
 
-      .header__center
-        .header__left-logo
-         a(v-link="{name: 'home'}")
-          img(src="../img/logo-main.svg")
-        .header__text(v-if="centerTextLink === null") {{ title }}
-        .header__text.active(v-if="centerTextLink !== null", v-link="centerTextLink") {{ title }}
-          img.center-avatar(:src="avatarUrl", v-if="page == 'product' && !isMobile")
-        slot(name='content')
+        .header__center
+          .header__left-logo
+           a(v-link="{name: 'home'}")
+            img(src="../img/logo-main.svg")
+          .header__text(v-if="centerTextLink === null") {{ title }}
+          .header__text.active(v-if="centerTextLink !== null", v-link="centerTextLink") {{ title }}
+            img.center-avatar(:src="avatarUrl", v-if="page == 'product' && !isMobile")
+          slot(name='content')
 
-      .header-right(v-if="avatarUrl !== null && centerTextLink !== null && isMobile", v-link="centerTextLink")
-        img(:src="avatarUrl")
+        .header-right(v-if="avatarUrl !== null && centerTextLink !== null && isMobile", v-link="centerTextLink")
+          img(:src="avatarUrl")
 
       productmenu-component(v-if="page == 'product'")
 </template>

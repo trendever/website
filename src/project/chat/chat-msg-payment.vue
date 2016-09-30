@@ -1,8 +1,8 @@
-<style src='./styles/chat-msg-date.pcss'></style>
+<style src='./styles/chat-msg-status.pcss'></style>
 <template lang="jade">
 .chat-row.__center
-  .chat-msg-date
-    template(v-if='this.msg.parts[0].mime_type === "json/payment"')
+  .chat-msg-status
+    template(v-if='donePayment')
       span(v-if="succes")
        | {{getPaymentNames.from}} отправил {{getAmmount | curency_spaces}}
        i.ic-currency-rub
@@ -11,7 +11,7 @@
        | Перевод не удался
     template(v-else)
       span
-        | {{getPaymentNames.from}} отменил перевод
+        | <b>{{getPaymentNames.from}}</b> отменил перевод
       
 </template>
 
@@ -33,7 +33,17 @@
       }
     },
     computed: {
+      donePayment(){
+        return this.msg.parts[0].mime_type === 'json/payment';
+      },
       succes(){
+        let message = JSON.parse(this.msg.parts[0].content);
+        if (message.succes){
+          return true;
+        }
+        if (message.failure){
+          return false;
+        }
         return true;
       },
       getPaymentNames(){

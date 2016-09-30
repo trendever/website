@@ -1,15 +1,29 @@
 @import 'base/vars/vars.pcss';
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.standalone .payment{
+  padding-top: 40px;
+}
+
+.standalone .payment .close{
+  top: 35px;
+}
+
+
 .payment {
+  font-family: $font__family__light;
   background: #12302d;
-  position: fixed;
-  z-index: 99999;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
   color: #fff;
   font-size:38px;
   padding-bottom:123px;
+
+  @media (--desktop) {
+     padding-bottom:26px;
+  }
 
   ::-webkit-input-placeholder {color:#fff;opacity:.2;}
   ::-moz-placeholder          {color:#fff;opacity:.2;}
@@ -20,16 +34,28 @@
   :focus::-moz-placeholder          {color:transparent;}
   :focus:-moz-placeholder           {color:transparent;}
   :focus:-ms-input-placeholder      {color:transparent;}
-  
+
+  &.pay-fixed {
+    position: fixed;
+    z-index: 999;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+  }
+
   &-summ-input::first-letter{
     color: #fff;
     opacity: .2;
   }
 
   .bottom-margin {
-    height: 100%;
+    height: auto;
     overflow: auto;
     position: relative;
+    @media (--desktop){
+      height: auto;
+    }
 
     &:before {
       display: inline-block;
@@ -44,6 +70,9 @@
     width: 100%;
     text-align: center;
     display: inline-block;
+    @media (--mobile) {
+      padding-top: 70px;
+    }
   }
 
   &-head {
@@ -53,12 +82,31 @@
 
   &-summ {
     margin-top: 40px;
+    @media(--desktop){
+      margin-top: 20px;
+    }
   }
 
   &-summ-text {
-    font-size:30px;
-    opacity:.2;
-    margin-bottom: 63px;
+    font-size:30px;    
+    margin-bottom: 30px;
+
+    @media(--desktop){
+      margin-bottom: 15px;
+    }
+
+    .transparent{
+      opacity:.2;
+    }
+
+    .error-message{
+      color: #ffde1e;
+    }
+
+    @media(--mobile){
+      margin-bottom: 63px;
+    }
+    
   }
 
   &-summ-input {
@@ -70,8 +118,38 @@
     color:#fff;
     font-size:58px;
     margin-bottom: 50px;
+    @media(--desktop){
+      margin-bottom: 5px;
+    }
     &-wrapper {
       position: relative;
+      .phantom-input {
+        height: 66px;
+        margin-bottom: 53px;
+        cursor: pointer;
+        text-align: center;
+        @media(--desktop){
+          margin-bottom: 5px;
+        }
+        span {
+          color: white;
+          opacity: .2;
+          font-size: 3.7rem;
+          line-height: 3.7rem;
+          margin-right: 10px;
+          &.bill-price {
+            opacity: 1;
+          }
+        }
+      }
+      input {
+        text-align: center;
+        font-family: $font__family__light;
+
+        &::placeholder {
+
+        }
+      }
     }
 
     &:focus {
@@ -127,6 +205,10 @@
       margin:0 auto;
       width: 685px;
       margin-bottom: 37px;
+
+      @media(--desktop){
+        margin-bottom: 10px;
+      }
       position: relative;
 
       &:after {
@@ -175,7 +257,12 @@
         outline:none;
       }
     }
-
+    h1{
+      text-align: left;
+      float: right;
+      width: 600px;
+      padding-left: 15px;
+    }
     &-input{
       background: transparent;
       border-bottom:1px solid rgba(255,255,255, .2);
@@ -228,10 +315,27 @@
     width: 820px;
     margin: 0 auto;
     img {
-      padding-top: 50px;
+      padding-top: 30px;
     }
     @media(--mobile) {
+      font-size:24px;
+      padding: 40px 20px 0 20px;
+      line-height: 50px;
+      width: 100%;
+    }
+  }
+  .note-img {
+    max-width: 600px;
+    padding-top: 50px;
+
+    @media (--desktop){
       width: 400px;
+      padding-top: 30px;
+    }
+
+    @media (--mobile){
+      width: 90%;
+
     }
   }
 
@@ -283,6 +387,15 @@
 
   .btn-container {
     text-align: center;
+    @media (--desktop) {
+      .note-img {
+
+      }
+      button {
+        width: 579px;
+        height: 81px;
+      }
+    }
   }
 
   .ic-currency-rub {

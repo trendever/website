@@ -10,8 +10,10 @@
 
   .photos__more-wrap(v-if='hasMore')
     .photos__more( :class='{"_active": isLoading}' )
-        .photos__more__base-ic: span еще
-        .photos__more__anim-ic: i.ic-update
+        .loader-photos
+          app-loader
+        //-.photos__more__base-ic: span еще
+        //-.photos__more__anim-ic: i.ic-update
 
   .photos__no-more-wrap(v-if='itemsLength === 0 && !hasMore')
     .main__bottom.__no-goods: a.link.link_primary(
@@ -19,7 +21,7 @@
       href='#',
       v-if="tags || search" ) Сбросить поиск
 
-scroll-top
+scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMobile}")
 </template>
 
 <script type='text/babel'>
@@ -27,6 +29,7 @@ scroll-top
 
   import scrollTop from 'base/scroll-top/scroll-top.vue';
   import photoItem from './photo-item.vue';
+  import AppLoader from 'base/loader/loader';
 
   import { clearSearch } from 'vuex/actions/search.js';
   import { searchValue, tags, selectedTagsId } from 'vuex/getters/search.js';
@@ -103,6 +106,7 @@ scroll-top
 
     data() {
       return {
+        isMobile: window.browser.mobile,
         styleObject: {
           pointerEvents: 'auto'
         },
@@ -398,6 +402,7 @@ scroll-top
     },
 
     components: {
+      AppLoader,
       photoItem,
       scrollTop
     }

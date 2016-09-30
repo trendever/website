@@ -129,3 +129,14 @@ export const getTooltips = ( { user } ) => {
   return user.tooltips;
 
 }
+
+export const getPayment = ( { user } ) => {
+
+  return user.payment;
+
+}
+
+export const authUserId = ( { user } ) => {
+
+  return user.myId;
+}
