@@ -372,15 +372,15 @@ export function create(product_id) {
  *
  * REJECT (one of ERROR_CODES) {FORBIDDEN, UNATHORIZED}
  */
-export function setEvent(lead_id, event) {
+export function setEvent(lead_id, event, cancel_reason) {
 
   return new Promise( (resolve, reject) => {
 
-    channel.req('event', 'lead', {lead_id, event})
+    channel.req('event', 'lead', {lead_id, event, cancel_reason})
     .then( data => {
       resolve(data.response_map.lead);
     }).catch( error => {
-      
+
       if (error.log_map.code_key === '400') {
         // Not exists or forbiden
         reject(ERROR_CODES.FORBIDDEN);

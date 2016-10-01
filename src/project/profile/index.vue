@@ -2,6 +2,8 @@
 <template lang="jade">
 scroll-component(v-if="isDone", class="profile-cnt")
   header-component(:title='getUserName', :left-btn-show='true')
+    div.profile-right-menu(slot="content", v-if="isMobile && $route.name === 'profile'")
+      i.ic-options_menu(@click="buyTg")
   right-nav-component(current="profile")
 
   .section.top.bottom
@@ -31,10 +33,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
             input(type="radio" value="like" v-model="photoType" id="filter-likes")
             label(for="filter-likes") Мои Тренды
        template(v-if="loaded")
-        .profile_no-goods(v-if="noLikes && noProducts")
+        .profile_no-goods(v-if="noLikes && noProducts && $route.name === 'profile'")
          span.empty Здесь пусто,
          span #[br]... потому что ты пока ничего не сохранил.
-        .profile_no-goods-guest(v-if="noLikes && noProducts && !isSelfPage") Пока здесь пусто ;( #[br] Пользователь еще не добавил #[br] тренды в свою ленту
+        .profile_no-goods-guest(v-if="noLikes && noProducts && $route.name === 'user'") Пока здесь пусто ;( #[br] Пользователь еще не добавил #[br] тренды в свою ленту
         .profile_no-goods-banner(v-if="noLikes && noProducts && isSelfPage") Нажми Сохранить&nbsp
          span под товаром #[br.break_1] или&nbsp
          | напиши&nbsp
@@ -63,7 +65,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
   navbar-component(:current='listId')
 
-  .find-bloger-btn(v-if='isSelfPage && shopId !== 1 && isMobile && show', @click="buyServiceProduct") Найти блогера
+  .find-bloger-btn(v-if='isSelfPage && shopId !== 1 && isMobile && showBloger', @click="buyServiceProduct") Найти блогера
 
 .help-wrapper(v-if='isFirst')
   .attention(v-if='isFirst')
@@ -126,7 +128,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
         noProducts: true,
         loaded: false,
         isMobile: window.browser.mobile,
-        show: true,
+        showBloger: true,
         hiddenCount: 0
       }
     },
@@ -158,12 +160,40 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
 
     },
+    events:{
+      'show-bloger-btn'(){
+        this.$set('showBloger', true);
+      },
+      'hide-bloger-btn'(){
+        this.$set('showBloger', false);
+      }
+    },
     beforeDestroy(){
       if ( this.isAuth ) {
         this.closeProfile();
       }
     },
     methods:{
+      buyTg(){
+        this
+          .createLead( 21499 )
+          .then(
+            ( lead ) => {
+              if ( lead !== undefined && lead !== null ) {
+                this.$router.go( { name: 'chat', params: { id: lead.id } } )
+              }
+            }
+          )
+          .catch(
+            ( error ) => {
+              if ( error === leads.ERROR_CODES.UNATHORIZED ) {
+                this.$router.go( { name: 'signup' } )
+              }
+            }
+          )
+
+      },
+
       buyServiceProduct(){
 
         let productId = config.service_product_id === null ? 7833 : config.service_product_id;

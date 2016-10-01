@@ -51,7 +51,7 @@
     },
     ready(){
 
-     /* new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
+      new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
 
       .on('swipeleft',()=>{
         this.$set('showDelete', true);
@@ -60,15 +60,30 @@
       .on('swiperight',()=>{
         this.$set('showDelete', false);
 
-      });*/
+      });
 
     },
     methods: {
-      deleteChat(){
-        alert(1);
-        return;
 
-        service.deleteChat();
+      deleteChat(){
+
+        if(confirm('Удалить чат?')){
+
+          service.setEvent(this.lead.id,'CANCEL', 1)
+
+          .then(()=> {
+
+            this.$set('showDelete', false);
+            alert('чат удален');
+
+          });
+
+        } else {
+
+          this.$set('showDelete', false);
+
+        }
+
 
       },
       getPhoto() {

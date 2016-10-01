@@ -75,7 +75,7 @@
        .profile-header__mobile-slider-slide
         slider
      .hero__content__logo__mobile
-    .hero__content__description Шопинг в Instagram стал проще!
+    .hero__content__description Шопинг в Instagram #[br] стал проще!
     button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }") ВХОД И РЕГИСТРАЦИЯ
     .hero__content__footer
      .hero__content__footer__social
