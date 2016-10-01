@@ -110,7 +110,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
   export default {
     data(){
-      if (browser.mobile && !browser.standalone){
+      if (browser.mobile && !browser.standalone && !isAuth){
         document.location = 'tndvr://shop/' + this.getUserName;
         setTimeout( function()
         {
