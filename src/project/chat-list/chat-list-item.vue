@@ -73,8 +73,15 @@
 
           .then(()=> {
 
-            this.$set('showDelete', false);
-            alert('чат удален');
+            let customerLeads = this.$store.state.leads.customer;
+            let lead = customerLeads.filter(item=>{
+              return item.id === this.lead.id;
+
+            })
+            //console.log(JSON.parse(JSON.stringify(lead)));
+            let idx = customerLeads.indexOf(lead[0]);
+
+            customerLeads.splice(idx,1);
 
           });
 

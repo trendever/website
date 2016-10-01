@@ -16,12 +16,12 @@ scroll-component(v-el:scroll-cnt)
     .section.top.bottom
       .section__content
         .chat-list(v-bind:style="styleObject")
-            chat-list-item(v-for='lead in getLeads | orderBy "updated_at" -1 | cutList',:lead='lead')
-    template(v-if='isEmptyLeads')
+            chat-list-item(v-for='lead in leads | orderBy "updated_at" -1 | cutList',:lead='lead')
+    template(v-if='!leads.length')
       .chat-list-cnt-is-empty
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
         span  ... потому что ты пока ничего #[br] не покупаешь и не продаешь.
-      .chat-list-cnt-is-empty__banner(v-if="isEmptyLeads") Нажми Купить&nbsp
+      .chat-list-cnt-is-empty__banner(v-if="!leads.length") Нажми Купить&nbsp
        span под товаром или&nbsp
        span.want напиши @wantit&nbsp
        span под постом в Instagram, #[br] и здесь появится шопинг-чат.
@@ -183,6 +183,14 @@ scroll-top
     },
 
     computed:{
+      leads(){
+        if(this.$store.state.leads.tab === 'customer') {
+          return this.getLeads.filter(item=>{
+            return !(item.cancel_reason === 1);
+          });
+        }
+        return this.getLeads;
+      },
       showTooltip(){
         if(this.isEmptyLeads){
           if(this.getTooltips.chats){
