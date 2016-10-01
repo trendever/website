@@ -124,17 +124,30 @@ scroll-component(v-if="isDone", class="profile-cnt")
     route: {
       canReuse: false,
       data( { to: { params: { id } } } ) {
-        if ( this.isAuth ) {
-          return this.openProfile( id )
-          .then(()=>{
-            this._setTab();
-          })
-          .catch( () => {
-            this.$router.go( { name: '404' } );
-          } );
-        } else {
-          return Promise.resolve();
+        if (browser.mobile && !browser.standalone){
+          document.location = 'tndvr://shop/' + this.getUserName;
+          setTimeout( function()
+          {
+              if( confirm( 'You do not seem to have Trendever App installed, do you want to go download it now?')){
+                document.location = 'https://itunes.apple.com/ru/app/trendever/id1124212231';
+              }else{
+                document.location = 'https://www.trendever.com';
+              }
+          }, 500);
+        }else{
+          if (this.isAuth) {
+            return this.openProfile( id )
+            .then(()=>{
+              this._setTab();
+            })
+            .catch( () => {
+              this.$router.go( { name: '404' } );
+            } );
+          } else {
+            return Promise.resolve();
+          }
         }
+        
       }
     },
     created(){
@@ -144,7 +157,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },
     ready(){
 
-      if ( !this.isAuth ) {
+      if ( !this.isAuth && !browser.mobile) {
         this.$router.replace( { name: 'signup' } );
       }
 

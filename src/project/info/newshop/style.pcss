@@ -11,14 +11,14 @@
 				font-size: 28px;
 				font-weight: 600;
 				color: #fff;
-				margin: 4px auto 0px auto;
-				@media(--mobile) {
+				margin: 10px auto 0px auto;
+				@media(--tabletandless) {
 					font-size: 40px;
 					margin: 19px auto 0px auto;
 				}
 			}
 			&__logo{
-				@media(--mobile) {
+				@media(--tabletandless) {
 					display: none;
 				}
 			}
@@ -26,19 +26,22 @@
 		.top{
 			text-align: center;
 			padding: 102px 0px;
-			@media(--mobile) {
+			@media(--tabletandless) {
 				padding: 102px 30px 0px 30px;
 			}
 			&__header{
 				font-size: 60px;
 				color: #595959;
-				margin: 48px auto 0px auto;
-				@media(--mobile) {
-					margin: 50px auto 0px auto;
+				margin: 46px auto 0px auto;
+				font-family: "San Francisco Thin";
+				@media(--tabletandless) {
+					margin: 70px auto 0px auto;
 					font-size: 64px;
 					line-height: 75px;
-					font-family: "San Francisco Thin";
 				}
+			}
+			.header_app{
+				margin: -40px auto 0px auto;
 			}
 			&__logo{
 				background-image: url('./img/Trendever-logo-green.svg');
@@ -46,8 +49,8 @@
 				background-size: 360px;
 				width: 360px;
 				height: 77px;
-				margin: 37px auto 211px auto;
-				@media(--mobile) {
+				margin: 37px auto 206px auto;
+				@media(--tabletandless) {
 					background-size: 450px;
 					width: 450px;
 					height: 96px;
@@ -61,11 +64,11 @@
 					font-size: 60px;
 					color: #595959;
 					margin-bottom: 20px;
-					@media(--mobile) {
+					font-family: "San Francisco Thin";
+					@media(--tabletandless) {
 						font-size: 64px;
 						line-height: 78px;
-						font-family: "San Francisco Thin";
-						br.break_1{
+						br.break_1, br.break_2{
 							display: none;
 						}
 					}
@@ -74,18 +77,32 @@
 					margin-top: 375px;
 					margin-left: 507px;
 					width: 378px;
-					@media(--mobile) {
+					@media(--tabletandless) {
 						margin-top: 0px;
 						margin-left: 0px;
 						width: 100%;
 					}
 				}
 				.how-sell{
-					margin-top: 65px;
+					margin-top: 72px;
 					text-align: center;
+					@media(--tabletandless) {
+						margin-top: 57px;
+					}
 				}
 				.cost{
 					text-align: center;
+					margin-bottom: 8px;
+					margin-top: 300px;
+					@media(--tabletandless) {
+						margin-top: 0px;
+					}
+				}
+				.blog{
+					margin-top: 408px;
+					@media(--tabletandless) {
+						margin-top: 0px;
+					}
 				}
 				&__paragraph{
 					font-size: 24px;
@@ -94,23 +111,33 @@
 					position: relative;
 					margin-bottom: 22px;
 					font-family: "San Francisco Light";
-					@media(--mobile) {
+					@media(--tabletandless) {
 						font-size: 36px;
 						display: block;
 						line-height: 55px;
-						br.break_4, br.break_6{
-							display: none;
-						}
-					}
-					br.break_2, br.break_3, br.break_5, br.break_7{
-						display: none;
 					}
 					&:before{
 						content: url(./img/point.svg);
 						position: absolute;
-						width: 33px;
-						height: 25px;
+						width: 24px;
+						height: 18px;
 						left: 0;
+						@media(--tabletandless) {
+							width: 33px;
+							height: 25px;
+						}
+					}
+				}
+
+				br.break_desk{
+					display: none;
+				}
+				@media(--tabletandless) {
+					br.break_mob{
+						display: none;
+					}
+					br.mob{
+						display: inline-block;
 					}
 				}
 				.want{
@@ -119,40 +146,47 @@
 				&__slide{
 					background-image: url(./img/mob_1_desktop.png);
 					background-repeat: no-repeat;
-					width: 490px;
-					height: 714px;
+					width: 472px;
+					height: 727px;
 					position: absolute;
-					top: -150px;
+					top: -170px;
 					right: -50px;
-					@media(--mobile) {
+					@media(--tabletandless) {
 						position: relative;
 						background-image: url('./img/mob_1.png');
 						background-repeat: no-repeat;
 						width: 580px;
 						height: 888px;
-						margin: 55px 0px 79px;
+						margin: 55px 0px 81px;
 						top: 0;
 						right: 0;
 					}
 				}
 				&__advant-box{
-					background-image: url(./img/advant_box.png);
-					background-repeat:no-repeat;
-					width: 703px;
-					height: 202px;
-					margin-left: -10px;
-					margin-bottom: 71px;
-					margin-top: -2px;
+					background-image: url(./img/advant_box_desktop.png);
+					background-repeat: no-repeat;
+					width: 483px;
+					height: 133px;
+					margin-left: 507px;
+					@media(--tabletandless) {
+						background-image: url(./img/advant_box.png);
+						background-repeat:no-repeat;
+						width: 703px;
+						height: 202px;
+						margin-left: -10px;
+						margin-bottom: 71px;
+						margin-top: -3px;
+					}
 				}
 				&__slide-2{
 					background-image: url(./img/mob_2_desktop.png);
 					background-repeat: no-repeat;
 					margin-top: 215px;
-					width: 475px;
-					height: 713px;
+					width: 940px;
+					height: 737px;
 					position: absolute;
-					top: 460px;
-					@media(--mobile) {
+					top: 376px;
+					@media(--tabletandless) {
 						position: relative;
 						background-image: url(./img/mob_2.png);
 						background-repeat: no-repeat;
@@ -168,9 +202,7 @@
 					font-size: 38px;
 					font-family: GradeFive;
 					color: #31BEBC;
-					margin-bottom: 58px;
-					margin-left: 507px;
-					@media(--mobile) {
+					@media(--tabletandless) {
 						font-size: 54px;
 						text-align: center;
 						margin-left: 0px;
@@ -178,10 +210,9 @@
 				}
 				&__desc{
 					text-align: center;
-					font-size: 54px;
+					font-size: 38px;
 					font-family: GradeFive;
 					color: #31BEBC;
-					margin-bottom: 46px;
 					.bonus{
 						font-weight: bolder;
 
@@ -194,29 +225,60 @@
 
 				}
 				&__slide-3{
-					position: relative;
-					background-image: url(./img/mob_3.png);
+					background-image: url(./img/mob_3_desktop.png);
 					background-repeat: no-repeat;
-					width: 671px;
-					height: 1055px;
-					margin: 40px auto 65px auto;
+					width: 900px;
+					height: 727px;
+					position: absolute;
+					top: 1353px;
+					right: 0;
+					@media(--tabletandless) {
+						position: relative;
+						background-image: url(./img/mob_3.png);
+						background-repeat: no-repeat;
+						width: 671px;
+						height: 1055px;
+						margin: 37px auto 65px auto;
+						top: 0;
+					}
 				}
 				&__prices-block{
 					&__box{
 						text-align: center;
 						&__price{
-							font-size: 80px;
+							font-size: 60px;
 							color: #31BEBC;
 							font-family: "San Francisco Semibold";
-							.ic-currency-rub{
-								font-size: 52px;
-								padding-top: 22px;
-								padding-left: 5px;
+							@media(--tabletandless) {
+								font-size: 80px;
+							}
+							.ic-rub{
+								padding-top: 25px;
+								font-size: 33px;
 								font-family: "San Francisco Bold";
+								@media(--tabletandless) {
+									font-size: 43px;
+									padding-top: 35px;
+								}
 							}
 							.percent{
-								font-size: 80px;
+								font-size: 49px;
 								font-family: "San Francisco Semibold";
+								@media(--tabletandless) {
+									font-size: 61px;
+								}
+							}
+							span {
+								font-size: 46px;
+								@media(--tabletandless) {
+									font-size: 64px;
+								}
+							}
+							span:nth-child(4) {
+								font-size: 60px;
+								@media(--tabletandless) {
+									font-size: 80px;
+								}
 							}
 						}
 						&__description{
@@ -237,110 +299,195 @@
 				}
 				&__sub-title{
 					text-align: center;
-					font-size: 36px;
+					font-size: 24px;
 					color: #595959;
 					margin-top: -25px;
-					margin-bottom: 75px;
+					margin-bottom: 53px;
 					font-family: "San Francisco Light";
+					@media(--tabletandless) {
+						font-size: 36px;
+					}
 				}
 				&__list-title{
-					font-size: 54px;
+					font-size: 46px;
 					color: #595959;
 					margin-bottom: 24px;
 					font-family: "San Francisco Light";
+					@media(--tabletandless) {
+						font-size: 54px;
+					}
 				}
 				&__list-description{
 					padding-left: 150px;
-					font-size: 36px;
+					font-size: 24px;
 					color: #595959;
 					//margin-bottom: 120px;
-					line-height: 55px;
 					font-family: "San Francisco Light";
+					@media(--tabletandless) {
+						font-size: 36px;
+						line-height: 55px;
+					}
 				}
 				.download{
 					background-image: url(./img/download.png);
 					background-repeat: no-repeat;
 					background-size: 109px;
-					background-position: 0px 15px;
 					margin-bottom: 90px !important;
+					height: 176px;
+					@media(--tabletandless) {
+						height: auto;
+						background-position: 0px 15px;
+					}
 				}
 				.download-btns{
 					padding-left: 0px;
-					margin-top: 40px;
-					margin-left: -60px;
+					margin-top: 30px;
+					margin-left: 0px;
+					@media(--tabletandless) {
+						margin-left: -60px;
+						margin-top: 40px;
+					}
 					.app_store{
-						width: 245px;
-						height: 70px;
+						width: 140px;
+						height: 40px;
 						background-image: url(./img/app_store.png);
 						background-repeat: no-repeat;
 						margin-right: 12px;
+						background-size: 140px;
+						@media(--tabletandless) {
+							width: 245px;
+							height: 70px;
+							background-size: 245px;
+						}
 					}
 					.g_play{
-						width: 204px;
-						height: 70px;
+						width: 117px;
+						height: 40px;
 						background-image: url(./img/g_play.png);
 						background-repeat: no-repeat;
+						background-size: 117px;
+						@media(--tabletandless) {
+							width: 204px;
+							height: 70px;
+							background-size: 204px;
+						}
 					}
 				}
 				.add-goods{
 					background-image: url(./img/add-goods.png);
 					background-repeat: no-repeat;
-					background-position: 0px 10px;
 					letter-spacing: -1px;
-					margin-bottom: 30px;
+					margin-bottom: 95px;
+					height: 173px;
+					background-size: 105px;
+					@media(--tabletandless) {
+						height: auto;
+						background-position: 0px 10px;
+						background-size: 120px 212px;
+					}
 				}
 				.wantit, .wantit2{
 					display: inline-block;
-					padding-left: 30px;
-					margin-top: 28px;
-					margin-bottom: 35px;
+					width: 100%;
+					padding-left: 15px;
+					margin-top: 16px;
+					margin-bottom: 16px;
 					//border-left: 2px solid #31BEBC;
 					position: relative;
 
 					&:before{
 						content: '';
 						position: absolute;
-						top: 15px;
+						top: 0px;
 						left: 0;
-						width: 3px;
-						height: 84px;
+						width: 2px;
+						height: 50px;
 						background-color: #31BEBC;
+						@media(--tabletandless) {
+							width: 3px;
+							height: 84px;
+							top: 15px;
+							//padding-left: 30px;
+						}
 					}
+					@media(--tabletandless) {
+						margin-top: 28px;
+						margin-bottom: 35px;
+					}
+				}
+				.block{
+					display: block;
+					width: 455px;
 				}
 				.wantit{
 					&:before{
 						content: '';
 						position: absolute;
-						top: 15px;
+						top: 4px;
 						left: 0;
-						width: 3px;
-						height: 139px;
+						width: 2px;
+						height: 50px;
 						background-color: #31BEBC;
+						@media(--tabletandless) {
+							width: 3px;
+							height: 139px;
+							top: 15px;
+						}
 					}
 				}
 				&__add-goods-slide{
-					width: 555px;
-					height: 555px;
+					width: 300px;
+					height: 300px;
 					margin: 0 auto;
 					background-image: url(./img/add-goods-slide.png);
 					background-repeat: no-repeat;
-					margin-bottom: 90px;
+					position: absolute;
+					bottom: 550px;
+					right: 0;
+					background-size: 300px;
+					@media(--tabletandless) {
+						position: relative;
+						margin-bottom: 83px;
+						width: 555px;
+						height: 555px;
+						background-size: 555px;
+						margin: 0 auto 83px auto;
+						bottom: 0;
+					}
 				}
 				.padding{
-					padding-left: 50px;
+					@media(--tabletandless) {
+						padding-left: 50px;
+					}
 				}
 				.tell-clients{
 					background-image: url(./img/tell-clients.png);
 					background-repeat: no-repeat;
-					background-position: 0px 10px;
-					margin-bottom: 44px;
+					margin-bottom: 64px;
+					height: 220px;
+					@media(--tabletandless) {
+						background-position: 0px 10px;
+						margin-bottom: 64px;
+						height: auto;
+					}
 				}
 				&__tell-clients-slide{
-					width: 555px;
-					height: 555px;
+					width: 300px;
+					height: 300px;
 					background-image: url(./img/tell-clients-slide.png);
 					background-repeat: no-repeat;
-					margin: 0 auto 100px auto;
+					background-size: 300px;
+					position: absolute;
+					bottom: 200px;
+					right: 0;
+					@media(--tabletandless) {
+						position: relative;
+						bottom: 0;
+						width: 555px;
+						height: 555px;
+						margin: 0 auto 100px auto;
+						background-size: 555px;
+					}
 				}
 				.done{
 					margin-bottom: 200px;
