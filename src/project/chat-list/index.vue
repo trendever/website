@@ -201,7 +201,13 @@ scroll-top
         return false;
       }
     },
+    events:{
+      'closeDeleteLead'(){
 
+        this.$broadcast('closeDelete');
+
+      }
+    },
     methods: {
       panup(e){
         this.$els.scrollCnt.scrollTop = this.currentPan + Math.abs(e.deltaY);

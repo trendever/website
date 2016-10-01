@@ -29,6 +29,7 @@
   import * as service from 'services/leads';
   import { getNotifyCountList, getLastMessage } from 'vuex/getters/lead.js';
   import Hammer from 'hammerjs';
+  import { getTab } from 'vuex/getters/lead';
 
   export default {
     data(){
@@ -46,22 +47,33 @@
     vuex: {
       getters: {
         getNotifyCountList,
-        getLastMessage
+        getLastMessage,
+        getTab
       }
     },
     ready(){
+      if( this.getTab === 'customer') {
+        new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
 
-      new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
+        .on('swipeleft',()=>{
+          this.$dispatch('closeDeleteLead');
+          this.$set('showDelete', true);
 
-      .on('swipeleft',()=>{
-        this.$set('showDelete', true);
+        })
+        .on('swiperight',()=>{
 
-      })
-      .on('swiperight',()=>{
-        this.$set('showDelete', false);
+          this.$set('showDelete', false);
 
-      });
+        });
+      }
 
+    },
+    events: {
+      'closeDelete'(){
+        if(this.showDelete){
+          this.$set('showDelete', false)
+        }
+      }
     },
     methods: {
 
