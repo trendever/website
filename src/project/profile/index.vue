@@ -108,6 +108,17 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
   export default {
     data(){
+      if (browser.mobile && !browser.standalone){
+        document.location = 'tndvr://shop/' + this.getUserName;
+        setTimeout( function()
+        {
+            if( confirm( 'You do not seem to have Trendever App installed, do you want to go download it now?')){
+              document.location = 'https://itunes.apple.com/ru/app/trendever/id1124212231';
+            }else{
+              document.location = 'https://www.trendever.com';
+            }
+        }, 500);
+      }
       return {
         isFirst: false,
         photoType: '',
