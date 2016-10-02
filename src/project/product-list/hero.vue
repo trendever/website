@@ -27,7 +27,7 @@
     a(class='profile-header__menu-link',
       v-link='{name: "info-user"}') Покупателям
     a(class='profile-header__menu-link',
-      v-link='{name: "info-shop"}') Магазинам
+      v-link='{name: "info-newshop"}') Магазинам
     a(class='profile-header__menu-link',
       @click="onBuyPromoProduct()") Блогерам
     a(class='profile-header__menu-link',
@@ -58,7 +58,7 @@
     a(class='profile-header__menu-link',
       v-link='{name: "info-user"}') Покупателям
     a(class='profile-header__menu-link',
-      v-link='{name: "info-shop"}') Магазинам
+      v-link='{name: "info-newshop"}') Магазинам
     a(class='profile-header__menu-link',
       @click="onBuyPromoProduct()") Блогерам
     a(class='profile-header__menu-link',
@@ -69,14 +69,15 @@
   .section__content.hero__content(:class="{'cnt_app': isStandalone}", v-el:hero-one)
     .profile-header
       .profile-header__center
-      button(v-link='{ name: "info-shop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
+      button(v-link='{ name: "info-newshop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
       button(v-link='{ name: "signup" }').profile-header__auth-btn ВХОД И РЕГИСТРАЦИЯ
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
         slider
      .hero__content__logo__mobile
-    .hero__content__description Шопинг в Instagram стал проще!
-    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }") ВХОД И РЕГИСТРАЦИЯ
+    .hero__content__description Шопинг в Instagram #[br] стал проще!
+    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }" v-if="isStandalone") ВХОД И РЕГИСТРАЦИЯ
+    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'app' }" v-else) СКАЧАТЬ ПРИЛОЖЕНИЕ
     .hero__content__footer
      .hero__content__footer__social
       a(href='https://www.fb.com/trendevercom', class='fb' target="_blank")
@@ -100,7 +101,7 @@
    .caption__play__mobile(v-link='{name: "main-video"}')
      i.ic-play
     .caption__description__mobile(v-link='{name: "main-video"}') (смотреть видео)
-    button(v-link='{ name: "info-shop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
+    button(v-link='{ name: "info-newshop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends ЗАГЛЯНУТЬ ВНУТРЬ
 </template>
 
@@ -189,9 +190,7 @@ export default {
   },
   computed: {
       isStandalone(){
-        //alert(navigator.standalone)
         return browser.standalone
-        //return navigator.standalone
       },
       getLinkTitle(){
         if (this.phoneError){
@@ -330,10 +329,6 @@ export default {
           }, 1 );
         }
       }*/
-    },
-
-    isStandalone(){
-      return browser.standalone
     }
   },
 };

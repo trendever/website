@@ -69,9 +69,9 @@
         return this.getShopName;
       },
       getUsername() {
-        //сервисные сообщния
+        //сервисные сообщения
         if(this.msg.user.name === 'trendever'){
-          return 'trendever';
+          return '<b>trendever</b>';
         }
         if (this.isCustomer) {
           return `<b>${this.msg.user.name}</b>`

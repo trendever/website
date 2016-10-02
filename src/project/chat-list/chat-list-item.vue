@@ -29,6 +29,7 @@
   import * as service from 'services/leads';
   import { getNotifyCountList, getLastMessage } from 'vuex/getters/lead.js';
   import Hammer from 'hammerjs';
+  import { getTab } from 'vuex/getters/lead';
 
   export default {
     data(){
@@ -46,29 +47,62 @@
     vuex: {
       getters: {
         getNotifyCountList,
-        getLastMessage
+        getLastMessage,
+        getTab
       }
     },
     ready(){
+      if( this.getTab === 'customer') {
+        new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
 
-     /* new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
+        .on('swipeleft',()=>{
+          this.$dispatch('closeDeleteLead');
+          this.$set('showDelete', true);
 
-      .on('swipeleft',()=>{
-        this.$set('showDelete', true);
+        })
+        .on('swiperight',()=>{
 
-      })
-      .on('swiperight',()=>{
-        this.$set('showDelete', false);
+          this.$set('showDelete', false);
 
-      });*/
+        });
+      }
 
     },
+    events: {
+      'closeDelete'(){
+        if(this.showDelete){
+          this.$set('showDelete', false)
+        }
+      }
+    },
     methods: {
-      deleteChat(){
-        alert(1);
-        return;
 
-        service.deleteChat();
+      deleteChat(){
+
+        if(confirm('Удалить чат?')){
+
+          service.setEvent(this.lead.id,'CANCEL', 1)
+
+          .then(()=> {
+
+            let customerLeads = this.$store.state.leads.customer;
+            let lead = customerLeads.filter(item=>{
+              return item.id === this.lead.id;
+
+            })
+            //console.log(JSON.parse(JSON.stringify(lead)));
+            let idx = customerLeads.indexOf(lead[0]);
+
+            customerLeads.splice(idx,1);
+
+          });
+
+        } else {
+
+          this.$set('showDelete', false);
+
+        }
+
 
       },
       getPhoto() {
