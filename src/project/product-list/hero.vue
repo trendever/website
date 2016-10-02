@@ -27,7 +27,7 @@
     a(class='profile-header__menu-link',
       v-link='{name: "info-user"}') Покупателям
     a(class='profile-header__menu-link',
-      v-link='{name: "info-shop"}') Магазинам
+      v-link='{name: "info-newshop"}') Магазинам
     a(class='profile-header__menu-link',
       @click="onBuyPromoProduct()") Блогерам
     a(class='profile-header__menu-link',
@@ -58,7 +58,7 @@
     a(class='profile-header__menu-link',
       v-link='{name: "info-user"}') Покупателям
     a(class='profile-header__menu-link',
-      v-link='{name: "info-shop"}') Магазинам
+      v-link='{name: "info-newshop"}') Магазинам
     a(class='profile-header__menu-link',
       @click="onBuyPromoProduct()") Блогерам
     a(class='profile-header__menu-link',
@@ -69,7 +69,7 @@
   .section__content.hero__content(:class="{'cnt_app': isStandalone}", v-el:hero-one)
     .profile-header
       .profile-header__center
-      button(v-link='{ name: "info-shop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
+      button(v-link='{ name: "info-newshop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
       button(v-link='{ name: "signup" }').profile-header__auth-btn ВХОД И РЕГИСТРАЦИЯ
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
@@ -100,7 +100,7 @@
    .caption__play__mobile(v-link='{name: "main-video"}')
      i.ic-play
     .caption__description__mobile(v-link='{name: "main-video"}') (смотреть видео)
-    button(v-link='{ name: "info-shop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
+    button(v-link='{ name: "info-newshop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends ЗАГЛЯНУТЬ ВНУТРЬ
 </template>
 

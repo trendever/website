@@ -1,18 +1,14 @@
 <style src="./style.pcss"></style>
 <template lang="jade">
 scroll-component
+  header-component(
+    :title='"Брендам"',
+    :back-link='{name: "home"}',
+    :center-text-link="centerTextLink",
+    :page="info",
+    :show-desktop-arrow="false")
+    right-nav-component(slot="content", current="")
   .section__content
-    .section.header
-      .section__content.header__content.u-fixed
-        .wrapper
-          .header__arrow(v-if='!isAuth', @click='goBack()')
-            i.header__arrow__ic.ic-arrow-left
-          .header__logo
-            a(v-link='{ name: "home" }', v-if="!isMobile")
-              img(src='../../../base/img/logo-main.svg' alt='')
-          .header__title Брендам
-          right-nav-component(current="feed", v-if="!isMobile")
-
     .section.top
      .section.top__header(:class="{'header_app': isStandalone}") Хочешь быть успешным в Instagram?
      .section.top__logo
