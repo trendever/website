@@ -10,7 +10,7 @@ scroll-component
     right-nav-component(slot="content", current="")
   .section__content
     .section.top
-     .section.top__header(:class="{'header_app': isStandalone}") Хочешь быть успешным в Instagram?
+     .section.top__header Хочешь быть успешным в Instagram?
      .section.top__logo
      .section.top__info-block
       .section.top__info-block__title Преврати #[br.break_1] свой Instagram #[br.break_2] в настоящий магазин
@@ -80,9 +80,7 @@ scroll-component
 
   export default {
     data(){
-      return {
-        isStandalone: browser.standalone
-      }
+      return {}
     },
 
     vuex: {
@@ -101,9 +99,9 @@ scroll-component
         return window.browser.mobile;
       },
       isStandalone(){
+        return true;
         return browser.standalone
       },
-
     },
 
     methods: {
@@ -131,9 +129,6 @@ scroll-component
           );
 
         }
-      },
-      isStandalone(){
-        return browser.standalone
       }
     },
 
