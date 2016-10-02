@@ -62,7 +62,8 @@ scroll-component
       .section.top__info-block__tell-clients-slide
       .section.top__info-block__desc.done Готово! #[br] Принимай заказы #[br.break_desk.mob] в одном приложении #[br] и получи доступ к клиентам #[br.break_desk.mob] всех Instagram-магазинов
       .section.top__info-block__download-btn 
-       button(v-if="isMobile") СКАЧАТЬ ПРИЛОЖЕНИЕ
+       button(v-if="isMobile && !isStandalone" @click="dlapp") СКАЧАТЬ ПРИЛОЖЕНИЕ
+       button(v-if="isStandalone && !isAuth" v-link='{ name: "signup" }') ВХОД И РЕГИСТРАЦИЯ
 
 </template>
 <script>
@@ -100,14 +101,15 @@ scroll-component
         return window.browser.mobile;
       },
       isStandalone(){
-        //alert(navigator.standalone)
         return browser.standalone
-        //return navigator.standalone
       },
 
     },
 
     methods: {
+      dlapp(){
+        window.location = "https://itunes.apple.com/ru/app/trendever/id1124212231";
+      },
       goBack(){
         history.back();
       },
@@ -131,8 +133,8 @@ scroll-component
         }
       },
       isStandalone(){
-      return browser.standalone
-    }
+        return browser.standalone
+      }
     },
 
     components: {
