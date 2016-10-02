@@ -45,12 +45,6 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscrib//e") ПОДПИСАТЬСЯ
 
-        //.profile_settings_btn
-        //a(href="#")
-        //img(src="icons/cogwheel.png")
-
-
-
       //- лайки
       photos-component(
         v-if="photoType === 'like'",
