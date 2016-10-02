@@ -76,7 +76,8 @@
         slider
      .hero__content__logo__mobile
     .hero__content__description Шопинг в Instagram #[br] стал проще!
-    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }") ВХОД И РЕГИСТРАЦИЯ
+    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }" v-if="isStandalone") ВХОД И РЕГИСТРАЦИЯ
+    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'app' }" v-else) СКАЧАТЬ ПРИЛОЖЕНИЕ
     .hero__content__footer
      .hero__content__footer__social
       a(href='https://www.fb.com/trendevercom', class='fb' target="_blank")
@@ -189,9 +190,7 @@ export default {
   },
   computed: {
       isStandalone(){
-        //alert(navigator.standalone)
         return browser.standalone
-        //return navigator.standalone
       },
       getLinkTitle(){
         if (this.phoneError){
@@ -330,10 +329,6 @@ export default {
           }, 1 );
         }
       }*/
-    },
-
-    isStandalone(){
-      return browser.standalone
     }
   },
 };

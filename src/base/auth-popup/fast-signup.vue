@@ -6,9 +6,9 @@ div(class="popup" v-if="show")
         | КАК ЭТО РАБОТАЕТ?
     .column-desktop-50.column-desktop-left
       .container-left
-        button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }") ВХОД И РЕГИСТРАЦИЯ
-        .link-container
-          a.link-bottom( v-link="{ name: 'signup' }", href='') Зачем мне это?
+        button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'app' }" v-if="isMobile && !isStandalone") СКАЧАТЬ ПРИЛОЖЕНИЕ
+        button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }" v-else) ВХОД И РЕГИСТРАЦИЯ
+        
 </template>
 
 <script type="text/babel">
@@ -28,6 +28,12 @@ div(class="popup" v-if="show")
       }
     },
     computed:{
+      isMobile(){
+        return browser.mobile;
+      },
+      isStandalone(){
+        return browser.standalone;
+      },
       show() {
         return !this.isAuth && !this.isException
       },
