@@ -8,7 +8,7 @@ scroll-component
     :page="info",
     :show-desktop-arrow="false")
     right-nav-component(slot="content", current="")
-  .section__content
+  .section__content.infonewshops
     .section.top
      .section.top__header Хочешь быть успешным в Instagram?
      .section.top__logo
