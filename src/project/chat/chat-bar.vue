@@ -3,7 +3,7 @@
 
 div
   .chat-approve-btn.noaction(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat') ПОДТВЕРДИТЬ
-  .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay'")
+  .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay' && getAction !== 'pendingpayment' ")
     .chat-bar_menu-btn(@click.stop='setShowMenu(true)')
       i.ic-chat_menu
     .chat-bar_input

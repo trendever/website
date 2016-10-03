@@ -101,13 +101,12 @@ export default{
         let oldCard = this.userCards.find(card=>{
           return card.number === getlastFour(this.currentCardNumber);
         })
-
         if(oldCard){
           this.$set('selectedCardId',oldCard.id);
         } 
-
       }
 
+      //Добавление пробелов в инпут
       var result = '';
       var last_one = 0;
       for (var i = 0; i < e.target.value.length; i++){
@@ -157,10 +156,12 @@ export default{
         .then(data=>{
           if(data.success){
             this.currentCardId = data.id;
+            this.selectedCardId = this.currentCardId
+            this.userCards.push({id:data.id,name:data.name,number:getlastFour(this.currentCardNumber)})
             this.makeOrder();
           }
         },err=>{
-          this.setMessage('Не валидный RPC')
+          this.setMessage('Ошибка в номере карты')
           console.log(err);
           return false;
         });
@@ -200,7 +201,7 @@ export default{
       }).then((order)=>{
         this.$router.go(window.history.back());
       },err=>{
-        this.setMessage('Укажите цену');
+        this.setMessage('Ошибка сервера, обратитесь в поддержку');
       });
     },
     //метод не используется в компоненте

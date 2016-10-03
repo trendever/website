@@ -4,10 +4,6 @@ div
   .loader-center(v-if="imgLoader"): app-loader
   menu-component(v-if='getShowMenu && !getShowStatusMenu')
     div.menu-items(slot='items')
-      .menu_i(v-if='false')
-        .menu_i_t Перечислить деньги
-      .menu_i(v-if='false')
-        .menu_i_t Выставить счет
 
       .menu_i(v-if='canCallCustomer', @click='callCustomer()')
         .menu_i_t Позвать покупателя в чат
@@ -18,7 +14,7 @@ div
       .menu_i(v-if='isAdmin', @click='setShowStatusMenu(true)')
         .menu_i_t Изменить статус заказа
 
-      .menu_i(@click='openPayment()')
+      .menu_i(@click='openPayment()' v-if="noActivePayments")
         .menu_i_t Запросить деньги
 
       label(class='menu_i menu_i-send-file') Отправить фото
@@ -45,6 +41,7 @@ div
     getShowStatusMenu,
     getInviteShop,
     getInviteCustomer,
+    getAction,
     imgLoader,
   } from 'vuex/getters/chat.js';
 
@@ -82,6 +79,7 @@ div
         getShowStatusMenu,
         getInviteShop,
         getInviteCustomer,
+        getAction,
       }
     },
     data(){
@@ -91,6 +89,7 @@ div
     },
     ready(){
       let scrollCnt = document.querySelector('.scroll-cnt');
+
       this.outerCloseMenu = listen(scrollCnt, 'click',(e)=>{
 
         targetClass(e, 'menu-cnt', ()=>{
@@ -177,6 +176,11 @@ div
     },
 
     computed: {
+      noActivePayments(){
+        console.log("NO ACTIVE")
+        console.log(this.getAction !== 'pendingpayment');
+        return this.getAction !== 'pendingpayment';
+      },
       isAdmin() {
         console.log(this.getCurrentMember.role);
         return !!(this.getCurrentMember.role === leads.USER_ROLES.SUPPLIER.key
