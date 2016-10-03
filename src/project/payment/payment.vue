@@ -25,7 +25,7 @@
 
       .check-card
         div
-          .check-card-text Выберите карту#[br(v-if="isMobile")] куда будут зачислены деньги
+          .check-card-text Выберите карту, #[br(v-if="isMobile")] куда будут зачислены деньги
           .check-card-select-wrap
             i.ic-check-card
               img(src='icons/card_1.png').ic-card_1
@@ -41,7 +41,7 @@
                onkeypress='return event.charCode >= 48 && event.charCode <= 57',
                v-on:input="onChangeNumber").check-card-input
           h1(v-if="selectedCardId > 0") **** **** **** {{ currentCardNumber }}
-      p.payment-note
+      p.payment-note(:class="{'pay_note_app': isStandalone}")
         | Деньги будут перечислены на#[br(v-if="isMobile")] твою карту за вычетом#[br(v-if="!isMobile")] комиссии -#[br(v-if="isMobile")] 1.48%, но не менее 50 руб. Payture.ru
       img.note-img(src='img/pay_cards.svg' v-if="isMobile")
 
@@ -70,6 +70,7 @@ export default{
   data(){
     return {
       isMobile: window.browser.mobile,
+      isStandalone: browser.standalone,
       activateInput: false,
       //error
       errorMessage: '',
@@ -81,6 +82,12 @@ export default{
       userCards: [],
       selectedCardId: 0
     }
+  },
+
+  computed: {
+    isStandalone() {
+      return browser.standalone
+    },
   },
   ready() {
     this.setOpen();
