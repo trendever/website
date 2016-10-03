@@ -127,7 +127,6 @@ export const authUser = ( { dispatch }, user, token ) => {
 export const openProfile = ( { dispatch, state }, id ) => {
 
   return new Promise( ( resolve, reject ) => {
-
     if ( typeof id === 'undefined' ) {
 
       dispatch( types.USER_SET_PROFILE, id );
@@ -146,6 +145,7 @@ export const openProfile = ( { dispatch, state }, id ) => {
         instagram_name: getUserName( state )
       }
     };
+    
 
     if ( typeof id === 'string' ) {
 
