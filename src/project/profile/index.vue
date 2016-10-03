@@ -118,7 +118,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
       canReuse: false,
       data( { to: { params: { id } } } ) {
         if (browser.mobile && !browser.standalone){
-          document.location = 'tndvr://shop/' + this.getUserName;
+          document.location = 'tndvr://';
         }
 
         return this.openProfile( id )
