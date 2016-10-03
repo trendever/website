@@ -16,6 +16,11 @@
   .btn-payment(@click="pay") 
     span ОТПРАВИТЬ {{getAmmount}}₽
   .btn-cancel(@click="cancel") <i class="ic-close"></i>
+
+.chat-pending-btn(v-if='showPendingButton' )
+  .btn-payment 
+    span ЗАПРОШЕНО {{getAmmount}}₽
+  .btn-cancel(@click="cancel") <i class="ic-close"></i>
     
 </template>
 
@@ -33,6 +38,9 @@
     data() {
       if (!this.msg.parts[1] && this.msg.user.user_id !== this.getCurrentMember.user_id){
         this.setConversationAction("pay");
+      }
+      if (!this.msg.parts[1] && this.msg.user.user_id === this.getCurrentMember.user_id){
+        this.setConversationAction("pendingpayment");
       }
       return {
         canceled: false
@@ -135,6 +143,13 @@
           return this.msg.user.user_id !== this.$store.state.user.myId && !this.isDone;
         }else{
           return this.getCustomerId === this.$store.state.user.myId && !this.isDone;
+        }
+      },
+      showPendingButton(){
+        if (this.msg.user.role === 1){
+          return this.msg.user.user_id === this.$store.state.user.myId && !this.isDone;
+        }else{
+          return this.getCustomerId !== this.$store.state.user.myId && !this.isDone;
         }
       },
       getUsername() {
