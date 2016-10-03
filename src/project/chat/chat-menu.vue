@@ -17,6 +17,9 @@ div
       .menu_i(@click='openPayment()' v-if="noActivePayments")
         .menu_i_t Запросить деньги
 
+      .menu_i(@click='openPayon()' v-if="noActivePayments")
+        .menu_i_t Посмотреть страницу оплаты
+
       label(class='menu_i menu_i-send-file') Отправить фото
         input(type='file', hidden, @change='selectedFile')
 
@@ -108,6 +111,9 @@ div
       openPayment(){
         this.setPayment({shopId: this.paymentShopId(),leadId: this.getLeadId});
         this.$router.go( { name: 'payment'} );
+      },
+      openPayon(){
+        window.location = "https://dev.trendever.com/payon";
       },
       paymentShopId(){
         //если простой покупатель
