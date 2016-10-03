@@ -178,7 +178,7 @@ export const browser = {
   chrome: /chrome/i.test(_ua),
   chrome_mobile: /CriOS/i.test(_ua),
   safari: (!(/chrome/i.test(_ua)) && /webkit|safari|khtml/i.test(_ua)),
-  standalone: (/iphone|ipod|ipad/.test(_ua) && !standalone && !/safari/.test(_ua)),
+  standalone: (/iphone|ipod|ipad/.test(_ua) && !standalone && !/safari/.test(_ua) || /androidapp/.test(_ua)),
   iphone: /iphone/i.test(_ua),
   ipod: /ipod/i.test(_ua),
   iphone4: /iphone.*OS 4/i.test(_ua),
