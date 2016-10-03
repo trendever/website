@@ -136,6 +136,8 @@ export const getShowMenu = ( { conversation } ) => conversation.showMenu;
 
 export const getShowStatusMenu = ( { conversation } ) => conversation.showStatusMenu;
 
+export const getShowCancelMenu = ( { conversation } ) => conversation.showCancelMenu;
+
 export const getStatus = ( state ) => {
 
   const lead = getLeadByConversationId( state, state.conversation.id );
