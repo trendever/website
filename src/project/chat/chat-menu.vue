@@ -29,6 +29,7 @@ div
         .menu_i_t.__txt-green Отмена
 
   chat-menu-status( v-if='getShowStatusMenu')
+  chat-menu-cancel( v-if='getShowCancelMenu')
 
 </template>
 
@@ -42,6 +43,7 @@ div
     getLeadId,
     getShowMenu,
     getShowStatusMenu,
+    getShowCancelMenu,
     getInviteShop,
     getInviteCustomer,
     getAction,
@@ -54,6 +56,7 @@ div
   import {
     setShowMenu,
     setShowStatusMenu,
+    setShowCancelMenu,
     addPreLoadMessage
   } from 'vuex/actions/chat.js';
   import * as leads from 'services/leads';
@@ -62,6 +65,7 @@ div
 
   import MenuComponent from 'base/menu/menu.vue';
   import ChatMenuStatus from './chat-menu-status.vue';
+  import ChatMenuCancel from './chat-menu-cancel.vue';
   import AppLoader from 'base/loader/loader';
 
   export default{
@@ -70,6 +74,7 @@ div
         setConversationImgLoader,
         setShowMenu,
         setShowStatusMenu,
+        setShowCancelMenu,
         addPreLoadMessage,
         setPayment
       },
@@ -80,6 +85,7 @@ div
         getLeadId,
         getShowMenu,
         getShowStatusMenu,
+        getShowCancelMenu,
         getInviteShop,
         getInviteCustomer,
         getAction,
@@ -98,6 +104,8 @@ div
         targetClass(e, 'menu-cnt', ()=>{
           if(getShowMenu) {
              this.setShowMenu(false);
+             this.setShowStatusMenu(false);
+             this.setShowCancelMenu(false);
           }
 
         });
@@ -208,7 +216,8 @@ div
     components: {
       AppLoader,
       MenuComponent,
-      ChatMenuStatus
+      ChatMenuStatus,
+      ChatMenuCancel
     }
 
   }
