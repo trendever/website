@@ -5,6 +5,7 @@ import {
   CONVERSATION_LOAD_MESSAGE,
   CONVERSATION_SET_SHOW_MENU,
   CONVERSATION_SET_SHOW_STATUS_MENU,
+  CONVERSATION_SET_SHOW_CANCEL_MENU,
   CONVERSATION_CONFIRM_MSG,
   CONVERSATION_CONFIRM_STATUS_MSG,
   CONVERSATION_CLOSE,
@@ -550,6 +551,12 @@ export const setShowMenu = ( { dispatch }, showMenu ) => {
 export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
 
   dispatch( CONVERSATION_SET_SHOW_STATUS_MENU, showStatusMenu )
+
+}
+
+export const setShowCancelMenu = ( { dispatch }, showCancelMenu ) => {
+
+  dispatch( CONVERSATION_SET_SHOW_CANCEL_MENU, showCancelMenu )
 
 }
 

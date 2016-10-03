@@ -4,6 +4,7 @@ import {
   CONVERSATION_LOAD_MESSAGE,
   CONVERSATION_SET_SHOW_MENU,
   CONVERSATION_SET_SHOW_STATUS_MENU,
+  CONVERSATION_SET_SHOW_CANCEL_MENU,
   CONVERSATION_CONFIRM_MSG,
   CONVERSATION_CONFIRM_STATUS_MSG,
   CONVERSATION_CLOSE,
@@ -33,6 +34,7 @@ const state = {
   done: false,
   showMenu: false,
   showStatusMenu: false,
+  showCancelMenu: false,
   lengthList: 50,
   imgPopUpUrl: false,
   imgWidth: 0,
@@ -345,6 +347,10 @@ const mutations = {
 
   [CONVERSATION_SET_SHOW_STATUS_MENU] ( state, showStatusMenu ) {
     state.showStatusMenu = showStatusMenu;
+  },
+  [CONVERSATION_SET_SHOW_CANCEL_MENU] ( state, showCancelMenu ) {
+     state.showStatusMenu = false;
+    state.showCancelMenu = showCancelMenu;
   },
 
   [CONVERSATION_OPEN_IMG_POPUP] ( state, url, width, height ){
