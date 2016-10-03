@@ -11,7 +11,7 @@ div
       .menu_i(v-if='canCallSupplier', @click='callSupplier()')
         .menu_i_t Позвать магазин в чат
 
-      .menu_i(v-if='isAdmin', @click='setShowStatusMenu(true)')
+      .menu_i(v-if='notCustomer', @click='setShowStatusMenu(true)')
         .menu_i_t Изменить статус заказа
 
       .menu_i(@click='openPayment()' v-if="noActivePayments")
@@ -42,6 +42,7 @@ div
     getShowStatusMenu,
     getShowCancelMenu,
     getInviteShop,
+    getCustomerId,
     getInviteCustomer,
     getAction,
     imgLoader,
@@ -54,7 +55,6 @@ div
     setShowMenu,
     setShowStatusMenu,
     addPreLoadMessage,
-    getCustomerId,
     setShowCancelMenu,
   } from 'vuex/actions/chat.js';
   import * as leads from 'services/leads';
@@ -194,19 +194,14 @@ div
         console.log(this.getAction !== 'pendingpayment');
         return this.getAction !== 'pendingpayment';
       },
-      isAdmin() {
-        console.log(this.getCurrentMember.role);
-        return !!(this.getCurrentMember.role === leads.USER_ROLES.SUPPLIER.key
-        || this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
-        || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key);
-
+      notCustomer(){
+        return this.getCustomerId !== this.$store.state.user.myId;
       },
       canCallCustomer(){
         return this.getCustomerId !== this.$store.state.user.myId && this.getInviteCustomer;
       },
       canCallSupplier() {
-        return this.getCustomerId === this.$store.state.user.myId && this.getInviteShop;
-
+        return this.getInviteShop;
       }
     },
 
