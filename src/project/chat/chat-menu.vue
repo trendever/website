@@ -30,6 +30,7 @@ div
         .menu_i_t.__txt-green Отмена
 
   chat-menu-status( v-if='getShowStatusMenu')
+  chat-menu-cancel( v-if='getShowCancelMenu')
 
 </template>
 
@@ -43,6 +44,7 @@ div
     getLeadId,
     getShowMenu,
     getShowStatusMenu,
+    getShowCancelMenu,
     getInviteShop,
     getInviteCustomer,
     imgLoader,
@@ -62,6 +64,7 @@ div
 
   import MenuComponent from 'base/menu/menu.vue';
   import ChatMenuStatus from './chat-menu-status.vue';
+  import ChatMenuCancel from './chat-menu-cancel.vue';
   import AppLoader from 'base/loader/loader';
 
   export default{
@@ -80,6 +83,7 @@ div
         getLeadId,
         getShowMenu,
         getShowStatusMenu,
+        getShowCancelMenu,
         getInviteShop,
         getInviteCustomer,
       }
@@ -198,7 +202,8 @@ div
     components: {
       AppLoader,
       MenuComponent,
-      ChatMenuStatus
+      ChatMenuStatus,
+      ChatMenuCancel
     }
 
   }

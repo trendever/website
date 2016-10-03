@@ -1,6 +1,6 @@
 <style src='./menu.pcss'></style>
 <template lang="jade">
-.menu-cnt(:class="{'desktop-style': !isMoblie }")
+.menu-cnt(:class="{'desktop-style': !isMoblie , 'cancel-items': getShowCancelMenu}")
   .menu.section__content
     slot(name='items')
       .menu_i
@@ -9,7 +9,13 @@
 </template>
 
 <script>
+  import { getShowCancelMenu } from 'vuex/getters/chat';
   export default{
+    vuex: {
+      getters: {
+        getShowCancelMenu
+      }
+    },
     data(){
       return {
         isMoblie: window.browser.mobile
