@@ -6,7 +6,7 @@ div(class="popup" v-if="show")
         | КАК ЭТО РАБОТАЕТ?
     .column-desktop-50.column-desktop-left
       .container-left
-        button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'app' }" v-if="isMobile && !isStandalone") СКАЧАТЬ ПРИЛОЖЕНИЕ
+        button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'app' }" v-if="isMobile && !isStandalone") {{getButtonText()}} 
         button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }" v-else) ВХОД И РЕГИСТРАЦИЯ
         
 </template>
@@ -25,9 +25,22 @@ div(class="popup" v-if="show")
     methods: {
       onClose(){
 
+      },
+      getButtonText(){
+        switch (this.$route.name){
+          case 'product_detail': return 'КУПИТЬ В ПРИЛОЖЕНИИ'; break;
+          case 'user': return 'ОТКРЫТЬ В ПРИЛОЖЕНИИ'; break;
+          default: return 'СКАЧАТЬ ПРИЛОЖЕНИЕ'; break;
+        }
       }
     },
     computed:{
+      productDetailPage(){
+        return this.$route.name === 'product_detail' 
+      },
+      profilePage(){
+        return this.$route.name === 'user';
+      },
       isMobile(){
         return browser.mobile;
       },

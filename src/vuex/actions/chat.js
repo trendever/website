@@ -5,6 +5,7 @@ import {
   CONVERSATION_LOAD_MESSAGE,
   CONVERSATION_SET_SHOW_MENU,
   CONVERSATION_SET_SHOW_STATUS_MENU,
+  CONVERSATION_SET_SHOW_CANCEL_MENU,
   CONVERSATION_CONFIRM_MSG,
   CONVERSATION_CONFIRM_STATUS_MSG,
   CONVERSATION_CLOSE,
@@ -450,7 +451,7 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 
 }
 
-export const setStatus = ( { dispatch, state }, status, type ) => {
+export const setStatus = ( { dispatch, state }, status, type, cancel_reason = null ) => {
 
   const statusMap = {
     COMPLETE: 'COMPLETED',
@@ -503,7 +504,7 @@ export const setStatus = ( { dispatch, state }, status, type ) => {
 
     return new Promise( ( resolve, reject ) => {
       leads
-        .setEvent( lead.id, status )
+        .setEvent( lead.id, status, cancel_reason )
         .then( ( { status } ) => {
           resolve( status )
         } )
@@ -550,6 +551,12 @@ export const setShowMenu = ( { dispatch }, showMenu ) => {
 export const setShowStatusMenu = ( { dispatch }, showStatusMenu ) => {
 
   dispatch( CONVERSATION_SET_SHOW_STATUS_MENU, showStatusMenu )
+
+}
+
+export const setShowCancelMenu = ( { dispatch }, showCancelMenu ) => {
+
+  dispatch( CONVERSATION_SET_SHOW_CANCEL_MENU, showCancelMenu )
 
 }
 

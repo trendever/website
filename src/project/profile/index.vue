@@ -14,7 +14,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
           //.profile_info_count 01
           // .profile_info_count_t Подписчики
 
-          .profile_info_img(@click="hiddenfeature")
+          .profile_info_img()
             img(:src="getUserPhoto")
 
           //.profile_info_count 0
@@ -111,37 +111,23 @@ scroll-component(v-if="isDone", class="profile-cnt")
         noProducts: true,
         loaded: false,
         isMobile: window.browser.mobile,
-        showBloger: true,
-        hiddenCount: 0
+        showBloger: true
       }
     },
     route: {
       canReuse: false,
       data( { to: { params: { id } } } ) {
         if (browser.mobile && !browser.standalone){
-          document.location = 'tndvr://shop/' + this.getUserName;
-          setTimeout( function()
-          {
-              if( confirm( 'You do not seem to have Trendever App installed, do you want to go download it now?')){
-                document.location = 'https://itunes.apple.com/ru/app/trendever/id1124212231';
-              }else{
-                document.location = 'https://www.trendever.com';
-              }
-          }, 500);
-        }else{
-          if (this.isAuth) {
-            return this.openProfile( id )
-            .then(()=>{
-              this._setTab();
-            })
-            .catch( () => {
-              this.$router.go( { name: '404' } );
-            } );
-          } else {
-            return Promise.resolve();
-          }
+          document.location = 'tndvr://';
         }
-        
+
+        return this.openProfile( id )
+        .then(()=>{
+          this._setTab();
+        })
+        .catch( () => {
+          this.$router.go( { name: '404' } );
+        } );        
       }
     },
     created(){
@@ -210,14 +196,6 @@ scroll-component(v-if="isDone", class="profile-cnt")
               }
             }
           )
-      },
-      hiddenfeature(){
-        if (this.hiddenCount === 5){
-          window.location.href = "https://dev.trendever.com"
-        }
-        let _count = this.hiddenCount;
-        _count++;
-        this.$set('hiddenCount',_count);
       },
       _setTab(){
         this._checkStaff().then(staff=>{
@@ -349,7 +327,11 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
       },
       isSelfPage(){
-        return this.$store.state.user.id === this.$store.state.user.myId;
+        if (this.$store){
+          return this.$store.state.user.id === this.$store.state.user.myId;
+        }else{
+          return false;
+        }
       },
       listId(){
         return this.getPhotoConfig.listId;

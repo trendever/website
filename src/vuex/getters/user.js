@@ -24,8 +24,7 @@ export const user = ( { user } ) => {
 
   }
 
-  return null
-
+  return {instagram_username:"",name:""};
 };
 
 export const userID = ( state ) => {
@@ -54,7 +53,7 @@ export const getUserName = ( state ) => {
     return name;
   }
 
-  return null;
+  return "anonymous";
 
 };
 
