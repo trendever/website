@@ -1,6 +1,6 @@
 <style src='./menu.pcss'></style>
 <template lang="jade">
-.menu-cnt(:class="{'desktop-style': !isMoblie , 'cancel-items': getShowCancelMenu}")
+.menu-cnt(:class="{'desktop-style': !isMobile , 'cancel-items': getShowCancelMenu && !isMobile}")
   .menu.section__content
     slot(name='items')
       .menu_i
@@ -18,7 +18,7 @@
     },
     data(){
       return {
-        isMoblie: window.browser.mobile
+        isMobile: window.browser.mobile
       }
     }
   }

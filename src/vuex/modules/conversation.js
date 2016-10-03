@@ -364,6 +364,7 @@ const mutations = {
   [CONVERSATION_SEND_STATUS] ( state ) {
     state.showMenu       = false;
     state.showStatusMenu = false;
+    state.showCancelMenu = false;
   },
 
   [CONVERSATION_SET_SHOW_MENU] ( state, showMenu ) {

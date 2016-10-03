@@ -56,6 +56,7 @@ div
   import {
     setShowMenu,
     setShowStatusMenu,
+    setShowCancelMenu,
     addPreLoadMessage
   } from 'vuex/actions/chat.js';
   import * as leads from 'services/leads';
@@ -73,6 +74,7 @@ div
         setConversationImgLoader,
         setShowMenu,
         setShowStatusMenu,
+        setShowCancelMenu,
         addPreLoadMessage,
         setPayment
       },
@@ -100,6 +102,8 @@ div
         targetClass(e, 'menu-cnt', ()=>{
           if(getShowMenu) {
              this.setShowMenu(false);
+             this.setShowStatusMenu(false);
+             this.setShowCancelMenu(false);
           }
 
         });

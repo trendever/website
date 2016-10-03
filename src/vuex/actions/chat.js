@@ -451,7 +451,7 @@ export const addPreLoadMessage = ( { dispatch, state }, base64, base64WithPrefix
 
 }
 
-export const setStatus = ( { dispatch, state }, status, type ) => {
+export const setStatus = ( { dispatch, state }, status, type, cancel_reason = null ) => {
 
   const statusMap = {
     COMPLETE: 'COMPLETED',
@@ -504,7 +504,7 @@ export const setStatus = ( { dispatch, state }, status, type ) => {
 
     return new Promise( ( resolve, reject ) => {
       leads
-        .setEvent( lead.id, status )
+        .setEvent( lead.id, status, cancel_reason )
         .then( ( { status } ) => {
           resolve( status )
         } )
