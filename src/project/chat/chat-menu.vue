@@ -17,9 +17,6 @@ div
       .menu_i(@click='openPayment()' v-if="noActivePayments")
         .menu_i_t Запросить деньги
 
-      .menu_i(@click='openPayon()' v-if="noActivePayments")
-        .menu_i_t Посмотреть страницу оплаты
-
       label(class='menu_i menu_i-send-file') Отправить фото
         input(type='file', hidden, @change='selectedFile')
 
@@ -54,7 +51,8 @@ div
   import {
     setShowMenu,
     setShowStatusMenu,
-    addPreLoadMessage
+    addPreLoadMessage,
+    getCustomerId
   } from 'vuex/actions/chat.js';
   import * as leads from 'services/leads';
   import * as service from 'services/chat';
@@ -74,6 +72,7 @@ div
         setPayment
       },
       getters: {
+        getCustomerId,
         imgLoader,
         getShopId,
         getCurrentMember,
@@ -195,12 +194,10 @@ div
 
       },
       canCallCustomer(){
-        return this.isAdmin && this.getInviteCustomer;
+        return this.getCustomerId !== this.$store.state.user.myId && this.getInviteCustomer;
       },
       canCallSupplier() {
-        return  !!(this.getCurrentMember.role === leads.USER_ROLES.SELLER.key
-                || this.getCurrentMember.role === leads.USER_ROLES.SUPER_SELLER.key)
-                && this.getInviteShop;
+        return this.getCustomerId === this.$store.state.user.myId && this.getInviteShop;
 
       }
     },
