@@ -27,7 +27,7 @@ scroll-component(v-el:scroll-cnt)
        span под постом в Instagram, #[br] и здесь появится шопинг-чат.
 navbar-component(current='chat')
 scroll-top
-app-loader(v-if="!needLoadLeads")
+app-loader.list-loader(v-if="!needLoadLeads")
 
 .help-wrapper(v-if='isFirst')
   .help(@click='isFirst=false')
