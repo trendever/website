@@ -19,6 +19,7 @@
   float: left;
   box-sizing: border-box;
   overflow-x: hidden;
+
   /* &-button{
     padding-bottom: 22px;
     } */
@@ -30,10 +31,11 @@
         width: 100%;
         float: left;
         margin-left: 20px;
+        border-bottom: 3px solid white;
         @media(--mobile) {
           margin-left: 0px;
-          height: 300px !important;
-          max-height: 410px !important;
+          //height: 300px !important;
+          //max-height: 410px !important;
         }
       }
     }
@@ -49,7 +51,7 @@
 
     @media(--mobile) {
       margin-left: 0px;
-      height: 223px !important;
+      //height: 223px !important;
       //height: calc($height__mobile + $height-tag-button);
       margin-top: 2px;
       overflow-y: scroll;
@@ -57,8 +59,10 @@
   }
 
   .product_tags{
+
     @media(--mobile) {
       overflow-y: hidden;
+      height: 223px !important;
     }
   }
 

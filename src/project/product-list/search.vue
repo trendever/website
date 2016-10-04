@@ -52,7 +52,8 @@
         :is-pending="getPendingStatus",
         :margin-bottom="marginBottom",
         :margin-right="marginRight",
-        :base-height="baseHeight"
+        :base-height="baseHeight",
+        :max-height="maxHeight"
 
       )
 </template>
@@ -155,6 +156,13 @@
 
     },
     computed:{
+      maxHeight(){
+        if(window.matchMedia('(max-width: 750px)').matches){
+          return 76 * 6.5 + 6 + 'px';
+        } else {
+          return 39 * 3.5 - 2 + 'px';
+        }
+      },
       baseHeight(){
         if(!window.matchMedia('(max-width: 750px)').matches){
           return 78;
