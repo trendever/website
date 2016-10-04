@@ -5,7 +5,7 @@
       .wrapper
         .header__arrow(
           @click='leftBtnAction',
-          v-if='leftBtnShow',
+          v-if='leftBtnShow && $route.name !== "profile"',
           :class="{'show-desktop-arrow': showDesktopArrow}")
 
           i.header__arrow__ic.ic-arrow-left(
