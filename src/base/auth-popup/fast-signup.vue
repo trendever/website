@@ -7,8 +7,9 @@ div(class="popup" v-if="show")
     .column-desktop-50.column-desktop-left
       .container-left
         button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'app' }" v-if="isMobile && !isStandalone") {{getButtonText()}}
-        appstore-link(v-else)
-        //-button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }" v-else) ВХОД И РЕГИСТРАЦИЯ
+        template(v-else)
+          button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }" v-if="isStandalone") ВХОД И РЕГИСТРАЦИЯ
+          appstore-link(v-else)
 
 </template>
 
