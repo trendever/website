@@ -1,5 +1,5 @@
 <template>
-  <div class="buttons" :class="{'glued-btns': isMobile && !authSellerProduct}">
+  <div class="buttons" :class="{'glued-btns': isMobile && !authSellerProduct}" v-if="!authSellerProduct">
     <div class="leftSide">
       <button class="save_btn" @click="like" :class="{ 'active': isLiked, 'default': !isLiked}">
       {{text}}
