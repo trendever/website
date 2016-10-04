@@ -6,15 +6,17 @@ div(class="popup" v-if="show")
         | КАК ЭТО РАБОТАЕТ?
     .column-desktop-50.column-desktop-left
       .container-left
-        button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'app' }" v-if="isMobile && !isStandalone") {{getButtonText()}} 
-        button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }" v-else) ВХОД И РЕГИСТРАЦИЯ
-        
+        button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'app' }" v-if="isMobile && !isStandalone") {{getButtonText()}}
+        appstore-link(v-else)
+        //-button.btn.btn_primary.__orange.__xl.hello__btn.fast__big__btn( v-link="{ name: 'signup' }" v-else) ВХОД И РЕГИСТРАЦИЯ
+
 </template>
 
 <script type="text/babel">
 
   import { isAuth } from 'vuex/getters/user.js';
   import popupWrapper from 'base/popup/wrapper.vue'
+  import AppstoreLink from 'base/appstore-link/appstore-link';
 
   export default {
     vuex: {
@@ -36,7 +38,7 @@ div(class="popup" v-if="show")
     },
     computed:{
       productDetailPage(){
-        return this.$route.name === 'product_detail' 
+        return this.$route.name === 'product_detail'
       },
       profilePage(){
         return this.$route.name === 'user';
@@ -65,7 +67,8 @@ div(class="popup" v-if="show")
     },
 
     components: {
-      popupWrapper
+      popupWrapper,
+      AppstoreLink
     }
   }
 
