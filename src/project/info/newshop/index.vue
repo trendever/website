@@ -3,10 +3,12 @@
 scroll-component
   header-component(
     :title='"Брендам"',
-    :back-link='{name: "home"}',
     :center-text-link="centerTextLink",
     :page="info",
     :show-desktop-arrow="false")
+      .chat-header(slot='content')
+          .chat-header_arrow(v-link="{name: 'home'}")
+            i.chat-header_arrow_ic.ic-arrow-left
     right-nav-component(slot="content", current="")
   .section__content.infonewshops
     .section.top
