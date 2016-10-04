@@ -70,7 +70,7 @@
     .profile-header
       .profile-header__center
       button(v-link='{ name: "info-newshop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
-      button(v-link='{ name: "signup" }').profile-header__auth-btn ВХОД И РЕГИСТРАЦИЯ
+      button(v-link='{ name: "signup" }').profile-header__auth-btn ВХОД
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
         slider
