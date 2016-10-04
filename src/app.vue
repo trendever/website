@@ -31,7 +31,8 @@ input(type="hidden", value="", id="get-user-login")
       return {
         authIsDone: false,
         touchMoveY: 0,
-        showAuthBtn: false
+        showAuthBtn: false,
+        dirtyAuthHack: false
       }
     },
     vuex: {
@@ -46,7 +47,12 @@ input(type="hidden", value="", id="get-user-login")
         setToken(token,type).then(data => console.log(data));
       },
       window.authIsDone = function(){
+        if (this.dirtyAuthHack){
+          return false;
+        }
+
         if (self.$store.state.user.token != null){
+          this.dirtyAuthHack = true;
           return true;
         }else{
           return false;
