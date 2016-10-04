@@ -45,7 +45,7 @@
       },
       maxHeight: {
         type: String,
-        default: `285px`
+        default: '285px'
       },
       baseHeight: {
         type: Number,
@@ -175,7 +175,13 @@
 
           if ( this.fullHeight < 170 ) {
 
-            return `${this.fullHeight - 10}px !important`
+            if(this.$route.name === 'product_detail') {
+
+              return `${this.fullHeight - 10}px !important`;
+
+            }
+
+            return `${this.fullHeight - 10}px`;
 
           }
 
@@ -192,7 +198,8 @@
         if ( window.matchMedia( "(max-width: 750px)" ).matches ) {
 
           if ( this.baseHeight < 170 ) {
-            return `170px`;
+            //return `170px`;
+            return `228px`;
           }
 
         }

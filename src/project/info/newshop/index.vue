@@ -17,8 +17,8 @@ scroll-component
      .section.top__info-block
       .section.top__info-block__title Преврати #[br.break_1] свой Instagram #[br.break_2] в настоящий магазин
       .section.top__info-block__paragraph Скачай приложение Trendever и оно #[br.break_desk] мгновенно #[br.break_mob]интегрируется с твоим #[br.break_desk] Instagram
-      .section.top__info-block__paragraph Теперь, стоит клиенту написать #[br.break_desk] 
-       span.want @wantit #[br.break_mob] 
+      .section.top__info-block__paragraph Теперь, стоит клиенту написать #[br.break_desk]
+       span.want @wantit #[br.break_mob]
        span в комментариях под твоим #[br.break_desk] постом, в приложении #[br.break_mob] Trendever #[br.break_desk] появится #[br.break_desk] шопинг-чат с ним
       .section.top__info-block__slide
       .section.top__info-block__title.get Общайся и получай деньги в чате
@@ -38,7 +38,7 @@ scroll-component
          span 1 990
          i.ic-rub
          span   в месяц
-      .section.top__info-block__desc Первый месяц бесплатно  
+      .section.top__info-block__desc Первый месяц бесплатно
       .section.top__info-block__title.how-sell Как начать продавать?
       .section.top__info-block__sub-title Выполни 3 простых шага:
       .section.top__info-block__list-title 1. Cкачай приложение
@@ -48,25 +48,25 @@ scroll-component
         a(href="#").g_play
       .section.top__info-block__list-title 2. Расскажи клиентам
       .section.top__info-block__list-description.add-goods Добавь текст в профиль #[br.break_desk.mob] своего Instagram: #[br]
-        .wantit Напиши  
-         span.want @wantit 
-         span и товар #[br.break_desk.mob] попадет #[br.break_mob] в шопинг- #[br.break_desk.mob]приложение по ссылке ниже #[br.break_mob] 
+        .wantit Напиши
+         span.want @wantit
+         span и товар #[br.break_desk.mob] попадет #[br.break_mob] в шопинг- #[br.break_desk.mob]приложение по ссылке ниже #[br.break_mob]
         span.block Укажи в профиле ссылку #[br.break_desk] на свою витрину #[br.break_mob] в Trendever
       .section.top__info-block__add-goods-slide
-      .section.top__info-block__list-title 3. Добавляй описание #[br.break_desk.mob] 
+      .section.top__info-block__list-title 3. Добавляй описание #[br.break_desk.mob]
        span.padding к товарам
       .section.top__info-block__list-description.tell-clients При размещении #[br.break_desk.mob] новых товаров в Instagram, #[br] напиши в начале описания:
         .wantit2 Покупай по комментарию #[br]
          span.want @wantit #[br]
-        span Товар с 
-         span.want @wantit 
+        span Товар с
+         span.want @wantit
          span в описании #[br.break_desk.mob] попадает #[br.break_mob] в твою Trendever-витрину и виден всем
       .section.top__info-block__tell-clients-slide
       .section.top__info-block__desc.done Готово! #[br] Принимай заказы #[br.break_desk.mob] в одном приложении #[br] и получи доступ к клиентам #[br.break_desk.mob] всех Instagram-магазинов
-      .section.top__info-block__download-btn 
+      .section.top__info-block__download-btn
        button(v-if="isMobile && !isStandalone" @click="dlapp") СКАЧАТЬ ПРИЛОЖЕНИЕ
-       button(v-if="isStandalone && !isAuth" v-link='{ name: "signup" }') ВХОД И РЕГИСТРАЦИЯ
-
+       //-button(v-if="isStandalone && !isAuth" v-link='{ name: "signup" }') ВХОД И РЕГИСТРАЦИЯ
+      fast-signup(v-if="isStandalone && !isAuth && !isMobile")
 </template>
 <script>
   import settings from 'settings'
@@ -79,6 +79,7 @@ scroll-component
   import { isAuth } from 'vuex/getters/user.js';
   import * as leads from 'services/leads';
   import RightNavComponent from 'base/right-nav/index';
+  import FastSignup from 'base/auth-popup/fast-signup';
 
   export default {
     data(){
@@ -135,6 +136,7 @@ scroll-component
     },
 
     components: {
+      FastSignup,
       ScrollComponent,
       HeaderComponent,
       RightNavComponent
