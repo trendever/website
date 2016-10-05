@@ -10,12 +10,12 @@ menu-component
       .menu_i_t.__txt-white Подтвержден
     .menu_i.__bg-red(@click='setShowCancelMenu(true)')
       .menu_i_t.__txt-white Отменен
-    .menu_i(@click='setShowStatusMenu(false);')
+    .menu_i(@click.stop='setShowMenu(true)')
       .menu_i_t.__txt-green Назад
 </template>
 
 <script>
-  import { setStatus, setShowStatusMenu, setShowCancelMenu } from 'vuex/actions/chat.js';
+  import { setStatus, setShowStatusMenu, setShowCancelMenu, setShowMenu } from 'vuex/actions/chat.js';
 
   import MenuComponent from 'base/menu/menu.vue';
   import * as leads from 'services/leads';
@@ -23,6 +23,7 @@ menu-component
   export default{
     vuex: {
       actions: {
+        setShowMenu,
         setStatus,
         setShowStatusMenu,
         setShowCancelMenu

@@ -21,9 +21,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
           // .profile_info_count_t Подписки
 
         .profile_desc
-          //.profile_desc_t {{getSlogan}} Слоган Профиля
-          .profile_desc_caption(v-if="getUserCaption")
-          | {{ getUserCaption }}
+          .profile_desc_t(v-if="getSlogan") {{getSlogan}}
+          .profile_desc_caption(v-if="getUserCaption") {{getUserCaption}}
 
         .profile_filter(v-if="isSelfPage && !noLikes && !noProducts")
           span(v-bind:class="{'seleted': photoType === 'product'}")

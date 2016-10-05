@@ -349,7 +349,7 @@ const mutations = {
     state.showStatusMenu = showStatusMenu;
   },
   [CONVERSATION_SET_SHOW_CANCEL_MENU] ( state, showCancelMenu ) {
-     state.showStatusMenu = false;
+    state.showStatusMenu = false;
     state.showCancelMenu = showCancelMenu;
   },
 

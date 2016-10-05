@@ -405,3 +405,23 @@ export function removeStatusListener(handler) {
   channel.off('RETRIEVED', 'lead', handler);
 }
  */
+
+export function getCancelReasons() {
+
+  return new Promise( (resolve, reject) => {
+
+    channel.req('get_cancel_reasons', 'lead')
+    .then( data => {
+      resolve(data.response_map);
+    }).catch( error => {
+
+      if (error.log_map.code_key === '400') {
+        // Not exists or forbiden
+        reject(ERROR_CODES.FORBIDDEN);
+      } else if (error.log_map.code_key === '403') {
+        reject(ERROR_CODES.UNATHORIZED);
+      }
+    });
+
+  });
+}
