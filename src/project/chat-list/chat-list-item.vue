@@ -79,7 +79,7 @@
 
       deleteChat(){
 
-        if(confirm('Удалить чат?')){
+        //if(confirm('Удалить чат?')){
 
           service.setEvent(this.lead.id,'CANCEL', 1)
 
@@ -97,11 +97,11 @@
 
           });
 
-        } else {
+/*        } else {
 
           this.$set('showDelete', false);
 
-        }
+        }*/
 
 
       },
