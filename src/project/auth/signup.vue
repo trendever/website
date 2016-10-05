@@ -63,7 +63,7 @@ scroll-component
   }
 </style>
 
-<script type="text/ecmascript-6">
+<script type='text/babel'>
   import listen from 'event-listener';
   import {
     saveAuthData,
@@ -89,13 +89,15 @@ scroll-component
     errorLoginLink: 'Мое имя кто-то занял!',
     errorLoginMesage: 'Имя занято, введите другое',
     errorPhoneFormat: 'Неверный формат номера',
-    errorWrongCreditionals: ''
+    errorWrongCreditionals: '',
+    errorloginLang: 'Неверный формат логина'
   }
 
   const PLACEHOLDER = {
     instagramMode: 'Введите свое Instagram имя',
     withoutInstagramMode: 'Введите свое имя',
     errorPhoneFormat: 'Введите номер +7XXXXXXXXXX',
+    errorLoginFormat: 'Только латинские буквы...'
   }
 
   export default {
@@ -172,6 +174,15 @@ scroll-component
         if (!this.$signup.valid) {
           return;
         }
+
+        if(this.login.match(/[а-яё]+/g) !== null){
+          this.login = '';
+          this.errorLogin = true;
+          this.textLink = TEXT_LINK['errorloginLang'];
+          this.login = PLACEHOLDER['errorLoginFormat'];
+          return;
+        }
+
         this.save();
 
         this.signup().then( ()=> {
