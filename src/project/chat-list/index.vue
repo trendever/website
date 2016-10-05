@@ -8,10 +8,10 @@ scroll-component(v-el:scroll-cnt)
         .header__nav__i.header__text(
         :class='{_active: getTab === "customer"}', @click='setTab("customer");',
         @touch='setTab("customer");')
-          | Покупаю
+          span Покупаю
         .header__nav__i.header__text(
         :class='{_active: getTab === "seller"}', @click='setTab("seller");')
-          | Продаю
+          span Продаю
 
     .section.top.bottom
       .section__content
