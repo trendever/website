@@ -4,7 +4,8 @@ scroll-component(v-el:scroll-cnt)
   right-nav-component(current="chat")
   .chat-list-cnt(v-if='isDone')
     header-component(:title='getTitle', :left-btn-show='false')
-      .header__nav(slot='content' v-if='getIsTab')
+      //-старая логика v-if="getIsTab"
+      .header__nav(slot='content' v-if='true')
         .header__nav__i.header__text(
         :class='{_active: getTab === "customer"}', @click='setTab("customer");',
         @touch='setTab("customer");')
@@ -187,12 +188,23 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
     computed:{
       leads(){
+        console.log('уоа')
         if(this.$store.state.leads.tab === 'customer') {
-          return this.getLeads.filter(item=>{
+          let leads = this.getLeads.filter(item=>{
             return !(item.cancel_reason === 1);
           });
+
+          console.log(leads);
+          return leads;
         }
-        return this.getLeads;
+
+        if(this.$store.state.leads.tab === 'seller') {
+          let leads = this.getLeads.filter(item=>{
+            return !(item.cancel_reason === 1);
+          });
+          console.log(leads);
+          return leads;
+        }
       },
       showTooltip(){
         if(this.isEmptyLeads){
