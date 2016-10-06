@@ -7,11 +7,13 @@ scroll-component(v-el:scroll-cnt)
       //-старая логика v-if="getIsTab"
       .header__nav(slot='content' v-if='true')
         .header__nav__i.header__text(
-        :class='{_active: getTab === "customer"}', @click='setTab("customer");',
-        @touch='setTab("customer");')
+          :class='{_active: getTab === "customer" && !isMobile, _active_mobile: getTab === "customer" && isMobile, _unactive: getTab === "seller" && isMobile}',
+          @click='setTab("customer");',
+          @touch='setTab("customer");')
           span Покупаю
         .header__nav__i.header__text(
-        :class='{_active: getTab === "seller"}', @click='setTab("seller");')
+          :class='{_active: getTab === "seller" && !isMobile, _active_mobile: getTab === "seller" && isMobile, _unactive: getTab === "customer" && isMobile }',
+          @click='setTab("seller");')
           span Продаю
 
     .section.top.bottom
@@ -34,7 +36,7 @@ scroll-component(v-el:scroll-cnt)
        span.want покупай по комментарию @wantit&nbsp
        span
         #[br] под товарами в своем instagram,
-        #[br] чтобы продавать и видеть здесь покупаелей.
+        #[br] чтобы продавать и видеть здесь покупателей.
       .how-to-sell-btn(v-if="!leads.length && getTab === 'seller'", v-link="{name: 'info-newshop'}") Как начать продавать?
 navbar-component(current='chat')
 scroll-top
@@ -126,6 +128,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
     },
     data(){
       return {
+        isMobile: window.browser.mobile,
         needLoadLeads: true,
         isFirst: false,
         styleObject: {

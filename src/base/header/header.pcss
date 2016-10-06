@@ -315,6 +315,28 @@
           }
         }
       }
+      &._active_mobile {
+
+        cursor: default;
+        span {
+          width: 100px;
+          border-bottom: .5px solid white;
+          @media (--mobile) {
+            width: 150px;
+          }
+        }
+      }
+
+      &._unactive {
+        background: #29A19F;
+        cursor: default;
+        span {
+          width: 100px;
+          @media (--mobile) {
+            width: 150px;
+          }
+        }
+      }
 
       @media(--mobile){
         width: 50%;
