@@ -32,8 +32,13 @@ menu-component
     },
     ready(){
       leadService.getCancelReasons().then(data=>{
-        this.$set('cancelReasons', data.reasons);
-        console.log(this.cancelReasons)
+
+        let reasons = data.reasons.filter(item=>{
+          return item.id !== 1 && item.id !== 2;
+        });
+
+        this.$set('cancelReasons', reasons);
+
       })
     }
   }

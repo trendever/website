@@ -5,10 +5,10 @@ div
   menu-component(v-if='getShowMenu && !getShowStatusMenu')
     div.menu-items(slot='items')
 
-      .menu_i(v-if='canCallCustomer', @click='callCustomer()')
+      //-.menu_i(v-if='canCallCustomer', @click='callCustomer()')
         .menu_i_t Позвать покупателя в чат
 
-      .menu_i(v-if='canCallSupplier', @click='callSupplier()')
+      //-.menu_i(v-if='canCallSupplier', @click='callSupplier()')
         .menu_i_t Позвать магазин в чат
 
       .menu_i(v-if='notCustomer', @click='setShowStatusMenu(true)')
