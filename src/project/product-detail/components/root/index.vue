@@ -173,9 +173,17 @@
       _buy( productId ){
 
         if ( !this.isAuth ) {
-
+          let page = this.$route.name;
+          let params = this.$route.params.id;
           this.$router.go( { name: 'signup' } )
-          this.setCallbackOnSuccessAuth( this._buy.bind( this, productId ), 'PRODUCT_BUY' )
+          //this.setCallbackOnSuccessAuth( this._buy.bind( this, productId ), 'PRODUCT_BUY' )
+
+          let vm = this;
+          this.setCallbackOnSuccessAuth(()=>{
+
+            vm.$router.go({name: page, params: { id: params }})
+
+          });
 
         } else {
 
