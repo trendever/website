@@ -1,5 +1,17 @@
 @import 'base/vars/vars.pcss';
+.how-to-sell-btn {
+  font-family: $font__family__light;
+  color: black;
+  text-align: center;
+  line-height: 99px;
+  position: fixed * 0 0 0;
+  height: 99px;
+  text-transform: uppercase;
+  background: #FFDE1E;
+  z-index: 9999;
+  font-size: 34px;
 
+}
 .list-loader {
    position: fixed 50% * * 50% ;
    transform: translate(-50%, -50%);
@@ -52,23 +64,24 @@
       @media(--mobile) {
         display: block;
         position: absolute;
-        font-size: 22px;
+        font-size: 34px;
         width: 100%;
         text-align: center;
         background-color: #ececec;
         bottom: 98px;
         //padding: 30px;
-        padding-top: 30px;
-        padding-bottom: 30px;
+        padding-top: 40px;
+        padding-bottom: 40px;
         color: #595959;
         font-weight: bolder;
         line-height: 38px;
       }
       span{
-        font-family: "San Francisco Light";
+        font-family: $font__family__light;
       }
       span.want{
         font-family: "San Francisco Semibold";
+        font-weight: bold;
       }
     }
   }
