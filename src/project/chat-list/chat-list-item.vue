@@ -1,5 +1,5 @@
 <template lang="jade">
-.chat-list-i(v-link='{name: "chat", params: {id: lead.id}}',
+.chat-list-i(@click="goToChat",
             track-by='id',
             v-el:chat-item)
   .chat-list-i-photo(v-if="!showDelete")
@@ -76,7 +76,18 @@
       }
     },
     methods: {
+      goToChat(){
 
+        if(this.showDelete) {
+
+          this.$set('showDelete', false);
+          return;
+
+        }
+
+        this.$router.go({name: "chat", params: {id: this.lead.id}})
+
+      },
       deleteChat(){
 
         //if(confirm('Удалить чат?')){
