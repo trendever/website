@@ -11,15 +11,26 @@
        | Перевод не удался
     template(v-else)
       span
-        | <b>{{getPaymentNames.from}}</b> отменил перевод
+        | <b>{{getCancelName}}</b> отменил перевод
       
 </template>
 
 <script>
-  import { getShopName, getCustomerName } from 'vuex/getters/chat.js';
+  import { getShopName, getCustomerName,getAction, getActionData } from 'vuex/getters/chat.js';
+  import {setConversationAction} from 'vuex/actions/chat.js'
   import { getPaymentAmmount } from 'project/payment/functions.js';
 
   export default{
+    data(){
+      if (this.getAction == 'pay' || this.getAction == 'pendingpayment'){
+        let _payid = JSON.parse(this.msg.parts[0].content).pay_id;
+        if (this.getActionData.id == _payid){
+          this.setConversationAction("base");
+        }
+      }
+      
+      return {}
+    },
     props: {
       msg: {
         type: Object,
@@ -29,7 +40,12 @@
     vuex: { 
       getters: {
         getShopName,
-        getCustomerName
+        getCustomerName,
+        getActionData,
+        getAction
+      },
+      actions: {
+        setConversationAction
       }
     },
     computed: {
@@ -56,6 +72,13 @@
           _to = this.getShopName;
         }
         return {from: _from,to: _to};
+      },
+      getCancelName(){
+        if (this.msg.user.role === 1){
+          return this.getCustomerName;
+        }else{
+          return this.getShopName;
+        }
       },
       getAmmount(){
         return getPaymentAmmount(this.msg);

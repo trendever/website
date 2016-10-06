@@ -4,27 +4,40 @@ scroll-component(v-el:scroll-cnt)
   right-nav-component(current="chat")
   .chat-list-cnt(v-if='isDone')
     header-component(:title='getTitle', :left-btn-show='false')
-      .header__nav(slot='content' v-if='getIsTab')
+      //-старая логика v-if="getIsTab"
+      .header__nav(slot='content' v-if='true')
         .header__nav__i.header__text(
-        :class='{_active: getTab === "customer"}', @click='setTab("customer");',
-        @touch='setTab("customer");')
-          | Покупаю
+          :class='{_active: getTab === "customer" && !isMobile, _active_mobile: getTab === "customer" && isMobile, _unactive: getTab === "seller" && isMobile}',
+          @click='setTab("customer");',
+          @touch='setTab("customer");')
+          span Покупаю
         .header__nav__i.header__text(
-        :class='{_active: getTab === "seller"}', @click='setTab("seller");')
-          | Продаю
+          :class='{_active: getTab === "seller" && !isMobile, _active_mobile: getTab === "seller" && isMobile, _unactive: getTab === "customer" && isMobile }',
+          @click='setTab("seller");')
+          span Продаю
 
     .section.top.bottom
       .section__content
         .chat-list(v-bind:style="styleObject")
             chat-list-item(v-for='lead in leads | orderBy "updated_at" -1 | cutList',:lead='lead')
     template(v-if='!leads.length')
-      .chat-list-cnt-is-empty
+      .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
-        span  ... потому что ты пока ничего #[br] не покупаешь и не продаешь.
-      .chat-list-cnt-is-empty__banner(v-if="!leads.length") Нажми Купить&nbsp
-       span под товаром или&nbsp
+        span  ... потому что ты пока ничего #[br] не покупаешь
+      .chat-list-cnt-is-empty(v-if="getTab === 'seller'")
+        .chat-list-cnt-is-empty__container Нет чатов,#[br]
+        span  ... потому что ты пока ничего #[br] не продаешь
+      .chat-list-cnt-is-empty__banner(v-if="!leads.length && getTab === 'customer'") Нажми Купить&nbsp
+       span под товаром #[br]или&nbsp
        span.want напиши @wantit&nbsp
        span под постом в Instagram, #[br] и здесь появится шопинг-чат.
+      .chat-list-cnt-is-empty__banner(v-if="!leads.length && getTab === 'seller'")
+       span Напиши&nbsp
+       span.want покупай по комментарию @wantit&nbsp
+       span
+        #[br] под товарами в своем instagram,
+        #[br] чтобы продавать и видеть здесь покупателей.
+      .how-to-sell-btn(v-if="!leads.length && getTab === 'seller'", v-link="{name: 'info-newshop'}") Как начать продавать?
 navbar-component(current='chat')
 scroll-top
 app-loader.list-loader(v-if="!needLoadLeads")
@@ -115,6 +128,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
     },
     data(){
       return {
+        isMobile: window.browser.mobile,
         needLoadLeads: true,
         isFirst: false,
         styleObject: {
@@ -187,12 +201,22 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
     computed:{
       leads(){
+
         if(this.$store.state.leads.tab === 'customer') {
-          return this.getLeads.filter(item=>{
+          let leads = this.getLeads.filter(item=>{
             return !(item.cancel_reason === 1);
           });
+
+          return leads;
         }
-        return this.getLeads;
+
+        if(this.$store.state.leads.tab === 'seller') {
+          let leads = this.getLeads.filter(item=>{
+            return !(item.cancel_reason === 1);
+          });
+
+          return leads;
+        }
       },
       showTooltip(){
         if(this.isEmptyLeads){

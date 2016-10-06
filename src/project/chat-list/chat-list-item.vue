@@ -1,5 +1,5 @@
 <template lang="jade">
-.chat-list-i(v-link='{name: "chat", params: {id: lead.id}}',
+.chat-list-i(@click="goToChat",
             track-by='id',
             v-el:chat-item)
   .chat-list-i-photo(v-if="!showDelete")
@@ -52,7 +52,7 @@
       }
     },
     ready(){
-      if( this.getTab === 'customer') {
+      //if( this.getTab === 'customer') {
         new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
 
         .on('swipeleft',()=>{
@@ -65,7 +65,7 @@
           this.$set('showDelete', false);
 
         });
-      }
+      //}
 
     },
     events: {
@@ -76,32 +76,60 @@
       }
     },
     methods: {
+      goToChat(){
 
+        if(this.showDelete) {
+
+          this.$set('showDelete', false);
+          return;
+
+        }
+
+        this.$router.go({name: "chat", params: {id: this.lead.id}})
+
+      },
       deleteChat(){
 
-        if(confirm('Удалить чат?')){
+        //if(confirm('Удалить чат?')){
 
           service.setEvent(this.lead.id,'CANCEL', 1)
 
           .then(()=> {
+            if(this.getTab === "customer") {
 
-            let customerLeads = this.$store.state.leads.customer;
-            let lead = customerLeads.filter(item=>{
-              return item.id === this.lead.id;
+              let customerLeads = this.$store.state.leads.customer;
+              let lead = customerLeads.filter(item=>{
+                return item.id === this.lead.id;
 
-            })
-            //console.log(JSON.parse(JSON.stringify(lead)));
-            let idx = customerLeads.indexOf(lead[0]);
+              })
+              //console.log(JSON.parse(JSON.stringify(lead)));
+              let idx = customerLeads.indexOf(lead[0]);
 
-            customerLeads.splice(idx,1);
+              customerLeads.splice(idx,1);
+
+            }
+
+            if(this.getTab === "seller") {
+
+              let sellerLeads = this.$store.state.leads.seller;
+              let lead = sellerLeads.filter(item=>{
+                return item.id === this.lead.id;
+
+              })
+              //console.log(JSON.parse(JSON.stringify(lead)));
+              let idx = sellerLeads.indexOf(lead[0]);
+
+              sellerLeads.splice(idx,1);
+
+            }
 
           });
 
-        } else {
+/*        } else {
 
           this.$set('showDelete', false);
 
-        }
+        }*/
 
 
       },

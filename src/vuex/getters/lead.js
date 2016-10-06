@@ -3,13 +3,15 @@ import { getCustomerName } from 'vuex/getters/chat.js';
 import { statusString } from '../../project/chat/utils';
 
 export const getTab = ( { leads } ) => {
-  if ( getIsTab( { leads } ) ) {
+/*  if ( getIsTab( { leads } ) ) {
     return leads.tab;
-  }
-  if ( leads.seller.length > 0 ) {
+  }*/
+
+  return leads.tab;
+  /*if ( leads.seller.length > 0 ) {
     return 'seller';
   }
-  return 'customer';
+  return 'customer';*/
 };
 
 export const getLengthList = ( { leads } ) => {
@@ -101,13 +103,16 @@ export const getIsTab = ( { leads } ) => {
 };
 
 export const getTitle = ( state ) => {
-  if ( getIsTab( state ) ) {
+
+  return;
+  //старая логика
+  /*if ( getIsTab( state ) ) {
     return;
   }
   return {
     seller: 'Чаты с покупателями',
     customer: 'Шопинг-чаты'
-  }[ getTab( state ) ];
+  }[ getTab( state ) ];*/
 };
 
 export const getLastMessage = ( state ) => {
