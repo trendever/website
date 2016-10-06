@@ -25,14 +25,16 @@ scroll-component(v-el:scroll-cnt)
       .chat-list-cnt-is-empty(v-if="getTab === 'seller'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
         span  ... потому что ты пока ничего #[br] не продаешь
-      .chat-list-cnt-is-empty__banner(v-if="!leads.length") Нажми Купить&nbsp
-       span под товаром или&nbsp
+      .chat-list-cnt-is-empty__banner(v-if="!leads.length && getTab === 'customer'") Нажми Купить&nbsp
+       span под товаром #[br]или&nbsp
        span.want напиши @wantit&nbsp
        span под постом в Instagram, #[br] и здесь появится шопинг-чат.
-      //-.chat-list-cnt-is-empty__banner(v-if="!leads.length") Нажми Купить&nbsp
-       span под товаром или&nbsp
-       span.want напиши @wantit&nbsp
-       span под постом в Instagram, #[br] и здесь появится шопинг-чат.
+      .chat-list-cnt-is-empty__banner(v-if="!leads.length && getTab === 'seller'")
+       span Напиши&nbsp
+       span.want покупай по комментарию @wantit&nbsp
+       span
+        #[br] под товарами в своем instagram,
+        #[br] чтобы продавать и видеть здесь покупаелей.
 navbar-component(current='chat')
 scroll-top
 app-loader.list-loader(v-if="!needLoadLeads")
@@ -195,13 +197,12 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
     computed:{
       leads(){
-        console.log('уоа')
+
         if(this.$store.state.leads.tab === 'customer') {
           let leads = this.getLeads.filter(item=>{
             return !(item.cancel_reason === 1);
           });
 
-          console.log(leads);
           return leads;
         }
 
@@ -209,7 +210,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
           let leads = this.getLeads.filter(item=>{
             return !(item.cancel_reason === 1);
           });
-          console.log(leads);
+
           return leads;
         }
       },
