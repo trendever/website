@@ -19,10 +19,17 @@ scroll-component(v-el:scroll-cnt)
         .chat-list(v-bind:style="styleObject")
             chat-list-item(v-for='lead in leads | orderBy "updated_at" -1 | cutList',:lead='lead')
     template(v-if='!leads.length')
-      .chat-list-cnt-is-empty
+      .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
-        span  ... потому что ты пока ничего #[br] не покупаешь и не продаешь.
+        span  ... потому что ты пока ничего #[br] не покупаешь
+      .chat-list-cnt-is-empty(v-if="getTab === 'seller'")
+        .chat-list-cnt-is-empty__container Нет чатов,#[br]
+        span  ... потому что ты пока ничего #[br] не продаешь
       .chat-list-cnt-is-empty__banner(v-if="!leads.length") Нажми Купить&nbsp
+       span под товаром или&nbsp
+       span.want напиши @wantit&nbsp
+       span под постом в Instagram, #[br] и здесь появится шопинг-чат.
+      //-.chat-list-cnt-is-empty__banner(v-if="!leads.length") Нажми Купить&nbsp
        span под товаром или&nbsp
        span.want напиши @wantit&nbsp
        span под постом в Instagram, #[br] и здесь появится шопинг-чат.
