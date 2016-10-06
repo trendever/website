@@ -339,9 +339,11 @@ export const isJoined = ( state, lead ) => {
 };
 
 export const getAction = ( state ) => {
-  console.log('ATATATAT');
-  console.log(state.conversation.action);
-  return state.conversation.action;
+  return state.conversation.action.type;
+}
+
+export const getActionData = ( state ) => {
+  return state.conversation.action.data;
 }
 
 export const getCountForLoading = 50;//(window.browser.mobile) ? 10 : 20;
