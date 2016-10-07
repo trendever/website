@@ -52,7 +52,7 @@
       }
     },
     ready(){
-      //if( this.getTab === 'customer') {
+
         new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
 
         .on('swipeleft',()=>{
@@ -65,7 +65,7 @@
           this.$set('showDelete', false);
 
         });
-      //}
+
 
     },
     events: {
@@ -90,9 +90,11 @@
       },
       deleteChat(){
 
-        //if(confirm('Удалить чат?')){
 
-          service.setEvent(this.lead.id,'CANCEL', 1)
+          let cancel_reason = this.getTab === "customer" ? 2 : 1;
+
+
+          service.setEvent(this.lead.id,'CANCEL', cancel_reason)
 
           .then(()=> {
             if(this.getTab === "customer") {
@@ -124,13 +126,6 @@
             }
 
           });
-
-/*        } else {
-
-          this.$set('showDelete', false);
-
-        }*/
-
 
       },
       getPhoto() {
