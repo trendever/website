@@ -194,8 +194,10 @@ app-loader.list-loader(v-if="!needLoadLeads")
     },
     beforeDestroy(){
       if ( this.isAuth ) {
-        //this.scrollListener.remove();
         this.leadClose();
+      }
+      if (this.scrollListener){
+        this.scrollListener.remove();
       }
     },
 
