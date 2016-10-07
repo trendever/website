@@ -11,7 +11,7 @@
       :picture="picture"
       :caption="caption"
       :is-liked="isLiked"
-      last-update=""
+      :last-update="lastUpdate"
       :is-mobile="isMobile"
       :product-id="productId"
       :like="like"
@@ -30,7 +30,7 @@
       :picture="picture"
       :caption="caption"
       :is-liked="isLiked"
-      last-update=""
+      :last-update="lastUpdate"
       :is-mobile="isMobile"
       :product-id="productId"
       :like="like"
@@ -72,7 +72,7 @@
   import { ratioFit } from 'utils'
   import settings from 'settings'
   import { selectTag } from 'vuex/actions/search.js'
-
+  import { formatPastTime } from 'project/chat/utils';
   export default {
     data(){
       return {
@@ -209,7 +209,12 @@
     },
 
     computed: {
+      lastUpdate() {
+        if ( this.getOpenedProduct ) {
+          return formatPastTime(this.getOpenedProduct.instagram_published_at);
+        }
 
+      },
       isProduct(){
 
         return this.getOpenedProduct !== null

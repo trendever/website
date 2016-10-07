@@ -1,6 +1,6 @@
 <style src="../../base/vars/vars.pcss"></style>
 <template lang="jade">
-.status_bar(v-if='isAuth || showStatusBar')
+.status_bar(v-if='isAuth || showStatusBar', @click="scrollTop")
 
 scroll-component
   hero-component
@@ -45,7 +45,7 @@ scroll-component
         let lookinside_button = document.getElementById('lookinside');
         this.showOnScroll = listen(scrollComp,'scroll',()=>{
           if(window.browser.mobile){
-            if(scrollComp.scrollTop > 2000){              
+            if(scrollComp.scrollTop > 2000){
               this.$dispatch('showAuthBtn');
             } else {
               this.$dispatch('hideAuthBtn');
@@ -76,6 +76,11 @@ scroll-component
         this.showOnScroll.remove();
       }
       this.setComeBack( false );
+    },
+    methods:{
+      scrollTop(){
+        document.querySelector('.scroll-cnt').scrollTop = 0;
+      }
     },
     components: {
       ScrollComponent,

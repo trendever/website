@@ -20,7 +20,11 @@
 <script>
 
 export default {
-  data: () => ({
-  })
+  data: () => {
+    let main_page = window.location.origin;
+    history.pushState({},"Trendever",main_page);
+    history.pushState(history.state,"404",main_page+"/404");
+    return {}
+  }
 }
 </script>

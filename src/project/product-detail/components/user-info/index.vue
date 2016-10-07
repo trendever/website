@@ -6,9 +6,9 @@
         <span class="title" v-link='{name: "user", params: {id: name}}'>Нашёл</span>
         <span class="name" v-link='{name: "user", params: {id: name}}'>{{name}}</span>
       </div>
-      <span class="code">Код тренда {{code}}</span>
+      <span class="code">{{code}}, {{ lastUpdate}}</span>
     </div>
-    <span class="lastUpdate">{{ lastUpdate }}</span>
+    <!-- <span class="lastUpdate">{{ lastUpdate }}</span> -->
   </div>
 </template>
 
