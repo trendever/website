@@ -19,7 +19,7 @@ scroll-component(v-el:scroll-cnt)
     .section.top.bottom
       .section__content
         .chat-list(v-bind:style="styleObject")
-            chat-list-item(v-for='lead in leads | orderBy "updated_at" -1 | cutList',:lead='lead')
+            chat-list-item(v-for='lead in leads | orderBy "updated_at" -1 | cutList',:lead='lead', track-by="$index")
     template(v-if='!leads.length')
       .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
@@ -279,7 +279,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
             if ( targetHeight < ( scrollTop + 1000 ) ) {
 
-              setTimeout( () => {
+
 
                 this.loadLeads().then( () => {
 
@@ -289,7 +289,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
                 } )
 
-              }, 1 );
+
 
             } else {
 
