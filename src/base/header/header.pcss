@@ -293,7 +293,7 @@
       justify-content: center;
 
       span {
-        font-family: $font__family__regular;
+        color: rgba(255,255,255,.5);
         height: 53%;
         line-height: 100%;
 
@@ -305,33 +305,8 @@
 
       &._active {
         cursor: default;
-
-        background: #29A19F;
         span {
-          width: 100px;
-          border-bottom: .5px solid white;
-          @media (--mobile) {
-            width: 150px;
-          }
-        }
-      }
-      &._active_mobile {
-
-        cursor: default;
-        span {
-          width: 100px;
-          border-bottom: .5px solid white;
-          @media (--mobile) {
-            width: 150px;
-          }
-        }
-      }
-
-      &._unactive {
-        background: #29A19F;
-        cursor: default;
-        span {
-          width: 100px;
+          color: #fff;
           @media (--mobile) {
             width: 150px;
           }

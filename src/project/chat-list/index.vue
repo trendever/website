@@ -7,12 +7,12 @@ scroll-component(v-el:scroll-cnt)
       //-старая логика v-if="getIsTab"
       .header__nav(slot='content' v-if='true')
         .header__nav__i.header__text(
-          :class='{_active: getTab === "customer" && !isMobile, _active_mobile: getTab === "customer" && isMobile, _unactive: getTab === "seller" && isMobile}',
+          :class='{_active: getTab === "customer"}',
           @click='setTab("customer");',
           @touch='setTab("customer");')
           span Покупаю
         .header__nav__i.header__text(
-          :class='{_active: getTab === "seller" && !isMobile, _active_mobile: getTab === "seller" && isMobile, _unactive: getTab === "customer" && isMobile }',
+          :class='{_active: getTab === "seller"}',
           @click='setTab("seller");')
           span Продаю
 
