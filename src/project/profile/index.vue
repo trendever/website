@@ -116,17 +116,27 @@ scroll-component(v-if="isDone", class="profile-cnt")
     route: {
       canReuse: false,
       data( { to: { params: { id } } } ) {
-        if (browser.mobile && !browser.standalone){
-          document.location = 'tndvr://';
-        }
-
         return this.openProfile( id )
         .then(()=>{
+          if (browser.mobile && !browser.standalone){
+            document.location = 'tndvr://shop/'+id;
+          }
           this._setTab();
         })
         .catch( () => {
-          this.$router.go( { name: '404' } );
-        } );        
+          let try_ = id.replace("-","_");
+
+          return this.openProfile( try_ )
+          .then(()=>{
+            if (browser.mobile && !browser.standalone){
+              document.location = 'tndvr://shop/'+try_;
+            }
+            this._setTab();
+          })
+          .catch( () => {
+            this.$router.go( { name: '404' } );
+          }); 
+        });        
       }
     },
     created(){

@@ -5,10 +5,8 @@ scroll-component
     :title='"Брендам"',
     :center-text-link="centerTextLink",
     :page="info",
+    :back-link='{name: "home"}',
     :show-desktop-arrow="false")
-      .chat-header(slot='content')
-          .chat-header_arrow(v-link="{name: 'home'}")
-            i.chat-header_arrow_ic.ic-arrow-left
     right-nav-component(slot="content", current="")
   .section__content.infonewshops
     .section.top
@@ -63,10 +61,7 @@ scroll-component
          span в описании #[br.break_desk.mob] попадает #[br.break_mob] в твою Trendever-витрину и виден всем
       .section.top__info-block__tell-clients-slide
       .section.top__info-block__desc.done Готово! #[br] Принимай заказы #[br.break_desk.mob] в одном приложении #[br] и получи доступ к клиентам #[br.break_desk.mob] всех Instagram-магазинов
-      .section.top__info-block__download-btn
-       button(v-if="isMobile && !isStandalone" @click="dlapp") СКАЧАТЬ ПРИЛОЖЕНИЕ
-       //-button(v-if="isStandalone && !isAuth" v-link='{ name: "signup" }') ВХОД И РЕГИСТРАЦИЯ
-      fast-signup(v-if="isStandalone && !isAuth && !isMobile")
+      fast-signup(v-if="!isAuth")
 </template>
 <script>
   import settings from 'settings'
