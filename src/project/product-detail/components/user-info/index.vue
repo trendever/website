@@ -6,7 +6,7 @@
         <span class="title" v-link='{name: "user", params: {id: name}}'>Нашёл</span>
         <span class="name" v-link='{name: "user", params: {id: name}}'>{{name}}</span>
       </div>
-      <span class="code">{{code}}, {{ time}}</span>
+      <span class="code">{{code}}, {{ lastUpdate}}</span>
     </div>
     <!-- <span class="lastUpdate">{{ lastUpdate }}</span> -->
   </div>
@@ -15,14 +15,7 @@
 <style src="./style.pcss" scoped lang="postcss"></style>
 
 <script type="text/babel">
-  import { formatPastTime } from 'project/chat/utils';
   export default {
-    computed: {
-      time(){
-        let time = +this.lastUpdate;
-        return formatPastTime( time);
-      }
-    },
     props: {
       img: {
         type: String,
