@@ -186,6 +186,8 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
         })() );
 
+        leads.onEvent( this.onEvent );
+
         this.run();
 
       } else {
@@ -195,6 +197,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
     beforeDestroy(){
       if ( this.isAuth ) {
         this.leadClose();
+        leads.offEvent( this.onEvent );
       }
       if (this.scrollListener){
         this.scrollListener.remove();
@@ -238,6 +241,13 @@ app-loader.list-loader(v-if="!needLoadLeads")
       }
     },
     methods: {
+      onEvent(data){
+        if (data.response_map.event === "PROGRESS"){
+          console.log("LEAD ADDED");
+          console.log(data);
+          window.location.reload();
+        }
+      },
       panup(e){
         this.$els.scrollCnt.scrollTop = this.currentPan + Math.abs(e.deltaY);
         this.setScroll( this.$els.scrollCnt.scrollTop, this.$els.scrollCnt.scrollHeight );

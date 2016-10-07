@@ -425,3 +425,12 @@ export function getCancelReasons() {
 
   });
 }
+
+
+export function onEvent(handler) {
+  channel.on('EVENT', 'lead', handler);
+}
+
+export function offEvent( handler ) {
+  channel.off( 'EVENT', 'lead', handler );
+}
