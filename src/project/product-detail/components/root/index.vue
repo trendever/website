@@ -11,7 +11,7 @@
       :picture="picture"
       :caption="caption"
       :is-liked="isLiked"
-      last-update=""
+      :last-update="lastUpdate"
       :is-mobile="isMobile"
       :product-id="productId"
       :like="like"
@@ -209,7 +209,12 @@
     },
 
     computed: {
+      lastUpdate() {
+        if ( this.getOpenedProduct ) {
+          return this.getOpenedProduct.instagram_published_at + '';
+        }
 
+      },
       isProduct(){
 
         return this.getOpenedProduct !== null
