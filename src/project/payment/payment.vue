@@ -39,14 +39,15 @@
                maxlength="19",
                v-if="selectedCardId == 0",
                onkeypress='return event.charCode >= 48 && event.charCode <= 57',
-               v-on:input="onChangeNumber").check-card-input
+               v-on:input="onChangeNumber",
+               placeholder="0000 0000 0000 0000").check-card-input
           h1(v-if="selectedCardId > 0") **** **** **** {{ currentCardNumber }}
       p.payment-note(:class="{'pay_note_app': isStandalone}")
         | Деньги будут перечислены на#[br(v-if="isMobile")] твою карту за вычетом#[br(v-if="!isMobile")] комиссии -#[br(v-if="isMobile")] 1.48%, но не менее 50 руб. Payture.ru
       img.note-img(src='img/pay_cards.svg' v-if="isMobile")
 
   .btn-container
-    button(@click="leadOrder").btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom Отправить
+    button(@click="leadOrder", id="send").btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom Отправить
     div
       img.note-img(src='img/pay_cards.svg' v-if="!isMobile")
 
