@@ -12,6 +12,7 @@ import {
   CONVERSATION_INC_LENGTH_LIST,
   CONVERSATION_OPEN_IMG_POPUP,
   CONVERSATION_SET_ACTION,
+  CONVERSATION_SET_ACTION_DATA,
   CONVERSATION_SET_IMG_LOADER
 } from '../mutation-types';
 
@@ -39,7 +40,10 @@ const state = {
   imgPopUpUrl: false,
   imgWidth: 0,
   imgHeight: 0,
-  action: '',
+  action: {
+    type: "base",
+    data: {}
+  },
   imgLoader: false
 };
 
@@ -378,9 +382,15 @@ const mutations = {
     state.showMenu       = false;
     state.showStatusMenu = false;
   },
+
   [CONVERSATION_SET_ACTION] (state, value) {
-    state.action = value;
+    state.action.type = value;
   },
+
+  [CONVERSATION_SET_ACTION_DATA] (state, value) {
+    state.action.data = value;
+  },
+
   [CONVERSATION_SET_IMG_LOADER] (state, value) {
     state.imgLoader = value;
   }

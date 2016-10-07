@@ -244,7 +244,7 @@
     color: #fff;
     position: relative;
     font-size: 1.563em;
-    font-family: "San Francisco Semibold";
+    font-family: $font__family__semibold;
 
     height: 50px;
     line-height: 50px;
@@ -293,7 +293,7 @@
       justify-content: center;
 
       span {
-        font-family: $font__family__regular;
+        color: rgba(255,255,255,.5);
         height: 53%;
         line-height: 100%;
 
@@ -305,13 +305,10 @@
 
       &._active {
         cursor: default;
-
-        background: #29A19F;
         span {
-          width: 110px;
-          border-bottom: .5px solid white;
+          color: #fff;
           @media (--mobile) {
-            width: 160px;
+            width: 150px;
           }
         }
       }

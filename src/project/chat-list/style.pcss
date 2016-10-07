@@ -1,5 +1,26 @@
 @import 'base/vars/vars.pcss';
+.how-to-sell-btn {
+  cursor: pointer;
+  font-family: $font__family__light;
+  color: black;
+  text-align: center;
+  line-height: 99px;
+  position: fixed * 0 0 0;
+  height: 99px;
+  text-transform: uppercase;
+  background: #FFDE1E;
+  z-index: 9999;
+  font-size: 34px;
+  @media (min-width: 751px) {
+    bottom: 150px;
+    font-size: 20px;
+    height: 50px;
+    line-height: 50px;
+    width: 300px;
+    margin: 0 auto;
+  }
 
+}
 .list-loader {
    position: fixed 50% * * 50% ;
    transform: translate(-50%, -50%);
@@ -14,7 +35,7 @@
     text-align:center;
     color: $color__gray;
     font-size: 24px;
-    font-family: "San Francisco Light";
+    font-family: $font__family__light;
     margin-top: -25px;
     padding-top: 240px;
     background: url("img/chats_inactive.svg") no-repeat 50% 0;
@@ -28,14 +49,14 @@
       max-width:1050px;
       margin:0 auto;
       text-align: center;
-      font-family: "San Francisco Semibold";
+      font-family: $font__family__semibold;
       img {
         display: inline-block;
         margin-bottom: 45px;
       }
     }
     &__banner{
-      z-index: 9999;
+      z-index: 10;
       display: block;
       position: absolute;
       font-size: 24px;
@@ -47,28 +68,29 @@
       padding-top: 30px;
       padding-bottom: 30px;
       color: #595959;
-      font-family: "San Francisco Semibold";
+      font-family: $font__family__semibold;
       line-height: 30px;
       @media(--mobile) {
         display: block;
         position: absolute;
-        font-size: 22px;
+        font-size: 30px;
         width: 100%;
         text-align: center;
         background-color: #ececec;
         bottom: 98px;
         //padding: 30px;
-        padding-top: 30px;
-        padding-bottom: 30px;
+        padding-top: 40px;
+        padding-bottom: 40px;
         color: #595959;
         font-weight: bolder;
         line-height: 38px;
       }
       span{
-        font-family: "San Francisco Light";
+        font-family: $font__family__light;
       }
       span.want{
-        font-family: "San Francisco Semibold";
+        font-family: $font__family__semibold;
+        font-weight: bold;
       }
     }
   }
@@ -173,13 +195,13 @@
             height: 47.5px;
             font-size: 38px;
             line-height: 45.6px;
-            font-family: "San Francisco Light";
+            font-family: $font__family__light;
           }
         }
         .body-status-time{
           display: flex;
           justify-content: space-between;
-          font-family: "San Francisco Light";
+          font-family: $font__family__light;
         }
 
         .body-status {
@@ -189,7 +211,7 @@
           @media (--mobile) {
             font-size: 24px;
             line-height: 36px;
-            font-family: "San Francisco Light";
+            font-family: $font__family__light;
           }
         }
         .body-time{
@@ -249,7 +271,7 @@
           height: 26px;
 
           border-radius: 25px;
-          background: #EF3758;
+          background: #31BEBC;
 
           flex-shrink: 0;
           @media(--mobile) {

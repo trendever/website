@@ -3,15 +3,10 @@
 <template lang="jade">
 .chat-row.__center
   .chat-msg-status
-    template(v-if='msg.user.user_id === $store.state.user.myId')
-      span 
-       | Вы отправили запрос на получение {{getAmmount | curency_spaces}}
-       i.ic-currency-rub
-    template(v-else)
-      span 
-       | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
-       i.ic-currency-rub
-
+    span 
+     | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
+     i.ic-currency-rub
+     
 .chat-approve-btn(v-if='showPayButton' )
   .btn-payment(@click="pay") 
     span ОТПРАВИТЬ {{getAmmount}}₽
@@ -25,8 +20,8 @@
 </template>
 
 <script type='text/babel'>
-  import { getCurrentMember, getShopName, getLastMessageId, getLeadId, getCustomerName,getCustomerId } from 'vuex/getters/chat.js';
-  import {setConversationAction} from 'vuex/actions/chat.js'
+  import { getCurrentMember, getShopName, getLastMessageId, getLeadId, getCustomerName,getCustomerId,getAction} from 'vuex/getters/chat.js';
+  import {setConversationAction,setConversationActionData} from 'vuex/actions/chat.js'
   import { user } from 'vuex/getters/user.js';
   import * as service from 'services/chat';
   import * as leads from 'services/leads';
@@ -36,11 +31,14 @@
 
   export default{
     data() {
+      let _payid = JSON.parse(this.msg.parts[0].content).pay_id;
       if (!this.msg.parts[1] && this.msg.user.user_id !== this.getCurrentMember.user_id){
         this.setConversationAction("pay");
+        this.setConversationActionData({id: _payid})
       }
       if (!this.msg.parts[1] && this.msg.user.user_id === this.getCurrentMember.user_id){
         this.setConversationAction("pendingpayment");
+        this.setConversationActionData({id: _payid})
       }
       return {
         canceled: false
@@ -54,9 +52,11 @@
     },
     vuex: { 
       actions: {
-        setConversationAction
+        setConversationAction,
+        setConversationActionData
       },
       getters: {
+        getAction,
         getShopName,
         getCurrentMember,
         getLastMessageId,
@@ -139,17 +139,21 @@
         return {from: _from,to: _to};
       },
       showPayButton(){
-        if (this.msg.user.role === 1){
-          return this.msg.user.user_id !== this.$store.state.user.myId && !this.isDone;
-        }else{
-          return this.getCustomerId === this.$store.state.user.myId && !this.isDone;
+        if (this.getAction == 'pay'){
+          if (this.msg.user.role === 1){
+            return this.msg.user.user_id !== this.$store.state.user.myId && !this.isDone;
+          }else{
+            return this.getCustomerId === this.$store.state.user.myId && !this.isDone;
+          }
         }
       },
       showPendingButton(){
-        if (this.msg.user.role === 1){
-          return this.msg.user.user_id === this.$store.state.user.myId && !this.isDone;
-        }else{
-          return this.getCustomerId !== this.$store.state.user.myId && !this.isDone;
+        if (this.getAction == 'pendingpayment'){
+          if (this.msg.user.role === 1){
+            return this.msg.user.user_id === this.$store.state.user.myId && !this.isDone;
+          }else{
+            return this.getCustomerId !== this.$store.state.user.myId && !this.isDone;
+          }
         }
       },
       getUsername() {

@@ -72,17 +72,17 @@ export const formatPastTime = ( unixtime ) => {
 
     if ( month === 1 ) {
 
-      return `${month} месяц`;
+      return `${month} меc`;
 
     }
 
     if ( month >= 2 && day <= 4 ) {
 
-      return `${month} месяца`;
+      return `${month} мес`;
 
     }
 
-    return `${month} месяцев`;
+    return `${month} мес`;
 
   }
 
