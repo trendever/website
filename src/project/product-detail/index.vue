@@ -8,7 +8,7 @@ scroll-component(v-el:scroll-cnt)
     :avatar-url='avatarUrl',
     :show-desktop-arrow="false")
     right-nav-component(slot="content", current="")
-  .section.main.top
+  .section.main.top.little-padding
     .section__content
       post-component
 </template>
