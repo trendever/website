@@ -75,8 +75,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
     setTab,
     loadLeads,
     leadClose,
-    setScroll,
-    init
+    setScroll
   } from 'vuex/actions/lead.js';
 
   import * as leads from 'services/leads';
@@ -124,8 +123,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
         setTab,
         loadLeads,
         leadClose,
-        setScroll,
-        init
+        setScroll
       }
     },
     data(){
@@ -247,9 +245,9 @@ app-loader.list-loader(v-if="!needLoadLeads")
         if (data.response_map.event === "PROGRESS"){
           console.log("LEAD ADDED");
           console.log(data);
-
+          window.location.reload();
           //reload leads
-          this.init();
+          //this.init();
         }
       },
       panup(e){
