@@ -1,6 +1,6 @@
 <style src="../../base/vars/vars.pcss"></style>
 <template lang="jade">
-.status_bar(v-if='isAuth || showStatusBar', @click="scrollTop")
+.status_bar(v-if='isAuth || showStatusBar')
 
 scroll-component
   hero-component
@@ -76,11 +76,6 @@ scroll-component
         this.showOnScroll.remove();
       }
       this.setComeBack( false );
-    },
-    methods:{
-      scrollTop(){
-        document.querySelector('.scroll-cnt').scrollTop = 0;
-      }
     },
     components: {
       ScrollComponent,
