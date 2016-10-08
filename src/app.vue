@@ -1,5 +1,6 @@
 <style src="project/app/style.pcss"></style>
 <template lang="jade">
+.fake-status-bar(v-if="isStandalone", @click="scrollTop")
 .app(:class="{'standalone': isStandalone}")
   popup-fast-signup(v-if="authIsDone && showAuthBtn")
   router-view(v-if="authIsDone")
@@ -51,6 +52,11 @@ input(type="hidden", value="", id="get-user-login")
         }else{
           return false;
         }
+      }
+    },
+    methods:{
+      scrollTop(){
+        document.querySelector('.scroll-cnt').scrollTop = 0;
       }
     },
     ready() {

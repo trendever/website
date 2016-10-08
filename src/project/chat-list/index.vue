@@ -19,7 +19,7 @@ scroll-component(v-el:scroll-cnt)
     .section.top.bottom
       .section__content
         .chat-list(v-bind:style="styleObject")
-            chat-list-item(v-for='lead in leads | orderBy "updated_at" -1 | cutList',:lead='lead', track-by="$index")
+            chat-list-item(v-for='lead in leads | orderBy "updated_at" -1 | cutList', :lead='lead', track-by="id")
     template(v-if='!leads.length')
       .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
@@ -186,6 +186,8 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
         })() );
 
+        leads.onEvent( this.onEvent );
+
         this.run();
 
       } else {
@@ -195,6 +197,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
     beforeDestroy(){
       if ( this.isAuth ) {
         this.leadClose();
+        leads.offEvent( this.onEvent );
       }
       if (this.scrollListener){
         this.scrollListener.remove();
@@ -206,7 +209,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
         if(this.$store.state.leads.tab === 'customer') {
           let leads = this.getLeads.filter(item=>{
-            return !(item.cancel_reason === 1);
+            return !(item.cancel_reason === 2) && !(item.cancel_reason === 1);
           });
 
           return leads;
@@ -214,7 +217,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
         if(this.$store.state.leads.tab === 'seller') {
           let leads = this.getLeads.filter(item=>{
-            return !(item.cancel_reason === 1);
+            return !(item.cancel_reason === 2) && !(item.cancel_reason === 1);
           });
 
           return leads;
@@ -238,6 +241,15 @@ app-loader.list-loader(v-if="!needLoadLeads")
       }
     },
     methods: {
+      onEvent(data){
+        if (data.response_map.event === "PROGRESS"){
+          console.log("LEAD ADDED");
+          console.log(data);
+          window.location.reload();
+          //reload leads
+          //this.init();
+        }
+      },
       panup(e){
         this.$els.scrollCnt.scrollTop = this.currentPan + Math.abs(e.deltaY);
         this.setScroll( this.$els.scrollCnt.scrollTop, this.$els.scrollCnt.scrollHeight );
