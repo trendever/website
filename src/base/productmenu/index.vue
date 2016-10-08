@@ -1,7 +1,7 @@
 <style src='./menu.pcss'></style>
 <template lang="jade">
 .header__menu(v-if="isMobile")
- .header__menu-icon(@click.stop='menuOpened = !menuOpened')
+ .header__menu-icon(@click.stop='menuOpened = !menuOpened', v-show="showBullets")
   i.ic-menu_bullets
  .header__menu-links.bubble.bubble--arrow.bubble--arrow-ne(v-if="menuOpened")
   a.header__menu-link(@click="menuOpened=false") Отмена
@@ -24,12 +24,13 @@
 
       return {
         menuOpened: false,
+        showBullets: true,
         isMobile: window.browser.mobile
       }
     },
     ready(){
       let scrollCnt = document.querySelector('.scroll-cnt');
-      this.outerCloseMenu = listen(scrollCnt, 'click',(e)=>{
+      this.scrollListen = listen(scrollCnt, 'click',(e)=>{
 
         targetClass(e, 'menu-cnt', ()=>{
           if(this.menuOpened) {
@@ -39,9 +40,15 @@
         });
 
       })
+
+      this.scrollListen = listen(scrollCnt,'scroll',()=>{
+
+        this.showBullets = scrollCnt.scrollTop > 85 ? false : true;
+
+      });
     },
     beforeDestroy(){
-      this.outerCloseMenu.remove();
+      this.scrollListen.remove();
     },
     vuex: {
       getters: {
