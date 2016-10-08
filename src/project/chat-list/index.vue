@@ -209,7 +209,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
         if(this.$store.state.leads.tab === 'customer') {
           let leads = this.getLeads.filter(item=>{
-            return !(item.cancel_reason === 1);
+            return !(item.cancel_reason === 2) && !(item.cancel_reason === 1);
           });
 
           return leads;
@@ -217,7 +217,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
         if(this.$store.state.leads.tab === 'seller') {
           let leads = this.getLeads.filter(item=>{
-            return !(item.cancel_reason === 1);
+            return !(item.cancel_reason === 2) && !(item.cancel_reason === 1);
           });
 
           return leads;
