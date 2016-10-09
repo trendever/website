@@ -6,9 +6,12 @@
         <span class="title" v-link='{name: "user", params: {id: name}}'>Нашёл</span>
         <span class="name" v-link='{name: "user", params: {id: name}}'>{{name}}</span>
       </div>
-      <span class="code">{{code}}, {{ lastUpdate}}</span>
+      <!--
+      //IMPORTANT TODO (after https://trello.com/c/TZMW2VPA/896-instagram-published-at)
+      //Show valid lastUpdate
+      -->
+      <span class="code">{{code}}</span><!--, {{ lastUpdate}}</span> -->
     </div>
-    <!-- <span class="lastUpdate">{{ lastUpdate }}</span> -->
   </div>
 </template>
 

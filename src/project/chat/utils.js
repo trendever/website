@@ -9,11 +9,8 @@ export const formatDatetime = unixtime => {
 
 export const formatTime = unixtime => formatDatetime( unixtime ).split( ' ' )[ 1 ];
 
-export const formatPastTime = ( unixtime ) => {
-
-  const diffUnixTime = Date.now() - parseInt( unixtime * 1000 );
-
-  const second = parseInt( diffUnixTime / 1000 );
+export const formatPastTime = ( pasttime ) => {
+  const second = parseInt( pasttime);
   const minute = parseInt( second / 60 );
   const hour   = parseInt( minute / 60 );
   const day    = parseInt( hour / 24 );
