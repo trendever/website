@@ -167,7 +167,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
     methods:{
       buyTg(){
         this
-          .createLead( 21499 )
+          .createLead( 32158 )
           .then(
             ( lead ) => {
               if ( lead !== undefined && lead !== null ) {
