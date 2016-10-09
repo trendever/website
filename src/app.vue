@@ -2,6 +2,7 @@
 <template lang="jade">
 .fake-status-bar(v-if="isStandalone", @click="scrollTop")
 .app(:class="{'standalone': isStandalone}")
+  inapp-notification
   popup-fast-signup(v-if="authIsDone && showAuthBtn")
   router-view(v-if="authIsDone")
   listener-component(v-if="authIsDone")
@@ -23,16 +24,18 @@ input(type="hidden", value="", id="get-user-login")
 
   import PopupFastSignup from 'base/auth-popup/fast-signup.vue'
   import ListenerComponent from 'project/listener/index.vue'
+  import InappNotification from 'base/inapp-notification/index.vue';
 
   import {get as getUser} from 'services/user';
   import {setToken} from 'services/user';
+
 
   export default {
     data(){
       return {
         authIsDone: false,
         touchMoveY: 0,
-        showAuthBtn: false
+        showAuthBtn: false        
       }
     },
     vuex: {
@@ -57,7 +60,8 @@ input(type="hidden", value="", id="get-user-login")
     methods:{
       scrollTop(){
         document.querySelector('.scroll-cnt').scrollTop = 0;
-      }
+      },
+      
     },
     ready() {
 
@@ -68,7 +72,6 @@ input(type="hidden", value="", id="get-user-login")
       this.$on('hideAuthBtn',()=>{
         this.showAuthBtn = false;
       })
-
 
       let token = null
 
@@ -99,12 +102,14 @@ input(type="hidden", value="", id="get-user-login")
         return this.$route.name !== 'why'
       },
       isStandalone(){
+        return true;
         return browser.standalone;
       }
     },
     components: {
       ListenerComponent,
       PopupFastSignup,
+      InappNotification
     },
     store
   }

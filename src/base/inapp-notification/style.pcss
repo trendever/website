@@ -1,0 +1,34 @@
+.standalone .inapp-notification{
+	margin-top: 40px;
+}
+
+.inapp-notification{
+  z-index: 20000;
+  color: white;
+  padding-left: 20px;
+
+  h2{
+  	font-size: 30px;
+  }
+
+  span{
+  	font-size: 28px;
+  }
+}
+
+
+/* always present */
+.expand-transition {
+  position: absolute 0 0 * 0;
+  transition: all .3s ease;
+  height: 120px;
+  background-color: #1d6362;
+  overflow: hidden;
+}
+/* .expand-enter defines the starting state for entering */
+/* .expand-leave defines the ending state for leaving */
+.expand-enter, .expand-leave {
+  height: 0;
+  padding: 0 10px;
+  opacity: 0;
+}
