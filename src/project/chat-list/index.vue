@@ -4,7 +4,6 @@ scroll-component(v-el:scroll-cnt)
   right-nav-component(current="chat")
   .chat-list-cnt(v-if='isDone')
     header-component(:title='getTitle', :left-btn-show='false')
-      //-старая логика v-if="getIsTab"
       .header__nav(slot='content' v-if='true')
         .header__nav__i.header__text(
           :class='{_active: getTab === "customer"}',
@@ -19,19 +18,19 @@ scroll-component(v-el:scroll-cnt)
     .section.top.bottom
       .section__content
         .chat-list(v-bind:style="styleObject")
-            chat-list-item(v-for='lead in leads | orderBy "updated_at" -1 | cutList', :lead='lead', track-by="id")
-    template(v-if='!leads.length')
+            chat-list-item(v-for='lead in leadsArray | orderBy "updated_at" -1 | cutList', :lead='lead', track-by="id")
+    template(v-if='!leadsArray.length')
       .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
         span  ... потому что ты пока ничего #[br] не покупаешь
       .chat-list-cnt-is-empty(v-if="getTab === 'seller'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
         span  ... потому что ты пока ничего #[br] не продаешь
-      .chat-list-cnt-is-empty__banner(v-if="!leads.length && getTab === 'customer'") Нажми Купить&nbsp
+      .chat-list-cnt-is-empty__banner(v-if="!leadsArray.length && getTab === 'customer'") Нажми Купить&nbsp
        span под товаром #[br]или&nbsp
        span.want напиши @wantit&nbsp
        span под постом в Instagram, #[br] и здесь появится шопинг-чат.
-      .chat-list-cnt-is-empty__banner(v-if="!leads.length && getTab === 'seller'")
+      .chat-list-cnt-is-empty__banner(v-if="!leadsArray.length && getTab === 'seller'")
        span Напиши&nbsp
        span.want покупай по комментарию @wantit&nbsp
        span
@@ -100,8 +99,8 @@ app-loader.list-loader(v-if="!needLoadLeads")
       ChatListItem
     },
     filters: {
-      cutList( leads ){
-        return leads.slice( 0, this.getLengthList );
+      cutList( leadsArray ){
+        return leadsArray.slice( 0, this.getLengthList );
       }
     },
     vuex: {
@@ -130,6 +129,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
       return {
         isMobile: window.browser.mobile,
         needLoadLeads: true,
+        leadsArray: [],
         isFirst: false,
         styleObject: {
           pointerEvents: 'auto'
@@ -205,7 +205,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
     },
 
     computed:{
-      leads(){
+      leadsArray(){
 
         if(this.$store.state.leads.tab === 'customer') {
           let leads = this.getLeads.filter(item=>{
@@ -241,13 +241,16 @@ app-loader.list-loader(v-if="!needLoadLeads")
       }
     },
     methods: {
+      //Добавление нового лида в нужную вкладку
       onEvent(data){
         if (data.response_map.event === "PROGRESS"){
-          console.log("LEAD ADDED");
-          console.log(data);
-          window.location.reload();
-          //reload leads
-          //this.init();
+          let lead_id = data.response_map.lead;
+          return leads
+              .get({lead_id})
+              .then((data)=>{
+                let lead = data.lead
+                this.$store.state.leads.seller.unshift(lead)
+              });
         }
       },
       panup(e){
