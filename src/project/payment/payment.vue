@@ -111,7 +111,7 @@ export default{
         })
         if(oldCard){
           this.$set('selectedCardId',oldCard.id);
-        } 
+        }
       }
 
       //Добавление пробелов в инпут
@@ -174,7 +174,7 @@ export default{
           return false;
         });
 
-      }else{ 
+      }else{
         if (this.selectedCardId ===0 ){
           this.setMessage('Введите полный номер карты');
           return false;
@@ -239,7 +239,7 @@ export default{
         this.$set('currentCardNumber','');
       }
     }
-   
+
   }
 }
 //helpers

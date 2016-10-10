@@ -5,6 +5,12 @@
     padding-top: 0;
     margin: 0 auto;
   }
+  .lg-popup{
+    width: 636px;
+  }
+  .lg-input, .lg-btn{
+    width: 318px;
+  }
 
 }
 
@@ -12,9 +18,9 @@
 </style>
 
 <template lang="jade">
-.hero__content__input-wrap
-  input(type="text" placeholder="Номер телефона" v-model="phoneNumber")
-  button.hero__content__get-link(@click="getLink()" v-bind:disabled="disableButton") {{getLinkTitle}}
+.hero__content__input-wrap.lg-popup
+  input(type="text" placeholder="Укажите номер телефона" v-model="phoneNumber").lg-input
+  button.hero__content__get-link.lg-btn(@click="getLink()" v-bind:disabled="disableButton") {{getLinkTitle}}
 </template>
 
 <script>
@@ -38,7 +44,7 @@ export default {
         if (this.smsSent){
           return "ОТПРАВЛЕНО";
         }else{
-          return "ПОЛУЧИТЬ ССЫЛКУ";
+          return "ПОЛУЧИТЬ ССЫЛКУ НА ПРИЛОЖЕНИЕ";
         }
       },
     disableButton(){
