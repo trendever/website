@@ -30,7 +30,7 @@ scroll-component
   export default {
     data(){
       if (browser.mobile && !browser.standalone){
-        document.location = 'tndvr://shop/' + this.getUserName;
+        //document.location = 'tndvr://';
       }
       return {showStatusBar: false};
     },
