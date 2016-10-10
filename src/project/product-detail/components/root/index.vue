@@ -211,7 +211,9 @@
     computed: {
       lastUpdate() {
         if ( this.getOpenedProduct ) {
-          return formatPastTime(this.getOpenedProduct.instagram_published_at);
+          console.log("PUBLISHED AT");
+          console.log(this.getOpenedProduct.instagram_published_at_ago);
+          return formatPastTime(this.getOpenedProduct.instagram_published_at_ago/1000000000);
         }
 
       },
