@@ -9,7 +9,7 @@
 
 <script type="text/babel">
 import * as messages from 'services/message';
-import * as user from 'services/user';
+import * as users from 'services/user';
 
 export default {
   data(){
@@ -31,30 +31,42 @@ export default {
     onMessage(data){
         console.log("MESSAGE");
         console.log(data);
+        let messages = data.response_map.messages;
+        if (messages[0]){
+          let user_id = data.response_map.messages[0].user.id;
 
-        let chat = data.response_map.chat;
+          console.log("SELFID");
+          console.log(this.$store.state.user.myId);
+
+          console.log("USERID")
+          console.log(user_id);
+        }
+       
+
+        /*let chat = data.response_map.chat;
         let messages = data.response_map.messages;
         let user_id = messages[0].user_id;
-        let user = messages[0].user;
         let message = messages[0].parts[0];
+        var that = this;
 
-        /*user.get({user_id}).then(function(data){
+
+        users.get({user_id}).then(function(data){
           console.log("USER!");
           console.log(data);
-        })
-        console.log(data);*/
+          let user = data;
 
-        let alertData = {
-          title: "Новое сообщение в чате", 
-          text: message.content,
-          username: user.name
-        }
+          let alertData = {
+            title: "Новое сообщение в чате", 
+            text: message.content,
+            username: user.instagram_username
+          }
 
-        if (messages[0].parts[0].mime_type == 'text/plain'){
-          this.$set('alert',true);
-          this.$set('alertData',alertData);
-          setTimeout( () => this.$set('alert', false), 2000);
-        }
+          if (messages[0].parts[0].mime_type == 'text/plain'){
+            that.$set('alert',true);
+            that.$set('alertData',alertData);
+            setTimeout( () => that.$set('alert', false), 2000);
+          }
+        });*/
     }
   }
 }
