@@ -33,6 +33,8 @@ export default {
   methods:{
     goToChat(){
       if (this.chatId){
+        this.$set('alert', false);
+        this.$set('avatarUrl', "");
         this.$router.go({name: "chat", params: {id: this.chatId}})
       }
     },
@@ -43,8 +45,7 @@ export default {
       return leads.get({conversation_id: this.chatId});
     },
     onMessage(data){
-        console.log("MESSAGE");
-        console.log(data);
+
         let messages = data.response_map.messages;
         if (messages[0]){
           let user_id = data.response_map.messages[0].user.user_id;
@@ -52,23 +53,26 @@ export default {
           let chat_id = data.response_map.chat.id;
           this.$set('text', message.content);
           this.$set('chatId', chat_id);
+          this._getLead().then(data => {
+            this.$set('chatId', data.lead.id);
 
-
-          if (message.mime_type === 'text/plain' && user_id != this.$store.state.user.myId){
-            this._getUser(user_id).then(data => {
-                this.$set('username', data.instagram_username);
-                this.$set('alert', true);
-                this.$set('avatarUrl', data.avatar_url);
-
-                this._getLead().then(data => {
-                  this.$set('chatId', data.lead.id);
+            //Если мы не в чате с тем кто пишет
+            if (this.$route.params.id != data.lead.id){
+              //Уведомляем только о текстовых сообщениях (всех кроме того кто писал сообщение)
+              if (message.mime_type === 'text/plain' && user_id != this.$store.state.user.myId){
+                //Нужно получать юзера чтобы узнать avatar_url
+                this._getUser(user_id).then(data => {
+                    this.$set('username', data.instagram_username);
+                    this.$set('alert', true);
+                    if (data.avatar_url){
+                      this.$set('avatarUrl', data.avatar_url);
+                    }
+                    setTimeout( () => this.$set('alert', false), 3000);
                 });
-                setTimeout( () => this.$set('alert', false), 3000);
-            });
-          }
-
+              }
+            }
+          });
         }
-       
     }
   }
 }
