@@ -15,7 +15,7 @@ scroll-component(v-el:scroll-cnt)
           @click='setTab("seller");')
           span Продаю
 
-    .section.top.bottom.little-move-up
+    .section.top.bottom(:class="{'little-move-up': !$root.isStandalone,'little-move-up-standalone': $root.isStandalone}")
       .section__content
         .chat-list(v-bind:style="styleObject")
             chat-list-item(v-for='lead in leadsArray | orderBy "updated_at" -1 | cutList', :lead='lead', track-by="id", v-ref:item)
