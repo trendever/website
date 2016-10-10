@@ -1,0 +1,69 @@
+.standalone .inapp-notification{
+	margin-top: 40px;
+}
+
+.inapp-notification{
+  z-index: 20000;
+  color: white;
+  padding-left: 20px;
+  padding-top: 20px;
+
+  h2{
+  	font-size: 30px;
+  }
+
+  span{
+  	font-size: 28px;
+  }
+
+  .popup_img{
+    width: 90px;
+    height: 90px;
+    background-image: url(icons/user_active.svg);
+    background-size: 118px;
+    background-position: -136px;
+
+    border-radius: 50%;
+    float: left;
+  }
+
+  .popup_author-name{
+    float: left;
+    font-size: 28px;
+    margin: 5px 0px 0px 17px;
+    width: 85%;
+    /* font-family: @font_family_light; */
+  }
+  .popup_msg{
+    float: left;
+    font-size: 24px;
+    width: 85%;
+    margin: 0px 0px 0px 17px;
+    /* font-family: @font_family_light; */
+  }
+
+}
+
+.expand-transition {
+  position: absolute 0 0 * 0;
+  transition: all .3s ease;
+  background-color: #343434;
+  color: #fff;
+  height: 130px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.expand-enter, .expand-leave {
+  height: 0;
+  padding: 0 10px;
+  opacity: 0;
+}
+
+
+
+
+
+
