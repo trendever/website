@@ -42,8 +42,9 @@ scroll-component
       .section.top__info-block__list-title 1. Cкачай приложение
       .section.top__info-block__list-description.download Не важно какой телефон у тебя или твоих клиентов, #[br.break_mob]Trendever доступен на iPhone и Android устройствах
        .section.top__info-block__list-description.download-btns
-        a(href="#").app_store
-        a(href="#").g_play
+        a(href="https://itunes.apple.com/ru/app/trendever/id1124212231", v-if="!isMobile").app_store
+        .app_store(v-if="isMobile")
+        //a(href="#").g_play
       .section.top__info-block__list-title 2. Расскажи клиентам
       .section.top__info-block__list-description.add-goods Добавь текст в профиль #[br.break_desk.mob] своего Instagram: #[br]
         .wantit Напиши
