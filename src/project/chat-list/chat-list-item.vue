@@ -78,6 +78,23 @@
     methods: {
       goToChat(){
 
+        let parentRefs = this.$parent.$parent.$refs.item;
+
+        let item = parentRefs.find(item=>{
+
+          return item.showDelete === true;
+
+        })
+
+
+        if(item) {
+
+          item.showDelete = false;
+          return;
+
+        }
+
+
         if(this.showDelete) {
 
           this.$set('showDelete', false);
@@ -178,7 +195,7 @@
       },
       dataTime(){
         if ( this.lead.chat !== null ) {
-          return formatPastTime( this.lead.updated_at_ago / 1e9 );
+          return formatPastTime( this.lead.updated_at_ago  );
         }
       },
       title(){
