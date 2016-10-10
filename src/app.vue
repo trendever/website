@@ -2,7 +2,7 @@
 <template lang="jade">
 .fake-status-bar(v-if="isStandalone", @click="scrollTop")
 .app(:class="{'standalone': isStandalone}")
-  inapp-notification
+  inapp-notification(v-if="isStandalone")
   popup-fast-signup(v-if="authIsDone && showAuthBtn")
   router-view(v-if="authIsDone")
   listener-component(v-if="authIsDone")
