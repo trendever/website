@@ -6,7 +6,7 @@
       </button>
     </div>
     <div class="rightSide">
-      <button class="buy_btn" @click="buy">КАК КУПИТЬ?</button>
+      <button class="buy_btn" @click="buy">КУПИТЬ</button>
     </div>
   </div>
   <div class="find-bloger" v-if="authSellerProduct" @click="buyServiceProduct">Найти блогера</div>
