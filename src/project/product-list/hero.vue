@@ -74,11 +74,7 @@
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
         slider
-<<<<<<< HEAD
-     .hero__content__logo__mobile
-=======
      .hero__content__logo__mobile(:class="{'logo_app': isStandalone}")
->>>>>>> makeup
     .hero__content__description Шопинг в Instagram #[br(v-if="isMobile")] стал проще!
     button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }" v-if="isStandalone") ВХОД И РЕГИСТРАЦИЯ
     button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'app' }" v-else) СКАЧАТЬ ПРИЛОЖЕНИЕ
