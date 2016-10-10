@@ -85,9 +85,6 @@
 .hero {
   position: relative;
   z-index: 101;
-/*   @media(--mobile) {
-  height: 201%;
-} */
   @media(--tabletandless) {
     height: 200%;
   }
@@ -102,11 +99,6 @@
     background: url(../img/hero.jpg) no-repeat;
 
     background-size: cover;
-/*     @media(--mobile) {
-  background: url(../img/Bgr_clg_mob.jpg) no-repeat;
-  background-size: cover;
-  height: 46%;
-} */
     @media(--tabletandless) {
       background: url(../img/Bgr_clg_mob.jpg) no-repeat;
       background-size: cover;
@@ -218,7 +210,7 @@
         width: 528px;
         height: 112px;
         background-size: 528px;
-        margin-top: 52.1%;
+        margin-top: 42%;
         margin-left: 59px;
       }
     }
@@ -602,7 +594,7 @@
      &__logo{
       position: relative;
       display: inline-block;
-      padding-top: 8px;
+      padding-top: 7px;
       color: $color__white;
       width:150px;
       font-size: 32px;
@@ -622,23 +614,14 @@
       }
 
       @media(--mobile){
-        width:290px;
-        font-size: 60px;
+        width:220px;
+        height: 53px;
+        font-size: 53px;
       }
     }
   }
   .hero__content__2{
     display: none;
-    /*@media(--mobile) {
-      display: inline-block !important;
-      height: 53%;
-      width: 100%;
-      text-align: center;
-      background-image: url(../img/blue_bgr.png);
-      background-repeat: no-repeat;
-      background-size: cover;
-      //background-position: -460px -80px;
-    }*/
     @media(--tabletandless){
       display: inline-block !important;
       height: 53%;
@@ -648,7 +631,7 @@
       background-repeat: no-repeat;
       background-size: cover;
       margin-bottom: 20px;
-      //background-position: -80px;
+      background-position-x: -1px;
     }
     a{
       display: inline-block;
@@ -657,7 +640,7 @@
       color: #fff;
       margin-top: 30px;
       width: 100%;
-      line-height: 60px;
+      line-height: 50px;
       font-family: $font__family__light;
     }
     p{
@@ -671,12 +654,6 @@
 
   .enter__btn{
     display: none !important;
-   /* @media(--mobile) {
-      display: inline-block !important;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-    }*/
     @media(--tabletandless) {
       display: inline-block !important;
       position: absolute;
@@ -701,17 +678,6 @@
   }
   .sellers_auth_btn{
     display: none;
-    /*@media(--mobile) {
-      display: block;
-      font-size: 36px;
-      color: #fff;
-      border: 1px solid #fff;
-      background: transparent;
-      width: 550px;
-      height: 118px;
-      border-radius: 5px;
-      margin: 160px auto 0px auto;
-    }*/
     @media(--tabletandless) {
       display: block;
       font-size: 36px;
@@ -727,24 +693,12 @@
   }
   .shopping_trends{
     display: none;
-    /*@media(--mobile) {
-      display: inline-block;
-      font-size: 36px;
-      color: #fff;
-      width: 100%;
-      height: 118px;
-      position: absolute;
-      bottom: 0px;
-      left: 0;
-      background: #31bebc;
-      border: none;
-    }*/
     @media(--tabletandless) {
       display: inline-block;
       font-size: 36px;
       color: #fff;
       width: 100%;
-      height: 118px;
+      height: 100px;
       position: absolute;
       bottom: 1px;
       left: 0;
@@ -758,11 +712,14 @@
     margin-bottom: 35px;
   }
   .cnt_app{
-    height: 45.5% !important;
+    height: 46% !important;
   }
   .cnt2_app{
     height: 53% !important;
   }
   .cnt2_app p{
     padding-top: 190px !important;
+  }
+  .logo_app{
+    margin-top: 55% !important;
   }

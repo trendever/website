@@ -15,10 +15,10 @@ scroll-component(v-el:scroll-cnt)
           @click='setTab("seller");')
           span Продаю
 
-    .section.top.bottom
+    .section.top.bottom.little-move-up
       .section__content
         .chat-list(v-bind:style="styleObject")
-            chat-list-item(v-for='lead in leadsArray | orderBy "updated_at" -1 | cutList', :lead='lead', track-by="id")
+            chat-list-item(v-for='lead in leadsArray | orderBy "updated_at" -1 | cutList', :lead='lead', track-by="id", v-ref:item)
     template(v-if='!leadsArray.length')
       .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
@@ -253,17 +253,6 @@ app-loader.list-loader(v-if="!needLoadLeads")
               });
         }
       },
-      panup(e){
-        this.$els.scrollCnt.scrollTop = this.currentPan + Math.abs(e.deltaY);
-        this.setScroll( this.$els.scrollCnt.scrollTop, this.$els.scrollCnt.scrollHeight );
-      },
-      pandown(e){
-        this.$els.scrollCnt.scrollTop = this.currentPan - Math.abs(e.deltaY);
-        this.setScroll( this.$els.scrollCnt.scrollTop, this.$els.scrollCnt.scrollHeight );
-      },
-      panend(e){
-        this.currentPan = this.$els.scrollCnt.scrollTop;
-      },
       run(){
 
         this.runLoadingLeads().then( () => {
@@ -297,11 +286,11 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
 
                 this.loadLeads().then( () => {
-
-                  this.$nextTick( () => {
-                    add( this.$els.scrollCnt.scrollHeight );
-                  } );
-
+                  setTimeout(()=>{
+                    this.$nextTick( () => {
+                      add( this.$els.scrollCnt.scrollHeight );
+                    } );
+                  },1)
                 } )
 
 

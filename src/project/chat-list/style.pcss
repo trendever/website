@@ -1,4 +1,15 @@
 @import 'base/vars/vars.pcss';
+
+
+.section.top.bottom.little-move-up {
+
+    @media (--mobile) {
+      padding-top: 90px;
+
+    }
+
+
+}
 .how-to-sell-btn {
   cursor: pointer;
   font-family: $font__family__light;
@@ -117,7 +128,6 @@
 
       &-photo {
         overflow: hidden;
-
         width: 110px;
         height: 110px;
 
@@ -125,12 +135,12 @@
 
         flex-shrink: 0;
         @media (--mobile) {
+          margin-top: 18px;
           width: 190px;
           height: 190px;
         }
         img {
           display: block;
-
           width: 100%;
           height: 100%;
 
@@ -239,6 +249,7 @@
 
           font-size: 16px;
           line-height: 20.85px;
+          font-family: "San Francisco Light";
 
           b {
             font-weight: 700;
