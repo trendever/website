@@ -1,8 +1,7 @@
 @import 'base/vars/vars.pcss';
 
-
 .popup-wrapper {
-  position: fixed * 0 0 0;
+  position: absolute * 0 0 0;
   z-index: 100;
   width: 100%;
   padding-top: 20px;
@@ -14,6 +13,7 @@
   @media(--tabletandless){
     padding: 13px 0 0px;
     font-size: 36px;
+    position: fixed;
   }
   @media(--mobile) {
 
@@ -100,13 +100,13 @@
   height: 60px;
   margin: 0;
 
-  font-family: $font__family__light;
+  font-family: "San Francisco Light";
   font-size: 26px;//было 24px
   line-height: 40px;
 
   @media(--tabletandless){
     width: 100% !important;
-    height: 118px !important;
+    height: 100px !important;
     margin-bottom:0 !important;
     border-radius: 0;
     font-size: 36px;
@@ -121,7 +121,7 @@
 .popup .container-left {
   display: inline-block;
 
-  width: 420px;
+  width: 636px;
   @media(--tabletandless){
     width: 100%;
   }

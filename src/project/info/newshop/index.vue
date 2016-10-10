@@ -42,13 +42,14 @@ scroll-component
       .section.top__info-block__list-title 1. Cкачай приложение
       .section.top__info-block__list-description.download Не важно какой телефон у тебя или твоих клиентов, #[br.break_mob]Trendever доступен на iPhone и Android устройствах
        .section.top__info-block__list-description.download-btns
-        a(href="#").app_store
-        a(href="#").g_play
+        a(href="https://itunes.apple.com/ru/app/trendever/id1124212231", v-if="!isMobile").app_store
+        .app_store(v-if="isMobile")
+        //a(href="#").g_play
       .section.top__info-block__list-title 2. Расскажи клиентам
       .section.top__info-block__list-description.add-goods Добавь текст в профиль #[br.break_desk.mob] своего Instagram: #[br]
         .wantit Напиши
-         span.want @wantit
-         span и товар #[br.break_desk.mob] попадет #[br.break_mob] в шопинг- #[br.break_desk.mob]приложение по ссылке ниже #[br.break_mob]
+         span.want  @wantit
+         span  и товар #[br.break_desk.mob] попадет #[br.break_mob] в шопинг- #[br.break_desk.mob]приложение по ссылке ниже #[br.break_mob]
         span.block Укажи в профиле ссылку #[br.break_desk] на свою витрину #[br.break_mob] в Trendever
       .section.top__info-block__add-goods-slide
       .section.top__info-block__list-title 3. Добавляй описание #[br.break_desk.mob]
@@ -57,12 +58,18 @@ scroll-component
         .wantit2 Покупай по комментарию #[br]
          span.want @wantit #[br]
         span Товар с
-         span.want @wantit
-         span в описании #[br.break_desk.mob] попадает #[br.break_mob] в твою Trendever-витрину и виден всем
+         span.want  @wantit
+         span  в описании #[br.break_desk.mob] попадает #[br.break_mob] в твою Trendever-витрину и виден всем
       .section.top__info-block__tell-clients-slide
       .section.top__info-block__desc.done Готово! #[br] Принимай заказы #[br.break_desk.mob] в одном приложении #[br] и получи доступ к клиентам #[br.break_desk.mob] всех Instagram-магазинов
-      fast-signup(v-if="!isAuth")
+  fast-signup(v-if="!isAuth")
+   .popup(style="position: relative")
 </template>
+<style scoped>
+  #lp{
+    position: relative;
+  }
+</style>
 <script>
   import settings from 'settings'
 
