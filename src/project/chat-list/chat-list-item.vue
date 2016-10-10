@@ -195,7 +195,7 @@
       },
       dataTime(){
         if ( this.lead.chat !== null ) {
-          return formatPastTime( this.lead.updated_at_ago / 1e9 );
+          return formatPastTime( this.lead.updated_at_ago  );
         }
       },
       title(){
