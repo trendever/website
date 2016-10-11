@@ -8,7 +8,7 @@
      i.ic-currency-rub
      
 .chat-approve-btn(v-if='showPayButton' )
-  a.btn-payment(v-bind:href="payLink", target="_blank") 
+  .btn-payment(@click="pay") 
     span ОТПРАВИТЬ {{getAmmount}}₽
   .btn-cancel(@click="cancel") <i class="ic-close"></i>
 
@@ -16,6 +16,8 @@
   .btn-payment 
     span ЗАПРОШЕНО {{getAmmount}}₽
   .btn-cancel(@click="cancel") <i class="ic-close"></i>
+
+iframe.test(v-if='showPayButton', id="paymentIframe" v-bind:src="payLink" v-show="showPaymentWindow")
     
 </template>
 
@@ -32,17 +34,10 @@
   export default{
     data() {
       let _payid = JSON.parse(this.msg.parts[0].content).pay_id;
-      
+      this.showPaymentWindow = false;
       if (!this.msg.parts[1] && this.msg.user.user_id !== this.getCurrentMember.user_id){
-        cardService.createPayment({
-          id: _payid,
-          lead_id: +this.getLeadId
-        }).then(path=>{
-          this.$set("payLink",path.redirect_url);
           this.setConversationAction("pay");
-          this.setConversationActionData({id: _payid})
-        });
-        
+          this.setConversationActionData({id: _payid});        
       }
       if (!this.msg.parts[1] && this.msg.user.user_id === this.getCurrentMember.user_id){
         this.setConversationAction("pendingpayment");
@@ -50,7 +45,8 @@
       }
       return {
         canceled: false,
-        payLink: ""
+        payLink: "",
+        showPaymentWindow: false
       }
     },
     props: {
@@ -77,7 +73,13 @@
     },
     methods:{
       pay(){
-        
+        cardService.createPayment({
+          id: +this.payId,
+          lead_id: +this.getLeadId
+        }).then(path=>{
+          this.$set("payLink",path.redirect_url);
+          this.$set("showPaymentWindow",true);
+        });
       },
       cancel(){
         cardService.cancelPayment({
