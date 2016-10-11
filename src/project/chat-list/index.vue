@@ -260,11 +260,11 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
           const { scrollTop } = this.getScroll;
 
-          if ( scrollTop > 0 ) {
+          //if ( scrollTop > 0 ) {
 
             this.restoreScroll()
 
-          }
+          //}
 
         } )
 
