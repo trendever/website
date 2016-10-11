@@ -34,12 +34,15 @@ iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLi
   export default{
     data() {
       let _payid = JSON.parse(this.msg.parts[0].content).pay_id;
-      this.showPaymentWindow = false;
+      this.showPaymentWindow = true;
 
-      window.cancelPayment = () => {
-        this.showPaymentWindow = false;
-        this.cancel();
-      }
+      window.onmessage = (msg) => {
+        var fra = document.getElementById("paymentIframe");
+        if(msg.data && msg.data.name=="Close" && msg.source == fra.contentWindow) {
+          this.showPaymentWindow = false;
+          this.cancel();
+        }
+      };
 
       if (!this.msg.parts[1] && this.msg.user.user_id !== this.getCurrentMember.user_id){
           this.setConversationAction("pay");
