@@ -20,8 +20,6 @@ export const formatPastTime = ( pasttime ) => {
   if ( second <= 60 ) {
     return `${second} сек`;
   }
-  console.log("SECOND")
-  console.log(second);
 
   if ( minute <= 60 ) {
     return `${minute} мин`;
