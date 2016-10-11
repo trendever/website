@@ -17,7 +17,7 @@
     span ЗАПРОШЕНО {{getAmmount}}₽
   .btn-cancel(@click="cancel") <i class="ic-close"></i>
 
-iframe.test(v-if='showPayButton', id="paymentIframe" v-bind:src="payLink" v-show="showPaymentWindow")
+iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLink" v-show="showPaymentWindow")
     
 </template>
 
@@ -35,6 +35,12 @@ iframe.test(v-if='showPayButton', id="paymentIframe" v-bind:src="payLink" v-show
     data() {
       let _payid = JSON.parse(this.msg.parts[0].content).pay_id;
       this.showPaymentWindow = false;
+
+      window.cancelPayment = () => {
+        this.showPaymentWindow = false;
+        this.cancel();
+      }
+
       if (!this.msg.parts[1] && this.msg.user.user_id !== this.getCurrentMember.user_id){
           this.setConversationAction("pay");
           this.setConversationActionData({id: _payid});        
