@@ -72,7 +72,7 @@
           id: +this.payId,
           lead_id: +this.getLeadId
         }).then(path=>{
-          window.location = path.redirect_url;
+          window.open(path.redirect_url, '_blank');
         });
       },
       cancel(){

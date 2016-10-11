@@ -155,10 +155,10 @@ const mutations = {
 
   [LEAD_SET_TAB] ( state, tab = 'customer', lengthList = getCountForLoading ) {
     state.tab        = tab;
-    state.lengthList = {
+    /*state.lengthList = {
       seller: lengthList,
       customer: lengthList
-    };
+    };*/
   },
 
   [LEAD_INC_LENGTH_LIST] ( state, lengthList = getCountForLoading, tab = null ) {
@@ -254,10 +254,10 @@ const mutations = {
 
   [LEAD_CLOSE] ( state ) {
 
-    state.lengthList = {
+    /*state.lengthList = {
       seller: getCountForLoading,
       customer: getCountForLoading
-    };
+    };*/
 
   }
 

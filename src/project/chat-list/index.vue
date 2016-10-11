@@ -15,6 +15,7 @@ scroll-component(v-el:scroll-cnt)
           @click='setTab("seller");')
           span Продаю
 
+
     .section.top.bottom(:class="{'little-move-up': !$root.isStandalone,'little-move-up-standalone': $root.isStandalone}")
       .section__content
         .chat-list(v-bind:style="styleObject")
@@ -259,11 +260,11 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
           const { scrollTop } = this.getScroll;
 
-          if ( scrollTop > 0 ) {
+          //if ( scrollTop > 0 ) {
 
             this.restoreScroll()
 
-          }
+          //}
 
         } )
 

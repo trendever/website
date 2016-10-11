@@ -16,7 +16,7 @@
   padding: 50px 30px 0 30px;
   padding-top: 120px;
   color: #FFF;
-  background-color: #12302d;
+  background-color: #0E3333;
   font-size: 24px;
   line-height: 1.2;
   min-height:100vh;
@@ -60,7 +60,7 @@
   }
 
   @media(max-width:1279px) {
-    padding: 50px 30px 130px 30px;
+    padding: 40px 30px 130px 30px;
     font-size: 36px;
   }
 
@@ -85,10 +85,10 @@
     height: 3rem;
     font-size: 24px;
     font-family: $font__family__light;
-    &::-webkit-input-placeholder{opacity: .2; color: #fff;font-family: $font__family__light;}
-    &::-moz-placeholder{opacity: .2; color: #fff;font-family: $font__family__light;}
-    &:-moz-placeholder{opacity: .2; color: #fff;font-family: $font__family__light;}
-    &:-ms-input-placeholder{opacity: .2; color: #fff;font-family: $font__family__light;}
+    &::-webkit-input-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
+    &::-moz-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
+    &:-moz-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
+    &:-ms-input-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
 
     @media(--mobile) {
       height: 4rem;
@@ -107,7 +107,6 @@
 
       text-align: center;
 
-      font-size: 54px;
     }
   }
   .section {
@@ -187,7 +186,7 @@
     padding: 20px 50px;
 
     @media(--mobile) {
-      padding: 20px 15px 20px 50px;
+      padding: 25px 15px 50px 50px;
     }
   }
   &.confirm {
@@ -245,6 +244,7 @@
 
     @media(--tabletandless) {
       padding: 0;
+      height: auto;
     }
   }
   .column-desktop-right {
@@ -385,6 +385,9 @@
     width:580px;
     padding-left:0;
     margin-left:40px;
+  }
+  &:last-child{
+    margin-top: 42px;
   }
 
   i {
