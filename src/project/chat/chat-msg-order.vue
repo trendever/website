@@ -32,9 +32,10 @@
   export default{
     data() {
       let _payid = JSON.parse(this.msg.parts[0].content).pay_id;
+      
       if (!this.msg.parts[1] && this.msg.user.user_id !== this.getCurrentMember.user_id){
         cardService.createPayment({
-          id: +this.payId,
+          id: _payid,
           lead_id: +this.getLeadId
         }).then(path=>{
           this.$set("payLink",path.redirect_url);
