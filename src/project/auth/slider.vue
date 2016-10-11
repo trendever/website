@@ -2,7 +2,7 @@
 <template lang="jade">
 swipe.swipe-item-container
   swipe-item.slide.slide-1
-    p ...искать и покупать в живом каталоге#[br] товаров из инстаграма.
+    p ...искать и покупать в живом#[br] каталоге товаров из инстаграма.
     img(src='img/auth-slide-1.png')
   swipe-item.slide.slide-2
     p ...покупать в приложении Instagram#[br]по комментарию @wantit.
