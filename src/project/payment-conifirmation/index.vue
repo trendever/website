@@ -1,6 +1,6 @@
 <template lang="jade">
   .wrapper
-   .header Оплачено
+   .header-pay Оплачено
    .text Направляем обратно в чат #[br] или
    a(href="#").link нажми здесь
 </template>
@@ -27,7 +27,7 @@ export default {
     text-align: center;
     font-family: $font__family__regular;
   }
-  .header{
+  .header-pay{
     font-size: 54px;
     padding-top: 50%;
     margin-bottom: 50px;
