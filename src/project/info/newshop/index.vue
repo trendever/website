@@ -36,7 +36,7 @@ scroll-component
          span 1 990
          i.ic-rub
          span   в месяц
-      .section.top__info-block__desc Первый месяц бесплатно
+      .section.top__info-block__desc Первые 7 дней бесплатно
       .section.top__info-block__title.how-sell Как начать продавать?
       .section.top__info-block__sub-title Выполни 3 простых шага:
       .section.top__info-block__list-title 1. Cкачай приложение
@@ -63,7 +63,6 @@ scroll-component
       .section.top__info-block__tell-clients-slide
       .section.top__info-block__desc.done Готово! #[br] Принимай заказы #[br.break_desk.mob] в одном приложении #[br] и получи доступ к клиентам #[br.break_desk.mob] всех Instagram-магазинов
   fast-signup(v-if="!isAuth")
-   .popup(style="position: relative")
 </template>
 <style scoped>
   #lp{
