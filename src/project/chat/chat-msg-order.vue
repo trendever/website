@@ -39,8 +39,16 @@ iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLi
       window.onmessage = (msg) => {
         var fra = document.getElementById("paymentIframe");
         if(msg.data && msg.data.name=="Close" && msg.source == fra.contentWindow) {
+          if (msg.data.redirect_url){
+            console.log(msg.data.redirect_url);
+            //logic about sucess
+          }else{
+            this.cancel();
+          }
           this.showPaymentWindow = false;
-          this.cancel();
+        }
+        if(msg.data && msg.data.name=="Load" && msg.source == fra.contentWindow){
+          console.log("SHOW LOADER");
         }
       };
 
