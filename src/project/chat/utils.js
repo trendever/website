@@ -20,10 +20,16 @@ export const formatPastTime = ( pasttime ) => {
   if ( second <= 60 ) {
     return `${second} сек`;
   }
-  
+
   if ( minute <= 60 ) {
     return `${minute} мин`;
   }
+   console.log("Minute")
+  console.log(minute);
+
+  console.log("HOUR");
+   console.log(hour);
+
 
   if ( hour < 24 ) {
 

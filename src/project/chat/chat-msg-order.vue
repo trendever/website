@@ -16,6 +16,8 @@
   .btn-payment 
     span ЗАПРОШЕНО {{getAmmount}}₽
   .btn-cancel(@click="cancel") <i class="ic-close"></i>
+
+iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLink" v-show="showPaymentWindow")
     
 </template>
 
@@ -32,16 +34,28 @@
   export default{
     data() {
       let _payid = JSON.parse(this.msg.parts[0].content).pay_id;
+      this.showPaymentWindow = true;
+
+      window.onmessage = (msg) => {
+        var fra = document.getElementById("paymentIframe");
+        if(msg.data && msg.data.name=="Close" && msg.source == fra.contentWindow) {
+          this.showPaymentWindow = false;
+          this.cancel();
+        }
+      };
+
       if (!this.msg.parts[1] && this.msg.user.user_id !== this.getCurrentMember.user_id){
-        this.setConversationAction("pay");
-        this.setConversationActionData({id: _payid})
+          this.setConversationAction("pay");
+          this.setConversationActionData({id: _payid});        
       }
       if (!this.msg.parts[1] && this.msg.user.user_id === this.getCurrentMember.user_id){
         this.setConversationAction("pendingpayment");
         this.setConversationActionData({id: _payid})
       }
       return {
-        canceled: false
+        canceled: false,
+        payLink: "",
+        showPaymentWindow: false
       }
     },
     props: {
@@ -72,7 +86,8 @@
           id: +this.payId,
           lead_id: +this.getLeadId
         }).then(path=>{
-          window.location = path.redirect_url;
+          this.$set("payLink",path.redirect_url);
+          this.$set("showPaymentWindow",true);
         });
       },
       cancel(){
