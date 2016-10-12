@@ -40,11 +40,12 @@ iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLi
         var fra = document.getElementById("paymentIframe");
         if(msg.data && msg.data.name=="Close" && msg.source == fra.contentWindow) {
           if (msg.data.redirect_url){
+            this.showPaymentWindow = false;
             window.location(msg.data.redirect_url);
           }else{
             this.cancel();
+            this.showPaymentWindow = false;
           }
-          this.showPaymentWindow = false;
         }
         if(msg.data && msg.data.name=="Load" && msg.source == fra.contentWindow){
           console.log("SHOW LOADER");
