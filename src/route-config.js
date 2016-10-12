@@ -37,7 +37,7 @@ export function configRouter(router) {
       name: 'chatPayed',
       component: require('project/chat/index.vue'),
     },
-    
+
     '/settings/tracking': {
       name: 'settings-tracking',
       component: require('project/settings-tracking/index.vue'),
@@ -91,6 +91,11 @@ export function configRouter(router) {
     '/payment': {
       name: 'payment',
       component: require('project/payment/payment.vue')
+    },
+
+    '/payment-conifirmation': {
+      name: 'payment-conifirmation',
+      component: require('project/payment-conifirmation/index.vue')
     },
 
     '/:id': {
