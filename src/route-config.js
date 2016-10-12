@@ -93,11 +93,6 @@ export function configRouter(router) {
       component: require('project/payment/payment.vue')
     },
 
-    '/payment-conifirmation': {
-      name: 'payment-conifirmation',
-      component: require('project/payment-conifirmation/index.vue')
-    },
-
     '/:id': {
       // !important it must be last of the list.
       // (exlclude '*' not found)
