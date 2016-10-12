@@ -63,7 +63,6 @@ scroll-component
       .section.top__info-block__tell-clients-slide
       .section.top__info-block__desc.done Готово! #[br] Принимай заказы #[br.break_desk.mob] в одном приложении #[br] и получи доступ к клиентам #[br.break_desk.mob] всех Instagram-магазинов
   fast-signup(v-if="!isAuth")
-   .popup(style="position: relative")
 </template>
 <style scoped>
   #lp{
