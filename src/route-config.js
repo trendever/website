@@ -96,10 +96,17 @@ export function configRouter(router) {
       name: 'payment',
       component: require('project/payment/payment.vue')
     },
+
     '/foreign': {
       name: 'foreign-link',
       component: require('project/app-iframe/index.vue')
     },
+
+    'monetization': {
+      name: 'monetization',
+      component: require('project/monetization/index.vue')
+    },
+
     '/:id': {
       // !important it must be last of the list.
       // (exlclude '*' not found)
