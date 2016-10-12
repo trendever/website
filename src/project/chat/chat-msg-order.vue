@@ -40,8 +40,7 @@ iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLi
         var fra = document.getElementById("paymentIframe");
         if(msg.data && msg.data.name=="Close" && msg.source == fra.contentWindow) {
           if (msg.data.redirect_url){
-            console.log(msg.data.redirect_url);
-            //logic about sucess
+            window.location(msg.data.redirect_url);
           }else{
             this.cancel();
           }
