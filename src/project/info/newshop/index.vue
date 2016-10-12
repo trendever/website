@@ -36,7 +36,7 @@ scroll-component
          span 1 990
          i.ic-rub
          span   в месяц
-      .section.top__info-block__desc Первый месяц бесплатно
+      .section.top__info-block__desc Первые 7 дней бесплатно
       .section.top__info-block__title.how-sell Как начать продавать?
       .section.top__info-block__sub-title Выполни 3 простых шага:
       .section.top__info-block__list-title 1. Cкачай приложение
