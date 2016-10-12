@@ -34,7 +34,7 @@ iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLi
   export default{
     data() {
       let _payid = JSON.parse(this.msg.parts[0].content).pay_id;
-      this.showPaymentWindow = true;
+      this.showPaymentWindow = false;
 
       window.onmessage = (msg) => {
         var fra = document.getElementById("paymentIframe");
