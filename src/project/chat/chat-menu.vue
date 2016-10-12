@@ -14,8 +14,8 @@ div
       .menu_i(v-if='notCustomer', @click='setShowStatusMenu(true)')
         .menu_i_t Изменить статус заказа
 
-      //.menu_i(@click='openPayment()' v-if="noActivePayments")
-        //.menu_i_t Запросить деньги
+      .menu_i(@click='openPayment()' v-if="noActivePayments")
+        .menu_i_t Запросить деньги
 
       label(class='menu_i menu_i-send-file') Отправить фото
         input(type='file', hidden, @change='selectedFile')
