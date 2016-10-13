@@ -4,10 +4,28 @@ div
     .signup__close.__hello(@click='closePage'): i.ic-close
     .section
       h1 Подтвердите номер телефона
-      .middle-container
-        template(v-if='isCompleted')
+      .middle-container(:class="{'has-another-name': anotherName}")
+        .thanks-wrap(v-if='isCompleted')
           h1 Спасибо!
-          span.has-another-name(v-if="anotherName") Вы уже регистрировались ранее с именем {{ anotherName }}.#[br] Имя можно изменить в настройках своего профиле,#[br] нажав на иконку "шестеренки".
+
+          span.another-name-desc(v-if="anotherName && !isMobile")
+            | Вы уже регистрировались ранее с именем&nbsp
+            span.inst-name {{ anotherName }}.#[br]
+            | Имя можно изменить в настройках своего профиле,#[br]
+            | нажав на иконку&nbsp
+            i.ic-options_menu
+
+          span.another-name-mobile(v-if="anotherName && isMobile")
+            .top-text
+              | Вы уже регистрировались #[br]
+              | ранее с другим именем #[br]
+              span.inst-name {{ anotherName }} #[br]
+            .bottom-text
+              | Имя можно изменить #[br]
+              | в настройках своего профиля,#[br]
+              | нажав на иконку#[br]
+              i.ic-options_menu
+
         template(v-else)
           p(v-if='!isCompleted',
             :class='{ error: errorCode }') {{ text_header }}
@@ -79,7 +97,8 @@ div
         height: '',
         text_header: TEXT_HEADER.DEFAULT,
         needNewSMS: false,
-        anotherName: ''
+        anotherName: '',
+        isMobile: window.browser.mobile
       };
     },
 
