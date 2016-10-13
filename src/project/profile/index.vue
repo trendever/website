@@ -22,7 +22,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
         .profile_desc
           .profile_desc_t(v-if="getSlogan") {{getSlogan}}
-          .profile_desc_caption(v-if="getUserCaption") {{getUserCaption}}
+          .profile_desc_caption(v-if="getUserCaption") {{{getUserCaption | captionSpaces}}}
 
         .profile_filter(v-if="isSelfPage && !noLikes && !noProducts")
           span(v-bind:class="{'seleted': photoType === 'product'}")
@@ -150,6 +150,12 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
       if ( !this.isAuth && !browser.mobile) {
         this.$router.replace( { name: 'signup' } );
+      }
+
+    },
+    filters:{
+      captionSpaces(val){
+        return val.replace(/\r\n\r\n/g,"<br/><br/>");
       }
 
     },
