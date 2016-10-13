@@ -50,7 +50,7 @@
 }
 
 .standalone .signup{
-  padding-top: 89px;
+  padding-top: 90px;
 
   .signup__close{
     top: 50px;
@@ -141,6 +141,9 @@
       font-size: 36px;
     }
   }
+  .input.confirm-input input{
+    height: 6rem !important;
+  }
   h1 {
     margin-bottom: 77px;
 
@@ -154,6 +157,11 @@
       text-align: center;
       font-family: $font__family__semibold;
 
+    }
+  }
+  .confirm{
+    @media(--mobile) {
+      font-family: $font__family__light;
     }
   }
   .section {
@@ -233,7 +241,7 @@
     padding: 20px 50px;
 
     @media(--mobile) {
-      padding: 5px 15px 50px 50px;
+      padding: 65px 15px 50px 50px;
     }
   }
   &.confirm {
@@ -385,7 +393,7 @@
   font-size: 40px;
 
   @media(--mobile) {
-    margin-bottom: 20px;
+    margin-bottom: -5px;
 
     font-size: 56px;
   }
@@ -443,7 +451,7 @@
     margin-left:40px;
   }
   &:last-child{
-    margin-top: 42px;
+    margin-top: 22px;
   }
 
   i {

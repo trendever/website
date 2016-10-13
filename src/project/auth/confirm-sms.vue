@@ -6,7 +6,7 @@ div
       h1 Подтвердите номер телефона
       .middle-container(:class="{'has-another-name': anotherName}")
         .thanks-wrap(v-if='isCompleted')
-          h1 Спасибо!
+          h1 Номер подтвержден!
 
           span.another-name-desc(v-if="anotherName && !isMobile")
             | Вы уже регистрировались ранее с именем&nbsp
@@ -75,19 +75,16 @@ div
 </template>
 
 <script type="text/babel">
-
   import { executeCallbackOnSuccessAuth } from 'vuex/actions';
   import { authUser } from 'vuex/actions/user.js';
   import { authData, callbackOnSuccessAuth } from 'vuex/getters';
   import store from 'vuex/store';
   import * as auth from 'services/auth';
   import { get as getUser} from 'services/user';
-
   const TEXT_HEADER = {
     DEFAULT: 'Введите код из sms',
     ERROR: 'Ошибка, попробуйте снова',
   };
-
   export default {
     data(){
       return {
@@ -101,7 +98,6 @@ div
         isMobile: window.browser.mobile
       };
     },
-
     route: {
       canActivate({abort}){
         if (!authData(store.state).phone && !authData(store.state).username) {
@@ -110,12 +106,10 @@ div
         return true;
       }
     },
-
     ready() {
       this.$set('height', `${ document.body.scrollHeight }px`);
       this.$els.confirmField.focus();
     },
-
     vuex: {
       actions: {
         authUser,
@@ -126,7 +120,6 @@ div
         callbackOnSuccessAuth,
       }
     },
-
     computed: {
       isDisabled() {
         return (this.code.length !== 4) && !this.isCompleted;
@@ -135,17 +128,14 @@ div
         return window.browser.mobile;
       }
     },
-
     methods: {
       // input only numbers
       onInput(e) {
         this.code = this.code.replace(/[^0-9]/g, '');
-
         if (this.code.length >= 4) {
           this.code = this.code.slice(0, 4);
         }
       },
-
       onButton() {
         if(this.anotherName){
           if (!this.callbackOnSuccessAuth) {
@@ -159,13 +149,11 @@ div
         if (this.isDisabled) {
           return;
         }
-
         if (!this.isCompleted) {
           this.onConfirm();
           setTimeout( () => this.$set('needNewSMS', true), 7000);
         }
       },
-
       onConfirm() {
         auth.confirmByCode( this.authData.phone, this.code)
         .then( ({ user, token }) => {
@@ -176,13 +164,10 @@ div
           }
         })
       },
-
       onComplete(user, token) {
         this.isCompleted = true;
         this.$els.confirmBtn.focus();
-
         this.anotherName = user.name !== this.authData.username ? user.name : '';
-
         this
           .authUser(user, token)
           .then(() => {
@@ -197,36 +182,29 @@ div
             }
           });
       },
-
       onErrorCode() {
         console.log('on error');
         this.$set('errorCode', true);
         this.$set('text_header', TEXT_HEADER.ERROR);
         this.$set('code', '');
       },
-
       onFocus() {
         if (this.$get('errorCode')) {
           this.$set('errorCode', false);
           this.$set('text_header', TEXT_HEADER.DEFAULT);
         }
       },
-
       sendSMS() {
         this.onFocus();
         this.$set('code', '');
         this.$set('needNewSMS', false);
         setTimeout( () => this.$set('needNewSMS', true), 7000);
-
         auth.sendPassword(this.authData.phone).then( data => {
           this.$router.go({ name: 'comfirm-sms' })
         })
-
       },
-
       closePage() {
         mixpanel.track('Close confirm-sms Page');
-
         if (window.history.length > 2) {
           this.$router.go(window.history.back(2));
         } else {
