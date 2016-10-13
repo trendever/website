@@ -6,7 +6,7 @@ div
       h1 Подтвердите номер телефона
       .middle-container
         template(v-if='isCompleted')
-          h1 Спасибо!
+          h1.confirm Номер подтвержден!
         template(v-else)
           p(v-if='!isCompleted',
             :class='{ error: errorCode }') {{ text_header }}
