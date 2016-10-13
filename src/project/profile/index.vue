@@ -110,7 +110,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
         noProducts: true,
         loaded: false,
         isMobile: window.browser.mobile,
-        showBloger: true
+        showBloger: true,
+        isSeller: false,
+        isSupplier: false
       }
     },
     route: {
@@ -135,8 +137,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
           })
           .catch( () => {
             this.$router.go( { name: '404' } );
-          }); 
-        });        
+          });
+        });
       }
     },
     created(){
@@ -229,7 +231,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
               }
 
             } else {
-
+              if(this.isSeller) {
+                this.$set('photoType','like');
+                return;
+              }
               this.$set('photoType','product');
 
             }
@@ -320,10 +325,12 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
         if(this.user.supplier_of !== null){
           shopId = this.user.supplier_of[0];
+          this.$set('isSupplier', true);
         }
 
         if(this.user.seller_of !== null){
           shopId = this.user.seller_of[0];
+          this.$set('isSeller', true);
         }
 
         if(shopId){
