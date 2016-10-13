@@ -3,6 +3,23 @@
   text-transform: uppercase;
 }
 
+.has-another-name {
+
+  opacity: 0.4;
+  text-align: center;
+  font-size: 1.6rem;
+  @media (--mobile) {
+    display: inline-block;
+    font-size: 1.4rem;
+  }
+  @media screen and (min-width:1024px) {
+    display: inline-block;
+    margin-top: 200px;
+
+  }
+
+}
+
 .standalone .signup{
   padding-top: 90px;
 
@@ -94,6 +111,9 @@
       height: 4rem;
       font-size: 36px;
     }
+  }
+  .input.confirm-input input{
+    height: 6rem !important;
   }
   h1 {
     margin-bottom: 77px;
@@ -335,7 +355,7 @@
   font-size: 40px;
 
   @media(--mobile) {
-    margin-bottom: 20px;
+    margin-bottom: -5px;
 
     font-size: 56px;
   }
@@ -393,7 +413,7 @@
     margin-left:40px;
   }
   &:last-child{
-    margin-top: 42px;
+    margin-top: 22px;
   }
 
   i {

@@ -7,6 +7,7 @@ div
       .middle-container
         template(v-if='isCompleted')
           h1.confirm Номер подтвержден!
+          span.has-another-name(v-if="anotherName") Вы уже регистрировались ранее с именем {{ anotherName }}.#[br] Имя можно изменить в настройках своего профиле,#[br] нажав на иконку "шестеренки".
         template(v-else)
           p(v-if='!isCompleted',
             :class='{ error: errorCode }') {{ text_header }}
@@ -78,6 +79,7 @@ div
         height: '',
         text_header: TEXT_HEADER.DEFAULT,
         needNewSMS: false,
+        anotherName: ''
       };
     },
 
@@ -126,7 +128,15 @@ div
       },
 
       onButton() {
-
+        if(this.anotherName){
+          if (!this.callbackOnSuccessAuth) {
+                this.$router.go({name: 'chat_list'}), 1000;
+                return;
+              } else {
+                this.executeCallbackOnSuccessAuth()
+                return;
+              }
+        }
         if (this.isDisabled) {
           return;
         }
@@ -152,16 +162,19 @@ div
         this.isCompleted = true;
         this.$els.confirmBtn.focus();
 
+        this.anotherName = user.name !== this.authData.username ? user.name : '';
+
         this
           .authUser(user, token)
           .then(() => {
-
-            if (!this.callbackOnSuccessAuth) {
-              setTimeout( () => this.$router.go({name: 'chat_list'}), 1000);
-              return true;
-            } else {
-              this.executeCallbackOnSuccessAuth()
-              return 0;
+            if(!this.anotherName) {
+              if (!this.callbackOnSuccessAuth) {
+                setTimeout( () => this.$router.go({name: 'chat_list'}), 1000);
+                return true;
+              } else {
+                this.executeCallbackOnSuccessAuth()
+                return 0;
+              }
             }
           });
       },

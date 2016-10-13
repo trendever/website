@@ -39,8 +39,19 @@ iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLi
       window.onmessage = (msg) => {
         var fra = document.getElementById("paymentIframe");
         if(msg.data && msg.data.name=="Close" && msg.source == fra.contentWindow) {
-          this.showPaymentWindow = false;
-          this.cancel();
+          if (msg.data.redirect_url){
+            this.showPaymentWindow = false;
+            console.log("REDIRECTION:");
+            console.log(msg.data.redirect_url);
+            location.href(msg.data.redirect_url);
+            window.location(msg.data.redirect_url);
+          }else{
+            this.cancel();
+            this.showPaymentWindow = false;
+          }
+        }
+        if(msg.data && msg.data.name=="Load" && msg.source == fra.contentWindow){
+          console.log("SHOW LOADER");
         }
       };
 
