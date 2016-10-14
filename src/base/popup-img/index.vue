@@ -13,11 +13,19 @@
          v-touch:panEnd="panEnd($event)"
          v-touch-options:pan="{ threshold: 40 }"
          v-touch:tap="imgTaps"
-         v-touch-options:tap="{ taps:2, interval:500, threshold:2, time:300, posThreshold: 50 }">
+         v-touch-options:tap="{ taps:2, interval:500, threshold:2, time:300, posThreshold: 50 }"
+         v-touch:press="showBottomMenu = true"
+         v-touch-options:press="{time: 300}">
 
       </div>
 
       <div class="close-block" @click="onClose"></div>
+
+      <div class="ios-bottom-menu" :class="{'opened-ios-menu': showBottomMenu}" v-show="showBottomMenu">
+        <div class="save-option">Save Image</div>
+        <div class="copy-option">Copy</div>
+        <div class="cancel-option"  @click.stop="showBottomMenu = false">Cancel</div>
+      </div>
 
     </div>
 
@@ -42,7 +50,8 @@
         deltaY: 0,
         deltaX: 0,
         currentScale: 1,
-        isScaled: false
+        isScaled: false,
+        showBottomMenu: false
       }
 
     },

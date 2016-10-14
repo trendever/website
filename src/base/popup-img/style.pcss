@@ -56,3 +56,53 @@
   size: 100%;
 
 }
+
+
+.ios-bottom-menu {
+  z-index: 9000;
+  transition: all .2s ease;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 40px;
+  color: blue;
+  width: 90%;
+  text-align: center;
+  margin: 0 auto;
+
+  .cancel-option, .save-option, .copy-option {
+      background: white;
+      font-family: $font__family__regular;
+      color: #0070ff;
+      text-align: center;
+      display: block;
+      font-size: 40px;
+      height: 120px;
+      line-height: 120px;
+      opacity: .8;
+  }
+
+  .copy-option {
+    margin-bottom: 30px;
+    border-radius: 0 0 20px 20px;
+    margin-top: 1px;
+  }
+
+  .save-option {
+    border-radius: 20px 20px 0 0;
+    margin-bottom: 1px;
+  }
+  .cancel-option {
+    border-radius: 20px;
+    margin-bottom: 30px;
+    font-family: $font__family__semibold;
+  }
+
+  & .opened-ios-menu {
+
+  }
+
+}
+
+
