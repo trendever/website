@@ -1,6 +1,7 @@
 <style src='./styles/chat.pcss'></style>
 <template lang="jade">
   scroll-component(v-el:scroll-cnt, class="chat-cnt")
+    .loader-center(v-if="showLoader"): app-loader
     popup-img(v-if="imgPopUpUrl", :url="imgPopUpUrl", :width="imgWidth", :height="imgHeight", :on-close="closePopUp")
     chat-header(:notify-count='conversationNotifyCount')
     .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu")
@@ -38,6 +39,7 @@
 </template>
 
 <script type='text/babel'>
+  import appLoader from 'base/loader/loader';
   import listen from 'event-listener';
   import scrollTop from 'base/scroll-top/scroll-top.vue';
   //actions
@@ -99,14 +101,16 @@
       ChatMsgStatus,
       ChatMsgImg,
       ChatMsgInfo,
-      scrollTop
+      scrollTop,
+      appLoader,
     },
 
     data(){
       return {
         needLoadMessage: true,
         lead_id: null,
-        isMobile: window.browser.mobile
+        isMobile: window.browser.mobile,
+        showLoader: true,
       }
     },
 
@@ -227,7 +231,10 @@
             if(!flagMessage && this.getCurrentMember.role === 1){
               this.setConversationAction('approve');
             }
-          })
+          }).then(()=>{
+
+            this.$set('showLoader', false);
+          });
       },
 
       runLoadingMessage(){
