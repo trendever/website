@@ -40,8 +40,11 @@ scroll-component
     },
 
     route: {
-      canDeactivate(){
-        this.$store.state.user.showRootLoader = true;
+      canDeactivate({ to, next }){
+        if( to.name === 'product_detail') {
+          this.$store.state.user.showRootLoader = true;
+          next();
+        }
       }
     },
     ready(){
