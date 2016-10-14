@@ -44,6 +44,8 @@ scroll-component
         if( to.name === 'product_detail') {
           this.$store.state.user.showRootLoader = true;
           next();
+        } else {
+          next();
         }
       }
     },
