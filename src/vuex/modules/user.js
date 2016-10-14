@@ -26,7 +26,8 @@ const state = {
     profile: true,
     chats: true
   },
-  payment: {}
+  payment: {},
+  showRootLoader: false
 
 };
 

@@ -1,5 +1,18 @@
 <style src="project/app/style.pcss"></style>
+<style lang="postcss">
+
+.root-loader {
+
+  position: fixed;
+  top:50%;
+  left:50%;
+  z-index: 9999;
+  transform: translate(-50%,-50%)
+}
+
+</style>
 <template lang="jade">
+.root-loader(v-if="$store.state.user.showRootLoader"): app-loader
 .fake-status-bar(v-if="isStandalone", @click="scrollTop")
 .app(:class="{'standalone': isStandalone}")
   inapp-notification(v-if="isStandalone")
@@ -12,7 +25,7 @@ input(type="hidden", value="", id="get-user-login")
 
 <script type='text/babel'>
   import 'base/fonts/trendever-icons/trendever-icons.font'
-
+  import appLoader from 'base/loader/loader';
   import listen from 'event-listener';
 
   import { browser } from 'utils'
@@ -35,7 +48,7 @@ input(type="hidden", value="", id="get-user-login")
       return {
         authIsDone: false,
         touchMoveY: 0,
-        showAuthBtn: false        
+        showAuthBtn: false
       }
     },
     vuex: {
@@ -61,7 +74,7 @@ input(type="hidden", value="", id="get-user-login")
       scrollTop(){
         document.querySelector('.scroll-cnt').scrollTop = 0;
       },
-      
+
     },
     ready() {
 
@@ -106,6 +119,7 @@ input(type="hidden", value="", id="get-user-login")
       }
     },
     components: {
+      appLoader,
       ListenerComponent,
       PopupFastSignup,
       InappNotification

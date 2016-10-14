@@ -38,6 +38,12 @@ scroll-component
       //Баг подвисания ещё
       this.$store.state.products.listId = '';
     },
+
+    route: {
+      canDeactivate(){
+        this.$store.state.user.showRootLoader = true;
+      }
+    },
     ready(){
       //показываем Auth button
       if( !this.isAuth ) {
