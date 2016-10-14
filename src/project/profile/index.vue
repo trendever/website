@@ -126,7 +126,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
           this._setTab();
         })
         .catch( () => {
-          let try_ = id.replace("-","_");
+          let try_ = id.replace(new RegExp("-", 'g'),"_");
 
           return this.openProfile( try_ )
           .then(()=>{
