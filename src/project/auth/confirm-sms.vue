@@ -32,6 +32,7 @@ div
           .input-container
             .input.confirm-input
               input(type='tel',
+                @click="$els.confirmField.focus()"
                 @keyup='onInput',
                 @focus='onFocus',
                 @keydown.enter='onButton()',

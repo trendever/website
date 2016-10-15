@@ -28,9 +28,9 @@
         img.load( url, null, null, () => {
           this.$set( 'srcImg', url );
           this.$set( 'opacityImg', 1 );
+          this.$store.state.user.showRootLoader = false;
         } );
       }
-
     },
     props: {
       img: {

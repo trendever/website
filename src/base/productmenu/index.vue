@@ -40,15 +40,21 @@
         });
 
       })
+      if(window.matchMedia('(max-width: 750px)').matches) {
 
-      this.scrollListen = listen(scrollCnt,'scroll',()=>{
+        this.scrollListen = listen(scrollCnt,'scroll',()=>{
 
-        this.showBullets = scrollCnt.scrollTop > 85 ? false : true;
+          this.showBullets = scrollCnt.scrollTop > 85 ? false : true;
 
-      });
+        });
+      }
     },
     beforeDestroy(){
-      this.scrollListen.remove();
+      if(this.scrollListen) {
+
+        this.scrollListen.remove();
+
+      }
     },
     vuex: {
       getters: {
