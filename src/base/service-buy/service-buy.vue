@@ -1,6 +1,6 @@
 <template lang="jade">
 
-#service-buy
+#service-buy(@click="serviceBuy")
   slot
 
 
@@ -8,6 +8,7 @@
 
 <script>
 import { createLead } from 'vuex/actions/lead';
+import * as leads from 'services/leads';
 
 export default {
   props:{
@@ -21,7 +22,7 @@ export default {
     }
   },
   methods:{
-    buyTg(){
+    serviceBuy(){
       this
         .createLead( this.productId )
         .then(
