@@ -185,3 +185,9 @@ export const getCountElementOnPage = () => {
   return 27;
 
 };
+
+
+export const checkAuthUserProduct = state => {
+
+  return state.authUserProduct;
+}
