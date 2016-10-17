@@ -4,7 +4,6 @@
 }
 
 .thanks-wrap {
-  //font-family: $font__family__light !important;
 
   h1 {
     font-family: $font__family__light !important;
@@ -15,6 +14,7 @@
   }
 
   .another-name-desc {
+    display: none;
     opacity: 0.4;
     text-align: center;
     font-size: 24px;
@@ -24,7 +24,7 @@
     @media screen and (min-width:1024px) {
       display: inline-block;
       margin-top: 200px;
-
+      display: none;
     }
 
     i.ic-options_menu {
@@ -33,9 +33,9 @@
 
   }
   .another-name-mobile {
-    line-height: 60px;
+    line-height: 45px;
     text-align: center;
-    font-size: 44px;
+    font-size: 36px;
 
     .top-text {
       margin-bottom: 30px;
@@ -44,16 +44,20 @@
     i.ic-options_menu {
       margin: 20px;
       font-size: 55px;
+      @media(--mobile) {
+        font-size: 40px;
+      }
     }
   }
 
 }
 
 .standalone .signup{
-  padding-top: 90px;
+  padding-top: 80px;
 
   .signup__close{
-    top: 50px;
+    top: 65px;
+    right: 30px;
   }
 }
 .signup {
@@ -96,8 +100,9 @@
       vertical-align: middle;
     }
     @media(--mobile) {
-      width: 90px;
-      height: 90px;
+      font-size: 36px;
+      width: 36px;
+      height: 36px;
     }
   }
 
@@ -144,12 +149,12 @@
   .input.confirm-input input{
     height: 6rem !important;
   }
-  h1 {
+  h1.accept {
     margin-bottom: 77px;
 
     text-align: left;
 
-    font-size: 40px;
+    font-size: 40px !important;
 
     @media(--tabletandless) {
       margin-bottom: 0;
@@ -365,7 +370,7 @@
 
 .confirm .middle-container.has-another-name {
   @media (--mobile) {
-    top: 40%;
+    top: 41%;
     h1 {
       margin-bottom: 30px;
     }
