@@ -3,13 +3,13 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 25 25" style="enable-background:new 0 0 25 25;" xml:space="preserve">
 <style type="text/css">
-	.st0{opacity:0.5;}
+	.st0{opacity:1;}
 	.st1{fill:#FFFFFF;}
 </style>
 <g class="st0">
-	
+
 		<rect id="XMLID_2_" x="11.7" y="-4.4" transform="matrix(0.7073 0.707 -0.707 0.7073 12.4962 -5.178)" class="st1" width="1.6" height="33.8"/>
-	
+
 		<rect id="XMLID_1_" x="-4.4" y="11.7" transform="matrix(0.7071 0.7071 -0.7071 0.7071 12.5 -5.178)" class="st1" width="33.8" height="1.6"/>
 </g>
 </svg>
