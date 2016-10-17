@@ -8,12 +8,12 @@
 
 <script>
 import { createLead } from 'vuex/actions/lead';
-import * as leads from 'services/leads';
 
 export default {
   props:{
     productId: {
-      type: Number
+      type: Number,
+      required: true
     }
   },
   vuex: {
@@ -23,6 +23,11 @@ export default {
   },
   methods:{
     serviceBuy(){
+      if(!this.productId) {
+        return;
+      }
+
+
       this
         .createLead( this.productId )
         .then(
@@ -31,14 +36,7 @@ export default {
               this.$router.go( { name: 'chat', params: { id: lead.id } } )
             }
           }
-        )
-        .catch(
-          ( error ) => {
-            if ( error === leads.ERROR_CODES.UNATHORIZED ) {
-              this.$router.go( { name: 'signup' } )
-            }
-           }
-        )
+        );
     }
   }
 };
@@ -48,6 +46,7 @@ export default {
 
 #service-buy {
   display: inline-block;
+  width: 100%;
 }
 
 </style>
