@@ -139,6 +139,14 @@ scroll-component(v-if="isDone", class="profile-cnt")
             this.$router.go( { name: '404' } );
           });
         });
+      },
+      canDeactivate({ to, next }){
+        if( to.name === 'product_detail') {
+          this.$store.state.user.showRootLoader = true;
+          next();
+        } else {
+          next();
+        }
       }
     },
     created(){
