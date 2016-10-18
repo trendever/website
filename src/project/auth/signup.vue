@@ -24,6 +24,7 @@ scroll-component
                     @focus='onFocusLogin',
                     @keydown.enter='sendSMS()',
                     v-validate:login='[ "required" ]',
+                    v-on:blur="blurInput",
                     v-model='login',
                     :placeholder='placeholder')
                   .input__clear-btn(
@@ -40,6 +41,7 @@ scroll-component
                     :class=' {error: errorPhone} ',
                     @focus='onFocusPhone',
                     @keydown.enter='sendSMS()',
+                    v-on:blur="blurInput",
                     v-validate:phone='[ "phone", "required" ]',
                     v-model='phone',
                     placeholder='Введите номер телефона')
@@ -214,6 +216,10 @@ scroll-component
         })
       },
 
+      blurInput(){
+        this.$set('showTitleSlider', document.body.scrollHeight >= 1000 || document.body.scrollWidth > 750);
+      },
+
       onErrorPhone() {
         this.phone = '';
         this.errorPhone = true;
@@ -223,6 +229,8 @@ scroll-component
 
       // remove error class from <input> phone
       onFocusPhone() {
+        if (browser.android)
+          this.$set('showTitleSlider',false);
         if (this.errorPhone) {
           this.errorPhone = false;
           this.textLink = '';
@@ -238,6 +246,8 @@ scroll-component
 
       // clear login and remove error class from <input>
       onFocusLogin() {
+        if (browser.android)
+          this.$set('showTitleSlider',false);
         if (this.$get('errorLogin')) {
           this.$set('errorLogin', false);
           this.$set('login', '');
