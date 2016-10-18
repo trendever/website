@@ -217,7 +217,8 @@ scroll-component
       },
 
       blurInput(){
-        this.$set('showTitleSlider', document.body.scrollHeight >= 1000 || document.body.scrollWidth > 750);
+        if (browser.android)
+          this.$set('showTitleSlider', document.body.scrollHeight >= 1000 || document.body.scrollWidth > 750);
       },
 
       onErrorPhone() {
