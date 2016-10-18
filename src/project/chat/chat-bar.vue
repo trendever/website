@@ -17,7 +17,7 @@ div.chat-bar
                        :class='{"__active": !!txtMsg}')
       i.ic-send-plane
     chat-menu(v-if="!isMobile")
-  chat-menu(v-if="isMobile")
+chat-menu(v-if="isMobile")
 
 </template>
 
