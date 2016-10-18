@@ -1,15 +1,18 @@
-<template>
+<template lang="jade">
+div
 </template>
 
 <script>
 import channel from 'services/channel/channel';
 
-import { authUser } from 'vuex/getters/user';
+import { getAuthUser, isAuth } from 'vuex/getters/user';
+
 
 export default {
   vuex: {
     getters: {
-      authUser
+      getAuthUser,
+      isAuth
     }
   },
   data () {
@@ -20,54 +23,66 @@ export default {
   },
   ready() {
 
-    let shop_id = this.authUser.supplier_of[0];
+    this.$nextTick(()=>{
 
-    if(shop_id) {
+      if(this.isAuth) {
 
-      channel
-        .req('retrieve','shop',{shop_id: shop_id })
-        .then(data=>{
+        let shop_id = this.getAuthUser.supplier_of[0];
 
-          return data.response_map.shop.created_at;
+        if(shop_id) {
 
-        }).then(date=>{
+          channel
 
-            let nowTime = +new Date()/1000;
+            .req('retrieve','shop',{shop_id: shop_id })
 
-            let difference = nowTime - date;
+            .then(data=>{
 
-            if (difference <= this.threeDays){
+              return data.response_map.shop.created_at;
 
-              setTimeout(()=>{
+            })
 
-                router.go({name: 'monetization',query: { lessThan: 3 }})
+            .then(date=>{
 
-              }, 60 * 1000)
+              let nowTime = +new Date()/1000;
 
-            }
+              let difference = nowTime - date;
 
-            if (difference <= this.sevenDays && difference >= this.threeDays){
+              if (difference <= this.threeDays){
 
-              setTimeout(()=>{
+                setTimeout(()=>{
 
-                router.go({name: 'monetization',query: { moreThan: 3 }})
+                  this.$router.go({name: 'monetization',query: { lessThan: 3 }})
 
-              }, 60 * 1000)
+                }, 100)
 
-            }
+              }
 
-            if(difference >= this.sevenDays) {
+              if (difference <= this.sevenDays && difference >= this.threeDays){
 
-              setTimeout(()=>{
+                setTimeout(()=>{
 
-                router.go({name: 'monetization',query: { moreThan: 7 }})
+                  this.$router.go({name: 'monetization',query: { moreThan: 3 }})
 
-              }, 60 * 1000)
+                }, 100)
 
-            }
+              }
 
-        });
-    }
+              if(difference >= this.sevenDays) {
+
+                setTimeout(()=>{
+
+                  this.$router.go({name: 'monetization',query: { moreThan: 7 }})
+
+                }, 100)
+
+              }
+
+          });
+        }
+      }
+
+    })
+
   }
 };
 

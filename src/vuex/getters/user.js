@@ -141,7 +141,7 @@ export const authUserId = ( { user } ) => {
 }
 
 
-export const authUser = ( { user }) => {
+export const getAuthUser = ( { user }) => {
 
   return user.all[user.myId];
 
