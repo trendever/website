@@ -22,6 +22,7 @@ scroll-component
      .section.top.install
       p Прокачай свой инста-шоп за 5 мин #[br] - просто установи приложение!
      .section.top__more ПОДРОБНЕЕ
+      img(src="./img/more.svg")
      .section.top__logo
      .section.top__info-block
       .section.top__info-block__title Преврати #[br.break_1] свой Instagram #[br.break_2] в настоящий магазин
@@ -43,14 +44,14 @@ scroll-component
         .section.top__info-block__prices-block__box__price 5.5
          i.percent %
          span  за сделку #[br.break_desk.mob]
-         .section.top__info-block__desc Первые 7 дней бесплатно
          span или #[br.break_desk.mob]
          span 1 990
          i.ic-rub
          span   в месяц
+      .section.top__info-block__desc Первые 7 дней бесплатно
       .section.top__bot-txt
        p * подробнее об остальных функциях #[br] внутри приложения
-    button(v-if="isAuth").how-to-sell КАК НАЧАТЬ ПРОДАВАТЬ?
+    button(v-if="isAuth", v-link='{ name: "info-instructions-1" }').how-to-sell КАК НАЧАТЬ ПРОДАВАТЬ?
   fast-signup(v-if="!isAuth")
 </template>
 <style scoped>

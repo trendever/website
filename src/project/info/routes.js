@@ -25,6 +25,15 @@ export default function() {
       component: require('./newshop/index.vue')
     },
 
+    'instructions-first': {
+      name: 'info-instructions-1',
+      component: require('./instructions/instruction-first.vue')
+    },
+
+    'instructions-second': {
+      name: 'info-instructions-2',
+      component: require('./instructions/instruction-second.vue')
+    }
   }
 
 }
