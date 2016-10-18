@@ -139,3 +139,10 @@ export const authUserId = ( { user } ) => {
 
   return user.myId;
 }
+
+
+export const authUser = ( { user }) => {
+
+  return user.all[user.myId];
+
+}
