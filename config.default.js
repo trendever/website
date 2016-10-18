@@ -27,6 +27,8 @@ var config = {
   /**
    * Other
    */
+  edit_product_id: null, ////th4754
+
   service_product_id: null,
 
   promo_product_id: 21499
