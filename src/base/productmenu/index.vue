@@ -33,7 +33,7 @@
         menuOpened: false,
         showBullets: true,
         isMobile: window.browser.mobile,
-        editProductId: '',
+        editProductId: settings.editProductID === null ? 7740 : settings.editProductID,
         promoProductId: settings.promoProductID
 
       }
