@@ -1,7 +1,9 @@
 import * as types from '../mutation-types';
 import * as products from 'services/products.js';
+import * as userService from 'services/user';
 import { searchValue, selectedTagsId } from 'vuex/getters/search.js';
-import { user } from 'vuex/getters/user.js';
+import { user, authUserId } from 'vuex/getters/user.js';
+
 import {
   getLastProduct,
   getColumnCount,
@@ -412,4 +414,46 @@ export const setContainerWidth = ( { dispatch }, width ) => {
 
   dispatch( types.PRODUCTS_SET_CONTAINER_WIDTH, width );
 
+};
+
+export const checkIsUserProduct = ( { dispatch, state } ) => {
+
+    return userService
+
+      .get({user_id: authUserId(state) })
+      .then( res => {
+        let isProductSupplier, isProductSeller;
+
+        if(res.supplier_of){
+
+          isProductSupplier = res.supplier_of.some((item)=>{
+
+            return item === getOpenedProduct(state).supplier.id;
+
+          })
+
+        }
+
+        if(res.seller_of) {
+
+          isProductSeller = res.seller_of.some(item=>{
+
+            return item === getOpenedProduct(state).supplier.id;
+
+          });
+
+        }
+
+
+        if( isProductSupplier || isProductSeller){
+
+          dispatch(types.PRODUCTS_CHECK_AUTH_USER_PRODUCT, true)
+
+        } else {
+
+          dispatch(types.PRODUCTS_CHECK_AUTH_USER_PRODUCT, false)
+
+        }
+
+      })
 };

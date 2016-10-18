@@ -14,7 +14,7 @@
 <template lang="jade">
 .root-loader(v-if="$store.state.user.showRootLoader"): app-loader
 .fake-status-bar(v-if="isStandalone", @click="scrollTop")
-.app(:class="{'standalone': isStandalone}")
+.app(:class="{'standalone': isStandalone, 'android': isAndroid}")
   inapp-notification(v-if="isStandalone")
   popup-fast-signup(v-if="authIsDone && showAuthBtn")
   router-view(v-if="authIsDone")
@@ -113,6 +113,9 @@ input(type="hidden", value="", id="get-user-login")
     computed: {
       isNotWhy(){
         return this.$route.name !== 'why'
+      },
+      isAndroid(){
+        return browser.android;
       },
       isStandalone(){
         return browser.standalone;
