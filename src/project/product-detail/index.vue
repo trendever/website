@@ -16,7 +16,7 @@ scroll-component(v-el:scroll-cnt)
 <script type="text/babel">
   import { openProduct, closeProduct, setScrollByProduct } from 'vuex/actions/products';
   import { getOpenedProduct, getScrollTopOfProduct } from 'vuex/getters/products';
-
+  import { checkIsUserProduct } from 'vuex/actions/products';
   import RightNavComponent from 'base/right-nav';
   import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
@@ -29,6 +29,9 @@ scroll-component(v-el:scroll-cnt)
       ScrollComponent,
       HeaderComponent,
       PostComponent
+    },
+    ready(){
+      this.checkIsUserProduct();
     },
     computed: {
 
@@ -111,7 +114,8 @@ scroll-component(v-el:scroll-cnt)
       actions: {
         openProduct,
         closeProduct,
-        setScrollByProduct
+        setScrollByProduct,
+        checkIsUserProduct
       }
     },
     route: {
@@ -139,6 +143,7 @@ scroll-component(v-el:scroll-cnt)
     beforeDestroy(){
       this.scrollListener.remove();
       this.closeProduct();
+      this.$store.state.products.authUserProduct = false;
     }
   }
 </script>

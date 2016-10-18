@@ -5,8 +5,11 @@
   i.ic-menu_bullets
  .header__menu-links.bubble.bubble--arrow.bubble--arrow-ne(v-if="menuOpened")
   a.header__menu-link(@click="menuOpened=false") Отмена
-  a.header__menu-link(@click="buyPromoProduct") Я блогер
-  //a.header__menu-link(href='#') Найти блогера
+  a.header__menu-link
+    service-buy(:product-id="promoProductId") Я блогер
+  a(v-if="isAuthUserProduct").header__menu-link
+    service-buy(:product-id="editProductId") Редактировать товар
+  //-a.header__menu-link(href='#') Найти блогера
   a.header__menu-link(
   v-link='{name:"product_repost", params: {id: productId}}') Пост в Instagram
 
@@ -15,17 +18,24 @@
 <script>
   import listen from 'event-listener';
   import { targetClass } from 'utils';
-
+  import serviceBuy from 'base/service-buy/service-buy';
   import settings from 'settings';
   import { createLead } from 'vuex/actions/lead';
-  import { getOpenedProduct } from 'vuex/getters/products';
+  import { getOpenedProduct, isAuthUserProduct } from 'vuex/getters/products';
+
   export default{
+    components:{
+      serviceBuy
+    },
     data: function(){
 
       return {
         menuOpened: false,
         showBullets: true,
-        isMobile: window.browser.mobile
+        isMobile: window.browser.mobile,
+        editProductId: '',
+        promoProductId: settings.promoProductID
+
       }
     },
     ready(){
@@ -58,7 +68,8 @@
     },
     vuex: {
       getters: {
-        getOpenedProduct
+        getOpenedProduct,
+        isAuthUserProduct
       },
       actions: {
         createLead
@@ -67,18 +78,6 @@
     computed:{
       productId(){
         if (this.getOpenedProduct) return this.getOpenedProduct.id;
-      }
-    },
-    methods: {
-      buyPromoProduct(){
-        this.createLead( settings.promoProductID )
-            .then(
-              ( lead ) => {
-                if ( lead !== undefined && lead !== null ) {
-                  this.$router.go( { name: 'chat', params: { id: lead.id } } );
-                }
-              }
-            );
       }
     }
   }

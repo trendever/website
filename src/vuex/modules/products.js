@@ -13,7 +13,8 @@ import {
   PRODUCTS_SET_COME_BACK,
   PRODUCTS_SET_CONTAINER_WIDTH,
   PRODUCTS_RESET_SCROLL_BY_LIST_ID,
-  PRODUCTS_SAVE_SCROLL_BY_PRODUCT
+  PRODUCTS_SAVE_SCROLL_BY_PRODUCT,
+  PRODUCTS_CHECK_AUTH_USER_PRODUCT
 } from '../mutation-types';
 
 import { getCountElementOnPage } from 'vuex/getters/products.js';
@@ -59,7 +60,8 @@ const state = {
   callBackAfterLoading: () => {
   },
   comeBack: false,
-  containerWidth: 0
+  containerWidth: 0,
+  authUserProduct: false
 };
 
 // mutations
@@ -351,6 +353,11 @@ const mutations = {
   [PRODUCTS_SET_COME_BACK] ( state, comeBack = false ) {
 
     state.comeBack = comeBack;
+
+  },
+  [PRODUCTS_CHECK_AUTH_USER_PRODUCT](state, check = false){
+
+    state.authUserProduct = check;
 
   }
 

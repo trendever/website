@@ -2,7 +2,7 @@
 
   <popup-container :on-close="onClose">
 
-    <div class="img-container" v-el:container>
+    <div class="img-container" v-el:container v-touch:swipeleft="swipeBack">
       <div class="img-keeper" v-el:img>
 
         <img v-el:picture class="picture" @load="resizeImg"
@@ -89,6 +89,11 @@
       }
     },
     methods: {
+      swipeBack(){
+        if(!this.isScaled){
+          this.onClose();
+        }
+      },
       imgTaps(){
         if(!window.browser.mobile){
           return;

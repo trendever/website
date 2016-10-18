@@ -24,6 +24,7 @@ scroll-component
                     @focus='onFocusLogin',
                     @keydown.enter='sendSMS()',
                     v-validate:login='[ "required" ]',
+                    v-on:blur="blurInput",
                     v-model='login',
                     :placeholder='placeholder')
                   .input__clear-btn(
@@ -40,6 +41,7 @@ scroll-component
                     :class=' {error: errorPhone} ',
                     @focus='onFocusPhone',
                     @keydown.enter='sendSMS()',
+                    v-on:blur="blurInput",
                     v-validate:phone='[ "phone", "required" ]',
                     v-model='phone',
                     placeholder='Введите номер телефона')
@@ -49,7 +51,6 @@ scroll-component
                     i.ic-close
             .btn-container
               button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
-                :disabled='!$signup.valid',
                 @click='sendSMS') Отправить sms-код
               .link-container
                 a.link-bottom(href='#',
@@ -90,14 +91,20 @@ scroll-component
     errorLoginMesage: 'Имя занято, введите другое',
     errorPhoneFormat: 'Неверный формат номера',
     errorWrongCreditionals: '',
-    errorloginLang: 'Неверный формат логина'
+    errorloginLang: 'Неверный формат логина',
+    errorNoLogin: 'Не указан логин',
+    errorNoPhone: 'Не указан номер телефона',
+    errorNoData: 'Не указаны ваши данные'
   }
 
   const PLACEHOLDER = {
     instagramMode: 'Введите свое Instagram имя',
     withoutInstagramMode: 'Введите свое имя',
     errorPhoneFormat: 'Введите номер +7XXXXXXXXXX',
-    errorLoginFormat: 'Только латинские буквы...'
+    errorLoginFormat: 'Только латинские буквы...',
+    errorNoLogin: 'Введите свое имя',
+    errorNoPhone: 'Введите номер телефона',
+    errorNoData: 'Заполните поле'
   }
 
   export default {
@@ -171,8 +178,13 @@ scroll-component
       },
 
       sendSMS() {
-        if (!this.$signup.valid) {
+        if(!this.login) {
+          this.login = '';
+          this.errorLogin = true;
+          this.textLink = TEXT_LINK['errorNoLogin'];
+          this.login = PLACEHOLDER['errorNoLogin'];
           return;
+
         }
 
         if(this.login.match(/[а-яё]+/g) !== null){
@@ -180,6 +192,18 @@ scroll-component
           this.errorLogin = true;
           this.textLink = TEXT_LINK['errorloginLang'];
           this.login = PLACEHOLDER['errorLoginFormat'];
+          return;
+        }
+
+        if(!this.phone) {
+          this.onErrorPhone();
+          return;
+        }
+
+        let len = this.phone.replace(/\D/g,'').length;
+
+        if (!len) {
+          this.onErrorPhone();
           return;
         }
 
@@ -192,6 +216,11 @@ scroll-component
         })
       },
 
+      blurInput(){
+        if (browser.android)
+          this.$set('showTitleSlider', document.body.scrollHeight >= 1000 || document.body.scrollWidth > 750);
+      },
+
       onErrorPhone() {
         this.phone = '';
         this.errorPhone = true;
@@ -201,6 +230,8 @@ scroll-component
 
       // remove error class from <input> phone
       onFocusPhone() {
+        if (browser.android)
+          this.$set('showTitleSlider',false);
         if (this.errorPhone) {
           this.errorPhone = false;
           this.textLink = '';
@@ -216,6 +247,8 @@ scroll-component
 
       // clear login and remove error class from <input>
       onFocusLogin() {
+        if (browser.android)
+          this.$set('showTitleSlider',false);
         if (this.$get('errorLogin')) {
           this.$set('errorLogin', false);
           this.$set('login', '');

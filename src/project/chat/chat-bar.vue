@@ -1,9 +1,9 @@
 <style src='./styles/chat-bar.pcss'></style>
 <template lang="jade">
 
-div
+div.chat-bar
   .chat-approve-btn.noaction(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat') ПОДТВЕРДИТЬ
-  .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay' && getAction !== 'pendingpayment' ")
+  .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay' && getAction !== 'pendingpayment' ", id="inputbar")
     .chat-bar_menu-btn(@click.stop='setShowMenu(true)')
       i.ic-chat_menu
     .chat-bar_input
@@ -156,12 +156,18 @@ div
             this.scrollEvent.remove()
           }
         }
+        if (window.browser.android) {
+          document.getElementById('inputbar').classList.toggle("inputon");
+        }
       },
 
       focusInput(){
         if ( window.browser.iphone ) {
           this.normalizeScroll()
           this.scrollEvent = listen( window, 'scroll', this.normalizeScroll.bind( this ) )
+        }
+        if (window.browser.android) {
+          document.getElementById('inputbar').classList.toggle("inputon");
         }
       },
 
