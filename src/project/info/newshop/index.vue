@@ -10,7 +10,18 @@ scroll-component
     right-nav-component(slot="content", current="")
   .section__content.infonewshops
     .section.top
-     .section.top__header Хочешь быть успешным в Instagram?
+     .section.top__header Ты инста-шоп? #[br] Готов стать #[br] интернет-магазином? #[br] и даже больше
+     .section.top__header-small Trendever решает все проблемы #[br] Instagram-магазинов, под-ключ
+     .section.top__header Наши преимущества
+     .section.top__advantages.chats Шопинг-чат, куда автоматичеcки #[br] попадают заказы из Instagram
+     .section.top__advantages.pay Онлайн-платежи на карту, #[br] не выходя из чата
+     .section.top__advantages.grow Увеличение продаж через #[br] рекламу у блогеров
+     .section.top__advantages.photos Создание стильных фотографий #[br] для инста-ленты через блогеров
+     .section.top__advantages.shops Своя витрина внутри сайта и аппа #[br] Trendever, где все инста-шоперы
+     .section.top__advantages.sellers Подключение и контроль #[br] за несколькими продавцами
+     .section.top.install
+      p Прокачай свой инста-шоп за 5 мин #[br] - просто установи приложение!
+     .section.top__more ПОДРОБНЕЕ
      .section.top__logo
      .section.top__info-block
       .section.top__info-block__title Преврати #[br.break_1] свой Instagram #[br.break_2] в настоящий магазин
@@ -32,36 +43,14 @@ scroll-component
         .section.top__info-block__prices-block__box__price 5.5
          i.percent %
          span  за сделку #[br.break_desk.mob]
+         .section.top__info-block__desc Первые 7 дней бесплатно
          span или #[br.break_desk.mob]
          span 1 990
          i.ic-rub
          span   в месяц
-      .section.top__info-block__desc Первые 7 дней бесплатно
-      .section.top__info-block__title.how-sell Как начать продавать?
-      .section.top__info-block__sub-title Выполни 3 простых шага:
-      .section.top__info-block__list-title 1. Cкачай приложение
-      .section.top__info-block__list-description.download Не важно какой телефон у тебя или твоих клиентов, #[br.break_mob]Trendever доступен на iPhone и Android устройствах
-       .section.top__info-block__list-description.download-btns
-        a(href="https://itunes.apple.com/ru/app/trendever/id1124212231", v-if="!isMobile").app_store
-        .app_store(v-if="isMobile")
-        //a(href="#").g_play
-      .section.top__info-block__list-title 2. Расскажи клиентам
-      .section.top__info-block__list-description.add-goods Добавь текст в профиль #[br.break_desk.mob] своего Instagram: #[br]
-        .wantit Напиши
-         span.want  @wantit
-         span  и товар #[br.break_desk.mob] попадет #[br.break_mob] в шопинг- #[br.break_desk.mob]приложение по ссылке ниже #[br.break_mob]
-        span.block Укажи в профиле ссылку #[br.break_desk] на свою витрину #[br.break_mob] в Trendever
-      .section.top__info-block__add-goods-slide
-      .section.top__info-block__list-title 3. Добавляй описание #[br.break_desk.mob]
-       span.padding к товарам
-      .section.top__info-block__list-description.tell-clients При размещении #[br.break_desk.mob] новых товаров в Instagram, #[br] напиши в начале описания:
-        .wantit2 Покупай по комментарию #[br]
-         span.want @wantit #[br]
-        span Товар с
-         span.want  @wantit
-         span  в описании #[br.break_desk.mob] попадает #[br.break_mob] в твою Trendever-витрину и виден всем
-      .section.top__info-block__tell-clients-slide
-      .section.top__info-block__desc.done Готово! #[br] Принимай заказы #[br.break_desk.mob] в одном приложении #[br] и получи доступ к клиентам #[br.break_desk.mob] всех Instagram-магазинов
+      .section.top__bot-txt
+       p * подробнее об остальных функциях #[br] внутри приложения
+    button(v-if="isAuth").how-to-sell КАК НАЧАТЬ ПРОДАВАТЬ?
   fast-signup(v-if="!isAuth")
 </template>
 <style scoped>

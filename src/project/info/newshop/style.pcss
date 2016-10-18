@@ -4,12 +4,6 @@
 	src: url(./font/PFKidsPro-GradeFive.ttf);
 }
 
-
-
-/* .standalone .section__content{
-	margin-top: 60px;
-} */
-
 .section{
 	&__content{
 		.header{
@@ -41,9 +35,98 @@
 				margin: 46px auto 0px auto;
 				font-family: $font__family__thin;
 				@media(--tabletandless) {
-					margin: 55px auto 0px auto;
+					margin: 50px auto 0px auto;
 					font-size: 64px;
 					line-height: 75px;
+				}
+			}
+			&__header-small{
+				color: #595959;
+				font-family: $font__family__light;
+				@media(--mobile) {
+					font-size: 36px;
+					margin-top: 20px;
+					line-height: 55px;
+				}
+			}
+			&__advantages{
+				@media(--mobile) {
+					font-size: 36px;
+					font-family: $font__family__light;
+					color: #595959;
+					text-align: left;
+					line-height: 55px;
+					padding-left: 110px;
+					padding-top: 45px;
+				}
+			}
+			.chats{
+				background-image: url('./img/chats.svg');
+				background-repeat: no-repeat;
+				background-size: 55px 85px;
+				background-position: 15px 55px;
+			}
+			.pay, .shops{
+				position: relative;
+			}
+			.pay::before{
+				content: url(./img/pay.svg);
+				position: absolute;
+				top: 55px;
+				left: -10px;
+				width: 105px;
+				height: 75px;
+			}
+			.grow{
+				background-image: url('./img/grow.svg');
+				background-repeat: no-repeat;
+				background-size: 75px 85px;
+				background-position: 10px 55px;
+			}
+			.photos{
+				background-image: url('./img/photos.svg');
+				background-repeat: no-repeat;
+				background-size: 85px 80px;
+				background-position: 0px 55px;
+			}
+			.shops::before{
+				content: url(./img/shops.svg);
+				position: absolute;
+				top: 55px;
+				left: -10px;
+				width: 105px;
+				height: 85px;
+			}
+			.sellers{
+				background-image: url('./img/sellers.svg');
+				background-repeat: no-repeat;
+				background-size: 75px 85px;
+				background-position: 10px 55px;
+			}
+			.install{
+				@media(--mobile) {
+				font-family: GradeFive;
+				font-size: 54px;
+				color: #31BEBC;
+				padding: 75px 0px 67px 0px !important;
+				}
+			}
+			&__more{
+				font-size: 36px;
+				font-family: $font__family__light;
+				color: #595959;
+				position: relative;
+				margin-bottom: 135px;
+
+				&:after{
+					content: url(/static/img/more.6710c92.svg);
+					position: absolute;
+					top: 65px;
+					left: 0px;
+					right: 0px;
+					margin: 0 auto;
+					width: 76px;
+					height: 40px;
 				}
 			}
 			&__logo{
@@ -99,6 +182,7 @@
 					margin-top: 300px;
 					@media(--tabletandless) {
 						margin-top: 0px;
+						font-family: $font__family__thin;
 					}
 				}
 				.blog{
@@ -254,6 +338,7 @@
 							font-family: $font__family__semibold;
 							@media(--tabletandless) {
 								font-size: 80px;
+								margin-bottom: 70px;
 							}
 							.ic-rub{
 								padding-top: 25px;
@@ -517,6 +602,28 @@
 					}
 				}
 			}
+			&__bot-txt{
+				@media(--mobile) {
+					margin-bottom: 150px;
+					font-size: 28px;
+					font-family: $font__family__light;
+					color: #595959;
+				}
+			}
 		}
 	}
+}
+.how-to-sell {
+	width: 100%;
+	height: 100px;
+	line-height: 100px;
+	background-color: #FFDE1E;
+	color: #0E3333;
+	font-size: 36px;
+	font-family: $font__family__light;
+	border: none;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
