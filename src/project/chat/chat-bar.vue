@@ -54,7 +54,7 @@ chat-menu(v-if="isMobile")
     },
 
     ready(){
-
+      this.scroll = document.querySelector( '.scroll-cnt' );
       if ( !window.browser.mobile ) {
 
         this.sendMessage = listen( window, 'keydown', ( event ) => {
@@ -156,8 +156,10 @@ chat-menu(v-if="isMobile")
             this.scrollEvent.remove()
           }
         }
-        if (window.browser.android) {
-          document.getElementById('inputbar').classList.toggle("inputon");
+        if (window.browser.androidapp) {
+          document.getElementById('inputbar').classList.remove("inputon");
+          document.getElementById('chatmessages').classList.remove("inputon");
+          this.scroll.scrollTop = this.scroll.scrollHeight;
         }
       },
 
@@ -166,8 +168,10 @@ chat-menu(v-if="isMobile")
           this.normalizeScroll()
           this.scrollEvent = listen( window, 'scroll', this.normalizeScroll.bind( this ) )
         }
-        if (window.browser.android) {
-          document.getElementById('inputbar').classList.toggle("inputon");
+        if (window.browser.androidapp) {
+          document.getElementById('inputbar').classList.add("inputon");
+          document.getElementById('chatmessages').classList.add("inputon");
+          this.scroll.scrollTop = this.scroll.scrollHeight;
         }
       },
 
