@@ -7,7 +7,7 @@
     .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu")
     .section.top.bottom
       .chat.section__content
-        .chat_messages
+        .chat_messages(id="chatmessages")
           template(v-for='msg in getMessages | list', track-by='$index')
             div
               chat-msg-status(
