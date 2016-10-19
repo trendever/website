@@ -10,17 +10,18 @@ scroll-component
     right-nav-component(slot="content", current="")
   .section__content.infonewshops
     .section.top
-     .section.top__header Ты инста-шоп? #[br] Готов стать #[br] интернет-магазином? #[br] и даже больше
-     .section.top__header-small Trendever решает все проблемы #[br] Instagram-магазинов, под-ключ
+     .section.top__header Ты инста-шоп? #[br(v-if="isMobile")] Готов стать #[br] интернет-магазином? #[br(v-if="isMobile")] и даже больше
+     .section.top__header-small Trendever решает все проблемы #[br(v-if="isMobile")] Instagram-магазинов, под-ключ
      .section.top__header Наши преимущества
-     .section.top__advantages.chats Шопинг-чат, куда автоматичеcки #[br] попадают заказы из Instagram
-     .section.top__advantages.pay Онлайн-платежи на карту, #[br] не выходя из чата
-     .section.top__advantages.grow Увеличение продаж через #[br] рекламу у блогеров
-     .section.top__advantages.photos Создание стильных фотографий #[br] для инста-ленты через блогеров
-     .section.top__advantages.shops Своя витрина внутри сайта и аппа #[br] Trendever, где все инста-шоперы
-     .section.top__advantages.sellers Подключение и контроль #[br] за несколькими продавцами
+     .section.top__wrap
+      .section.top__advantages.chats Шопинг-чат, куда #[br(v-if="!isMobile")] автоматичеcки #[br(v-if="isMobile")] попадают #[br(v-if="!isMobile")] заказы из Instagram
+      .section.top__advantages.pay Онлайн-платежи #[br(v-if="!isMobile")] на карту, #[br(v-if="isMobile")] не выходя #[br(v-if="!isMobile")] из чата
+      .section.top__advantages.grow Увеличение продаж #[br(v-if="!isMobile")] через #[br(v-if="isMobile")] рекламу #[br(v-if="!isMobile")] у блогеров
+      .section.top__advantages.photos Создание стильных #[br(v-if="!isMobile")] фотографий #[br(v-if="isMobile")] для инста-#[br(v-if="!isMobile")]ленты через блогеров
+      .section.top__advantages.shops Своя витрина внутри #[br(v-if="!isMobile")] сайта и аппа #[br(v-if="isMobile")] Trendever, #[br(v-if="!isMobile")] где все инста-шоперы
+      .section.top__advantages.sellers Подключение и контроль #[br] за несколькими #[br(v-if="!isMobile")] продавцами
      .section.top.install
-      p Прокачай свой инста-шоп за 5 мин #[br] - просто установи приложение!
+      p Прокачай свой инста-шоп за 5 мин #[br(v-if="isMobile")] - просто установи приложение!
      .section.top__more ПОДРОБНЕЕ
       img(src="./img/more.svg")
      .section.top__logo
@@ -49,8 +50,11 @@ scroll-component
          i.ic-rub
          span   в месяц
       .section.top__info-block__desc Первые 7 дней бесплатно
-      .section.top__bot-txt
-       p * подробнее об остальных функциях #[br] внутри приложения
+    .section.top__header(v-if="!isMobile") Скачай приложение, #[br] чтобы начать продавать
+    .section.top__header-small(v-if="!isMobile") Сначала зарегистрируйся в приложениии #[br] сможешь обслуживать заказы также на ноутбуке
+    .section.top__bot-txt
+      p * подробнее об остальных функциях #[br(v-if="isMobile")]
+       span внутри приложения
     button(v-if="isAuth", v-link='{ name: "info-instructions-1" }').how-to-sell КАК НАЧАТЬ ПРОДАВАТЬ?
   fast-signup(v-if="!isAuth")
 </template>
