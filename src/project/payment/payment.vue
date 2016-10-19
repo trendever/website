@@ -212,14 +212,6 @@ export default{
         this.setMessage('Ошибка сервера, обратитесь в поддержку');
       });
     },
-    //метод не используется в компоненте
-    deleteCard(cardId){
-      return cardService.deleteCard({
-        card_id: cardId
-      }).then(()=>{
-        console.log('карта удалена');
-      });
-    },
     _getCards(){
       return cardService.retrieve({
         shop_id: this.getPayment.shopId

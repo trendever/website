@@ -93,13 +93,6 @@
         return this.msg.closestMessage;
       },
       isOwnMessage() {
-
-/*        if(this.msg.addDateStatus !== null){
-
-          console.log(formatDatetime(this.msg.addDateStatus));
-
-        }*/
-
         if ( this.getCurrentMember !== null ) {
           return this.getCurrentMember.user_id === this.msg.user.user_id;
         }
