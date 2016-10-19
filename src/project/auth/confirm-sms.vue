@@ -3,7 +3,7 @@ div
   .signup.confirm(:style='{ height: height }')
     .signup__close.__hello(@click='closePage'): i.ic-close
     .section
-      h1 Подтвердите номер телефона
+      h1.accept Подтвердите номер телефона
       .middle-container(:class="{'has-another-name': anotherName}")
         .thanks-wrap(v-if='isCompleted')
           h1 Номер подтвержден!

@@ -93,8 +93,8 @@
      .hero__content__dwnld-btns
       a(href="https://itunes.apple.com/ru/app/trendever/id1124212231", class="app_store")
        i(class="ic-appstore")
-      //a(href="#", class="g_play")
-       //i(class="ic-google_play")
+      a(href="https://play.google.com/store/apps/details?id=com.trendever.app", class="g_play")
+       i(class="ic-google_play")
   .hero__content__2(:class="{'cnt2_app': isStandalone}", v-el:hero-two)
    a.how-btn(@click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
    p(id="how-it-work") Находи и покупай #[br] трендовые товары здесь #[br] или прямо в Instagram
@@ -274,6 +274,7 @@ export default {
     getLink(){
 
       commonService.marketSms({phone: this.phoneNumber }).then(data=>{
+          yaCounter35346175.reachGoal('get_link');
           this.$set('smsSent', true);
           this.$set('phoneNumber','');
           setTimeout( () => this.$set('smsSent', false), 3000);

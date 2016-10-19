@@ -10,7 +10,20 @@ scroll-component
     right-nav-component(slot="content", current="")
   .section__content.infonewshops
     .section.top
-     .section.top__header Хочешь быть успешным в Instagram?
+     .section.top__header Ты инста-шоп? #[br(v-if="isMobile")] Готов стать #[br] интернет-магазином? #[br(v-if="isMobile")] и даже больше
+     .section.top__header-small Trendever решает все проблемы #[br(v-if="isMobile")] Instagram-магазинов, под-ключ
+     .section.top__header Наши преимущества
+     .section.top__wrap
+      .section.top__advantages.chats Шопинг-чат, куда #[br(v-if="!isMobile")] автоматичеcки #[br(v-if="isMobile")] попадают #[br(v-if="!isMobile")] заказы из Instagram
+      .section.top__advantages.pay Онлайн-платежи #[br(v-if="!isMobile")] на карту, #[br(v-if="isMobile")] не выходя #[br(v-if="!isMobile")] из чата
+      .section.top__advantages.grow Увеличение продаж #[br(v-if="!isMobile")] через #[br(v-if="isMobile")] рекламу #[br(v-if="!isMobile")] у блогеров
+      .section.top__advantages.photos Создание стильных #[br(v-if="!isMobile")] фотографий #[br(v-if="isMobile")] для инста-#[br(v-if="!isMobile")]ленты через блогеров
+      .section.top__advantages.shops Своя витрина внутри #[br(v-if="!isMobile")] сайта и аппа #[br(v-if="isMobile")] Trendever, #[br(v-if="!isMobile")] где все инста-шоперы
+      .section.top__advantages.sellers Подключение и контроль #[br] за несколькими #[br(v-if="!isMobile")] продавцами
+     .section.top.install
+      p Прокачай свой инста-шоп за 5 мин #[br(v-if="isMobile")] - просто установи приложение!
+     .section.top__more ПОДРОБНЕЕ
+      img(src="./img/more.svg")
      .section.top__logo
      .section.top__info-block
       .section.top__info-block__title Преврати #[br.break_1] свой Instagram #[br.break_2] в настоящий магазин
@@ -37,31 +50,12 @@ scroll-component
          i.ic-rub
          span   в месяц
       .section.top__info-block__desc Первые 7 дней бесплатно
-      .section.top__info-block__title.how-sell Как начать продавать?
-      .section.top__info-block__sub-title Выполни 3 простых шага:
-      .section.top__info-block__list-title 1. Cкачай приложение
-      .section.top__info-block__list-description.download Не важно какой телефон у тебя или твоих клиентов, #[br.break_mob]Trendever доступен на iPhone и Android устройствах
-       .section.top__info-block__list-description.download-btns
-        a(href="https://itunes.apple.com/ru/app/trendever/id1124212231", v-if="!isMobile").app_store
-        .app_store(v-if="isMobile")
-        //a(href="#").g_play
-      .section.top__info-block__list-title 2. Расскажи клиентам
-      .section.top__info-block__list-description.add-goods Добавь текст в профиль #[br.break_desk.mob] своего Instagram: #[br]
-        .wantit Напиши
-         span.want  @wantit
-         span  и товар #[br.break_desk.mob] попадет #[br.break_mob] в шопинг- #[br.break_desk.mob]приложение по ссылке ниже #[br.break_mob]
-        span.block Укажи в профиле ссылку #[br.break_desk] на свою витрину #[br.break_mob] в Trendever
-      .section.top__info-block__add-goods-slide
-      .section.top__info-block__list-title 3. Добавляй описание #[br.break_desk.mob]
-       span.padding к товарам
-      .section.top__info-block__list-description.tell-clients При размещении #[br.break_desk.mob] новых товаров в Instagram, #[br] напиши в начале описания:
-        .wantit2 Покупай по комментарию #[br]
-         span.want @wantit #[br]
-        span Товар с
-         span.want  @wantit
-         span  в описании #[br.break_desk.mob] попадает #[br.break_mob] в твою Trendever-витрину и виден всем
-      .section.top__info-block__tell-clients-slide
-      .section.top__info-block__desc.done Готово! #[br] Принимай заказы #[br.break_desk.mob] в одном приложении #[br] и получи доступ к клиентам #[br.break_desk.mob] всех Instagram-магазинов
+    .section.top__header(v-if="!isMobile") Скачай приложение, #[br] чтобы начать продавать
+    .section.top__header-small(v-if="!isMobile") Сначала зарегистрируйся в приложениии #[br] сможешь обслуживать заказы также на ноутбуке
+    .section.top__bot-txt
+      p * подробнее об остальных функциях #[br(v-if="isMobile")]
+       span внутри приложения
+    button(v-if="isAuth", v-link='{ name: "info-instructions-1" }').how-to-sell КАК НАЧАТЬ ПРОДАВАТЬ?
   fast-signup(v-if="!isAuth")
 </template>
 <style scoped>

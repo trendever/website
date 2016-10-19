@@ -3,22 +3,22 @@
 <template lang="jade">
 .chat-row.__center
   .chat-msg-status
-    span 
+    span
      | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
      i.ic-currency-rub
-     
+
 .chat-approve-btn(v-if='showPayButton' )
-  .btn-payment(@click="pay") 
-    span ОТПРАВИТЬ {{getAmmount}}₽
+  .btn-payment(@click="pay")
+    span ОТПРАВИТЬ {{getAmmount | curency_spaces}} ₽
   .btn-cancel(@click="cancel") <i class="ic-close"></i>
 
 .chat-pending-btn(v-if='showPendingButton' )
-  .btn-payment 
-    span ЗАПРОШЕНО {{getAmmount}}₽
+  .btn-payment
+    span ЗАПРОШЕНО {{getAmmount | curency_spaces}} ₽
   .btn-cancel(@click="cancel") <i class="ic-close"></i>
 
 iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLink" v-show="showPaymentWindow")
-    
+
 </template>
 
 <script type='text/babel'>
@@ -41,22 +41,17 @@ iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLi
         if(msg.data && msg.data.name=="Close" && msg.source == fra.contentWindow) {
           if (msg.data.redirect_url){
             this.showPaymentWindow = false;
-            console.log("REDIRECTION");
-            console.log(msg.data.redirect_url);
             window.location = msg.data.redirect_url;
           }else{
             this.cancel();
             this.showPaymentWindow = false;
           }
         }
-        if(msg.data && msg.data.name=="Load" && msg.source == fra.contentWindow){
-          console.log("SHOW LOADER");
-        }
       };
 
       if (!this.msg.parts[1] && this.msg.user.user_id !== this.getCurrentMember.user_id){
           this.setConversationAction("pay");
-          this.setConversationActionData({id: _payid});        
+          this.setConversationActionData({id: _payid});
       }
       if (!this.msg.parts[1] && this.msg.user.user_id === this.getCurrentMember.user_id){
         this.setConversationAction("pendingpayment");
@@ -74,7 +69,7 @@ iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLi
         required: true
       }
     },
-    vuex: { 
+    vuex: {
       actions: {
         setConversationAction,
         setConversationActionData

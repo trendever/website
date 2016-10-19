@@ -6,7 +6,7 @@ scroll-component
       .signup__close.__hello(@click='closePage'): i.ic-close
       .section
         .column-desktop-50.header(v-if="showTitleSlider")
-          h1 Войдите и сможете
+          h1.accept Войдите и сможете
         .column-desktop-50.column-desktop-right(v-if="showTitleSlider")
           slider
         .column-desktop-50
