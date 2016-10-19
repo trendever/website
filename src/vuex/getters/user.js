@@ -146,3 +146,10 @@ export const getAuthUser = ( { user }) => {
   return user.all[user.myId];
 
 }
+
+
+export const getUseDays = ( { user } ) => {
+
+  return user.useDays;
+
+}

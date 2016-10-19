@@ -8,7 +8,8 @@ import {
   USER_LOGOUT,
   USER_SET_MY_CURRENT_LIST,
   USER_SET_TOOLTIP,
-  USER_SET_PAYMENT
+  USER_SET_PAYMENT,
+  USER_SET_USE_DAYS
 } from '../mutation-types';
 
 // initial state
@@ -27,7 +28,11 @@ const state = {
     chats: true
   },
   payment: {},
+
   showRootLoader: false
+
+  useDays: 7
+
 
 };
 
@@ -130,6 +135,9 @@ const mutations = {
   [USER_SET_PAYMENT](state,value){
     state.payment = value;
   },
+  [USER_SET_USE_DAYS](state, count) {
+    state.useDays = count;
+  }
 };
 
 export default {

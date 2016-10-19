@@ -6,24 +6,30 @@ div
 import channel from 'services/channel/channel';
 
 import { getAuthUser, isAuth } from 'vuex/getters/user';
-
+import { setUseDays } from 'vuex/actions/user';
 
 export default {
   vuex: {
     getters: {
       getAuthUser,
       isAuth
+    },
+    actions: {
+      setUseDays
     }
   },
   data () {
+
     return {
-      sevenDays: 60 * 60 * 24 * 7,
-      threeDays: 60 * 60 * 24 * 3
+      day: 60 * 60 * 24,
     };
+
   },
+
+
   ready() {
 
-    this.$nextTick(()=>{
+    this.$nextTick(() => {
 
       if(this.isAuth) {
 
@@ -43,37 +49,105 @@ export default {
 
             .then(date=>{
 
+              let timeOut = 100;
+
               let nowTime = +new Date()/1000;
 
               let difference = nowTime - date;
 
-              if (difference <= this.threeDays){
+              if (difference <= this.day){
 
                 setTimeout(()=>{
+                  this.setUseDays(7)
+                  this.$router.go({name: 'monetization'})
 
-                  this.$router.go({name: 'monetization',query: { lessThan: 3 }})
+                }, timeOut)
 
-                }, 100)
+                return
 
               }
 
-              if (difference <= this.sevenDays && difference >= this.threeDays){
+              if (difference <= this.day * 2){
 
                 setTimeout(()=>{
+                  this.setUseDays(6)
+                  this.$router.go({name: 'monetization'})
 
-                  this.$router.go({name: 'monetization',query: { moreThan: 3 }})
+                }, timeOut)
 
-                }, 100)
+                return
 
               }
 
-              if(difference >= this.sevenDays) {
+              if (difference <= this.day * 3 ){
 
                 setTimeout(()=>{
+                  this.setUseDays(5)
+                  this.$router.go({name: 'monetization'})
 
-                  this.$router.go({name: 'monetization',query: { moreThan: 7 }})
+                }, timeOut)
 
-                }, 100)
+                return
+
+              }
+
+              if (difference <= this.day * 4){
+
+                setTimeout(()=>{
+                  this.setUseDays(4)
+                  this.$router.go({name: 'monetization'})
+
+                }, timeOut)
+
+                return
+
+              }
+
+              if(difference <= this.day * 5) {
+
+                setTimeout(()=>{
+                  this.setUseDays(3)
+                  this.$router.go({name: 'monetization'})
+
+                }, timeOut)
+
+                return
+
+              }
+
+              if(difference <= this.day * 6) {
+
+                setTimeout(()=>{
+                  this.setUseDays(2)
+                  this.$router.go({name: 'monetization'})
+
+                }, timeOut)
+
+                return
+
+              }
+
+              if(difference <= this.day * 7) {
+
+                setTimeout(()=>{
+                  this.setUseDays(1)
+                  this.$router.go({name: 'monetization'})
+
+                }, timeOut)
+
+                return
+
+              }
+
+              if(difference > this.day * 7) {
+
+                setTimeout(()=>{
+                  this.setUseDays(0)
+                  this.$router.go({name: 'monetization'})
+
+                }, timeOut)
+
+                return
 
               }
 
