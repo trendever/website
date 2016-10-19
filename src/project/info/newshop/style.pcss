@@ -703,8 +703,10 @@
 					margin-left: 30px;
 				}
 				span{
-					display: inline-block;
-					margin-left: 20px;
+					@media(--mobile) {
+						display: inline-block;
+						margin-left: 20px;
+					}
 				}
 			}
 		}
