@@ -37,7 +37,7 @@ scroll-component(v-el:scroll-cnt)
        span
         #[br] под товарами в своем instagram,
         #[br] чтобы продавать и видеть здесь покупателей.
-      .how-to-sell-btn(v-if="!leads.length && getTab === 'seller'", v-link="{name: 'info-newshop'}") Как начать продавать?
+      .how-to-sell-btn(v-if="!leads.length && getTab === 'seller'", v-link="{name: 'info-instructions-1'}") Как начать продавать?
 navbar-component(current='chat')
 scroll-top
 app-loader.list-loader(v-if="!needLoadLeads")

@@ -93,8 +93,8 @@
      .hero__content__dwnld-btns
       a(href="https://itunes.apple.com/ru/app/trendever/id1124212231", class="app_store")
        i(class="ic-appstore")
-      //a(href="#", class="g_play")
-       //i(class="ic-google_play")
+      a(href="https://play.google.com/store/apps/details?id=com.trendever.app", class="g_play")
+       i(class="ic-google_play")
   .hero__content__2(:class="{'cnt2_app': isStandalone}", v-el:hero-two)
    a.how-btn(@click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
    p(id="how-it-work") Находи и покупай #[br] трендовые товары здесь #[br] или прямо в Instagram
