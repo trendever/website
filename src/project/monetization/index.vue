@@ -3,7 +3,7 @@
  .monetization
   i.ic-close(@click='closePage')
   .monetization__days-to-end 7
-  .monetization__text дней осталось до окончания #[br] бесплатного периода
+  .monetization__text дней осталось до конца #[br] пробного периода
   .monetization__text.bot Выбери, как тебе выгоднее #[br] оплачивать услуги Trendever
   .monetization__btn
    button 1990 В МЕСЯЦ
