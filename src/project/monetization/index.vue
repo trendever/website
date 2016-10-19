@@ -12,8 +12,10 @@
   .monetization__btn(@click="dealType = 'percent-type'")
    button(:class="{make__choice: dealType === 'percent-type'}") 5.5% ЗА СДЕЛКУ
   .monetization__accept-btn(:class="{ dark__yellow: getUseDays === 0 && !dealType}")
-   button(v-if="getUseDays !== 0", @click="closePage") ПОКА НЕ УВЕРЕН
-   button(v-if="getUseDays === 0", ) ПОДТВЕРДИТЬ
+
+   button(v-if="getUseDays !== 0 && !dealType", @click="closePage") ПОКА НЕ УВЕРЕН
+   button(v-if="getUseDays === 0 || dealType", @click="accept") ПОДТВЕРДИТЬ
+
 </template>
 
 <script>
@@ -41,6 +43,12 @@ export default {
       }
 
       this.$router.go({name: 'home'})
+    },
+    accept(){
+      if(!this.dealType){
+        return;
+      }
+      alert('Подтверждаю');
     }
   }
 }

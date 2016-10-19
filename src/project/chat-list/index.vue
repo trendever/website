@@ -60,6 +60,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
   import RightNavComponent from 'base/right-nav/index';
   import listen from 'event-listener';
 
+
   import {
     getLeads,
     getTab,
@@ -73,7 +74,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
     getCountForLoading
   } from 'vuex/getters/lead.js';
 
-  import { isAuth, getTooltips } from 'vuex/getters/user.js';
+  import { isAuth, getTooltips, getUseDays } from 'vuex/getters/user.js';
   import { setTooltip } from 'vuex/actions/user.js';
 
   import {
@@ -122,7 +123,8 @@ app-loader.list-loader(v-if="!needLoadLeads")
         isDone,
         getLengthList,
         getScroll,
-        getHasMore
+        getHasMore,
+        getUseDays
       },
       actions: {
         setTooltip,
@@ -147,6 +149,11 @@ app-loader.list-loader(v-if="!needLoadLeads")
     ready(){
 
       if ( this.isAuth ) {
+        if( this.getUseDays === 0){
+
+          this.$router.go({name: 'monetization'})
+
+        }
 
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', (() => {
 

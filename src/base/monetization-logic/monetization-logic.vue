@@ -49,7 +49,7 @@ export default {
 
             .then(date=>{
 
-              let timeOut = 100;
+              let timeOut = 1000;
 
               let nowTime = +new Date()/1000;
 
