@@ -3,7 +3,7 @@
  .monetization
 
   i.ic-close(@click='closePage', v-if="getUseDays")
-  .monetization__days-to-end {{ getUseDays }}
+  .monetization__days-to-end(:class="{is__end: getUseDays === 0}") {{ getUseDays }}
   .monetization__text дней осталось до конца #[br] пробного периода
   .monetization__text.bot Выбери, как тебе выгоднее #[br] оплачивать услуги Trendever
   .monetization__btn(@click="dealType = 'month-type'")
