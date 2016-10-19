@@ -274,6 +274,7 @@ export default {
     getLink(){
 
       commonService.marketSms({phone: this.phoneNumber }).then(data=>{
+          yaCounter35346175.reachGoal('get_link');
           this.$set('smsSent', true);
           this.$set('phoneNumber','');
           setTimeout( () => this.$set('smsSent', false), 3000);

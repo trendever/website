@@ -159,7 +159,7 @@
       },
 
       buy() {
-
+        yaCounter35346175.reachGoal('purchase');
         this._buy( this.productId );
 
       },
