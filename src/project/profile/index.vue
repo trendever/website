@@ -34,7 +34,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
        template(v-if="loaded")
         .profile_no-goods(v-if="noLikes && noProducts && $route.name === 'profile'")
          span.empty Здесь пусто,
-         span #[br]... потому что ты пока ничего не сохранил
+         span #[br]... потому что ты пока ничего #[br(v-if="!isMobile")] не сохранил
         .profile_no-goods-guest(v-if="noLikes && noProducts && $route.name === 'user'") Пока здесь пусто ;( #[br] Пользователь еще не добавил #[br] тренды в свою ленту
         .profile_no-goods-banner(v-if="noLikes && noProducts && isSelfPage") Нажми Сохранить&nbsp
          span под товаром #[br.break_1] или&nbsp
