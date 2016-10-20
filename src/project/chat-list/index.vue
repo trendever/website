@@ -30,14 +30,14 @@ scroll-component(v-el:scroll-cnt)
       .chat-list-cnt-is-empty__banner(v-if="!leadsArray.length && getTab === 'customer'") Нажми Купить&nbsp
        span под товаром #[br]или&nbsp
        span.want напиши @wantit&nbsp
-       span под постом в Instagram, #[br] и здесь появится шопинг-чат.
-      .chat-list-cnt-is-empty__banner(v-if="!leadsArray.length && getTab === 'seller'")
+       span под постом в Instagram, #[br] и здесь появится шопинг-чат
+      .chat-list-cnt-is-empty__banner.sell(v-if="!leadsArray.length && getTab === 'seller'")
        span Напиши&nbsp
-       span.want покупай по комментарию @wantit&nbsp
+       span.want Покупай по комментарию @wantit&nbsp
        span
-        #[br] под товарами в своем instagram,
-        #[br] чтобы продавать и видеть здесь покупателей.
-      .how-to-sell-btn(v-if="!leads.length && getTab === 'seller'", v-link="{name: 'info-instructions-1'}") Как начать продавать?
+        #[br(v-if="isMobile")] под товарами в своем instagram,
+        #[br] чтобы продавать и видеть здесь покупателей
+       .how-to-sell-btn.chat-btn( v-link="{name: 'info-instructions-1'}") Как начать продавать?
 navbar-component(current='chat')
 scroll-top
 app-loader.list-loader(v-if="!needLoadLeads")

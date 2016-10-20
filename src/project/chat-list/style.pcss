@@ -19,22 +19,39 @@
   font-family: $font__family__light;
   color: black;
   text-align: center;
-  line-height: 99px;
-  position: fixed * 0 0 0;
-  height: 99px;
+  line-height: 60px;
+  position: absolute;
+  bottom: 110px;
+  left: 0;
+  right: 0;
+  height: 60px;
+  width: 420px;
   text-transform: uppercase;
   background: #FFDE1E;
   z-index: 9999;
-  font-size: 34px;
+  font-size: 24px;
   @media (min-width: 751px) {
-    bottom: 150px;
-    font-size: 20px;
     height: 50px;
     line-height: 50px;
-    width: 300px;
+    width: 100%;
     margin: 0 auto;
   }
-
+}
+.chat-btn{
+  width: 420px !important;
+  height: 60px !important;
+  line-height: 60px !important;
+  font-size: 24px !important;
+  border-radius: 5px;
+  @media(--mobile) {
+    bottom: 98px;
+    width: 100% !important;
+    height: 100px !important;
+    line-height: 100px !important;
+    font-size: 36px !important;
+    border-radius: 0px !important;
+    bottom: -100px !important;
+  }
 }
 .list-loader {
    position: fixed 50% * * 50% ;
@@ -79,34 +96,37 @@
       text-align: center;
       background-color: #ececec;
       bottom: 0px;
-      //padding: 30px;
-      padding-top: 30px;
-      padding-bottom: 30px;
+      padding-top: 25px;
       color: #595959;
-      font-family: $font__family__semibold;
+      font-family: $font__family__light;
       line-height: 30px;
+      height: 100px;
       @media(--mobile) {
         display: block;
         position: absolute;
-        font-size: 30px;
+        font-size: 32px;
         width: 100%;
         text-align: center;
         background-color: #ececec;
         bottom: 98px;
-        //padding: 30px;
         padding-top: 40px;
         padding-bottom: 40px;
         color: #595959;
-        font-weight: bolder;
         line-height: 38px;
+        font-family: $font__family__light;
+        height: 200px;
       }
       span{
         font-family: $font__family__light;
       }
       span.want{
         font-family: $font__family__semibold;
-        font-weight: bold;
       }
+    }
+  }
+  .sell{
+    @media(--mobile) {
+      bottom: 197px;
     }
   }
   .chat-list {
