@@ -34,13 +34,13 @@ scroll-component(v-if="isDone", class="profile-cnt")
        template(v-if="loaded")
         .profile_no-goods(v-if="noLikes && noProducts && $route.name === 'profile'")
          span.empty Здесь пусто,
-         span #[br]... потому что ты пока ничего #[br(v-if="!isMobile")] не сохранил
+         span #[br]... потому что ты пока ничего #[br] не сохранил
         .profile_no-goods-guest(v-if="noLikes && noProducts && $route.name === 'user'") Пока здесь пусто ;( #[br] Пользователь еще не добавил #[br] тренды в свою ленту
         .profile_no-goods-banner(v-if="noLikes && noProducts && isSelfPage") Нажми Сохранить&nbsp
          span под товаром #[br.break_1] или&nbsp
          | напиши&nbsp
-         span.save @savetrend&nbsp
-         span под постом в #[br.break_2] Instagram, #[br.break_3] чтобы добавить тренд сюда в ленту
+         span.save @savetrend&nbsp #[br(v-if="!isMobile")]
+         span под постом в #[br.break_2] Instagram, #[br(v-if="!isMobile")] чтобы добавить тренд сюда в ленту
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscrib//e") ПОДПИСАТЬСЯ
 

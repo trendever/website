@@ -33,7 +33,7 @@ scroll-component(v-el:scroll-cnt)
        span под постом в Instagram, #[br] и здесь появится шопинг-чат
       .chat-list-cnt-is-empty__banner.sell(v-if="!leadsArray.length && getTab === 'seller'")
        span Напиши&nbsp
-       span.want Покупай по комментарию @wantit&nbsp
+       span.want Покупай по комментарию @wantit&nbsp #[br(v-if="!isMobile")]
        span
         #[br(v-if="isMobile")] под товарами в своем instagram,
         #[br] чтобы продавать и видеть здесь покупателей
