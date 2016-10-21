@@ -175,12 +175,6 @@
 
           if ( this.fullHeight < 170 ) {
 
-            if(this.$route.name === 'product_detail') {
-
-              return `${this.fullHeight - 10}px !important`;
-
-            }
-
             return `${this.fullHeight - 10}px`;
 
           }
