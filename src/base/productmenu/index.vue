@@ -33,7 +33,7 @@
         menuOpened: false,
         showBullets: true,
         isMobile: window.browser.mobile,
-        editProductId: 32158,
+        editProductId: 32929,
         promoProductId: settings.promoProductID
 
       }
