@@ -6,7 +6,7 @@
  .instruction__header
   p Укажи в Instagram ссылку #[br] на свою витрину
  .instruction__sub-header Вот короткая ссылка:
- .instruction__bold-title YourInstaShop.tndvr.com
+ .instruction__bold-title {{authUser.name}}.tndvr.com
  .instruction__txt на твою витрину товаров #[br] в приложении и на сайте Trendever
  .instruction__screen
   img(src="./img/screen-2.png")
@@ -19,7 +19,9 @@
 <script>
 export default {
   data () {
-    return {}
+    return {
+      authUser: this.$store.state.user.all[this.$store.state.user.myId]
+    }
   },
   computed: {},
   mounted () {},
