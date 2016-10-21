@@ -33,7 +33,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
             label(for="filter-likes") Мои Тренды
        template(v-if="loaded")
         .profile_no-goods(v-if="noLikes && noProducts && $route.name === 'profile'")
-         span.empty Здесь пусто,
+         span.empty Нет шопинг-желаний,
          span #[br]... потому что ты пока ничего #[br] не сохранил
         .profile_no-goods-guest(v-if="noLikes && noProducts && $route.name === 'user'") Пока здесь пусто ;( #[br] Пользователь еще не добавил #[br] тренды в свою ленту
         .profile_no-goods-banner(v-if="noLikes && noProducts && isSelfPage") Нажми Сохранить&nbsp
@@ -58,7 +58,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
   navbar-component(:current='listId')
 
-  .find-bloger-btn(v-if='isSelfPage && shopId !== 1 && isMobile && showBloger', @click="buyServiceProduct") Найти блогера
+  .find-bloger-btn(v-if='isSelfPage && isMobile && showBloger', @click="buyServiceProduct") Найти блогера
 
 .help-wrapper(v-if='isFirst')
   .attention(v-if='isFirst')

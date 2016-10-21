@@ -35,7 +35,7 @@ scroll-component(v-el:scroll-cnt)
        span Напиши&nbsp
        span.want Покупай по комментарию @wantit&nbsp #[br(v-if="!isMobile")]
        span
-        #[br(v-if="isMobile")] под товарами в своем instagram,
+        #[br(v-if="isMobile")] под товарами в своем Instagram,
         #[br] чтобы продавать и видеть здесь покупателей
        .how-to-sell-btn.chat-btn( v-link="{name: 'info-instructions-1'}") Как начать продавать?
 navbar-component(current='chat')
