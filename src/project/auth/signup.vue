@@ -100,7 +100,7 @@ scroll-component
   const PLACEHOLDER = {
     instagramMode: 'Введите свое Instagram имя',
     withoutInstagramMode: 'Введите свое имя',
-    errorPhoneFormat: 'Введите номер +7XXXXXXXXXX',
+    errorPhoneFormat: 'Введите верный номер',
     errorLoginFormat: 'Только латинские буквы...',
     errorNoLogin: 'Введите свое имя',
     errorNoPhone: 'Введите номер телефона',
@@ -181,7 +181,7 @@ scroll-component
         if(!this.login) {
           this.login = '';
           this.errorLogin = true;
-          this.textLink = TEXT_LINK['errorNoLogin'];
+          //this.textLink = TEXT_LINK['errorNoLogin'];
           this.login = PLACEHOLDER['errorNoLogin'];
           return;
 
@@ -190,7 +190,7 @@ scroll-component
         if(this.login.match(/[а-яё]+/g) !== null){
           this.login = '';
           this.errorLogin = true;
-          this.textLink = TEXT_LINK['errorloginLang'];
+          //this.textLink = TEXT_LINK['errorloginLang'];
           this.login = PLACEHOLDER['errorLoginFormat'];
           return;
         }
@@ -224,7 +224,7 @@ scroll-component
       onErrorPhone() {
         this.phone = '';
         this.errorPhone = true;
-        this.textLink = TEXT_LINK['errorPhoneFormat'];
+        //this.textLink = TEXT_LINK['errorPhoneFormat'];
         this.phone = PLACEHOLDER['errorPhoneFormat'];
       },
 
@@ -234,7 +234,7 @@ scroll-component
           this.$set('showTitleSlider',false);
         if (this.errorPhone) {
           this.errorPhone = false;
-          this.textLink = '';
+          //this.textLink = '';
           this.phone = '';
         };
       },
@@ -242,7 +242,7 @@ scroll-component
       onErrorLogin() {
         this.$set('login', TEXT_LINK['errorLoginMesage']);
         this.$set('errorLogin', true);
-        this.$set('textLink', TEXT_LINK['errorLoginLink']);
+        //this.$set('textLink', TEXT_LINK['errorLoginLink']);
       },
 
       // clear login and remove error class from <input>
@@ -252,7 +252,7 @@ scroll-component
         if (this.$get('errorLogin')) {
           this.$set('errorLogin', false);
           this.$set('login', '');
-          this.$set('textLink', '');
+          //this.$set('textLink', '');
         };
       },
 

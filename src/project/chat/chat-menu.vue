@@ -119,9 +119,6 @@ div
         this.setPayment({shopId: this.paymentShopId(),leadId: this.getLeadId});
         this.$router.go( { name: 'payment'} );
       },
-      openPayon(){
-        window.location = "https://dev.trendever.com/payon";
-      },
       paymentShopId(){
         //если простой покупатель
         if(this.getCurrentMember.role === 1){

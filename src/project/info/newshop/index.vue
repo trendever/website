@@ -51,9 +51,9 @@ scroll-component
          span   в месяц
       .section.top__info-block__desc Первые 7 дней бесплатно
     .section.top__header(v-if="!isMobile") Скачай приложение, #[br] чтобы начать продавать
-    .section.top__header-small(v-if="!isMobile") Сначала зарегистрируйся в приложениии #[br] сможешь обслуживать заказы также на ноутбуке
+    .section.top__header-small(v-if="!isMobile") Сначала зарегистрируйся в приложении #[br] и сможешь обслуживать заказы также на ноутбуке
     .section.top__bot-txt
-      p * подробнее об остальных функциях #[br(v-if="isMobile")]
+      p * подробнее об остальных функциях #[br(v-if="isMobile")]
        span внутри приложения
     button(v-if="isAuth", v-link='{ name: "info-instructions-1" }').how-to-sell КАК НАЧАТЬ ПРОДАВАТЬ?
   fast-signup(v-if="!isAuth")

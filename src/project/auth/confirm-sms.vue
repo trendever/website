@@ -3,13 +3,13 @@ div
   .signup.confirm(:style='{ height: height }')
     .signup__close.__hello(@click='closePage'): i.ic-close
     .section
-      h1.accept Подтвердите номер телефона
+      h1.accept Номер подтвержден
       .middle-container(:class="{'has-another-name': anotherName}")
         .thanks-wrap(v-if='isCompleted')
-          h1 Номер подтвержден!
+          h1 Спасибо!
 
           span.another-name-desc(v-if="anotherName && !isMobile")
-            | Вы уже регистрировались ранее с именем&nbsp
+            | Но вы уже регистрировались ранее с именем&nbsp
             span.inst-name {{ anotherName }}.#[br]
             | Имя можно изменить в настройках своего профиле,#[br]
             | нажав на иконку&nbsp
@@ -17,7 +17,7 @@ div
 
           span.another-name-mobile(v-if="anotherName && isMobile")
             .top-text
-              | Вы уже регистрировались #[br]
+              | Но вы уже регистрировались #[br]
               | ранее с другим именем #[br]
               span.inst-name {{ anotherName }} #[br]
             .bottom-text
@@ -173,6 +173,9 @@ div
           .authUser(user, token)
           .then(() => {
             if(!this.anotherName) {
+              if (typeof Android !== 'undefined'){
+                Android.sendToken();
+              }
               if (!this.callbackOnSuccessAuth) {
                 setTimeout( () => this.$router.go({name: 'chat_list'}), 1000);
                 return true;
