@@ -24,9 +24,10 @@
       color: #FFDE1E;
     }
     font-size: 100px;
-    padding-top: 135px;
+    padding-top: 50px;
     padding-bottom: 50px;
     @media(--mobile) {
+      padding-top: 135px;
       font-size: 150px;
       padding-bottom: 25px;
     }
@@ -39,7 +40,7 @@
       width: 490px;
       margin: 0 auto;
     }
-    br{
+    .first-br{
       display: none;
       @media(--mobile) {
         display: inline-block;
@@ -47,11 +48,17 @@
     }
   }
   .bot{
-    margin-top: 110px;
-    margin-bottom: 30px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    @media(--mobile) {
+      margin-top: 110px;
+      margin-bottom: 30px;
+
+    }
   }
 
   &__btn button{
+    cursor: pointer;
     width: 490px;
     height: 118px;
     background-color: transparent;
@@ -61,19 +68,42 @@
     font-family: $font__family__semibold;
     font-size: 36px;
 
+
+
+    @media screen and (min-width: 751px){
+
+      height: 77px;
+      width: 420px;
+      font-size: 24px;
+
+    }
+
     &.make__choice{
       background-color: #31BEBC;
       border-color: #31BEBC;
     }
 
     &:first-child{
+
+      @media screen and (min-width: 751px){
+
+       margin-bottom: 20px;
+
+      }
+
       margin-bottom: 55px;
     }
   }
 
   &__i.ic-monetization-icon{
-    font-size: 50px;
-    margin-bottom: 55px;
+    margin-top: 5px;
+    font-size: 25px;
+    margin-bottom: 25px;
+    @media(--mobile){
+      margin-top: initial;
+      font-size: 50px;
+      margin-bottom: 55px;
+    }
   }
 
   &__accept-btn {
@@ -105,6 +135,16 @@
 
     &:hover{
       background-color: #DEBD00;
+    }
+
+
+    @media screen and (min-width: 751px){
+      position: relative;
+      width: 420px;
+      height: 77px;
+      border-radius: 5px;
+      border: none;
+      font-size: 24px;
     }
   }
 }

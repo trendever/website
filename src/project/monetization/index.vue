@@ -4,8 +4,10 @@
 
   i.ic-close(@click='closePage', v-if="getUseDays")
   .monetization__days-to-end(:class="{is__end: getUseDays === 0}") {{ getUseDays }}
-  .monetization__text дней осталось до конца #[br] пробного периода
-  .monetization__text.bot Выбери, как тебе выгоднее #[br] оплачивать услуги Trendever
+  .monetization__text
+    | дней осталось до конца #[br.first-br] пробного периода
+  .monetization__text.bot
+    | Выбери, как тебе выгоднее #[br.second-br] оплачивать услуги Trendever
   .monetization__btn(@click="dealType = 'month-type'")
    button(:class="{make__choice: dealType === 'month-type'}") 1990 В МЕСЯЦ
   .monetization__i.ic-monetization-icon
