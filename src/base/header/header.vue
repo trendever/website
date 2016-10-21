@@ -14,6 +14,11 @@
         .header__notify-count(v-if='notifyCount')
           span {{ notifyCount }}
 
+        .header__use-days(v-if='$route.name === "profile"')
+          .days-count {{ getUseDays }}
+            span д
+
+
         .header__center
           .header__left-logo
            a(v-link="{name: 'home'}")
@@ -32,8 +37,14 @@
 <script type='text/babel'>
   import listen from 'event-listener';
   import ProductmenuComponent from '../productmenu/index.vue'
+  import { getUseDays } from 'vuex/getters/user';
 
   export default {
+    vuex: {
+      getters: {
+        getUseDays
+      }
+    },
     components: {
       ProductmenuComponent
     },
