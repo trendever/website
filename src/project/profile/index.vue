@@ -96,6 +96,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
     getTooltips
   } from 'vuex/getters/user.js';
 
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
+
   import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue'
   import PhotosComponent from 'base/photos/photos.vue'
@@ -155,8 +157,12 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
     },
     ready(){
-
+      let id = this.$route.params.id;
       if ( !this.isAuth && !browser.mobile) {
+        this.setCallbackOnSuccessAuth(()=>{
+
+          this.$router.go({name: 'user', params: { id }})
+        })
         this.$router.replace( { name: 'signup' } );
       }
 
@@ -291,6 +297,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },
     vuex: {
       actions: {
+        setCallbackOnSuccessAuth,
         createLead,
         setTooltip,
         setMyCurrentList,
