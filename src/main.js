@@ -73,3 +73,5 @@ FastClick.attach(document.body, {});
 // Throttled events
 // throttleEvent('scroll', 'optimizedScroll');
 throttleEvent('resize', 'optimizedResize');
+
+Window.androidhack = 0;
