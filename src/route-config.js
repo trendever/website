@@ -14,7 +14,7 @@ export function configRouter(router) {
     },
     '/': {
       name: 'home',
-      component: require('project/product-list/index.vue')
+      component: require('project/directbot/index.vue')
     },
 
     '/product/:id': {
