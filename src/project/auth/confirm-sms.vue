@@ -173,6 +173,9 @@ div
           .authUser(user, token)
           .then(() => {
             if(!this.anotherName) {
+              if (typeof Android !== 'undefined'){
+                Android.sendToken();
+              }
               if (!this.callbackOnSuccessAuth) {
                 setTimeout( () => this.$router.go({name: 'chat_list'}), 1000);
                 return true;
