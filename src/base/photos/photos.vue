@@ -149,6 +149,12 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
         this.scrollCnt.scrollTop = scrollTop;
 
+        if (typeof Android !== 'undefined'){
+          if (Window.androidhack === 0){
+            this.$router.go( { name: 'androidhack' } );
+          }
+        }
+
       } ).then(()=>{
 
         if(this.$route.name === 'profile'){
