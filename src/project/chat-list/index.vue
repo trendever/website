@@ -37,7 +37,11 @@ scroll-component(v-el:scroll-cnt)
        span
         #[br(v-if="isMobile")] под товарами в своем Instagram,
         #[br] чтобы продавать и видеть здесь покупателей
-       .how-to-sell-btn.chat-btn( v-link="{name: 'info-instructions-1'}") Как начать продавать?
+       .how-to-sell-btn.chat-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile") Как начать продавать?
+       appstore-link(
+        text-link="ПОЛУЧИТЬ ПРИЛОЖЕНИЕ ДЛЯ ПРОДАЖ",
+        placeholder-link="Укажите номер, чтобы начать продавать",
+        v-if="!isMobile").chat-appstore-link
 navbar-component(current='chat')
 scroll-top
 app-loader.list-loader(v-if="!needLoadLeads")
@@ -51,6 +55,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
 </template>
 
 <script type='text/babel'>
+  import AppstoreLink from 'base/appstore-link/appstore-link';
   import appLoader from 'base/loader/loader';
   import RightNavComponent from 'base/right-nav/index';
   import listen from 'event-listener';
@@ -91,6 +96,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
   export default {
 
     components: {
+      AppstoreLink,
       appLoader,
       ScrollTop,
       RightNavComponent,

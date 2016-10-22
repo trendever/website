@@ -19,7 +19,7 @@
 
 <template lang="jade">
 .hero__content__input-wrap.lg-popup
-  input(type="text" placeholder="Укажите номер телефона" v-model="phoneNumber").lg-input
+  input(type="text" placeholder="{{ placeholderLink }}" v-model="phoneNumber").lg-input
   button.hero__content__get-link.lg-btn(@click="getLink()" v-bind:disabled="disableButton") {{getLinkTitle}}
 </template>
 
@@ -27,7 +27,14 @@
 import * as commonService from 'services/common';
 export default {
 
-  name: 'component_name',
+  props:{
+    textLink: {
+      default: "ПОЛУЧИТЬ ССЫЛКУ НА ПРИЛОЖЕНИЕ"
+    },
+    placeholderLink: {
+      default: "Укажите номер телефона"
+    }
+  },
 
   data () {
     return {
@@ -44,7 +51,7 @@ export default {
         if (this.smsSent){
           return "ОТПРАВЛЕНО";
         }else{
-          return "ПОЛУЧИТЬ ССЫЛКУ НА ПРИЛОЖЕНИЕ";
+          return this.textLink;
         }
       },
     disableButton(){
