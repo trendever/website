@@ -125,7 +125,6 @@ export const authUser = ( { dispatch }, user, token ) => {
 };
 
 export const openProfile = ( { dispatch, state }, id ) => {
-
   return new Promise( ( resolve, reject ) => {
     if ( typeof id === 'undefined' ) {
 
@@ -148,22 +147,9 @@ export const openProfile = ( { dispatch, state }, id ) => {
     
 
     if ( typeof id === 'string' ) {
-
-      if ( id.indexOf( 'id' ) !== -1 ) {
-
-        requestData.user_id                      = +id.split( 'id' )[ 1 ];
-        photosConfig.listId                      = `profile_id_${ requestData.user_id }`;
-        photosConfig.photosFilter.user_id        = requestData.user_id;
-        photosConfig.photosFilter.instagram_name = null;
-
-      } else if ( id.length > 0 ) {
-
         requestData.instagram_name               = id;
         photosConfig.listId                      = `profile_${ id }`;
         photosConfig.photosFilter.instagram_name = id;
-
-      }
-
     }
 
     if ( requestData.user_id !== null || requestData.instagram_name !== null ) {
@@ -177,7 +163,6 @@ export const openProfile = ( { dispatch, state }, id ) => {
         resolve();
 
       } else {
-
         userService
           .get( requestData )
           .then( ( user ) => {
