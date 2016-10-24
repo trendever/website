@@ -14,6 +14,11 @@
         .header__notify-count(v-if='notifyCount')
           span {{ notifyCount }}
 
+        .header__use-days(v-if='$route.name === "profile" && isMobile && activeMonetization')
+          .days-count {{ getUseDays }}
+            span д
+
+
         .header__center
           .header__left-logo
            a(v-link="{name: 'home'}")
@@ -30,15 +35,23 @@
 </template>
 
 <script type='text/babel'>
+  import settings from 'settings';
   import listen from 'event-listener';
   import ProductmenuComponent from '../productmenu/index.vue'
+  import { getUseDays } from 'vuex/getters/user';
 
   export default {
+    vuex: {
+      getters: {
+        getUseDays
+      }
+    },
     components: {
       ProductmenuComponent
     },
     data(){
       return {
+        activeMonetization: settings.activateMonetization,
         is_visible: false,
         is_action_up: false,
         scrollEvent: null,
