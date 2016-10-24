@@ -69,35 +69,23 @@
   .section__content.hero__content(:class="{'cnt_app': isStandalone}", v-el:hero-one)
     .profile-header
       .profile-header__center
-      button(v-link='{ name: "info-newshop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
       button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
-      .profile-header__mobile-slider
-       .profile-header__mobile-slider-slide
-        slider
      .hero__content__logo__mobile(:class="{'logo_app': isStandalone}")
     .hero__content__description Искусственный интеллект для Instagram-магазинов
     button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }" v-if="isStandalone") ВХОД И РЕГИСТРАЦИЯ
     button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'app' }" v-else) СКАЧАТЬ ПРИЛОЖЕНИЕ
-    .hero__content__footer
-     .hero__content__footer__social
-      a(href='https://www.fb.com/trendevercom', class='fb' target="_blank")
-       i(class='ic-fb social')
-      a(href='https://www.instagram.com/trendevercom', class='insta' target="_blank")
-       i(class='ic-insta social')
-      a(href='https://vk.com/trendever', class='vk' target="_blank")
-       i(class='ic-vk social')
-     .hero__content__input-wrap
-      p Приложение для шопинга в Instagram
-      input(type="text" placeholder="Номер телефона" v-model="phoneNumber")
-      button.hero__content__get-link(@click="getLink()" v-bind:disabled="disableButton") {{getLinkTitle}}
-     .hero__content__dwnld-btns
-      a(href="https://itunes.apple.com/ru/app/trendever/id1124212231", class="app_store")
-       i(class="ic-appstore")
-      a(href="https://play.google.com/store/apps/details?id=com.trendever.app", class="g_play")
-       i(class="ic-google_play")
   .hero__content__2(:class="{'cnt2_app': isStandalone}", v-el:hero-two)
    a.how-btn(@click='scrollAnchor()') КАК ЭТО РАБОТАЕТ?
-   .hero__content__2__title Находи и покупай #[br] трендовые товары здесь #[br] или прямо в Instagram
+   .hero__content__2__title ПРОБЛЕМА
+   .hero__content__2__paragraph
+     p Вопросы клиентов Instagram #[br] теряются среди спама #[br] в комментах, директ, вотсап, #[br] вайбер, email...
+   .hero__content__2__paragraph
+     p Большинство клиентов #[br] спрашивают одно и тоже, #[br] а потом перестают отвечать
+   .hero__content__2__paragraph
+     p Неактивная ссылка #[br] под постом в Instagram
+   .hero__content__2__title.bot РЕШЕНИЕ
+   .hero__content__2__paragraph
+     p Directbot автоматически #[br] отвечает всем клиентам #[br] в Instagram-директ
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends МОЖНО ПОДРОБНЕЕ?
 </template>
 

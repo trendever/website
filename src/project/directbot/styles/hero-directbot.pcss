@@ -170,7 +170,7 @@
       z-index: 1;
       display: inline-block;
 
-      background: url(../../../base/img/Trendever_logo-white.svg) no-repeat;
+      //background: url(/base/img/Trendever_logo-white.svg) no-repeat;
       background-size: 240px;
 
       width: 250px;
@@ -196,7 +196,7 @@
     &__logo__mobile{
       display: none;
       @media(--mobile) {
-        background: url(../../../base/img/Trendever_logo-white.svg) no-repeat;
+        //background: url(../../../base/img/Trendever_logo-white.svg) no-repeat;
         display: inline-block !important;
         width: 528px;
         height: 112px;
@@ -644,12 +644,27 @@
       line-height: 50px;
       font-family: $font__family__light;
     }
-    p{
-      font-size: 46px;
+
+    &__title{
+      font-size: 54px;
+      font-family: $font__family__semibold;
       color: #fff;
-      padding-top: 50px;
-      line-height: 55px;
-      font-family: $font__family__regular;
+      margin-top: 165px;
+    }
+    .bot{
+      margin-top: 75px;
+    }
+
+    &__paragraph p{
+      font-size: 40px;
+      font-family: $font__family__semibold;
+      color: #fff;
+      padding-top: 45px;
+      line-height: 48px;
+
+      &:first-child{
+        padding-bottom: 5px;
+      }
     }
   }
 
@@ -718,9 +733,9 @@
   .cnt2_app{
     height: 53% !important;
   }
-  .cnt2_app p{
+  /*.cnt2_app p{
     padding-top: 190px !important;
-  }
+  }*/
   .logo_app{
     margin-top: 60% !important;
   }
