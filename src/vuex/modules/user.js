@@ -29,7 +29,7 @@ const state = {
   },
   payment: {},
 
-  showRootLoader: false
+  showRootLoader: false,
 
   useDays: 7
 

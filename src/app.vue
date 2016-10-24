@@ -130,7 +130,7 @@ input(type="hidden", value="", id="get-user-login")
       appLoader,
       ListenerComponent,
       PopupFastSignup,
-      InappNotification
+      InappNotification,
       MonetizationLogic,
 
     },
