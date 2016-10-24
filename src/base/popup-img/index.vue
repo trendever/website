@@ -99,9 +99,10 @@
 
           setTimeout(()=>{
 
+            this.resetTransform()
             this.showToSave = false;
 
-          },2000)
+          },1500)
         })
     },
     beforeDestroy(){
