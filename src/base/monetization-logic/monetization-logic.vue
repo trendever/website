@@ -3,6 +3,7 @@ div
 </template>
 
 <script>
+import settings from 'settings';
 import channel from 'services/channel/channel';
 
 import { getAuthUser, isAuth } from 'vuex/getters/user';
@@ -29,101 +30,107 @@ export default {
 
   ready() {
 
-    this.$nextTick(() => {
+    if(!settings.activateMonetization){
 
-      if(this.isAuth) {
+      return;
 
-        let shop_id = this.getAuthUser.supplier_of[0];
+    } else {
 
-        if(shop_id) {
+      this.$nextTick(() => {
 
-          channel
+        if(this.isAuth) {
 
-            .req('retrieve','shop',{shop_id: shop_id })
+          let shop_id = this.getAuthUser.supplier_of[0];
 
-            .then(data=>{
+          if(shop_id) {
 
-              return data.response_map.shop.created_at;
+            channel
 
-            })
+              .req('retrieve','shop',{shop_id: shop_id })
 
-            .then(date=>{
+              .then(data=>{
 
-              let timeOut = 3000;
+                return data.response_map.shop.created_at;
 
-              let nowTime = +new Date()/1000;
+              })
 
-              let difference = nowTime - date;
+              .then(date=>{
 
-              if (difference <= this.day){
-                this.setUseDays(7)
-                return { timeOut, difference }
-              }
-              if (difference <= this.day * 2){
-                this.setUseDays(6)
-                return { timeOut, difference }
-              }
+                let timeOut = 3000;
 
-              if (difference <= this.day * 3 ){
-                this.setUseDays(5)
-                return { timeOut, difference }
-              }
+                let nowTime = +new Date()/1000;
 
-              if (difference <= this.day * 4){
-                this.setUseDays(4)
-                return { timeOut, difference }
-              }
+                let difference = nowTime - date;
 
-              if(difference <= this.day * 5) {
-                this.setUseDays(3)
-                return { timeOut, difference }
-              }
+                if (difference <= this.day){
+                  this.setUseDays(7)
+                  return { timeOut, difference }
+                }
+                if (difference <= this.day * 2){
+                  this.setUseDays(6)
+                  return { timeOut, difference }
+                }
 
-              if(difference <= this.day * 6) {
-                this.setUseDays(2)
-                return { timeOut, difference }
-              }
+                if (difference <= this.day * 3 ){
+                  this.setUseDays(5)
+                  return { timeOut, difference }
+                }
 
-              if(difference <= this.day * 7) {
-                this.setUseDays(1)
-                return { timeOut, difference }
-              }
+                if (difference <= this.day * 4){
+                  this.setUseDays(4)
+                  return { timeOut, difference }
+                }
 
-              if(difference > this.day * 7) {
-                this.setUseDays(0)
-                return { timeOut, difference }
+                if(difference <= this.day * 5) {
+                  this.setUseDays(3)
+                  return { timeOut, difference }
+                }
 
-              }
+                if(difference <= this.day * 6) {
+                  this.setUseDays(2)
+                  return { timeOut, difference }
+                }
 
-            }).then(({timeOut, difference})=>{
+                if(difference <= this.day * 7) {
+                  this.setUseDays(1)
+                  return { timeOut, difference }
+                }
 
-              if(difference <= this.day) {
-                setTimeout(()=>{
-                  this.$router.go({name: 'monetization'})
-                }, timeOut)
-                return
-              }
+                if(difference > this.day * 7) {
+                  this.setUseDays(0)
+                  return { timeOut, difference }
 
-              if(difference > this.day * 2 && difference <= this.day * 3) {
-                setTimeout(()=>{
-                  this.$router.go({name: 'monetization'})
-                }, timeOut)
-                return
-              }
+                }
 
-              if(difference > this.day * 7) {
-                setTimeout(()=>{
-                  this.$router.go({name: 'monetization'})
-                }, timeOut)
+              }).then(({timeOut, difference})=>{
 
-                return
-              }
-            })
+                if(difference <= this.day) {
+                  setTimeout(()=>{
+                    this.$router.go({name: 'monetization'})
+                  }, timeOut)
+                  return
+                }
+
+                if(difference > this.day * 2 && difference <= this.day * 3) {
+                  setTimeout(()=>{
+                    this.$router.go({name: 'monetization'})
+                  }, timeOut)
+                  return
+                }
+
+                if(difference > this.day * 7) {
+                  setTimeout(()=>{
+                    this.$router.go({name: 'monetization'})
+                  }, timeOut)
+
+                  return
+                }
+              })
+          }
         }
-      }
 
-    })
-
+      })
+    }
   }
 };
 

@@ -27,6 +27,9 @@ var config = {
   /**
    * Other
    */
+
+  activate_monetization: false,
+
   edit_product_id: null, ////th4754
 
   service_product_id: null,
