@@ -5,17 +5,11 @@
     <div class="img-container" v-el:container v-touch:swipeleft="swipeBack">
       <div class="img-keeper" v-el:img>
 
-        <img v-el:picture class="picture" @load="resizeImg"
-         :src="url" alt=""
-         v-touch:pinchMove="pinchMove($event)"
-         v-touch:pinchEnd="pinchEnd($event)"
-         v-touch:panMove="panMove($event)"
-         v-touch:panEnd="panEnd($event)"
-         v-touch-options:pan="{ threshold: 40 }"
-         v-touch:tap="imgTaps"
-         v-touch-options:tap="{ taps:2, interval:500, threshold:2, time:300, posThreshold: 50 }"
-         v-touch:press="menuStyle = {marginBottom: '0px'}"
-         v-touch-options:press="{time: 300}">
+        <img v-el:picture :class="{'hide-move-left': showToSave }" class="picture" @load="resizeImg"
+         :src="url" alt="" >
+
+        <img class="picture" v-if="showToSave" @load="resizeImg"
+         :src="url" alt="" >
 
       </div>
 
@@ -36,7 +30,7 @@
 <style src="./style.pcss" scoped lang="postcss"></style>
 
 <script type="text/babel">
-
+  import  hammer from 'hammerjs';
   import listener from 'event-listener'
   import { browser, ratioFit } from 'utils'
   import popupContainer from '../popup-container/index.vue'
@@ -53,7 +47,8 @@
         isScaled: false,
         menuStyle: {
           marginBottom: '-450px'
-        }
+        },
+        showToSave: false
       }
 
     },
@@ -64,6 +59,50 @@
 
       this.resize = listener( window, 'optimizedResize', this.resizeImg.bind( this ) );
       this.resizeImg();
+
+
+
+      let mc = new hammer.Manager( this.$els.picture, {touchAction: 'auto', domEvents: true } );
+
+
+      mc.add([
+
+        new hammer.Pan({direction: hammer.DIRECTION_ALL, threshold: 40}),
+
+        new hammer.Pinch({ enable: true}),
+
+        new hammer.Tap({ taps:2, interval:500, threshold:2, time:300, posThreshold: 50}),
+        new hammer.Press({ enable: true})
+
+      ])
+
+      mc.on('pinchmove',e=>{
+          this.pinchMove(e);
+        })
+
+        .on('pinchend',e=>{
+          this.pinchEnd(e);
+        })
+
+        .on('panmove',e=>{
+          this.panMove(e)
+        })
+        .on('panend', e=>{
+          this.panEnd(e)
+        })
+        .on('tap',e=>{
+          this.imgTaps(e)
+        })
+
+        .on('press', e=>{
+          this.showToSave = true;
+
+          setTimeout(()=>{
+
+            this.showToSave = false;
+
+          },2000)
+        })
     },
     beforeDestroy(){
       this.scrollcnt.style.overflow = 'auto';
