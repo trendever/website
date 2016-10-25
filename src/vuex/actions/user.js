@@ -144,7 +144,7 @@ export const openProfile = ( { dispatch, state }, id ) => {
         instagram_name: getUserName( state )
       }
     };
-    
+
 
     if ( typeof id === 'string' ) {
         requestData.instagram_name               = id;
@@ -226,4 +226,9 @@ export const setPayment = ( { dispatch }, value) => {
   dispatch(types.USER_SET_PAYMENT, value);
 
 };
+
+export const setUseDays = ({dispatch}, count) => {
+
+  dispatch(types.USER_SET_USE_DAYS, count)
+}
 

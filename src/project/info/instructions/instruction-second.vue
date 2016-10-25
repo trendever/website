@@ -10,6 +10,8 @@
  .instruction__txt на твою витрину товаров #[br] в приложении и на сайте Trendever
  .instruction__screen
   img(src="./img/screen-2.png")
+  .wrap-instruction-img
+    second-img(:username="getAuthUser.name")
  .instruction__txt Нажми на кнопку ниже и ссылка #[br] на витрину скопируется для вставки #[br] в твой Instagram-профиль
  .instruction__continue-btn
   button(@click="goInstgram").copy-trigger
@@ -18,8 +20,15 @@
 </template>
 
 <script>
+import { getAuthUser } from 'vuex/getters/user';
 import clipboard from 'clipboard';
+import secondImg from './components/second-img';
 export default {
+  vuex:{
+    getters:{
+      getAuthUser
+    }
+  },
   data () {
     return {
       authUser: this.$store.state.user.all[this.$store.state.user.myId],
@@ -58,6 +67,8 @@ export default {
       this.$router.go(window.history.back());
     },
   },
-  components: {}
+  components: {
+    secondImg
+  }
 }
 </script>
