@@ -5,21 +5,18 @@
     <div class="img-container" v-el:container v-touch:swipeleft="swipeBack">
       <div class="img-keeper" v-el:img>
 
-        <img v-el:picture :class="{'hide-move-left': showToSave }" class="picture" @load="resizeImg"
-         :src="url" alt="" >
-
-        <img class="picture" v-if="showToSave" @load="resizeImg"
-         :src="url" alt="" >
+        <img v-el:picture  class="picture" @load="resizeImg"
+         :src="url" alt="">
 
       </div>
 
       <div class="close-block" @click="onClose"></div>
 
-      <div class="ios-bottom-menu" :class="{'opened-ios-menu': showBottomMenu}" :style="menuStyle">
-        <div class="save-option">Save Image</div>
-        <div class="copy-option">Copy</div>
-        <div class="cancel-option"  @click.stop="menuStyle = {marginBottom: '-450px'}">Cancel</div>
-      </div>
+<!--       <div class="ios-bottom-menu" :class="{'opened-ios-menu': showBottomMenu}" :style="menuStyle">
+  <div class="save-option">Save Image</div>
+  <div class="copy-option">Copy</div>
+  <div class="cancel-option"  @click.stop="menuStyle = {marginBottom: '-450px'}">Cancel</div>
+</div> -->
 
     </div>
 
@@ -62,7 +59,11 @@
 
 
 
-      let mc = new hammer.Manager( this.$els.picture, {touchAction: 'auto', domEvents: true } );
+      //http://sky2high.net/en/2015/03/hammer-js-css-touch-action-and-ios-safari-context-menu/
+      let mc = new hammer.Manager( this.$els.picture, {
+        cssProps: Object.assign({},Hammer.defaults.cssProps, { touchCallout: '' }),
+        doNotPreventPress: true
+      } );
 
 
       mc.add([
@@ -72,7 +73,7 @@
         new hammer.Pinch({ enable: true}),
 
         new hammer.Tap({ taps:2, interval:500, threshold:2, time:300, posThreshold: 50}),
-        new hammer.Press({ enable: true})
+        new hammer.Press({ enable: true, touchAction: 'auto', domEvents: true })
 
       ])
 
@@ -94,16 +95,6 @@
           this.imgTaps(e)
         })
 
-        .on('press', e=>{
-          this.showToSave = true;
-
-          setTimeout(()=>{
-
-            this.resetTransform()
-            this.showToSave = false;
-
-          },1500)
-        })
     },
     beforeDestroy(){
       this.scrollcnt.style.overflow = 'auto';
