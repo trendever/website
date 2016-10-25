@@ -1,6 +1,6 @@
 <style src="./styles/photo-item.pcss"></style>
 <template lang="jade">
-.photo__container(class='{{ classForColumn }}', v-if='!error', @click="goToProduct")
+.photo__container(:class='classForColumn', v-if='!error', @click="goToProduct")
   .photo__img-space
     img.photo__img(
         :src='thumb',
@@ -13,7 +13,7 @@
     .photo__row.photo__title {{ title}}
     .photo__row
      .photo__summ(v-if="discountPrice")
-      | {{ discountPrice | curency_spaces }}
+      | {{ discountPrice  }}
       i.ic-currency-rub
      .photo__shopTitle {{suppliername}}
 </template>
@@ -29,22 +29,17 @@
         error: false,
       };
     },
-
-    props: [
-      {
-        name: 'productId',
+    props: {
+      productId: {
         required: true
       },
-      {
-        name: 'product',
+      product: {
         required: true
       },
-      {
-        name: 'animate',
+      animate: {
         default: true
       }
-    ],
-
+    },
     methods: {
       goToProduct(){
 

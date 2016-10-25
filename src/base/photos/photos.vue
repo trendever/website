@@ -1,33 +1,37 @@
 <style src='./styles/photos.pcss'></style>
 <template lang="jade">
-.photos(v-bind:style="styleObject", v-el:container)
-  .photos__list(v-el:photos-list, v-if='items', v-bind:style="listStyle")
+.photos(v-bind:style="styleObject", ref="container")
+  .photos__list(ref="photosList", v-if='items', v-bind:style="listStyle")
 
-    template(v-for='line in items | lines' track-by="uid")
-      .photos__list__cell(v-bind:style="top[$index]")
-        template(v-for='item in line.bundle' track-by="id")
-          photo-item( :product.once='item.data', :product-id.once="item.id", :animate='true' )
+    .photos__list__cell(v-for='(line,index) in lines', :key="line.uid",v-bind:style="top[index]")
+      photo-item(
+        v-for='item in line.bundle',
+        :key="item.id",
+        :product.once='item.data',
+        :product-id.once="item.id",
+        :animate='true')
 
   .photos__more-wrap(v-if='hasMore')
     .photos__more( :class='{"_active": isLoading}' )
         .loader-photos
-          app-loader
+        //- app-loader
         //-.photos__more__base-ic: span еще
         //-.photos__more__anim-ic: i.ic-update
 
   .photos__no-more-wrap(v-if='itemsLength === 0 && !hasMore')
     .main__bottom.__no-goods: a.link.link_primary(
-      @click.prevent.stop='clearSearch()',
+      v-on:click.prevent.stop='clearSearch()',
       href='#',
       v-if="tags || search" ) Сбросить поиск
 
-scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMobile}")
+//-scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMobile}")
 </template>
 
 <script type='text/babel'>
+  import Vue from 'vue';
   import listen from 'event-listener';
 
-  import scrollTop from 'base/scroll-top/scroll-top.vue';
+  //-import scrollTop from 'base/scroll-top/scroll-top.vue';
   import photoItem from './photo-item.vue';
   import AppLoader from 'base/loader/loader';
 
@@ -120,65 +124,68 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
       }
     },
 
-    ready() {
+    mounted() {
+      this.$nextTick(()=>{
+
       //need for no vue warning about container.clientWidth in rowHeight
-      this.$set('containerClientWidth',this.$els.container.clientWidth)
+        this.containerClientWidth = this.$refs.container.clientWidth;
 
-      this.setContainerWidth( this.$els.container.offsetWidth );
+        this.setContainerWidth( this.$refs.container.offsetWidth );
 
-      this.scrollCnt = document.querySelector( '.scroll-cnt' );
+        this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
-      this.$set( 'lastSelectedTagId', this.selectedTagsId.join( ',' ) );
+        this.lastSelectedTagId = this.selectedTagsId.join( ',' );
 
-      this.setListId( this.listId );
+        this.setListId( this.listId );
 
-      this.resize = listen( window, 'optimizedResize', () => {
+        this.resize = listen( window, 'optimizedResize', () => {
 
-        this.setContainerWidth( this.$els.container.offsetWidth );
+          this.setContainerWidth( this.$refs.container.offsetWidth );
 
-        this._setScroll();
+          this._setScroll();
 
-      } );
+        } );
 
-      this._run().then( ( scrollTop ) => {
+        this._run().then( ( scrollTop ) => {
 
-        this.runScroll();
-        this.emitIsRun();
+          this.runScroll();
+          this.emitIsRun();
 
-        this.$set( 'isRunning', true );
+          this.isRunning = true;
 
-        this.scrollCnt.scrollTop = scrollTop;
+          this.scrollCnt.scrollTop = scrollTop;
 
-        if (typeof Android !== 'undefined'){
-          if (Window.androidhack === 0){
-            this.$router.go( { name: 'androidhack' } );
+          if (typeof Android !== 'undefined'){
+            if (Window.androidhack === 0){
+              this.$router.go( { name: 'androidhack' } );
+            }
           }
+
+        } ).then(()=>{
+
+          if(this.$route.name === 'profile'){
+
+            this.scrollCnt.scrollTop = 0;
+
+          }
+
+        })
+        if(this.$route.name === 'profile') {
+
+          this.showBlogerBtn = listen(this.scrollCnt, 'scroll', ()=>{
+
+            if(this.scrollCnt.scrollTop >= window.innerHeight * 2){
+
+              this.$emit('hide-bloger-btn');
+
+            } else {
+              this.$emit('show-bloger-btn');
+            }
+
+          });
+
         }
-
-      } ).then(()=>{
-
-        if(this.$route.name === 'profile'){
-
-          this.scrollCnt.scrollTop = 0;
-
-        }
-
       })
-      if(this.$route.name === 'profile') {
-
-        this.showBlogerBtn = listen(this.scrollCnt, 'scroll', ()=>{
-
-          if(this.scrollCnt.scrollTop >= window.innerHeight * 2){
-
-            this.$dispatch('hide-bloger-btn');
-
-          } else {
-            this.$dispatch('show-bloger-btn');
-          }
-
-        });
-
-      }
 
     },
 
@@ -194,39 +201,13 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
       this.closeProducts();
 
-      this.$set( 'isRunning', false );
+      this.isRunning = false;
 
 
       if(this.showBlogerBtn){
         this.showBlogerBtn.remove();
       }
 
-    },
-
-    filters: {
-      lines( value ) {
-
-        const { idStart, idEnd } = this.getScrollData;
-
-        const _lines = [];
-
-        const items  = value.slice( idStart, idEnd );
-
-        let interateCout = Math.ceil(items.length / this.getColumnCount);
-        let bundleId = 0;
-        for(let i = 0; i < interateCout; i++ ){
-
-          let bundle = items.splice(0,this.getColumnCount);
-          //нужен id для того чтобы изображения постоянно показывались а не появлялись из ничего
-          //каждый раз при скролле
-          bundleId += +bundle[0].id;
-
-          _lines.push({uid: bundleId, bundle: bundle});
-
-        }
-
-        return _lines;
-      }
     },
 
     methods: {
@@ -261,7 +242,7 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
       emitIsRun() {
 
-        this.$dispatch( 'photosIsRun' );
+        this.$emit( 'photosIsRun' );
 
       },
 
@@ -285,11 +266,11 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
             }
 
-            this.$set( 'styleObject.pointerEvents', 'none' );
+            this.styleObject.pointerEvents = 'none';
 
             timerId = setTimeout( () => {
 
-              this.$set( 'styleObject.pointerEvents', 'auto' );
+              this.styleObject.pointerEvents = 'auto';
 
             }, 200 );
 
@@ -304,11 +285,34 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
     },
 
     computed: {
+      lines() {
+
+        const { idStart, idEnd } = this.getScrollData;
+
+        const _lines = [];
+
+        const items  = this.items.slice( idStart, idEnd );
+
+        let interateCout = Math.ceil(items.length / this.getColumnCount);
+        let bundleId = 0;
+        for(let i = 0; i < interateCout; i++ ){
+
+          let bundle = items.splice(0,this.getColumnCount);
+          //нужен id для того чтобы изображения постоянно показывались а не появлялись из ничего
+          //каждый раз при скролле
+          bundleId += +bundle[0].id;
+
+          _lines.push({uid: bundleId, bundle: bundle});
+
+        }
+
+        return _lines;
+      },
       scrollTop: {
         cache: false,
         get(){
 
-          const scrollTop = this.$els.container.getBoundingClientRect().top;
+          const scrollTop = this.$refs.container.getBoundingClientRect().top;
 
           return ( scrollTop > 0 ) ? 0 : Math.abs( scrollTop );
 
@@ -379,10 +383,10 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
       items() {
         const height = ( this.itemsLength / this.getColumnCount + 1) * this.rowHeight;
 
-        this.$set( 'listStyle', {
+        this.listStyle =  {
           height: `${ height }px`,
           maxHeight: `${ height }px`
-        } )
+        }
       },
 
       listId( listId ) {
@@ -405,7 +409,7 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
           if ( this.lastSelectedTagId !== tagsString ) {
 
-            this.$set( 'lastSelectedTagId', tagsString );
+            this.lastSelectedTagId = tagsString;
 
             this._run( true );
 
@@ -430,7 +434,7 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
     components: {
       AppLoader,
       photoItem,
-      scrollTop
+      //scrollTop
     }
 
   }

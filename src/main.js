@@ -95,5 +95,3 @@ const app = new Vue({
 app.$mount('#app')
 
 
-window.Vue = Vue;
-

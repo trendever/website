@@ -41,7 +41,7 @@
               span.change-col__sm
 
     .tags-wrapper( ref="tags" )
-      tags-component(
+      //-tags-component(
         :tags="tags",
         :text-font-size="tagsFontSize",
         :text-line-height="tagsLineHeight",
@@ -54,7 +54,7 @@
         :margin-right="marginRight",
         :base-height="baseHeight",
         :max-height="maxHeight"
-      )
+        )
 </template>
 
 <script type='text/babel'>

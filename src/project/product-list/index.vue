@@ -1,18 +1,25 @@
 <style src="../../base/vars/vars.pcss"></style>
+<style>
+#product-list {
+
+  height: 100%;
+
+}
+
+</style>
 <template lang="jade">
 #product-list
   //-.status_bar(v-if='isAuth || showStatusBar')
-
   scroll-component
     hero-component
     //-caption-component
 
     .section.main
       .section__content
-       search-component
-       //-photos-component(:tags="true", :search="true", list-id="home")
-       //-navbar-component(current='feed')
-       //-helps-component
+        search-component
+        photos-component(:tags="true", :search="true", list-id="home")
+        //-navbar-component(current='feed')
+        //-helps-component
 </template>
 
 <script type='text/babel'>
@@ -23,7 +30,7 @@
   import HeroComponent from './hero.vue'
   //import CaptionComponent from './caption.vue'
   import SearchComponent from './search.vue'
-  //import PhotosComponent from 'base/photos/photos.vue'
+  import PhotosComponent from 'base/photos/photos.vue'
   import { setComeBack } from 'vuex/actions/products.js'
   //import HelpsComponent from './helps.vue'
 
@@ -95,7 +102,7 @@
       SearchComponent,
       HeroComponent,
       //CaptionComponent,
-      //PhotosComponent,
+      PhotosComponent,
       //HelpsComponent
     },
     vuex: {
