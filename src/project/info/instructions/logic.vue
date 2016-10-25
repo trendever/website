@@ -21,7 +21,13 @@ export default {
 
       if(this.isAuth) {
 
-        let shop_id = this.getAuthUser.supplier_of[0];
+        let shop_id;
+
+        if(this.getAuthUser.supplier_of){
+
+          shop_id = this.getAuthUser.supplier_of[0];
+
+        }
 
         if(shop_id) {
 
