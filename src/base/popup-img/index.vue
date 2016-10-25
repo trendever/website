@@ -61,7 +61,7 @@
 
       //http://sky2high.net/en/2015/03/hammer-js-css-touch-action-and-ios-safari-context-menu/
       let mc = new hammer.Manager( this.$els.picture, {
-        cssProps: Object.assign({},Hammer.defaults.cssProps, { touchCallout: '' }),
+        cssProps: Object.assign({},hammer.defaults.cssProps, { touchCallout: '' }),
         doNotPreventPress: true
       } );
 
