@@ -1,70 +1,7 @@
 <style src='./styles/hero-directbot.pcss'></style>
 <template lang="jade">
-.header__menu__overlay(v-show='menuOpened && isMobile', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
-
-.section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
-
-  .input__container(v-if="!isMobile")
-    i.ic-search(@click="openInput")
-    input(
-      v-el:input,
-      @keyup='search()',
-      :value='searchValue',
-      type='text',
-      placeholder='Ищи текстом или жми теги...',
-      v-if="inputOpened || searchValue")
-
-  .profile-header__menu
-    .profile-header__menu-btn
-      .profile-header__menu-btn-label
-      .profile-header__menu-btn-icon(v-if="!getComeBack", @click.stop='menuOpened=!menuOpened')
-        i(class='ic-info')
-      .profile-header__menu-btn-icon(v-if="getComeBack", @click='goBack')
-        i(class='ic-arrow-left')
-  .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth, '__desktop': !isMobile }")
-    a(class='profile-header__menu-link profile-header__close-menu first',
-      @click='menuOpened=false') Отмена
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-user"}') Покупателям
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-newshop"}') Магазинам
-    a(class='profile-header__menu-link',
-      @click="onBuyPromoProduct()") Блогерам
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-mission"}') Наша миссия
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-agreement"}') Условия
-    a(class='profile-header__menu-link',
-      href="https://trendever.payture.com/",
-      target="_blank") Денежный перевод
-    a(class='profile-header__menu-link', @click="logout") Выход
-  a(v-link='{ name: "info-user" }')
-    i.smallHero__logo
-      img(src='../../base/img/logo-main.svg')
-
-  right-nav-component(current="feed")
-
 .section.hero(v-if='!isAuth',
             :class="{'cnt_app_hero': isStandalone}")
-  .profile-header__menu(v-if='isAuth')
-    .profile-header__menu-btn
-    .profile-header__menu-btn-label
-      .profile-header__menu-btn-icon(@click='menuOpened=true')
-        i(class='ic-info')
-
-  .profile-header__menu-links(v-show='menuOpened', v-if='!isAuth')
-    a(class='profile-header__menu-link profile-header__close-menu',
-      @click='menuOpened=false') Отмена
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-user"}') Покупателям
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-newshop"}') Магазинам
-    a(class='profile-header__menu-link',
-      @click="onBuyPromoProduct()") Блогерам
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-mission"}') Наша миссия
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-agreement"}') Условия
 
   .section__content.hero__content(:class="{'cnt_app': isStandalone}", v-el:hero-one)
     .profile-header
@@ -87,6 +24,13 @@
    .hero__content__2__paragraph
      p Directbot автоматически #[br] отвечает всем клиентам #[br] в Instagram-директ
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends МОЖНО ПОДРОБНЕЕ?
+  .hero__content__landing
+   .section.header.section__content
+      .header__content.u-fixed.directbot-header(v-show='is_visible')
+        .wrapper
+          .header__center
+            .header__text Подробнее о Directbot
+    .hero__content__landing__title Почему Directbot?
 </template>
 
 <script type='text/babel'>
@@ -100,13 +44,8 @@ import { isAuth } from 'vuex/getters/user.js'
 import { logOut } from 'vuex/actions/user.js'
 import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
-import RightNavComponent from 'base/right-nav/index';
-import Slider from './slider.vue';
 import * as commonService from 'services/common';
-
-//search logic
-import { searchValue } from 'vuex/getters/search';
-import { setSearchValue } from 'vuex/actions/search';
+import HeaderComponent from 'base/header/header.vue';
 
 import { targetClass } from 'utils';
 
@@ -124,8 +63,7 @@ export default {
   },
 
   components :{
-    Slider,
-    RightNavComponent
+    HeaderComponent
   },
 
   ready() {
@@ -200,12 +138,10 @@ export default {
 
   vuex: {
     getters: {
-      searchValue,
       isAuth,
       getComeBack
     },
     actions: {
-      setSearchValue,
       logOut,
       createLead,
       setCallbackOnSuccessAuth,
@@ -223,9 +159,6 @@ export default {
       this.$nextTick(()=>{
         this.$els.input.focus()
       });
-    },
-    search() {
-      this.setSearchValue(this.$els.input.value);
     },
     logout(){
 
@@ -270,50 +203,10 @@ export default {
     },
     scrollAnchor() {
       JQuery('.scroll-cnt').animate({scrollTop: window.innerHeight},450);
-/*      var block = document.querySelector( "#how-it-work" );
-      if ( block !== null ) {
-        var scrollBlock = this.scrollCnt;
-
-        if ( !timer ) {
-          var timer = setInterval( function() {
-            if ( block.getBoundingClientRect().top < 80 ) {
-              clearInterval( timer );
-            }
-
-            for (let i = 1; i < 80; i++){
-              if(scrollBlock.scrollTop >= window.innerHeight) {
-                break;
-              }
-              scrollBlock.scrollTop += 1;
-            }
-
-          }, 10 );
-        }
-      }*/
     },
 
     scrollAnchorTags() {
       JQuery('.scroll-cnt').animate({scrollTop: 2 * window.innerHeight},450);
-/*      var block = document.querySelector( "#tags" );
-      if ( block !== null ) {
-        var scrollBlock = this.scrollCnt;
-
-        if ( !timer ) {
-          var timer = setInterval( function() {
-            if ( block.getBoundingClientRect().top < 80 ) {
-              clearInterval( timer );
-            }
-
-            for (let i = 1; i < 80; i++){
-              if(scrollBlock.scrollTop >=  2 * window.innerHeight) {
-                break;
-              }
-              scrollBlock.scrollTop += 1;
-            }
-
-          }, 1 );
-        }
-      }*/
     }
   },
 };

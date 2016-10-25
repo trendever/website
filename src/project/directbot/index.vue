@@ -5,11 +5,6 @@
 scroll-component
   hero-component
   caption-component
-
-  .section.main
-    .section__content
-     photos-component(:tags="true", :search="true", list-id="home")
-     navbar-component(current='feed')
 </template>
 
 <script type='text/babel'>
