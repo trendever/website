@@ -6,30 +6,30 @@
 
     .search-input(v-if="isAuth && isMobile")
       .search-input__container(:class='{"__focused": inputFocused, "__active": searchValue.length || selectedCount > 0}')
-        .search-input__search-btn(@click='search()')
+        .search-input__search-btn(v-on:click='search()')
           i.ic-search.__mirror
 
         input.search-input__input(
-          v-el:input,
-          @keyup='search()',
+          ref="input",
+          v-on:keyup='search()',
           :value='searchValue',
-          @focus='onFocusInput',
-          @blur='onBlurInput',
+          v-on:focus='onFocusInput',
+          v-on:blur='onBlurInput',
           type='text',
           placeholder='Ищи текстом или жми теги...'
         )
 
         .search-input__clear-btn
           span.badge(v-if='selectedCount > 0') {{ selectedCount }}
-          span.close(v-show='searchValue.length || selectedCount > 0', @click='clear'): i.ic-close
+          span.close(v-show='searchValue.length || selectedCount > 0', v-on:click='clear'): i.ic-close
           span.change-col
-            span.change-col__two-col( :class='{"active": getColumnCount === 3}', @click='setColumnNumber(2)')
+            span.change-col__two-col( :class='{"active": getColumnCount === 3}', v-on:click='setColumnNumber(2)')
               span.change-col__big
               span.change-col__big
               span.change-col__big
               span.change-col__big
 
-            span.change-col__three-col( :class='{"active": getColumnCount === 2}', @click='setColumnNumber(3)')
+            span.change-col__three-col( :class='{"active": getColumnCount === 2}', v-on:click='setColumnNumber(3)')
               span.change-col__sm
               span.change-col__sm
               span.change-col__sm
@@ -40,7 +40,7 @@
               span.change-col__sm
               span.change-col__sm
 
-    .tags-wrapper( v-el:tags )
+    .tags-wrapper( ref="tags" )
       tags-component(
         :tags="tags",
         :text-font-size="tagsFontSize",
@@ -54,11 +54,11 @@
         :margin-right="marginRight",
         :base-height="baseHeight",
         :max-height="maxHeight"
-
       )
 </template>
 
 <script type='text/babel'>
+  import Vue from 'vue';
   import listen from 'event-listener';
   import tagsComponent from 'base/tags/index.vue';
 
@@ -102,11 +102,11 @@
 
             if ( this.scrollCnt.scrollTop > searchHeight ) {
 
-              this.$set( 'searchGlued', true );
+              Vue.set( 'searchGlued', true );
 
             } else {
 
-              this.$set( 'searchGlued', false );
+              Vue.set( 'searchGlued', false );
 
             }
 
@@ -206,14 +206,14 @@
       clear(){
         this.clearSearch();
         this.scrollCnt.scrollTop = 0;
-        this.$set('isOpenTags', false);
+        Vue.set('isOpenTags', false);
       },
 
       search() {
-        this.setSearchValue( this.$els.input.value );
+        this.setSearchValue( this.$refs.input.value );
       },
       onFocusInput() {
-        this.$set('isOpenTags', true)
+        Vue.set('isOpenTags', true)
         this.inputFocused = true;
       },
       onBlurInput() {

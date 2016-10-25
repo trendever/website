@@ -8,23 +8,28 @@
          :class="{'product_tags' : isProduct}"
          v-el:tags
          v-bind:style="tagsStyle">
-      <div class="tag"
-           v-bind:style="tagStyle"
-           v-for="tag of tags | filterBy searchString in 'name'"
-           :class="{'tag-active': tag.active}"
-           @click.stop="addTag(tag), open()">
+         <div class="tag"
+          v-bind:style="tagStyle"
+          v-for="tag of tags"
+          :class="{'tag-active': tag.active}"
+          v-on:click.stop="addTag(tag), open()">
+<!--       <div class="tag"
+     v-bind:style="tagStyle"
+    v-for="tag of tags | filterBy searchString in 'name'"
+     :class="{'tag-active': tag.active}"
+     v-on:click.stop="addTag(tag), open()"> -->
         <span
           class="text"
           v-bind:style="textStyle">{{tag.name}}
         <i
           class="ic-close close"
           v-if="tag.active"
-          @click.stop="delTag(tag)"
+          v-on:click.stop="delTag(tag)"
           v-bind:style="iconStyle"></i>
         </span>
       </div>
     </div>
-    <!-- <div class="button" @click="open" v-if="hiddenContent && showMoreButton"></div> -->
+    <!-- <div class="button" v-on:click="open" v-if="hiddenContent && showMoreButton"></div> -->
     <div class="pending" v-if="isPending"></div>
   </div>
 </template>

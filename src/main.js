@@ -1,13 +1,13 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
-import VueTouch from 'vue-touch';
-import VueValidator from 'vue-validator';
+//import VueRouter from 'vue-router';
+//import VueTouch from 'vue-touch';
+//import VueValidator from 'vue-validator';
 import FastClick from 'fastclick';
 import config from '../config';
 import { throttleEvent, isDebug } from 'utils';
-import { configRouter } from './route-config';
-import InitFilters from './filters';
-import InitValidators from './validators';
+//import { configRouter } from './route-config';
+//import InitFilters from './filters';
+//import InitValidators from './validators';
 import store from 'vuex/store';
 
 require('es6-promise').polyfill();
@@ -39,33 +39,29 @@ if (config.raven.enabled) {
 window.mixpanel.init(config.mixpanel.token);
 window.socket_url = config.socket_server.url;
 
-Vue.config.debug = true;
+//Vue.config.debug = true;
 
-Vue.use(VueValidator);
+//Vue.use(VueValidator);
 
-InitValidators();
-InitFilters();
+//InitValidators();
+//InitFilters();
 
 // add touch
-Vue.use(VueTouch)
+//Vue.use(VueTouch)
 
 // install router
-Vue.use(VueRouter);
+//Vue.use(VueRouter);
 
 // create router
-const router = new VueRouter({
-  history: true,
-  saveScrollPosition: true,
-  transitionOnLoad: false
-});
+
 window.history.scrollRestoration = 'manual';
 
 // configure router
-configRouter(router);
+//configRouter(router);
 
 // bootstrap the app
-const App = Vue.extend(require('./app.vue'));
-router.start(App, 'app');
+//const App = Vue.extend(require('./app.vue'));
+//router.start(App, 'app');
 
 // Init FastClick
 FastClick.attach(document.body, {});
@@ -75,3 +71,29 @@ FastClick.attach(document.body, {});
 throttleEvent('resize', 'optimizedResize');
 
 Window.androidhack = 0;
+
+
+import {sync} from 'vuex-router-sync'
+import App from './app'
+import router from './route-config'
+//import store from './store'
+
+//sync(store, router)
+
+const app = new Vue({
+  router,
+  store,
+  ...App
+})
+
+//export {app, router, store}
+
+
+
+//import { app } from './app'
+
+app.$mount('#app')
+
+
+window.Vue = Vue;
+

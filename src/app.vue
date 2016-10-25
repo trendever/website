@@ -12,23 +12,27 @@
 
 </style>
 <template lang="jade">
-.root-loader(v-if="$store.state.user.showRootLoader"): app-loader
-.fake-status-bar(v-if="isStandalone", @click="scrollTop")
-.app(:class="{'standalone': isStandalone, 'android': isAndroid}")
-  inapp-notification(v-if="isStandalone")
-  popup-fast-signup(v-if="authIsDone && showAuthBtn")
-  router-view(v-if="authIsDone")
-  listener-component(v-if="authIsDone")
-  monetization-logic
-  instructions-logic
-//-get user for ios push actions logic
-input(type="hidden", value="", id="get-user-login")
+#app
+
+  //-.root-loader(v-if="$store.state.user.showRootLoader"): app-loader
+  //-.fake-status-bar(v-if="isStandalone", @click="scrollTop")
+  //-.app(:class="{'standalone': isStandalone, 'android': isAndroid}")
+    //-inapp-notification(v-if="isStandalone")
+    //-popup-fast-signup(v-if="authIsDone && showAuthBtn")
+  //-router-view(v-if="authIsDone")
+  router-view
+    //-listener-component(v-if="authIsDone")
+    //-monetization-logic
+    //-instructions-logic
+  //-get user for ios push actions logic
+  //-input(type="hidden", value="", id="get-user-login")
 </template>
 
 <script type='text/babel'>
+  import Vue from 'vue';
   import 'base/fonts/trendever-icons/trendever-icons.font'
 
-  import appLoader from 'base/loader/loader';
+  //-import appLoader from 'base/loader/loader';
 
   import listen from 'event-listener';
 
@@ -39,11 +43,11 @@ input(type="hidden", value="", id="get-user-login")
   import store from 'vuex/store'
   import { authUser } from 'vuex/actions/user.js'
 
-  import MonetizationLogic from 'base/monetization-logic/monetization-logic';
+/*  import MonetizationLogic from 'base/monetization-logic/monetization-logic';
   import InstructionsLogic from 'project/info/instructions/logic';
   import PopupFastSignup from 'base/auth-popup/fast-signup.vue'
   import ListenerComponent from 'project/listener/index.vue'
-  import InappNotification from 'base/inapp-notification/index.vue';
+  import InappNotification from 'base/inapp-notification/index.vue';*/
 
   import {get as getUser} from 'services/user';
   import {setToken} from 'services/user';
@@ -63,7 +67,7 @@ input(type="hidden", value="", id="get-user-login")
       }
     },
     //get user for ios push actions logic
-    created(){
+    mounted(){
       let self = this;
       window.setUserToken = function(token,type){
         setToken(token,type).then(data => console.log(data));
@@ -82,7 +86,7 @@ input(type="hidden", value="", id="get-user-login")
       },
 
     },
-    ready() {
+    mounted() {
 
       this.$on('showAuthBtn',()=>{
         this.showAuthBtn = true;
@@ -102,7 +106,7 @@ input(type="hidden", value="", id="get-user-login")
       this
         .authUser( null, token )
         .then( () => {
-          this.$set( 'authIsDone', true )
+          this.authIsDone = true;
         } );
       mixpanel.track( 'App Open' )
 
@@ -129,12 +133,12 @@ input(type="hidden", value="", id="get-user-login")
     },
     components: {
 
-      appLoader,
+     /* appLoader,
       ListenerComponent,
       PopupFastSignup,
       InappNotification,
       MonetizationLogic,
-      InstructionsLogic
+      InstructionsLogic*/
 
     },
     store

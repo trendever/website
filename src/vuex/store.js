@@ -26,6 +26,6 @@ export default new Vuex.Store({
     products,
     search,
   },
-  strict: config.debug,
-  middlewares: config.debug ? [createLogger()] : []
+  //strict: config.debug,
+  //middlewares: config.debug ? [createLogger()] : []
 });

@@ -1,15 +1,15 @@
 <style src="./style.pcss"></style>
-<template lang='jade'>
+<template lang="jade">
 .scroll-cnt(v-on:touchstart="onStart",
             v-on:touchmove="onMove",
             v-on:touchend="onEnd",
-            v-el:scroll-el)
+            ref="scrollEl")
 
   //- h1(v-if="showUpdate",
     style="position: fixed; top: 50px; left: 0; z-index: 100; background: blue; height: 50px; width: 300px")
               | Pull down to reload
 
-  .splash-spinner(v-if="updating")
+  //-.splash-spinner(v-if="updating")
     splash-spinner-component
 
   slot
@@ -19,7 +19,7 @@
   import listen from 'event-listener'
 
   import { browser } from 'utils'
-  import SplashSpinnerComponent from 'base/splash-spinner/splash-spinner.vue'
+  //-import SplashSpinnerComponent from 'base/splash-spinner/splash-spinner.vue'
 
   export default {
     data(){
@@ -33,7 +33,7 @@
     },
 
     components: {
-      SplashSpinnerComponent
+      //-SplashSpinnerComponent
     },
 
     beforeDestroy() {
@@ -42,26 +42,30 @@
       }
     },
 
-    ready(){
-      this.updateOnPanDown = browser.standalone
+    mounted(){
+      this.$nextTick(()=>{
 
-      if ( browser.ios ) {
-        // Disable rubber scroll in ios devices
-        this.rubberEvent = listen(this.$els.scrollEl , "touchstart", () => {
+        this.updateOnPanDown = browser.standalone
 
-            var top = this.$els.scrollEl.scrollTop,
-                totalScroll = this.$els.scrollEl.scrollHeight,
-                currentScroll = top + this.$els.scrollEl.offsetHeight
+        if ( browser.ios ) {
+          // Disable rubber scroll in ios devices
+          this.rubberEvent = listen(this.$refs.scrollEl , "touchstart", () => {
 
-            if ( top === 0 ) {
-                this.$els.scrollEl.scrollTop = 1
-            } else if ( currentScroll === totalScroll ) {
-                this.$els.scrollEl.scrollTop = top - 1
-            }
+              var top = this.$refs.scrollEl.scrollTop,
+                  totalScroll = this.$refs.scrollEl.scrollHeight,
+                  currentScroll = top + this.$refs.scrollEl.offsetHeight
 
-        } );
+              if ( top === 0 ) {
+                  this.$refs.scrollEl.scrollTop = 1
+              } else if ( currentScroll === totalScroll ) {
+                  this.$refs.scrollEl.scrollTop = top - 1
+              }
 
-      }
+          } );
+
+        }
+
+      })
 
     },
 
@@ -89,7 +93,7 @@
           return
         }
 
-        if (this.$els.scrollEl.scrollTop <= 0) {
+        if (this.$refs.scrollEl.scrollTop <= 0) {
 
           if (this.startPanY === null) {
             this.startPanY = e.changedTouches[0].clientY
