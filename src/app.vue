@@ -20,6 +20,7 @@
   router-view(v-if="authIsDone")
   listener-component(v-if="authIsDone")
   monetization-logic
+  instructions-logic
 //-get user for ios push actions logic
 input(type="hidden", value="", id="get-user-login")
 </template>
@@ -39,6 +40,7 @@ input(type="hidden", value="", id="get-user-login")
   import { authUser } from 'vuex/actions/user.js'
 
   import MonetizationLogic from 'base/monetization-logic/monetization-logic';
+  import InstructionsLogic from 'project/info/instructions/logic';
   import PopupFastSignup from 'base/auth-popup/fast-signup.vue'
   import ListenerComponent from 'project/listener/index.vue'
   import InappNotification from 'base/inapp-notification/index.vue';
@@ -132,6 +134,7 @@ input(type="hidden", value="", id="get-user-login")
       PopupFastSignup,
       InappNotification,
       MonetizationLogic,
+      InstructionsLogic
 
     },
     store
