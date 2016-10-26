@@ -21,6 +21,12 @@ export default {
 
       if(this.isAuth) {
 
+        let instructionsShown = window.localStorage.getItem('instructionsShown');
+
+        if(instructionsShown){
+          return;
+        }
+
         let shop_id;
 
         if(this.getAuthUser.supplier_of){
@@ -52,7 +58,7 @@ export default {
               if(difference < 3600 * 24){
 
                 setTimeout(()=>{
-
+                  window.localStorage.setItem('instructionsShown', true);
                   this.$router.go({name: 'info-instructions-1'})
 
                 }, timeOut)
