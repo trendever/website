@@ -76,7 +76,11 @@ export function configRouter(router) {
 
     '/profile': {
       name: 'profile',
-      component: require('project/profile/index.vue')
+      component: require('project/directbot/profile.vue')
+    },
+    '/turn-on-bot': {
+      name: 'turn-on-bot',
+      component: require('project/directbot/turn-on-bot.vue')
     },
     '/payment': {
       name: 'payment',

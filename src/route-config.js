@@ -90,7 +90,7 @@ export function configRouter(router) {
 
     '/profile': {
       name: 'profile',
-      component: require('project/directbot/profile.vue')
+      component: require('project/profile/index.vue')
     },
     '/payment': {
       name: 'payment',
@@ -99,10 +99,6 @@ export function configRouter(router) {
     '/foreign': {
       name: 'foreign-link',
       component: require('project/app-iframe/index.vue')
-    },
-    '/turn-on-bot': {
-      name: 'turn-on-bot',
-      component: require('project/directbot/turn-on-bot.vue')
     },
     '/:id': {
       // !important it must be last of the list.

@@ -16,28 +16,27 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .profile_info_img()
             img(:src="getUserPhoto")
 
-        .profile_filter(v-if="isSelfPage && !noLikes && !noProducts")
-          span(v-bind:class="{'seleted': photoType === 'product'}")
-            input(type="radio" value="product" v-model="photoType" id="filter-products")
-            label(for="filter-products") Мои Товары
-          span(v-bind:class="{'seleted': photoType === 'like'}")
-            input(type="radio" value="like" v-model="photoType" id="filter-likes")
-            label(for="filter-likes") Мои Тренды
+        
        template(v-if="loaded")
-        .profile_inactive(v-if="noLikes && noProducts && $route.name === 'profile'")
+        .profile_inactive
           img(src="./img/empty-directbot-profile.png")
           span.empty Деактивирован
           span #[br]мониторю 3 поста #[br] отправил 5 сообщений
-        .profile_no-goods-guest(v-if="noLikes && noProducts && $route.name === 'user'") Пока здесь пусто ;( #[br] Пользователь еще не добавил #[br] тренды в свою ленту
+        .profile_active(v-if="false")
+          img(src="./img/active-directbot-profile.png")
+          p.bold Активирован... #[br]
+          p мониторю 3 поста #[br] отправил 5 сообщений
         .profile_no-goods-banner(v-if="noLikes && noProducts && isSelfPage")
           span Все готово для подключения #[br] Instagram профиля к #[br]
           span.save Directbot
 
 
-          button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(v-link="{ name: 'turn-on-bot' }") ПОДКЛЮЧИТЬ БОТА
+        button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(v-link="{ name: 'turn-on-bot' }") ПОДКЛЮЧИТЬ БОТА
+        button.bot-active-btn(v-if="false") БОТ АКТИВЕН
+          i.ic-close
 
 
-  navbar-component(:current='listId')
+  navbar-component(:current='listId').directbot-navbar
 
 </template>
 <script type='text/babel'>
