@@ -1,0 +1,11 @@
+<ol>
+  {% for todos %}
+    <li>
+      {% if complete %}
+        <del>{{ text }}</del>
+      {% else %}
+        <em>{{ text }}</em>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ol>

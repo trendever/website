@@ -50,6 +50,10 @@ module.exports = {
         loader: 'vue'
       },
       {
+        test: /\.monk$/, 
+        loader: 'monkberry-loader'
+      },
+      {
         test: /\.jade$/,
         loader: 'jade'
       },

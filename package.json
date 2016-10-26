@@ -82,7 +82,8 @@
     "webpack-hot-middleware": "^2.10.0",
     "webpack-merge": "^0.12.0",
     "webpack-stream": "^3.2.0",
-    "webpack-version-file-plugin": "^0.2.2"
+    "webpack-version-file-plugin": "^0.2.2",
+    "monkberry": "*"
   },
   "keywords": [],
   "license": "",
@@ -95,6 +96,7 @@
     "fastclick": "^1.0.6",
     "jquery": "^3.1.1",
     "jwt-decode": "^2.0.1",
+    "monkberry-loader": "^4.0.8",
     "pluralize-ru": "^1.0.1",
     "raven-js": "^3.0.4",
     "sockjs-client": "^1.1.1",

@@ -4,6 +4,10 @@ import InfoRoutes from 'project/info/routes'
 
 export function configRouter(router) {
   router.map({
+    'monk':{
+      name: 'monk',
+      component: require('base/monk/index.vue')
+    },
     'android':{
       name: 'androidhack',
       component: require('base/androidhack/hack.vue')
