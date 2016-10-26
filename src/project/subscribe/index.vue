@@ -35,7 +35,7 @@ export default{
       if(window.history.length > 2){
           window.history.back();
       } else {
-        this.$router.go({name: 'home'});
+        this.$router.push({name: 'home'});
       }
     },
     subscribe(){
@@ -46,7 +46,7 @@ export default{
           return;
         }
         alert('Спасибо');
-        this.$router.go({name: 'home'});
+        this.$router.push({name: 'home'});
       })
     }
   }

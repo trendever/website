@@ -138,7 +138,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
             this._setTab();
           })
           .catch( () => {
-            this.$router.go( { name: '404' } );
+            this.$router.push( { name: '404' } );
           });
         });
 
@@ -162,7 +162,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
       if ( !this.isAuth && !browser.mobile) {
         this.setCallbackOnSuccessAuth(()=>{
 
-          this.$router.go({name: 'user', params: { id }})
+          this.$router.push({name: 'user', params: { id }})
         })
         this.$router.replace( { name: 'signup' } );
       }
@@ -194,14 +194,14 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .then(
             ( lead ) => {
               if ( lead !== undefined && lead !== null ) {
-                this.$router.go( { name: 'chat', params: { id: lead.id } } )
+                this.$router.push( { name: 'chat', params: { id: lead.id } } )
               }
             }
           )
           .catch(
             ( error ) => {
               if ( error === leads.ERROR_CODES.UNATHORIZED ) {
-                this.$router.go( { name: 'signup' } )
+                this.$router.push( { name: 'signup' } )
               }
             }
           )
@@ -217,14 +217,14 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .then(
             ( lead ) => {
               if ( lead !== undefined && lead !== null ) {
-                this.$router.go( { name: 'chat', params: { id: lead.id } } )
+                this.$router.push( { name: 'chat', params: { id: lead.id } } )
               }
             }
           )
           .catch(
             ( error ) => {
               if ( error === leads.ERROR_CODES.UNATHORIZED ) {
-                this.$router.go( { name: 'signup' } )
+                this.$router.push( { name: 'signup' } )
               }
             }
           )

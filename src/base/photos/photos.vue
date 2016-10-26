@@ -157,7 +157,7 @@
 
           if (typeof Android !== 'undefined'){
             if (Window.androidhack === 0){
-              this.$router.go( { name: 'androidhack' } );
+              this.$router.push( { name: 'androidhack' } );
             }
           }
 

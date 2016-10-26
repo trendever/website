@@ -20,7 +20,7 @@ scroll-component
         removeToken();
         location.replace('/')
       } else {
-        this.$router.go( { name: 'signup' } );
+        this.$router.push( { name: 'signup' } );
       }
     },
     vuex:{

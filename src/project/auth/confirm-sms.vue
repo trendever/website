@@ -1,7 +1,7 @@
 <template lang="jade">
 div
   .signup.confirm(:style='{ height: height }')
-    .signup__close.__hello(@click='closePage'): i.ic-close
+    .signup__close.__hello(v-on:click='closePage'): i.ic-close
     .section
       h1.accept(v-if='!isCompleted') Подтвердите телефон
       h1.accept(v-if='isCompleted') Номер подтвержден
@@ -27,17 +27,17 @@ div
               | нажав на иконку#[br]
               i.ic-options_menu
 
-        template(v-else)
+        div(v-else)
           p(v-if='!isCompleted',
             :class='{ error: errorCode }') {{ text_header }}
           .input-container
             .input.confirm-input
               input(type='tel',
-                @click="$els.confirmField.focus()"
-                @keyup='onInput',
-                @focus='onFocus',
-                @keydown.enter='onButton()',
-                v-el:confirm-field,
+                v-on:click="$refs.confirmField.focus()"
+                v-on:keyup='onInput',
+                v-on:focus='onFocus',
+                v-on:keydown.enter='onButton()',
+                ref="confirmField",
                 v-model='code',
                 placeholder='9999',
                 autocomplete="off",
@@ -46,30 +46,30 @@ div
                 spellcheck="false")
 
       .bottom-container.__fixed-width
-        template(v-if="isMobile")
+        div(v-if="isMobile")
           .btn-container-mobile
             div.link-div
               a.link-bottom(href='#',
                 v-if='!isCompleted',
                 v-show='needNewSMS'
-                @click.prevent='sendSMS') Отправить новый код
+                v-on:click.prevent='sendSMS') Отправить новый код
             button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
               :disabled='isDisabled',
-              v-el:confirm-btn,
-              @keydown.enter='onButton()',
-              @click='onButton') {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
-        template(v-else)
+              ref="confirmBtn",
+              v-on:keydown.enter='onButton()',
+              v-on:click='onButton') {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
+        div(v-else)
           .btn-container
             button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
               :disabled='isDisabled',
-              v-el:confirm-btn,
-              @keydown.enter='onButton()',
-              @click='onButton') {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
+              ref="confirmBtn",
+              v-on:keydown.enter='onButton()',
+              v-on:click='onButton') {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
           .link-container
             a.link-bottom(href='#',
               v-if='!isCompleted',
               v-show='needNewSMS'
-              @click.prevent='sendSMS') Отправить новый код
+              v-on:click.prevent='sendSMS') Отправить новый код
 
 
 
@@ -108,9 +108,13 @@ div
         return true;
       }
     },
-    ready() {
-      this.$set('height', `${ document.body.scrollHeight }px`);
-      this.$els.confirmField.focus();
+    mounted() {
+      this.$nextTick(()=>{
+
+        this.height = `${ document.body.scrollHeight }px`;
+        this.$refs.confirmField.focus();
+
+      })
     },
     vuex: {
       actions: {
@@ -141,7 +145,7 @@ div
       onButton() {
         if(this.anotherName){
           if (!this.callbackOnSuccessAuth) {
-                this.$router.go({name: 'chat_list'}), 1000;
+                this.$router.push({name: 'chat_list'}), 1000;
                 return;
               } else {
                 this.executeCallbackOnSuccessAuth()
@@ -168,7 +172,7 @@ div
       },
       onComplete(user, token) {
         this.isCompleted = true;
-        this.$els.confirmBtn.focus();
+        this.$refs.confirmBtn.focus();
         this.anotherName = user.name !== this.authData.username ? user.name : '';
         this
           .authUser(user, token)
@@ -178,7 +182,7 @@ div
                 Android.sendToken();
               }
               if (!this.callbackOnSuccessAuth) {
-                setTimeout( () => this.$router.go({name: 'chat_list'}), 1000);
+                setTimeout( () => this.$router.push({name: 'chat_list'}), 1000);
                 return true;
               } else {
                 this.executeCallbackOnSuccessAuth()
@@ -189,31 +193,31 @@ div
       },
       onErrorCode() {
         console.log('on error');
-        this.$set('errorCode', true);
-        this.$set('text_header', TEXT_HEADER.ERROR);
-        this.$set('code', '');
+        this.errorCode = true;
+        this.text_header = TEXT_HEADER.ERROR;
+        this.code = '';
       },
       onFocus() {
-        if (this.$get('errorCode')) {
-          this.$set('errorCode', false);
-          this.$set('text_header', TEXT_HEADER.DEFAULT);
+        if (this.errorCode) {
+          this.errorCode = false;
+          this.text_header = TEXT_HEADER.DEFAULT;
         }
       },
       sendSMS() {
         this.onFocus();
-        this.$set('code', '');
-        this.$set('needNewSMS', false);
-        setTimeout( () => this.$set('needNewSMS', true), 7000);
+        this.code = '';
+        this.needNewSMS = false;
+        setTimeout( () => this.needNewSMS = true, 7000);
         auth.sendPassword(this.authData.phone).then( data => {
-          this.$router.go({ name: 'comfirm-sms' })
+          this.$router.push({ name: 'comfirm-sms' })
         })
       },
       closePage() {
         mixpanel.track('Close confirm-sms Page');
         if (window.history.length > 2) {
-          this.$router.go(window.history.back(2));
+          this.$router.push(window.history.back(2));
         } else {
-          this.$router.go({name: 'home'});
+          this.$router.push({name: 'home'});
         }
       },
     },

@@ -145,7 +145,7 @@
         messages.onMsg( this.onMessage );
 
       } else {
-        this.$router.go( { name: 'signup' } );
+        this.$router.push( { name: 'signup' } );
       }
     },
 
@@ -210,12 +210,12 @@
             },
             ( error ) => {
               console.error( `[ CONVERSATION_SET ERROR ]: `, error );
-              this.$router.go( { name: 'home' } );
+              this.$router.push( { name: 'home' } );
             }
           ).then(()=>{
             //redirect if no chat room
             if(this.$store.state.conversation.id === null){
-              this.$router.go( { name: '404'});
+              this.$router.push( { name: '404'});
             }
           }).then(()=>{
 

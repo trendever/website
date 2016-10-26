@@ -1,12 +1,12 @@
 <template lang="jade">
 .right-nav(v-if="isAuth && !isMobile")
-  .right-nav_i(:class='{"__active": current=="profile"}', v-link='{name: "profile"}')
+  router-link(:class='{"__active": current=="profile"}', :to='{name: "profile"}').right-nav_i
     i.ic-user_menu
-  .right-nav_i(:class='{"__active": current=="chat"}', v-link='{name: "chat_list"}')
+  router-link(:class='{"__active": current=="chat"}', :to='{name: "chat_list"}').right-nav_i
     i.ic-chats_menu
     .notify-cout(v-if="getGlobalNotifyCount")
       span {{ getGlobalNotifyCount }}
-  .right-nav_i(:class='{"__active": current=="feed"}', v-link='{name: "home"}')
+  router-link(:class='{"__active": current=="feed"}', :to='{name: "home"}').right-nav_i
     i.ic-gallery_menu
 </template>
 

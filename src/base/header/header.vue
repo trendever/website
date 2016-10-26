@@ -21,14 +21,14 @@
 
         .header__center
           .header__left-logo
-           a(v-link="{name: 'home'}")
+           router-link(:to="{name: 'home'}")
             img(src="../img/logo-main.svg")
           .header__text(v-if="centerTextLink === null") {{ title }}
           .header__text.active(v-if="centerTextLink !== null", v-link="centerTextLink") {{ title }}
             img.center-avatar(:src="avatarUrl", v-if="page == 'product' && !isMobile")
           slot(name='content')
 
-        .header-right(v-if="avatarUrl !== null && centerTextLink !== null && isMobile", v-link="centerTextLink")
+        router-link.header-right(v-if="avatarUrl !== null && centerTextLink !== null && isMobile", :to="centerTextLink")
           img(:src="avatarUrl")
 
       productmenu-component(v-if="page == 'product'")
@@ -163,7 +163,7 @@
 
         } else {
 
-          this.$router.go( this.backLink );
+          this.$router.push( this.backLink );
 
         }
 

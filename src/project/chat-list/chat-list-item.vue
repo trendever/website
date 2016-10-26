@@ -1,7 +1,7 @@
 <template lang="jade">
-.chat-list-i(@click="goToChat",
-            track-by='id',
-            v-el:chat-item)
+.chat-list-i(v-on:click="goToChat",
+            :key='id',
+            ref="chat-item")
   .chat-list-i-photo(v-if="!showDelete")
     img(:src='getPhoto()')
 
@@ -15,11 +15,11 @@
 
     .body-last-msg
       p
-        b(v-if="recentMessage.user_name.length > 0") {{recentMessage.user_name}}:
-        | {{{ recentMessage.message }}}
+        b(v-if="recentMessage.user_name.length > 0" v-html) {{recentMessage.user_name}}:
+        | {{ recentMessage.message }}
       .body-notify(v-if='unreadCount')
         span {{ unreadCount }}
-  .chat-list-i-delete(:class="{'open-delete': showDelete}", @click.stop="deleteChat") Удалить
+  .chat-list-i-delete(:class="{'open-delete': showDelete}", v-on:click.stop="deleteChat") Удалить
 
 </template>
 
@@ -51,7 +51,13 @@
         getTab
       }
     },
-    ready(){
+    mounted(){
+
+      this.$on('closeDelete',()=>{
+        this.showDelete = false;
+      })
+
+      this.$nextTick(()=>{
 
         new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
 
@@ -67,13 +73,9 @@
         });
 
 
-    },
-    events: {
-      'closeDelete'(){
-        if(this.showDelete){
-          this.$set('showDelete', false)
-        }
-      }
+      })
+
+
     },
     methods: {
       goToChat(){
@@ -97,12 +99,12 @@
 
         if(this.showDelete) {
 
-          this.$set('showDelete', false);
+          this.showDelete = false;
           return;
 
         }
 
-        this.$router.go({name: "chat", params: {id: this.lead.id}})
+        this.$router.push({name: "chat", params: {id: this.lead.id}})
 
       },
       deleteChat(){

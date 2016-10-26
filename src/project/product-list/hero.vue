@@ -43,7 +43,7 @@
       i.smallHero__logo
         img(src='../../base/img/logo-main.svg')
 
-    //-right-nav-component(current="feed")
+    right-nav-component(current="feed")
 
   .section.hero(v-if='!isAuth',
               :class="{'cnt_app_hero': isStandalone}")
@@ -70,8 +70,10 @@
     .section__content.hero__content(:class="{'cnt_app': isStandalone}", ref="heroOne")
       .profile-header
         .profile-header__center
-        button(to='{ name: "info-newshop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
-        button(to='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
+        router-link(:to='{ name: "info-newshop" }')
+          button.profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
+        router-link(:to='{ name: "signup" }')
+          button.profile-header__auth-btn.btn-smaller ВХОД
         .profile-header__mobile-slider
          .profile-header__mobile-slider-slide
           //-slider
@@ -118,7 +120,7 @@ import { isAuth } from 'vuex/getters/user.js'
 import { logOut } from 'vuex/actions/user.js'
 import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
-//-import RightNavComponent from 'base/right-nav/index';
+import RightNavComponent from 'base/right-nav/index';
 //import Slider from './slider.vue';
 import * as commonService from 'services/common';
 
@@ -143,7 +145,7 @@ export default {
 
   components :{
     //Slider,
-    //-RightNavComponent
+    RightNavComponent
   },
 
   mounted() {
@@ -247,7 +249,7 @@ export default {
     },
     logout(){
 
-      Vue.set('menuOpened', false);
+      this.menuOpened = false;
       this.logOut();
       window.location = '/';
 
@@ -258,7 +260,7 @@ export default {
     onBuyPromoProduct() {
       if ( !this.isAuth ) {
         this.setCallbackOnSuccessAuth( this.onBuyPromoProduct.bind( this ) );
-        this.$router.go( { name: 'signup' } );
+        this.$router.push( { name: 'signup' } );
 
 
       } else {
@@ -267,7 +269,7 @@ export default {
             .then(
               ( lead ) => {
                 if ( lead !== undefined && lead !== null ) {
-                  this.$router.go( { name: 'chat', params: { id: lead.id } } );
+                  this.$router.push( { name: 'chat', params: { id: lead.id } } );
                 }
               }
             );

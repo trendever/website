@@ -105,7 +105,7 @@ scroll-component
 
           } else {
 
-            this.$router.go( { name: "home" } );
+            this.$router.push( { name: "home" } );
 
           }
 

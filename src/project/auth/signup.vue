@@ -3,15 +3,15 @@
 scroll-component
   div
     .signup(:style='{ height: height }')
-      .signup__close.__hello(@click='closePage'): i.ic-close
+      .signup__close.__hello(v-on:click='closePage'): i.ic-close
       .section
         .column-desktop-50.header(v-if="showTitleSlider")
           h1.accept Войдите и сможете
         .column-desktop-50.column-desktop-right(v-if="showTitleSlider")
-          slider
+          //-slider
         .column-desktop-50
           .bottom-container(:class='{"opened-key-board":!showTitleSlider}')
-            validator(name='signup')
+            div
               .input-container
                 .input.name
                   i.ic-insta-name
@@ -21,15 +21,14 @@ scroll-component
                     autocapitalize="off",
                     spellcheck="false",
                     :class=' {error: errorLogin} ',
-                    @focus='onFocusLogin',
-                    @keydown.enter='sendSMS()',
-                    v-validate:login='[ "required" ]',
+                    v-on:focus='onFocusLogin',
+                    v-on:keydown.enter='sendSMS()',
                     v-on:blur="blurInput",
                     v-model='login',
                     :placeholder='placeholder')
                   .input__clear-btn(
                     v-if='login',
-                    @click='login = ""')
+                    v-on:click='login = ""')
                     i.ic-close
                 .input.phone
                   i.ic-mobile-phone
@@ -39,23 +38,22 @@ scroll-component
                     autocapitalize="off",
                     spellcheck="false",
                     :class=' {error: errorPhone} ',
-                    @focus='onFocusPhone',
-                    @keydown.enter='sendSMS()',
+                    v-on:focus='onFocusPhone',
+                    v-on:keydown.enter='sendSMS()',
                     v-on:blur="blurInput",
-                    v-validate:phone='[ "phone", "required" ]',
                     v-model='phone',
                     placeholder='Введите номер телефона')
                   .input__clear-btn(
                     v-if='phone',
-                    @click='phone = ""')
+                    v-on:click='phone = ""')
                     i.ic-close
             .btn-container
               button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
-                @click='sendSMS') Отправить sms-код
+                v-on:click='sendSMS') Отправить sms-код
               .link-container
                 a.link-bottom(href='#',
-                  @click.prevent='onClickLink')
-                  | {{{ textLink }}}
+                  v-on:click.prevent='onClickLink', v-html="textLink")
+
 </template>
 
 <style>
@@ -82,7 +80,7 @@ scroll-component
 
   import ScrollComponent from 'base/scroll/scroll.vue'
 
-  import Slider from './slider.vue';
+  //-import Slider from './slider.vue';
 
   const TEXT_LINK = {
     instagramMode: 'Если нет Instagram',
@@ -131,17 +129,21 @@ scroll-component
       }
     },
 
-    ready() {
-      this.$set('height', `${ document.body.scrollHeight }px`);
-      this.phone = this.authData.phone;
-      this.login = this.authData.username;
-      this.instagram = this.authData.instagram;
-      const onResize = () => {
-        this.$set('height', `${ document.body.scrollHeight }px`);
-        this.$set('showTitleSlider', document.body.scrollHeight >= 1000 || document.body.scrollWidth > 750);
-      };
-      this.resize = listen( window, 'resize', onResize );
-      onResize();
+    mounted() {
+      this.$nextTick(()=>{
+
+        this.height = `${ document.body.scrollHeight }px`;
+        this.phone = this.authData.phone;
+        this.login = this.authData.username;
+        this.instagram = this.authData.instagram;
+        const onResize = () => {
+          this.height = `${ document.body.scrollHeight }px`;
+          this.showTitleSlider = document.body.scrollHeight >= 1000 || document.body.scrollWidth > 750;
+        };
+        this.resize = listen( window, 'resize', onResize );
+        onResize();
+
+      })
     },
     beforeDestroy(){
       this.resize.remove();
@@ -163,9 +165,9 @@ scroll-component
         this.save();
 
         if (window.history.length > 2) {
-          this.$router.go(window.history.back());
+          this.$router.push(window.history.back());
         } else {
-          this.$router.go({name: 'home'});
+          this.$router.push({name: 'home'});
         }
       },
 
@@ -210,7 +212,7 @@ scroll-component
         this.save();
 
         this.signup().then( ()=> {
-          this.$router.go({ name: 'comfirm-sms' });
+          this.$router.push({ name: 'comfirm-sms' });
         }).catch( (error) => {
           this.onErrorPhone();
         })
@@ -218,7 +220,7 @@ scroll-component
 
       blurInput(){
         if (browser.android)
-          this.$set('showTitleSlider', document.body.scrollHeight >= 1000 || document.body.scrollWidth > 750);
+          this.showTitleSlider = document.body.scrollHeight >= 1000 || document.body.scrollWidth > 750;
       },
 
       onErrorPhone() {
@@ -231,7 +233,7 @@ scroll-component
       // remove error class from <input> phone
       onFocusPhone() {
         if (browser.android)
-          this.$set('showTitleSlider',false);
+          this.showTitleSlider =false;
         if (this.errorPhone) {
           this.errorPhone = false;
           //this.textLink = '';
@@ -240,18 +242,18 @@ scroll-component
       },
 
       onErrorLogin() {
-        this.$set('login', TEXT_LINK['errorLoginMesage']);
-        this.$set('errorLogin', true);
+        this.login = TEXT_LINK['errorLoginMesage'];
+        this.errorLogin = true;
         //this.$set('textLink', TEXT_LINK['errorLoginLink']);
       },
 
       // clear login and remove error class from <input>
       onFocusLogin() {
         if (browser.android)
-          this.$set('showTitleSlider',false);
-        if (this.$get('errorLogin')) {
-          this.$set('errorLogin', false);
-          this.$set('login', '');
+          this.showTitleSlider = false;
+        if (this.errorLogin) {
+          this.errorLogin = false;
+          this.login = '';
           //this.$set('textLink', '');
         };
       },
@@ -279,7 +281,7 @@ scroll-component
 
     components: {
       ScrollComponent,
-      Slider,
+      //-Slider,
     },
   }
 </script>

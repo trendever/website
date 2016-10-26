@@ -64,7 +64,7 @@ export default {
       window.location = 'https://www.instagram.com/' + this.authUser.name;
     },
     close(){
-      this.$router.go(window.history.back());
+      this.$router.push(window.history.back());
     },
   },
   components: {

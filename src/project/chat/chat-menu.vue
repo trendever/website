@@ -117,7 +117,7 @@ div
     methods: {
       openPayment(){
         this.setPayment({shopId: this.paymentShopId(),leadId: this.getLeadId});
-        this.$router.go( { name: 'payment'} );
+        this.$router.push( { name: 'payment'} );
       },
       paymentShopId(){
         //если простой покупатель

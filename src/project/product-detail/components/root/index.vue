@@ -126,7 +126,7 @@
 
         this.resetScrollByListId( 'home' );
 
-        this.$router.go( { name: 'home' } );
+        this.$router.push( { name: 'home' } );
 
       },
 
@@ -142,13 +142,13 @@
 
           this.setCallbackOnSuccessAuth( function( id, product, newLike ) {
 
-            this.$router.go( { name: "product_detail", params: { id } } );
+            this.$router.push( { name: "product_detail", params: { id } } );
 
             this.setCallBackAfterLoading( this.setLike.bind( this, product, newLike ) )
 
           }.bind( this, this.productId, this.getOpenedProduct, true ) );
 
-          this.$router.go( { name: 'signup' } );
+          this.$router.push( { name: 'signup' } );
 
         } else {
 
@@ -175,7 +175,7 @@
         if ( !this.isAuth ) {
           let page = this.$route.name;
           let params = this.$route.params.id;
-          this.$router.go( { name: 'signup' } )
+          this.$router.push( { name: 'signup' } )
           //this.setCallbackOnSuccessAuth( this._buy.bind( this, productId ), 'PRODUCT_BUY' )
 
           let vm = this;
@@ -192,14 +192,14 @@
             .then(
               ( lead ) => {
                 if ( lead !== undefined && lead !== null ) {
-                  this.$router.go( { name: 'chat', params: { id: lead.id } } )
+                  this.$router.push( { name: 'chat', params: { id: lead.id } } )
                 }
               }
             )
             .catch(
               ( error ) => {
                 if ( error === leads.ERROR_CODES.UNATHORIZED ) {
-                  this.$router.go( { name: 'signup' } )
+                  this.$router.push( { name: 'signup' } )
                 }
               }
             )

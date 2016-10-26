@@ -27,7 +27,7 @@ scroll-component
     },
     ready() {
       if ( this.isAuth ) {
-        this.$router.go(
+        this.$router.push(
           {
             name: 'settings-token',
             query: {
@@ -36,7 +36,7 @@ scroll-component
           }
         );
       } else {
-        this.$router.go( { name: 'signup' } );
+        this.$router.push( { name: 'signup' } );
       }
     },
     vuex: {

@@ -44,7 +44,7 @@ export default {
 
       }
 
-      this.$router.go({name: 'home'})
+      this.$router.push({name: 'home'})
     },
     accept(){
       if(!this.dealType){

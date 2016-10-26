@@ -43,7 +43,7 @@
     methods: {
       goToProduct(){
 
-        this.$router.go( { name: "product_detail", params: { id: this.productId } } );
+        this.$router.push( { name: "product_detail", params: { id: this.productId } } );
 
       },
       showImage(){

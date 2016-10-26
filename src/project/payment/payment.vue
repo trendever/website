@@ -192,7 +192,7 @@ export default{
 
     },
     close(){
-      this.$router.go(window.history.back());
+      this.$router.push(window.history.back());
     },
     makeOrder(){
       let _trueprice = Math.round(this.billPrice/1.015);
@@ -207,7 +207,7 @@ export default{
         currency: 0,//0 - рубли
         lead_id: this.getPayment.leadId
       }).then((order)=>{
-        this.$router.go(window.history.back());
+        this.$router.push(window.history.back());
       },err=>{
         this.setMessage('Ошибка сервера, обратитесь в поддержку');
       });

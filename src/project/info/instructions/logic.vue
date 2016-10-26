@@ -53,7 +53,7 @@ export default {
 
                 setTimeout(()=>{
 
-                  this.$router.go({name: 'info-instructions-1'})
+                  this.$router.push({name: 'info-instructions-1'})
 
                 }, timeOut)
               }

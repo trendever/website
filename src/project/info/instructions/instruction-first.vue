@@ -37,7 +37,7 @@ export default {
   mounted () {},
   methods: {
     close(){
-      this.$router.go(window.history.back());
+      this.$router.push(window.history.back());
     },
   }
 }

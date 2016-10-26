@@ -106,21 +106,21 @@ export default {
 
                 if(difference <= this.day) {
                   setTimeout(()=>{
-                    this.$router.go({name: 'monetization'})
+                    this.$router.push({name: 'monetization'})
                   }, timeOut)
                   return
                 }
 
                 if(difference > this.day * 2 && difference <= this.day * 3) {
                   setTimeout(()=>{
-                    this.$router.go({name: 'monetization'})
+                    this.$router.push({name: 'monetization'})
                   }, timeOut)
                   return
                 }
 
                 if(difference > this.day * 7) {
                   setTimeout(()=>{
-                    this.$router.go({name: 'monetization'})
+                    this.$router.push({name: 'monetization'})
                   }, timeOut)
 
                   return

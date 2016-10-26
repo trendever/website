@@ -304,7 +304,7 @@ scroll-component
       onBuyPromoProduct() {
         if ( !this.isAuth ) {
 
-          this.$router.go( { name: 'signup' } );
+          this.$router.push( { name: 'signup' } );
           this.setCallbackOnSuccessAuth( this.onBuyPromoProduct.bind( this ) )
 
         } else {
@@ -313,7 +313,7 @@ scroll-component
               .then(
                 ( lead ) => {
                   if ( lead !== undefined && lead !== null ) {
-                    this.$router.go( { name: 'chat', params: { id: lead.id } } );
+                    this.$router.push( { name: 'chat', params: { id: lead.id } } );
                   }
                 }
               );

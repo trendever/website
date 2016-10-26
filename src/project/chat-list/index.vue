@@ -1,61 +1,62 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-scroll-component(v-el:scroll-cnt)
-  right-nav-component(current="chat")
-  .chat-list-cnt(v-if='isDone')
-    header-component(:title='getTitle', :left-btn-show='false')
-      .header__nav(slot='content' v-if='true')
-        .header__nav__i.header__text(
-          :class='{_active: getTab === "customer"}',
-          @click='setTab("customer");',
-          @touch='setTab("customer");')
-          span Покупаю
-        .header__nav__i.header__text(
-          :class='{_active: getTab === "seller"}',
-          @click='setTab("seller");')
-          span Продаю
+#chat-list
+  scroll-component(ref="scrollCnt")
+    right-nav-component(current="chat")
+    .chat-list-cnt(v-if='isDone')
+      header-component(:title='getTitle', :left-btn-show='false')
+        .header__nav(slot='content' v-if='true')
+          .header__nav__i.header__text(
+            :class='{_active: getTab === "customer"}',
+            v-on:click='setTab("customer");',
+            v-on:touch='setTab("customer");')
+            span Покупаю
+          .header__nav__i.header__text(
+            :class='{_active: getTab === "seller"}',
+            v-on:click='setTab("seller");')
+            span Продаю
 
 
-    .section.top.bottom(:class="{'little-move-up': !$root.isStandalone,'little-move-up-standalone': $root.isStandalone}")
-      .section__content
-        .chat-list(v-bind:style="styleObject")
-            chat-list-item(v-for='lead in leadsArray | orderBy "updated_at" -1 | cutList', :lead='lead', track-by="id", v-ref:item)
-    template(v-if='!leadsArray.length')
-      .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
-        .chat-list-cnt-is-empty__container Нет чатов,#[br]
-        span  ... потому что ты пока ничего #[br] не покупаешь
-      .chat-list-cnt-is-empty(v-if="getTab === 'seller'")
-        .chat-list-cnt-is-empty__container Нет чатов,#[br]
-        span  ... потому что ты пока ничего #[br] не продаешь
-      .chat-list-cnt-is-empty__banner(v-if="!leadsArray.length && getTab === 'customer'") Нажми Купить&nbsp
-       span под товаром #[br]или&nbsp
-       span.want напиши @wantit&nbsp
-       span под постом в Instagram, #[br] и здесь появится шопинг-чат
-      .chat-list-cnt-is-empty__banner.sell(v-if="!leadsArray.length && getTab === 'seller'")
-       span Напиши&nbsp
-       span.want Покупай по комментарию @wantit&nbsp #[br(v-if="!isMobile")]
-       span
-        #[br(v-if="isMobile")] под товарами в своем Instagram,
-        #[br] чтобы продавать и видеть здесь покупателей
-       .how-to-sell-btn.chat-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile") Как начать продавать?
-       appstore-link(
-        text-link="ПОЛУЧИТЬ ПРИЛОЖЕНИЕ ДЛЯ ПРОДАЖ",
-        placeholder-link="Укажите номер, чтобы начать продавать",
-        v-if="!isMobile").chat-appstore-link
-navbar-component(current='chat')
-scroll-top
-app-loader.list-loader(v-if="!needLoadLeads")
+      .section.top.bottom(:class="{'little-move-up': !$root.isStandalone,'little-move-up-standalone': $root.isStandalone}")
+        .section__content
+          .chat-list(v-bind:style="styleObject")
+              chat-list-item(v-for='lead in cutList', :lead='lead', :key="lead.id", v-ref="item")
+      div(v-if='!leadsArray.length')
+        .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
+          .chat-list-cnt-is-empty__container Нет чатов,#[br]
+          span  ... потому что ты пока ничего #[br] не покупаешь
+        .chat-list-cnt-is-empty(v-if="getTab === 'seller'")
+          .chat-list-cnt-is-empty__container Нет чатов,#[br]
+          span  ... потому что ты пока ничего #[br] не продаешь
+        .chat-list-cnt-is-empty__banner(v-if="!leadsArray.length && getTab === 'customer'") Нажми Купить&nbsp
+         span под товаром #[br]или&nbsp
+         span.want напиши v-on:wantit&nbsp
+         span под постом в Instagram, #[br] и здесь появится шопинг-чат
+        .chat-list-cnt-is-empty__banner.sell(v-if="!leadsArray.length && getTab === 'seller'")
+         span Напиши&nbsp
+         span.want Покупай по комментарию v-on:wantit&nbsp #[br(v-if="!isMobile")]
+         span
+          #[br(v-if="isMobile")] под товарами в своем Instagram,
+          #[br] чтобы продавать и видеть здесь покупателей
+         .how-to-sell-btn.chat-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile") Как начать продавать?
+         //-appstore-link(
+          text-link="ПОЛУЧИТЬ ПРИЛОЖЕНИЕ ДЛЯ ПРОДАЖ",
+          placeholder-link="Укажите номер, чтобы начать продавать",
+          v-if="!isMobile").chat-appstore-link
+  //-navbar-component(current='chat')
+  //-scroll-top
+  app-loader.list-loader(v-if="!needLoadLeads")
 
-.help-wrapper(v-if='isFirst')
-  .help(@click='isFirst=false')
-    .help__chat-list
-      .help-conteiner
-        .help-text Это шопинг-чаты, где можно напрямую#[br]  общаться с магазинами и заказывать
-        .help__chat-list-round
+  .help-wrapper(v-if='isFirst')
+    .help(v-on:click='isFirst=false')
+      .help__chat-list
+        .help-conteiner
+          .help-text Это шопинг-чаты, где можно напрямую#[br]  общаться с магазинами и заказывать
+          .help__chat-list-round
 </template>
 
 <script type='text/babel'>
-  import AppstoreLink from 'base/appstore-link/appstore-link';
+  //import AppstoreLink from 'base/appstore-link/appstore-link';
   import appLoader from 'base/loader/loader';
   import RightNavComponent from 'base/right-nav/index';
   import listen from 'event-listener';
@@ -97,7 +98,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
   export default {
 
     components: {
-      AppstoreLink,
+      //AppstoreLink,
       appLoader,
       ScrollTop,
       RightNavComponent,
@@ -105,11 +106,6 @@ app-loader.list-loader(v-if="!needLoadLeads")
       HeaderComponent,
       NavbarComponent,
       ChatListItem
-    },
-    filters: {
-      cutList( leadsArray ){
-        return leadsArray.slice( 0, this.getLengthList );
-      }
     },
     vuex: {
       getters: {
@@ -146,67 +142,75 @@ app-loader.list-loader(v-if="!needLoadLeads")
         currentPan: 0
       }
     },
-    ready(){
+    mounted(){
 
-      if ( this.isAuth ) {
-        if( this.getUseDays === 0){
+      this.$on('closeDeleteLead',()=>{
+        this.$emit('closeDelete');
+      })
 
-          this.$router.go({name: 'monetization'})
+      this.$nextTick(()=>{
 
-        }
+        if ( this.isAuth ) {
 
-        this.scrollListener = listen( this.$els.scrollCnt, 'scroll', (() => {
+          if( this.getUseDays === 0){
 
-          let timerId = null;
+            this.$router.push({name: 'monetization'})
 
-          return () => {
+          }
 
-            if ( timerId !== null ) {
+          this.scrollListener = listen( document.body.querySelector('.scroll-cnt'), 'scroll', (() => {
 
-              clearTimeout( timerId );
+            let timerId = null;
 
-            }
+            return () => {
 
-            this.$set( 'styleObject.pointerEvents', 'none' );
+              if ( timerId !== null ) {
 
-            timerId = setTimeout( () => {
+                clearTimeout( timerId );
 
-              this.$set( 'styleObject.pointerEvents', 'auto' );
+              }
 
-            }, 200 );
+              this.styleObject.pointerEvents = 'none';
 
-            this.setScroll( this.$els.scrollCnt.scrollTop, this.$els.scrollCnt.scrollHeight );
+              timerId = setTimeout( () => {
 
-            if ( this.needLoadLeads ) {
+                this.styleObject.pointerEvents = 'auto';
 
-              const full_scroll = this.$els.scrollCnt.scrollHeight;
-              const diff_scroll = full_scroll - this.$els.scrollCnt.scrollTop;
+              }, 200 );
 
-              if ( diff_scroll < 2500 ) {
+              this.setScroll( this.$refs.scrollCnt.scrollTop, this.$refs.scrollCnt.scrollHeight );
 
-                this.$set( 'needLoadLeads', false );
+              if ( this.needLoadLeads ) {
 
-                this.loadLeads().then( () => {
+                const full_scroll = this.$refs.scrollCnt.scrollHeight;
+                const diff_scroll = full_scroll - this.$refs.scrollCnt.scrollTop;
 
-                  this.$set( 'needLoadLeads', true );
+                if ( diff_scroll < 2500 ) {
 
-                } );
+                  this.needLoadLeads = false;
+
+                  this.loadLeads().then( () => {
+
+                    this.needLoadLeads = true;
+
+                  } );
+
+                }
 
               }
 
             }
 
-          }
+          })() );
 
-        })() );
+          leads.onEvent( this.onEvent );
 
-        leads.onEvent( this.onEvent );
+          this.run();
 
-        this.run();
-
-      } else {
-        this.$router.go( { name: 'signup' } );
-      }
+        } else {
+          this.$router.push( { name: 'signup' } );
+        }
+      })
     },
     beforeDestroy(){
       if ( this.isAuth ) {
@@ -219,6 +223,11 @@ app-loader.list-loader(v-if="!needLoadLeads")
     },
 
     computed:{
+      cutList(){
+        return this.leadsArray.slice( 0, this.getLengthList ).reverse();
+
+        //leadsArray | orderBy "updated_at" -1 |
+      },
       leadsArray(){
 
         if(this.$store.state.leads.tab === 'customer') {
@@ -247,13 +256,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
         return false;
       }
     },
-    events:{
-      'closeDeleteLead'(){
 
-        this.$broadcast('closeDelete');
-
-      }
-    },
     methods: {
       //Добавление нового лида в нужную вкладку
       onEvent(data){
@@ -302,7 +305,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
                 this.loadLeads().then( () => {
                   setTimeout(()=>{
                     this.$nextTick( () => {
-                      add( this.$els.scrollCnt.scrollHeight );
+                      add( this.$refs.scrollCnt.scrollHeight );
                     } );
                   },1)
                 } )
@@ -311,7 +314,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
             } else {
 
-              this.$els.scrollCnt.scrollTop = scrollTop;
+              this.$refs.scrollCnt.scrollTop = scrollTop;
 
               resolve();
 
@@ -321,7 +324,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
           this.$nextTick( () => {
 
-            add( this.$els.scrollCnt.scrollHeight );
+            add( this.$refs.scrollCnt.scrollHeight );
 
           } );
 
@@ -342,7 +345,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
                   this.$nextTick( () => {
 
-                    add( this.$els.scrollCnt.scrollHeight );
+                    add( this.$refs.scrollCnt.scrollHeight );
 
                   } );
 
@@ -364,7 +367,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
           this.$nextTick( () => {
 
-            add( this.$els.scrollCnt.scrollHeight )
+            add( this.$refs.scrollCnt.scrollHeight )
 
           } );
 

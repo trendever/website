@@ -35,7 +35,7 @@ export default {
       if (this.chatId){
         this.$set('alert', false);
         this.$set('avatarUrl', "");
-        this.$router.go({name: "chat", params: {id: this.chatId}})
+        this.$router.push({name: "chat", params: {id: this.chatId}})
       }
     },
     _getUser(user_id){

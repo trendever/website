@@ -33,7 +33,7 @@ export default {
         .then(
           ( lead ) => {
             if ( lead !== undefined && lead !== null ) {
-              this.$router.go( { name: 'chat', params: { id: lead.id } } )
+              this.$router.push( { name: 'chat', params: { id: lead.id } } )
             }
           }
         );
