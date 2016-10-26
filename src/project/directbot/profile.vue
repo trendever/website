@@ -16,7 +16,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .profile_info_img()
             img(:src="getUserPhoto")
 
-        
+
        template(v-if="loaded")
         .profile_inactive
           img(src="./img/empty-directbot-profile.png")
@@ -35,11 +35,12 @@ scroll-component(v-if="isDone", class="profile-cnt")
         button.bot-active-btn(v-if="false") БОТ АКТИВЕН
           i.ic-close
 
-
+        a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
   navbar-component(:current='listId').directbot-navbar
 
 </template>
 <script type='text/babel'>
+  import { logOut } from 'vuex/actions/user.js'
   import RightNavComponent from 'base/right-nav/index';
   import * as productsService from 'services/products';
   import { urlThumbnail } from 'utils';
@@ -147,6 +148,13 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     methods:{
+      logout(){
+
+        this.$set('menuOpened', false);
+        this.logOut();
+        window.location = '/';
+
+      },
       buyTg(){
         this
           .createLead( 32158 )
@@ -261,7 +269,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
         setTooltip,
         setMyCurrentList,
         openProfile,
-        closeProfile
+        closeProfile,
+        logOut,
       },
       getters: {
         getTooltips,

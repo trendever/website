@@ -50,7 +50,7 @@ export function configRouter(router) {
 
     '/signup': {
       name: 'signup',
-      component: require('project/auth/signup.vue'),
+      component: require('project/directbot/signup-directbot.vue'),
     },
 
     '/confirm-sms': {
@@ -81,6 +81,10 @@ export function configRouter(router) {
     '/turn-on-bot': {
       name: 'turn-on-bot',
       component: require('project/directbot/turn-on-bot.vue')
+    },
+    '/monetization': {
+      name: 'monetization',
+      component: require('project/directbot/monetization.vue')
     },
     '/payment': {
       name: 'payment',
