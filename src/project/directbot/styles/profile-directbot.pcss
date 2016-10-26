@@ -1,5 +1,9 @@
 @import 'base/vars/vars.pcss';
 
+.directbot-header .wrapper{
+  background-color: $color__blue !important;
+}
+
 .profile-right-menu {
   position: absolute;
   top: 65px;
@@ -10,32 +14,18 @@
   }
 }
 
-standalone i.ic-options_menu{
-  margin-top: 65px;
+.profile-days{
+  position: absolute;
+  top: 60px;
+  left: 30px;
+  font-size: 40px;
+  color: $color-orange;
+  font-family: $font__family__semibold;
+  .day{
+    font-size: 24px;
+  }
 }
 
-
-.find-bloger-btn {
-    font-family: $font__family__light;
-    z-index: 1;
-    position: fixed * 0 98px 0;
-    margin-bottom: 0px!important;
-    color: #12302d;
-    background: #ffde1e;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 36px;
-    line-height: 100px;
-    height: 100px;
-    cursor: pointer;
-    width: 100% !important;
-    @media (--ipad) {
-      position: fixed * 0 49px 0;
-      line-height: 100px;
-      height: 100px;
-    }
-
-}
 
 
 .profile-cnt {
@@ -67,7 +57,7 @@ standalone i.ic-options_menu{
         //background: whitesmoke;
         size: 190px;
         margin: 0 10px;
-        background-image: url(icons/user_active.svg);
+        background-image: url(../icons/user_active.svg);
         background-repeat: no-repeat;
         background-position-x: -6px;
         img {
@@ -76,17 +66,26 @@ standalone i.ic-options_menu{
       }
     }
 
-    &_no-goods{
+    &_inactive{
       margin-top: 50px;
       color: #595959;
       text-align: center;
       font-size: 24px;
       font-family: $font__family__light;
       @media(--mobile) {
+        /*background-image: url(../img/empty-directbot-profile.png);
+        background-repeat: no-repeat;
+        background-size: 330px 340px;*/
         width: 80%;
+        //height: 515px;
         margin: 0 auto;
         font-size: 32px;
-        margin-top: 150px;
+        margin-top: 80px;
+        //padding-top: 500px;
+      }
+      img{
+        display: block;
+        margin: 0 auto 50px auto;
       }
       .empty{
         font-family: $font__family__semibold;
@@ -203,6 +202,9 @@ standalone i.ic-options_menu{
         top: 17px;
         right: 15px;
       }
+    }
+    .turn-on-bot-btn{
+      z-index: 30;
     }
   }
 }
