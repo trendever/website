@@ -22,7 +22,7 @@
 <script>
 import { getAuthUser } from 'vuex/getters/user';
 import clipboard from 'clipboard';
-import secondImg from './components/second-img';
+//import secondImg from './components/second-img';
 export default {
   vuex:{
     getters:{
@@ -31,12 +31,24 @@ export default {
   },
   data () {
     return {
-      copyError: false
+      copyError: false,
+      firstInst: true
+    }
+  },
+
+  route: {
+    activate({from, to, next }){
+      if(from.name !== 'info-instructions-1') {
+        this.firstInst = false;
+      }
+      next();
     }
   },
 
   ready () {
-
+    if(!this.firstInst){
+      this.$router.go({name: 'profile'})
+    }
     let self = this;
     self.copy =  new clipboard('.copy-trigger',{
         text(trigger){
@@ -70,7 +82,7 @@ export default {
     },
   },
   components: {
-    secondImg
+    //secondImg
   }
 }
 </script>

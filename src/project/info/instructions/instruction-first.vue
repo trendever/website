@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import FirstImg from './components/first-img';
+//import FirstImg from './components/first-img';
 import { getAuthUser } from 'vuex/getters/user';
 export default {
   vuex: {
@@ -28,7 +28,7 @@ export default {
     }
   },
   components:{
-    FirstImg
+    //FirstImg
   },
   methods: {
     close(){
