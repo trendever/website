@@ -60,6 +60,7 @@
       i.ic-rub-directbot
       span  в месяц
     .hero__content__landing__free Первые 3 дня бесплатно
+a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
 </template>
 
 <script type='text/babel'>
