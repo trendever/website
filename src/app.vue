@@ -21,7 +21,7 @@
     //-popup-fast-signup(v-if="authIsDone && showAuthBtn")
   //-router-view(v-if="authIsDone")
   router-view
-    //-listener-component(v-if="authIsDone")
+  listener-component(v-if="authIsDone")
     //-monetization-logic
     //-instructions-logic
   //-get user for ios push actions logic
@@ -32,7 +32,7 @@
   import Vue from 'vue';
   import 'base/fonts/trendever-icons/trendever-icons.font'
 
-  //-import appLoader from 'base/loader/loader';
+  //import appLoader from 'base/loader/loader';
 
   import listen from 'event-listener';
 
@@ -46,8 +46,8 @@
 /*  import MonetizationLogic from 'base/monetization-logic/monetization-logic';
   import InstructionsLogic from 'project/info/instructions/logic';
   import PopupFastSignup from 'base/auth-popup/fast-signup.vue'
-  import ListenerComponent from 'project/listener/index.vue'
   import InappNotification from 'base/inapp-notification/index.vue';*/
+  import ListenerComponent from 'project/listener/index.vue'
 
   import {get as getUser} from 'services/user';
   import {setToken} from 'services/user';
@@ -133,12 +133,12 @@
     },
     components: {
 
-     /* appLoader,
+      //appLoader,
       ListenerComponent,
-      PopupFastSignup,
-      InappNotification,
-      MonetizationLogic,
-      InstructionsLogic*/
+      //PopupFastSignup,
+      //InappNotification,
+      //MonetizationLogic,
+      //InstructionsLogic
 
     },
     store

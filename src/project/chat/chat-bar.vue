@@ -1,23 +1,23 @@
 <style src='./styles/chat-bar.pcss'></style>
 <template lang="jade">
-
-div.chat-bar
-  .chat-approve-btn.noaction(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat') ПОДТВЕРДИТЬ
-  .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay' && getAction !== 'pendingpayment' ", id="inputbar")
-    .chat-bar_menu-btn(@click.stop='setShowMenu(true)')
-      i.ic-chat_menu
-    .chat-bar_input
-      textarea(placeholder='Введите сообщение',
-               v-model='txtMsg',
-               v-el:input-msg,
-               @focus='focusInput',
-               @blur='blurInput($event)')
-    .chat-bar_send-btn(v-on:mousedown='send($event)',
-                       v-on:touchstart='send($event)',
-                       :class='{"__active": !!txtMsg}')
-      i.ic-send-plane
-    chat-menu(v-if="!isMobile")
-chat-menu(v-if="isMobile")
+#chat-bar
+  div.chat-bar
+    .chat-approve-btn.noaction(v-if='getAction === "approve" && getCurrentMember.role === 1', v-on:click='approveChat') ПОДТВЕРДИТЬ
+    .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay' && getAction !== 'pendingpayment' ", id="inputbar")
+      .chat-bar_menu-btn(v-on:click.stop='setShowMenu(true)')
+        i.ic-chat_menu
+      .chat-bar_input
+        textarea(placeholder='Введите сообщение',
+                 v-model='txtMsg',
+                 ref="inputMsg",
+                 v-on:focus='focusInput',
+                 v-on:blur='blurInput($event)')
+      .chat-bar_send-btn(v-on:mousedown='send($event)',
+                         v-on:touchstart='send($event)',
+                         :class='{"__active": !!txtMsg}')
+        i.ic-send-plane
+      chat-menu(v-if="!isMobile")
+  chat-menu(v-if="isMobile")
 
 </template>
 
@@ -53,26 +53,31 @@ chat-menu(v-if="isMobile")
       }
     },
 
-    ready(){
-      this.scroll = document.querySelector( '.scroll-cnt' );
-      if ( !window.browser.mobile ) {
+    mounted(){
+      this.$nextTick(()=>{
 
-        this.sendMessage = listen( window, 'keydown', ( event ) => {
+        this.scroll = document.querySelector( '.scroll-cnt' );
 
-          if ( !event.shiftKey && event.keyCode === 13 ) {
+        if ( !window.browser.mobile ) {
 
-            this.send( event )
+          this.sendMessage = listen( window, 'keydown', ( event ) => {
 
-          }
-          if ( event.shiftKey && event.keyCode === 13 ) {
+            if ( !event.shiftKey && event.keyCode === 13 ) {
 
-            this.$set( 'txtMsg', this.txtMsg )
+              this.send( event )
 
-          }
+            }
+            if ( event.shiftKey && event.keyCode === 13 ) {
 
-        } )
+              this.txtMsg = this.txtMsg;
 
-      }
+            }
+
+          } )
+
+        }
+
+      })
 
     },
 
@@ -239,7 +244,7 @@ chat-menu(v-if="isMobile")
     watch: {
       txtMsg( msg ) {
         this.$nextTick( () => {
-          let inputMsg          = this.$els.inputMsg
+          let inputMsg          = this.$refs.inputMsg
           const textHeight      = window.matchMedia( '(max-width: 750px)' ).matches ? 58 : 32
           const inpHeight       = inputMsg.scrollHeight
           inputMsg.style.height = (msg ? (inpHeight <= textHeight) ? textHeight : inpHeight : textHeight) + 'px'

@@ -5,24 +5,24 @@ div
   menu-component(v-if='getShowMenu && !getShowStatusMenu')
     div.menu-items(slot='items')
 
-      //-.menu_i(v-if='canCallCustomer', @click='callCustomer()')
+      //-.menu_i(v-if='canCallCustomer', v-on:click='callCustomer()')
         .menu_i_t Позвать покупателя в чат
 
-      //-.menu_i(v-if='canCallSupplier', @click='callSupplier()')
+      //-.menu_i(v-if='canCallSupplier', v-on:click='callSupplier()')
         .menu_i_t Позвать магазин в чат
 
-      .menu_i(v-if='notCustomer', @click='setShowStatusMenu(true)')
+      .menu_i(v-if='notCustomer', v-on:click='setShowStatusMenu(true)')
         .menu_i_t Изменить статус заказа
 
-      .menu_i(@click='openPayment()' v-if="noActivePayments")
+      .menu_i(v-on:click='openPayment()' v-if="noActivePayments")
         .menu_i_t Запросить деньги
 
       label(class='menu_i menu_i-send-file') Отправить фото
-        input(type='file', hidden, @change='selectedFile')
+        input(type='file', hidden, v-on:change='selectedFile')
 
       .menu_i(v-if='false')
         .menu_i_t Добавить шаблон
-      .menu_i(@click='setShowMenu(false)')
+      .menu_i(v-on:click='setShowMenu(false)')
         .menu_i_t.__txt-green Отмена
 
   chat-menu-status( v-if='getShowStatusMenu')
@@ -95,19 +95,24 @@ div
         loadImg: false
       }
     },
-    ready(){
-      let scrollCnt = document.querySelector('.scroll-cnt');
+    mounted(){
 
-      this.outerCloseMenu = listen(scrollCnt, 'click',(e)=>{
+      this.$nextTick(()=>{
 
-        targetClass(e, 'menu-cnt', ()=>{
-          if(getShowMenu) {
-             this.setShowMenu(false);
-             this.setShowStatusMenu(false);
-             this.setShowCancelMenu(false);
-          }
+        let scrollCnt = document.querySelector('.scroll-cnt');
 
-        });
+        this.outerCloseMenu = listen(scrollCnt, 'click',(e)=>{
+
+          targetClass(e, 'menu-cnt', ()=>{
+            if(getShowMenu) {
+               this.setShowMenu(false);
+               this.setShowStatusMenu(false);
+               this.setShowCancelMenu(false);
+            }
+
+          });
+
+        })
 
       })
     },

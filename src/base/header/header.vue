@@ -4,7 +4,7 @@
     .header__content.u-fixed(v-show='is_visible')
       .wrapper
         .header__arrow(
-          @click='leftBtnAction',
+          v-on:click='leftBtnAction',
           v-if='leftBtnShow && $route.name !== "profile"',
           :class="{'show-desktop-arrow': showDesktopArrow}")
 
@@ -31,13 +31,13 @@
         router-link.header-right(v-if="avatarUrl !== null && centerTextLink !== null && isMobile", :to="centerTextLink")
           img(:src="avatarUrl")
 
-      productmenu-component(v-if="page == 'product'")
+      //-productmenu-component(v-if="page == 'product'")
 </template>
 
 <script type='text/babel'>
   import settings from 'settings';
   import listen from 'event-listener';
-  import ProductmenuComponent from '../productmenu/index.vue'
+  //import ProductmenuComponent from '../productmenu/index.vue'
   import { getUseDays } from 'vuex/getters/user';
 
   export default {
@@ -47,7 +47,7 @@
       }
     },
     components: {
-      ProductmenuComponent
+      //ProductmenuComponent
     },
     data(){
       return {
@@ -130,18 +130,24 @@
         this.scrollEvent.remove();
       }
     },
-    ready() {
-      this.scrollCnt = document.querySelector( '.scroll-cnt' );
+    mounted() {
 
-      if ( this.show_on_elem ) {
-        this.showOnEl = document.getElementById( this.show_on_elem );
-      }
+      this.$nextTick(()=>{
 
-      // Run, function for stopped scroll.
-      // Because function work only in motion.
-      this.toggleHeaderOnScroll();
+        this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
-      this.scrollEvent = listen( this.scrollCnt, 'scroll', this.toggleHeaderOnScroll.bind( this ) )
+        if ( this.show_on_elem ) {
+          this.showOnEl = document.getElementById( this.show_on_elem );
+        }
+
+        // Run, function for stopped scroll.
+        // Because function work only in motion.
+        this.toggleHeaderOnScroll();
+
+        this.scrollEvent = listen( this.scrollCnt, 'scroll', this.toggleHeaderOnScroll.bind( this ) )
+
+      })
+
     },
     methods: {
       leftBtnAction() {
@@ -181,23 +187,23 @@
 
           // Show header, if show_on_elem scrollY is 0 or smaller
           if ( this.scrollCnt.scrollTop - this.showOnEl.offsetTop >= 0 ) {
-            this.$set( 'is_visible', true );
+            this.is_visible = true;
 
             // Left btn now work as ScrollToTop
-            this.$set( 'is_action_up', true );
+            this.is_action_up = true;
             return;
           }
         }
 
         // Left btn now work as Go to Prev Page
-        this.$set( 'is_action_up', false );
+        this.is_action_up = false;
 
         // if header as secondary header
-        if ( this.$get( 'is_secondary' ) ) {
-          this.$set( 'is_visible', false );
+        if ( this.is_secondary) {
+          this.is_visible = false;
           return;
         }
-        this.$set( 'is_visible', true );
+        this.is_visible = true;
       },
     },
   }

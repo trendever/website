@@ -2,9 +2,9 @@
 <template lang="jade">
 menu-component
   div.menu-items(slot='items')
-    .menu_i(v-for="reason in cancelReasons" @click='setStatus("CANCEL", "lead.state.changed", reason.id)')
+    .menu_i(v-for="reason in cancelReasons" v-on:click='setStatus("CANCEL", "lead.state.changed", reason.id)')
       .menu_i_t {{ reason.name }}
-    .menu_i(@click='setShowCancelMenu(false),setShowStatusMenu(true)')
+    .menu_i(v-on:click='setShowCancelMenu(false),setShowStatusMenu(true)')
       .menu_i_t.__txt-green Назад
 </template>
 
@@ -30,14 +30,14 @@ menu-component
     components: {
       MenuComponent
     },
-    ready(){
+    mounted(){
       leadService.getCancelReasons().then(data=>{
 
         let reasons = data.reasons.filter(item=>{
           return item.id !== 1 && item.id !== 2;
         });
 
-        this.$set('cancelReasons', reasons);
+        this.cancelReasons = reasons;
 
       })
     }

@@ -21,6 +21,9 @@ export default {
 
       if(this.isAuth) {
 
+          alert(1)
+        window.localStorage.setItem('myCat', 'Tom');
+
         let shop_id;
 
         if(this.getAuthUser.supplier_of){

@@ -157,7 +157,7 @@ div
         }
         if (!this.isCompleted) {
           this.onConfirm();
-          setTimeout( () => this.$set('needNewSMS', true), 7000);
+          setTimeout( () => { this.needNewSMS = true }, 7000);
         }
       },
       onConfirm() {

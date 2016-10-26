@@ -10,11 +10,11 @@
         v-if='!isOwnMessage && !isClosest',
         :class='{"chat-msg_t-customer-color":isCustomer}'
         v-link='{name: "user", params: {id: getUserNameLink}}',
+        v-html="getUsername"
       )
-      | {{{ getUsername }}}
     .chat-msg-wrap
-      p.chat-msg_txt
-        | {{{ getMessage }}}
+      p.chat-msg_txt(v-html="getMessage")
+
 
 </template>
 

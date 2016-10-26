@@ -2,17 +2,18 @@
 <template lang="jade">
 .chat-row.__center
   .chat-msg-status
-    template(v-if='donePayment')
+    div(v-if='donePayment')
       span(v-if="succes")
-       | {{getPaymentNames.from}} отправил {{getAmmount | curency_spaces}}
+       | {{getPaymentNames.from}} отправил {{getAmmount}}
+       //-{{getPaymentNames.from}} отправил {{getAmmount | curency_spaces}}
        i.ic-currency-rub
        |  на карту {{getPaymentNames.to}}
       span(v-else)
        | Перевод не удался
-    template(v-else)
+    div(v-else)
       span
         | <b>{{getCancelName}}</b> отменил перевод
-      
+
 </template>
 
 <script>
@@ -28,7 +29,7 @@
           this.setConversationAction("base");
         }
       }
-      
+
       return {}
     },
     props: {
@@ -37,7 +38,7 @@
         required: true
       }
     },
-    vuex: { 
+    vuex: {
       getters: {
         getShopName,
         getCustomerName,

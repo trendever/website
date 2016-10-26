@@ -4,24 +4,24 @@ div
   header-component(:notify-count='getGlobalNotifyCount', :back-link='{name: "chat_list"}')
 
     .chat-header(slot='content')
-      .chat-header_arrow(v-link="{name: 'chat_list'}")
+      router-link(:to="{name: 'chat_list'}").chat-header_arrow
         i.chat-header_arrow_ic.ic-arrow-left
 
       .chat-header_notify-count(v-if='getGlobalNotifyCount')
         span {{ getGlobalNotifyCount }}
 
       .chat-header_cnt(v-show='getShopName')
-        .chat-header_cnt_t(v-link='{name: "user", params: {id: getShopName}}') {{ getShopName }}
+        router-link(:to='{name: "user", params: {id: getShopName}}').chat-header_cnt_t {{ getShopName }}
         .chat-header_cnt_info
           span.chat-header_cnt_info-text
           | {{ getLeadId }},
           span  {{ getStatus }}
 
       .chat-header_photo
-        img(
-        v-link='{name: "user", params: {id: getShopName}}',
-        :src='userImage',
-        v-on:error='onUserImageError',)
+        router-link(:to='{name: "user", params: {id: getShopName}}')
+          img(
+          :src='userImage',
+          v-on:error='onUserImageError',)
 </template>
 
 <script type='text/babel'>
@@ -75,7 +75,7 @@ div
     },
     watch:{
       getPhoto(val){
-        this.$set('userImage', val);
+        this.userImage = val;
       }
     }
   }

@@ -1,23 +1,24 @@
 <style src='./styles/chat-msg-status.pcss'></style>
 <style src='./styles/chat-bar.pcss'></style>
 <template lang="jade">
-.chat-row.__center
-  .chat-msg-status
-    span
-     | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
-     i.ic-currency-rub
+#chat-msg-order
+  .chat-row.__center
+    .chat-msg-status
+      span
+       | {{getUsernameRaw}} отправил запрос на получение {{getAmmount | curency_spaces}}
+       i.ic-currency-rub
 
-.chat-approve-btn(v-if='showPayButton' )
-  .btn-payment(@click="pay")
-    span ОТПРАВИТЬ {{getAmmount | curency_spaces}} ₽
-  .btn-cancel(@click="cancel") <i class="ic-close"></i>
+  .chat-approve-btn(v-if='showPayButton' )
+    .btn-payment(v-on:click="pay")
+      span ОТПРАВИТЬ {{getAmmount | curency_spaces}} ₽
+    .btn-cancel(v-on:click="cancel") <i class="ic-close"></i>
 
-.chat-pending-btn(v-if='showPendingButton' )
-  .btn-payment
-    span ЗАПРОШЕНО {{getAmmount | curency_spaces}} ₽
-  .btn-cancel(@click="cancel") <i class="ic-close"></i>
+  .chat-pending-btn(v-if='showPendingButton' )
+    .btn-payment
+      span ЗАПРОШЕНО {{getAmmount | curency_spaces}} ₽
+    .btn-cancel(v-on:click="cancel") <i class="ic-close"></i>
 
-iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLink" v-show="showPaymentWindow")
+  iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLink" v-show="showPaymentWindow")
 
 </template>
 
@@ -91,8 +92,8 @@ iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLi
           id: +this.payId,
           lead_id: +this.getLeadId
         }).then(path=>{
-          this.$set("payLink",path.redirect_url);
-          this.$set("showPaymentWindow",true);
+          this.payLink = path.redirect_url;
+          this.showPaymentWindow = true;
         });
       },
       cancel(){
@@ -100,7 +101,7 @@ iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLi
           lead_id: +this.getLeadId,
           id: +this.payId
         }).then(data=>{
-          this.$set('canceled', true);
+          this.canceled = true;
           this.setConversationAction("base");
         });
       }

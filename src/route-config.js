@@ -14,11 +14,6 @@ export default new Router({
       component: require('project/product-list/index.vue')
     },
     {
-      path: '/chat',
-      name: 'chat_list',
-      component: require('project/chat-list/index.vue')
-    },
-    {
       path: '/signup',
       name: 'signup',
       component: require('project/auth/signup.vue'),
@@ -28,6 +23,15 @@ export default new Router({
       path: '/confirm-sms',
       name: 'comfirm-sms',
       component: require('project/auth/confirm-sms.vue'),
+    },
+    {
+      path: '/chat',
+      name: 'chat_list',
+      component: require('project/chat-list/index.vue')
+    },
+    { path: '/chat/:id',
+      name: 'chat',
+      component: require('project/chat/index.vue'),
     },
   ]
 })

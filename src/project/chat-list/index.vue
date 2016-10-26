@@ -1,50 +1,52 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-#chat-list
-  scroll-component(ref="scrollCnt")
-    right-nav-component(current="chat")
-    .chat-list-cnt(v-if='isDone')
-      header-component(:title='getTitle', :left-btn-show='false')
-        .header__nav(slot='content' v-if='true')
-          .header__nav__i.header__text(
-            :class='{_active: getTab === "customer"}',
-            v-on:click='setTab("customer");',
-            v-on:touch='setTab("customer");')
-            span Покупаю
-          .header__nav__i.header__text(
-            :class='{_active: getTab === "seller"}',
-            v-on:click='setTab("seller");')
-            span Продаю
+
+scroll-component
+
+  .chat-list-cnt(v-if='isDone')
+    header-component(:title='getTitle', :left-btn-show='false')
+      .header__nav(slot='content' v-if='true')
+        .header__nav__i.header__text(
+          :class='{_active: getTab === "customer"}',
+          v-on:click='setTab("customer");',
+          v-on:touch='setTab("customer");')
+          span Покупаю
+        .header__nav__i.header__text(
+          :class='{_active: getTab === "seller"}',
+          v-on:click='setTab("seller");')
+          span Продаю
+
+        right-nav-component(current="chat")
 
 
-      .section.top.bottom(:class="{'little-move-up': !$root.isStandalone,'little-move-up-standalone': $root.isStandalone}")
-        .section__content
-          .chat-list(v-bind:style="styleObject")
-              chat-list-item(v-for='lead in cutList', :lead='lead', :key="lead.id", v-ref="item")
-      div(v-if='!leadsArray.length')
-        .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
-          .chat-list-cnt-is-empty__container Нет чатов,#[br]
-          span  ... потому что ты пока ничего #[br] не покупаешь
-        .chat-list-cnt-is-empty(v-if="getTab === 'seller'")
-          .chat-list-cnt-is-empty__container Нет чатов,#[br]
-          span  ... потому что ты пока ничего #[br] не продаешь
-        .chat-list-cnt-is-empty__banner(v-if="!leadsArray.length && getTab === 'customer'") Нажми Купить&nbsp
-         span под товаром #[br]или&nbsp
-         span.want напиши v-on:wantit&nbsp
-         span под постом в Instagram, #[br] и здесь появится шопинг-чат
-        .chat-list-cnt-is-empty__banner.sell(v-if="!leadsArray.length && getTab === 'seller'")
-         span Напиши&nbsp
-         span.want Покупай по комментарию v-on:wantit&nbsp #[br(v-if="!isMobile")]
-         span
-          #[br(v-if="isMobile")] под товарами в своем Instagram,
-          #[br] чтобы продавать и видеть здесь покупателей
-         .how-to-sell-btn.chat-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile") Как начать продавать?
-         //-appstore-link(
-          text-link="ПОЛУЧИТЬ ПРИЛОЖЕНИЕ ДЛЯ ПРОДАЖ",
-          placeholder-link="Укажите номер, чтобы начать продавать",
-          v-if="!isMobile").chat-appstore-link
+    .section.top.bottom(:class="{'little-move-up': !$root.isStandalone,'little-move-up-standalone': $root.isStandalone}")
+      .section__content
+        .chat-list(v-bind:style="styleObject")
+            chat-list-item(v-for='lead in cutList', :lead='lead', :key="lead.id", ref="item")
+    div(v-if='!leadsArray.length')
+      .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
+        .chat-list-cnt-is-empty__container Нет чатов,#[br]
+        span  ... потому что ты пока ничего #[br] не покупаешь
+      .chat-list-cnt-is-empty(v-if="getTab === 'seller'")
+        .chat-list-cnt-is-empty__container Нет чатов,#[br]
+        span  ... потому что ты пока ничего #[br] не продаешь
+      .chat-list-cnt-is-empty__banner(v-if="!leadsArray.length && getTab === 'customer'") Нажми Купить&nbsp
+       span под товаром #[br]или&nbsp
+       span.want напиши v-on:wantit&nbsp
+       span под постом в Instagram, #[br] и здесь появится шопинг-чат
+      .chat-list-cnt-is-empty__banner.sell(v-if="!leadsArray.length && getTab === 'seller'")
+       span Напиши&nbsp
+       span.want Покупай по комментарию v-on:wantit&nbsp #[br(v-if="!isMobile")]
+       span
+        #[br(v-if="isMobile")] под товарами в своем Instagram,
+        #[br] чтобы продавать и видеть здесь покупателей
+       .how-to-sell-btn.chat-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile") Как начать продавать?
+       //-appstore-link(
+        text-link="ПОЛУЧИТЬ ПРИЛОЖЕНИЕ ДЛЯ ПРОДАЖ",
+        placeholder-link="Укажите номер, чтобы начать продавать",
+        v-if="!isMobile").chat-appstore-link
   //-navbar-component(current='chat')
-  //-scroll-top
+  scroll-top
   app-loader.list-loader(v-if="!needLoadLeads")
 
   .help-wrapper(v-if='isFirst')
@@ -91,7 +93,7 @@
   import ScrollTop from 'base/scroll-top/scroll-top';
   import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
-  import NavbarComponent from 'base/navbar/navbar.vue';
+  //import NavbarComponent from 'base/navbar/navbar.vue';
 
   import ChatListItem from './chat-list-item.vue';
 
@@ -104,7 +106,7 @@
       RightNavComponent,
       ScrollComponent,
       HeaderComponent,
-      NavbarComponent,
+      //NavbarComponent,
       ChatListItem
     },
     vuex: {
@@ -139,7 +141,8 @@
         styleObject: {
           pointerEvents: 'auto'
         },
-        currentPan: 0
+        currentPan: 0,
+        scrollCnt: ''
       }
     },
     mounted(){
@@ -158,7 +161,9 @@
 
           }
 
-          this.scrollListener = listen( document.body.querySelector('.scroll-cnt'), 'scroll', (() => {
+          this.scrollCnt = document.querySelector('.scroll-cnt');
+
+          this.scrollListener = listen(this.scrollCnt , 'scroll', (() => {
 
             let timerId = null;
 
@@ -178,12 +183,14 @@
 
               }, 200 );
 
-              this.setScroll( this.$refs.scrollCnt.scrollTop, this.$refs.scrollCnt.scrollHeight );
+
+
+              this.setScroll( this.scrollCnt.scrollTop, this.scrollCnt.scrollHeight );
 
               if ( this.needLoadLeads ) {
 
-                const full_scroll = this.$refs.scrollCnt.scrollHeight;
-                const diff_scroll = full_scroll - this.$refs.scrollCnt.scrollTop;
+                const full_scroll = this.scrollCnt.scrollHeight;
+                const diff_scroll = full_scroll - this.scrollCnt.scrollTop;
 
                 if ( diff_scroll < 2500 ) {
 
@@ -224,7 +231,7 @@
 
     computed:{
       cutList(){
-        return this.leadsArray.slice( 0, this.getLengthList ).reverse();
+        return this.leadsArray.slice( 0, this.getLengthList );
 
         //leadsArray | orderBy "updated_at" -1 |
       },
@@ -305,7 +312,7 @@
                 this.loadLeads().then( () => {
                   setTimeout(()=>{
                     this.$nextTick( () => {
-                      add( this.$refs.scrollCnt.scrollHeight );
+                      add( this.scrollCnt.scrollHeight );
                     } );
                   },1)
                 } )
@@ -314,7 +321,7 @@
 
             } else {
 
-              this.$refs.scrollCnt.scrollTop = scrollTop;
+              this.scrollCnt.scrollTop = scrollTop;
 
               resolve();
 
@@ -324,7 +331,7 @@
 
           this.$nextTick( () => {
 
-            add( this.$refs.scrollCnt.scrollHeight );
+            add( this.scrollCnt.scrollHeight );
 
           } );
 
@@ -345,7 +352,7 @@
 
                   this.$nextTick( () => {
 
-                    add( this.$refs.scrollCnt.scrollHeight );
+                    add( this.scrollCnt.scrollHeight );
 
                   } );
 
@@ -367,7 +374,7 @@
 
           this.$nextTick( () => {
 
-            add( this.$refs.scrollCnt.scrollHeight )
+            add( this.scrollCnt.scrollHeight )
 
           } );
 

@@ -1,14 +1,15 @@
 <style src='./styles/chat.pcss'></style>
 <template lang="jade">
-  scroll-component(v-el:scroll-cnt, class="chat-cnt")
+#chat
+  scroll-component(class="chat-cnt")
     .loader-center(v-if="showLoader"): app-loader
-    popup-img(v-if="imgPopUpUrl", :url="imgPopUpUrl", :width="imgWidth", :height="imgHeight", :on-close="closePopUp")
+    //-popup-img(v-if="imgPopUpUrl", :url="imgPopUpUrl", :width="imgWidth", :height="imgHeight", :on-close="closePopUp")
     chat-header(:notify-count='conversationNotifyCount')
     .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu")
     .section.top.bottom
       .chat.section__content
         .chat_messages(id="chatmessages")
-          template(v-for='msg in getMessages | list', track-by='$index')
+          div(v-for='(msg, index) in list', :key='index')
             div
               chat-msg-status(
                 v-if='msg.parts[0].mime_type === "json/status"',
@@ -84,13 +85,13 @@
   import ChatMsgInfo from './chat-msg-info.vue';
   import ChatBar from './chat-bar.vue';
   import ChatHeader from './chat-header.vue';
-  import popupImg from 'base/popup-img/index.vue';
+  //-import popupImg from 'base/popup-img/index.vue';
 
   export default {
 
     components: {
       ScrollComponent,
-      popupImg,
+      //-popupImg,
       ChatHeader,
       ChatBar,
       ChatMsg,
@@ -111,6 +112,7 @@
         lead_id: null,
         isMobile: window.browser.mobile,
         showLoader: true,
+        scrollCnt: ''
       }
     },
 
@@ -121,28 +123,37 @@
         }
       }
     },
-    route: {
-      data( { to: { params: { id:lead_id } } } ) {
-        this.$set( 'lead_id', +lead_id );
-        if ( this.isDone ) {
-          if ( this.isAuth ) {
-            return this.run().then(()=>{
-              this.clearNotify(this.lead_id);
-              this.$nextTick( () => {
-                      this.goToBottom();
-                    } );
-            })
-          } else {
-            return Promise.resolve()
+
+    beforeRouteEnter ( to, from, next) {
+
+      next(vm => {
+        vm.lead_id = +to.params.id;
+          if ( vm.isDone ) {
+            if ( vm.isAuth ) {
+              return vm.run().then(()=>{
+                vm.clearNotify(vm.lead_id);
+                vm.$nextTick( () => {
+                        vm.goToBottom();
+                      } );
+              })
+            } else {
+              return Promise.resolve()
+            }
           }
-        }
-      },
+      })
     },
-    ready(){
+    mounted(){
+
+
       if ( this.isAuth ) {
-        this.onMessage      = this.onMessage.bind( this );
-        this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
-        messages.onMsg( this.onMessage );
+
+        this.$nextTick(()=>{
+          this.scrollCnt = document.querySelector('.scroll-cnt');
+          this.onMessage      = this.onMessage.bind( this );
+          this.scrollListener = listen( this.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
+          messages.onMsg( this.onMessage );
+
+        })
 
       } else {
         this.$router.push( { name: 'signup' } );
@@ -182,13 +193,17 @@
       },
     },
 
-    filters: {
-      list( value ){
+    computed:{
 
-        const end   = value.length;
+      list(){
+
+        const end   = this.getMessages.length;
+
         const start = end - this.getLengthList - 1; // -1 потому что есть первое сообщение с датой.
-        return value.slice( (start <= 0) ? 0 : start, end );
+
+        return this.getMessages.slice( (start <= 0) ? 0 : start, end );
       }
+
     },
 
     methods: {
@@ -220,7 +235,7 @@
           }).then(()=>{
 
             return messages
-              .find(this.getId, null, 50, false)
+              .find(this.getId, null, 70, false)
               .then((data)=>{
                 return data.find(message=>{
                   return message.parts[0].content === 'Привет;) да, подтверждаю!'
@@ -233,7 +248,7 @@
             }
           }).then(()=>{
 
-            this.$set('showLoader', false);
+            this.showLoader = false;
           });
       },
 
@@ -257,7 +272,7 @@
 
                       this.$nextTick( () => {
 
-                        add( this.$els.scrollCnt.scrollHeight )
+                        add( this.scrollCnt.scrollHeight )
 
                       } );
 
@@ -275,7 +290,7 @@
 
           this.$nextTick( () => {
 
-            add( this.$els.scrollCnt.scrollHeight )
+            add( this.scrollCnt.scrollHeight )
 
           } );
 
@@ -299,10 +314,10 @@
       },
 
       scrollHandler(){
-        /*const SHAfter = this.$els.scrollCnt.scrollHeight;
+        /*const SHAfter = this.scrollCnt.scrollHeight;
 
         if ( this.needLoadMessage ) {
-          if ( this.$els.scrollCnt.scrollTop < 1500 ) {
+          if ( this.scrollCnt.scrollTop < 1500 ) {
 
             this.$set( 'needLoadMessage', false );
 
@@ -311,9 +326,9 @@
 
                 if ( messages !== null ) {
 
-                  const SHDelta                 = this.$els.scrollCnt.scrollHeight - SHAfter;
-                  const percentTopOfHeight      = (this.$els.scrollCnt.scrollTop + SHDelta) / this.$els.scrollCnt.scrollHeight;
-                  this.$els.scrollCnt.scrollTop = percentTopOfHeight * this.$els.scrollCnt.scrollHeight;
+                  const SHDelta                 = this.scrollCnt.scrollHeight - SHAfter;
+                  const percentTopOfHeight      = (this.scrollCnt.scrollTop + SHDelta) / this.scrollCnt.scrollHeight;
+                  this.scrollCnt.scrollTop = percentTopOfHeight * this.scrollCnt.scrollHeight;
                   this.$set( 'needLoadMessage', true );
 
                 }
@@ -326,7 +341,7 @@
 
       },
       goToBottom(){
-        this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
+        this.scrollCnt.scrollTop = this.scrollCnt.scrollHeight;
       }
     },
   }

@@ -13,7 +13,7 @@
   import { isAuth } from 'vuex/getters/user.js'
 
   export default {
-    ready() {
+    mounted() {
       this.onMessage     = this.onMessage.bind( this )
       this.onMessageRead = this.onMessageRead.bind( this )
       this.onProductNew  = this.onProductNew.bind( this )

@@ -7,14 +7,14 @@
     i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
   .chat-msg.bubble.bubble-img(
     :class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest && !isAfterServiceMessage}')
-    .chat-msg_t(
-        v-link='{name: "user", params: {id: getUserNameLink}}',
+    router-link.chat-msg_t(
+        :to='{name: "user", params: {id: getUserNameLink}}',
         v-if='!isOwnMessage && !isClosest',
-        :class='{"chat-msg_t-customer-color":isCustomer}'
+        :class='{"chat-msg_t-customer-color":isCustomer}',
+        v-html="getUsername"
     )
-      | {{{ getUsername }}}
     img(
-        @click="open",
+        v-on:click="open",
         :src='getImg',
         class='chat-msg-img',
         v-bind:class='{"chat-msg-img-opacity":!isLoaded }',
@@ -116,8 +116,8 @@
 
           const {width, height} = ratioFit(img.width, img.height, 570, img.height);
 
-          this.$set('imgStyle.width', `${width}px`);
-          this.$set('imgStyle.height', `${height}px`);
+          this.imgStyle.width = `${width}px`;
+          this.imgStyle.height = `${height}px`;
 
           if (img.thumbs.big) {
 
@@ -143,8 +143,8 @@
 
         if ( 'link' in cnt ) {
 
-          this.$set('imgStyle.width', `${cnt.width}px`);
-          this.$set('imgStyle.height', `${cnt.height}px`);
+          this.imgStyle.width = `${cnt.width}px`;
+          this.imgStyle.height = `${cnt.height}px`;
 
           return cnt.link;
 

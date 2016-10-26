@@ -1,7 +1,6 @@
 <template lang="jade">
 .chat-list-i(v-on:click="goToChat",
-            :key='id',
-            ref="chat-item")
+            ref="chatItem")
   .chat-list-i-photo(v-if="!showDelete")
     img(:src='getPhoto()')
 
@@ -10,12 +9,13 @@
     .body-title {{ title }}
 
     .body-status-time
-      .body-status ({{ status | lowercase }})
+      .body-status ({{ status }})
+      //-.body-status ({{ status | lowercase }})
       .body-time {{ dataTime }}
 
     .body-last-msg
       p
-        b(v-if="recentMessage.user_name.length > 0" v-html) {{recentMessage.user_name}}:
+        b(v-if="recentMessage.user_name.length > 0", v-html="recentMessage.user_name")
         | {{ recentMessage.message }}
       .body-notify(v-if='unreadCount')
         span {{ unreadCount }}
@@ -59,7 +59,7 @@
 
       this.$nextTick(()=>{
 
-        new Hammer(this.$els.chatItem,{ touchAction: 'auto'})
+        new Hammer(this.$refs.chatItem,{ touchAction: 'auto'})
 
         .on('swipeleft',()=>{
           this.$dispatch('closeDeleteLead');
