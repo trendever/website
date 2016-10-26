@@ -5,7 +5,7 @@ import VueValidator from 'vue-validator';
 import FastClick from 'fastclick';
 import config from '../config';
 import { throttleEvent, isDebug } from 'utils';
-import { configRouter } from './route-config';
+import { configRouter } from './directbot-routes';
 import InitFilters from './filters';
 import InitValidators from './validators';
 import store from 'vuex/store';
