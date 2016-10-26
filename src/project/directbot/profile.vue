@@ -26,7 +26,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
           img(src="./img/active-directbot-profile.png")
           p.bold Активирован... #[br]
           p мониторю 3 поста #[br] отправил 5 сообщений
-        .profile_no-goods-banner(v-if="noLikes && noProducts && isSelfPage")
+        .profile_no-goods-banner
           span Все готово для подключения #[br] Instagram профиля к #[br]
           span.save Directbot
 
@@ -35,7 +35,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
         button.bot-active-btn(v-if="false") БОТ АКТИВЕН
           i.ic-close
 
-        a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
+
   navbar-component(:current='listId').directbot-navbar
 
 </template>
