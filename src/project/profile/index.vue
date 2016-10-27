@@ -1,7 +1,7 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
 scroll-component(v-if="isDone", class="profile-cnt")
-  header-component(:title='getUserName', :left-btn-show='true')
+  header-component(:title='getUserName', :left-btn-show='leftArrowShow')
     div.profile-right-menu(slot="content", v-if="isMobile && $route.name === 'profile'")
       i.ic-options_menu(@click="buyTg")
   right-nav-component(current="profile")
@@ -114,12 +114,18 @@ scroll-component(v-if="isDone", class="profile-cnt")
         isMobile: window.browser.mobile,
         showBloger: true,
         isSeller: false,
-        isSupplier: false
+        isSupplier: false,
+        leftArrowShow: true
       }
     },
     route: {
       canReuse: false,
-      data( { to: { params: { id } } } ) {
+      data( { to: { params: { id } }, from } ) {
+
+        if(!from.name) {
+          this.leftArrowShow = false;
+        }
+
         return this.openProfile( id )
         .then(()=>{
           if (!this.$store.invShown){
