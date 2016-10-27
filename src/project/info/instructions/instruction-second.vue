@@ -17,12 +17,17 @@
   button(v-on:click="goInstgram").copy-trigger
     a ПЕРЕЙТИ В INSTAGRAM
    //-a(href="instagram://profile", target="_blank") ПЕРЕЙТИ В INSTAGRAM
+
+native-popup(:show-popup="showPopup")
+  .main-text {{{ message }}}
+  .button-text(v-on:click="moveInstagram") ОК
 </template>
 
 <script>
 
 import { getAuthUser } from 'vuex/getters/user';
 import clipboard from 'clipboard';
+import nativePopup from 'base/popup/native';
 //import secondImg from './components/second-img';
 export default {
   vuex:{
@@ -32,7 +37,9 @@ export default {
   },
   data () {
     return {
-      copyError: false
+      copyError: false,
+      showPopup: false,
+      message: ''
     }
   },
 
@@ -45,16 +52,15 @@ export default {
         }
       })
       self.copy.on('success',()=>{
-        alert('Ссылка username.tndvr.com скопирована. Сейчас откроется ваш Instagram профиль и вы сможете ее вставить.');
-
-        //window.location = 'https://www.instagram.com/' + this.getAuthUser.name;
-        this.navigate('https://www.instagram.com/' + this.getAuthUser.name, true);
-        this.$router.go({name: 'profile'})
+        this.message = 'Ссылка username.tndvr.com скопирована. <br><br> Сейчас откроется ваш Instagram профиль и вы сможете ее вставить.';
+        this.showPopup = true;
 
       })
 
       self.copy.on('error', () =>{
-        alert('К сожалению скопировать в буфер не удалось. Сделайте это вручную');
+        this.message = 'К сожалению скопировать в буфер не удалось.<br><br> Сделайте это вручную'
+        this.showPopup = true;
+
         self.copyError = true;
         self.copy.destroy();
         self.copy = false;
@@ -67,12 +73,19 @@ export default {
       if(this.copy || !this.copyError){
         return;
       }
-      //window.location = 'https://www.instagram.com/' + this.getAuthUser.name;
-      this.navigate('https://www.instagram.com/' + this.getAuthUser.name, true);
-      this.$router.go({name: 'profile'})
+      this.moveInstagram();
     },
     close(){
       this.$router.go(window.history.back());
+    },
+
+    moveInstagram(){
+      if(this.copyError) {
+        this.showPopup = false;
+        return;
+      }
+      this.navigate('https://www.instagram.com/' + this.getAuthUser.name, true);
+      this.$router.go({name: 'profile'})
     },
     navigate(href, newTab) {
        let a = document.createElement('a');
@@ -86,6 +99,7 @@ export default {
 
 
   components: {
+    nativePopup
     //secondImg
   }
 }
