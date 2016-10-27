@@ -59,7 +59,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
   navbar-component(:current='listId')
 
   .find-bloger-btn(v-if='isSelfPage && isMobile && showBloger', @click="buyServiceProduct") Найти блогера
-
+  .how-to-sell-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile && noLikes && noProducts") Как начать продавать?
 .help-wrapper(v-if='isFirst')
   .attention(v-if='isFirst')
     p Для корректного отображения подсказок переверните устройство в портретную ориентацию
@@ -122,8 +122,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
       data( { to: { params: { id } } } ) {
         return this.openProfile( id )
         .then(()=>{
-          if (browser.mobile && !browser.standalone){
-            document.location = 'tndvr://shop/'+id;
+          if (!this.$store.invShown){
+            if (browser.mobile && !browser.standalone){
+              document.location = 'tndvr://shop/'+id;
+            }
           }
           this._setTab();
         })
@@ -132,8 +134,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
           return this.openProfile( try_ )
           .then(()=>{
-            if (browser.mobile && !browser.standalone){
-              document.location = 'tndvr://shop/'+try_;
+            if (!this.$store.invShown){
+              if (browser.mobile && !browser.standalone){
+                document.location = 'tndvr://shop/'+try_;
+              }
             }
             this._setTab();
           })
@@ -141,6 +145,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
             this.$router.go( { name: '404' } );
           });
         });
+
       },
       canDeactivate({ to, next }){
         if( to.name === 'product_detail') {
@@ -152,7 +157,6 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     created(){
-      //Баг подвисания ещё
       this.$store.state.products.listId = '';
 
     },
@@ -182,6 +186,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     beforeDestroy(){
+      this.$store.invShown = true;
       if ( this.isAuth ) {
         this.closeProfile();
       }

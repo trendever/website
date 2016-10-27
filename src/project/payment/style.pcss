@@ -17,7 +17,7 @@ input[type=number]::-webkit-outer-spin-button {
 .payment {
   font-family: $font__family__light;
   background: #0E3333;
-  color: #fff;
+  color: $color__white;
   font-size:38px;
   padding-bottom:123px;
 
@@ -25,10 +25,10 @@ input[type=number]::-webkit-outer-spin-button {
    padding-bottom:26px;
  }
 
- ::-webkit-input-placeholder {color:#fff;opacity:.4;}
- ::-moz-placeholder          {color:#fff;opacity:.4;}
- :-moz-placeholder           {color:#fff;opacity:.4;}
- :-ms-input-placeholder      {color:#fff;opacity:.4;}
+ ::-webkit-input-placeholder {color:$color__white;opacity:.4;}
+ ::-moz-placeholder          {color:$color__white;opacity:.4;}
+ :-moz-placeholder           {color:$color__white;opacity:.4;}
+ :-ms-input-placeholder      {color:$color__white;opacity:.4;}
 
  :focus::-webkit-input-placeholder {color:transparent;}
  :focus::-moz-placeholder          {color:transparent;}
@@ -45,7 +45,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 &-summ-input::first-letter{
-  color: #fff;
+  color: $color__white;
   opacity: .4;
 }
 
@@ -105,7 +105,7 @@ input[type=number]::-webkit-outer-spin-button {
     }
 
     .error-message{
-      color: #ffde1e;
+      color: $color-orange;
     }
 
     @media(--mobile){
@@ -120,7 +120,7 @@ input[type=number]::-webkit-outer-spin-button {
   width: 300px;
   padding:0 7px;
   text-align: right;
-  color:#fff;
+  color:$color__white;
   font-size:58px;
   margin-bottom: 50px;
   @media(--desktop){
@@ -212,8 +212,8 @@ input[type=number]::-webkit-outer-spin-button {
         position: absolute;
         width: 22px;
         height: 22px;
-        border-right:2px solid #fff;
-        border-bottom:2px solid #fff;
+        border-right:2px solid $color__white;
+        border-bottom:2px solid $color__white;
         position: absolute;
         right:0;
         top:50%;
@@ -283,7 +283,7 @@ input[type=number]::-webkit-outer-spin-button {
           border:none;
           height:48px;
           line-height: 48px;
-          color: #fff;
+          color: $color__white;
           font-family: "San Francisco Light";
           @media(--mobile) {
             font-size: 36px;
@@ -323,7 +323,7 @@ input[type=number]::-webkit-outer-spin-button {
                 font-size:36px;
                 text-align: left;
                 padding: 0 0 0 3px;
-                color:#fff;
+                color:$color__white;
                 display: inline-block;
                 width: 125px;
                 height: 46px;
@@ -381,7 +381,7 @@ input[type=number]::-webkit-outer-spin-button {
 
           .close {
             cursor: pointer;
-            color: #fff;
+            color: $color__white;
             font-size:24px;
       /* width: 90px;
       height: 90px; */
