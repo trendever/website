@@ -20,6 +20,7 @@
 </template>
 
 <script>
+
 import { getAuthUser } from 'vuex/getters/user';
 import clipboard from 'clipboard';
 //import secondImg from './components/second-img';
@@ -31,24 +32,12 @@ export default {
   },
   data () {
     return {
-      copyError: false,
-      firstInst: true
-    }
-  },
-
-  route: {
-    activate({from, to, next }){
-      if(from.name !== 'info-instructions-1') {
-        this.firstInst = false;
-      }
-      next();
+      copyError: false
     }
   },
 
   ready () {
-    if(!this.firstInst){
-      this.$router.go({name: 'profile'})
-    }
+
     let self = this;
     self.copy =  new clipboard('.copy-trigger',{
         text(trigger){
@@ -57,13 +46,16 @@ export default {
       })
       self.copy.on('success',()=>{
         alert('Ссылка username.tndvr.com скопирована. Сейчас откроется ваш Instagram профиль и вы сможете ее вставить.');
-        window.location = 'https://www.instagram.com/' + this.getAuthUser.name;
+
+        //window.location = 'https://www.instagram.com/' + this.getAuthUser.name;
+        this.navigate('https://www.instagram.com/' + this.getAuthUser.name, true);
+        this.$router.go({name: 'profile'})
 
       })
 
       self.copy.on('error', () =>{
         alert('К сожалению скопировать в буфер не удалось. Сделайте это вручную');
-        copyError = true;
+        self.copyError = true;
         self.copy.destroy();
         self.copy = false;
       });
@@ -72,15 +64,27 @@ export default {
   methods: {
     goInstgram(){
       console.log(this.copy);
-      if(this.copyError || this.copy){
+      if(this.copy || !this.copyError){
         return;
       }
-      window.location = 'https://www.instagram.com/' + this.getAuthUser.name;
+      //window.location = 'https://www.instagram.com/' + this.getAuthUser.name;
+      this.navigate('https://www.instagram.com/' + this.getAuthUser.name, true);
+      this.$router.go({name: 'profile'})
     },
     close(){
       this.$router.go(window.history.back());
     },
+    navigate(href, newTab) {
+       let a = document.createElement('a');
+       a.href = href;
+       if (newTab) {
+          a.setAttribute('target', '_blank');
+       }
+       a.click();
+    }
   },
+
+
   components: {
     //secondImg
   }
