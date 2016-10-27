@@ -286,50 +286,10 @@ export default {
     },
     scrollAnchor() {
       JQuery('.scroll-cnt').animate({scrollTop: window.innerHeight},450);
-/*      var block = document.querySelector( "#how-it-work" );
-      if ( block !== null ) {
-        var scrollBlock = this.scrollCnt;
-
-        if ( !timer ) {
-          var timer = setInterval( function() {
-            if ( block.getBoundingClientRect().top < 80 ) {
-              clearInterval( timer );
-            }
-
-            for (let i = 1; i < 80; i++){
-              if(scrollBlock.scrollTop >= window.innerHeight) {
-                break;
-              }
-              scrollBlock.scrollTop += 1;
-            }
-
-          }, 10 );
-        }
-      }*/
     },
 
     scrollAnchorTags() {
       JQuery('.scroll-cnt').animate({scrollTop: 2 * window.innerHeight},450);
-/*      var block = document.querySelector( "#tags" );
-      if ( block !== null ) {
-        var scrollBlock = this.scrollCnt;
-
-        if ( !timer ) {
-          var timer = setInterval( function() {
-            if ( block.getBoundingClientRect().top < 80 ) {
-              clearInterval( timer );
-            }
-
-            for (let i = 1; i < 80; i++){
-              if(scrollBlock.scrollTop >=  2 * window.innerHeight) {
-                break;
-              }
-              scrollBlock.scrollTop += 1;
-            }
-
-          }, 1 );
-        }
-      }*/
     }
   },
 };

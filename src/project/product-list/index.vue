@@ -29,8 +29,10 @@ scroll-component
   import { isAuth } from 'vuex/getters/user';
   export default {
     data(){
-      if (browser.mobile && !browser.standalone){
-        document.location = 'tndvr://';
+      if (!this.$store.invShown){
+        if (browser.mobile && !browser.standalone){
+          document.location = 'tndvr://';
+        }
       }
       return {showStatusBar: false};
     },
@@ -83,6 +85,7 @@ scroll-component
       });
     },
     beforeDestroy(){
+      this.$store.invShown = true;
       if(this.showOnScroll){
         this.showOnScroll.remove();
       }
