@@ -24,6 +24,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .profile_desc_t(v-if="getSlogan") {{getSlogan}}
           .profile_desc_caption(v-if="getUserCaption") {{{getUserCaption | captionSpaces}}}
 
+        .profile_insta-link(v-if="$route.name === 'profile'")
+          .insta-link-text ссылка на эту витрину
+          .insta-link(v-el:insta-link) {{ getUserName }}.tndvr.com
+
         .profile_filter(v-if="isSelfPage && !noLikes && !noProducts")
           span(v-bind:class="{'seleted': photoType === 'product'}")
             input(type="radio" value="product" v-model="photoType" id="filter-products")
@@ -57,6 +61,11 @@ scroll-component(v-if="isDone", class="profile-cnt")
         :list-id.sync="listId")
 
   navbar-component(:current='listId')
+  native-popup(:show-popup="showPopup")
+    .main-text
+      {{message}}
+    .button-text(v-on:click="showPopup = false")
+      | ОК
 
   .find-bloger-btn(v-if='isSelfPage && isMobile && showBloger', @click="buyServiceProduct") Найти блогера
   .how-to-sell-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile && noLikes && noProducts") Как начать продавать?
@@ -74,7 +83,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
 </template>
 <script type='text/babel'>
-  import RightNavComponent from 'base/right-nav/index';
+  import clipboard from 'clipboard';
   import * as productsService from 'services/products';
   import { urlThumbnail } from 'utils';
   import { createLead } from 'vuex/actions/lead';
@@ -98,10 +107,12 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
 
+  import RightNavComponent from 'base/right-nav/index';
   import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue'
   import PhotosComponent from 'base/photos/photos.vue'
   import NavbarComponent from 'base/navbar/navbar.vue'
+  import NativePopup from 'base/popup/native';
 
   export default {
     data(){
@@ -115,7 +126,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
         showBloger: true,
         isSeller: false,
         isSupplier: false,
-        leftArrowShow: true
+        leftArrowShow: true,
+        showPopup: false,
+        message: ''
       }
     },
     route: {
@@ -175,6 +188,26 @@ scroll-component(v-if="isDone", class="profile-cnt")
         })
         this.$router.replace( { name: 'signup' } );
       }
+
+    let self = this;
+
+    self.copy =  new clipboard('.profile_insta-link',{
+        text(trigger){
+          return self.$els.instaLink.textContent;
+        }
+      })
+      self.copy.on('success',()=>{
+        self.message = `Ссылка ${self.getUserName}.tndvr.com скопирована.`;
+        self.showPopup = true;
+
+      })
+
+      self.copy.on('error', () =>{
+        self.message = 'К сожалению скопировать ссылку не удалось.<br><br> Сделайте это вручную'
+        self.showPopup = true;
+        self.copy.destroy();
+        self.copy = false;
+      });
 
     },
     filters:{
@@ -389,6 +422,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     components: {
+      NativePopup,
       RightNavComponent,
       ScrollComponent,
       HeaderComponent,

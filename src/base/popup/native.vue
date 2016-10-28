@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style lang="postcss">
-
+@import 'base/vars/vars.pcss';
 
 #native-popup {
 
@@ -31,31 +31,56 @@ export default {
 
     color: black;
     text-align: center;
-    font-size: 36px;
+    font-size: 20px;
 
-    width: 80%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+
+    @media (--mobile) {
+      width: 80%;
+      font-size: 36px;
+    }
+
   }
 
   .main-text {
     background: #F5F5F6;
     border-bottom: 1px solid grey;
-    padding: 50px 50px 50px 50px;
-    border-top-right-radius: 30px;
-    border-top-left-radius: 30px;
+
+    padding: 20px 20px 20px 20px;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+
+    @media (--mobile) {
+      padding: 50px 50px 50px 50px;
+      border-top-right-radius: 30px;
+      border-top-left-radius: 30px;
+    }
+
 
   }
+
   .button-text {
+    cursor: pointer;
     background: #F5F5F6;
     color:#226ABB ;
-    padding: * 50px 50px 50px;
-    padding-top: 50px;
-    border-bottom-right-radius: 30px;
-    border-bottom-left-radius: 30px;
+
+    padding: * 20px 20px 20px;
+    padding-top: 20px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+
+    @media (--mobile) {
+      padding: * 50px 50px 50px;
+      padding-top: 50px;
+      border-bottom-right-radius: 30px;
+      border-bottom-left-radius: 30px;
+    }
   }
+
 }
 
 
