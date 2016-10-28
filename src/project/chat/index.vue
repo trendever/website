@@ -206,7 +206,7 @@
       },
 
       run(){
-        if(this.directbot) this.lead_id = this.$route.params.id;
+        if(this.directbot) this.lead_id = +this.$route.params.id;
         return this
           .setConversation( this.lead_id )
           .then(
