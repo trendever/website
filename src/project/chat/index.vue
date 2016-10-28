@@ -21,7 +21,8 @@
                 :msg='msg')
               chat-msg(
                 v-if='msg.parts[0].mime_type === "text/plain" && !hasData(msg)',
-                :msg='msg')
+                :msg='msg',
+                :directbot="directbot")
               chat-msg-info(
                 v-if='msg.parts[0].mime_type === "text/html"',
                 :msg='msg')
