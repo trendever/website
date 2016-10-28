@@ -5,7 +5,7 @@
 <script>
 export default {
   ready(){
-    $route.router.go(window.history.back())
+    this.$route.router.go(window.history.back())
   }
 };
 </script>

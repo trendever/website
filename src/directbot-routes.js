@@ -101,7 +101,7 @@ export function configRouter(router) {
       // !important it must be last of the list.
       // (exlclude '*' not found)
       name: 'user',
-      component: require('project/profile/index.vue')
+      component: require('project/directbot/redirect.vue')
     },
 
     // not found handler
