@@ -144,6 +144,25 @@
         }
       },
     },
+    created(){
+      /*
+      /*D I R E C T B O T
+      */
+      if(this.directbot){
+        if ( this.isDone ) {
+          if ( this.isAuth ) {
+            return this.run().then(()=>{
+              this.clearNotify(this.lead_id);
+              this.$nextTick( () => {
+                      this.goToBottom();
+                    } );
+            })
+          } else {
+            return Promise.resolve()
+          }
+        }
+      }
+    },
     ready(){
       if ( this.isAuth ) {
         this.onMessage      = this.onMessage.bind( this );
