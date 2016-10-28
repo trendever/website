@@ -27,6 +27,7 @@
 </template>
 
 <script type='text/babel'>
+  import { navigateTolink } from 'utils';
   import { getCurrentMember, getShopName, getLastMessageId } from 'vuex/getters/chat.js';
   import { user } from 'vuex/getters/user.js';
   import * as service from 'services/chat';
@@ -54,7 +55,7 @@
     },
     methods:{
       goInstagramProfile(){
-        alert(1);
+        navigateTolink(`http://instagram.com/${this.getUserNameLink}`, true);
       }
     },
     computed: {
