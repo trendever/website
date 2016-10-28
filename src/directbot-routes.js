@@ -20,7 +20,7 @@ export function configRouter(router) {
 
     '/chat': {
       name: 'chat_list',
-      component: require('project/chat-list/index.vue'),
+      component: require('project/directbot/chat-list.vue'),
     },
 
     '/chat/:id': {
