@@ -189,25 +189,32 @@ scroll-component(v-if="isDone", class="profile-cnt")
         this.$router.replace( { name: 'signup' } );
       }
 
-    let self = this;
 
-    self.copy =  new clipboard('.profile_insta-link',{
-        text(trigger){
-          return self.$els.instaLink.textContent;
-        }
-      })
-      self.copy.on('success',()=>{
-        self.message = `Ссылка ${self.getUserName}.tndvr.com скопирована.`;
-        self.showPopup = true;
 
-      })
 
-      self.copy.on('error', () =>{
-        self.message = 'К сожалению скопировать ссылку не удалось.<br><br> Сделайте это вручную'
-        self.showPopup = true;
-        self.copy.destroy();
-        self.copy = false;
-      });
+      if(this.$route.name === 'profile') {
+
+        let self = this;
+
+        self.copy =  new clipboard('.profile_insta-link',{
+            text(trigger){
+              return self.$els.instaLink.textContent;
+            }
+          })
+        self.copy.on('success',()=>{
+          self.message = `Ссылка ${self.getUserName}.tndvr.com скопирована.`;
+          self.showPopup = true;
+
+        })
+
+        self.copy.on('error', () =>{
+          self.message = 'К сожалению скопировать ссылку не удалось.<br><br> Сделайте это вручную'
+          self.showPopup = true;
+          self.copy.destroy();
+          self.copy = false;
+        });
+
+      }
 
     },
     filters:{
@@ -225,6 +232,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     beforeDestroy(){
+      if (this.copy) this.copy.destroy();
       this.$store.invShown = true;
       if ( this.isAuth ) {
         this.closeProfile();
