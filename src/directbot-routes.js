@@ -25,7 +25,7 @@ export function configRouter(router) {
 
     '/chat/:id': {
       name: 'chat',
-      component: require('project/chat/index.vue'),
+      component: require('project/directbot/chat.vue'),
     },
 
     '/chat/:id/payed/:result': {

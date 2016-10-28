@@ -87,6 +87,12 @@
   import popupImg from 'base/popup-img/index.vue';
 
   export default {
+    props: {
+      directBot: {
+        default: false,
+        type: Boolean
+      }
+    },
 
     components: {
       ScrollComponent,
