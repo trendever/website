@@ -88,7 +88,7 @@
 
   export default {
     props: {
-      directBot: {
+      directbot: {
         default: false,
         type: Boolean
       }
@@ -206,6 +206,7 @@
       },
 
       run(){
+        if(this.directbot) this.lead_id = this.$route.params.id;
         return this
           .setConversation( this.lead_id )
           .then(

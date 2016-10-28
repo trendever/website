@@ -1,6 +1,6 @@
 <template lang="jade">
 #directbot-chat
-  chat-component(:direct-bot="true")
+  chat-component(:directbot="true")
 
 </template>
 
