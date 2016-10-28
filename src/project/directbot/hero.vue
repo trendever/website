@@ -9,8 +9,8 @@
       button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
      .hero__content__logo__mobile(:class="{'logo_app': isStandalone}")
     .hero__content__description Искусственный интеллект для Instagram-магазинов
-    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }" v-if="isStandalone") ВХОД И РЕГИСТРАЦИЯ
-    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'app' }" v-else) СКАЧАТЬ ПРИЛОЖЕНИЕ
+    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }") ВХОД И РЕГИСТРАЦИЯ
+    //-button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'app' }" v-else) СКАЧАТЬ ПРИЛОЖЕНИЕ
   .hero__content__2(:class="{'cnt2_app': isStandalone}", v-el:hero-two)
    a.how-btn(@click='scrollAnchor()') КАКИЕ ПРОБЛЕМЫ РЕШАЕТ?
    .hero__content__2__title.main 2 часа ожидания
