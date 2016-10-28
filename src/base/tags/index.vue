@@ -6,11 +6,11 @@
   >
     <div class="tags" id="tags"
          :class="{'product_tags' : isProduct}"
-         v-el:tags
+         ref="tags"
          v-bind:style="tagsStyle">
          <div class="tag"
           v-bind:style="tagStyle"
-          v-for="tag of tags"
+          v-for="tag of filtredTags"
           :class="{'tag-active': tag.active}"
           v-on:click.stop="addTag(tag), open()">
 <!--       <div class="tag"
@@ -121,17 +121,19 @@
         fullHeight: 0
       }
     },
-    ready(){
+    mounted(){
 
-      this.onFlex = this.onFlex.bind( this );
+      this.$nextTick(()=>{
 
-      this.$nextTick( () => {
+        this.onFlex = this.onFlex.bind( this );
+
         this.onFlex();
-      } );
 
-      this.resize = listener( window, 'optimizedResize', this.onFlex )
+        this.resize = listener( window, 'optimizedResize', this.onFlex )
 
-      this.$on( 'update', this.onFlex )
+        this.$on( 'update', this.onFlex )
+
+      })
 
     },
 
@@ -142,12 +144,21 @@
       }
       this.$off( 'update', this.onFlex )
       clearTimeout( this.timer )
-      this.$set( 'timer', null )
+      this.timer = null;
 
     },
 
     computed: {
+      filtredTags(){
 
+        return this.tags/*.filter(tag=>{
+
+          return tag.name === this.searchString;
+
+        })*/
+        //tag of tags | filterBy searchString in 'name'
+
+      },
       tagsStyle(){
         return {
           maxHeight: this.maxHeight,
@@ -223,8 +234,8 @@
 
       open(){
         if(!this.isOpen) {
-          this.$set( 'isOpen', true );
-          this.$els.tags.scrollTop = 0;
+          this.isOpen = true;
+          this.$refs.tags.scrollTop = 0;
         }
       },
 
@@ -234,24 +245,24 @@
 
           const computed = () => {
 
-            if ( this.$els.tags !== null ) {
+            if ( this.$refs.tags !== null ) {
 
-              this.$set( 'showMoreButton', this.$els.tags.scrollHeight > (this.baseHeight + 10) )
+              this.showMoreButton = this.$refs.tags.scrollHeight > (this.baseHeight + 10)
 
               Array
-                .from( this.$els.tags.children )
+                .from( this.$refs.tags.children )
                 .forEach( ( tag ) => {
 
                   tag.style.marginRight = '0';
 
                 } );
 
-              this.$set( 'fullHeight', flex(
-                Array.from( this.$els.tags.children ),
-                this.$els.tags.clientWidth,
+              this.fullHeight = flex(
+                Array.from( this.$refs.tags.children ),
+                this.$refs.tags.clientWidth,
                 this.marginRight
                 )
-              )
+
 
             }
 
@@ -265,13 +276,13 @@
 
           }
 
-          this.$set( 'timer', setTimeout( () => {
+          this.timer = setTimeout( () => {
 
-            this.$set( 'timer', null );
+            this.timer = null ;
 
             computed();
 
-          }, 100 ) );
+          }, 100 ) ;
 
         }
 

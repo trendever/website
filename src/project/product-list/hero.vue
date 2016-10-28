@@ -29,13 +29,13 @@
         to='{name: "info-user"}') Покупателям
       router-link(class='profile-header__menu-link',
         to='{name: "info-newshop"}') Магазинам
-      router-link(class='profile-header__menu-link',
+      a(class='profile-header__menu-link',
         v-on:click="onBuyPromoProduct()") Блогерам
       router-link(class='profile-header__menu-link',
         to='{name: "info-mission"}') Наша миссия
       router-link(class='profile-header__menu-link',
         to='{name: "info-agreement"}') Условия
-      router-link(class='profile-header__menu-link',
+      a(class='profile-header__menu-link',
         href="https://trendever.payture.com/",
         target="_blank") Денежный перевод
       a(class='profile-header__menu-link', v-on:click="logout") Выход

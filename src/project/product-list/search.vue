@@ -41,7 +41,7 @@
               span.change-col__sm
 
     .tags-wrapper( ref="tags" )
-      //-tags-component(
+      tags-component(
         :tags="tags",
         :text-font-size="tagsFontSize",
         :text-line-height="tagsLineHeight",
@@ -82,39 +82,44 @@
         isMobile: window.browser.mobile
       }
     },
-    ready(){
+    mounted(){
 
-      if ( this.isAuth ) {
+      this.$nextTick(()=>{
 
-        this.scrollCnt = document.querySelector( '.scroll-cnt' );
+        if ( this.isAuth ) {
 
-        this.gluingSearch = listen( this.scrollCnt, 'scroll', () => {
+          this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
-          if ( this.isAuth ) {
+          this.gluingSearch = listen( this.scrollCnt, 'scroll', () => {
 
-            let searchHeight = 50;
+            if ( this.isAuth ) {
 
-            if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
+              let searchHeight = 50;
 
-              searchHeight = 100;
+              if ( window.matchMedia( '(max-width: 750px)' ).matches ) {
+
+                searchHeight = 100;
+
+              }
+
+              if ( this.scrollCnt.scrollTop > searchHeight ) {
+
+                Vue.set( 'searchGlued', true );
+
+              } else {
+
+                Vue.set( 'searchGlued', false );
+
+              }
 
             }
 
-            if ( this.scrollCnt.scrollTop > searchHeight ) {
+          } );
 
-              Vue.set( 'searchGlued', true );
+        }
 
-            } else {
+      })
 
-              Vue.set( 'searchGlued', false );
-
-            }
-
-          }
-
-        } );
-
-      }
 
     },
     beforeDestroy(){
@@ -148,10 +153,10 @@
         clearSearch
       }
     },
-    activate(done) {
+    created(/*done*/) {
 
       this.loadTags().then(() => {
-        done();
+        //done();
       });
 
     },

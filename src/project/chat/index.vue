@@ -229,9 +229,9 @@
             }
           ).then(()=>{
             //redirect if no chat room
-            if(this.$store.state.conversation.id === null){
+           /* if(this.$store.state.conversation.id === null){
               this.$router.push( { name: '404'});
-            }
+            }*/
           }).then(()=>{
 
             return messages
