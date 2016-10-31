@@ -61,7 +61,8 @@ div(class="popup" v-if="show")
           'signup',
           '404',
           'contest',
-          'comfirm-sms'
+          'comfirm-sms',
+          'product_detail'
         ];
         return excludePages.indexOf(this.$route.name) > -1;
       }

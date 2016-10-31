@@ -39,6 +39,19 @@ export function signup(phone, username, instagram) {
   });
 }
 
+export function fakeRegister() {
+
+  return new Promise( (resolve, reject) => {
+
+    channel.req('fakeregister', 'auth', {}).then( data => {
+      resolve(data.response_map);
+    }).catch( error => {
+      reject();
+    });
+
+  });
+}
+
 /**
  * Send password manually (to phone)
  * @param  {string} phone user phone (formated +79990000000)
