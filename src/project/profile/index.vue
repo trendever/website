@@ -4,7 +4,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
   header-component(:title='getUserName', :left-btn-show='leftArrowShow')
     div.profile-right-menu(slot="content", v-if="isMobile && $route.name === 'profile'")
-      i.ic-options_menu(@click="showMenu = true")
+      i.ic-options_menu(@click.stop="showMenu = true")
 
   header-menu(:show="showMenu")
 
@@ -14,19 +14,19 @@ scroll-component(v-if="isDone", class="profile-cnt")
         .menu_i_t.__txt-green Отмена
       .menu_i(v-on:click="buyTg")
         .menu_i_t Настройки профиля
-      .menu_i
+      a.menu_i(v-link='{name: "info-instructions-1"}')
         .menu_i_t Как начать продавать?
       .menu_i(v-if="shopId !== 1", v-on:click="buyTg")
         .menu_i_t Подключить продажников
-      .menu_i
+      a.menu_i(v-link='{name: "info-mission"}')
         .menu_i_t Наша миссия
-      .menu_i
+      a.menu_i(v-link='{name: "info-agreement"}')
         .menu_i_t Условия
-      .menu_i
+      a.menu_i(v-link='{name: "info-newshop"}')
         .menu_i_t Помощь магазинам
-      .menu_i
+      a.menu_i(href="https://trendever.payture.com/", target="_blank")
         .menu_i_t Денежный перевод
-      .menu_i
+      .menu_i(v-on:click="logout")
         .menu_i_t.__txt-red Выйти
 
   right-nav-component(current="profile")
@@ -115,7 +115,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
   import config from '../../../config';
 
   import store from 'vuex/store'
-  import { openProfile, closeProfile, setMyCurrentList, setTooltip } from 'vuex/actions/user.js';
+  import { openProfile, closeProfile, setMyCurrentList, setTooltip, logOut } from 'vuex/actions/user.js';
   import {
     userID,
     user,
@@ -155,7 +155,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
         leftArrowShow: true,
         showPopup: false,
         message: '',
-        showMenu: true
+        showMenu: false
       }
     },
     route: {
@@ -266,6 +266,12 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     methods:{
+      logout(){
+
+        this.logOut();
+        window.location = '/';
+
+      },
       buyTg(){
         this
           .createLead( 32158 )
