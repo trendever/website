@@ -33,7 +33,7 @@ div(class="popup" v-if="show")
         switch (this.$route.name){
           case 'product_detail': return 'КУПИТЬ В ПРИЛОЖЕНИИ'; break;
           case 'user': return 'ОТКРЫТЬ В ПРИЛОЖЕНИИ'; break;
-          default: return 'СКАЧАТЬ ПРИЛОЖЕНИЕ'; break;
+          default: return 'ПОДКЛЮЧИТЬ БЕСПЛАТНО'; break;
         }
       }
     },
