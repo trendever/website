@@ -36,6 +36,7 @@
     background: url(../img/hero.jpg) no-repeat;
 
     background-size: cover;
+
     @media(--tabletandless) {
       background: url(../img/Bgr_clg_mob.jpg) no-repeat;
       background-size: cover;
@@ -137,7 +138,7 @@
         display: inline-block !important;
         width: 445px;
         height: 345px;
-        margin-top: 28.5%;
+        margin-top: 14.5%;
       }
     }
 
@@ -171,9 +172,10 @@
       }
       @media(--tabletandless) {
         width: 100%;
-        font-size: 54px;
+        font-size: 48px;
         text-align: center;
         margin-top: 25px;
+				margin-bottom: 100px;
         padding: 0px 30px;
         top: 0;
         left: 0;
@@ -182,7 +184,31 @@
       @media(--largedesktopH) {
         width: 70%;
       }
+			.bold{
+				font-family: $font__family__semibold;
+			}
+			.light{
+				font-family: $font__family__light;
+			}
     }
+
+		&__set-up{
+			button{
+				width: 490px;
+				height: 120px;
+				color: $color__white;
+				font-size: 36px;
+				font-family: $font__family__semibold;
+				border: 2px solid $color__white;
+				border-radius: 5px;
+				background-color: transparent;
+			}
+			i.ic-rub{
+				font-size: 24px;
+				padding-top: 10px;
+				padding-left: 8px;
+			}
+		}
   }
 }
   .hero__content__2{
@@ -240,8 +266,8 @@
     text-align: center;
     .directbot-header{
       display: block !important;
-      position: absolute;
-      top: 2670px !important;
+      position: fixed;
+      //top: 2230px !important;
     }
     .directbot-wrap{
       background: #5E8BCE !important;
@@ -254,7 +280,7 @@
       font-size: 64px;
       font-family: $font__family__thin;
       color: #595959;
-      margin-top: 55px;
+      margin-top: 160px;
     }
     .mid{
       margin-top: 80px;
@@ -282,8 +308,12 @@
     }
 
     &__screen-2{
-      margin-top: 55px;
+      margin-top: 90px;
     }
+
+		&__screen-3{
+			margin-top: 90px;
+		}
 
     &__sub-title{
       font-size: 40px;
@@ -299,6 +329,12 @@
       font-family: $font__family__light;
       color: #595959;
       margin-top: 10px;
+
+			.link-info{
+				display: inline;
+				color: #595959;
+				border-bottom: 0.5px solid #595959;
+			}
     }
 
     &__price{
