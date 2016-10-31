@@ -13,7 +13,7 @@
     button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'app' }" v-else) СКАЧАТЬ ПРИЛОЖЕНИЕ
   .hero__content__2(:class="{'cnt2_app': isStandalone}", v-el:hero-two)
    a.how-btn(@click='scrollAnchor()') КАКИЕ ПРОБЛЕМЫ РЕШАЕТ?
-   .hero__content__2__title.main 2 часа ожидания
+   .hero__content__2__title.main(:class="{'cnt2_app_title': isStandalone}") 2 часа ожидания
    .hero__content__2__paragraph
      p нужно в среднем, чтобы #[br] получить ответ от инста-шопа
    .hero__content__2__title 9 из 10 покупателей
@@ -27,7 +27,7 @@
      p Directbot автоматически #[br] отвечает клиентам #[br] в Instagram Direct
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends КАК ЭТО РАБОТАЕТ?
   .hero__content__landing
-   .section.header.section__content
+   .section.header.section__content(:class="{'cnt2_app_header': isStandalone}")
       .header__content.u-fixed.directbot-header(v-show='is_visible')
         .wrapper.directbot-wrap
           .header__center
