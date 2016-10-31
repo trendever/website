@@ -93,6 +93,18 @@ export function configRouter(router) {
       name: 'payment',
       component: require('project/payment/payment.vue')
     },
+    '/info-screen-1': {
+      name: 'info-screen-1',
+      component: require('project/directbot/info-screen-1.vue')
+    },
+    '/info-screen-2': {
+      name: 'info-screen-2',
+      component: require('project/directbot/info-screen-2.vue')
+    },
+    '/info-screen-3': {
+      name: 'info-screen-3',
+      component: require('project/directbot/info-screen-3.vue')
+    },
     '/foreign': {
       name: 'foreign-link',
       component: require('project/app-iframe/index.vue')
