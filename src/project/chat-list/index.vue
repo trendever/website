@@ -38,7 +38,7 @@ scroll-component(v-el:scroll-cnt)
         #[br(v-if="isMobile")] под товарами в своем Instagram,
         #[br] чтобы продавать и видеть здесь покупателей
        .how-to-sell-btn.chat-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile") Как начать продавать?
-       appstore-link(
+       //-appstore-link(
         text-link="ПОЛУЧИТЬ ПРИЛОЖЕНИЕ ДЛЯ ПРОДАЖ",
         placeholder-link="Укажите номер, чтобы начать продавать",
         v-if="!isMobile").chat-appstore-link
