@@ -31,11 +31,11 @@ scroll-component(v-if="isDone", class="profile-cnt")
           span.save Directbot
 
 
-        button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(v-link="{ name: 'turn-on-bot' }", v-if="false") ПОДКЛЮЧИТЬ БОТА
-        button.bot-active-btn БОТ АКТИВЕН
+        button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(v-link="{ name: 'turn-on-bot' }") ПОДКЛЮЧИТЬ БОТА
+        button.bot-active-btn(v-if="false") БОТ АКТИВЕН
           i.ic-close
 
-        a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
+        //a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
 
   navbar-component(:current='listId').directbot-navbar
 
