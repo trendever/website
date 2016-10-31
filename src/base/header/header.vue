@@ -157,7 +157,7 @@
           }
         }
 
-        if ( window.history.length > 2 && !this.forceBackLink) {
+        if ( window.history.length > 2 && !this.forceBackLink && this.$route.name !== 'chat') {
 
           window.history.back();
 

@@ -32,6 +32,12 @@ export function configRouter(router) {
       component: require('project/chat-list/index.vue'),
     },
 
+    'chat/zoom': {
+      name: 'chat_zoom',
+      component: require('base/popup-img/routed')
+
+    },
+
     '/chat/:id': {
       name: 'chat',
       component: require('project/chat/index.vue'),

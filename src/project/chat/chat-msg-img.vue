@@ -74,6 +74,7 @@
 
           this.openPopUp( this.getImg, width, height );
 
+          this.$router.go({name: 'chat_zoom', query: { chatid: this.$route.params.id}})
         }
 
         if (msgParts.mime_type  === 'image/base64')  {
@@ -81,6 +82,9 @@
           let {width, height} = msgParts.content;
 
           this.openPopUp( this.getImg, width, height );
+
+          this.$router.go({name: 'chat_zoom', query: { chatid: this.$route.params.id}})
+
 
         }
       }
@@ -114,10 +118,10 @@
 
           let img = JSON.parse( cnt );
 
-          const {width, height} = ratioFit(img.width, img.height, 570, img.height);
+          //const {width, height} = ratioFit(img.width, img.height, 570, img.height);
 
-          this.$set('imgStyle.width', `${width}px`);
-          this.$set('imgStyle.height', `${height}px`);
+/*          this.$set('imgStyle.width', `${width}px`);
+          this.$set('imgStyle.height', `${height}px`);*/
 
           if (img.thumbs.big) {
 
@@ -143,8 +147,8 @@
 
         if ( 'link' in cnt ) {
 
-          this.$set('imgStyle.width', `${cnt.width}px`);
-          this.$set('imgStyle.height', `${cnt.height}px`);
+/*          this.$set('imgStyle.width', `${cnt.width}px`);
+          this.$set('imgStyle.height', `${cnt.height}px`);*/
 
           return cnt.link;
 
