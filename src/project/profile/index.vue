@@ -1,9 +1,34 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
 scroll-component(v-if="isDone", class="profile-cnt")
+
   header-component(:title='getUserName', :left-btn-show='leftArrowShow')
     div.profile-right-menu(slot="content", v-if="isMobile && $route.name === 'profile'")
-      i.ic-options_menu(@click="buyTg")
+      i.ic-options_menu(@click="showMenu = true")
+
+  header-menu(:show="showMenu")
+
+    .menu-items(slot="items")
+
+      .menu_i(v-on:click="showMenu = false")
+        .menu_i_t.__txt-green Отмена
+      .menu_i(v-on:click="buyTg")
+        .menu_i_t Настройки профиля
+      .menu_i
+        .menu_i_t Как начать продавать?
+      .menu_i(v-if="shopId !== 1", v-on:click="buyTg")
+        .menu_i_t Подключить продажников
+      .menu_i
+        .menu_i_t Наша миссия
+      .menu_i
+        .menu_i_t Условия
+      .menu_i
+        .menu_i_t Помощь магазинам
+      .menu_i
+        .menu_i_t Денежный перевод
+      .menu_i
+        .menu_i_t.__txt-red Выйти
+
   right-nav-component(current="profile")
 
   .section.top.bottom
@@ -107,6 +132,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
 
+  import HeaderMenu from 'base/menu/header-menu';
   import RightNavComponent from 'base/right-nav/index';
   import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue'
@@ -128,7 +154,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
         isSupplier: false,
         leftArrowShow: true,
         showPopup: false,
-        message: ''
+        message: '',
+        showMenu: true
       }
     },
     route: {
@@ -430,6 +457,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     components: {
+      HeaderMenu,
       NativePopup,
       RightNavComponent,
       ScrollComponent,
