@@ -8,7 +8,12 @@
       .profile-header__center
       button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
      .hero__content__logo__mobile(:class="{'logo_app': isStandalone}")
-    .hero__content__description Искусственный интеллект для Instagram-магазинов
+    .hero__content__description
+      span.bold Бот-консультант #[br]
+      span.light для Instagram Direct
+    .hero__content__set-up
+      button.set-up-btn ПОДКЛЮЧИТЬ ЗА 0
+        i.ic-rub
     button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }") ВХОД И РЕГИСТРАЦИЯ
     //-button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'app' }" v-else) СКАЧАТЬ ПРИЛОЖЕНИЕ
   .hero__content__2(:class="{'cnt2_app': isStandalone}", v-el:hero-two)
@@ -27,39 +32,40 @@
      p Directbot автоматически #[br] отвечает клиентам #[br] в Instagram Direct
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends КАК ЭТО РАБОТАЕТ?
   .hero__content__landing
-   .section.header.section__content(:class="{'cnt2_app_header': isStandalone}")
+   .section.header.section__content(:class="{'cnt2_app_header': isStandalone}", id="header")
       .header__content.u-fixed.directbot-header(v-show='is_visible')
         .wrapper.directbot-wrap
           .header__center
             .header__text.head Подробнее о Directbot
-    .hero__content__landing__title Что умеет Directbot?
+    .hero__content__landing__title Directbot сам отвечает #[br] в Instagram Direct
     .hero__content__landing__icon-1
       img(src="./img/icon-1.png")
-    .hero__content__landing__sub-title Отвечает всем клиентам сразу
-    .hero__content__landing__caption Играюче уделит внимание каждому, #[br] быстро ответит. На реальных покупателей останется больше времени
+    .hero__content__landing__sub-title Отвечает всем #[br] клиентам сразу
+    .hero__content__landing__caption Играюче уделит внимание каждому, #[br] быстро ответит.
+      a.link-info(v-link="{name: 'info-screen-1'}")  Ни один клиент #[br] не успеет передумать
     .hero__content__landing__icon-2
       img(src="./img/icon-2.png")
-    .hero__content__landing__sub-title Выполняет «мартышкин труд»
-    .hero__content__landing__caption Больше не нужно бесконечно #[br] копировать/вставлять. Бот даст ссылку #[br] на сайт, расскажет про цены, наличие
+    .hero__content__landing__sub-title Выполняет #[br] «мартышкин труд»
+    .hero__content__landing__caption Больше не нужно отвечать #[br] и спрашивать одно и то же. #[br]
+      a.link-info(v-link="{name: 'info-screen-2'}") Бот даст ссылку на сайт, уточнит #[br] наличие, узнает размеры и адрес
     .hero__content__landing__icon-3
       img(src="./img/icon-3.png")
-    .hero__content__landing__sub-title Подключается быстро #[br] и работает в фоне
-    .hero__content__landing__caption Просто подключи свой Instagram #[br] и наслаждайся результатом. Ничего #[br] не надо скачивать. Будущее наступило
+    .hero__content__landing__sub-title Подключается быстро, #[br] работает самостоятельно
+    .hero__content__landing__caption Подключи бота и следи за чатами #[br] в своем Instagram Direct. #[br] Ничего не надо скачивать. #[br]
+      a.link-info(v-link="{name: 'info-screen-3'}") Будущее наступило
     .hero__content__landing__title.mid Откуда бот знает, #[br] кому и что отвечать?!
     .hero__content__landing__screen-1
       img(src="./img/screen-1.png")
-    .hero__content__landing__sub-title.questions Бот понимает вопросы покупателей
-    .hero__content__landing__caption Не важно, где задан вопрос, #[br] бот сразу отправит персональное #[br] сообщение в директ и приветливо #[br] ответит на вопросы
+    .hero__content__landing__sub-title.questions Бот понимает #[br] вопросы покупателей
+    .hero__content__landing__caption Не важно, задан вопрос в комментариях #[br] или личном сообщении, #[br] бот распознает его и поймет, #[br] что нужно ответить клиенту
     .hero__content__landing__screen-2
       img(src="./img/screen-2.png")
-    .hero__content__landing__sub-title.info Бот спросит у тебя все, что нужно
-    .hero__content__landing__caption Бот уточнит всю информациюпо #[br] товарам в чате (по ссылке в sms). #[br] Есть сайт? Укажи ссылку на товарв #[br] описании поста
-    .hero__content__landing__title.how-cost Сколько стоят услуги #[br] Directbot?
-    .hero__content__landing__price
-      span.numb 4 990
-      i.ic-rub-directbot
-      span  в месяц
-    .hero__content__landing__free Первые 3 дня бесплатно
+    .hero__content__landing__sub-title.info Все просто, если есть сайт
+    .hero__content__landing__caption Нужна активная ссылка под постом #[br] в Instagram? Просто напиши ее #[br] в описании своего поста, а бот #[br] пришлет ссылку в Instagram Direct
+    .hero__content__landing__screen-3
+      img(src="./img/screen-3.png")
+    .hero__content__landing__sub-title Бот ответит #[br] на большинство вопросов
+    .hero__content__landing__caption Клиенты быстро получат ответы, #[br] без опечаток. Следи за диалогом #[br] прямо в своем Instagram #[br] и вступи на этапе сделки
 a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
 </template>
 
