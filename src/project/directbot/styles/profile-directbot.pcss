@@ -6,8 +6,12 @@
 
 .profile-right-menu {
   position: absolute;
-  top: 65px;
+  top: 27px;
   right: 30px;
+
+  .standalone & {
+    top: 65px;
+  }
   .ic-options_menu {
     font-size: 40px;
     color: white;
@@ -16,11 +20,15 @@
 
 .profile-days{
   position: absolute;
-  top: 60px;
+  top: 19px;
   left: 30px;
   font-size: 40px;
   color: $color-orange;
   font-family: $font__family__semibold;
+  .standalone & {
+    top: 60px;
+  }
+
   .day{
     font-size: 24px;
   }

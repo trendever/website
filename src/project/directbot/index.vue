@@ -39,8 +39,12 @@ scroll-component
       }
     },
     ready(){
+      if(this.isAuth) {
+        this.$router.go({name: 'chat_list'})
+      }
       //показываем Auth button
       if( !this.isAuth ) {
+
         let scrollComp = document.querySelector('.scroll-cnt');
         let lookinside_button = document.getElementById('lookinside');
         this.showOnScroll = listen(scrollComp,'scroll',()=>{

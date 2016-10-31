@@ -263,3 +263,15 @@ export const targetClass = ( event , className , callback ) => {
   callback();
 
 }
+
+
+export const  navigateTolink = (href, newTab) => {
+
+  let a = document.createElement('a');
+    a.href = href;
+    if (newTab) {
+      a.setAttribute('target', '_blank');
+    }
+  a.click();
+
+}

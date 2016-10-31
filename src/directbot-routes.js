@@ -17,15 +17,18 @@ export function configRouter(router) {
       name: 'home',
       component: require('project/directbot/index.vue')
     },
-
+    '/product/': {
+      name: 'product_detail',
+      component: require('project/directbot/redirect.vue')
+    },
     '/chat': {
       name: 'chat_list',
-      component: require('project/chat-list/index.vue'),
+      component: require('project/directbot/chat-list.vue'),
     },
 
     '/chat/:id': {
       name: 'chat',
-      component: require('project/chat/index.vue'),
+      component: require('project/directbot/chat.vue'),
     },
 
     '/chat/:id/payed/:result': {
@@ -98,7 +101,7 @@ export function configRouter(router) {
       // !important it must be last of the list.
       // (exlclude '*' not found)
       name: 'user',
-      component: require('project/profile/index.vue')
+      component: require('project/directbot/redirect.vue')
     },
 
     // not found handler

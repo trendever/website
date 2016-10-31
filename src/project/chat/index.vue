@@ -21,7 +21,8 @@
                 :msg='msg')
               chat-msg(
                 v-if='msg.parts[0].mime_type === "text/plain" && !hasData(msg)',
-                :msg='msg')
+                :msg='msg',
+                :directbot="directbot")
               chat-msg-info(
                 v-if='msg.parts[0].mime_type === "text/html"',
                 :msg='msg')
@@ -87,6 +88,12 @@
   import popupImg from 'base/popup-img/index.vue';
 
   export default {
+    props: {
+      directbot: {
+        default: false,
+        type: Boolean
+      }
+    },
 
     components: {
       ScrollComponent,
@@ -137,6 +144,25 @@
           }
         }
       },
+    },
+    created(){
+      /*
+      /*D I R E C T B O T
+      */
+      if(this.directbot){
+        if ( this.isDone ) {
+          if ( this.isAuth ) {
+            return this.run().then(()=>{
+              this.clearNotify(this.lead_id);
+              this.$nextTick( () => {
+                      this.goToBottom();
+                    } );
+            })
+          } else {
+            return Promise.resolve()
+          }
+        }
+      }
     },
     ready(){
       if ( this.isAuth ) {
@@ -200,6 +226,7 @@
       },
 
       run(){
+        if(this.directbot) this.lead_id = +this.$route.params.id;
         return this
           .setConversation( this.lead_id )
           .then(
