@@ -10,7 +10,7 @@
         .payment-summ-text
           .error-message(v-if="errorMessage") {{ errorMessage }}
           .transparent(v-else)
-            Введите сумму к получению
+            | Введите сумму к получению
         .payment-summ-input-wrapper
           .phantom-input(v-if="!activateInput" @click="startInput")
             span(v-if="!billPrice") 0

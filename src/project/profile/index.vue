@@ -88,7 +88,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
   navbar-component(:current='listId')
   native-popup(:show-popup="showPopup")
     .main-text
-      {{message}}
+      | {{message}}
     .button-text(v-on:click="showPopup = false")
       | OK
 
