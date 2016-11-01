@@ -3,7 +3,7 @@
  .monetization
 
   i.ic-close(@click='closePage', v-if="getUseDays")
-  .monetization__days-to-end(:class="{is__end: getUseDays === 0}") {{ getUseDays }}
+  .monetization__days-to-end(:class="{is__end: getUseDays === 0, 'error-days': errorChoice}") {{ getUseDays }}
   .monetization__text
     | дней осталось до конца #[br.first-br] пробного периода
   .monetization__text.bot
@@ -16,7 +16,8 @@
   .monetization__accept-btn(:class="{ dark__yellow: getUseDays === 0 && !dealType}")
 
    button(v-if="getUseDays !== 0 && !dealType", @click="closePage") ПОКА НЕ УВЕРЕН
-   button(v-if="getUseDays === 0 || dealType", @click="accept") ПОДТВЕРДИТЬ
+   button(v-if="getUseDays === 0 && !errorChoice || dealType && !errorChoice",  @click="accept") ПОДТВЕРДИТЬ
+   button(v-if="errorChoice", :class="{'error-button': errorChoice}" @click="accept") ВЫБЕРИ ТАРИФ
 
 </template>
 
@@ -26,7 +27,8 @@ import { getUseDays } from 'vuex/getters/user';
 export default {
   data(){
     return {
-      dealType: ''
+      dealType: '',
+      errorChoice: ''
     }
   },
   vuex: {
@@ -47,10 +49,21 @@ export default {
       this.$router.go({name: 'home'})
     },
     accept(){
+
       if(!this.dealType){
+
+        this.errorChoice = true;
+
+        setTimeout(()=>{
+          this.errorChoice = false;
+        },1000)
+
         return;
+
       }
+
       alert('Подтверждаю');
+
     }
   }
 }
