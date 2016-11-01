@@ -29,7 +29,7 @@
      p хотели бы добавлять активную #[br] ссылку в подпись своих постов
    .hero__content__2__title.bot РЕШЕНИЕ
    .hero__content__2__paragraph
-     p Directbot автоматически #[br] отвечает клиентам #[br] в Instagram Direct
+     p Directbot автоматически отвечает #[br] клиентам в Instagram Direct
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends КАК ЭТО РАБОТАЕТ?
   .hero__content__landing
    .section.header.section__content(:class="{'cnt2_app_header': isStandalone}", id="header")
@@ -58,10 +58,22 @@
       img(src="./img/screen-1.png")
     .hero__content__landing__sub-title.questions Бот понимает #[br] вопросы покупателей
     .hero__content__landing__caption Не важно, задан вопрос в комментариях #[br] или личном сообщении, #[br] бот распознает его и поймет, #[br] что нужно ответить клиенту
-    .hero__content__landing__screen-2
-      img(src="./img/screen-2.png")
-    .hero__content__landing__sub-title.info Все просто, если есть сайт
-    .hero__content__landing__caption Нужна активная ссылка под постом #[br] в Instagram? Просто напиши ее #[br] в описании своего поста, а бот #[br] пришлет ссылку в Instagram Direct
+    .hero__content__landing__toggle
+      .hero__content__landing__toggle__title У ТЕБЯ ЕСТЬ ИНТЕРНЕТ-МАГАЗИН?
+      button.yes ДА
+      button.no НЕТ
+    .wrap-yes(v-if="false")
+      .hero__content__landing__screen-2
+        img(src="./img/screen-2-yes.png")
+      .hero__content__landing__sub-title.info Укажи артикул товара #[br] под постом
+      .hero__content__landing__caption Бот узнает о деталях и наличии товара #[br] по артикулу в описании поста. #[br] Ссылка на сайт должна быть #[br] в «био» инста-профиля
+    .wrap-no
+      .hero__content__landing__screen-2
+        img(src="./img/screen-2-no.png")
+      .hero__content__landing__sub-title.info Нет сайта? Ответь #[br] на вопросы о товарах
+      .hero__content__landing__caption Бот увидит новые посты, уточнит детали #[br] и наличие товаров. Потом добавит их #[br] в твой
+        a.link-info() новый интернет-магазин #[br] по ссылке
+          span.bold  xxxx.drbt.io
     .hero__content__landing__screen-3
       img(src="./img/screen-3.png")
     .hero__content__landing__sub-title Бот ответит #[br] на большинство вопросов

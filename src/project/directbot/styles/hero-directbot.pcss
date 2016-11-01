@@ -242,7 +242,7 @@
       margin-top: 55px;
     }
     .main{
-      margin-top: 35px;
+      margin-top: 55px;
     }
     .bot{
       margin-top: 75px;
@@ -266,8 +266,8 @@
     text-align: center;
     .directbot-header{
       display: block !important;
-      position: fixed;
-      //top: 2230px !important;
+      position: absolute;
+      top: 2230px !important;
     }
     .directbot-wrap{
       background: #5E8BCE !important;
@@ -280,7 +280,7 @@
       font-size: 64px;
       font-family: $font__family__thin;
       color: #595959;
-      margin-top: 160px;
+      margin-top: 155px;
     }
     .mid{
       margin-top: 80px;
@@ -291,7 +291,7 @@
     }
 
     &__icon-1{
-      margin-top: 55px;
+      margin-top: 120px;
     }
 
     &__icon-2{
@@ -316,9 +316,10 @@
 		}
 
     &__sub-title{
-      font-size: 40px;
+      font-size: 46px;
       font-family: $font__family__semibold;
       color: #595959;
+	    margin-top: -5px;
     }
     .questions, .info{
       margin-top: -10px;
@@ -333,9 +334,42 @@
 			.link-info{
 				display: inline;
 				color: #595959;
-				border-bottom: 0.5px solid #595959;
+				border-bottom: 1px solid #595959;
+
+				.bold{
+					font-family: $font__family__semibold;
+				}
 			}
     }
+
+		&__toggle{
+			&__title{
+				font-size: 36px;
+				margin-top: 90px;
+				color: #595959;
+				font-family: $font__family__light;
+			}
+
+			button{
+				display: inline-block;
+				width: 330px;
+				height: 64px;
+				background-color: transparent;
+				border: 1px solid $color__blue;
+				border-radius: 5px;
+				font-size: 28px;
+				font-family: $font__family__light;
+				color: $color__blue;
+
+				&:hover{
+					background-color: $color__blue;
+					color: $color__white;
+				}
+			}
+				.yes{
+					margin-right: 30px;
+				}
+		}
 
     &__price{
       font-size: 64px;

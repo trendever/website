@@ -2,7 +2,6 @@
 <template lang="jade">
 .info-screen
   i.ic-close(@click='closePage')
-  img(src="./img/info-screen.svg")
   p.description Мы знаем как много сейчас разных CRM для управления продажами. Бот хорош тем, #[br] что работает на вас, а не вы #[br] в нем. Нужно просто нажать #[br] на кнопку, а не разбираться #[br] в новых приложениях #[br] и программах
 </template>
 

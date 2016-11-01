@@ -2,8 +2,7 @@
 <template lang="jade">
 .info-screen
   i.ic-close(@click='closePage')
-  img(src="./img/info-screen.svg")
-  p.description Directbot, как самый ответственный продавец, всегда на чеку для ваших клиентов в Instagram и может многое. Он вежливо поговорит с покупателем прямо в Instagram Direct, как бот-консультант. Вы не тратите время на клиентов, которые не покупают
+  p.description Directbot, как самый #[br] ответственный продавец, #[br] всегда на чеку для ваших #[br] клиентов в Instagram и может #[br] многое. Он вежливо поговорит #[br] с покупателем прямо в Instagram Direct, как бот-консультант. #[br] Вы не тратите время на #[br] клиентов, которые #[br] не покупают
 </template>
 
 <script>
