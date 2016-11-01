@@ -48,7 +48,7 @@ export const closeProducts = ( { dispatch } ) => {
 
 export const loadProducts = (
   { dispatch, state },
-  { isSearch, isTags, filterByShopId, filterByMentionerId, limit },
+  { isSearch, isTags, filterByShopId, filterByMentionerId, limit, includeNotSailed },
   force = false
 ) => {
 
@@ -63,7 +63,7 @@ export const loadProducts = (
       setAnimate( { dispatch, state }, true );
 
       products
-        .find( getSearchOptions( { state }, { isSearch, isTags, filterByShopId, filterByMentionerId, limit }, force ) )
+        .find( getSearchOptions( { state }, { isSearch, isTags, filterByShopId, filterByMentionerId, limit, includeNotSailed }, force ) )
         .then( data => {
 
           if ( force ) {
@@ -80,7 +80,7 @@ export const loadProducts = (
 
         } )
         .catch( ( error ) => {
-          products.sendError( error, { state, isSearch, isTags, filterByShopId, filterByMentionerId, limit } );
+          products.sendError( error, { state, isSearch, isTags, filterByShopId, filterByMentionerId, limit, includeNotSailed } );
           reject( error );
         } );
 
@@ -91,7 +91,7 @@ export const loadProducts = (
         setAnimate( { dispatch, state }, true );
 
         products
-          .find( getSearchOptions( { state }, { isSearch, isTags, filterByShopId, filterByMentionerId, limit }, force ) )
+          .find( getSearchOptions( { state }, { isSearch, isTags, filterByShopId, filterByMentionerId, limit, includeNotSailed }, force ) )
           .then( data => {
 
             dispatch( types.PRODUCTS_RECEIVE, data/*.object_list*/ );
@@ -100,7 +100,7 @@ export const loadProducts = (
 
           } )
           .catch( ( error ) => {
-            products.sendError( error, { state, isSearch, isTags, filterByShopId, filterByMentionerId, limit } );
+            products.sendError( error, { state, isSearch, isTags, filterByShopId, filterByMentionerId, limit, includeNotSailed } );
             reject( error );
           } );
 
@@ -323,7 +323,7 @@ export const setLike = (
 
 export const getSearchOptions = (
   { state },
-  { isSearch, isTags, filterByShopId, filterByMentionerId, limit = state.products.ITEMS_PER_PAGE },
+  { isSearch, isTags, filterByShopId, filterByMentionerId, limit = state.products.ITEMS_PER_PAGE, includeNotSailed },
   force = false
 ) => {
 
@@ -384,6 +384,12 @@ export const getSearchOptions = (
   if ( filterByMentionerId ) {
 
     request.mentioner_id = filterByMentionerId;
+
+  }
+
+  if( includeNotSailed ) {
+
+    request.include_not_on_sale = includeNotSailed
 
   }
 

@@ -106,7 +106,7 @@ export const sendError = ( errorCode, state = null ) => {
   } );
 }*/
 
-export function find( { query, tags, shop_id, mentioner_id, limit, offset, include_not_on_sale = true } ) {
+export function find( { query, tags, shop_id, mentioner_id, limit, offset, include_not_on_sale } ) {
 
   return new Promise( ( resolve, reject ) => {
 

@@ -252,10 +252,23 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
         const { search, tags, filterByShopId, filterByMentionerId } = this;
 
+        //Возвращение c другой ленты
+
         if(this.getComeBack){
           force = true;
         }
-        return this.run( { isSearch: search, isTags: tags, filterByShopId, filterByMentionerId }, force );
+
+        //Получение отмеченых товаров
+
+        let includeNotSailed = false;
+
+        if(this.$route.name === 'profile' && this.filterByMentionerId){
+
+          includeNotSailed = true;
+
+        }
+
+        return this.run( { isSearch: search, isTags: tags, filterByShopId, filterByMentionerId, includeNotSailed }, force );
 
       },
 
