@@ -104,15 +104,32 @@ export default {
 
               }).then(({timeOut, difference})=>{
 
+                let storage = window.localStorage;
+                let showMonetization = storage.getItem('showMonetization');
+
                 if(difference <= this.day) {
+
+                  if(showMonetization === '7days'){
+                    return;
+                  }
+
                   setTimeout(()=>{
+                    storage.setItem('showMonetization','7days');
                     this.$router.go({name: 'monetization'})
                   }, timeOut)
+
                   return
+
                 }
 
                 if(difference > this.day * 2 && difference <= this.day * 3) {
+
+                  if(showMonetization === '5days'){
+                    return;
+                  }
+
                   setTimeout(()=>{
+                    storage.setItem('showMonetization','5days');
                     this.$router.go({name: 'monetization'})
                   }, timeOut)
                   return
