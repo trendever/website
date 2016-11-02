@@ -232,7 +232,7 @@ export const setUseDays = ({dispatch}, count) => {
   dispatch(types.USER_SET_USE_DAYS, count)
 }
 
-export const setSupplierStatus = ({ dispath }, disable = true ) => {
+export const setSupplierStatus = ({ dispatch }, disable) => {
 
   dispatch(types.USER_SET_SUPPLIER_STATUS, disable);
 

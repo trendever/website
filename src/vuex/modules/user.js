@@ -36,7 +36,7 @@ const state = {
   //Число оставшихся дней до окончания пробоного периода
   useDays: 7,
 
-  //Ставится в зависимости от решения юзера начать продавать
+  //Ставится в зависимости от решения юзера начать продавать или нет
   supplierStatus: true
 
 };
@@ -144,15 +144,7 @@ const mutations = {
     state.useDays = count;
   },
   [USER_SET_SUPPLIER_STATUS](state, disable) {
-
-    if(disable) {
-
-      state.userAll[state.myId].supplier_of = null;
-
-    }
-
     state.supplierStatus = disable;
-
   }
 };
 

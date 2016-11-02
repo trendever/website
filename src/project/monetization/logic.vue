@@ -5,7 +5,7 @@ div
       | Мы видим товары, где вы указаны как поставщик. Вы собираетесь их продавать?
     .button-text
       span(v-on:click="goInstructions") Да
-      span(v-on:link="disableSupplier") Нет
+      span(v-on:click="disableSupplier") Нет
 </template>
 
 <script>
@@ -26,7 +26,8 @@ export default {
       isAuth
     },
     actions: {
-      setUseDays
+      setUseDays,
+      setSupplierStatus
     }
   },
   data () {
@@ -41,7 +42,7 @@ export default {
   methods:{
     disableSupplier(){
       this.showPopup = false;
-      this.setSupplierStatus();
+      this.setSupplierStatus(false);
     },
     goInstructions(){
       this.showPopup = false;
