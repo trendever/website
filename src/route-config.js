@@ -102,19 +102,20 @@ export function configRouter(router) {
       name: 'payment',
       component: require('project/payment/payment.vue')
     },
-    '/pay-on': {
-      name: 'pay-on',
-      component: require('project/monetization/pay-on.vue')
-    },
 
     '/foreign': {
       name: 'foreign-link',
       component: require('project/app-iframe/index.vue')
     },
 
-    'monetization': {
+    '/monetization': {
       name: 'monetization',
       component: require('project/monetization/index.vue')
+    },
+
+    '/pay-on': {
+      name: 'pay-on',
+      component: require('project/monetization/pay-on.vue')
     },
 
     '/:id': {

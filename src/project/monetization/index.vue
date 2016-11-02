@@ -62,7 +62,7 @@ export default {
 
       }
 
-      alert('Подтверждаю');
+      this.$router.go({name: 'pay-on'});
 
     }
   }
