@@ -108,6 +108,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
 </template>
 <script type='text/babel'>
+  import setting from 'settings';
   import clipboard from 'clipboard';
   import * as productsService from 'services/products';
   import { urlThumbnail } from 'utils';
@@ -427,6 +428,14 @@ scroll-component(v-if="isDone", class="profile-cnt")
         return false;
       },
       shopId(){
+
+        if(settings.activateMonetization){
+          if(!window.localStorage.getItem('supplierStatus')){
+            return 1;
+          }
+        }
+
+
         let shopId = '';
 
         if(this.user.supplier_of !== null){

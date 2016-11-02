@@ -49,6 +49,8 @@ export default {
     },
     goInstructions(){
       this.showPopup = false;
+      this.setSupplierStatus(true);
+      storage.setItem('supplierStatus', true);
       storage.setItem('showMonetization','firstTimeAlert');
       this.$router.go({name: 'info-instructions-1'})
     }
