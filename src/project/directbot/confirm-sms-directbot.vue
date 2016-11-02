@@ -1,11 +1,13 @@
+<style src="./styles/signup-directbot.pcss"></style>
 <template lang="jade">
+
 div
   .signup.confirm(:style='{ height: height }')
     .signup__close.__hello(@click='closePage'): i.ic-close
     .section
-      h1.accept(v-if='!isCompleted') Подтвердите номер телефона
+      h1.accept(v-if='!isCompleted') Подтвердите телефон
       h1.accept(v-if='isCompleted') Номер подтвержден
-      .middle-container(:class="{'has-another-name': anotherName}")
+      .middle-container.mid(:class="{'has-another-name': anotherName}")
         .thanks-wrap(v-if='isCompleted')
           h1 Спасибо!
 

@@ -58,7 +58,7 @@ export function configRouter(router) {
 
     '/confirm-sms': {
       name: 'comfirm-sms',
-      component: require('project/auth/confirm-sms.vue'),
+      component: require('project/directbot/confirm-sms-directbot.vue'),
     },
 
     '/404': {
@@ -104,6 +104,10 @@ export function configRouter(router) {
     '/info-screen-3': {
       name: 'info-screen-3',
       component: require('project/directbot/info-screen-3.vue')
+    },
+    '/info-screen-4': {
+      name: 'info-screen-4',
+      component: require('project/directbot/info-screen-4.vue')
     },
     '/foreign': {
       name: 'foreign-link',

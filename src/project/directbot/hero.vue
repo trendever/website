@@ -10,7 +10,7 @@
      .hero__content__logo__mobile(:class="{'logo_app': isStandalone}")
     .hero__content__description
       span.bold Бот-консультант #[br]
-      span.light для Instagram Direct
+      span.light для Instagram-магазинов
     .hero__content__set-up
       button.set-up-btn ПОДКЛЮЧИТЬ ЗА 0
         i.ic-rub
@@ -20,16 +20,16 @@
    a.how-btn(@click='scrollAnchor()') КАКИЕ ПРОБЛЕМЫ РЕШАЕТ?
    .hero__content__2__title.main(:class="{'cnt2_app_title': isStandalone}") 2 часа ожидания
    .hero__content__2__paragraph
-     p нужно в среднем, чтобы #[br] получить ответ от инста-шопа
+     p.top нужно в среднем, чтобы #[br] получить ответ от инста-шопа
    .hero__content__2__title 9 из 10 покупателей
    .hero__content__2__paragraph
      p в начале спрашивают про цену #[br] или наличие товара
    .hero__content__2__title 10 из 10 инста-шопов
    .hero__content__2__paragraph
-     p хотели бы добавлять активную #[br] ссылку в подпись своих постов
+     p хотят добавлять активную ссылку #[br] в подпись своих постов
    .hero__content__2__title.bot РЕШЕНИЕ
    .hero__content__2__paragraph
-     p Directbot автоматически отвечает #[br] клиентам в Instagram Direct
+     p.last Directbot автоматически отвечает #[br] клиентам в Instagram Direct
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends КАК ЭТО РАБОТАЕТ?
   .hero__content__landing
    .section.header.section__content(:class="{'cnt2_app_header': isStandalone}", id="header")
@@ -65,19 +65,19 @@
     .wrap-yes(v-if="false")
       .hero__content__landing__screen-2
         img(src="./img/screen-2-yes.png")
-      .hero__content__landing__sub-title.info Укажи артикул товара #[br] под постом
+      .hero__content__landing__sub-title.info Есть сайт? Укажи артикул #[br] товара под постом
       .hero__content__landing__caption Бот узнает о деталях и наличии товара #[br] по артикулу в описании поста. #[br] Ссылка на сайт должна быть #[br] в «био» инста-профиля
     .wrap-no
       .hero__content__landing__screen-2
         img(src="./img/screen-2-no.png")
       .hero__content__landing__sub-title.info Нет сайта? Ответь #[br] на вопросы о товарах
       .hero__content__landing__caption Бот увидит новые посты, уточнит детали #[br] и наличие товаров. Потом добавит их #[br] в твой
-        a.link-info() новый интернет-магазин #[br] по ссылке
+        a.link-info(v-link="{name: 'info-screen-4'}")  новый интернет-магазин #[br] по ссылке
           span.bold  xxxx.drbt.io
     .hero__content__landing__screen-3
       img(src="./img/screen-3.png")
-    .hero__content__landing__sub-title Бот ответит #[br] на большинство вопросов
-    .hero__content__landing__caption Клиенты быстро получат ответы, #[br] без опечаток. Следи за диалогом #[br] прямо в своем Instagram #[br] и вступи на этапе сделки
+    .hero__content__landing__sub-title Бот даст ссылку на товар #[br] и ответит на вопросы
+    .hero__content__landing__caption Клиенты быстро получат ответы, #[br] без опечаток. Следи за диалогом #[br] прямо в своем Instagram #[br] и отвечай сам, если нужно
 a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
 </template>
 
@@ -255,7 +255,9 @@ export default {
 
     scrollAnchorTags() {
       JQuery('.scroll-cnt').animate({scrollTop: 2 * window.innerHeight},450);
-    }
+    },
+
+
   },
 };
 </script>
