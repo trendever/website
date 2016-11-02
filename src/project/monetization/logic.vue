@@ -16,6 +16,8 @@ import { getAuthUser, isAuth } from 'vuex/getters/user';
 import { setUseDays } from 'vuex/actions/user';
 import { setSupplierStatus } from 'vuex/actions/user';
 
+let storage = window.localStorage;
+
 export default {
   components: {
     NativePopup
@@ -43,10 +45,11 @@ export default {
     disableSupplier(){
       this.showPopup = false;
       this.setSupplierStatus(false);
+      storage.setItem('supplierStatus', false);
     },
     goInstructions(){
       this.showPopup = false;
-      window.localStorage.setItem('showMonetization','7days');
+      storage.setItem('showMonetization','firstTimeAlert');
       this.$router.go({name: 'info-instructions-1'})
     }
   },
@@ -132,12 +135,11 @@ export default {
 
               }).then(({timeOut, difference})=>{
 
-                let storage = window.localStorage;
                 let showMonetization = storage.getItem('showMonetization');
 
-                if(difference <= this.day) {
+                if(difference <= this.day * 2 || !storage.getItem('supplierStatus')) {
 
-                  if(showMonetization === '7days'){
+                  if(showMonetization === 'firtTimeAlert'){
                     return;
                   }
 
@@ -151,12 +153,12 @@ export default {
 
                 if(difference > this.day * 2 && difference <= this.day * 3) {
 
-                  if(showMonetization === '5days'){
+                  if(showMonetization === 'fiveDaysLeft'){
                     return;
                   }
 
                   setTimeout(()=>{
-                    storage.setItem('showMonetization','5days');
+                    storage.setItem('showMonetization','fiveDaysLeft');
                     this.$router.go({name: 'monetization'})
                   }, timeOut)
                   return
@@ -164,6 +166,7 @@ export default {
 
                 if(difference > this.day * 7) {
                   setTimeout(()=>{
+                    storage.setItem('showMonetization','noMoreDays');
                     this.$router.go({name: 'monetization'})
                   }, timeOut)
 

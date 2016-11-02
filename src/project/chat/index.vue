@@ -39,6 +39,7 @@
 </template>
 
 <script type='text/babel'>
+  import settings from 'settings';
   import appLoader from 'base/loader/loader';
   import listen from 'event-listener';
   import scrollTop from 'base/scroll-top/scroll-top.vue';
@@ -66,7 +67,7 @@
     imgHeight
   } from 'vuex/getters/chat.js';
   import { isDone } from 'vuex/getters/lead.js';
-  import { isAuth } from 'vuex/getters/user.js';
+  import { isAuth, getUseDays } from 'vuex/getters/user.js';
 
   //services
   import * as messages from 'services/message';
@@ -171,6 +172,7 @@
         imgWidth,
         imgHeight,
         isAuth,
+        getUseDays,
         isDone,
         getMessages,
         conversationNotifyCount,
@@ -232,9 +234,22 @@
               this.setConversationAction('approve');
             }
           }).then(()=>{
-
+            //лоадер
             this.$set('showLoader', false);
-          });
+          }).then(()=>{
+            //Монетизация
+            if(settings.activateMonetization && this.getCurrentMember.role === 2){
+              let storage = window.localStorage;
+              if(!storage.getItem('firstTimeChatVisited')) {
+                storage.setItem('firstTimeChatVisited', true)
+                this.$router.go({name: 'monetization'});
+              }
+
+              if( this.getUseDays === 0 ) {
+                this.$router.go({name: 'monetization'})
+              }
+            }
+          })
       },
 
       runLoadingMessage(){
