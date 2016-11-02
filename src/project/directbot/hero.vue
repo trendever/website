@@ -58,7 +58,7 @@
       img(src="./img/screen-1.png")
     .hero__content__landing__sub-title.questions Бот понимает #[br] вопросы покупателей
     .hero__content__landing__caption Не важно, задан вопрос в комментариях #[br] или личном сообщении, #[br] бот распознает его и поймет, #[br] что нужно ответить клиенту
-    .hero__content__landing__toggle
+    .hero__content__landing__toggle(v-if="showToggleMenu")
       .hero__content__landing__toggle__title У ТЕБЯ ЕСТЬ ИНТЕРНЕТ-МАГАЗИН?
       button.yes ДА
       button.no НЕТ
@@ -106,7 +106,8 @@ export default {
       isMobile: window.browser.mobile,
       phoneNumber: '',
       smsSent: false,
-      phoneError: false
+      phoneError: false,
+      showToggleMenu: false
     }
   },
 
@@ -126,6 +127,15 @@ export default {
               this.menuOpened = false;
             }
         });
+    })
+
+
+    this.showToggle = listen(this.scrollCnt, 'scroll', ()=>{
+      if(this.scrollCnt.scrollTop >= window.innerHeight * 2){
+        this.showToggleMenu = true;
+      } else {
+        this.showToggleMenu = false;
+      }
     })
 
 
@@ -182,6 +192,7 @@ export default {
     },
   beforeDestroy(){
     this.outerCloseMenu.remove();
+    this.showToggle.remove();
   },
 
   vuex: {
