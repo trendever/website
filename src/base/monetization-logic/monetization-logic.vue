@@ -1,15 +1,25 @@
 <template lang="jade">
 div
+  native-popup(:show="showPopup")
+    .main-text
+      | Мы видим товары, где вы указаны как поставщик. Вы собираетесь их продавать?
+    .button-text
+      span(v-link="{name: 'instructions-first'}") Да
+      span(v-on:link="disableSupplier, showPopup = false") Нет
 </template>
 
 <script>
 import settings from 'settings';
 import channel from 'services/channel/channel';
-
+import NativePopup from 'base/popup/native';
 import { getAuthUser, isAuth } from 'vuex/getters/user';
 import { setUseDays } from 'vuex/actions/user';
+import { setSupplierStatus } from 'vuex/actions/user';
 
 export default {
+  components: {
+    NativePopup
+  },
   vuex: {
     getters: {
       getAuthUser,
@@ -23,10 +33,16 @@ export default {
 
     return {
       day: 60 * 60 * 24,
+      showPopup: false
     };
 
   },
 
+  methods:{
+    disableSupplier(){
+      setSupplierStatus();
+    }
+  },
 
   ready() {
 

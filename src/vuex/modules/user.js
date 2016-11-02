@@ -9,7 +9,8 @@ import {
   USER_SET_MY_CURRENT_LIST,
   USER_SET_TOOLTIP,
   USER_SET_PAYMENT,
-  USER_SET_USE_DAYS
+  USER_SET_USE_DAYS,
+  USER_SET_SUPPLIER_STATUS
 } from '../mutation-types';
 
 // initial state
@@ -29,10 +30,14 @@ const state = {
   },
   payment: {},
 
+  //В будущем перенести лоадер в лучшее место
   showRootLoader: false,
 
-  useDays: 7
+  //Число оставшихся дней до окончания пробоного периода
+  useDays: 7,
 
+  //Ставится в зависимости от решения юзера начать продавать
+  supplierStatus: true
 
 };
 
@@ -137,6 +142,17 @@ const mutations = {
   },
   [USER_SET_USE_DAYS](state, count) {
     state.useDays = count;
+  },
+  [USER_SET_SUPPLIER_STATUS](state, disable) {
+
+    if(disable) {
+
+      state.userAll[state.myId].supplier_of = null;
+
+    }
+
+    state.supplierStatus = disable;
+
   }
 };
 

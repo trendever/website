@@ -153,3 +153,9 @@ export const getUseDays = ( { user } ) => {
   return user.useDays;
 
 }
+
+export const supplierStatus = ( { user } ) => {
+
+  return user.supplierStatus;
+
+}
