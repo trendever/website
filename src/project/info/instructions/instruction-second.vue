@@ -6,7 +6,7 @@
  .instruction__header
   p Укажи в Instagram ссылку #[br] на свою витрину
  .instruction__sub-header Вот короткая ссылка:
- .instruction__bold-title(v-el:title) {{getAuthUser.name}}.tndvr.com
+ .instruction__bold-title(v-el:title) {{userName}}.tndvr.com
  .instruction__txt на твою витрину товаров #[br] в приложении и на сайте Trendever
  .instruction__screen
   img(src="./img/screen-2.png")
@@ -97,7 +97,11 @@ export default {
     }
   },
 
-
+  computed:{
+    userName(){
+      return this.getAuthUser.name || this.getAuthUser.instagram_username;
+    }
+  },
   components: {
     nativePopup
     //secondImg

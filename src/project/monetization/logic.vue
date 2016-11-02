@@ -45,6 +45,7 @@ export default {
     },
     goInstructions(){
       this.showPopup = false;
+      window.localStorage.setItem('showMonetization','7days');
       this.$router.go({name: 'info-instructions-1'})
     }
   },
@@ -141,8 +142,6 @@ export default {
 
                   setTimeout(()=>{
                     this.showPopup = true;
-                    /*storage.setItem('showMonetization','7days');
-                    this.$router.go({name: 'monetization'})*/
                   }, timeOut)
 
                   return
@@ -168,6 +167,7 @@ export default {
                   }, timeOut)
 
                   return
+
                 }
               })
           }
