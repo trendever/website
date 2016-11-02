@@ -1,11 +1,11 @@
 <template lang="jade">
 div
-  native-popup(:show="showPopup")
+  native-popup(:show-popup="showPopup")
     .main-text
       | Мы видим товары, где вы указаны как поставщик. Вы собираетесь их продавать?
     .button-text
-      span(v-link="{name: 'instructions-first'}") Да
-      span(v-on:link="disableSupplier, showPopup = false") Нет
+      span(v-on:click="goInstructions") Да
+      span(v-on:link="disableSupplier") Нет
 </template>
 
 <script>
@@ -40,7 +40,12 @@ export default {
 
   methods:{
     disableSupplier(){
-      setSupplierStatus();
+      this.showPopup = false;
+      this.setSupplierStatus();
+    },
+    goInstructions(){
+      this.showPopup = false;
+      this.$router.go({name: 'info-instructions-1'})
     }
   },
 
@@ -55,6 +60,11 @@ export default {
       this.$nextTick(() => {
 
         if(this.isAuth) {
+
+          if(this.getAuthUser.supplier_of === null) {
+
+            return;
+          }
 
           let shop_id = this.getAuthUser.supplier_of[0];
 
@@ -130,8 +140,9 @@ export default {
                   }
 
                   setTimeout(()=>{
-                    storage.setItem('showMonetization','7days');
-                    this.$router.go({name: 'monetization'})
+                    this.showPopup = true;
+                    /*storage.setItem('showMonetization','7days');
+                    this.$router.go({name: 'monetization'})*/
                   }, timeOut)
 
                   return

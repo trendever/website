@@ -64,7 +64,6 @@ export default {
   }
 
   .button-text {
-    cursor: pointer;
     background: #F5F5F6;
     color:#226ABB ;
 
@@ -78,6 +77,12 @@ export default {
       padding-top: 50px;
       border-bottom-right-radius: 30px;
       border-bottom-left-radius: 30px;
+    }
+
+    span {
+      cursor: pointer;
+      padding: * 50px * 50px;
+      margin: * 10px * 10px;
     }
   }
 
