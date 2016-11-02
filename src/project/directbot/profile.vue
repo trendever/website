@@ -27,13 +27,14 @@ scroll-component(v-if="isDone", class="profile-cnt")
           p.bold Активирован... #[br]
           p мониторю 3 поста #[br] отправил 5 сообщений
         .profile_no-goods-banner(v-if="false")
-          span Все готово для подключения #[br] Instagram профиля к #[br]
+          span После подключения #[br]
           span.save Directbot
+          span  начнет мониторить все #[br] ваши новые посты и автоматически #[br] отвечать на вопросы покупателей
 
 
-        button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(v-link="{ name: 'turn-on-bot' }") ПОДКЛЮЧИТЬ БОТА
-        button.bot-active-btn(v-if="false") БОТ АКТИВЕН
-          i.ic-close
+        button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(v-link="{ name: 'turn-on-bot' }", v-if="false") ПОДКЛЮЧИТЬ БОТА
+        //button.bot-active-btn(v-if="false") БОТ АКТИВЕН
+          //i.ic-close
 
         a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
 

@@ -31,7 +31,7 @@ scroll-component
                   .input__clear-btn(
                     v-if='login',
                     @click='login = ""')
-                    i.ic-close
+                    i.ic-close.clear
                 .input.phone
                   i.ic-mobile-phone
                   input(type='tel',
@@ -49,7 +49,7 @@ scroll-component
                   .input__clear-btn(
                     v-if='phone',
                     @click='phone = ""')
-                    i.ic-close
+                    i.ic-close.clear
             .btn-container
               button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
                 @click='sendSMS') Отправить sms-код

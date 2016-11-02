@@ -14,7 +14,7 @@
     .hero__content__set-up
       button.set-up-btn ПОДКЛЮЧИТЬ ЗА 0
         i.ic-rub
-    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }") ВХОД И РЕГИСТРАЦИЯ
+    button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'monetization' }") ВХОД И РЕГИСТРАЦИЯ
     //-button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'app' }" v-else) СКАЧАТЬ ПРИЛОЖЕНИЕ
   .hero__content__2(:class="{'cnt2_app': isStandalone}", v-el:hero-two)
    a.how-btn(@click='scrollAnchor()') КАКИЕ ПРОБЛЕМЫ РЕШАЕТ?
