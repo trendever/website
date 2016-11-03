@@ -58,14 +58,27 @@ const router = new VueRouter({
   saveScrollPosition: true,
   transitionOnLoad: false
 });
+
 window.history.scrollRestoration = 'manual';
+window.before = {};
 
 // configure router
 configRouter(router);
 
+router.beforeEach((to, from, next) => {
+  if (to.from){
+    let name = to.from.name;
+    let params = to.from.params;
+    window.before = {name: name, params: params};
+  }
+  to.next()
+});
+
 // bootstrap the app
 const App = Vue.extend(require('./app.vue'));
 router.start(App, 'app');
+
+
 
 // Init FastClick
 FastClick.attach(document.body, {});

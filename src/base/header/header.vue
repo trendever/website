@@ -159,9 +159,14 @@
           }
         }
 
-        if ( window.history.length > 2 && !this.forceBackLink && this.$route.name !== 'chat') {
+        console.log("BACK PRESSED")
+        console.log(window.before)
 
-          window.history.back();
+        console.log(this.backLink)
+
+
+        if (!this.backLink) {
+          this.$router.go({ name: window.before.name, params: window.before.params})
 
         } else {
 
