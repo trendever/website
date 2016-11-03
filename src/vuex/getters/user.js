@@ -169,3 +169,7 @@ export const supplierStatus = ( { user } ) => {
   return user.supplierStatus;
 
 }
+
+export const showMenu = ( { user } ) => {
+  return user.showMenu;
+}

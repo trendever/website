@@ -238,3 +238,9 @@ export const setSupplierStatus = ({ dispatch }, disable) => {
 
 }
 
+
+export const setShowMenu = ({dispatch}, value) =>{
+
+  dispatch(types.USER_SHOW_MENU, value);
+}
+

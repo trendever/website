@@ -10,7 +10,8 @@ import {
   USER_SET_TOOLTIP,
   USER_SET_PAYMENT,
   USER_SET_USE_DAYS,
-  USER_SET_SUPPLIER_STATUS
+  USER_SET_SUPPLIER_STATUS,
+  USER_SHOW_MENU
 } from '../mutation-types';
 
 // initial state
@@ -29,6 +30,7 @@ const state = {
     chats: true
   },
   payment: {},
+  showMenu: false,
 
   //В будущем перенести лоадер в лучшее место
   showRootLoader: false,
@@ -145,6 +147,9 @@ const mutations = {
   },
   [USER_SET_SUPPLIER_STATUS](state, disable) {
     state.supplierStatus = disable;
+  },
+  [USER_SHOW_MENU](state, value){
+    state.showMenu = value;
   }
 };
 

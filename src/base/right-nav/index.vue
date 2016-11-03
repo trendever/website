@@ -2,7 +2,7 @@
 .right-nav(v-if="isAuth && !isMobile")
   .right-nav_i(:class='{"__active": current=="profile"}', v-link='{name: "profile"}', v-if="$route.name !== 'profile'")
     i.ic-user_menu
-  .right-nav_i(v-if="$route.name === 'profile'")
+  .right-nav_i(v-if="$route.name === 'profile'", v-on:click="setShowMenu(true)")
     i.ic-options_menu
   .right-nav_i(:class='{"__active": current=="chat"}', v-link='{name: "chat_list"}')
     i.ic-chats_menu
@@ -14,9 +14,13 @@
 
 <script>
 import { isAuth } from 'vuex/getters/user';
+import { setShowMenu } from 'vuex/actions/user';
 import { getGlobalNotifyCount } from 'vuex/getters/lead.js';
 export default {
   vuex:{
+    actions: {
+      setShowMenu
+    },
     getters:{
       isAuth,
       getGlobalNotifyCount
@@ -28,12 +32,6 @@ export default {
       default: null
     }
   },
-  data () {
-    return {
-
-    };
-  },
-
   computed:{
     isMobile(){
       return window.browser.mobile;

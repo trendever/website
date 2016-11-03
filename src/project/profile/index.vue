@@ -4,13 +4,13 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
   header-component(:title='getUserName', :left-btn-show='leftArrowShow')
     div.profile-right-menu(slot="content", v-if="isMobile && $route.name === 'profile'")
-      i.ic-options_menu(@click.stop="showMenu = true")
+      i.ic-options_menu(@click.stop="setShowMenu(true)")
 
   header-menu(:show="showMenu")
 
     .menu-items(slot="items")
 
-      .menu_i(v-on:click="showMenu = false")
+      .menu_i(v-on:click="setShowMenu(false)")
         .menu_i_t.__txt-green Отмена
       .menu_i(v-on:click="buyTg")
         .menu_i_t Настройки профиля
@@ -116,7 +116,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
   import config from '../../../config';
 
   import store from 'vuex/store'
-  import { openProfile, closeProfile, setMyCurrentList, setTooltip, logOut } from 'vuex/actions/user.js';
+  import { openProfile, closeProfile, setMyCurrentList, setTooltip, logOut, setShowMenu } from 'vuex/actions/user.js';
   import {
     userID,
     user,
@@ -128,7 +128,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
     getPhotoConfig,
     isAuth,
     getMyCurrentList,
-    getTooltips
+    getTooltips,
+    showMenu
   } from 'vuex/getters/user.js';
 
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
@@ -155,8 +156,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
         isSupplier: false,
         leftArrowShow: true,
         showPopup: false,
-        message: '',
-        showMenu: false
+        message: ''
       }
     },
     route: {
@@ -383,6 +383,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
     },
     vuex: {
       actions: {
+        setShowMenu,
         setCallbackOnSuccessAuth,
         createLead,
         setTooltip,
@@ -401,7 +402,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
         getUserCaption,
         getSlogan,
         isDone,
-        getPhotoConfig
+        getPhotoConfig,
+        showMenu
       }
     },
     watch:{
