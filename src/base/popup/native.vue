@@ -40,8 +40,8 @@ export default {
 
 
     @media (--mobile) {
-      width: 80%;
-      font-size: 36px;
+      width: 75%;
+      font-size: 32px;
     }
 
   }
@@ -55,7 +55,7 @@ export default {
     border-top-left-radius: 15px;
 
     @media (--mobile) {
-      padding: 50px 50px 50px 50px;
+      padding: 30px 30px 30px 30px;
       border-top-right-radius: 30px;
       border-top-left-radius: 30px;
     }
@@ -73,10 +73,11 @@ export default {
     border-bottom-left-radius: 15px;
 
     @media (--mobile) {
-      padding: * 50px 50px 50px;
-      padding-top: 50px;
+      padding: 30px 30px 30px 30px;
+      font-size: 36px;
       border-bottom-right-radius: 30px;
       border-bottom-left-radius: 30px;
+
     }
 
     span {
