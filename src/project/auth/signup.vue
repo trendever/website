@@ -9,6 +9,14 @@ scroll-component
           h1.accept Войдите и сможете
         .column-desktop-50.column-desktop-right(v-if="showTitleSlider")
           slider
+          .logo(v-if="false")
+            img(src="./img/auth-logo.png")
+          .reg(v-if="false")
+            p Зарегистрируйтесь, #[br] чтобы не пропустить ответ от #[br]
+              span.bold supplier_name
+          .reg(v-if="false")
+            p Зарегистрируйтесь, #[br] чтобы оплатить заказ в #[br]
+              span.bold supplier_name
         .column-desktop-50
           .bottom-container(:class='{"opened-key-board":!showTitleSlider}')
             validator(name='signup')
