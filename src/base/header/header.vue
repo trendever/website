@@ -28,6 +28,8 @@
             img.center-avatar(:src="avatarUrl", v-if="page == 'product' && !isMobile")
           slot(name='content')
 
+        slot(name='menu')
+
         .header-right(v-if="avatarUrl !== null && centerTextLink !== null && isMobile", v-link="centerTextLink")
           img(:src="avatarUrl")
 

@@ -26,7 +26,7 @@
 .profile-header__menu-links.__desktop {
   position: absolute;
   top: 54px;
-  margin-right: 5px;
+  margin-right: 23px;
   //margin: initial;
   max-width: 322px;
   border: 1px solid $color__gray-light;
@@ -34,6 +34,7 @@
   box-shadow: 1px 1px 3px grey;
   background-color: #F0F0F0;
   font-family: $font__family__regular;
+  z-index: 140;
 
   &::before {
     content: '';
@@ -478,7 +479,7 @@
         display: block;
         size: 100%;
         position: absolute;
-        z-index: 9998;
+        z-index: 100;
 
         &.color-black{
           background-color: $color__green-light;

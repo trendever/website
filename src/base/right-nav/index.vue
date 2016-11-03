@@ -2,7 +2,7 @@
 .right-nav(v-if="isAuth && !isMobile")
   .right-nav_i(:class='{"__active": current=="profile"}', v-link='{name: "profile"}', v-if="$route.name !== 'profile'")
     i.ic-user_menu
-  .right-nav_i(v-if="$route.name === 'profile'", v-on:click.stop="setShowMenu(true)")
+  .right-nav_i.menu__btn(v-if="$route.name === 'profile'", v-on:click.stop="setShowMenu(true)")
     i.ic-options_menu
   .right-nav_i(:class='{"__active": current=="chat"}', v-link='{name: "chat_list"}')
     i.ic-chats_menu
@@ -11,7 +11,6 @@
   .right-nav_i(:class='{"__active": current=="feed"}', v-link='{name: "home"}')
     i.ic-gallery_menu
 
-  slot
 </template>
 
 <script>
@@ -63,9 +62,17 @@ export default {
     vertical-align:middle;
     padding-top: 8px;
     cursor:pointer;
+
     &:hover {
       background: $color__dark-green;
     }
+
+    &.menu__btn {
+      &:hover {
+        background: initial;
+      }
+    }
+
     &.__active {
       background: $color__dark-green;
     }
