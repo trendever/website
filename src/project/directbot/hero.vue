@@ -58,16 +58,16 @@
       img(src="./img/screen-1.png")
     .hero__content__landing__sub-title.questions Бот понимает #[br] вопросы покупателей
     .hero__content__landing__caption Не важно, задан вопрос в комментариях #[br] или личном сообщении, #[br] бот распознает его и поймет, #[br] что нужно ответить клиенту
-    .hero__content__landing__toggle(v-if="showToggleMenu")
+    .hero__content__landing__toggle
       .hero__content__landing__toggle__title У ТЕБЯ ЕСТЬ ИНТЕРНЕТ-МАГАЗИН?
       button.yes ДА
       button.no НЕТ
-    .wrap-yes(v-if="false")
+    .wrap-yes
       .hero__content__landing__screen-2
         img(src="./img/screen-2-yes.png")
       .hero__content__landing__sub-title.info Есть сайт? Укажи артикул #[br] товара под постом
       .hero__content__landing__caption Бот узнает о деталях и наличии товара #[br] по артикулу в описании поста. #[br] Ссылка на сайт должна быть #[br] в «био» инста-профиля
-    .wrap-no
+    .wrap-no(v-if="false")
       .hero__content__landing__screen-2
         img(src="./img/screen-2-no.png")
       .hero__content__landing__sub-title.info Нет сайта? Ответь #[br] на вопросы о товарах
@@ -129,14 +129,6 @@ export default {
         });
     })
 
-
-    this.showToggle = listen(this.scrollCnt, 'scroll', ()=>{
-      if(this.scrollCnt.scrollTop >= window.innerHeight * 2){
-        this.showToggleMenu = true;
-      } else {
-        this.showToggleMenu = false;
-      }
-    })
 
 
 
