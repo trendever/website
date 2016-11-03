@@ -4,7 +4,7 @@
 div.chat-bar
   .chat-approve-btn.noaction(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat($event)') ПОДТВЕРДИТЬ
   .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay' && getAction !== 'pendingpayment' ", id="inputbar")
-    .chat-bar_menu-btn(@click.stop='setShowMenu(true)')
+    .chat-bar_menu-btn(@click.stop='openChatmenu')
       i.ic-chat_menu
     .chat-bar_input
       textarea(placeholder='Введите сообщение',
@@ -22,6 +22,7 @@ chat-menu(v-if="isMobile")
 </template>
 
 <script type='text/babel'>
+  import settings from 'settings';
   import listen from 'event-listener'
 
   import store from 'vuex/store'
@@ -32,6 +33,8 @@ chat-menu(v-if="isMobile")
     getStatus,
     getShowMenu
   } from 'vuex/getters/chat.js'
+
+  import { getUseDays } from 'vuex/getters/user';
 
   import {
     setConversationAction,
@@ -102,6 +105,18 @@ chat-menu(v-if="isMobile")
     },
 
     methods: {
+      openChatmenu(){
+
+        if(settings.activateMonetization){
+          if(this.getUseDays === 0){
+            this.$router.go({name: 'monetization'});
+            return;
+          }
+        }
+
+        this.setShowMenu(true);
+
+      },
       normalizeScroll() {
         // Hard hack for ios jumping, why open keyboard
         if ( window.scrollY === 0 ) {
@@ -176,6 +191,14 @@ chat-menu(v-if="isMobile")
       },
 
       send ( event ) {
+
+        if(settings.activateMonetization){
+          if(this.getUseDays === 0){
+            this.$router.go({name: 'monetization'});
+            return;
+          }
+        }
+
         if(event) {
 
           event.stopPropagation()
