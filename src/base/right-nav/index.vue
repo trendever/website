@@ -2,7 +2,7 @@
 .right-nav(v-if="isAuth && !isMobile")
   .right-nav_i(:class='{"__active": current=="profile"}', v-link='{name: "profile"}', v-if="$route.name !== 'profile'")
     i.ic-user_menu
-  .right-nav_i(v-if="$route.name === 'profile'", v-on:click="setShowMenu(true)")
+  .right-nav_i(v-if="$route.name === 'profile'", v-on:click.stop="setShowMenu(true)")
     i.ic-options_menu
   .right-nav_i(:class='{"__active": current=="chat"}', v-link='{name: "chat_list"}')
     i.ic-chats_menu

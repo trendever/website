@@ -1,6 +1,6 @@
 <style src='./style.pcss'></style>
 <template lang="jade">
-scroll-component(v-if="isDone", class="profile-cnt")
+scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu")
 
   //-HEADER
 
@@ -9,10 +9,9 @@ scroll-component(v-if="isDone", class="profile-cnt")
       i.ic-options_menu(@click.stop="setShowMenu(true)")
 
 
-  //-USER MENU
-
   right-nav-component(current="profile")
 
+    //-USER MENU
     .header__menu__overlay(
       v-if='showMenu && isMobile',
       v-on:click='setShowMenu(false)',
@@ -122,6 +121,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
   import { urlThumbnail } from 'utils';
   import { createLead } from 'vuex/actions/lead';
   import config from '../../../config';
+  import { targetClass } from 'utils';
 
   import store from 'vuex/store'
   import { openProfile, closeProfile, setMyCurrentList, setTooltip, logOut, setShowMenu } from 'vuex/actions/user.js';
@@ -215,6 +215,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
     },
     ready(){
+      this.setShowMenu(false);
+
       let id = this.$route.params.id;
       if ( !this.isAuth && !browser.mobile) {
         this.setCallbackOnSuccessAuth(()=>{
@@ -274,6 +276,13 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     methods:{
+      outerCloseMenu(){
+         targetClass(event, 'profile-header__menu-links',()=>{
+            if(this.showMenu){
+              this.setShowMenu(false);
+            }
+        });
+      },
       logout(){
 
         this.logOut();
