@@ -96,6 +96,7 @@ chat-menu(v-if="isMobile")
         setStatus
       },
       getters: {
+        getUseDays,
         getAction,
         getId,
         getCurrentMember,
