@@ -38,7 +38,7 @@
       href="https://trendever.payture.com/",
       target="_blank") Денежный перевод
     a(class='profile-header__menu-link', @click="logout") Выход
-  a(v-link='{ name: "info-user" }')
+  a
     i.smallHero__logo
       img(src='../../base/img/logo-main.svg')
 
