@@ -8,6 +8,9 @@
       .profile-header__center
       button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
      .hero__content__logo__mobile(:class="{'logo_app': isStandalone}")
+    .hero__content__left-logo
+      a(href="#")
+        img(src="./img/directbot-logo-txt.svg")
     .hero__content__description
       span.bold Бот-консультант #[br]
       span.light для Instagram-магазинов

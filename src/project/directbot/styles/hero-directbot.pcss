@@ -33,7 +33,7 @@
 
     text-align: center;
 
-    background: url(../img/Bgr-blue.jpg) no-repeat;
+    background: url(../img/Bgr-blue.png) no-repeat;
 
     background-size: cover;
 
@@ -42,6 +42,10 @@
       background-size: cover;
       height: 45.5%;
     }
+
+		&:after{
+			transform: rotate(180deg);
+		}
 
     .profile-header {
       z-index: 2;
@@ -131,6 +135,20 @@
         margin-top: 50%;
       }
     }
+
+		&__left-logo{
+			text-align: left;
+			a{
+				width: 202px;
+				height: 43px;
+				margin-top: 20px;
+				margin-left: 20px;
+			}
+			@media(--mobile) {
+				display: none;
+			}
+		}
+
     &__logo__mobile{
       display: none;
       @media(--tabletandless) {
