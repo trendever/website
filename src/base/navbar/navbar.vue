@@ -8,7 +8,7 @@
   profile = '/static/img/user_inactive.svg'
   profile_active = '/static/img/user_active.svg'
 
-.navbar-cnt(v-if='isAuth && isMobile')
+.navbar-cnt(v-if='isAuth && isMobile && !fakeuser')
   .navbar.section__content
     .navbar_i(:class='{"__active": current=="feed"}', v-link='{name: "home"}', @click="scrollTop")
       .navbar_i_wrap
@@ -31,12 +31,14 @@
 </template>
 
 <script>
-  import { isAuth } from 'vuex/getters/user.js';
+  import { isAuth,isFake } from 'vuex/getters/user.js';
   import { getGlobalNotifyCount } from 'vuex/getters/lead.js';
 
   export default{
     data() {
-      return {};
+      return {
+        fakeuser: this.isFake
+      };
     },
     props: {
       current: {
@@ -47,6 +49,7 @@
     vuex: {
       getters: {
         isAuth,
+        isFake,
         getGlobalNotifyCount,
       },
     },
