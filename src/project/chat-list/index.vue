@@ -236,13 +236,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
         }
       },
       showTooltip(){
-        if(this.isEmptyLeads){
-          if(this.getTooltips.chats){
-            return true;
-          }
-          return false;
-        }
-        return false;
+        return (this.isEmptyLeads && this.getTooltips.chats) ? true : false;
       }
     },
     events:{
