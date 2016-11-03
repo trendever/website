@@ -106,8 +106,7 @@ export default {
       isMobile: window.browser.mobile,
       phoneNumber: '',
       smsSent: false,
-      phoneError: false,
-      showToggleMenu: false
+      phoneError: false
     }
   },
 
@@ -184,7 +183,6 @@ export default {
     },
   beforeDestroy(){
     this.outerCloseMenu.remove();
-    this.showToggle.remove();
   },
 
   vuex: {
