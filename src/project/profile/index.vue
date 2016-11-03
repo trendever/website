@@ -32,11 +32,15 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         a(class='profile-header__menu-link',
           v-link='{name: "info-agreement"}') Условия
         a(class='profile-header__menu-link',
+          v-if="shopId !== 1"
           v-link='{name: "info-newshop"}') Помощь магазинам
+        a(class='profile-header__menu-link',
+          v-if="shopId === 1"
+          v-link='{name: "info-newshop"}') Помощь покупателям
         a(class='profile-header__menu-link',
           href="https://trendever.payture.com/",
           target="_blank") Денежный перевод
-        a(class='profile-header__menu-link', @click="logout") Выход
+        a(class='profile-header__menu-link', @click="logout") Выйти
 
   right-nav-component(current="profile")
 
