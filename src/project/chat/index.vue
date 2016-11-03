@@ -240,6 +240,7 @@
             //Монетизация
             if(settings.activateMonetization && this.getCurrentMember.role === 2){
               let storage = window.localStorage;
+
               if(!storage.getItem('firstTimeChatVisited')) {
                 storage.setItem('firstTimeChatVisited', true)
                 this.$router.go({name: 'monetization'});
@@ -247,6 +248,10 @@
 
               if( this.getUseDays === 0 ) {
                 this.$router.go({name: 'monetization'})
+              }
+
+              if(storage.getItem('supplierStatus') === 'disabled'){
+                this.$router.go({name: 'monetization'});
               }
             }
           })
