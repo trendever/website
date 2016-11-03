@@ -24,9 +24,11 @@
 }
 
 .profile-header__menu-links.__desktop {
-  position: absolute 54px * * 230px;
-  margin: initial;
-  max-width: 252px;
+  position: absolute;
+  top: 54px;
+  margin-right: 5px;
+  //margin: initial;
+  max-width: 322px;
   border: 1px solid $color__gray-light;
   border-radius: 5px;
   box-shadow: 1px 1px 3px grey;
@@ -35,7 +37,7 @@
 
   &::before {
     content: '';
-    position: absolute -13px * * 30px;
+    position: absolute -13px 8px * *;
     size: 0;
     border-left: 11px solid transparent;
     border-right: 11px solid transparent;
@@ -45,7 +47,7 @@
 
   &::after {
     content: '';
-    position: absolute -12px * * 30px;
+    position: absolute -12px 8px * *;
     size: 0;
     border-left: 11px solid transparent;
     border-right: 11px solid transparent;
@@ -69,7 +71,7 @@
     line-height: 2.8rem;
     font-size: 1.4em;
     background-color: initial;
-    width: 250px;
+    width: 320px;
     border: initial;
     &:hover {
       color: $color__green;

@@ -10,6 +10,8 @@
       span {{ getGlobalNotifyCount }}
   .right-nav_i(:class='{"__active": current=="feed"}', v-link='{name: "home"}')
     i.ic-gallery_menu
+
+  slot
 </template>
 
 <script>

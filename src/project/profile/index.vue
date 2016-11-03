@@ -8,34 +8,36 @@ scroll-component(v-if="isDone", class="profile-cnt")
     div.profile-right-menu(slot="content", v-if="isMobile && $route.name === 'profile'")
       i.ic-options_menu(@click.stop="setShowMenu(true)")
 
-  right-nav-component(current="profile")
 
   //-USER MENU
 
-  .header__menu__overlay(
-    v-if='showMenu && isMobile',
-    v-on:click='setShowMenu(false)',
-    :class="{'color-green': !isAuth, 'color-black': isAuth}")
+  right-nav-component(current="profile")
 
-  .profile-header__menu-links(v-if='showMenu', v-bind:class="{ '__normal': isAuth, '__desktop': !isMobile }")
-    a(class='profile-header__menu-link profile-header__close-menu first',
-      @click='setShowMenu(false)') Отмена
-    a(class='profile-header__menu-link',
-      v-on:click="buyTg") Настройки профиля
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-instructions-1"}') Как начать продавать?
-    a(class='profile-header__menu-link',
-      v-if="shopId !== 1", v-on:click="buyTg") Подключить продажников
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-mission"}') Наша миссия
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-agreement"}') Условия
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-newshop"}') Помощь магазинам
-    a(class='profile-header__menu-link',
-      href="https://trendever.payture.com/",
-      target="_blank") Денежный перевод
-    a(class='profile-header__menu-link', @click="logout") Выход
+    .header__menu__overlay(
+      v-if='showMenu && isMobile',
+      v-on:click='setShowMenu(false)',
+      :class="{'color-green': !isAuth, 'color-black': isAuth}")
+
+    .profile-header__menu-links(v-if='showMenu', v-bind:class="{ '__normal': isAuth, '__desktop': !isMobile }")
+      a(class='profile-header__menu-link profile-header__close-menu first',
+        @click='setShowMenu(false)') Отмена
+      a(class='profile-header__menu-link',
+        v-on:click="buyTg") Настройки профиля
+      a(class='profile-header__menu-link',
+        v-link='{name: "info-instructions-1"}') Как начать продавать?
+      a(class='profile-header__menu-link',
+        v-if="shopId !== 1", v-on:click="buyTg") Подключить продажников
+      a(class='profile-header__menu-link',
+        v-link='{name: "info-mission"}') Наша миссия
+      a(class='profile-header__menu-link',
+        v-link='{name: "info-agreement"}') Условия
+      a(class='profile-header__menu-link',
+        v-link='{name: "info-newshop"}') Помощь магазинам
+      a(class='profile-header__menu-link',
+        href="https://trendever.payture.com/",
+        target="_blank") Денежный перевод
+      a(class='profile-header__menu-link', @click="logout") Выход
+
 
   .section.top.bottom
     .section__content(v-cloak)
