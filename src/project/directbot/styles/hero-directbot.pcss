@@ -28,12 +28,12 @@
   &__content {
     position: relative;
 
-    height: 366px;
+    height: 600px;
     max-width: none !important;
 
     text-align: center;
 
-    background: url(../img/hero.jpg) no-repeat;
+    background: url(../img/Bgr-blue.jpg) no-repeat;
 
     background-size: cover;
 
@@ -193,20 +193,24 @@
     }
 
 		&__set-up{
-			button{
-				width: 490px;
-				height: 120px;
-				color: $color__white;
-				font-size: 36px;
-				font-family: $font__family__semibold;
-				border: 2px solid $color__white;
-				border-radius: 5px;
-				background-color: transparent;
-			}
-			i.ic-rub{
-				font-size: 24px;
-				padding-top: 10px;
-				padding-left: 8px;
+			display: none;
+			@media(--mobile) {
+					display: block;
+				button{
+					width: 490px;
+					height: 120px;
+					color: $color__white;
+					font-size: 36px;
+					font-family: $font__family__semibold;
+					border: 2px solid $color__white;
+					border-radius: 5px;
+					background-color: transparent;
+				}
+				i.ic-rub{
+					font-size: 24px;
+					padding-top: 10px;
+					padding-left: 8px;
+				}
 			}
 		}
   }
@@ -350,7 +354,7 @@
 
 		&__toggle{
 
-      
+
 
 			&__title{
 				font-size: 36px;
