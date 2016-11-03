@@ -1,7 +1,9 @@
 <template lang="jade">
 .right-nav(v-if="isAuth && !isMobile")
-  .right-nav_i(:class='{"__active": current=="profile"}', v-link='{name: "profile"}')
+  .right-nav_i(:class='{"__active": current=="profile"}', v-link='{name: "profile"}', v-if="$route.name !== 'profile'")
     i.ic-user_menu
+  .right-nav_i(v-if="$route.name === 'profile'")
+    i.ic-options_menu
   .right-nav_i(:class='{"__active": current=="chat"}', v-link='{name: "chat_list"}')
     i.ic-chats_menu
     .notify-cout(v-if="getGlobalNotifyCount")
@@ -71,7 +73,7 @@ export default {
       width: 50px;
       height: 60px;
     }
-    i.ic-user_menu, i.ic-gallery_menu, i.ic-chats_menu  {
+    i.ic-user_menu, i.ic-gallery_menu, i.ic-chats_menu, i.ic-options_menu  {
       font-size: 32px;
       color: white;
     }
