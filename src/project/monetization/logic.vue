@@ -45,12 +45,12 @@ export default {
     disableSupplier(){
       this.showPopup = false;
       this.setSupplierStatus(false);
-      storage.setItem('supplierStatus', false);
+      storage.setItem('supplierStatus', 'disabled');
     },
     goInstructions(){
       this.showPopup = false;
       this.setSupplierStatus(true);
-      storage.setItem('supplierStatus', true);
+      storage.setItem('supplierStatus', 'active');
       storage.setItem('showMonetization','firstTimeAlert');
       this.$router.go({name: 'info-instructions-1'})
     }
@@ -139,7 +139,7 @@ export default {
 
                 let showMonetization = storage.getItem('showMonetization');
 
-                if(difference <= this.day * 2 || !storage.getItem('supplierStatus')) {
+                if(difference <= this.day * 2 || storage.getItem('supplierStatus') === 'disabled') {
 
                   if(showMonetization === 'firtTimeAlert'){
                     return;
