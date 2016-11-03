@@ -6,7 +6,7 @@
   .section__content.hero__content(:class="{'cnt_app': isStandalone}", v-el:hero-one)
     .profile-header
       .profile-header__center
-      button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
+      button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД И РЕГИСТРАЦИЯ
      .hero__content__logo__mobile(:class="{'logo_app': isStandalone}")
     .hero__content__left-logo
       a(href="#")

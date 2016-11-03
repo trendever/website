@@ -54,14 +54,14 @@
         position: absolute;
         top: 20px;
         right: 20px;
-        width: 275px;
-        height: 37px;
+        width: 250px;
+        height: 40px;
         border: 1px solid #fff;
         border-radius: 5px;
-        background: rgba(255, 255, 255, 0.8);
-        color: #41734c;
+        background: transparent;
+        color: $color__white;
         font-size: 16px;
-        font-family: $font__family__light;
+        font-family: $font__family__semibold;
         z-index: 100;
         @media(--mobile) {
           display: none;
@@ -70,14 +70,11 @@
           display: none;
         }
 
-        &.btn-smaller {
-          width: 122px;
-        }
       }
       &__auth-btn:hover{
-        background: #FFDE1E;
-        border-color: #FFDE1E;
-        color: #0e3333;
+        background: $color__blue;
+        border-color: $color__blue;
+        color: $color__white;
         cursor: pointer;
       }
       &__sellers-btn:hover{
@@ -287,10 +284,11 @@
   .hero__content__landing{
     padding: 0px 25px 170px 25px;
     text-align: center;
+		position: relative;
     .directbot-header{
       display: block !important;
-			position: relative;
-			width: 100%;
+			position: absolute;
+			top: -145px;
     }
     .directbot-wrap{
       background: #5E8BCE !important;
