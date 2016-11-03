@@ -49,7 +49,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .profile_desc_t(v-if="getSlogan") {{getSlogan}}
           .profile_desc_caption(v-if="getUserCaption") {{{getUserCaption | captionSpaces}}}
 
-        .profile_insta-link(v-if="$route.name === 'profile'")
+        .profile_insta-link(v-if="$route.name === 'profile' && shopId !== 1")
           .insta-link-text ссылка на эту витрину
           .insta-link(v-el:insta-link) {{ getUserName }}.tndvr.com
 
