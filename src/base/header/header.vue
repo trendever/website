@@ -14,7 +14,7 @@
         .header__notify-count(v-if='notifyCount')
           span {{ notifyCount }}
 
-        .header__use-days(v-if='$route.name === "profile" && isMobile && activeMonetization')
+        .header__use-days(v-if='$route.name === "profile" && isMobile && activeMonetization', v-link="{name: 'monetization'}")
           .days-count {{ getUseDays }}
             span д
 
