@@ -2,48 +2,54 @@
 <template lang="jade">
 scroll-component(v-if="isDone", class="profile-cnt")
 
+  //-HEADER
+
   header-component(:title='getUserName', :left-btn-show='leftArrowShow')
     div.profile-right-menu(slot="content", v-if="isMobile && $route.name === 'profile'")
       i.ic-options_menu(@click.stop="setShowMenu(true)")
 
-  header-menu(:show="showMenu")
-
-    .menu-items(slot="items")
-
-      .menu_i(v-on:click="setShowMenu(false)")
-        .menu_i_t.__txt-green Отмена
-      .menu_i(v-on:click="buyTg")
-        .menu_i_t Настройки профиля
-      a.menu_i(v-link='{name: "info-instructions-1"}')
-        .menu_i_t Как начать продавать?
-      .menu_i(v-if="shopId !== 1", v-on:click="buyTg")
-        .menu_i_t Подключить продажников
-      a.menu_i(v-link='{name: "info-mission"}')
-        .menu_i_t Наша миссия
-      a.menu_i(v-link='{name: "info-agreement"}')
-        .menu_i_t Условия
-      a.menu_i(v-link='{name: "info-newshop"}')
-        .menu_i_t Помощь магазинам
-      a.menu_i(href="https://trendever.payture.com/", target="_blank")
-        .menu_i_t Денежный перевод
-      .menu_i(v-on:click="logout")
-        .menu_i_t.__txt-red Выйти
-
   right-nav-component(current="profile")
+
+  //-USER MENU
+
+  .header__menu__overlay(
+    v-if='showMenu && isMobile',
+    v-on:click='setShowMenu(false)',
+    :class="{'color-green': !isAuth, 'color-black': isAuth}")
+
+  .profile-header__menu-links(v-if='showMenu', v-bind:class="{ '__normal': isAuth, '__desktop': !isMobile }")
+    a(class='profile-header__menu-link profile-header__close-menu first',
+      @click='setShowMenu(false)') Отмена
+    a(class='profile-header__menu-link',
+      v-on:click="buyTg") Настройки профиля
+    a(class='profile-header__menu-link',
+      v-link='{name: "info-instructions-1"}') Как начать продавать?
+    a(class='profile-header__menu-link',
+      v-if="shopId !== 1", v-on:click="buyTg") Подключить продажников
+    a(class='profile-header__menu-link',
+      v-link='{name: "info-mission"}') Наша миссия
+    a(class='profile-header__menu-link',
+      v-link='{name: "info-agreement"}') Условия
+    a(class='profile-header__menu-link',
+      v-link='{name: "info-newshop"}') Помощь магазинам
+    a(class='profile-header__menu-link',
+      href="https://trendever.payture.com/",
+      target="_blank") Денежный перевод
+    a(class='profile-header__menu-link', @click="logout") Выход
 
   .section.top.bottom
     .section__content(v-cloak)
       .profile
         .profile_info
 
-          //.profile_info_count 01
-          // .profile_info_count_t Подписчики
+          //-.profile_info_count 01
+          //- .profile_info_count_t Подписчики
 
           .profile_info_img()
             img(:src="getUserPhoto")
 
-          //.profile_info_count 0
-          // .profile_info_count_t Подписки
+          //-.profile_info_count 0
+          //- .profile_info_count_t Подписки
 
         .profile_desc
           .profile_desc_t(v-if="getSlogan") {{getSlogan}}
@@ -134,7 +140,6 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
   import { setCallbackOnSuccessAuth } from 'vuex/actions';
 
-  import HeaderMenu from 'base/menu/header-menu';
   import RightNavComponent from 'base/right-nav/index';
   import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue'
@@ -474,7 +479,6 @@ scroll-component(v-if="isDone", class="profile-cnt")
       }
     },
     components: {
-      HeaderMenu,
       NativePopup,
       RightNavComponent,
       ScrollComponent,
