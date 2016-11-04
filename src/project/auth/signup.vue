@@ -14,9 +14,9 @@ scroll-component
           .logo
             img(src="./img/auth-logo.png")
           .reg
-            p Зарегистрируйтесь, 
+            p Зарегистрируйтесь,
               br
-              | чтобы не пропустить ответ от 
+              | чтобы не пропустить ответ от
               br
               span.bold supplier_name
         .column-desktop-50
@@ -33,6 +33,7 @@ scroll-component
                     :class=' {error: errorLogin} ',
                     @focus='onFocusLogin',
                     @keydown.enter='sendSMS()',
+                    @keyup='validateLogin',
                     v-validate:login='[ "required" ]',
                     v-on:blur="blurInput",
                     v-model='login',
@@ -185,6 +186,15 @@ scroll-component
           phone: this.phone,
           instagram: this.instagram,
         })
+      },
+      validateLogin(){
+        if(this.login.match(/[а-яё]+/g) !== null){
+          this.login = '';
+          this.errorLogin = true;
+          //this.textLink = TEXT_LINK['errorloginLang'];
+          this.login = PLACEHOLDER['errorLoginFormat'];
+          return;
+        }
       },
 
       sendSMS() {
