@@ -10,6 +10,7 @@ div.chat-bar
       textarea(placeholder='Введите сообщение',
                v-model='txtMsg',
                v-el:input-msg,
+               v-on:click="$els.inputMsg.focus()",
                @focus='focusInput',
                @blur='blurInput($event)')
     .chat-bar_send-btn(v-on:mousedown='send($event)',
