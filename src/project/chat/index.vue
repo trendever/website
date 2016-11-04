@@ -300,7 +300,11 @@
       },
 
       onMessage(){
-        this.$nextTick( this.goToBottom );
+        Promise.resolve().then(()=>{
+
+          this.$nextTick( this.goToBottom );
+
+        })
       },
 
       isImage( mime ){
