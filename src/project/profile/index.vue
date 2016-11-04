@@ -24,6 +24,7 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         a(class='profile-header__menu-link',
           v-on:click="buyTg") Настройки профиля
         a(class='profile-header__menu-link',
+          v-if='isMobile',
           v-link='{name: "info-instructions-1"}') Как начать продавать?
         a(class='profile-header__menu-link',
           v-if="shopId !== 1", v-on:click="buyTg") Подключить продажников
