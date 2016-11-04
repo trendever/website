@@ -36,7 +36,7 @@ const state = {
   showRootLoader: false,
 
   //Число оставшихся дней до окончания пробоного периода
-  useDays: 7,
+  useDays: -1,
 
   //Ставится в зависимости от решения юзера начать продавать или нет
   supplierStatus: true
