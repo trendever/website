@@ -22,7 +22,7 @@
        i.ic-currency-rub
      span.bold  ЗА 30 ДНЕЙ #[br]
      span.light САМЫЙ ПОПУЛЯРНЫЙ ТАРИФ
-   .monetization__btn(@click="dealType = 'percent-type'")
+  .monetization__btn(@click="dealType = 'percent-type'")
     button(:class="{make__choice: dealType === 'percent-type'}")
       span.bold 8990
         i.ic-currency-rub
@@ -30,6 +30,8 @@
       span.light 2990
         i.ic-currency-rub
       span.light  ЦЕНА В МЕСЯЦ
+  .monetization__zero-days-link(v-if="false")
+    a(href="#") У меня есть вопросы
   .monetization__accept-btn(:class="{ dark__yellow: getUseDays === 0 && !dealType}")
 
    button(v-if="getUseDays !== 0 && !dealType", @click="closePage") ПОКА НЕ УВЕРЕН

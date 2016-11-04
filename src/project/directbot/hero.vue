@@ -26,13 +26,13 @@
      p.top нужно в среднем, чтобы #[br] получить ответ от инста-шопа
    .hero__content__2__title 9 из 10 покупателей
    .hero__content__2__paragraph
-     p в начале спрашивают про цену #[br] или наличие товара
+     p узнают про товар в комментариях #[br] или Instagram Direct, а не на сайте
    .hero__content__2__title 10 из 10 инста-шопов
    .hero__content__2__paragraph
-     p хотят добавлять активную ссылку #[br] в подпись своих постов
+     p нужны Интернет-магазин и активные #[br] ссылки на постах в Instagram
    .hero__content__2__title.bot РЕШЕНИЕ
    .hero__content__2__paragraph
-     p.last Directbot автоматически отвечает #[br] клиентам в Instagram Direct
+     p.last Directbot сам ответит клиентам #[br] в Instagram Direct и, если нужно, #[br] создаст сайт
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends КАК ЭТО РАБОТАЕТ?
   .hero__content__landing
    .section.header.section__content(:class="{'cnt2_app_header': isStandalone}", id="header")
@@ -56,7 +56,7 @@
     .hero__content__landing__sub-title Подключается быстро, #[br] работает самостоятельно
     .hero__content__landing__caption Подключи бота и следи за чатами #[br] в своем Instagram Direct. #[br] Ничего не надо скачивать. #[br]
       a.link-info(v-link="{name: 'info-screen-3'}") Будущее наступило
-    .hero__content__landing__title.mid Откуда бот знает, #[br] кому и что отвечать?!
+    .hero__content__landing__title.mid Откуда бот знает, #[br] кому и что отвечать?
     .hero__content__landing__screen-1
       img(src="./img/screen-1.png")
     .hero__content__landing__sub-title.questions Бот понимает #[br] вопросы покупателей
@@ -75,7 +75,7 @@
         img(src="./img/screen-2-no.png")
       .hero__content__landing__sub-title.info Нет сайта? Ответь #[br] на вопросы о товарах
       .hero__content__landing__caption Бот увидит новые посты, уточнит детали #[br] и наличие товаров. Потом добавит их #[br] в твой
-        a.link-info(v-link="{name: 'info-screen-4'}")  новый интернет-магазин #[br] по ссылке
+        a.link-info(v-link="{name: 'info-screen-4'}")  новый Интернет-магазин #[br] по ссылке
           span.bold  xxxx.drbt.io
     .hero__content__landing__screen-3
       img(src="./img/screen-3.png")

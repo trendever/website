@@ -40,7 +40,7 @@
     @media(--mobile) {
       font-size: 36px;
       width: 490px;
-      margin: 190px auto 0px auto;
+      margin: 195px auto 0px auto;
     }
     .first-br{
       display: none;
@@ -53,9 +53,15 @@
     margin-top: 40px;
     margin-bottom: 20px;
     @media(--mobile) {
-      margin-top: 90px;
-      margin-bottom: 25px;
+      margin-top: 75px;
+      margin-bottom: 22px;
 
+    }
+  }
+
+  .zero-days{
+    @media(--mobile) {
+      margin-top: 25px;
     }
   }
 
@@ -127,7 +133,16 @@
   }
 
 
-
+  &__zero-days-link{
+    a{
+      font-size: 36px;
+      font-family: $font__family__light;
+      opacity: .5;
+      color: $color__white;
+      border-bottom: 2px solid rgba(255, 255, 255, .5);
+      margin-top: 5px;
+    }
+  }
 
   &__accept-btn button{
     cursor: pointer;

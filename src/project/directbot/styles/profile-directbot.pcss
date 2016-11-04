@@ -49,11 +49,14 @@
         overflow: hidden;
         border-radius: 50%;
         //background: whitesmoke;
-        size: 190px;
+        width: 190px;
+        height: 190px;
         margin: -25px 10px 0px 10px;
         background-image: url(../icons/user_active.svg);
         background-repeat: no-repeat;
         background-position-x: -6px;
+        -webkit-background-size: 190px;
+        background-size: 190px;
         img {
           height: 100%;
         }
@@ -70,15 +73,17 @@
         width: 80%;
         margin: 0 auto;
         font-size: 32px;
-        margin-top: 80px;
+        margin-top: 70px;
       }
       img{
         display: block;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
         margin-left: 205px;
         margin-top: -10px;
       }
       .empty{
+        display: inline-block;
+        margin-bottom: 4px;
         font-family: $font__family__semibold;
       }
     }
@@ -89,12 +94,15 @@
       font-size: 32px;
       img{
         display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 35px;
+        margin-left: 42px;
+        //margin-right: auto;
+        margin-top: 18px;
         margin-bottom: 20px;
+        width: 642px;
       }
       .bold{
+        display: inline-block;
+        margin-bottom: 5px;
         font-family: $font__family__semibold;
       }
     }
@@ -121,7 +129,7 @@
       @media(--mobile) {
         width: 100%;
         height: 200px;
-        bottom: 190px;
+        bottom: 198px;
         font-size: 32px;
         line-height: 40px;
         padding: 20px 16px 0px 16px;
