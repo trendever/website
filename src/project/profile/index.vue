@@ -102,10 +102,9 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
   navbar-component(:current='listId', v-if="$route.name === 'profile'")
 
   native-popup(:show-popup="showPopup")
-    .main-text
-      | {{message}}
-    .button-text(v-on:click="showPopup = false")
-      | OK
+    .title-text.title-font Ссылка скопирована
+    .main-text {{message}}
+    .button-text(v-on:click="showPopup = false") OK
   template(v-if="loaded")
     .find-bloger-btn(v-if='isSelfPage && isMobile && showBloger', @click="buyServiceProduct") Найти блогера
     .how-to-sell-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile && noLikes && noProducts") Как начать продавать?
@@ -244,7 +243,7 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
             }
           })
         self.copy.on('success',()=>{
-          self.message = `Ссылка ${self.getUserName}.tndvr.com скопирована.`;
+          self.message = `Ссылка ${self.getUserName}.tndvr.com скопирована для вставки.`;
           self.showPopup = true;
 
         })

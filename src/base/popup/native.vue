@@ -20,7 +20,7 @@ export default {
 @import 'base/vars/vars.pcss';
 
 #native-popup {
-
+  font-family: $font__family__regular;
   position: fixed 0 0 * 0;
   z-index: 110;
   size: 100%;
@@ -28,7 +28,7 @@ export default {
 
 
   .popup-content {
-
+    background: #F5F5F6;
     color: black;
     text-align: center;
     font-size: 20px;
@@ -38,46 +38,53 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
 
+    border-radius: 15px;
+    overflow: hidden;
 
     @media (--mobile) {
+      border-radius: 30px;
       width: 75%;
       font-size: 32px;
     }
 
   }
 
-  .main-text {
-    background: #F5F5F6;
-    border-bottom: 1px solid grey;
+  .title-font {
+    font-family: $font__family__semibold;
+    font-size: 40px;
+  }
 
-    padding: 20px 20px 20px 20px;
-    border-top-right-radius: 15px;
-    border-top-left-radius: 15px;
+  .title-text {
+
+    padding: 30px 10px * 10px;
 
     @media (--mobile) {
-      padding: 30px 30px 30px 30px;
-      border-top-right-radius: 30px;
-      border-top-left-radius: 30px;
+      padding: 50px 30px 10px 30px;
+
     }
 
+  }
+
+  .main-text {
+
+    padding: * * 30px *;
+
+    @media (--mobile) {
+      padding: * * 50px *;
+
+    }
 
   }
 
   .button-text {
-    background: #F5F5F6;
+    font-family: $font__family__semibold;
+    border-top: 1px solid grey;
     color:#226ABB ;
-
-    padding: * 20px 20px 20px;
-    padding-top: 20px;
-    border-bottom-right-radius: 15px;
-    border-bottom-left-radius: 15px;
+    padding: 20px 20px 20px 20px;
 
     @media (--mobile) {
       padding: 30px 30px 30px 30px;
       font-size: 36px;
-      border-bottom-right-radius: 30px;
-      border-bottom-left-radius: 30px;
-
     }
 
     span {
