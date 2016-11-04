@@ -67,10 +67,10 @@ export default {
 
   .main-text {
 
-    padding: * * 30px *;
+    padding: * 5px 30px 5px;
 
     @media (--mobile) {
-      padding: * * 50px *;
+      padding: * 10px 50px 10px;
 
     }
 

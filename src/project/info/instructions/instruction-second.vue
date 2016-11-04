@@ -19,8 +19,9 @@
    //-a(href="instagram://profile", target="_blank") ПЕРЕЙТИ В INSTAGRAM
 
 native-popup(:show-popup="showPopup")
-  .main-text {{{ message }}}
-  .button-text(v-on:click="moveInstagram") ОК
+  .title-text.title-font Ссылка скопирована
+  .main-text {{{message}}}
+  .button-text(v-on:click="moveInstagram") OK
 </template>
 
 <script>
@@ -52,7 +53,7 @@ export default {
         }
       })
       self.copy.on('success',()=>{
-        this.message = 'Ссылка username.tndvr.com скопирована. <br><br> Сейчас откроется ваш Instagram профиль и вы сможете ее вставить.';
+        this.message = `Ссылка ${this.userName}.tndvr.com скопирована. <br><br> Сейчас откроется ваш Instagram профиль и вы сможете ее вставить.`;
         this.showPopup = true;
 
       })

@@ -1,8 +1,8 @@
 <template lang="jade">
 div
   native-popup(:show-popup="showPopup")
-    .main-text
-      | Мы видим товары, где вы указаны как поставщик. Вы собираетесь их продавать?
+    .title-text.title-font Уведомляем
+    .main-text Мы видим товары, где вы указаны как поставщик. Вы собираетесь их продавать?
     .button-text
       span(v-on:click="goInstructions") Да
       span(v-on:click="disableSupplier") Нет
