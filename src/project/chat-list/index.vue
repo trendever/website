@@ -74,7 +74,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
     getCountForLoading
   } from 'vuex/getters/lead.js';
 
-  import { isAuth, getTooltips, isFake } from 'vuex/getters/user.js';
+  import { isAuth, getTooltips} from 'vuex/getters/user.js';
   import { setTooltip } from 'vuex/actions/user.js';
 
   import {
@@ -118,7 +118,6 @@ app-loader.list-loader(v-if="!needLoadLeads")
         getLeads,
         getTab,
         getIsTab,
-        isFake,
         getTitle,
         isEmptyLeads,
         isDone,
@@ -135,9 +134,6 @@ app-loader.list-loader(v-if="!needLoadLeads")
       }
     },
     data(){
-      if (this.isFake){
-        window.location.href = window.location.origin;
-      }
       return {
         isMobile: window.browser.mobile,
         needLoadLeads: true,

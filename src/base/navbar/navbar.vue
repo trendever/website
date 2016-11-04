@@ -8,7 +8,7 @@
   profile = '/static/img/user_inactive.svg'
   profile_active = '/static/img/user_active.svg'
 
-.navbar-cnt(v-if='isAuth && isMobile && !fakeuser')
+.navbar-cnt(v-if='isAuth && isMobile')
   .navbar.section__content
     .navbar_i(:class='{"__active": current=="feed"}', v-link='{name: "home"}', @click="scrollTop")
       .navbar_i_wrap
@@ -36,9 +36,7 @@
 
   export default{
     data() {
-      return {
-        fakeuser: this.isFake
-      };
+      return {};
     },
     props: {
       current: {
