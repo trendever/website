@@ -106,9 +106,9 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
       | {{message}}
     .button-text(v-on:click="showPopup = false")
       | OK
-
-  .find-bloger-btn(v-if='isSelfPage && isMobile && showBloger', @click="buyServiceProduct") Найти блогера
-  .how-to-sell-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile && noLikes && noProducts") Как начать продавать?
+  template(v-if="loaded")
+    .find-bloger-btn(v-if='isSelfPage && isMobile && showBloger', @click="buyServiceProduct") Найти блогера
+    .how-to-sell-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile && noLikes && noProducts") Как начать продавать?
 .help-wrapper(v-if='isFirst')
   .attention(v-if='isFirst')
     p Для корректного отображения подсказок переверните устройство в портретную ориентацию
