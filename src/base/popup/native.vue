@@ -40,7 +40,7 @@ export default {
 
     border-radius: 15px;
     overflow: hidden;
-
+    width: 300px;
     @media (--mobile) {
       border-radius: 30px;
       width: 75%;
@@ -51,12 +51,16 @@ export default {
 
   .title-font {
     font-family: $font__family__semibold;
-    font-size: 40px;
+    font-size: 24px;
+    @media (--mobile) {
+      font-size: 40px;
+    }
+
   }
 
   .title-text {
 
-    padding: 30px 10px * 10px;
+    padding: 20px 10px 10px 10px;
 
     @media (--mobile) {
       padding: 50px 30px 10px 30px;
@@ -89,8 +93,12 @@ export default {
 
     span {
       cursor: pointer;
-      padding: * 50px * 50px;
+      padding: * 30px * 30px;
       margin: * 10px * 10px;
+      @media (--mobile) {
+        padding: * 50px * 50px;
+        margin: * 10px * 10px;
+      }
     }
   }
 

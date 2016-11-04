@@ -10,18 +10,16 @@
  .instruction__txt на твою витрину товаров #[br] в приложении и на сайте Trendever
  .instruction__screen
   img(src="./img/screen-2.png")
-  //-.wrap-instruction-img
-    second-img(:username="getAuthUser.name")
  .instruction__txt Нажми на кнопку ниже и ссылка #[br] на витрину скопируется для вставки #[br] в твой Instagram-профиль
  .instruction__continue-btn
   button(v-on:click="goInstgram").copy-trigger
     a ПЕРЕЙТИ В INSTAGRAM
-   //-a(href="instagram://profile", target="_blank") ПЕРЕЙТИ В INSTAGRAM
 
 native-popup(:show-popup="showPopup")
   .title-text.title-font Ссылка скопирована
   .main-text {{{message}}}
-  .button-text(v-on:click="moveInstagram") OK
+  .button-text(v-on:click="moveInstagram")
+    span OK
 </template>
 
 <script>
@@ -29,7 +27,7 @@ native-popup(:show-popup="showPopup")
 import { getAuthUser } from 'vuex/getters/user';
 import clipboard from 'clipboard';
 import nativePopup from 'base/popup/native';
-//import secondImg from './components/second-img';
+
 export default {
   vuex:{
     getters:{
@@ -105,7 +103,7 @@ export default {
   },
   components: {
     nativePopup
-    //secondImg
+
   }
 }
 </script>

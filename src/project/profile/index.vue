@@ -104,7 +104,8 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
   native-popup(:show-popup="showPopup")
     .title-text.title-font Ссылка скопирована
     .main-text {{message}}
-    .button-text(v-on:click="showPopup = false") OK
+    .button-text(v-on:click="showPopup = false")
+      span OK
   template(v-if="loaded")
     .find-bloger-btn(v-if='isSelfPage && isMobile && showBloger', @click="buyServiceProduct") Найти блогера
     .how-to-sell-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile && noLikes && noProducts") Как начать продавать?
