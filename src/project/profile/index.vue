@@ -22,12 +22,12 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         a(class='profile-header__menu-link profile-header__close-menu first',
           @click='setShowMenu(false)') Отмена
         a(class='profile-header__menu-link',
-          v-on:click="buyTg") Настройки профиля
+          v-on:click="helpSupplier") Настройки профиля
         a(class='profile-header__menu-link',
           v-if='isMobile',
           v-link='{name: "info-instructions-1"}') Как начать продавать?
         a(class='profile-header__menu-link',
-          v-if="shopId !== 1", v-on:click="buyTg") Подключить продажников
+          v-if="shopId !== 1", v-on:click="helpSupplier") Подключить продажников
         a(class='profile-header__menu-link',
           v-link='{name: "info-mission"}') Наша миссия
         a(class='profile-header__menu-link',
@@ -37,7 +37,7 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
           v-link='{name: "info-newshop"}') Помощь магазинам
         a(class='profile-header__menu-link',
           v-if="shopId === 1"
-          v-link='{name: "info-newshop"}') Помощь покупателям
+          v-on:click="helpCustomer") Помощь покупателям
         a(class='profile-header__menu-link',
           href="https://trendever.payture.com/",
           target="_blank") Денежный перевод
@@ -294,7 +294,7 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         window.location = '/';
 
       },
-      buyTg(){
+      helpSupplier(){
         this
           .createLead( 32158 )
           .then(
@@ -313,7 +313,24 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
           )
 
       },
-
+      helpCustomer(){
+        this
+          .createLead( 21499 )
+          .then(
+            ( lead ) => {
+              if ( lead !== undefined && lead !== null ) {
+                this.$router.go( { name: 'chat', params: { id: lead.id } } )
+              }
+            }
+          )
+          .catch(
+            ( error ) => {
+              if ( error === leads.ERROR_CODES.UNATHORIZED ) {
+                this.$router.go( { name: 'signup' } )
+              }
+            }
+          )
+      },
       buyServiceProduct(){
 
         let productId = config.service_product_id === null ? 7833 : config.service_product_id;
