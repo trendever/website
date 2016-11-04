@@ -2,7 +2,7 @@
 <template lang="jade">
  .monetization
 
-  i.ic-close(@click='closePage', v-if="getUseDays")
+  i.ic-close(@click='closePage')
   .monetization__days-to-end(:class="{is__end: getUseDays === 0, 'error-days': errorChoice}") {{ getUseDays }}
   .monetization__text
     | дней осталось до конца #[br.first-br] пробного периода
