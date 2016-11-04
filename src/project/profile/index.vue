@@ -99,7 +99,8 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         :filter-by-shop-id="shopId",
         :list-id.sync="listId")
 
-  navbar-component(:current='listId')
+  navbar-component(:current='listId', v-if="$route.name === 'profile'")
+
   native-popup(:show-popup="showPopup")
     .main-text
       | {{message}}
@@ -409,7 +410,8 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         setTooltip,
         setMyCurrentList,
         openProfile,
-        closeProfile
+        closeProfile,
+        logOut
       },
       getters: {
         getTooltips,

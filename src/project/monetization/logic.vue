@@ -94,7 +94,7 @@ export default {
                 let nowTime = +new Date()/1000;
 
                 let difference = nowTime - date;
-
+                console.log(difference);
                 if (difference <= this.day){
                   this.setUseDays(7)
                   return { timeOut, difference }
