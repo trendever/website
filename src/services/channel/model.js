@@ -41,7 +41,15 @@ export default class {
       this._addCallback(trans_id, callback);
     }
     if (__debugMode) {
-      console.trace('request trace', request_map);
+      //console.trace('request trace', request_map);
+      console.log('%c[req] ' +
+       '%c' + action_str +
+       ' %c' + data_type,
+       'font-size: 1.1rem; color: blue',
+       'color: #2196F3; text-transform: uppercase',
+       'color: #FF9800;',
+       request_map
+      );
     }
 
     this.store.send(data);
