@@ -14,30 +14,6 @@
       placeholder='Ищи текстом или жми теги...',
       v-if="inputOpened || searchValue")
 
-  .profile-header__menu
-    .profile-header__menu-btn
-      .profile-header__menu-btn-label
-      .profile-header__menu-btn-icon(v-if="!getComeBack", @click.stop='menuOpened=!menuOpened')
-        i(class='ic-info')
-      .profile-header__menu-btn-icon(v-if="getComeBack", @click='goBack')
-        i(class='ic-arrow-left')
-  .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth, '__desktop': !isMobile }")
-    a(class='profile-header__menu-link profile-header__close-menu first',
-      @click='menuOpened=false') Отмена
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-user"}') Покупателям
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-newshop"}') Магазинам
-    a(class='profile-header__menu-link',
-      @click="onBuyPromoProduct()") Блогерам
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-mission"}') Наша миссия
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-agreement"}') Условия
-    a(class='profile-header__menu-link',
-      href="https://trendever.payture.com/",
-      target="_blank") Денежный перевод
-    a(class='profile-header__menu-link', @click="logout") Выход
   a(v-link='{ name: "home" }')
     i.smallHero__logo
       img(src='../../base/img/logo-main.svg')
