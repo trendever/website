@@ -290,7 +290,13 @@ app-loader.list-loader(v-if="!needLoadLeads")
                 this.loadLeads().then( () => {
                   setTimeout(()=>{
                     this.$nextTick( () => {
-                      add( this.$els.scrollCnt.scrollHeight );
+
+                      if(this.$els.scrollCnt !== null) {
+
+                        add( this.$els.scrollCnt.scrollHeight );
+
+                      }
+
                     } );
                   },1)
                 } )
