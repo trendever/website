@@ -18,21 +18,21 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
 
        template(v-if="loaded")
-        .profile_inactive
+        .profile_inactive(v-if="false")
           img(src="./img/empty-directbot-profile.png")
           span.empty Деактивирован
           span #[br]мониторю 3 поста #[br] отправил 5 сообщений
-        .profile_active(v-if="false")
+        .profile_active
           img(src="./img/active-directbot-profile.png")
-          p.bold Активирован... #[br]
+          p.bold Активирован #[br]
           p мониторю 3 поста #[br] отправил 5 сообщений
-        .profile_no-goods-banner
+        .profile_no-goods-banner(v-if="false")
           span После подключения #[br]
           span.save Directbot
           span  начнет мониторить все #[br] ваши новые посты и автоматически #[br] отвечать на вопросы покупателей
 
 
-        button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(v-link="{ name: 'turn-on-bot' }") ПОДКЛЮЧИТЬ БОТА
+        //button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(v-link="{ name: 'turn-on-bot' }") ПОДКЛЮЧИТЬ БОТА
         //button.bot-active-btn(v-if="false") БОТ АКТИВЕН
           //i.ic-close
 

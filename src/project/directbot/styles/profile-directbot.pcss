@@ -34,8 +34,6 @@
   }
 }
 
-
-
 .profile-cnt {
   .profile {
     &_info {
@@ -94,7 +92,7 @@
       font-size: 32px;
       img{
         display: block;
-        margin-left: 42px;
+        margin-left: 48px;
         //margin-right: auto;
         margin-top: 18px;
         margin-bottom: 20px;
@@ -104,6 +102,14 @@
         display: inline-block;
         margin-bottom: 5px;
         font-family: $font__family__semibold;
+        position: relative;
+
+        &:after{
+          content: '...';
+          position: absolute;
+          top: 0;
+          right: -20px;
+        }
       }
     }
 
