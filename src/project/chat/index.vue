@@ -112,7 +112,8 @@
         lead_id: null,
         isMobile: window.browser.mobile,
         showLoader: true,
-        timerId: ''
+        timerId: '',
+        fullScroll: 0
       }
     },
 
@@ -141,68 +142,6 @@
       },
     },
     ready(){
-      this.timerId = setInterval(()=>{
-
-        let el = this.$els.boxMessages;
-
-        if(!el){
-
-          clearInterval(this.timerId);
-
-        }
-
-        let count = this.$els.boxMessages.children.length;
-
-        console.log(count)
-
-        if(count !== 0 && count >= this.getMessages.length){
-
-          Promise.resolve().then(()=>{
-
-            clearInterval(this.timerId);
-
-          }).then(()=>{
-
-            setTimeout(()=>{
-
-              this.$nextTick(()=>{
-
-                this.goToBottom();
-
-              })
-
-            },200)
-
-          }).then(()=>{
-
-            setTimeout(()=>{
-
-              this.$nextTick(()=>{
-
-                this.goToBottom();
-
-              })
-
-            },200)
-
-          }).then(()=>{
-
-            setTimeout(()=>{
-
-              this.$nextTick(()=>{
-
-                this.goToBottom();
-
-              })
-
-            },200)
-
-          })
-
-        }
-
-      },100)
-
       if ( this.isAuth ) {
         this.onMessage      = this.onMessage.bind( this );
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
@@ -421,7 +360,35 @@
 
       },
       goToBottom(){
-        this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
+
+        let height = this.$els.scrollCnt.scrollHeight;
+
+        if(this.fullScroll !==  height) {
+
+          this.$els.scrollCnt.scrollTop = height;
+
+          this.fullScroll = height;
+
+          console.log(this.$els.scrollCnt.scrollTop);
+
+          console.log(height);
+
+          setTimeout(()=>{
+
+            this.$nextTick(()=>{
+
+              this.goToBottom();
+
+            })
+
+          },100);
+
+        } else {
+
+          return;
+
+        }
+
       }
     },
   }
