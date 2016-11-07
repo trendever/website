@@ -25,7 +25,9 @@ scroll-component
               .input-container
                 .input.name
                   i.ic-insta-name
-                  input(type='text',
+                  input(
+                    v-el:login,
+                    type='text',
                     autocomplete="off",
                     autocorrect="off",
                     autocapitalize="off",
@@ -193,8 +195,18 @@ scroll-component
           this.errorLogin = true;
           //this.textLink = TEXT_LINK['errorloginLang'];
           this.login = PLACEHOLDER['errorLoginFormat'];
+
+
+          this.$nextTick(()=>{
+
+            this.$els.login.blur();
+
+          })
+
           return;
         }
+
+
       },
 
       sendSMS() {
