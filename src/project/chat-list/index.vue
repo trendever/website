@@ -23,7 +23,7 @@ scroll-component(v-el:scroll-cnt)
     template(v-if='!leadsArray.length')
       .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
-        span  ... потому что ты пока ничего #[br] не покупаешь
+        span  потому что ты пока ничего #[br] не покупаешь
       .chat-list-cnt-is-empty(v-if="getTab === 'seller'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
         span  ... потому что ты пока ничего #[br] не продаешь
