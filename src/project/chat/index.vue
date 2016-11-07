@@ -204,10 +204,32 @@
       run(){
         return this
           .setConversation( this.lead_id )
-          .then(
+
+          .then(()=>{
+
+            return messages
+              .find(this.getId, null, 70, false)
+              .then((data)=>{
+                return data.find(message=>{
+                  return message.parts[0].content === 'Привет;) да, подтверждаю!'
+                })
+              });
+
+          }).then(flagMessage=>{
+            if(!flagMessage && this.getCurrentMember.role === 1){
+              this.setConversationAction('approve');
+            }
+
+          }).then(
             () => {
                     this.$nextTick( () => {
-                      this.goToBottom();
+
+                      setTimeout(()=>{
+
+                        this.goToBottom();
+
+                      },30)
+
                     } );
             },
             ( error ) => {
@@ -219,20 +241,7 @@
             if(this.$store.state.conversation.id === null){
               this.$router.go( { name: '404'});
             }
-          }).then(()=>{
 
-            return messages
-              .find(this.getId, null, 50, false)
-              .then((data)=>{
-                return data.find(message=>{
-                  return message.parts[0].content === 'Привет;) да, подтверждаю!'
-                })
-              });
-
-          }).then(flagMessage=>{
-            if(!flagMessage && this.getCurrentMember.role === 1){
-              this.setConversationAction('approve');
-            }
           }).then(()=>{
             //лоадер
             this.$set('showLoader', false);
