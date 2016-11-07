@@ -74,7 +74,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
     getCountForLoading
   } from 'vuex/getters/lead.js';
 
-  import { isAuth, getTooltips} from 'vuex/getters/user.js';
+  import { isAuth, getTooltips,isFake} from 'vuex/getters/user.js';
   import { setTooltip } from 'vuex/actions/user.js';
 
   import {
@@ -91,7 +91,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
   import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
   import NavbarComponent from 'base/navbar/navbar.vue';
-
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import ChatListItem from './chat-list-item.vue';
 
   export default {
@@ -118,6 +118,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
         getLeads,
         getTab,
         getIsTab,
+        isFake,
         getTitle,
         isEmptyLeads,
         isDone,
@@ -127,6 +128,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
       },
       actions: {
         setTooltip,
+        setCallbackOnSuccessAuth,
         setTab,
         loadLeads,
         leadClose,
@@ -146,6 +148,13 @@ app-loader.list-loader(v-if="!needLoadLeads")
       }
     },
     ready(){
+      if (this.isFake){
+        window.fakeAuth = {text: "чтобы просматривать список чатов", data: ""}
+        this.setCallbackOnSuccessAuth(()=>{
+          this.$router.go({name: 'chat_list'})
+        })
+        this.$router.replace( { name: 'signup' } );
+      }
 
       if ( this.isAuth ) {
 

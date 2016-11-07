@@ -68,6 +68,7 @@
   } from 'vuex/getters/chat.js';
   import { isDone } from 'vuex/getters/lead.js';
   import { isAuth, getUseDays } from 'vuex/getters/user.js';
+  
 
   //services
   import * as messages from 'services/message';

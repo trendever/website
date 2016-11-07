@@ -6,19 +6,21 @@ scroll-component
       .signup__close.__hello(@click='closePage'): i.ic-close
       .section
         .column-desktop-50.header(v-if="showTitleSlider")
-          h1.accept Войдите и сможете
+          h1.accept(v-if="fakeReg") Зарегистрируйтесь
+          h1.accept(v-else) Войдите и сможете
         .column-desktop-50.column-desktop-right(v-if="showTitleSlider")
-          template(v-if="false")
+          
+          template(v-if="fakeReg")
+            .logo(:class="{'app_logo': isStandalone}")
+              img(src="./img/auth-logo.png")
+            .reg
+              p Зарегистрируйтесь,
+                br
+                | {{fakeText}}
+                br
+                span.bold {{fakeData}}
+          template(v-else)
             slider
-          template(v-if="true")
-          .logo(:class="{'app_logo': isStandalone}")
-            img(src="./img/auth-logo.png")
-          .reg
-            p Зарегистрируйтесь,
-              br
-              | чтобы не пропустить ответ от
-              br
-              span.bold supplier_name
         .column-desktop-50
           .bottom-container(:class='{"opened-key-board":!showTitleSlider}')
             validator(name='signup')
@@ -82,6 +84,7 @@ scroll-component
   import {
     saveAuthData,
     signup,
+    setData
   } from 'vuex/actions';
   import {
     authData,
@@ -145,6 +148,21 @@ scroll-component
       }
     },
 
+    computed: {
+      fakeReg(){
+        if (window.fakeAuth.text){
+          return true;
+        }
+        return false;
+      },
+      fakeText(){
+        return window.fakeAuth.text;
+      },
+      fakeData(){
+        return window.fakeAuth.data;
+      }
+    },
+
     ready() {
       this.$set('height', `${ document.body.scrollHeight }px`);
       this.phone = this.authData.phone;
@@ -164,6 +182,7 @@ scroll-component
       actions: {
         saveAuthData,
         signup,
+        setData
       },
       getters: {
         authData,
@@ -245,11 +264,21 @@ scroll-component
 
         this.save();
 
-        this.signup().then( ()=> {
-          this.$router.go({ name: 'comfirm-sms' });
-        }).catch( (error) => {
-          this.onErrorPhone();
-        })
+
+        if (this.fakeReg){
+          this.setData().then( ()=> {
+            this.$router.go({ name: 'comfirm-sms' });
+          }).catch( (error) => {
+            this.onErrorPhone();
+          })
+        }else{
+          this.signup().then( ()=> {
+            this.$router.go({ name: 'comfirm-sms' });
+          }).catch( (error) => {
+            this.onErrorPhone();
+          })
+        }
+        
       },
 
       blurInput(){

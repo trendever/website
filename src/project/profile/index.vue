@@ -143,6 +143,7 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
     isDone,
     getPhotoConfig,
     isAuth,
+    isFake,
     getMyCurrentList,
     getTooltips,
     showMenu
@@ -223,6 +224,16 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
 
     },
     ready(){
+      if (this.isFake && this.isSelfPage){
+        window.fakeAuth = {text: "чтобы просматривать свой профиль", data: ""}
+        this.setCallbackOnSuccessAuth(()=>{
+          this.$router.go({name: 'profile'})
+        })
+        this.$router.replace( { name: 'signup' } );
+      }
+
+
+
       this.setShowMenu(false);
 
       let id = this.$route.params.id;
@@ -436,6 +447,7 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         userID,
         user,
         isAuth,
+        isFake,
         getUserName,
         getUserPhoto,
         getUserCaption,

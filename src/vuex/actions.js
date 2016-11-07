@@ -46,6 +46,20 @@ export const signup = ({ dispatch, state }) => {
   });
 };
 
+export const setData = ({ dispatch, state }) => {
+  return new Promise((resolve, reject) => {
+
+    auth.setData(state.auth.phone, state.auth.username, state.auth.instagram)
+    .then( () => {
+      resolve(true);
+    }).catch( error => {
+      return reject(error);
+      console.log(error);
+    });
+
+  });
+};
+
 export const setCallbackOnSuccessAuth = ({ dispatch }, callback) => {
   dispatch(types.SET_CALLBACK_ON_SUCCEESS_AUTH, callback);
 };

@@ -32,10 +32,11 @@ chat-menu(v-if="isMobile")
     getId,
     getCurrentMember,
     getStatus,
-    getShowMenu
+    getShowMenu,
+    getShopName
   } from 'vuex/getters/chat.js'
 
-  import { getUseDays } from 'vuex/getters/user';
+  import { getUseDays, isFake } from 'vuex/getters/user';
 
   import {
     setConversationAction,
@@ -48,12 +49,15 @@ chat-menu(v-if="isMobile")
   import * as leads from 'services/leads'
   import * as cardService from 'services/card';
   import ChatMenu from './chat-menu.vue'
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
+
 
   export default{
     data(){
       return {
         txtMsg: '',
-        isMobile: window.browser.mobile
+        isMobile: window.browser.mobile,
+        fakeRegCount: 0
       }
     },
 
@@ -92,17 +96,20 @@ chat-menu(v-if="isMobile")
     vuex: {
       actions: {
         setConversationAction,
+        setCallbackOnSuccessAuth,
         createMessage,
         setShowMenu,
         setStatus
       },
       getters: {
+        isFake,
         getUseDays,
         getAction,
         getId,
         getCurrentMember,
         getShowMenu,
-        getStatus
+        getStatus,
+        getShopName
       }
     },
 
@@ -193,6 +200,17 @@ chat-menu(v-if="isMobile")
       },
 
       send ( event ) {
+        this.fakeRegCount++
+        
+        if (this.fakeRegCount === 2 && this.isFake){
+          window.fakeAuth = {text: "чтобы не пропустить ответ от", data: this.getShopName}
+          this.setCallbackOnSuccessAuth(()=>{
+            this.$router.go({name: 'chat-list'})
+          })
+          this.$router.replace( { name: 'signup' } );
+        }
+
+
 
         if(settings.activateMonetization){
           if(this.getUseDays === 0){

@@ -61,6 +61,7 @@ const router = new VueRouter({
 
 window.history.scrollRestoration = 'manual';
 window.before = {};
+window.fakeAuth = {}
 
 // configure router
 configRouter(router);
