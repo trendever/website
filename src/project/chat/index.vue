@@ -7,7 +7,7 @@
     .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu")
     .section.top.bottom
       .chat.section__content
-        .chat_messages(id="chatmessages")
+        .chat_messages(id="chatmessages", v-el:box-messages)
           template(v-for='msg in getMessages | list', track-by='$index')
             div
               chat-msg-status(
@@ -112,6 +112,7 @@
         lead_id: null,
         isMobile: window.browser.mobile,
         showLoader: true,
+        timerId: ''
       }
     },
 
@@ -140,6 +141,68 @@
       },
     },
     ready(){
+      this.timerId = setInterval(()=>{
+
+        let el = this.$els.boxMessages;
+
+        if(!el){
+
+          clearInterval(this.timerId);
+
+        }
+
+        let count = this.$els.boxMessages.children.length;
+
+        console.log(count)
+
+        if(count !== 0 && count >= this.getMessages.length){
+
+          Promise.resolve().then(()=>{
+
+            clearInterval(this.timerId);
+
+          }).then(()=>{
+
+            setTimeout(()=>{
+
+              this.$nextTick(()=>{
+
+                this.goToBottom();
+
+              })
+
+            },200)
+
+          }).then(()=>{
+
+            setTimeout(()=>{
+
+              this.$nextTick(()=>{
+
+                this.goToBottom();
+
+              })
+
+            },200)
+
+          }).then(()=>{
+
+            setTimeout(()=>{
+
+              this.$nextTick(()=>{
+
+                this.goToBottom();
+
+              })
+
+            },200)
+
+          })
+
+        }
+
+      },100)
+
       if ( this.isAuth ) {
         this.onMessage      = this.onMessage.bind( this );
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
@@ -151,6 +214,9 @@
     },
 
     beforeDestroy() {
+      if(this.timerId) {
+        clearInterval(this.timerId);
+      }
       if ( this.isAuth ) {
         this.scrollListener.remove();
         this.closeConversation();
@@ -204,10 +270,32 @@
       run(){
         return this
           .setConversation( this.lead_id )
-          .then(
+
+          .then(()=>{
+
+            return messages
+              .find(this.getId, null, 70, false)
+              .then((data)=>{
+                return data.find(message=>{
+                  return message.parts[0].content === 'Привет;) да, подтверждаю!'
+                })
+              });
+
+          }).then(flagMessage=>{
+            if(!flagMessage && this.getCurrentMember.role === 1){
+              this.setConversationAction('approve');
+            }
+
+          }).then(
             () => {
                     this.$nextTick( () => {
-                      this.goToBottom();
+
+                      setTimeout(()=>{
+
+                        this.goToBottom();
+
+                      },30)
+
                     } );
             },
             ( error ) => {
@@ -219,20 +307,7 @@
             if(this.$store.state.conversation.id === null){
               this.$router.go( { name: '404'});
             }
-          }).then(()=>{
 
-            return messages
-              .find(this.getId, null, 50, false)
-              .then((data)=>{
-                return data.find(message=>{
-                  return message.parts[0].content === 'Привет;) да, подтверждаю!'
-                })
-              });
-
-          }).then(flagMessage=>{
-            if(!flagMessage && this.getCurrentMember.role === 1){
-              this.setConversationAction('approve');
-            }
           }).then(()=>{
             //лоадер
             this.$set('showLoader', false);
