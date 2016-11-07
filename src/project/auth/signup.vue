@@ -11,7 +11,7 @@ scroll-component
           template(v-if="false")
             slider
           template(v-if="true")
-          .logo
+          .logo(:class="{'app_logo': isStandalone}")
             img(src="./img/auth-logo.png")
           .reg
             p Зарегистрируйтесь,
@@ -22,7 +22,7 @@ scroll-component
         .column-desktop-50
           .bottom-container(:class='{"opened-key-board":!showTitleSlider}')
             validator(name='signup')
-              .input-container
+              .input-container(:class="{'app_input': isStandalone}")
                 .input.name
                   i.ic-insta-name
                   input(type='text',
@@ -129,7 +129,8 @@ scroll-component
         textLink: TEXT_LINK.instagramMode,
         placeholder: PLACEHOLDER.instagramMode,
         instagram: true,
-        showTitleSlider: true
+        showTitleSlider: true,
+        isStandalone: browser.standalone,
       }
     },
 
@@ -169,6 +170,9 @@ scroll-component
     },
 
     methods: {
+      isStandalone(){
+        return browser.standalone
+      },
       closePage() {
         mixpanel.track('Close Signup Page');
         this.save();
