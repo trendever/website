@@ -4,7 +4,7 @@
     .loader-center(v-if="showLoader"): app-loader
     popup-img(v-if="imgPopUpUrl", :url="imgPopUpUrl", :width="imgWidth", :height="imgHeight", :on-close="closePopUp")
     chat-header(:notify-count='conversationNotifyCount')
-    .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu")
+    .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu", :class="{'directbot-color': isDirectbot }")
     .section.top.bottom
       .chat.section__content
         .chat_messages(id="chatmessages")
