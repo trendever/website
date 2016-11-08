@@ -65,7 +65,7 @@
   import navbar from 'base/navbar/navbar.vue'
   import { getOpenedProduct, isLiked, callAfterLoading } from 'vuex/getters/products'
   import { setLike, setCallBackAfterLoading, setComeBack, resetScrollByListId } from 'vuex/actions/products'
-  import { isAuth } from 'vuex/getters/user.js'
+  import { isAuth,isFake } from 'vuex/getters/user.js'
   import { createLead } from 'vuex/actions/lead.js'
   import { setCallbackOnSuccessAuth } from 'vuex/actions'
   import { authUser } from 'vuex/actions/user.js';
@@ -153,6 +153,13 @@
           this.$router.go( { name: 'signup' } );
 
         } else {
+          if (this.isFake){
+            window.fakeAuth = {text: " чтобы сохранять товары в свои шопинг-желания"}
+            this.setCallbackOnSuccessAuth(()=>{
+              this.$router.go( { name: "product_detail", params: { id } } );
+            })
+            this.$router.replace( { name: 'signup' } );
+          }
 
           this.setLike();
 
@@ -448,6 +455,7 @@
         getOpenedProduct,
         callAfterLoading,
         isLiked,
+        isFake,
         isAuth
       },
       actions: {

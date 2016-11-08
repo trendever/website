@@ -6,7 +6,7 @@ scroll-component
       .signup__close.__hello(@click='closePage'): i.ic-close
       .section
         .column-desktop-50.header(v-if="showTitleSlider")
-          h1.accept(v-if="fakeReg") Регистрация
+          h1.accept(v-if="fakeReg") Вход и регистрация 
           h1.accept(v-else) Войдите и сможете
         .column-desktop-50.column-desktop-right(v-if="showTitleSlider")
           
@@ -14,7 +14,7 @@ scroll-component
             .logo(:class="{'app_logo': isStandalone}")
               img(src="./img/auth-logo.png")
             .reg
-              p Зарегистрируйтесь,
+              p Войдите или зарегистрируйтесь,
                 br
                 | {{fakeText}}
                 br
