@@ -42,6 +42,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
         //a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
 
+  photos-component(
+    :filter-by-shop-id="shopId",
+    :list-id.sync="listId")
+
   .directbot-navbar
     navbar-component(:current='listId')
 
