@@ -45,7 +45,15 @@ scroll-component(v-el:scroll-cnt)
     //- D I R E C T  B O T
 
     template(v-if='!leadsArray.length && directbot')
+
       button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(v-link="{ name: 'turn-on-bot' }") ПОДКЛЮЧИТЬ БОТА
+      .chat-list-cnt-is-empty__banner.directbot-banner
+        span
+          | После подключения бота, здесь будет #[br]
+          | список чатов с покупателями как в #[br]
+        span.want
+          | Instagram Direct
+
       .chat-list-cnt-is-empty
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
         span  ... потому что ты пока ничего #[br] не продаешь
