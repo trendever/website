@@ -32,13 +32,14 @@ scroll-component(v-if="isDone", class="profile-cnt")
           span  начнет мониторить все #[br] ваши новые посты и автоматически #[br] отвечать на вопросы покупателей
 
 
-        //button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(v-link="{ name: 'turn-on-bot' }") ПОДКЛЮЧИТЬ БОТА
+        button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(v-link="{ name: 'turn-on-bot' }") ПОДКЛЮЧИТЬ БОТА
         //button.bot-active-btn(v-if="false") БОТ АКТИВЕН
           //i.ic-close
 
         //a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
 
-  navbar-component(:current='listId').directbot-navbar
+  .directbot-navbar
+    navbar-component(:current='listId')
 
 </template>
 <script type='text/babel'>
