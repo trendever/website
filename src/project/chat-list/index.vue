@@ -14,7 +14,8 @@ scroll-component(v-el:scroll-cnt)
         .header__nav__i.header__text(
           :class='{_active: getTab === "seller"}',
           @click='setTab("seller");')
-          span Продаю
+          span(v-if="!directbot") Продаю
+          span(v-if="directbot") Чаты с покупателями
 
 
     .section.top.bottom(:class="{'little-move-up': !$root.isStandalone,'little-move-up-standalone': $root.isStandalone}")
