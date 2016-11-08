@@ -224,7 +224,7 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
 
     },
     ready(){
-      if (this.isFake && this.isSelfPage){
+      if (this.isFake && this.isSelfPage && this.$route.name === 'profile'){
         window.fakeAuth = {text: "чтобы просматривать свой профиль", data: ""}
         this.setCallbackOnSuccessAuth(()=>{
           this.$router.go({name: 'profile'})

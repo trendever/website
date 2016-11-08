@@ -68,8 +68,8 @@ configRouter(router);
 
 router.beforeEach((to, from, next) => {
   if (to.from){
-    let exclude = ['signup','payment'];
-    let prevExclud = ['signup','payment','chat'];
+    let exclude = ['signup','payment','product_detail'];
+    let prevExclud = ['signup','payment','chat','product_detail'];
     let name = to.from.name;
     let toname = to.to.name
     if (exclude.indexOf(name) === -1){
