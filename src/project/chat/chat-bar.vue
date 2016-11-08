@@ -202,7 +202,7 @@ chat-menu(v-if="isMobile")
       send ( event ) {
         this.fakeRegCount++
         
-        if (this.fakeRegCount === 2 && this.isFake){
+        if (this.fakeRegCount === 3 && this.isFake){
           window.fakeAuth = {text: "чтобы не пропустить ответ от", data: this.getShopName}
           this.setCallbackOnSuccessAuth(()=>{
             this.$router.go({name: 'chat-list'})

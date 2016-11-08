@@ -2,7 +2,6 @@
 scroll-component(v-el:scroll-cnt)
   header-component(
     :title='title',
-    :back-link='{name: "home"}',
     :center-text-link="centerTextLink",
     :page="page",
     :avatar-url='avatarUrl',
