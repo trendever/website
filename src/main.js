@@ -39,6 +39,16 @@ if (config.raven.enabled) {
 window.mixpanel.init(config.mixpanel.token);
 window.socket_url = config.socket_server.url;
 
+Vue.mixin({
+  data() {
+    return {
+        isDirectbot: require('settings').directbotActive,
+        isMobile: window.browser.mobile,
+        isStandalone: window.browser.standalone
+      }
+    }
+})
+
 Vue.config.debug = true;
 
 Vue.use(VueValidator);
