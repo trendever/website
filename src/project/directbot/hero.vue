@@ -53,7 +53,9 @@
           img(src="./img/icon-1.png")
         .hero__content__landing__sub-title Отвечает всем #[br] клиентам сразу
         .hero__content__landing__caption Играюче уделит внимание каждому, #[br] быстро ответит.
-          a.link-info(v-link="{name: 'info-screen-1'}")  Ни один клиент #[br] не успеет передумать
+          a.link-info(v-on:click="showPopup = true")  Ни один клиент #[br] не успеет передумать
+          native-popup(:show-popup="showPopup")
+            info-screen1
       .info-box
         .hero__content__landing__icon-2
           img(src="./img/icon-2.png")
@@ -93,6 +95,7 @@
           img(src="./img/screen-3.png")
         .hero__content__landing__sub-title Бот даст ссылку на товар #[br] и ответит на вопросы
         .hero__content__landing__caption Клиенты быстро получат ответы, #[br] без опечаток. Следи за диалогом #[br] прямо в своем Instagram #[br] и отвечай сам, если нужно
+
 </template>
 
 <script type='text/babel'>
@@ -110,6 +113,12 @@ import * as commonService from 'services/common';
 import HeaderComponent from 'base/header/header.vue';
 
 import { targetClass } from 'utils';
+import NativePopup from 'base/popup/native';
+import infoScreen1 from 'project/directbot/info-screen-1.vue'
+import infoScreen2 from 'project/directbot/info-screen-2.vue'
+import infoScreen3 from 'project/directbot/info-screen-3.vue'
+import infoScreen4 from 'project/directbot/info-screen-4.vue'
+
 
 export default {
   data(){
@@ -120,12 +129,15 @@ export default {
       isMobile: window.browser.mobile,
       phoneNumber: '',
       smsSent: false,
-      phoneError: false
+      phoneError: false,
+      showPopup: false
     }
   },
 
   components :{
-    HeaderComponent
+    HeaderComponent,
+    NativePopup,
+    infoScreen1
   },
 
   ready() {
