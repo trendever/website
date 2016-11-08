@@ -6,7 +6,7 @@ scroll-component
       .signup__close.__hello(@click='closePage'): i.ic-close
       .section
         .column-desktop-50.header(v-if="showTitleSlider")
-          h1.accept(v-if="fakeReg") Зарегистрируйтесь
+          h1.accept(v-if="fakeReg") Регистрация
           h1.accept(v-else) Войдите и сможете
         .column-desktop-50.column-desktop-right(v-if="showTitleSlider")
           
@@ -89,7 +89,7 @@ scroll-component
   import {
     authData,
   } from 'vuex/getters';
-  import { isAuth } from 'vuex/getters/user.js';
+  import { isAuth,isFake } from 'vuex/getters/user.js';
 
 
   import store from 'vuex/store';
@@ -187,6 +187,7 @@ scroll-component
       getters: {
         authData,
         isAuth,
+        isFake,
       }
     },
 
@@ -198,11 +199,13 @@ scroll-component
         mixpanel.track('Close Signup Page');
         this.save();
 
-        if (window.history.length > 2) {
-          this.$router.go(window.history.back());
-        } else {
-          this.$router.go({name: 'home'});
+        if (this.isFake){
+          if (window.before.name === "chat_list" || window.before.name === "profile"){
+            this.$router.go({ name: "home"})
+            return
+          }
         }
+        this.$router.go({ name: window.before.name, params: window.before.params})
       },
 
       save() {

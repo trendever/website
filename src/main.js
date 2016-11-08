@@ -61,16 +61,26 @@ const router = new VueRouter({
 
 window.history.scrollRestoration = 'manual';
 window.before = {};
-window.fakeAuth = {}
+window.fakeAuth = {};
 
 // configure router
 configRouter(router);
 
 router.beforeEach((to, from, next) => {
   if (to.from){
+    let exclude = ['signup','payment'];
+    let prevExclud = ['signup','payment','chat'];
     let name = to.from.name;
-    let params = to.from.params;
-    window.before = {name: name, params: params};
+    let toname = to.to.name
+    if (exclude.indexOf(name) === -1){
+      let params = to.from.params;
+      let toparams = to.to.params;
+      window.before.name =  name;
+      window.before.params = params;
+      if (prevExclud.indexOf(toname) === -1){
+        window.before.prev = {name: toname, params: toparams}
+      }
+    }
   }
   to.next()
 });

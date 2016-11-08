@@ -159,13 +159,11 @@
           }
         }
 
-        console.log("BACK PRESSED")
-        console.log(window.before)
-
-        console.log(this.backLink)
-
-
         if (!this.backLink) {
+          if (this.$route.name === window.before.name && window.before.prev){
+            this.$router.go({ name: window.before.prev.name, params: window.before.prev.params})
+            return;
+          }
           this.$router.go({ name: window.before.name, params: window.before.params})
 
         } else {
