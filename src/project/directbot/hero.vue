@@ -72,8 +72,7 @@
     .hero__content__landing__sub-title.questions Бот понимает #[br] вопросы покупателей
     .hero__content__landing__caption Не важно, задан вопрос #[br(v-if="!isMobile")] в комментариях #[br(v-if="isMobile")] или личном сообщении, #[br] бот распознает его и поймет, #[br] что нужно ответить клиенту
     .hero__content__landing__toggle
-      .hero__content__landing__toggle__title(v-if="isMobile") У ТЕБЯ ЕСТЬ ИНТЕРНЕТ-МАГАЗИН?
-      .hero__content__landing__toggle__title(v-if="!isMobile") ЕСТЬ ЛИ У МЕНЯ ИНТЕРНЕТ-МАГАЗИН?
+      .hero__content__landing__toggle__title У ТЕБЯ ЕСТЬ ИНТЕРНЕТ-МАГАЗИН?
       button.yes ДА
       button.no НЕТ
     .toggle-box
