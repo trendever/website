@@ -31,8 +31,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
           span.save Directbot
           span  начнет мониторить все #[br] ваши новые посты и автоматически #[br] отвечать на вопросы покупателей
 
-        .bot-connect-btn(v-link="{ name: 'turn-on-bot' }"
-        v-if="getAuthUser.supplier_of === null"
+        button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(
+        v-link="{ name: 'turn-on-bot' }", v-if="getAuthUser.supplier_of === null"
         ) ПОДКЛЮЧИТЬ БОТА
 
         //button.bot-active-btn(v-if="false") БОТ АКТИВЕН
