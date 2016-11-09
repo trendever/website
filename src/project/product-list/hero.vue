@@ -79,7 +79,7 @@
     .caption__description__mobile(v-link='{name: "main-video"}') (смотреть видео)
     button(v-link='{ name: "info-newshop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends ЗАГЛЯНУТЬ ВНУТРЬ
-.banner(v-on:click="this.isClose = !this.isClose" v-bind:class="{ banner_close : isClose, banner: !isClose}", v-if="isMobile && isAuth")
+.banner(v-on:click="this.isClose = !this.isClose" v-bind:class="{ banner_close : isClose, banner: !isClose}", v-if="isMobile && isAuth && isFirst")
   i.ic-close
   span Лента товаров
   span.bold  формируется #[br] из шопинг-желаний
@@ -117,7 +117,8 @@ export default {
       phoneNumber: '',
       smsSent: false,
       phoneError: false,
-      isClose: false
+      isClose: false,
+      isFirst: false
     }
   },
 
