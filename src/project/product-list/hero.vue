@@ -79,6 +79,11 @@
     .caption__description__mobile(v-link='{name: "main-video"}') (смотреть видео)
     button(v-link='{ name: "info-newshop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends ЗАГЛЯНУТЬ ВНУТРЬ
+.banner(v-on:click="this.isClose = !this.isClose" v-bind:class="{ banner_close : isClose, banner: !isClose}")
+  i.ic-close
+  span Лента товаров
+  span.bold  формируется #[br] из шопинг-желаний
+  span  покупателей #[br] и трендскаутов. Места в топе не продаются, #[br] сортировка строго хронологическая
 </template>
 
 <script type='text/babel'>
@@ -111,7 +116,8 @@ export default {
       isMobile: window.browser.mobile,
       phoneNumber: '',
       smsSent: false,
-      phoneError: false
+      phoneError: false,
+      isClose: false
     }
   },
 
