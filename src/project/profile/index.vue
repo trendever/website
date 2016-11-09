@@ -61,7 +61,7 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
 
         .profile_desc
           .profile_desc_t(v-if="getSlogan") {{getSlogan}}
-          .profile_desc_caption(v-if="getUserCaption") {{{getUserCaption | captionSpaces}}}
+          .profile_desc_caption.less(v-if="getUserCaption", v-on:click="this.isMoreClass = !this.isMoreClass" v-bind:class="{ more : isMoreClass, less: !isMoreClass}") {{{getUserCaption | captionSpaces}}}
 
         .profile_insta-link(v-if="$route.name === 'profile' && shopId !== 1")
           .insta-link-text ссылка на эту витрину
@@ -172,7 +172,8 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         isSupplier: false,
         leftArrowShow: true,
         showPopup: false,
-        message: ''
+        message: '',
+        isMoreClass: false
       }
     },
     route: {
