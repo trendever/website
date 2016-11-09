@@ -68,7 +68,7 @@
   } from 'vuex/getters/chat.js';
   import { isDone } from 'vuex/getters/lead.js';
   import { isAuth, getUseDays } from 'vuex/getters/user.js';
-  
+
 
   //services
   import * as messages from 'services/message';
@@ -114,7 +114,8 @@
         isMobile: window.browser.mobile,
         showLoader: true,
         timerId: '',
-        fullScroll: 0
+        fullScroll: 0,
+        recursiveCount: 0
       }
     },
 
@@ -370,23 +371,34 @@
 
           this.fullScroll = height;
 
-          console.log(this.$els.scrollCnt.scrollTop);
-
           console.log(height);
 
-          setTimeout(()=>{
+          this.$nextTick(()=>{
 
-            this.$nextTick(()=>{
+            setTimeout(()=>{
 
               this.goToBottom();
 
-            })
+            },100);
 
-          },100);
+          })
 
         } else {
 
-          return;
+
+          this.recursiveCount++;
+
+          if(this.recursiveCount > 5) return;
+
+          this.$nextTick(()=>{
+
+            setTimeout(()=>{
+
+              this.goToBottom();
+
+            },100);
+
+          })
 
         }
 
