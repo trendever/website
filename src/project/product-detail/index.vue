@@ -29,8 +29,16 @@ scroll-component(v-el:scroll-cnt)
       HeaderComponent,
       PostComponent
     },
-    ready(){
+    ready() {
+      Promise.resolve().then(()=>{
+
       this.checkIsUserProduct();
+        
+      }).then(()=>{
+
+        this.$broadcast('isAuthProduct');
+
+      })
     },
     computed: {
 
