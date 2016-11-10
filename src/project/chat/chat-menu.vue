@@ -157,6 +157,8 @@ div
 
                 window.scrollTo( 0, document.body.scrollHeight );
 
+                this.$dispatch('goToBottom');
+
               } );
 
             });

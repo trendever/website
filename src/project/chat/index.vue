@@ -144,6 +144,9 @@
       },
     },
     ready(){
+
+      this.$on('goToBottom', this.goToBottom);
+
       if ( this.isAuth ) {
         this.onMessage      = this.onMessage.bind( this );
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
@@ -384,7 +387,6 @@
           })
 
         } else {
-
 
           this.recursiveCount++;
 
