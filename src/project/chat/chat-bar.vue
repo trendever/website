@@ -4,7 +4,7 @@
 div.chat-bar
   .chat-approve-btn.noaction(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat') ПОДТВЕРДИТЬ
   .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay' && getAction !== 'pendingpayment' ", id="inputbar")
-    .chat-bar_menu-btn(@click.stop='setShowMenu(true)')
+    .chat-bar_menu-btn(@click.stop='setShowMenu(true)', :class="{'directbot-color': directbot}")
       i.ic-chat_menu
     .chat-bar_input
       textarea(placeholder='Введите сообщение',
@@ -14,7 +14,7 @@ div.chat-bar
                @blur='blurInput($event)')
     .chat-bar_send-btn(v-on:mousedown='send($event)',
                        v-on:touchstart='send($event)',
-                       :class='{"__active": !!txtMsg}')
+                       :class='{"__active": !!txtMsg, "directbot-color": directbot}')
       i.ic-send-plane
     chat-menu(v-if="!isMobile")
 chat-menu(v-if="isMobile")
@@ -23,7 +23,7 @@ chat-menu(v-if="isMobile")
 
 <script type='text/babel'>
   import listen from 'event-listener'
-
+  import settings from 'settings'
   import store from 'vuex/store'
   import {
     getAction,
@@ -49,11 +49,13 @@ chat-menu(v-if="isMobile")
     data(){
       return {
         txtMsg: '',
-        isMobile: window.browser.mobile
+        isMobile: window.browser.mobile,
+        directbot: settings.directbotActive
       }
     },
 
     ready(){
+
       this.scroll = document.querySelector( '.scroll-cnt' );
       if ( !window.browser.mobile ) {
 

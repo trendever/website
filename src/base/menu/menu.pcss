@@ -37,6 +37,18 @@
 
 
       &-items {
+        &.directbot-color {
+          .menu_i:hover {
+            color: $color__blue;
+            background: #D9D9D9;
+          }
+          .menu_i_t:hover {
+            color: $color__blue;
+            background: #D9D9D9;
+          }
+        }
+
+
         .menu_i {
             font-size: 1.4rem;
             line-height: 3rem;
@@ -61,7 +73,6 @@
               background: #D9D9D9;
             }
           }
-
         }
 
       }
@@ -92,6 +103,9 @@
               }
               &.__txt-red {
                 color: $color__red;
+              }
+              &.directbot-color {
+                background: $color__blue !important;
               }
             }
             // Mods
@@ -206,6 +220,10 @@
         &.__txt-red {
           color: $color__red;
         }
+
+        &.directbot-color {
+          color: $color__blue !important;
+        }
       }
       // Mods
       &:hover {
@@ -239,7 +257,6 @@
           background: color(#EF3758 shade(7%));
         }
       }
-
     }
   }
 }
