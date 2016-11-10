@@ -36,6 +36,7 @@ scroll-component
                     spellcheck="false",
                     :class=' {error: errorLogin} ',
                     @focus='onFocusLogin',
+                    @keydown="checkValidate"
                     @keydown.enter='sendSMS()',
                     @keyup='validateLogin',
                     v-validate:login='[ "required" ]',
@@ -221,17 +222,14 @@ scroll-component
           this.errorLogin = true;
           //this.textLink = TEXT_LINK['errorloginLang'];
           this.login = PLACEHOLDER['errorLoginFormat'];
-
-
-          this.$nextTick(()=>{
-
-            this.$els.login.blur();
-
-          })
-
-          return;
         }
+      },
+      checkValidate(){
 
+        if(this.errorLogin){
+          this.errorLogin = false;
+          this.login ='';
+        }
 
       },
 
