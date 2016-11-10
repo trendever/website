@@ -6,9 +6,10 @@ div.chat-bar
   .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay' && getAction !== 'pendingpayment' ", id="inputbar")
     .chat-bar_menu-btn(@click.stop='openChatmenu')
       i.ic-chat_menu
-    .chat-bar_input
+    .chat-bar_input(v-el:bar)
       textarea(placeholder='Введите сообщение',
                v-model='txtMsg',
+               v-on:keyup="addPadding",
                v-el:input-msg,
                v-on:click="$els.inputMsg.focus()",
                @focus='focusInput',
@@ -114,6 +115,10 @@ chat-menu(v-if="isMobile")
     },
 
     methods: {
+      addPadding(){
+
+        this.$dispatch('addPadding', this.$els.bar.offsetHeight)
+      },
       openChatmenu(){
 
         if(settings.activateMonetization){
@@ -200,6 +205,7 @@ chat-menu(v-if="isMobile")
       },
 
       send ( event ) {
+        this.$dispatch('addPadding', 110)
         this.fakeRegCount++
 
         if(settings.activateMonetization){

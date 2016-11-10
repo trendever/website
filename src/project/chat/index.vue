@@ -5,7 +5,7 @@
     popup-img(v-if="imgPopUpUrl", :url="imgPopUpUrl", :width="imgWidth", :height="imgHeight", :on-close="closePopUp")
     chat-header(:notify-count='conversationNotifyCount')
     .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu")
-    .section.top.bottom
+    .section.top.bottom(v-el:section)
       .chat.section__content
         .chat_messages(id="chatmessages", v-el:box-messages)
           template(v-for='msg in getMessages | list', track-by='$index')
@@ -146,6 +146,11 @@
     ready(){
 
       this.$on('goToBottom', this.goToBottom);
+      this.$on('addPadding', (val)=>{
+        this.$els.section.style.paddingBottom = val + 'px';
+        this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
+
+      })
 
       if ( this.isAuth ) {
         this.onMessage      = this.onMessage.bind( this );
