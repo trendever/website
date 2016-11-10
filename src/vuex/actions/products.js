@@ -454,10 +454,14 @@ export const checkIsUserProduct = ( { dispatch, state } ) => {
         if( isProductSupplier || isProductSeller){
 
           dispatch(types.PRODUCTS_CHECK_AUTH_USER_PRODUCT, true)
+          
+          return true;
 
         } else {
 
           dispatch(types.PRODUCTS_CHECK_AUTH_USER_PRODUCT, false)
+
+          return false;
 
         }
 

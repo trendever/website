@@ -30,11 +30,10 @@ scroll-component(v-el:scroll-cnt)
       PostComponent
     },
     ready() {
-      Promise.resolve().then(()=>{
-
-      this.checkIsUserProduct();
-        
-      }).then(()=>{
+      
+      this.checkIsUserProduct()
+  
+      .then(()=>{
 
         this.$broadcast('isAuthProduct');
 
