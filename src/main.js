@@ -43,8 +43,8 @@ Vue.mixin({
   data() {
     return {
         isDirectbot: require('settings').directbotActive,
-        isMobile: window.browser.mobile,
-        isStandalone: window.browser.standalone
+        //isMobile: window.browser.mobile,
+        //isStandalone: window.browser.standalone
       }
     }
 })
