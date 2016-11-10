@@ -266,7 +266,7 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
           self.showPopup = true;
           self.copy.destroy();
           self.copy = false;
-        });
+        }); 
 
       }
 

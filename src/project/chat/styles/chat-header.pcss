@@ -5,11 +5,37 @@
   */
   //дублирую так как нодо только в этом компоненте
   @media(--mobile) {
-    .chat-header_arrow,
+    .chat-header_arrow {
+      position: absolute 25px * * 0px;
+
+      display: flex;
+
+      padding: 0 30px;
+
+      cursor: pointer;
+      text-decoration: none;
+
+      align-items: center;
+
+      &_ic {
+        width: 42px;
+        height: 42px;
+
+        color: $color__white;
+
+        font-size: 42px;
+
+      }
+
+
+
+    }
     .chat-header_notify-count {
       display:none
     }
   }
+
+
   @media screen and (min-width: 751px) {
 
     &_arrow {
