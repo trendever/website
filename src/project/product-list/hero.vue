@@ -79,7 +79,7 @@
     .caption__description__mobile(v-link='{name: "main-video"}') (смотреть видео)
     button(v-link='{ name: "info-newshop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends ЗАГЛЯНУТЬ ВНУТРЬ
-.banner(v-on:click="this.isClose = !this.isClose" v-bind:class="{ banner_close : isClose, banner: !isClose}", v-if="isMobile && isAuth && isFirst")
+.banner(v-on:click="hideBanner" class="banner", v-if="isMobile && isAuth" v-show="showBanner")
   i.ic-close
   span Лента товаров
   span.bold  формируется #[br] из шопинг-желаний
@@ -109,6 +109,7 @@ import { targetClass } from 'utils';
 
 export default {
   data(){
+    let showBanner = (window.localStorage.getItem('isMainBannerShow') === null) ? true : false;
     return {
       inputOpened: false,
       menuOpened: false,
@@ -118,7 +119,7 @@ export default {
       smsSent: false,
       phoneError: false,
       isClose: false,
-      isFirst: false
+      showBanner: showBanner
     }
   },
 
@@ -212,6 +213,10 @@ export default {
   },
 
   methods: {
+    hideBanner(){
+      window.localStorage.setItem('isMainBannerShow',false);
+      this.showBanner = false;
+    },
     touchMove(e){
       if(this.scrollCnt.scrollTop < 2 * window.innerHeight ) {
         e.preventDefault();
