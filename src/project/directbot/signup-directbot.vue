@@ -9,7 +9,7 @@ scroll-component
           h1.accept Вход и регистрация
         .column-desktop-50.column-desktop-right(v-if="showTitleSlider")
           img(src="./img/directbot.png").logo
-          p.paragraph Перед подключением бота, #[br] создайте или войдите #[br] в свою учетную запись
+          p.paragraph Перед подключением бота, #[br(v-if="isMobile")] создайте #[br(v-if="!isMobile")] или войдите #[br(v-if="isMobile")] в свою учетную запись
         .column-desktop-50
           .bottom-container(:class='{"opened-key-board":!showTitleSlider}')
             validator(name='signup')
