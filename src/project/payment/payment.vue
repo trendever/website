@@ -31,7 +31,7 @@
               img(src='icons/card_1.png').ic-card_1
             select(v-model="selectedCardId").check-card-select
               option(v-for="card in userCards" v-bind:value="card.id") {{card.name}} {{ card.number }}
-              option(value="0") Новая карта
+              option(:value="0") Новая карта
         .check-card-input-wrap()
           i.ic-card-new
             img(src='icons/card_2.png')
