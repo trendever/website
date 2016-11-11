@@ -246,27 +246,32 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         this.$router.replace( { name: 'signup' } );
       }
 
-      if(this.$route.name === 'profile') {
+      if(this.$route.name === 'profile' && this.shopId !== 1 && this.isMobile) {
 
-        let self = this;
+        this.$nextTick(()=>{
 
-        self.copy =  new clipboard('.profile_insta-link',{
-            text(trigger){
-              return self.$els.instaLink.textContent;
-            }
+          let self = this;
+
+          self.copy =  new clipboard('.profile_insta-link',{
+              text(trigger){
+                return self.$els.instaLink.textContent;
+              }
+            })
+          self.copy.on('success',()=>{
+            self.message = `Ссылка ${self.getUserName}.tndvr.com скопирована для вставки.`;
+            self.showPopup = true;
+
           })
-        self.copy.on('success',()=>{
-          self.message = `Ссылка ${self.getUserName}.tndvr.com скопирована для вставки.`;
-          self.showPopup = true;
 
+          self.copy.on('error', () =>{
+            self.message = 'К сожалению скопировать ссылку не удалось.<br><br> Сделайте это вручную'
+            self.showPopup = true;
+            self.copy.destroy();
+            self.copy = false;
+          }); 
+ 
         })
 
-        self.copy.on('error', () =>{
-          self.message = 'К сожалению скопировать ссылку не удалось.<br><br> Сделайте это вручную'
-          self.showPopup = true;
-          self.copy.destroy();
-          self.copy = false;
-        }); 
 
       }
 
