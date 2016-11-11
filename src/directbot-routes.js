@@ -17,9 +17,9 @@ export function configRouter(router) {
       name: 'home',
       component: require('project/directbot/index.vue')
     },
-    '/product/': {
+    '/product/:id': {
       name: 'product_detail',
-      component: require('project/directbot/redirect.vue')
+      component: require('project/product-detail/index.vue')
     },
     '/chat': {
       name: 'chat_list',

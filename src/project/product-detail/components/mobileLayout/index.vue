@@ -33,7 +33,7 @@
     <div class="desc-wrapper">
       <description :text="caption"></description>
     </div>
-    <div class="tags-wrapper">
+    <div class="tags-wrapper" v-if="!isDirectbot">
       <tags
         :tags="tags"
         :add-tag="goToHome"

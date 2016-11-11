@@ -2,7 +2,7 @@
 <template lang="jade">
 .section.header.section__content
     .header__content.u-fixed(v-show='is_visible')
-      .wrapper
+      .wrapper(:class="{'directbot-color': isDirectbot}")
         .header__arrow(
           @click='leftBtnAction',
           v-if='leftBtnShow && $route.name !== "profile"',
