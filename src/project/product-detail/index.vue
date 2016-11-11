@@ -13,6 +13,7 @@ scroll-component(v-el:scroll-cnt)
 </template>
 
 <script type="text/babel">
+  import { isAuth } from 'vuex/getters/user';
   import { openProduct, closeProduct, setScrollByProduct } from 'vuex/actions/products';
   import { getOpenedProduct, getScrollTopOfProduct } from 'vuex/getters/products';
   import { checkIsUserProduct } from 'vuex/actions/products';
@@ -30,14 +31,19 @@ scroll-component(v-el:scroll-cnt)
       PostComponent
     },
     ready() {
-      
-      this.checkIsUserProduct()
+
+      if(this.isAuth){
+
+        this.checkIsUserProduct()
+        
+        .then(()=>{
+
+          this.$broadcast('isAuthProduct');
+
+        })
+
+      }
   
-      .then(()=>{
-
-        this.$broadcast('isAuthProduct');
-
-      })
     },
     computed: {
 
@@ -115,7 +121,8 @@ scroll-component(v-el:scroll-cnt)
     vuex: {
       getters: {
         getOpenedProduct,
-        getScrollTopOfProduct
+        getScrollTopOfProduct,
+        isAuth
       },
       actions: {
         openProduct,

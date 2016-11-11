@@ -1,5 +1,5 @@
 <template>
-<div v-if="loaded">
+<div v-if="loaded || !isAuth">
   <div class="buttons" :class="{'glued-btns': isMobile && !authSellerProduct}" v-if="!authSellerProduct">
     <div class="leftSide">
       <button class="save_btn" @click="like" :class="{ 'active': isLiked, 'default': !isLiked}">
@@ -19,10 +19,14 @@
 <style src="./style.pcss" scoped lang="postcss"></style>
 
 <script type="text/babel">
+  import { isAuth } from 'vuex/getters/user';
   import { createLead } from 'vuex/actions/lead';
   import config from '../../../../../config';
   export default {
     vuex: {
+      getters: {
+        isAuth
+      },
       actions: {
         createLead
       }
