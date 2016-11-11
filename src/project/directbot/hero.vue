@@ -16,9 +16,9 @@
       span.bold Бот-консультант #[br]
       span.light для Instagram-магазинов
     .hero__content__set-up
-      button.set-up-btn(v-if="isMobile") ПОДКЛЮЧИТЬ ЗА 0
+      button.set-up-btn(v-if="isMobile", v-link='{ name: "signup" }') ПОДКЛЮЧИТЬ ЗА 0
         i.ic-rub
-      button.set-up-btn(v-if="!isMobile") ПОДКЛЮЧИТЬ БЕСПЛАТНО
+      button.set-up-btn(v-if="!isMobile", v-link='{ name: "signup" }') ПОДКЛЮЧИТЬ БЕСПЛАТНО
     button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }") ВХОД И РЕГИСТРАЦИЯ
     //-button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'app' }" v-else) СКАЧАТЬ ПРИЛОЖЕНИЕ
   .hero__content__2(v-el:hero-two)
@@ -53,22 +53,32 @@
           img(src="./img/icon-1.png")
         .hero__content__landing__sub-title Отвечает всем #[br] клиентам сразу
         .hero__content__landing__caption Играюче уделит внимание каждому, #[br] быстро ответит.
-          a.link-info(v-on:click="showPopup = true")  Ни один клиент #[br] не успеет передумать
-          native-popup(:show-popup="showPopup")
+          a.link-info(v-link="{ name: 'info-screen-1' }", v-if="isMobile")  Ни один клиент #[br] не успеет передумать
+          a.link-info(v-on:click="showPopup = true", v-if="!isMobile")  Ни один клиент #[br] не успеет передумать
+          info-popup(:show-popup="showPopup")
+            i.ic-close(v-if="!isMobile", v-on:click="showPopup = false")
             info-screen1
       .info-box
         .hero__content__landing__icon-2
           img(src="./img/icon-2.png")
         .hero__content__landing__sub-title Выполняет #[br] «мартышкин труд»
         .hero__content__landing__caption Больше не нужно отвечать #[br(v-if="isMobile")] и спрашивать #[br(v-if="!isMobile")] одно и то же. #[br(v-if="isMobile")]
-          a.link-info(v-link="{name: 'info-screen-2'}") Бот даст ссылку на сайт, #[br(v-if="!isMobile")] уточнит #[br(v-if="isMobile")] наличие, узнает размеры и адрес
+          a.link-info(v-link="{name: 'info-screen-2'}", v-if="isMobile") Бот даст ссылку на сайт, #[br(v-if="!isMobile")] уточнит #[br(v-if="isMobile")] наличие, узнает размеры и адрес
+          a.link-info(v-on:click="showPopup = true", v-if="!isMobile") Бот даст ссылку на сайт, #[br(v-if="!isMobile")] уточнит #[br(v-if="isMobile")] наличие, узнает размеры и адрес
+          info-popup(:show-popup="showPopup")
+            i.ic-close(v-if="!isMobile", v-on:click="showPopup = false")
+            info-screen2
       .info-box
         .hero__content__landing__icon-3
           img(src="./img/icon-3.png")
         .hero__content__landing__sub-title Подключается быстро, #[br] работает самостоятельно
         .hero__content__landing__caption Подключи бота и следи за чатами #[br(v-if="isMobile")] в своем #[br(v-if="!isMobile")] Instagram Direct. #[br(v-if="isMobile")] Ничего не надо скачивать. #[br]
-          a.link-info(v-link="{name: 'info-screen-3'}") Будущее наступило
-    .hero__content__landing__title.mid Откуда бот знает, #[br(v-if="isMobile")] кому и что отвечать?
+          a.link-info(v-link="{name: 'info-screen-3'}", v-if="isMobile") Будущее наступило
+          a.link-info(v-on:click="showPopup = true", v-if="!isMobile") Будущее наступило
+          info-popup(:show-popup="showPopup")
+            i.ic-close(v-if="!isMobile", v-on:click="showPopup = false")
+            info-screen3
+    .hero__content__landing__title.middle Откуда бот знает, #[br(v-if="isMobile")] кому и что отвечать?
     .hero__content__landing__screen-1
       img(src="./img/screen-1.png")
     .hero__content__landing__sub-title.questions Бот понимает #[br] вопросы покупателей
@@ -78,18 +88,23 @@
       button.yes ДА
       button.no НЕТ
     .toggle-box
-      .wrap-yes
+      .wrap-yes(v-if="false")
         .hero__content__landing__screen-2
           img(src="./img/screen-2-yes.png")
         .hero__content__landing__sub-title.info Есть сайт? Укажи артикул #[br] товара под постом
         .hero__content__landing__caption Бот узнает о деталях и наличии товара #[br] по артикулу в описании поста. #[br] Ссылка на сайт должна быть #[br] в «био» инста-профиля
-      .wrap-no(v-if="false")
+      .wrap-no
         .hero__content__landing__screen-2
           img(src="./img/screen-2-no.png")
         .hero__content__landing__sub-title.info Нет сайта? Ответь #[br] на вопросы о товарах
         .hero__content__landing__caption Бот увидит новые посты, уточнит детали #[br] и наличие товаров. Потом добавит их #[br] в твой
-          a.link-info(v-link="{name: 'info-screen-4'}")  новый Интернет-магазин #[br] по ссылке
+          a.link-info(v-link="{name: 'info-screen-4'}", v-if="isMobile")  новый Интернет-магазин #[br] по ссылке
             span.bold  xxxx.drbt.io
+          a.link-info(v-on:click="showPopup = true", v-if="!isMobile")  новый Интернет-магазин #[br] по ссылке
+            span.bold  xxxx.drbt.io
+          info-popup(:show-popup="showPopup")
+            i.ic-close(v-if="!isMobile", v-on:click="showPopup = false")
+            info-screen4
       .info-wrap
         .hero__content__landing__screen-3
           img(src="./img/screen-3.png")
@@ -113,7 +128,7 @@ import * as commonService from 'services/common';
 import HeaderComponent from 'base/header/header.vue';
 
 import { targetClass } from 'utils';
-import NativePopup from 'base/popup/native';
+import InfoPopup from 'base/popup/info-popup';
 import infoScreen1 from 'project/directbot/info-screen-1.vue'
 import infoScreen2 from 'project/directbot/info-screen-2.vue'
 import infoScreen3 from 'project/directbot/info-screen-3.vue'
@@ -136,8 +151,11 @@ export default {
 
   components :{
     HeaderComponent,
-    NativePopup,
-    infoScreen1
+    InfoPopup,
+    infoScreen1,
+    infoScreen2,
+    infoScreen3,
+    infoScreen4,
   },
 
   ready() {

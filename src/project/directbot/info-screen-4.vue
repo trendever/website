@@ -6,7 +6,7 @@
 </style>
 <template lang="jade">
 .info-screen
-  i.ic-close(@click='closePage')
+  i.ic-close(@click='closePage', v-if="isMobile")
   p.description.4 Да, вы не ослышались, Directbot #[br] умеет создавать интернет- #[br] магазины и наполнять их #[br] товарами из вашего Instagram. #[br] Поможет поддерживать #[br] ассортимент актуальным, просто #[br] задавая вам вопросы в чате. #[br] А еще, в этом онлайн-магазине, #[br] вы сможете принимать оплату
 </template>
 
