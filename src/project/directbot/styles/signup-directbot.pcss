@@ -1,71 +1,8 @@
 @import 'base/vars/vars.pcss';
-.btn {
-  text-transform: uppercase;
-}
 
-.thanks-wrap {
-
-  h1 {
-    font-family: $font__family__light !important;
-  }
-
-  .inst-name {
-      font-family: $font__family__semibold;
-  }
-
-  .another-name-desc {
-    display: none;
-    opacity: 0.4;
-    text-align: center;
-    font-size: 24px;
-    @media (--mobile) {
-      display: none;
-    }
-    @media screen and (min-width:1024px) {
-      display: inline-block;
-      margin-top: 200px;
-      display: none;
-    }
-
-    i.ic-options_menu {
-      margin: 5px;
-    }
-
-  }
-  .another-name-mobile {
-    line-height: 45px;
-    text-align: center;
-    font-size: 36px;
-
-    .top-text {
-      margin-bottom: 30px;
-      color: #FFDE1E;
-    }
-
-    i.ic-options_menu {
-      margin: 20px;
-      font-size: 55px;
-      @media(--mobile) {
-        font-size: 40px;
-      }
-    }
-  }
-
-}
-
-.standalone .signup{
-  padding-top: 80px;
-
-  .signup__close{
-    top: 65px;
-    right: 30px;
-  }
-}
 .signup {
   position:relative;
   overflow:hidden;
-  padding: 50px 30px 0 30px;
-  padding-top: 120px;
   color: #FFF;
   background-color: $color__dark-blue;
   font-size: 24px;
@@ -78,38 +15,34 @@
   .signup__close {
     position: absolute;
     z-index: 100;
-    top: 25px;
-    right: 30px;
-    text-align:center;
-
+    top: 23px;
+    right: -24px;
     size: 70px;
-
     cursor: pointer;
-
     color: white;
-
-    align-items: center;
-    justify-content: center;
-
-    &:before{
-      content:"";
-      display: inline-block;
-      height:100%;
-      vertical-align: middle;
-    }
-    [class^='ic-']{
-      vertical-align: middle;
-    }
-    @media(--mobile) {
+    @media(--tabletandless) {
       font-size: 36px;
       width: 36px;
       height: 36px;
+      top: 25px;
+      right: 30px;
     }
   }
 
   .link-bottom {
       opacity:.4;
       margin-top: 20px;
+        position: absolute;
+        left: 155px;
+        bottom: 139px;
+        @media(--tabletandless) {
+          position: relative;
+          left: 0;
+          bottom: 0;
+        }
+        @media(--smalldesktop){
+          bottom: 155px;
+        }
   }
 
   @media(max-width:1279px) {
@@ -129,7 +62,7 @@
     i {
       font-size: 20px;
 
-      @media (--mobile) {
+      @media (--tabletandless) {
         font-size: 2rem;
       }
     }
@@ -143,7 +76,7 @@
     &:-moz-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
     &:-ms-input-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
 
-    @media(--mobile) {
+    @media(--tabletandless) {
       height: 4rem;
       font-size: 36px;
     }
@@ -156,29 +89,29 @@
 
     text-align: left;
 
-    font-size: 40px !important;
+    font-size: 32px !important;
 
     @media(--tabletandless) {
       margin-bottom: 0;
 
       text-align: center;
       font-family: $font__family__semibold;
+      font-size: 40px !important;
 
     }
   }
   .confirm{
-    @media(--mobile) {
+    @media(--tabletandless) {
       font-family: $font__family__light;
     }
   }
   .section {
     position: absolute;
-    top: 50%;
+    top: 4%;
     right: 0;
     left:0;
-    transform: translateY(-50%);
-    max-width:1335px;
     margin:0 auto;
+    width: 515px;
 
     @media(--smalldesktop) {
       position: static;
@@ -188,12 +121,13 @@
      @media(--tabletandless) {
       position: static;
       transform: none;
+      width: 100%;
      }
   }
   &.confirm h1 {
     text-align: center;
 
-    @media(--mobile) {
+    @media(--tabletandless) {
       margin-bottom: 0;
 
       text-align: center;
@@ -231,13 +165,16 @@
 
 
     .link-bottom {
-
-      @media(--mobile) {
+      display: inline-block !important;
+      @media(--tabletandless) {
         display:inline-block !important;
+        position: relative;
+        left: 0;
+        bottom: 0;
       }
     }
 
-    @media(--mobile) {
+    @media(--tabletandless) {
       position: absolute;
       bottom: 0;
       left: 0;
@@ -247,20 +184,19 @@
   .input-container {
     padding: 20px 50px;
 
-    @media(--mobile) {
+    @media(--tabletandless) {
       padding: 70px 15px 22px 50px;
     }
   }
   &.confirm {
     .link-container {
       display: block;
-
       width: 100%;
     }
     .input-container {
       padding: 0;
 
-      @media(--mobile) { padding: 0 50px; }
+      @media(--tabletandless) { padding: 0 50px; }
     }
   }
   .btn.__orange {
@@ -274,28 +210,29 @@
     width: 40px;
     height: 40px;
 
-    @media(--mobile) {
+    @media(--tabletandless) {
       width: 50px;
       height: 60px;
     }
   }
   .column-desktop-50 {
     position: relative;
-    width: 45%;
-
+    padding-top: 57%;
     @media(--smalldesktop) {
       width:auto;
+      padding-top: 10%;
     }
 
     @media(--tabletandless) {
       position: static;
       width: 100%;
       margin-top:0;
+      padding-top: 0;
     }
 
   }
   .column-desktop-50.header {
-    padding: 0 50px;
+    padding: 0 109px;
 
     @media(--smalldesktop) {
       width:auto;
@@ -311,8 +248,7 @@
   }
   .column-desktop-right {
     float: right;
-    width: 55%;
-    margin-right:8%;
+    width: 100%;
     margin-top: -60px;
 
     @media(min-width:1441px) {
@@ -323,42 +259,77 @@
       width: auto;
       margin-right:0;
       float:none;
+      padding-top: 50%;
     }
 
     @media(--tabletandless) {
       float: none;
     }
-    @media(--mobile) { margin-top: 0; }
+    @media(--tabletandless) { margin-top: 0; }
   }
   .logo{
-    display: block;
-    margin: 95px auto 100px auto;
-    width: 190px;
-    height: 211px;
+    width: 180px;
+    height: 200px;
+    position: absolute;
+    top: 43px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    @media(--tabletandless) {
+      position: relative;
+      display: block;
+      margin: 95px auto 100px auto;
+      width: 190px;
+      height: 211px;
+      left: 0;
+      top: 0;
+    }
+    @media(--smalldesktop){
+      top: 10px;
+    }
   }
   .paragraph{
-    text-align: center;
-    font-size: 36px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    font-size: 24px;
     font-family: $font__family__light;
+    padding-top: 17px;
+    text-align: center;
+    @media(--tabletandless) {
+      position: relative;
+      display: block;
+      font-size: 36px;
+      padding-top: 0px;
+      left: 0;
+    }
+    @media(--smalldesktop) {
+      top: 240px;
+      padding-top: 0px;
+    }
   }
   .desktop-text-right {
     text-align: left;
 
-    @media(--mobile) { text-align: center; }
+    @media(--tabletandless) { text-align: center; }
 
   }
   .btn.fast__big__btn {
     width: 420px;
-    height: 77px;
+    height: 60px;
     margin: 10px 0;
+    margin-top: 63px;
 
     font-family: $font__family__light;
-    font-size: 26px;
+    font-size: 24px;
     line-height: 1em;
+    text-transform: uppercase;
 
-    @media(--mobile) {
+    @media(--tabletandless) {
       width: 490px;
       height: 118px;
+      margin-top: 0;
 
       font-size: 36px;
       line-height: 1em;
@@ -372,19 +343,23 @@
   text-align: center;
   height: 200px;
 
-  @media(--mobile) {
+  @media(--tabletandless) {
     position: absolute;
     top: 40%; right: 0; left: 0;
-    padding-top: 0;
+    padding-top: 60px;
     transform: translateY(-50%);
     text-align: center;
   }
 }
-.mid{
-  top: 41% !important;
+#mid{
+  padding-top: 145px !important;
+    @media(--tabletandless) {
+      top: 41% !important;
+      padding-top: 0px !important;
+    }
 }
 .confirm .middle-container.has-another-name {
-  @media (--mobile) {
+  @media (--tabletandless) {
     top: 41%;
     h1 {
       margin-bottom: 30px;
@@ -402,7 +377,7 @@
   padding-left:0;
   width: 160px;
 
-  @media(--mobile) { width: 240px; }
+  @media(--tabletandless) { width: 240px; }
 }
 
 .input.confirm-input input {
@@ -412,7 +387,7 @@
   letter-spacing: 10px;
   font-size: 40px;
 
-  @media(--mobile) {
+  @media(--tabletandless) {
     margin-bottom: -5px;
 
     font-size: 56px;
@@ -431,7 +406,7 @@
   right: 0;
 
   div.link-div{
-    padding-bottom: 60px !important;
+    padding-bottom: 70px !important;
   }
 
   button.btn.btn_fixed-bottom{
@@ -465,7 +440,7 @@
     margin-top: -10px;
   }
 
-  @media(--mobile) {
+  @media(--tabletandless) {
     width:580px;
     padding-left:0;
     margin-left:40px;
@@ -480,7 +455,7 @@
     margin-top: -17px;
     left: -47px;
 
-    @media(--mobile) {
+    @media(--tabletandless) {
       left:-91px;
     }
   }
@@ -488,7 +463,7 @@
     font-size:28px;
     left:-47px;
 
-    @media(--mobile) {
+    @media(--tabletandless) {
       left: -79px;
       font-size: 44px;
       margin-top: -22px;
@@ -500,7 +475,7 @@
     left: -51px;
     margin-top: -23px;
 
-    @media(--mobile) {
+    @media(--tabletandless) {
       font-size: 61px;
       left: -89px;
       margin-top:-30px;
@@ -512,7 +487,7 @@
     margin-top:-14px;
     left:-46px;
 
-    @media(--mobile) {
+    @media(--tabletandless) {
       font-size: 40px;
       margin-top: -20px;
       left: -77px;
@@ -521,4 +496,33 @@
 }
 .clear{
   top: 50% !important;
+}
+#conf_inp{
+  height: 45px !important;
+  text-indent: 10px;
+  @media(--tabletandless) {
+    height: 6rem !important;
+    text-indent: 10px;
+  }
+}
+.accept_btn{
+  width: 420px !important;
+  height: 60px !important;
+  margin-top: 274px !important;
+}
+.new_sms{
+  display: inline-block !important;
+  bottom: 90px !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 232px;
+  margin: 0 auto;
+
+  @media(--smalldesktop) {
+    bottom: 220px !important;
+  }
+  @media(--tabletandless) {
+    width: auto !important;
+    bottom: 230px;
+  }
 }

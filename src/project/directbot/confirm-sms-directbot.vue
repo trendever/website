@@ -7,7 +7,7 @@ div
     .section
       h1.accept(v-if='!isCompleted') Подтвердите телефон
       h1.accept(v-if='isCompleted') Номер подтвержден
-      .middle-container.mid(:class="{'has-another-name': anotherName}")
+      .middle-container#mid(:class="{'has-another-name': anotherName}")
         .thanks-wrap(v-if='isCompleted')
           h1 Спасибо!
 
@@ -33,7 +33,7 @@ div
           p(v-if='!isCompleted',
             :class='{ error: errorCode }') {{ text_header }}
           .input-container
-            .input.confirm-input
+            .input.confirm-input.conf
               input(type='tel',
                 @click="$els.confirmField.focus()"
                 @keyup='onInput',
@@ -45,7 +45,8 @@ div
                 autocomplete="off",
                 autocorrect="off",
                 autocapitalize="off",
-                spellcheck="false")
+                spellcheck="false",
+                id="conf_inp")
 
       .bottom-container.__fixed-width
         template(v-if="isMobile")
@@ -62,13 +63,13 @@ div
               @click='onButton') {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
         template(v-else)
           .btn-container
-            button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
+            button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.accept_btn(
               :disabled='isDisabled',
               v-el:confirm-btn,
               @keydown.enter='onButton()',
               @click='onButton') {{ isCompleted ? 'Продолжить' : 'Подтвердить' }}
           .link-container
-            a.link-bottom(href='#',
+            a.link-bottom.new_sms(href='#',
               v-if='!isCompleted',
               v-show='needNewSMS'
               @click.prevent='sendSMS') Отправить новый код
