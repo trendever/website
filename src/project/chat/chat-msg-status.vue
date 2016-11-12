@@ -47,11 +47,11 @@
       },
       text(){
 
-        const { type, value, reason } = JSON.parse( this.msg.parts[ 0 ].content );
+        const { type, value, reason, what } = JSON.parse( this.msg.parts[ 0 ].content );
 
-        if(reason) {
+        if(reason === 'Покупатель удалил чат' && what === 'lead_cancel') {
 
-          return reason;
+          return `${this.getCustomerName} удалил чат`;
 
         }
 
