@@ -138,11 +138,17 @@ const addServiceMessage = (function() {
 
           if ( MIME === 'json/status' ) {
 
-            const { type } = JSON.parse( messages[ i ].parts[ 0 ].content );
+            const { type, reason, what } = JSON.parse( messages[ i ].parts[ 0 ].content );
 
             if(type === 'suplier.called' || type === 'customer.called' || type === 'customer.phone.added'){
 
               newMessage.push( messages[ i ] );
+
+            }
+
+            if (reason === 'Покупатель удалил чат' && what === 'lead_cancel'){
+
+              newMessage.push( messages[ i ]);
 
             }
 
