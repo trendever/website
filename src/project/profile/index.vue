@@ -29,18 +29,18 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         a(class='profile-header__menu-link',
           v-if="shopId !== 1", v-on:click="helpSupplier") Подключить продажников
         a(class='profile-header__menu-link',
-          v-link='{name: "info-mission"}') Наша миссия
-        a(class='profile-header__menu-link',
-          v-link='{name: "info-agreement"}') Условия
-        a(class='profile-header__menu-link',
           v-if="shopId !== 1"
-          v-link='{name: "info-newshop"}') Помощь магазинам
+          v-link='{name: "info-newshop"}') Магазинам и брендам
         a(class='profile-header__menu-link',
           v-if="shopId === 1"
           v-on:click="helpCustomer") Помощь покупателям
         a(class='profile-header__menu-link',
           href="https://trendever.payture.com/",
           target="_blank") Денежный перевод
+        a(class='profile-header__menu-link',
+            v-link='{name: "info-mission"}') Наша миссия
+        a(class='profile-header__menu-link',
+            v-link='{name: "info-agreement"}') Условия
         a(class='profile-header__menu-link', @click="logout") Выйти
 
   right-nav-component(current="profile")
@@ -268,8 +268,8 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
             self.showPopup = true;
             self.copy.destroy();
             self.copy = false;
-          }); 
- 
+          });
+
         })
 
 
