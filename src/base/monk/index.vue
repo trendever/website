@@ -1,5 +1,5 @@
 <template lang="jade">
-div(id="monk")
+div(v-el:monk)
 </template>
 <script>
 import Monkberry from 'monkberry';
@@ -9,18 +9,32 @@ export default{
 		return {}
 	},
 	ready(){
-		let elem = document.getElementById("monk");
-		const view = Monkberry.render(Template, elem);
-		let todos = [
-			{complete: false, text: 123},
-			{complete: false, text: 12121},
-			{complete: false, text: 123333},
-			{complete: false, text: "hahaha"},
-			{complete: false, text: "lol"},
-			{complete: false, text: "it works"},
-			{complete: true, text: "yep"}
-		];
-		view.update({todos: todos});
+		var state = {
+		  todos: [
+		    {text: 'Primum', complete: true},
+		    {text: 'Secundo', complete: false},
+		    {text: 'Tertium', complete: false}
+		  ]
+		};
+
+		var view = Monkberry.render(Template, this.$els.monk);
+		view.update(state);
+
+/*		view.on('submit', 'form', function (event) {
+		  event.preventDefault();
+		  var input = view.querySelector('input[type="text"]');
+
+		  state.todos.push({text: input.value, complete: false});
+		  view.update(state);
+		  
+		  input.value = '';
+		});
+
+		view.on('click', '[data-index]', function (event) {
+		  var i = event.target.dataset.index;
+		  state.todos[i].complete = !state.todos[i].complete;
+		  view.update(state);
+		});*/
 	}
 }
 </script>

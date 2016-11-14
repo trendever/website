@@ -1,11 +1,16 @@
-<ol>
-  {% for todos %}
-    <li>
-      {% if complete %}
-        <del>{{ text }}</del>
-      {% else %}
-        <em>{{ text }}</em>
-      {% endif %}
-    </li>
-  {% endfor %}
-</ol>
+  <ol>
+    {% for i, todo of todos %}
+      <li>
+        <input type="checkbox" checked="{{ todo.complete }}"  data-index="{{ i }}" style="margin-top:{{ i * 10 }}px;">
+        {% if todo.complete %}
+          <del>{{ todo.text }} {{ i }} </del>
+        {% else %}
+          <em>{{ todo.text }} {{ i }}</em>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+  <form>
+    <input type="text">
+    <button type="submit">Add #{{ todos.length + 1 }}</button>
+  </form>
