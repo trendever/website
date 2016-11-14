@@ -206,7 +206,10 @@ chat-menu(v-if="isMobile")
 
       send ( event ) {
         this.$dispatch('addPadding', 110)
-        this.fakeRegCount++
+
+        if (this.getAction !== "approve"){
+          this.fakeRegCount++
+        }
 
         if(settings.activateMonetization){
           if(this.getUseDays === 0){
@@ -240,14 +243,14 @@ chat-menu(v-if="isMobile")
 
           this.setConversationAction("base");
 
-          if (this.fakeRegCount === 2 && this.isFake){
+          if (this.fakeRegCount === 1 && this.isFake){
             setTimeout(() => {
               window.fakeAuth = {text: "чтобы не пропустить ответ от", data: this.getShopName}
               this.setCallbackOnSuccessAuth(()=>{
                 this.$router.go({name: 'chat-list'})
               })
               this.$router.replace( { name: 'signup' } );
-            },300);
+            },700);
           }
 
         } )

@@ -139,11 +139,11 @@
       },
 
       like(){
-
         if ( !this.isAuth ) {
+          window.fakeAuth = {text: " чтобы сохранять товары в свои шопинг-желания"}
 
           this.setCallbackOnSuccessAuth( function( id, product, newLike ) {
-
+            
             this.$router.go( { name: "product_detail", params: { id } } );
 
             this.setCallBackAfterLoading( this.setLike.bind( this, product, newLike ) )
@@ -160,6 +160,7 @@
             })
             this.$router.replace( { name: 'signup' } );
           }
+          
 
           this.setLike();
 

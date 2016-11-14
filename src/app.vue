@@ -75,6 +75,7 @@ input(type="hidden", value="", id="get-user-login")
           return false;
         }
       }
+      window.entryPoint = this.$route.name;
     },
     methods:{
       scrollTop(){

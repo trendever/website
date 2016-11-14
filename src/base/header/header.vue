@@ -5,7 +5,7 @@
       .wrapper
         .header__arrow(
           @click='leftBtnAction',
-          v-if='leftBtnShow && $route.name !== "profile" && $route.name !== "chat"',
+          v-if='leftBtnShow && $route.name !== "profile" && $route.name !== "chat" && isNotEmptyHistory',
           :class="{'show-desktop-arrow': showDesktopArrow}")
 
           i.header__arrow__ic.ic-arrow-left(
@@ -144,6 +144,18 @@
       this.toggleHeaderOnScroll();
 
       this.scrollEvent = listen( this.scrollCnt, 'scroll', this.toggleHeaderOnScroll.bind( this ) )
+    },
+    computed:{
+      isNotEmptyHistory(){
+        if (window.before && window.before.prev){
+          if (this.$route.name == window.before.name){
+            return window.before.name != window.before.prev.name
+          }
+          return true
+        }else{
+          return false;
+        }
+      }
     },
     methods: {
       leftBtnAction() {

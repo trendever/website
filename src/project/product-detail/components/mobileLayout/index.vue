@@ -1,6 +1,6 @@
 <template>
   <div class="mobileLayout">
-    <div class="wrapper">
+    <div class="wrapper" v-if="notFromUser">
       <user-info
         :img="avatarUrl"
         :code="code"
@@ -55,7 +55,7 @@
   import description from '../description/index.vue';
   import tags from 'base/tags/index.vue'
   import { getOpenedProduct, isAuthUserProduct } from 'vuex/getters/products'
-  import { authUserId } from 'vuex/getters/user';
+  import { authUserId,isFake } from 'vuex/getters/user';
   import * as userService from 'services/user';
 
   export default {
@@ -66,11 +66,20 @@
       }
 
     },
+    computed:{
+      notFromUser(){
+        if (window.entryPoint == "user"){
+          return false;
+        }
+        return true
+      }
+    },
     vuex: {
       getters: {
         isAuthUserProduct,
         getOpenedProduct,
-        authUserId
+        authUserId,
+        isFake
       }
     },
     components: {

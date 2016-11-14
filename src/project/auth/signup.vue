@@ -201,11 +201,14 @@ scroll-component
         this.save();
 
         if (this.isFake){
+          console.log("CLOSE AUTH CLICK")
+          console.log(window.before)
           if (window.before.name === "chat_list" || window.before.name === "profile"){
             this.$router.go({ name: "home"})
             return
           }
         }
+        
         this.$router.go({ name: window.before.name, params: window.before.params})
       },
 
@@ -266,7 +269,7 @@ scroll-component
         this.save();
 
 
-        if (this.fakeReg){
+        if (this.isFake){
           this.setData().then( ()=> {
             this.$router.go({ name: 'comfirm-sms' });
           }).catch( (error) => {
