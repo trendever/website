@@ -1,3 +1,5 @@
+{% import Test from './Test' %} 
+<h1>{{ name }}</h1>
   <ol>
     {% for i, todo of todos %}
       <li>
@@ -12,5 +14,6 @@
   </ol>
   <form>
     <input type="text">
-    <button type="submit">Add #{{ todos.length + 1 }}</button>
+    <button type="submit">Add # {{ gett() }} </button>
   </form>
+  <Test name={{ name }}/>

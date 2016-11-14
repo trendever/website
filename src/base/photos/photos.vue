@@ -2,8 +2,10 @@
 <template lang="jade">
 .photos(v-bind:style="styleObject", v-el:container)
   .photos__list(v-el:photos-list, v-if='items', v-bind:style="listStyle")
+  
+    div(v-el:photos-wrapper)
 
-    template(v-for='line in items | lines' track-by="uid")
+    //-template(v-for='line in items | lines' track-by="uid")
       .photos__list__cell(v-bind:style="top[$index]")
         template(v-for='item in line.bundle' track-by="id")
           photo-item( :product.once='item.data', :product-id.once="item.id", :animate='true' )
@@ -25,6 +27,9 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 </template>
 
 <script type='text/babel'>
+  import monk from 'monkberry';
+  import Template from './list.monk'
+
   import listen from 'event-listener';
 
   import scrollTop from 'base/scroll-top/scroll-top.vue';
@@ -121,6 +126,15 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
     },
 
     ready() {
+
+      let state = {
+
+        lines: this.getlines,
+        top: this.top
+
+      }
+
+
       //need for no vue warning about container.clientWidth in rowHeight
       this.$set('containerClientWidth',this.$els.container.clientWidth)
 
@@ -163,7 +177,15 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
         }
 
+      }).then(()=>{
+
+        let view = monk.render(Template, this.$els.photosWrapper);
+        view.update(state);
+
       })
+
+
+
       if(this.$route.name === 'profile') {
 
         this.showBlogerBtn = listen(this.scrollCnt, 'scroll', ()=>{
@@ -304,6 +326,30 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
     },
 
     computed: {
+      getLines(){
+
+        const { idStart, idEnd } = this.getScrollData;
+
+        const _lines = [];
+
+        const items  = this.items.slice( idStart, idEnd );
+
+        let interateCout = Math.ceil(items.length / this.getColumnCount);
+        let bundleId = 0;
+        for(let i = 0; i < interateCout; i++ ){
+
+          let bundle = items.splice(0,this.getColumnCount);
+          //нужен id для того чтобы изображения постоянно показывались а не появлялись из ничего
+          //каждый раз при скролле
+          bundleId += +bundle[0].id;
+
+          _lines.push({uid: bundleId, bundle: bundle});
+
+        }
+
+        return _lines;
+
+      },
       scrollTop: {
         cache: false,
         get(){

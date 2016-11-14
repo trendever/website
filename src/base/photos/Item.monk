@@ -1,0 +1,22 @@
+<!-- <div class="photo_container" class='{{ classForColumn }}'>
+  <div class="photo__img-space">
+    <img src="{{ thumb }}" alt="" class="photo__img">
+  </div>
+  <div class="photo__description">
+    <div class="photo__row photo__title">
+    {{ title}}         
+    </div>
+    <div class="photo__row">
+      <div class="photo__summ">
+        {{ discountPrice }}
+        <i class="ic-currency-rub"></i>
+      </div>
+      <div class="photo__shopTitle">
+        {{suppliername}}
+      </div>
+    </div>
+  </div>
+</div>
+ -->
+
+ <h1>{{ name }}</h1>

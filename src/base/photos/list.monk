@@ -1,55 +1,22 @@
-{% for i, line of items %}
-  {% for i, item of line.bundle %}
-    <div class="photos__list__cell">
-      <div class="photo_container">
-        <div class="photo__img-space">
-          <img src="" alt="" class="photo__img">
-        </div>
-        <div class="photo__description">
-          <div class="photo__row photo__title">
-            
-          </div>
-          <div class="photo__row">
-            <div class="photo__summ">
-              {{ discountPrice }}
-               <i class="ic-currency-rub"></i>
-            </div>
-            <div class="photo__shopTitle">
-              {{suppliername}}
-            </div>
-          </div>
-        </div>
+{% import Item from './Item' %}
+
+<!-- {% for i, line of lines %}
+
+  <div>
+
+    {% for i, item of line.bundle %}
+
+      <div class="photos__list__cell" style="top: {{ top[i].top }}">
+        <Item product={{ item }}/>
       </div>
-    </div>
-  {% endfor %}
-{% endfor %}
+
+    {% endfor %}
+
+  </div>
+
+{% endfor %} -->
 
 
+<Item/>
 
 
-
-
-    template(v-for='line in items | lines' track-by="uid")
-      .photos__list__cell(v-bind:style="top[$index]")
-        template(v-for='item in line.bundle' track-by="id")
-          photo-item( :product.once='item.data', :product-id.once="item.id", :animate='true' )
-
-
-
-
-.photo__container(class='{{ classForColumn }}', v-if='!error', @click="goToProduct")
-  .photo__img-space
-    img.photo__img(
-        :src='thumb',
-        v-on:load='showImage',
-        v-on:error='loadError',
-        v-bind:style='{ opacity: imageOpacity }',
-        :class='{"animate": animate}'
-      )
-  .photo__description
-    .photo__row.photo__title {{ title}}
-    .photo__row
-     .photo__summ(v-if="discountPrice")
-      | {{ discountPrice }}
-      i.ic-currency-rub
-     .photo__shopTitle {{suppliername}}

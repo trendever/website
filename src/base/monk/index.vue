@@ -10,11 +10,18 @@ export default{
 	},
 	ready(){
 		var state = {
+		  some: {
+		  	name: 'williamsburg'
+		  },
+		  name: 'VOVA',
 		  todos: [
 		    {text: 'Primum', complete: true},
 		    {text: 'Secundo', complete: false},
 		    {text: 'Tertium', complete: false}
-		  ]
+		  ],
+		  gett: function (){
+		  	return 10101010101;
+		  }
 		};
 
 		var view = Monkberry.render(Template, this.$els.monk);
