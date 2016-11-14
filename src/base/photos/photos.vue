@@ -1,9 +1,10 @@
+<style src="./styles/photo-item.pcss"></style>
 <style src='./styles/photos.pcss'></style>
 <template lang="jade">
 .photos(v-bind:style="styleObject", v-el:container)
   .photos__list(v-el:photos-list, v-if='items', v-bind:style="listStyle")
   
-    div(v-el:photos-wrapper)
+    div(v-el:monk-wrap)
 
     //-template(v-for='line in items | lines' track-by="uid")
       .photos__list__cell(v-bind:style="top[$index]")
@@ -121,19 +122,12 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
         },
         lastSelectedTagId: null,
         isRunning: false,
-        containerClientWidth: ''
+        containerClientWidth: '',
+
       }
     },
 
     ready() {
-
-      let state = {
-
-        lines: this.getlines,
-        top: this.top
-
-      }
-
 
       //need for no vue warning about container.clientWidth in rowHeight
       this.$set('containerClientWidth',this.$els.container.clientWidth)
@@ -179,12 +173,25 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
       }).then(()=>{
 
-        let view = monk.render(Template, this.$els.photosWrapper);
-        view.update(state);
+          this.$nextTick(()=>{
+
+          let self = this;
+
+          self.monkState = {
+
+            lines: self.getlines,
+            top: self.top
+
+          }
+
+          self.monk = monk.render(Template, this.$els.monkWrap);
+          self.monk.update(self.monkState);
+
+          
+        })
+
 
       })
-
-
 
       if(this.$route.name === 'profile') {
 
@@ -328,26 +335,32 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
     computed: {
       getLines(){
 
-        const { idStart, idEnd } = this.getScrollData;
+        if(this.items) {
 
-        const _lines = [];
+          const { idStart, idEnd } = this.getScrollData;
 
-        const items  = this.items.slice( idStart, idEnd );
+          const _lines = [];
 
-        let interateCout = Math.ceil(items.length / this.getColumnCount);
-        let bundleId = 0;
-        for(let i = 0; i < interateCout; i++ ){
+          const items  = this.items.slice( idStart, idEnd );
 
-          let bundle = items.splice(0,this.getColumnCount);
-          //нужен id для того чтобы изображения постоянно показывались а не появлялись из ничего
-          //каждый раз при скролле
-          bundleId += +bundle[0].id;
+          let interateCout = Math.ceil(items.length / this.getColumnCount);
+          let bundleId = 0;
+          for(let i = 0; i < interateCout; i++ ){
 
-          _lines.push({uid: bundleId, bundle: bundle});
+            let bundle = items.splice(0,this.getColumnCount);
+            //нужен id для того чтобы изображения постоянно показывались а не появлялись из ничего
+            //каждый раз при скролле
+            bundleId += +bundle[0].id;
+
+            _lines.push({uid: bundleId, bundle: bundle});
+
+          }
+
+          return _lines;
 
         }
 
-        return _lines;
+        return [];
 
       },
       scrollTop: {
@@ -421,7 +434,16 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
         this.scrollCnt.scrollTop = this.getScrollData.scrollTop;
         this._setScroll();
       },
-
+      getLines(){
+        if(this.monk) {
+          this.monkState = {
+            lines: this.getLines,
+            top: this.top
+          }
+          
+          this.monk.update(this.monkState)
+        }
+      },
       items() {
         const height = ( this.itemsLength / this.getColumnCount + 1) * this.rowHeight;
 
@@ -429,6 +451,7 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
           height: `${ height }px`,
           maxHeight: `${ height }px`
         } )
+
       },
 
       listId( listId ) {
