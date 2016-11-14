@@ -7,6 +7,7 @@
 
   h1 {
     font-family: $font__family__light !important;
+    font-size: 40px;
   }
 
   .inst-name {
@@ -148,8 +149,11 @@
     }
   }
   .input.confirm-input input{
-    height: 6rem !important;
-    text-indent: 10px !important;
+    
+    @media(--mobile) {
+      height: 6rem !important;
+      text-indent: 10px !important;
+    }
   }
   h1.accept {
     margin-bottom: 77px;
