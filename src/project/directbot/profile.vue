@@ -4,9 +4,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
   header-component(:title='getUserName', :left-btn-show='true').directbot-header
       div.profile-right-menu(slot="content", v-if="isMobile && $route.name === 'profile'")
         i.ic-options_menu(@click="buyTg")
-      div.profile-days(slot="content")
+      div.profile-days(slot="content", v-if="isMobile")
         span 3
         span.day д
+  right-nav-component(current="profile")
 
   .section.top.bottom
     .section__content(v-cloak)
@@ -22,7 +23,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
           img(src="./img/empty-directbot-profile.png")
           span.empty Деактивирован
           span #[br]мониторю 3 поста #[br] отправил 5 сообщений
-        .profile_active
+        .profile_active(v-if="isMobile")
           img(src="./img/active-directbot-profile.png")
           p.bold Активирован #[br]
           p мониторю 3 поста #[br] отправил 5 сообщений
@@ -32,13 +33,13 @@ scroll-component(v-if="isDone", class="profile-cnt")
           span  начнет мониторить все #[br] ваши новые посты и автоматически #[br] отвечать на вопросы покупателей
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(
-        v-link="{ name: 'turn-on-bot' }", v-if="getAuthUser.supplier_of === null"
+        v-link="{ name: 'turn-on-bot' }", v-if="getAuthUser.supplier_of === null && isMobile"
         ) ПОДКЛЮЧИТЬ БОТА
 
         //button.bot-active-btn(v-if="false") БОТ АКТИВЕН
           //i.ic-close
 
-        a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
+        //a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
 
   photos-component(
     :filter-by-shop-id="shopId",
