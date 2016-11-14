@@ -1,4 +1,4 @@
-<div class="photo_container photo__container-three">
+<div class="photo_container {{ classForColumn }}">
   <div class="photo__img-space">
     <img src="{{ thumb }}" alt="" class="photo__img animate"></img>
   </div>

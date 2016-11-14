@@ -8,7 +8,9 @@ export default class extends Item {
     super();
 
     this.state = {
-      product: {}
+      product: {},
+      top: '',
+      count: 3
     }
 
   }
@@ -48,7 +50,7 @@ export default class extends Item {
         })();
 
         
-/*        this.state.classForColumn = (() => {
+        this.state.classForColumn = (() => {
           switch(this.state.count){
             case 2: return 'photo__container-two';
               break;
@@ -56,7 +58,7 @@ export default class extends Item {
               break;
             default: return 'photo__container-three';
           }
-        })();*/
+        })();
 
 /*        this.state.discountPrice = (()=> {
           const items = this.state.product.items;

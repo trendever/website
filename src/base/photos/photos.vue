@@ -438,9 +438,10 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
         if(this.monk) {
           this.monkState = {
             lines: this.getLines,
-            top: this.top
+            top: this.top,
+            count: this.getColumnCount
           }
-          
+
           this.monk.update(this.monkState)
         }
       },
