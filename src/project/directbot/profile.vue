@@ -38,7 +38,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
         //button.bot-active-btn(v-if="false") БОТ АКТИВЕН
           //i.ic-close
 
-        //a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
+        a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
 
   photos-component(
     :filter-by-shop-id="shopId",
