@@ -59,11 +59,6 @@ scroll-component
   .wrap
     fast-signup(v-if="!isAuth")
 </template>
-<style scoped>
-  .wrap{
-    position: relative;
-  }
-</style>
 <script>
   import settings from 'settings'
 
