@@ -2,8 +2,12 @@
 
 .profile-right-menu {
   position: absolute;
-  top: 60px;
+  top: 25px;
   right: 30px;
+
+  .standalone & {
+    top: 67px;
+  }
   .ic-options_menu {
     font-size: 40px;
     color: white;
@@ -40,8 +44,26 @@ standalone i.ic-options_menu{
 
 .profile-cnt {
   .profile {
+    &_insta-link {
+
+      text-align: center;
+      margin-bottom: 20px;
+      cursor: pointer;
+      .insta-link-text {
+        font-size: 32px;
+        font-family: $font__family__light;
+      }
+      .insta-link {
+        color: $color__gray-dark;
+        font-family: $font__family__semibold;
+        font-size: 32px;
+      }
+    }
+
+
+
     &_info {
-      padding-top: 36px;
+      padding-top: 16px;
       text-align: center;
 
 
@@ -65,11 +87,13 @@ standalone i.ic-options_menu{
         overflow: hidden;
         border-radius: 50%;
         //background: whitesmoke;
-        size: 190px;
+        size: 165px;
         margin: 0 10px;
         background-image: url(icons/user_active.svg);
         background-repeat: no-repeat;
         background-position-x: -6px;
+        -webkit-background-size: 165px;
+        background-size: 165px;
         img {
           height: 100%;
         }
@@ -112,15 +136,15 @@ standalone i.ic-options_menu{
       color: $color__gray-dark;
       background-color: $color__gray-lighter;
       text-align: center;
-      height: 100px;
       width: 100%;
       padding-top: 20px;
+      padding-bottom: 20px;
       font-size: 24px;
       position: absolute;
       bottom: 0;
       left: 0;
       font-family: $font__family__semibold;
-      z-index: 1000;
+      z-index: 98;
       span{
         font-family: $font__family__light;
       }
@@ -151,8 +175,8 @@ standalone i.ic-options_menu{
 
     &_desc {
       color: $color__gray-dark;
-      font-size: 28px;
-      padding: 16px 100px 32px;
+      font-size: 32px;
+      padding: 16px 15px 32px;
       /* border-bottom: 1px solid $color__gray-light; */
       text-align: center;
       word-wrap: break-word;
@@ -207,8 +231,31 @@ standalone i.ic-options_menu{
   }
 }
 .navbar-cnt{
-  //display: none;
   @media(--mobile) {
     display: inline-block;
   }
+}
+.less{
+  @media(--mobile) {
+    max-height: 185px;
+    position: relative;
+  }
+}
+.less::after{
+  @media(--mobile) {
+    content: '';
+    position: absolute;
+    bottom: -42px;
+    left: 0;
+    width: 100%;
+    height: 160px;
+    border-bottom: 40px solid #fff;
+    background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+    background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 );
+  }
+}
+.more{
+  height: auto;
 }

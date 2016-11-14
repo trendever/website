@@ -5,9 +5,9 @@
     popup-img(v-if="imgPopUpUrl", :url="imgPopUpUrl", :width="imgWidth", :height="imgHeight", :on-close="closePopUp")
     chat-header(:notify-count='conversationNotifyCount')
     .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu")
-    .section.top.bottom
+    .section.top.bottom(v-el:section)
       .chat.section__content
-        .chat_messages(id="chatmessages")
+        .chat_messages(id="chatmessages", v-el:box-messages)
           template(v-for='msg in getMessages | list', track-by='$index')
             div
               chat-msg-status(
@@ -39,6 +39,7 @@
 </template>
 
 <script type='text/babel'>
+  import settings from 'settings';
   import appLoader from 'base/loader/loader';
   import listen from 'event-listener';
   import scrollTop from 'base/scroll-top/scroll-top.vue';
@@ -66,7 +67,8 @@
     imgHeight
   } from 'vuex/getters/chat.js';
   import { isDone } from 'vuex/getters/lead.js';
-  import { isAuth } from 'vuex/getters/user.js';
+  import { isAuth, getUseDays } from 'vuex/getters/user.js';
+
 
   //services
   import * as messages from 'services/message';
@@ -111,6 +113,9 @@
         lead_id: null,
         isMobile: window.browser.mobile,
         showLoader: true,
+        timerId: '',
+        fullScroll: 0,
+        recursiveCount: 0
       }
     },
 
@@ -139,6 +144,14 @@
       },
     },
     ready(){
+
+      this.$on('goToBottom', this.goToBottom);
+      this.$on('addPadding', (val)=>{
+        this.$els.section.style.paddingBottom = val + 'px';
+        this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
+
+      })
+
       if ( this.isAuth ) {
         this.onMessage      = this.onMessage.bind( this );
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', this.scrollHandler.bind( this ) );
@@ -150,6 +163,9 @@
     },
 
     beforeDestroy() {
+      if(this.timerId) {
+        clearInterval(this.timerId);
+      }
       if ( this.isAuth ) {
         this.scrollListener.remove();
         this.closeConversation();
@@ -171,6 +187,7 @@
         imgWidth,
         imgHeight,
         isAuth,
+        getUseDays,
         isDone,
         getMessages,
         conversationNotifyCount,
@@ -202,10 +219,32 @@
       run(){
         return this
           .setConversation( this.lead_id )
-          .then(
+
+          .then(()=>{
+
+            return messages
+              .find(this.getId, null, 70, false)
+              .then((data)=>{
+                return data.find(message=>{
+                  return message.parts[0].content === 'Привет;) да, подтверждаю!'
+                })
+              });
+
+          }).then(flagMessage=>{
+            if(!flagMessage && this.getCurrentMember.role === 1){
+              this.setConversationAction('approve');
+            }
+
+          }).then(
             () => {
                     this.$nextTick( () => {
-                      this.goToBottom();
+
+                      setTimeout(()=>{
+
+                        this.goToBottom();
+
+                      },30)
+
                     } );
             },
             ( error ) => {
@@ -217,24 +256,25 @@
             if(this.$store.state.conversation.id === null){
               this.$router.go( { name: '404'});
             }
+
           }).then(()=>{
-
-            return messages
-              .find(this.getId, null, 50, false)
-              .then((data)=>{
-                return data.find(message=>{
-                  return message.parts[0].content === 'Привет;) да, подтверждаю!'
-                })
-              });
-
-          }).then(flagMessage=>{
-            if(!flagMessage && this.getCurrentMember.role === 1){
-              this.setConversationAction('approve');
-            }
-          }).then(()=>{
-
+            //лоадер
             this.$set('showLoader', false);
-          });
+          }).then(()=>{
+            //Монетизация
+            if(settings.activateMonetization && this.getCurrentMember.role === 2){
+              let storage = window.localStorage;
+
+              if(!storage.getItem('firstTimeChatVisited')) {
+                storage.setItem('firstTimeChatVisited', true)
+                this.$router.go({name: 'monetization'});
+              }
+
+              if(storage.getItem('supplierStatus') === 'disabled'){
+                this.$router.go({name: 'monetization'});
+              }
+            }
+          })
       },
 
       runLoadingMessage(){
@@ -284,7 +324,11 @@
       },
 
       onMessage(){
-        this.$nextTick( this.goToBottom );
+        Promise.resolve().then(()=>{
+
+          this.$nextTick( this.goToBottom );
+
+        })
       },
 
       isImage( mime ){
@@ -326,7 +370,45 @@
 
       },
       goToBottom(){
-        this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
+
+        let height = this.$els.scrollCnt.scrollHeight;
+
+        if(this.fullScroll !==  height) {
+
+          this.$els.scrollCnt.scrollTop = height;
+
+          this.fullScroll = height;
+
+          console.log(height);
+
+          this.$nextTick(()=>{
+
+            setTimeout(()=>{
+
+              this.goToBottom();
+
+            },100);
+
+          })
+
+        } else {
+
+          this.recursiveCount++;
+
+          if(this.recursiveCount > 5) return;
+
+          this.$nextTick(()=>{
+
+            setTimeout(()=>{
+
+              this.goToBottom();
+
+            },100);
+
+          })
+
+        }
+
       }
     },
   }

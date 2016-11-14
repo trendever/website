@@ -1,8 +1,9 @@
 <template>
 
+
   <popup-container :on-close="onClose">
 
-    <div class="img-container" v-el:container v-touch:swipeleft="swipeBack">
+    <div class="img-container" v-el:container>
       <div class="img-keeper" v-el:img>
 
         <img v-el:picture  class="picture" @load="resizeImg"
@@ -22,19 +23,29 @@
 
   </popup-container>
 
+
+
 </template>
 
 <style src="./style.pcss" scoped lang="postcss"></style>
 
 <script type="text/babel">
+  import { openPopUp } from 'vuex/actions/chat';
+  import scrollCnt from 'base/scroll/scroll';
   import  hammer from 'hammerjs';
   import listener from 'event-listener'
   import { browser, ratioFit } from 'utils'
   import popupContainer from '../popup-container/index.vue'
 
+
   const memoize = {};
 
   export default {
+    vuex: {
+      actions: {
+        openPopUp
+      }
+    },
     data(){
 
       return {
@@ -50,8 +61,8 @@
 
     },
     ready(){
-      this.scrollcnt = document.querySelector('.scroll-cnt');
-      this.scrollcnt.style.overflow = 'hidden';
+      //this.scrollcnt = document.querySelector('.scroll-cnt');
+      //this.scrollcnt.style.overflow = 'hidden';
 
 
       this.resize = listener( window, 'optimizedResize', this.resizeImg.bind( this ) );
@@ -97,8 +108,9 @@
 
     },
     beforeDestroy(){
-      this.scrollcnt.style.overflow = 'auto';
+      //this.scrollcnt.style.overflow = 'auto';
       this.resize.remove();
+      this.openPopUp();
 
     },
     props: {
@@ -122,11 +134,6 @@
       }
     },
     methods: {
-      swipeBack(){
-        if(!this.isScaled){
-          this.onClose();
-        }
-      },
       imgTaps(){
         if(!window.browser.mobile){
           return;
@@ -263,6 +270,7 @@
 
     },
     components: {
+      scrollCnt,
       popupContainer
     }
   }

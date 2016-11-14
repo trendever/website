@@ -1,20 +1,27 @@
 <template lang="jade">
 .right-nav(v-if="isAuth && !isMobile")
-  .right-nav_i(:class='{"__active": current=="profile"}', v-link='{name: "profile"}')
+  .right-nav_i(:class='{"__active": current=="profile"}', v-link='{name: "profile"}', v-if="$route.name !== 'profile'")
     i.ic-user_menu
+  .right-nav_i.menu__btn(v-if="$route.name === 'profile'", v-on:click.stop="setShowMenu(true)")
+    i.ic-options_menu
   .right-nav_i(:class='{"__active": current=="chat"}', v-link='{name: "chat_list"}')
     i.ic-chats_menu
     .notify-cout(v-if="getGlobalNotifyCount")
       span {{ getGlobalNotifyCount }}
   .right-nav_i(:class='{"__active": current=="feed"}', v-link='{name: "home"}')
     i.ic-gallery_menu
+
 </template>
 
 <script>
 import { isAuth } from 'vuex/getters/user';
+import { setShowMenu } from 'vuex/actions/user';
 import { getGlobalNotifyCount } from 'vuex/getters/lead.js';
 export default {
   vuex:{
+    actions: {
+      setShowMenu
+    },
     getters:{
       isAuth,
       getGlobalNotifyCount
@@ -26,12 +33,6 @@ export default {
       default: null
     }
   },
-  data () {
-    return {
-
-    };
-  },
-
   computed:{
     isMobile(){
       return window.browser.mobile;
@@ -61,9 +62,17 @@ export default {
     vertical-align:middle;
     padding-top: 8px;
     cursor:pointer;
+
     &:hover {
       background: $color__dark-green;
     }
+
+    &.menu__btn {
+      &:hover {
+        background: initial;
+      }
+    }
+
     &.__active {
       background: $color__dark-green;
     }
@@ -71,7 +80,7 @@ export default {
       width: 50px;
       height: 60px;
     }
-    i.ic-user_menu, i.ic-gallery_menu, i.ic-chats_menu  {
+    i.ic-user_menu, i.ic-gallery_menu, i.ic-chats_menu, i.ic-options_menu  {
       font-size: 32px;
       color: white;
     }

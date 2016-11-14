@@ -141,6 +141,10 @@ export const getLastMessage = ( state ) => {
 
               user_name = chat.recent_message.user.name;
 
+              if (user_name.indexOf("customer_") >= 0){
+                user_name = user_name.replace("customer_","client")
+              }
+
             }
 
           }

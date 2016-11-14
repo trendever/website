@@ -1,32 +1,60 @@
 <template lang="jade">
 div
+  native-popup(:show-popup="showPopup")
+    .title-text.title-font Уведомляем
+    .main-text Мы видим товары, где вы указаны как поставщик. Вы собираетесь их продавать?
+    .button-text
+      span(v-on:click="goInstructions") Да
+      span(v-on:click="disableSupplier") Нет
 </template>
 
 <script>
 import settings from 'settings';
 import channel from 'services/channel/channel';
-
+import NativePopup from 'base/popup/native';
 import { getAuthUser, isAuth } from 'vuex/getters/user';
 import { setUseDays } from 'vuex/actions/user';
+import { setSupplierStatus } from 'vuex/actions/user';
+
+let storage = window.localStorage;
 
 export default {
+  components: {
+    NativePopup
+  },
   vuex: {
     getters: {
       getAuthUser,
       isAuth
     },
     actions: {
-      setUseDays
+      setUseDays,
+      setSupplierStatus
     }
   },
   data () {
 
     return {
       day: 60 * 60 * 24,
+      showPopup: false
     };
 
   },
 
+  methods:{
+    disableSupplier(){
+      this.showPopup = false;
+      this.setSupplierStatus(false);
+      storage.setItem('supplierStatus', 'disabled');
+    },
+    goInstructions(){
+      this.showPopup = false;
+      this.setSupplierStatus(true);
+      storage.setItem('supplierStatus', 'active');
+      storage.setItem('showMonetization','firstTimeAlert');
+      this.$router.go({name: 'info-instructions-1'})
+    }
+  },
 
   ready() {
 
@@ -39,6 +67,11 @@ export default {
       this.$nextTick(() => {
 
         if(this.isAuth) {
+
+          if(this.getAuthUser.supplier_of === null) {
+
+            return;
+          }
 
           let shop_id = this.getAuthUser.supplier_of[0];
 
@@ -61,7 +94,7 @@ export default {
                 let nowTime = +new Date()/1000;
 
                 let difference = nowTime - date;
-
+                console.log(difference);
                 if (difference <= this.day){
                   this.setUseDays(7)
                   return { timeOut, difference }
@@ -104,15 +137,30 @@ export default {
 
               }).then(({timeOut, difference})=>{
 
-                if(difference <= this.day) {
+                let showMonetization = storage.getItem('showMonetization');
+
+                if(difference <= this.day * 2 || storage.getItem('supplierStatus') === 'disabled') {
+
+                  if(showMonetization === 'firstTimeAlert'){
+                    return;
+                  }
+
                   setTimeout(()=>{
-                    this.$router.go({name: 'monetization'})
+                    this.showPopup = true;
                   }, timeOut)
+
                   return
+
                 }
 
                 if(difference > this.day * 2 && difference <= this.day * 3) {
+
+                  if(showMonetization === 'fiveDaysLeft'){
+                    return;
+                  }
+
                   setTimeout(()=>{
+                    storage.setItem('showMonetization','fiveDaysLeft');
                     this.$router.go({name: 'monetization'})
                   }, timeOut)
                   return
@@ -120,10 +168,12 @@ export default {
 
                 if(difference > this.day * 7) {
                   setTimeout(()=>{
+                    storage.setItem('showMonetization','noMoreDays');
                     this.$router.go({name: 'monetization'})
                   }, timeOut)
 
                   return
+
                 }
               })
           }

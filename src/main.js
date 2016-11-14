@@ -58,14 +58,38 @@ const router = new VueRouter({
   saveScrollPosition: true,
   transitionOnLoad: false
 });
+
 window.history.scrollRestoration = 'manual';
+window.before = {};
+window.fakeAuth = {};
 
 // configure router
 configRouter(router);
 
+router.beforeEach((to, from, next) => {
+  if (to.from){
+    let exclude = ['signup','payment','product_detail'];
+    let prevExclud = ['signup','payment','chat','product_detail'];
+    let name = to.from.name;
+    let toname = to.to.name
+    if (exclude.indexOf(name) === -1){
+      let params = to.from.params;
+      let toparams = to.to.params;
+      window.before.name =  name;
+      window.before.params = params;
+      if (prevExclud.indexOf(toname) === -1){
+        window.before.prev = {name: toname, params: toparams}
+      }
+    }
+  }
+  to.next()
+});
+
 // bootstrap the app
 const App = Vue.extend(require('./app.vue'));
 router.start(App, 'app');
+
+
 
 // Init FastClick
 FastClick.attach(document.body, {});

@@ -65,10 +65,12 @@
   import navbar from 'base/navbar/navbar.vue'
   import { getOpenedProduct, isLiked, callAfterLoading } from 'vuex/getters/products'
   import { setLike, setCallBackAfterLoading, setComeBack, resetScrollByListId } from 'vuex/actions/products'
-  import { isAuth } from 'vuex/getters/user.js'
+  import { isAuth,isFake } from 'vuex/getters/user.js'
   import { createLead } from 'vuex/actions/lead.js'
   import { setCallbackOnSuccessAuth } from 'vuex/actions'
+  import { authUser } from 'vuex/actions/user.js';
   import * as leads from 'services/leads'
+  import * as auth from 'services/auth'
   import { ratioFit } from 'utils'
   import settings from 'settings'
   import { selectTag } from 'vuex/actions/search.js'
@@ -137,11 +139,11 @@
       },
 
       like(){
-
         if ( !this.isAuth ) {
+          window.fakeAuth = {text: " чтобы сохранять товары в свои шопинг-желания"}
 
           this.setCallbackOnSuccessAuth( function( id, product, newLike ) {
-
+            
             this.$router.go( { name: "product_detail", params: { id } } );
 
             this.setCallBackAfterLoading( this.setLike.bind( this, product, newLike ) )
@@ -151,6 +153,14 @@
           this.$router.go( { name: 'signup' } );
 
         } else {
+          if (this.isFake){
+            window.fakeAuth = {text: " чтобы сохранять товары в свои шопинг-желания"}
+            this.setCallbackOnSuccessAuth(()=>{
+              this.$router.go( { name: "product_detail", params: { id } } );
+            })
+            this.$router.replace( { name: 'signup' } );
+          }
+          
 
           this.setLike();
 
@@ -161,7 +171,6 @@
       buy() {
         yaCounter35346175.reachGoal('purchase');
         this._buy( this.productId );
-
       },
 
       buyPromoProduct() {
@@ -173,16 +182,8 @@
       _buy( productId ){
 
         if ( !this.isAuth ) {
-          let page = this.$route.name;
-          let params = this.$route.params.id;
-          this.$router.go( { name: 'signup' } )
-          //this.setCallbackOnSuccessAuth( this._buy.bind( this, productId ), 'PRODUCT_BUY' )
-
-          let vm = this;
-          this.setCallbackOnSuccessAuth(()=>{
-
-            vm.$router.go({name: page, params: { id: params }})
-
+          auth.fakeRegister().then(({token,user})=>{
+            this.authUser(user, token).then( () => { this._buy(productId) } );
           });
 
         } else {
@@ -455,9 +456,11 @@
         getOpenedProduct,
         callAfterLoading,
         isLiked,
+        isFake,
         isAuth
       },
       actions: {
+        authUser,
         resetScrollByListId,
         selectTag,
         setLike,

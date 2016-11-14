@@ -1,10 +1,10 @@
 <style src='./styles/chat-header.pcss'></style>
 <template lang="jade">
 div
-  header-component(:notify-count='getGlobalNotifyCount', :back-link='{name: "chat_list"}')
+  header-component(:notify-count='getGlobalNotifyCount')
 
     .chat-header(slot='content')
-      .chat-header_arrow(v-link="{name: 'chat_list'}")
+      .chat-header_arrow(@click='leftBtnAction')
         i.chat-header_arrow_ic.ic-arrow-left
 
       .chat-header_notify-count(v-if='getGlobalNotifyCount')
@@ -38,6 +38,8 @@ div
 
   import { getGlobalNotifyCount } from 'vuex/getters/lead.js'
 
+  import {isFake} from 'vuex/getters/user.js'
+
   import HeaderComponent from 'base/header/header.vue'
 
   export default {
@@ -50,6 +52,13 @@ div
        onUserImageError(){
         console.warn(`Load user photo has failed. Chat id: ${this.getId}`);
          this.$set('userImage', require('base/img/logo.png'));
+      },
+      leftBtnAction(){
+        if (this.isFake){
+          this.$router.go({ name: window.before.name, params: window.before.params})
+        }else{
+          this.$router.go({name: "chat_list"})
+        }
       }
     },
 
@@ -60,6 +69,7 @@ div
         getStatusName,
         getShopName,
         getPhoto,
+        isFake,
         getGlobalNotifyCount
       }
     },

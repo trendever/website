@@ -10,7 +10,7 @@
         .payment-summ-text
           .error-message(v-if="errorMessage") {{ errorMessage }}
           .transparent(v-else)
-            Введите сумму к получению
+            | Введите сумму к получению
         .payment-summ-input-wrapper
           .phantom-input(v-if="!activateInput" @click="startInput")
             span(v-if="!billPrice") 0
@@ -31,7 +31,7 @@
               img(src='icons/card_1.png').ic-card_1
             select(v-model="selectedCardId").check-card-select
               option(v-for="card in userCards" v-bind:value="card.id") {{card.name}} {{ card.number }}
-              option(value="0") Новая карта
+              option(:value="0") Новая карта
         .check-card-input-wrap()
           i.ic-card-new
             img(src='icons/card_2.png')
@@ -58,6 +58,7 @@ import channel from 'services/channel/channel';
 import { getPayment} from 'vuex/getters/user';
 import * as product from 'services/products';
 import store from 'vuex/store';
+import { getAuthUser } from 'vuex/getters/user';
 
 export default{
   props:{
@@ -65,7 +66,8 @@ export default{
   },
   vuex:{
     getters: {
-      getPayment
+      getPayment,
+      getAuthUser
     }
   },
   data(){
@@ -92,12 +94,27 @@ export default{
   },
   ready() {
     this.setOpen();
+    console.log(this.getAuthUser);
   },
   methods: {
     setOpen(){
       this._getCards().then(data=>{
         if(data !== null){
+
           this.$set('userCards', data);
+
+          if(this.getAuthUser.supplier_of || this.getAuthUser.seller_of) {
+              return;
+          }
+
+          let cardId = window.localStorage.getItem('cardId')
+
+          if(cardId) {
+
+            this.selectedCardId = +cardId;
+
+          }
+
         }
       });
     },
@@ -226,6 +243,7 @@ export default{
         });
         this.$set('currentCardId',currentCard.id);
         this.$set('currentCardNumber',currentCard.number);
+        window.localStorage.setItem('cardId', currentCard.id)
       }else{
         this.$set('currentCardId','');
         this.$set('currentCardNumber','');

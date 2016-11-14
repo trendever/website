@@ -48,6 +48,9 @@
     },
     computed: {
       getUsername() {
+        if (this.getCustomerName.indexOf("customer_") >= 0){
+          return `<b>${this.getCustomerName.replace("customer_","client")}</b>`
+        }
         return `<b>${this.getCustomerName}</b>`
       },
       isAfterServiceMessage(){

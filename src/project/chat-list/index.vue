@@ -23,7 +23,7 @@ scroll-component(v-el:scroll-cnt)
     template(v-if='!leadsArray.length')
       .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
-        span  ... потому что ты пока ничего #[br] не покупаешь
+        span  потому что ты пока ничего #[br] не покупаешь
       .chat-list-cnt-is-empty(v-if="getTab === 'seller'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
         span  ... потому что ты пока ничего #[br] не продаешь
@@ -33,12 +33,12 @@ scroll-component(v-el:scroll-cnt)
        span под постом в Instagram, #[br] и здесь появится шопинг-чат
       .chat-list-cnt-is-empty__banner.sell(v-if="!leadsArray.length && getTab === 'seller'")
        span Напиши&nbsp
-       span.want Покупай по комментарию @wantit&nbsp #[br(v-if="!isMobile")]
+       span.want "Покупай по комментарию @wantit&nbsp" #[br(v-if="!isMobile")]
        span
-        #[br(v-if="isMobile")] под товарами в своем Instagram,
-        #[br] чтобы продавать и видеть здесь покупателей
+        | #[br(v-if="isMobile")] под товарами в своем Instagram,
+        | #[br] чтобы продавать и видеть здесь покупателей
        .how-to-sell-btn.chat-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile") Как начать продавать?
-       appstore-link(
+       //-appstore-link(
         text-link="ПОЛУЧИТЬ ПРИЛОЖЕНИЕ ДЛЯ ПРОДАЖ",
         placeholder-link="Укажите номер, чтобы начать продавать",
         v-if="!isMobile").chat-appstore-link
@@ -74,7 +74,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
     getCountForLoading
   } from 'vuex/getters/lead.js';
 
-  import { isAuth, getTooltips, getUseDays } from 'vuex/getters/user.js';
+  import { isAuth, getTooltips,isFake} from 'vuex/getters/user.js';
   import { setTooltip } from 'vuex/actions/user.js';
 
   import {
@@ -91,7 +91,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
   import ScrollComponent from 'base/scroll/scroll.vue'
   import HeaderComponent from 'base/header/header.vue';
   import NavbarComponent from 'base/navbar/navbar.vue';
-
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import ChatListItem from './chat-list-item.vue';
 
   export default {
@@ -118,16 +118,17 @@ app-loader.list-loader(v-if="!needLoadLeads")
         getLeads,
         getTab,
         getIsTab,
+        isFake,
         getTitle,
         isEmptyLeads,
         isDone,
         getLengthList,
         getScroll,
-        getHasMore,
-        getUseDays
+        getHasMore
       },
       actions: {
         setTooltip,
+        setCallbackOnSuccessAuth,
         setTab,
         loadLeads,
         leadClose,
@@ -147,13 +148,15 @@ app-loader.list-loader(v-if="!needLoadLeads")
       }
     },
     ready(){
+      if (this.isFake){
+        window.fakeAuth = {text: "чтобы просматривать список чатов", data: ""}
+        this.setCallbackOnSuccessAuth(()=>{
+          this.$router.go({name: 'chat_list'})
+        })
+        this.$router.replace( { name: 'signup' } );
+      }
 
       if ( this.isAuth ) {
-        if( this.getUseDays === 0){
-
-          this.$router.go({name: 'monetization'})
-
-        }
 
         this.scrollListener = listen( this.$els.scrollCnt, 'scroll', (() => {
 
@@ -238,13 +241,7 @@ app-loader.list-loader(v-if="!needLoadLeads")
         }
       },
       showTooltip(){
-        if(this.isEmptyLeads){
-          if(this.getTooltips.chats){
-            return true;
-          }
-          return false;
-        }
-        return false;
+        return (this.isEmptyLeads && this.getTooltips.chats) ? true : false;
       }
     },
     events:{
@@ -302,7 +299,13 @@ app-loader.list-loader(v-if="!needLoadLeads")
                 this.loadLeads().then( () => {
                   setTimeout(()=>{
                     this.$nextTick( () => {
-                      add( this.$els.scrollCnt.scrollHeight );
+
+                      if(this.$els.scrollCnt !== null) {
+
+                        add( this.$els.scrollCnt.scrollHeight );
+
+                      }
+
                     } );
                   },1)
                 } )

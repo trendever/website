@@ -6,24 +6,28 @@
  .instruction__header
   p Укажи в Instagram ссылку #[br] на свою витрину
  .instruction__sub-header Вот короткая ссылка:
- .instruction__bold-title(v-el:title) {{getAuthUser.name}}.tndvr.com
+ .instruction__bold-title(v-el:title) {{userName}}.tndvr.com
  .instruction__txt на твою витрину товаров #[br] в приложении и на сайте Trendever
  .instruction__screen
   img(src="./img/screen-2.png")
-  //-.wrap-instruction-img
-    second-img(:username="getAuthUser.name")
  .instruction__txt Нажми на кнопку ниже и ссылка #[br] на витрину скопируется для вставки #[br] в твой Instagram-профиль
  .instruction__continue-btn
   button(v-on:click="goInstgram").copy-trigger
     a ПЕРЕЙТИ В INSTAGRAM
-   //-a(href="instagram://profile", target="_blank") ПЕРЕЙТИ В INSTAGRAM
+
+native-popup(:show-popup="showPopup")
+  .title-text.title-font Ссылка скопирована
+  .main-text {{{message}}}
+  .button-text(v-on:click="moveInstagram")
+    span OK
 </template>
 
 <script>
 
 import { getAuthUser } from 'vuex/getters/user';
 import clipboard from 'clipboard';
-//import secondImg from './components/second-img';
+import nativePopup from 'base/popup/native';
+
 export default {
   vuex:{
     getters:{
@@ -32,7 +36,9 @@ export default {
   },
   data () {
     return {
-      copyError: false
+      copyError: false,
+      showPopup: false,
+      message: ''
     }
   },
 
@@ -45,16 +51,15 @@ export default {
         }
       })
       self.copy.on('success',()=>{
-        alert('Ссылка username.tndvr.com скопирована. Сейчас откроется ваш Instagram профиль и вы сможете ее вставить.');
-
-        //window.location = 'https://www.instagram.com/' + this.getAuthUser.name;
-        this.navigate('https://www.instagram.com/' + this.getAuthUser.name, true);
-        this.$router.go({name: 'profile'})
+        this.message = `Ссылка ${this.userName}.tndvr.com скопирована. <br><br> Сейчас откроется ваш Instagram профиль и вы сможете ее вставить.`;
+        this.showPopup = true;
 
       })
 
       self.copy.on('error', () =>{
-        alert('К сожалению скопировать в буфер не удалось. Сделайте это вручную');
+        this.message = 'К сожалению скопировать в буфер не удалось.<br><br> Сделайте это вручную'
+        this.showPopup = true;
+
         self.copyError = true;
         self.copy.destroy();
         self.copy = false;
@@ -67,12 +72,19 @@ export default {
       if(this.copy || !this.copyError){
         return;
       }
-      //window.location = 'https://www.instagram.com/' + this.getAuthUser.name;
-      this.navigate('https://www.instagram.com/' + this.getAuthUser.name, true);
-      this.$router.go({name: 'profile'})
+      this.moveInstagram();
     },
     close(){
       this.$router.go(window.history.back());
+    },
+
+    moveInstagram(){
+      if(this.copyError) {
+        this.showPopup = false;
+        return;
+      }
+      this.navigate('https://www.instagram.com/' + this.getAuthUser.name, true);
+      this.$router.go({name: 'profile'})
     },
     navigate(href, newTab) {
        let a = document.createElement('a');
@@ -84,9 +96,14 @@ export default {
     }
   },
 
-
+  computed:{
+    userName(){
+      return this.getAuthUser.name || this.getAuthUser.instagram_username;
+    }
+  },
   components: {
-    //secondImg
+    nativePopup
+
   }
 }
 </script>

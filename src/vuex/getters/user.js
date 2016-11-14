@@ -10,6 +10,16 @@ export const isDone = ( { user } ) => {
 
 };
 
+export const isFake = ( state ) => {
+  const userData = user( state );
+  let username = userData.name;
+  let is_fake = false;
+  if (username && username.indexOf("customer_") >= 0){
+    is_fake = true;
+  }
+  return is_fake;
+};
+
 export const user = ( { user } ) => {
 
   if ( user.all.hasOwnProperty( user.id ) ) {
@@ -152,4 +162,14 @@ export const getUseDays = ( { user } ) => {
 
   return user.useDays;
 
+}
+
+export const supplierStatus = ( { user } ) => {
+
+  return user.supplierStatus;
+
+}
+
+export const showMenu = ( { user } ) => {
+  return user.showMenu;
 }

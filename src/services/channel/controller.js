@@ -106,7 +106,7 @@ export default class {
         color_code_key = 'color: #4CAF50';
       }
 
-      console.log('[CHAN]' +
+      console.log('%c[res]' +
        '%c ' + ctx.action_str +
        ' %c ' + ctx.data_type +
        ' %c ' + ctx.log_list[0].code_str +
@@ -114,12 +114,14 @@ export default class {
        ' ' + ctx.log_list[0].level_str +
        ' %c ' + (endTime - createdAt) + 'ms' +
        ' %c clean(' + (endTime - sendedAt) + 'ms)',
+       'font-size: 1.1rem',
        'color: #2196F3',
        'color: #FF9800',
        color_code_key,
        'color: #5E35B1',
        'color: #2196F3',
-       {response: JSON.parse(JSON.stringify(ctx))}
+       //{response: JSON.parse(JSON.stringify(ctx))}
+       JSON.parse(JSON.stringify(ctx))
        );
     }
 

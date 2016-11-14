@@ -39,7 +39,7 @@ input(type="hidden", value="", id="get-user-login")
   import store from 'vuex/store'
   import { authUser } from 'vuex/actions/user.js'
 
-  import MonetizationLogic from 'base/monetization-logic/monetization-logic';
+  import MonetizationLogic from 'project/monetization/logic';
   import InstructionsLogic from 'project/info/instructions/logic';
   import PopupFastSignup from 'base/auth-popup/fast-signup.vue'
   import ListenerComponent from 'project/listener/index.vue'
@@ -75,6 +75,7 @@ input(type="hidden", value="", id="get-user-login")
           return false;
         }
       }
+      window.entryPoint = this.$route.name;
     },
     methods:{
       scrollTop(){
