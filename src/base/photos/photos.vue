@@ -4,7 +4,7 @@
 .photos(v-bind:style="styleObject", v-el:container)
   .photos__list(v-el:photos-list, v-if='items', v-bind:style="listStyle")
   
-    div(v-el:monk-wrap)
+    .monkberry(v-el:monk-wrap)
 
     //-template(v-for='line in items | lines' track-by="uid")
       .photos__list__cell(v-bind:style="top[$index]")
@@ -173,22 +173,26 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
       }).then(()=>{
 
-          this.$nextTick(()=>{
+        this.$nextTick(()=>{
 
-          let self = this;
+          this.monkState = {
 
-          self.monkState = {
-
-            lines: self.getlines,
-            top: self.top
+            lines: this.getlines,
+            top: this.top,
+            count: this.getColumnCount
 
           }
 
-          self.monk = monk.render(Template, this.$els.monkWrap);
-          self.monk.update(self.monkState);
+          this.monk = monk.render(Template, this.$els.monkWrap);
+          this.monk.update(this.monkState);
 
-          
         })
+
+
+      }).then(()=>{
+
+        this.scrollCnt.scrollTop = 1;
+        this.scrollCnt.scrollTop = 0;
 
 
       })
@@ -210,7 +214,6 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
       }
 
     },
-
     beforeDestroy() {
 
       this.resize.remove();
@@ -434,8 +437,11 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
         this.scrollCnt.scrollTop = this.getScrollData.scrollTop;
         this._setScroll();
       },
+
       getLines(){
+
         if(this.monk) {
+
           this.monkState = {
             lines: this.getLines,
             top: this.top,
@@ -443,7 +449,9 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
           }
 
           this.monk.update(this.monkState)
+
         }
+
       },
       items() {
         const height = ( this.itemsLength / this.getColumnCount + 1) * this.rowHeight;

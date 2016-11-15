@@ -8,11 +8,11 @@
     </div>
     <div class="photo__row">
       <div class="photo__summ">
-
+        {{ discountPrice }}
         <i class="ic-currency-rub"></i>
       </div>
       <div class="photo__shopTitle">
-
+        {{ suppliername }}
       </div>
     </div>
   </div>

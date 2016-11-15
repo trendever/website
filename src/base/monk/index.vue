@@ -3,7 +3,9 @@ div(v-el:monk)
 </template>
 <script>
 import Monkberry from 'monkberry';
+
 import Template from './template.monk';
+
 export default{
 	data(){
 		return {}
@@ -27,21 +29,6 @@ export default{
 		var view = Monkberry.render(Template, this.$els.monk);
 		view.update(state);
 
-/*		view.on('submit', 'form', function (event) {
-		  event.preventDefault();
-		  var input = view.querySelector('input[type="text"]');
-
-		  state.todos.push({text: input.value, complete: false});
-		  view.update(state);
-		  
-		  input.value = '';
-		});
-
-		view.on('click', '[data-index]', function (event) {
-		  var i = event.target.dataset.index;
-		  state.todos[i].complete = !state.todos[i].complete;
-		  view.update(state);
-		});*/
 	}
 }
 </script>

@@ -29,7 +29,11 @@
       cursor: pointer;
 
       &-three {
-        float: left;
+
+        .monkberry & {
+          float: left;
+        }
+        
         width: calc(33.333% - 2px);
         margin-right: 3px;
 
@@ -46,6 +50,10 @@
       }
 
       &-two {
+        .monkberry & {
+          float: left;   
+        }
+
         width: calc(50% - 1.5px);
         margin-right: 3px;
 

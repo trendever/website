@@ -10,7 +10,7 @@ export default class extends Item {
     this.state = {
       product: {},
       top: '',
-      count: 3
+      count: ''
     }
 
   }
@@ -25,8 +25,6 @@ export default class extends Item {
         return;
 
       } else {
-
-
 
         this.state.thumb = (()=>{
 
@@ -46,7 +44,7 @@ export default class extends Item {
               return this.state.product.images.find((img) => img.name === "M_square").url
             }
           }
-          // return this.state.product.instagram_image_url
+
         })();
 
         
@@ -58,9 +56,10 @@ export default class extends Item {
               break;
             default: return 'photo__container-three';
           }
+
         })();
 
-/*        this.state.discountPrice = (()=> {
+        this.state.discountPrice = (()=> {
           const items = this.state.product.items;
           if (items.length === 0) {
             return
@@ -70,7 +69,7 @@ export default class extends Item {
           } else if (items[0].price) {
             return items[0].price
           }
-        })();*/
+        })();
 
 
         this.state.title = (()=>{
@@ -84,13 +83,12 @@ export default class extends Item {
         })();
 
 
-       /* this.state.suppliername = (()=> {
+       this.state.suppliername = (()=> {
           if(this.state.product.shop){
             return this.state.product.shop.name;
           }
           return this.state.product.supplier.instagram_username;
-        })();*/
-
+        })();
 
         super.update(this.state);
         

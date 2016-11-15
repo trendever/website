@@ -2,10 +2,10 @@
 
 {% for i, line of lines %}
 
-  <div class="photos__list__cell" style="top: {{ top[i].top }}">
+  <div class="photos__list__cell monkberry" style="top: {{ top[i].top }}">
 
   {% for i, item of line.bundle %}
-    <Item product={{ item.data }}/>
+    <Item product={{ item.data }} count={{ count }}/>
   {% endfor %}
 
   </div>
