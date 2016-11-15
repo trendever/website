@@ -87,6 +87,9 @@ chat-menu(v-if="isMobile")
     },
 
     beforeDestroy() {
+
+      this.$els.inputMsg.blur();
+
       if ( this.scrollEvent ) {
         this.scrollEvent.remove()
       }
