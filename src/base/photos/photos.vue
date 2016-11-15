@@ -191,8 +191,12 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
       }).then(()=>{
 
-        this.scrollCnt.scrollTop = 1;
-        this.scrollCnt.scrollTop = 0;
+
+        let { lastScrollTop, scrollTop } = this.getScrollData;
+
+        this.scrollCnt.scrollTop = lastScrollTop + 1;
+        this.scrollCnt.scrollTop = lastScrollTop;
+
 
 
       })
