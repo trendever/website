@@ -31,6 +31,7 @@ chat-menu(v-if="isMobile")
   import {
     getAction,
     getId,
+    getLeadId,
     getCurrentMember,
     getStatus,
     getShowMenu,
@@ -110,7 +111,8 @@ chat-menu(v-if="isMobile")
         getCurrentMember,
         getShowMenu,
         getStatus,
-        getShopName
+        getShopName,
+        getLeadId
       }
     },
 
@@ -243,11 +245,13 @@ chat-menu(v-if="isMobile")
 
           this.setConversationAction("base");
 
+          let id = this.$route.params.id;
+
           if (this.fakeRegCount === 1 && this.isFake){
             setTimeout(() => {
               window.fakeAuth = {text: "чтобы не пропустить ответ от", data: this.getShopName}
               this.setCallbackOnSuccessAuth(()=>{
-                this.$router.go({name: 'chat-list'})
+                this.$router.go({name: 'chat', params: { id }})
               })
               this.$router.replace( { name: 'signup' } );
             },700);
@@ -279,14 +283,6 @@ chat-menu(v-if="isMobile")
 
         this.send();
 
-      },
-      pay(){
-        cardService.createPayment({
-          id: this.payId,
-          lead_id: this.getLeadId
-        }).then(path=>{
-          window.location = path.redirect_url;
-        });
       }
     },
 
