@@ -17,6 +17,21 @@
 standalone i.ic-options_menu{
   margin-top: 65px;
 }
+.profile-days{
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  font-size: 40px;
+  color: $color-orange;
+  font-family: $font__family__semibold;
+  .standalone & {
+    top: 61px;
+  }
+
+  .day{
+    font-size: 24px;
+  }
+}
 
 
 .find-bloger-btn, .how-to-sell-btn {
@@ -44,10 +59,15 @@ standalone i.ic-options_menu{
 
 .profile-cnt {
   .profile {
+    display: flex;
+    @media(--mobile) {
+      display: block;
+    }
     &_insta-link {
 
       text-align: center;
-      margin-bottom: 20px;
+      margin-top: 10px;
+      margin-bottom: 24px;
       cursor: pointer;
       .insta-link-text {
         font-size: 32px;
@@ -64,7 +84,7 @@ standalone i.ic-options_menu{
 
     &_info {
       padding-top: 16px;
-      text-align: center;
+      display: inline-block;
 
 
       &_count {
@@ -83,20 +103,58 @@ standalone i.ic-options_menu{
       &_img {
         position: relative;
         display: inline-block;
-        vertical-align: middle;
         overflow: hidden;
         border-radius: 50%;
-        //background: whitesmoke;
-        size: 190px;
-        margin: 0 10px;
         background-image: url(icons/user_active.svg);
-        background-repeat: no-repeat;
-        background-position-x: -6px;
-        -webkit-background-size: 165px;
-        background-size: 165px;
+        size: 120px;
+        float: left;
+        margin: 5px 25px 0px 15px;
+          @media(--mobile) {
+            float: none;
+            size: 165px;
+            margin: 0px 27px 0px 30px;
+            background-repeat: no-repeat;
+            background-position-x: -6px;
+            -webkit-background-size: 190px;
+            background-size: 190px;
+          }
         img {
           height: 100%;
         }
+      }
+      &_about{
+        display: inline-block;
+        font-size: 28px;
+        font-family: $font__family__regular;
+        color: $color__gray-dark;
+        vertical-align: top;
+        margin-top: 10px;
+
+        &_location{
+          padding-top: 14px;
+        }
+
+        &_work-time{
+          padding-top: 12px;
+        }
+
+        &_posts-quantity{
+          padding-top: 14px;
+        }
+
+      }
+      &_follow{
+        display: inline-block;
+        text-align: right;
+        padding-top: 4px;
+        padding-right: 30px;
+
+        .following{
+          padding-top: 10px;
+        }
+      }
+      &_follow{
+        float: right;
       }
     }
 
@@ -175,15 +233,25 @@ standalone i.ic-options_menu{
 
     &_desc {
       color: $color__gray-dark;
-      font-size: 32px;
-      padding: 16px 15px 32px;
-      /* border-bottom: 1px solid $color__gray-light; */
-      text-align: center;
+      text-align: left;
       word-wrap: break-word;
-      font-family: "San Francisco Light";
+      font-family: $font__family__light;
+      font-size: 16px;
+      width: 495px;
+      padding: 30px 0px 0px 0px;
+      display: inline-block;
+      vertical-align: super;
+        @media(--mobile) {
+          font-size: 32px;
+          padding: 25px 15px 0px;
+          width: 100%;
+          vertical-align: inherit;
+          display: block;
+        }
       &_t {
         width: 100%;
         word-wrap: break-word;
+        font-family: $font__family__semibold;
       }
       span{
         display: inline-block;
@@ -196,21 +264,41 @@ standalone i.ic-options_menu{
       height: 50px;
       display: block;
       width:100%;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      padding: 0px 12px;
       span{
         display:inline-block;
         text-align:center;
-        width: 50%;
         font-size: 2rem;
+          &:first-child{
+            margin-right: 12px;
+          }
         label{
+          display: inline-block;
           cursor: pointer;
           text-transform: uppercase;
+          font-size: 28px;
+          font-family: $font__family__light;
+          width: 357px;
+          height: 64px;
+          padding-top: 13px;
+          border: 1px solid $color__green;
+          border-radius: 5px;
+          color: $color__green;
+
         }
         input{
           display: none;
         }
         &.seleted {
-          color: $color__green;
+          background-color: $color__green;
+          border-radius: 5px;
+
+          label{
+            width: 357px;
+            height: 64px;
+            color: #fff;
+          }
         }
       }
     }
@@ -237,7 +325,7 @@ standalone i.ic-options_menu{
 }
 .less{
   @media(--mobile) {
-    max-height: 185px;
+    max-height: 233px;
     position: relative;
   }
 }
@@ -245,11 +333,11 @@ standalone i.ic-options_menu{
   @media(--mobile) {
     content: '';
     position: absolute;
-    bottom: -42px;
+    bottom: 0px;
     left: 0;
     width: 100%;
-    height: 160px;
-    border-bottom: 40px solid #fff;
+    height: 120px;
+    //border-bottom: 10px solid #fff;
     background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
     background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
     background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
@@ -258,4 +346,7 @@ standalone i.ic-options_menu{
 }
 .more{
   height: auto;
+  @media(--mobile) {
+    padding-bottom: 25px;
+  }
 }

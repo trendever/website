@@ -14,7 +14,9 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
   header-component(:title='getUserName', :left-btn-show='leftArrowShow')
     div.profile-right-menu(slot="content", v-if="isMobile && $route.name === 'profile'")
       i.ic-options_menu(@click.stop="setShowMenu(true)")
-
+    div.profile-days(slot="content", v-if="isMobile && false")
+      span 3
+      span.day д
       //-USER MENU
     div(slot="menu")
 
@@ -50,14 +52,23 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
       .profile
         .profile_info
 
-          //-.profile_info_count 01
-          //- .profile_info_count_t Подписчики
-
           .profile_info_img()
             img(:src="getUserPhoto")
+          .profile_info_about(v-if="false")
+            .profile_info_about_type Магазин
+              #[br]
+            .profile_info_about_location Красноярск
+              #[br]
+            .profile_info_about_work-time 10.00-21.00
+              #[br]
+            .profile_info_about_posts-quantity 951 постов
 
-          //-.profile_info_count 0
-          //- .profile_info_count_t Подписки
+          .profile_info_follow(v-if="false")
+            .profile_info_count_t Подписчики
+            .profile_info_count 1258
+
+            .profile_info_count_t.following Подписки
+            .profile_info_count 53
 
         .profile_desc
           .profile_desc_t(v-if="getSlogan") {{getSlogan}}
