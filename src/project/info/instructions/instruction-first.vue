@@ -10,6 +10,8 @@
  .instruction__txt в описании своих постов в Instagram #[br] и они попадут на твою новую витрину
  .instruction__screen
   img(src="./img/screen-1.png")
+  //-.wrap-instruction-img
+    first-img(:username="getAuthUser.name")
  .instruction__txt Также твои товары можно будет #[br] покупать прямо из Instagram #[br] по комментарию
   span.want  @wantit
  .instruction__continue-btn
@@ -17,17 +19,21 @@
 </template>
 
 <script>
+//import FirstImg from './components/first-img';
+import { getAuthUser } from 'vuex/getters/user';
 export default {
-  data () {
-    return {}
+  vuex: {
+    getters: {
+      getAuthUser
+    }
   },
-  computed: {},
-  mounted () {},
+  components:{
+    //FirstImg
+  },
   methods: {
     close(){
       this.$router.go(window.history.back());
     },
-  },
-  components: {}
+  }
 }
 </script>

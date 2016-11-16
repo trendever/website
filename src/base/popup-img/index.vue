@@ -1,49 +1,51 @@
 <template>
 
+
   <popup-container :on-close="onClose">
 
-    <div class="img-container" v-el:container v-touch:swipeleft="swipeBack">
+    <div class="img-container" v-el:container>
       <div class="img-keeper" v-el:img>
 
-        <img v-el:picture class="picture" @load="resizeImg"
-         :src="url" alt=""
-         v-touch:pinchMove="pinchMove($event)"
-         v-touch:pinchEnd="pinchEnd($event)"
-         v-touch:panMove="panMove($event)"
-         v-touch:panEnd="panEnd($event)"
-         v-touch-options:pan="{ threshold: 40 }"
-         v-touch:tap="imgTaps"
-         v-touch-options:tap="{ taps:2, interval:500, threshold:2, time:300, posThreshold: 50 }"
-         v-touch:press="showBottomMenu = true"
-         v-touch-options:press="{time: 300}">
+        <img v-el:picture  class="picture" @load="resizeImg"
+         :src="url" alt="">
 
       </div>
 
       <div class="close-block" @click="onClose"></div>
 
-      <div class="ios-bottom-menu" :class="{'opened-ios-menu': showBottomMenu}" v-show="showBottomMenu">
-        <div class="save-option">Save Image</div>
-        <div class="copy-option">Copy</div>
-        <div class="cancel-option"  @click.stop="showBottomMenu = false">Cancel</div>
-      </div>
+<!--       <div class="ios-bottom-menu" :class="{'opened-ios-menu': showBottomMenu}" :style="menuStyle">
+  <div class="save-option">Save Image</div>
+  <div class="copy-option">Copy</div>
+  <div class="cancel-option"  @click.stop="menuStyle = {marginBottom: '-450px'}">Cancel</div>
+</div> -->
 
     </div>
 
   </popup-container>
+
+
 
 </template>
 
 <style src="./style.pcss" scoped lang="postcss"></style>
 
 <script type="text/babel">
-
+  import { openPopUp } from 'vuex/actions/chat';
+  import scrollCnt from 'base/scroll/scroll';
+  import  hammer from 'hammerjs';
   import listener from 'event-listener'
   import { browser, ratioFit } from 'utils'
   import popupContainer from '../popup-container/index.vue'
 
+
   const memoize = {};
 
   export default {
+    vuex: {
+      actions: {
+        openPopUp
+      }
+    },
     data(){
 
       return {
@@ -51,21 +53,64 @@
         deltaX: 0,
         currentScale: 1,
         isScaled: false,
-        showBottomMenu: false
+        menuStyle: {
+          marginBottom: '-450px'
+        },
+        showToSave: false
       }
 
     },
     ready(){
-      this.scrollcnt = document.querySelector('.scroll-cnt');
-      this.scrollcnt.style.overflow = 'hidden';
+      //this.scrollcnt = document.querySelector('.scroll-cnt');
+      //this.scrollcnt.style.overflow = 'hidden';
 
 
       this.resize = listener( window, 'optimizedResize', this.resizeImg.bind( this ) );
       this.resizeImg();
+
+
+
+      //http://sky2high.net/en/2015/03/hammer-js-css-touch-action-and-ios-safari-context-menu/
+      let mc = new hammer.Manager( this.$els.picture, {
+        cssProps: Object.assign({},hammer.defaults.cssProps, { touchCallout: '' }),
+        doNotPreventPress: true
+      } );
+
+
+      mc.add([
+
+        new hammer.Pan({direction: hammer.DIRECTION_ALL, threshold: 40}),
+
+        new hammer.Pinch({ enable: true}),
+
+        new hammer.Tap({ taps:2, interval:500, threshold:2, time:300, posThreshold: 50}),
+        new hammer.Press({ enable: true, touchAction: 'auto', domEvents: true })
+
+      ])
+
+      mc.on('pinchmove',e=>{
+          this.pinchMove(e);
+        })
+
+        .on('pinchend',e=>{
+          this.pinchEnd(e);
+        })
+
+        .on('panmove',e=>{
+          this.panMove(e)
+        })
+        .on('panend', e=>{
+          this.panEnd(e)
+        })
+        .on('tap',e=>{
+          this.imgTaps(e)
+        })
+
     },
     beforeDestroy(){
-      this.scrollcnt.style.overflow = 'auto';
+      //this.scrollcnt.style.overflow = 'auto';
       this.resize.remove();
+      this.openPopUp();
 
     },
     props: {
@@ -89,11 +134,6 @@
       }
     },
     methods: {
-      swipeBack(){
-        if(!this.isScaled){
-          this.onClose();
-        }
-      },
       imgTaps(){
         if(!window.browser.mobile){
           return;
@@ -230,6 +270,7 @@
 
     },
     components: {
+      scrollCnt,
       popupContainer
     }
   }

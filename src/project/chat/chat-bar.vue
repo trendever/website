@@ -2,14 +2,16 @@
 <template lang="jade">
 
 div.chat-bar
-  .chat-approve-btn.noaction(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat') ПОДТВЕРДИТЬ
+  .chat-approve-btn.noaction(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat($event)') ПОДТВЕРДИТЬ
   .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay' && getAction !== 'pendingpayment' ", id="inputbar")
-    .chat-bar_menu-btn(@click.stop='setShowMenu(true)', :class="{'directbot-color': directbot}")
+    .chat-bar_menu-btn(@click.stop='openChatmenu', :class="{'directbot-color': directbot}")
       i.ic-chat_menu
-    .chat-bar_input
+    .chat-bar_input(v-el:bar)
       textarea(placeholder='Введите сообщение',
                v-model='txtMsg',
+               v-on:keyup="addPadding",
                v-el:input-msg,
+               v-on:click="$els.inputMsg.focus()",
                @focus='focusInput',
                @blur='blurInput($event)')
     .chat-bar_send-btn(v-on:mousedown='send($event)',
@@ -22,16 +24,20 @@ chat-menu(v-if="isMobile")
 </template>
 
 <script type='text/babel'>
+  import settings from 'settings';
   import listen from 'event-listener'
-  import settings from 'settings'
   import store from 'vuex/store'
   import {
     getAction,
     getId,
+    getLeadId,
     getCurrentMember,
     getStatus,
-    getShowMenu
+    getShowMenu,
+    getShopName
   } from 'vuex/getters/chat.js'
+
+  import { getUseDays, isFake } from 'vuex/getters/user';
 
   import {
     setConversationAction,
@@ -44,13 +50,16 @@ chat-menu(v-if="isMobile")
   import * as leads from 'services/leads'
   import * as cardService from 'services/card';
   import ChatMenu from './chat-menu.vue'
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
+
 
   export default{
     data(){
       return {
         txtMsg: '',
         isMobile: window.browser.mobile,
-        directbot: settings.directbotActive
+        directbot: settings.directbotActive,
+        fakeRegCount: 0
       }
     },
 
@@ -79,6 +88,13 @@ chat-menu(v-if="isMobile")
     },
 
     beforeDestroy() {
+
+      if(this.$els.inputMsg) {
+
+        this.$els.inputMsg.blur();
+         
+      }
+
       if ( this.scrollEvent ) {
         this.scrollEvent.remove()
       }
@@ -90,20 +106,41 @@ chat-menu(v-if="isMobile")
     vuex: {
       actions: {
         setConversationAction,
+        setCallbackOnSuccessAuth,
         createMessage,
         setShowMenu,
         setStatus
       },
       getters: {
+        isFake,
+        getUseDays,
         getAction,
         getId,
         getCurrentMember,
         getShowMenu,
-        getStatus
+        getStatus,
+        getShopName,
+        getLeadId
       }
     },
 
     methods: {
+      addPadding(){
+
+        this.$dispatch('addPadding', this.$els.bar.offsetHeight)
+      },
+      openChatmenu(){
+
+        if(settings.activateMonetization){
+          if(this.getUseDays === 0){
+            this.$router.go({name: 'monetization'});
+            return;
+          }
+        }
+
+        this.setShowMenu(true);
+
+      },
       normalizeScroll() {
         // Hard hack for ios jumping, why open keyboard
         if ( window.scrollY === 0 ) {
@@ -178,6 +215,19 @@ chat-menu(v-if="isMobile")
       },
 
       send ( event ) {
+        this.$dispatch('addPadding', 110)
+
+        if (this.getAction !== "approve"){
+          this.fakeRegCount++
+        }
+
+        if(settings.activateMonetization){
+          if(this.getUseDays === 0){
+            this.$router.go({name: 'monetization'});
+            return;
+          }
+        }
+
         if(event) {
 
           event.stopPropagation()
@@ -203,6 +253,18 @@ chat-menu(v-if="isMobile")
 
           this.setConversationAction("base");
 
+          let id = this.$route.params.id;
+
+          if (this.fakeRegCount === 1 && this.isFake){
+            setTimeout(() => {
+              window.fakeAuth = {text: "чтобы не пропустить ответ от", data: this.getShopName}
+              this.setCallbackOnSuccessAuth(()=>{
+                this.$router.go({name: 'chat', params: { id }})
+              })
+              this.$router.replace( { name: 'signup' } );
+            },700);
+          }
+
         } )
 
         promise.catch( ( { code, errData } ) => {
@@ -221,20 +283,14 @@ chat-menu(v-if="isMobile")
 
         } )
       },
-      approveChat(){
+      approveChat(e){
 
         this.txtMsg = 'Привет;) да, подтверждаю!';
 
+        e.target.hidden = true;
+
         this.send();
 
-      },
-      pay(){
-        cardService.createPayment({
-          id: this.payId,
-          lead_id: this.getLeadId
-        }).then(path=>{
-          window.location = path.redirect_url;
-        });
       }
     },
 

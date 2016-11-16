@@ -7,6 +7,7 @@
 
   h1 {
     font-family: $font__family__light !important;
+    font-size: 40px;
   }
 
   .inst-name {
@@ -39,7 +40,7 @@
 
     .top-text {
       margin-bottom: 30px;
-      color: #FFDE1E;
+      color: $color-orange;
     }
 
     i.ic-options_menu {
@@ -66,7 +67,7 @@
   overflow:hidden;
   padding: 50px 30px 0 30px;
   padding-top: 120px;
-  color: #FFF;
+  color: $color__white;
   background-color: #0E3333;
   font-size: 24px;
   line-height: 1.2;
@@ -78,8 +79,8 @@
   .signup__close {
     position: absolute;
     z-index: 100;
-    top: 0;
-    right: 0;
+    top: 30px;
+    right: 30px;
     text-align:center;
 
     size: 70px;
@@ -137,10 +138,10 @@
     height: 3rem;
     font-size: 24px;
     font-family: $font__family__light;
-    &::-webkit-input-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
-    &::-moz-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
-    &:-moz-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
-    &:-ms-input-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
+    &::-webkit-input-placeholder{opacity: .4; color: $color__white;font-family: $font__family__light;}
+    &::-moz-placeholder{opacity: .4; color: $color__white;font-family: $font__family__light;}
+    &:-moz-placeholder{opacity: .4; color: $color__white;font-family: $font__family__light;}
+    &:-ms-input-placeholder{opacity: .4; color: $color__white;font-family: $font__family__light;}
 
     @media(--mobile) {
       height: 4rem;
@@ -148,7 +149,11 @@
     }
   }
   .input.confirm-input input{
-    height: 6rem !important;
+    
+    @media(--mobile) {
+      height: 6rem !important;
+      text-indent: 10px !important;
+    }
   }
   h1.accept {
     margin-bottom: 77px;
@@ -247,7 +252,7 @@
     padding: 20px 50px;
 
     @media(--mobile) {
-      padding: 65px 15px 50px 50px;
+      padding: 0px 15px 50px 50px;
     }
   }
   &.confirm {
@@ -267,7 +272,7 @@
     font-size: 36px;
   }
   .error {
-    color: #FFDE1E;
+    color: $color-orange;
   }
   .emoji {
     width: 40px;
@@ -400,7 +405,6 @@
 
   @media(--mobile) {
     margin-bottom: -5px;
-
     font-size: 56px;
   }
 }
@@ -504,4 +508,25 @@
       left: -77px;
     }
   }
+}
+.logo{
+  margin: 100px auto 50px auto;
+  width: 265px;
+  height: 265px;
+}
+.reg{
+  text-align: center;
+  font-size: 36px;
+  font-family: $font__family__light;
+  margin-bottom: 85px;
+
+  .bold{
+    font-family: $font__family__semibold;
+  }
+}
+.app_logo{
+  margin: 185px auto 50px auto !important;
+}
+.app_input{
+  padding: 65px 15px 50px 50px !important;
 }

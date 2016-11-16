@@ -1,6 +1,6 @@
 <style src='./menu.pcss'></style>
 <template lang="jade">
-.header__menu(v-if="isMobile")
+.header__menu(v-if="isMobile && notFromUser")
  .header__menu-icon(@click.stop='menuOpened = !menuOpened', v-show="showBullets")
   i.ic-menu_bullets
  .header__menu-links.bubble.bubble--arrow.bubble--arrow-ne(v-if="menuOpened")
@@ -33,7 +33,7 @@
         menuOpened: false,
         showBullets: true,
         isMobile: window.browser.mobile,
-        editProductId: settings.editProductID === null ? 7740 : settings.editProductID,
+        editProductId: 32929,
         promoProductId: settings.promoProductID
 
       }
@@ -76,6 +76,12 @@
       }
     },
     computed:{
+      notFromUser(){
+        if (window.entryPoint == "user"){
+          return false;
+        }
+        return true
+      },
       productId(){
         if (this.getOpenedProduct) return this.getOpenedProduct.id;
       }

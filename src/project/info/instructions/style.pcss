@@ -6,13 +6,16 @@
   text-align: center;
   position: relative;
   font-size: 36px;
-  color: #fff;
+  color: $color__white;
   font-family: $font__family__light;
 
   .close{
     position: absolute;
-    top: 70px;
-    right: 30px;
+    top: 50px;
+    right: 10px;
+    i {
+      padding: 20px;
+    }
   }
 
   &__header{
@@ -34,6 +37,36 @@
   &__screen{
     margin-top: 35px;
     margin-bottom: 15px;
+
+    img {
+      //display: none;
+    }
+
+    .wrap-instruction-img {
+      margin: 0 auto;
+      size: 600px;
+      overflow: hidden;
+      border-radius: 50%;
+      border: 7px solid #c157a6;
+
+      #first-inst-img {
+        position: relative;
+        size: 850px;
+        top: -860px;
+        left: -40px;
+
+      }
+
+      #second-inst-img {
+        position: relative;
+        size: 780px;
+        top: -230px;
+        left: -40px;
+
+      }
+
+    }
+
   }
   .want{
     font-family: $font__family__semibold;
@@ -48,7 +81,7 @@
     line-height: 100px;
     font-size: 36px;
     font-family: $font__family__light;
-    background-color: #FFDE1E;
+    background-color: $color-orange;
     color: #0E3333;
 
     a{

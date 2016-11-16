@@ -15,8 +15,12 @@ swipe.swipe-item-wrapper
     .caption__description(v-link='{name: "main-video"}') (смотреть видео)
   swipe-item.slide.slide-wrapper-second
    img(src="img/slide_2.svg").image
+   .caption__play.dark(v-link='{name: "main-video"}')
+    i.ic-play
   swipe-item.slide.slide-wrapper-third
    img(src="img/slide_3.svg").image
+   .caption__play.dark(v-link='{name: "main-video"}')
+    i.ic-play
 </template>
 
 <script type='text/ecmascript-6'>

@@ -24,28 +24,31 @@
 }
 
 .profile-header__menu-links.__desktop {
-  position: absolute 54px * * 230px;
-  margin: initial;
-  max-width: 252px;
-  border: 1px solid #BFBFBF;
+  position: absolute;
+  top: 54px;
+  margin-right: 23px;
+  //margin: initial;
+  max-width: 322px;
+  border: 1px solid $color__gray-light;
   border-radius: 5px;
   box-shadow: 1px 1px 3px grey;
   background-color: #F0F0F0;
   font-family: $font__family__regular;
+  z-index: 140;
 
   &::before {
     content: '';
-    position: absolute -13px * * 30px;
+    position: absolute -13px 8px * *;
     size: 0;
     border-left: 11px solid transparent;
     border-right: 11px solid transparent;
-    border-bottom: 13px solid #BFBFBF;
+    border-bottom: 13px solid $color__gray-light;
 
   }
 
   &::after {
     content: '';
-    position: absolute -12px * * 30px;
+    position: absolute -12px 8px * *;
     size: 0;
     border-left: 11px solid transparent;
     border-right: 11px solid transparent;
@@ -69,7 +72,7 @@
     line-height: 2.8rem;
     font-size: 1.4em;
     background-color: initial;
-    width: 250px;
+    width: 320px;
     border: initial;
     &:hover {
       color: $color__green;
@@ -114,7 +117,7 @@
         right: 20px;
         width: 275px;
         height: 37px;
-        border: 1px solid #fff;
+        border: 1px solid $color__white;
         border-radius: 5px;
         background: rgba(255, 255, 255, 0.8);
         color: #41734c;
@@ -133,13 +136,13 @@
         }
       }
       &__auth-btn:hover{
-        background: #FFDE1E;
-        border-color: #FFDE1E;
+        background: $color-orange;
+        border-color: $color-orange;
         color: #0e3333;
         cursor: pointer;
       }
       &__sellers-btn:hover{
-        background: #fff;
+        background: $color__white;
         cursor: pointer;
         color: #41734c;
       }
@@ -150,10 +153,10 @@
         z-index: 100;
         height: 37px;
         width: 275px;
-        border: 1px solid #fff;
+        border: 1px solid $color__white;
         border-radius: 5px;
         background: transparent;
-        color: #fff;
+        color: $color__white;
         font-size: 16px;
         font-family: $font__family__light;
         @media(--mobile) {
@@ -285,7 +288,7 @@
         display: none;
       }
       .fb, .insta, .vk{
-        color: #fff;
+        color: $color__white;
         font-size: 26px;
         margin-right: 12px;
         padding-top: 27px;
@@ -335,8 +338,8 @@
       height: 40px;
 
       .app_store, .g_play{
-        color: #000;
-        background-color: #fff;
+        color: $color__black;
+        background-color: $color__white;
         font-size: 40px;
         height: 40px;
         border-radius: 5px;
@@ -367,7 +370,7 @@
 
             p{
               font-size: 22px;
-              color: #fff;
+              color: $color__white;
               position: absolute;
               top: -10px;
               left: 5px;
@@ -386,8 +389,8 @@
               border-top-right-radius: 0px;
               border-bottom-right-radius: 0px;
               text-indent: 12px;
-              font-size: 14px;
-              color: #000;
+              font-size: 16px;
+              color: $color__black;
               padding-left: 6px;
               background-color: rgba(255,255,255, 0.8);
 
@@ -436,8 +439,8 @@
             border-top-right-radius: 5px;
             border-bottom-right-radius: 5px;
             font-size: 16px;
-            color: #000;
-            background-color: #FFDE1E;
+            color: $color__black;
+            background-color: $color-orange;
             letter-spacing: -1px;
             font-weight: 400;
             @media(--tabletH) {
@@ -445,12 +448,12 @@
             }
           }
           &__get-link:hover,&__get-link:disabled{
-            background-color: #DEBD00;
+            background-color: $color-orange-dark;
           }
 
           &__get-link:disabled{
             cursor: default;
-            background-color: #DEBD00;
+            background-color: $color-orange-dark;
           }
 
           &__btn-cnt {
@@ -476,13 +479,13 @@
         display: block;
         size: 100%;
         position: absolute;
-        z-index: 9998;
+        z-index: 100;
 
         &.color-black{
-          background-color: rgba(24, 92, 90, .7);
+          background-color: $color__green-light;
         }
         &.color-green{
-          background-color: rgba(24, 92, 90, .7);
+          background-color: $color__green-light;
         }
       }
 
@@ -638,7 +641,7 @@
       display: inline-block;
       width: 100%;
       font-size: 36px;
-      color: #fff;
+      color: $color__white;
       margin-top: 30px;
       width: 100%;
       line-height: 50px;
@@ -646,7 +649,7 @@
     }
     p{
       font-size: 46px;
-      color: #fff;
+      color: $color__white;
       padding-top: 50px;
       line-height: 55px;
       font-family: $font__family__regular;
@@ -667,14 +670,14 @@
     height: 160px;
     font-size: 160px;
     margin: 152px auto 26px auto;
-    color: #fff;
+    color: $color__white;
   }
   .caption__play__mobile i:hover{
     color: #d9d9d9;
   }
   .caption__description__mobile{
     font-size: 32px;
-    color: #fff;
+    color: $color__white;
     font-family: $font__family__light;
   }
   .sellers_auth_btn{
@@ -682,8 +685,8 @@
     @media(--tabletandless) {
       display: block;
       font-size: 36px;
-      color: #fff;
-      border: 1px solid #fff;
+      color: $color__white;
+      border: 1px solid $color__white;
       background: transparent;
       width: 550px;
       height: 118px;
@@ -697,7 +700,7 @@
     @media(--tabletandless) {
       display: inline-block;
       font-size: 36px;
-      color: #fff;
+      color: $color__white;
       width: 100%;
       height: 100px;
       position: absolute;
@@ -724,3 +727,27 @@
   .logo_app{
     margin-top: 55% !important;
   }
+.banner{
+  background-color: $color__gray-lighter;
+  color: $color__gray-dark;
+  font-size: 32px;
+  font-family: $font__family__light;
+  text-align: center;
+  padding: 28px;
+  width: 100%;
+  position: fixed;
+  bottom: 98px;
+  left: 0;
+  z-index: 1;
+
+  i.ic-close{
+    font-size: 32px;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+  }
+
+  .bold{
+    font-family: $font__family__semibold;
+  }
+}

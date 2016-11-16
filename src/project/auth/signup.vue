@@ -6,23 +6,39 @@ scroll-component
       .signup__close.__hello(@click='closePage'): i.ic-close
       .section
         .column-desktop-50.header(v-if="showTitleSlider")
-          h1.accept Войдите и сможете
+          h1.accept(v-if="fakeReg") Вход и регистрация 
+          h1.accept(v-else) Войдите и сможете
         .column-desktop-50.column-desktop-right(v-if="showTitleSlider")
-          slider
+          
+          template(v-if="fakeReg")
+            .logo(:class="{'app_logo': isStandalone}")
+              img(src="./img/auth-logo.png")
+            .reg
+              p Войдите или зарегистрируйтесь,
+                br
+                | {{fakeText}}
+                br
+                span.bold {{fakeData}}
+          template(v-else)
+            slider
         .column-desktop-50
           .bottom-container(:class='{"opened-key-board":!showTitleSlider}')
             validator(name='signup')
-              .input-container
+              .input-container(:class="{'app_input': isStandalone}")
                 .input.name
                   i.ic-insta-name
-                  input(type='text',
+                  input(
+                    v-el:login,
+                    type='text',
                     autocomplete="off",
                     autocorrect="off",
                     autocapitalize="off",
                     spellcheck="false",
                     :class=' {error: errorLogin} ',
                     @focus='onFocusLogin',
+                    @keydown="checkValidate"
                     @keydown.enter='sendSMS()',
+                    @keyup='validateLogin',
                     v-validate:login='[ "required" ]',
                     v-on:blur="blurInput",
                     v-model='login',
@@ -69,11 +85,12 @@ scroll-component
   import {
     saveAuthData,
     signup,
+    setData
   } from 'vuex/actions';
   import {
     authData,
   } from 'vuex/getters';
-  import { isAuth } from 'vuex/getters/user.js';
+  import { isAuth,isFake } from 'vuex/getters/user.js';
 
 
   import store from 'vuex/store';
@@ -118,7 +135,8 @@ scroll-component
         textLink: TEXT_LINK.instagramMode,
         placeholder: PLACEHOLDER.instagramMode,
         instagram: true,
-        showTitleSlider: true
+        showTitleSlider: true,
+        isStandalone: browser.standalone,
       }
     },
 
@@ -128,6 +146,21 @@ scroll-component
         //   abort();
         // }
         return true;
+      }
+    },
+
+    computed: {
+      fakeReg(){
+        if (window.fakeAuth.text){
+          return true;
+        }
+        return false;
+      },
+      fakeText(){
+        return window.fakeAuth.text;
+      },
+      fakeData(){
+        return window.fakeAuth.data;
       }
     },
 
@@ -150,23 +183,33 @@ scroll-component
       actions: {
         saveAuthData,
         signup,
+        setData
       },
       getters: {
         authData,
         isAuth,
+        isFake,
       }
     },
 
     methods: {
+      isStandalone(){
+        return browser.standalone
+      },
       closePage() {
         mixpanel.track('Close Signup Page');
         this.save();
 
-        if (window.history.length > 2) {
-          this.$router.go(window.history.back());
-        } else {
-          this.$router.go({name: 'home'});
+        if (this.isFake){
+          console.log("CLOSE AUTH CLICK")
+          console.log(window.before)
+          if (window.before.name === "chat_list" || window.before.name === "profile"){
+            this.$router.go({ name: "home"})
+            return
+          }
         }
+        
+        this.$router.go({ name: window.before.name, params: window.before.params})
       },
 
       save() {
@@ -175,6 +218,22 @@ scroll-component
           phone: this.phone,
           instagram: this.instagram,
         })
+      },
+      validateLogin(){
+        if(this.login.match(/[а-яё]+/g) !== null){
+          this.login = '';
+          this.errorLogin = true;
+          //this.textLink = TEXT_LINK['errorloginLang'];
+          this.login = PLACEHOLDER['errorLoginFormat'];
+        }
+      },
+      checkValidate(){
+
+        if(this.errorLogin){
+          this.errorLogin = false;
+          this.login ='';
+        }
+
       },
 
       sendSMS() {
@@ -209,11 +268,21 @@ scroll-component
 
         this.save();
 
-        this.signup().then( ()=> {
-          this.$router.go({ name: 'comfirm-sms' });
-        }).catch( (error) => {
-          this.onErrorPhone();
-        })
+
+        if (this.isFake){
+          this.setData().then( ()=> {
+            this.$router.go({ name: 'comfirm-sms' });
+          }).catch( (error) => {
+            this.onErrorPhone();
+          })
+        }else{
+          this.signup().then( ()=> {
+            this.$router.go({ name: 'comfirm-sms' });
+          }).catch( (error) => {
+            this.onErrorPhone();
+          })
+        }
+        
       },
 
       blurInput(){

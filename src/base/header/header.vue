@@ -5,7 +5,7 @@
       .wrapper(:class="{'directbot-color': isDirectbot}")
         .header__arrow(
           @click='leftBtnAction',
-          v-if='leftBtnShow && $route.name !== "profile"',
+          v-if='leftBtnShow && $route.name !== "profile" && $route.name !== "chat" && isNotEmptyHistory',
           :class="{'show-desktop-arrow': showDesktopArrow}")
 
           i.header__arrow__ic.ic-arrow-left(
@@ -13,6 +13,11 @@
 
         .header__notify-count(v-if='notifyCount')
           span {{ notifyCount }}
+
+        .header__use-days(v-if='$route.name === "profile" && isMobile && activeMonetization && getUseDays !== -1', v-link="{name: 'monetization'}")
+          .days-count {{ getUseDays }}
+            span д
+
 
         .header__center
           .header__left-logo
@@ -23,6 +28,8 @@
             img.center-avatar(:src="avatarUrl", v-if="page == 'product' && !isMobile")
           slot(name='content')
 
+        slot(name='menu')
+
         .header-right(v-if="avatarUrl !== null && centerTextLink !== null && isMobile", v-link="centerTextLink")
           img(:src="avatarUrl")
 
@@ -30,15 +37,23 @@
 </template>
 
 <script type='text/babel'>
+  import settings from 'settings';
   import listen from 'event-listener';
   import ProductmenuComponent from '../productmenu/index.vue'
+  import { getUseDays } from 'vuex/getters/user';
 
   export default {
+    vuex: {
+      getters: {
+        getUseDays
+      }
+    },
     components: {
       ProductmenuComponent
     },
     data(){
       return {
+        activeMonetization: settings.activateMonetization,
         is_visible: false,
         is_action_up: false,
         scrollEvent: null,
@@ -130,6 +145,18 @@
 
       this.scrollEvent = listen( this.scrollCnt, 'scroll', this.toggleHeaderOnScroll.bind( this ) )
     },
+    computed:{
+      isNotEmptyHistory(){
+        if (window.before && window.before.prev){
+          if (this.$route.name == window.before.name){
+            return window.before.name != window.before.prev.name
+          }
+          return true
+        }else{
+          return false;
+        }
+      }
+    },
     methods: {
       leftBtnAction() {
         if ( this.show_on_elem ) {
@@ -144,9 +171,12 @@
           }
         }
 
-        if ( window.history.length > 2 && !this.forceBackLink) {
-
-          window.history.back();
+        if (!this.backLink) {
+          if (this.$route.name === window.before.name && window.before.prev){
+            this.$router.go({ name: window.before.prev.name, params: window.before.prev.params})
+            return;
+          }
+          this.$router.go({ name: window.before.name, params: window.before.params})
 
         } else {
 

@@ -51,7 +51,7 @@ $width-desktop: 936px;
   }
 
   .swipe-indicator {
-    background-color: #fff;
+    background-color: $color__white;
 
     &.active {
       opacity:1;
@@ -189,7 +189,7 @@ $width-desktop: 936px;
   }
 }
 .swipe-item.slide-wrapper-second{
-  background: #fff;
+  background: $color__white;
   width: 282px;
   height: 263px;
   margin-top: 50px;
@@ -212,7 +212,7 @@ $width-desktop: 936px;
 }
 .swipe-item.slide-wrapper-third{
   margin-top: 50px;
-  background-color: #fff;
+  background-color: $color__white;
   height: 263px;
   @media(--tabletH) {
     margin-top: 32px;
@@ -308,5 +308,16 @@ $width-desktop: 936px;
     margin-bottom: 53px;
     text-align: center;
     font-size: 36px;
+  }
+}
+.dark{
+  margin-top: 0px !important;
+  position: absolute;
+  top: 108px;
+  left: 0;
+  right: 0;
+
+  i.ic-play{
+    color: rgba(0, 0, 0, .65);
   }
 }

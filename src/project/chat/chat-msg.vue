@@ -90,6 +90,9 @@
           return '<b>trendever</b>';
         }
         if (this.isCustomer) {
+          if (this.msg.user.name.indexOf("customer_") >= 0){
+            return `<b>${this.msg.user.name.replace("customer_","client")}</b>`
+          }
           return `<b>${this.msg.user.name}</b>`
         }
         if (this.msg.user.role === leads.USER_ROLES.SUPPLIER.key) {

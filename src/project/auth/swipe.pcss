@@ -38,20 +38,20 @@ $width-desktop: 936px;
 
 .swipe-item-container {
   position: relative;
-  height: 485px;
+  height: 485px!important;
   overflow: hidden;
   margin-top:-49px;
 
   @media (--smalldesktop) {
-    height:555px;
+    height:555px!important;
   }
 
   @media(--tabletandless) {
-    height:715px;
+    height:715px!important;
   }
 
   .swipe-indicator {
-    background-color: #fff;
+    background-color: $color__white;
 
     &.active {
       opacity:1;

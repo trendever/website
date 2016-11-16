@@ -8,7 +8,10 @@ import {
   USER_LOGOUT,
   USER_SET_MY_CURRENT_LIST,
   USER_SET_TOOLTIP,
-  USER_SET_PAYMENT
+  USER_SET_PAYMENT,
+  USER_SET_USE_DAYS,
+  USER_SET_SUPPLIER_STATUS,
+  USER_SHOW_MENU
 } from '../mutation-types';
 
 // initial state
@@ -27,7 +30,16 @@ const state = {
     chats: true
   },
   payment: {},
-  showRootLoader: false
+  showMenu: false,
+
+  //В будущем перенести лоадер в лучшее место
+  showRootLoader: false,
+
+  //Число оставшихся дней до окончания пробоного периода
+  useDays: -1,
+
+  //Ставится в зависимости от решения юзера начать продавать или нет
+  supplierStatus: true
 
 };
 
@@ -130,6 +142,15 @@ const mutations = {
   [USER_SET_PAYMENT](state,value){
     state.payment = value;
   },
+  [USER_SET_USE_DAYS](state, count) {
+    state.useDays = count;
+  },
+  [USER_SET_SUPPLIER_STATUS](state, disable) {
+    state.supplierStatus = disable;
+  },
+  [USER_SHOW_MENU](state, value){
+    state.showMenu = value;
+  }
 };
 
 export default {

@@ -49,13 +49,26 @@ iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLi
         }
       };
 
-      if (!this.msg.parts[1] && this.msg.user.user_id !== this.getCurrentMember.user_id){
-          this.setConversationAction("pay");
-          this.setConversationActionData({id: _payid});
-      }
-      if (!this.msg.parts[1] && this.msg.user.user_id === this.getCurrentMember.user_id){
-        this.setConversationAction("pendingpayment");
-        this.setConversationActionData({id: _payid})
+      if (!this.msg.parts[1]){
+        //Если выставил покупатель
+        if (this.msg.user.role === 1){
+          if (this.getCurrentMember.user_id !== this.getCustomerId){
+            this.setConversationAction("pay");
+            this.setConversationActionData({id: _payid});
+          }else{
+            this.setConversationAction("pendingpayment");
+            this.setConversationActionData({id: _payid})
+          }
+        //Иначе выставили со стороны магазина
+        }else{
+          if (this.getCurrentMember.user_id === this.getCustomerId){
+            this.setConversationAction("pay");
+            this.setConversationActionData({id: _payid});
+          }else{
+            this.setConversationAction("pendingpayment");
+            this.setConversationActionData({id: _payid})
+          }
+        }
       }
       return {
         canceled: false,

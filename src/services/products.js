@@ -106,11 +106,11 @@ export const sendError = ( errorCode, state = null ) => {
   } );
 }*/
 
-export function find( { query, tags, shop_id, mentioner_id, limit, offset } ) {
+export function find( { query, tags, shop_id, mentioner_id, limit, offset, include_not_on_sale } ) {
 
   return new Promise( ( resolve, reject ) => {
 
-    channel.req('elastic_search', 'product', { query, tags, shop_id, mentioner_id, limit, offset })
+    channel.req('elastic_search', 'product', { query, tags, shop_id, mentioner_id, limit, offset, include_not_on_sale })
 
     .then(data => {
 

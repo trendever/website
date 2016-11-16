@@ -42,6 +42,7 @@ export default {
       font-size: 32px;
     }
   }
+
   .title-font {
     font-family: $font__family__semibold;
     font-size: 24px;
@@ -49,27 +50,54 @@ export default {
       font-size: 40px;
     }
   }
+  
   .title-text {
     padding: 20px 10px 10px 10px;
     @media (--mobile) {
       padding: 50px 30px 10px 30px;
     }
   }
+
   .main-text {
     padding: * 5px 30px 5px;
     @media (--mobile) {
       padding: * 10px 50px 10px;
     }
   }
+
+  .title-text {
+
+    padding: 20px 10px 10px 10px;
+
+    @media (--mobile) {
+      padding: 50px 30px 10px 30px;
+
+    }
+
+  }
+
+  .main-text {
+
+    padding: * 5px 30px 5px;
+
+    @media (--mobile) {
+      padding: * 10px 50px 10px;
+
+    }
+
+  }
+
   .button-text {
     font-family: $font__family__semibold;
     border-top: 1px solid grey;
     color:#226ABB ;
     padding: 20px 20px 20px 20px;
+
     @media (--mobile) {
       padding: 30px 30px 30px 30px;
       font-size: 36px;
     }
+
     span {
       cursor: pointer;
       padding: * 30px * 30px;
