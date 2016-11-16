@@ -17,6 +17,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .profile_info_img()
             img(:src="getUserPhoto")
 
+        .profile_desc
+          .profile_desc_t(v-if="getSlogan") {{getSlogan}}
+          .profile_desc_caption.less(v-if="getUserCaption", v-on:click="this.isMoreClass = !this.isMoreClass" v-bind:class="{ more : isMoreClass, less: !isMoreClass}") {{{getUserCaption | captionSpaces}}}
+
 
        template(v-if="loaded")
         .profile_inactive(v-if="false")
@@ -90,7 +94,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
         isMobile: window.browser.mobile,
         showBloger: true,
         isSeller: false,
-        isSupplier: false
+        isSupplier: false,
+        isMoreClass: false
       }
     },
     route: {
