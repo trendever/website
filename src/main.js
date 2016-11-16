@@ -5,10 +5,10 @@ import VueValidator from 'vue-validator';
 import FastClick from 'fastclick';
 import config from '../config';
 import { throttleEvent, isDebug } from 'utils';
-import { configRouter } from './route-config';
 import InitFilters from './filters';
 import InitValidators from './validators';
 import store from 'vuex/store';
+const configRouter = config.directbot_active ? require('./directbot-routes').configRouter : require('./route-config').configRouter
 
 require('es6-promise').polyfill();
 require('core-js/fn/array/find');
