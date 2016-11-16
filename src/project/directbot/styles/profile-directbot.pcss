@@ -1,0 +1,199 @@
+@import 'base/vars/vars.pcss';
+
+.directbot-header .wrapper{
+  background-color: $color__blue !important;
+}
+
+.profile-right-menu {
+  position: absolute;
+  top: 27px;
+  right: 30px;
+
+  .standalone & {
+    top: 65px;
+  }
+  .ic-options_menu {
+    font-size: 40px;
+    color: white;
+  }
+}
+
+.profile-days{
+  position: absolute;
+  top: 19px;
+  left: 30px;
+  font-size: 40px;
+  color: $color-orange;
+  font-family: $font__family__semibold;
+  .standalone & {
+    top: 60px;
+  }
+
+  .day{
+    font-size: 24px;
+  }
+}
+
+.profile-cnt {
+  .profile {
+    &_info {
+      padding-top: 36px;
+      text-align: center;
+
+      &_img {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        overflow: hidden;
+        border-radius: 50%;
+        //background: whitesmoke;
+        width: 190px;
+        height: 190px;
+        margin: -25px 10px 0px 10px;
+        background-image: url(../icons/user_active.svg);
+        background-repeat: no-repeat;
+        background-position-x: -6px;
+        -webkit-background-size: 190px;
+        background-size: 190px;
+        img {
+          height: 100%;
+        }
+      }
+    }
+
+    &_inactive{
+      margin-top: 50px;
+      color: #595959;
+      text-align: center;
+      font-size: 24px;
+      font-family: $font__family__light;
+      @media(--mobile) {
+        width: 80%;
+        margin: 0 auto;
+        font-size: 32px;
+        margin-top: 70px;
+      }
+      img{
+        display: block;
+        margin-bottom: 20px;
+        margin-left: 205px;
+        margin-top: -10px;
+      }
+      .empty{
+        display: inline-block;
+        margin-bottom: 4px;
+        font-family: $font__family__semibold;
+      }
+    }
+    &_active{
+      text-align: center;
+      color: $color__blue;
+      font-family: $font__family__light;
+      font-size: 32px;
+      img{
+        display: block;
+        margin-left: 48px;
+        //margin-right: auto;
+        margin-top: 18px;
+        margin-bottom: 20px;
+        width: 642px;
+      }
+      .bold{
+        display: inline-block;
+        margin-bottom: 5px;
+        font-family: $font__family__semibold;
+        position: relative;
+
+        &:after{
+          content: '...';
+          position: absolute;
+          top: 0;
+          right: -20px;
+        }
+      }
+    }
+
+    &_no-goods-banner{
+      color: #595959;
+      background-color: #ececec;
+      text-align: center;
+      height: 100px;
+      width: 100%;
+      padding-top: 20px;
+      font-size: 24px;
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      font-family: $font__family__semibold;
+      z-index: 1000;
+      span{
+        font-family: $font__family__light;
+      }
+      .save{
+        font-family: $font__family__semibold;
+      }
+      @media(--mobile) {
+        width: 100%;
+        height: 200px;
+        bottom: 198px;
+        font-size: 32px;
+        line-height: 40px;
+        padding: 20px 16px 0px 16px;
+      }
+    }
+  }
+}
+.turn-on-bot-btn{
+  z-index: 30;
+  bottom: 98px !important;
+}
+button.bot-active-btn{
+  width: 100%;
+  height: 100px;
+  line-height: 100px;
+  border-radius: 0px;
+  border: none;
+  background-color: $color__gray-lighter;
+  font-size: 36px;
+  font-family: $font__family__light;
+  color: $color__gray-dark;
+  position: fixed;
+  bottom: 100px;
+  z-index: 1000;
+
+  i.ic-close{
+    font-size: 26px;
+    position: absolute;
+    top: 36.5px;
+    right: 28px;
+  }
+}
+.navbar-cnt{
+  @media(--mobile) {
+    display: inline-block;
+  }
+  .navbar_i{
+    width: 50%;
+    &:first-child{
+      display: none;
+    }
+
+    &__active{
+      .navbar_i_wrap_ic{
+        color: $color__blue;
+      }
+    }
+  }
+}
+.navbar-cnt .navbar_i.__active .navbar_i_wrap_ic, .navbar-cnt .navbar_i.__active .navbar_i_wrap_t{
+  color: $color__blue;
+}
+.right-nav .right-nav_i.__active{
+  background-color: #496DA1 !important;
+}
+.right-nav .right-nav_i:hover{
+  background-color: #496DA1 !important;
+}
+.right-nav .right-nav_i:last-child{
+  display: none;
+}

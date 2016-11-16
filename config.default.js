@@ -27,6 +27,7 @@ var config = {
   /**
    * Other
    */
+  directbot_active: true,
 
   activate_monetization: false,
 

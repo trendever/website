@@ -4,7 +4,7 @@
 div.chat-bar
   .chat-approve-btn.noaction(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat($event)') ПОДТВЕРДИТЬ
   .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay' && getAction !== 'pendingpayment' ", id="inputbar")
-    .chat-bar_menu-btn(@click.stop='openChatmenu')
+    .chat-bar_menu-btn(@click.stop='openChatmenu', :class="{'directbot-color': directbot}")
       i.ic-chat_menu
     .chat-bar_input(v-el:bar)
       textarea(placeholder='Введите сообщение',
@@ -16,7 +16,7 @@ div.chat-bar
                @blur='blurInput($event)')
     .chat-bar_send-btn(v-on:mousedown='send($event)',
                        v-on:touchstart='send($event)',
-                       :class='{"__active": !!txtMsg}')
+                       :class='{"__active": !!txtMsg, "directbot-color": directbot}')
       i.ic-send-plane
     chat-menu(v-if="!isMobile")
 chat-menu(v-if="isMobile")
@@ -26,11 +26,11 @@ chat-menu(v-if="isMobile")
 <script type='text/babel'>
   import settings from 'settings';
   import listen from 'event-listener'
-
   import store from 'vuex/store'
   import {
     getAction,
     getId,
+    getLeadId,
     getCurrentMember,
     getStatus,
     getShowMenu,
@@ -58,11 +58,13 @@ chat-menu(v-if="isMobile")
       return {
         txtMsg: '',
         isMobile: window.browser.mobile,
+        directbot: settings.directbotActive,
         fakeRegCount: 0
       }
     },
 
     ready(){
+
       this.scroll = document.querySelector( '.scroll-cnt' );
       if ( !window.browser.mobile ) {
 
@@ -86,6 +88,13 @@ chat-menu(v-if="isMobile")
     },
 
     beforeDestroy() {
+
+      if(this.$els.inputMsg) {
+
+        this.$els.inputMsg.blur();
+         
+      }
+
       if ( this.scrollEvent ) {
         this.scrollEvent.remove()
       }
@@ -110,7 +119,8 @@ chat-menu(v-if="isMobile")
         getCurrentMember,
         getShowMenu,
         getStatus,
-        getShopName
+        getShopName,
+        getLeadId
       }
     },
 
@@ -243,11 +253,13 @@ chat-menu(v-if="isMobile")
 
           this.setConversationAction("base");
 
+          let id = this.$route.params.id;
+
           if (this.fakeRegCount === 1 && this.isFake){
             setTimeout(() => {
               window.fakeAuth = {text: "чтобы не пропустить ответ от", data: this.getShopName}
               this.setCallbackOnSuccessAuth(()=>{
-                this.$router.go({name: 'chat-list'})
+                this.$router.go({name: 'chat', params: { id }})
               })
               this.$router.replace( { name: 'signup' } );
             },700);
@@ -279,14 +291,6 @@ chat-menu(v-if="isMobile")
 
         this.send();
 
-      },
-      pay(){
-        cardService.createPayment({
-          id: this.payId,
-          lead_id: this.getLeadId
-        }).then(path=>{
-          window.location = path.redirect_url;
-        });
       }
     },
 

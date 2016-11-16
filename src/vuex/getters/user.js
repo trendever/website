@@ -148,10 +148,11 @@ export const getPayment = ( { user } ) => {
 export const authUserId = ( { user } ) => {
 
   return user.myId;
+
 }
 
 
-export const getAuthUser = ( { user }) => {
+export const getAuthUser = ( { user } ) => {
 
   return user.all[user.myId];
 

@@ -14,7 +14,7 @@
 <template lang="jade">
 .root-loader(v-if="$store.state.user.showRootLoader"): app-loader
 .fake-status-bar(v-if="isStandalone", @click="scrollTop")
-.app(:class="{'standalone': isStandalone, 'android': isAndroid}")
+.app(:class="{'standalone': isStandalone, 'android': isAndroid, 'directbot': directbotActive}")
   inapp-notification(v-if="isStandalone")
   popup-fast-signup(v-if="authIsDone && showAuthBtn")
   router-view(v-if="authIsDone")
@@ -26,6 +26,7 @@ input(type="hidden", value="", id="get-user-login")
 </template>
 
 <script type='text/babel'>
+  import settings from 'settings';
   import 'base/fonts/trendever-icons/trendever-icons.font'
 
   import appLoader from 'base/loader/loader';
@@ -126,6 +127,9 @@ input(type="hidden", value="", id="get-user-login")
       },
       isStandalone(){
         return browser.standalone;
+      },
+      directbotActive(){
+        return settings.directbotActive;
       }
     },
     components: {

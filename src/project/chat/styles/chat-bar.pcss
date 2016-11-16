@@ -151,6 +151,12 @@ iframe.payment-window{
     &:hover {
       //background: rgba(0, 0, 0, 0.02);
     }
+
+    &.directbot-color {
+      i {
+        color: $color__blue;
+      }
+    }
   }
   &_input {
     display: table-cell;
@@ -224,6 +230,15 @@ iframe.payment-window{
     }
     &.__active i {
       color: $color__green;
+    }
+
+
+    &.directbot-color.__active {
+      i {
+
+        color: $color__blue;
+
+      }
     }
   }
 }

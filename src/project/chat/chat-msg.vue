@@ -7,9 +7,15 @@
     i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
   .chat-msg.bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest && !isAfterServiceMessage }')
     .chat-msg_t(
-        v-if='!isOwnMessage && !isClosest',
-        :class='{"chat-msg_t-customer-color":isCustomer}'
-        v-link='{name: "user", params: {id: getUserNameLink}}',
+        v-if='!isOwnMessage && !isClosest && !directbot',
+        :class='{"chat-msg_t-customer-color":isCustomer}',
+        v-link='{name: "user", params: {id: getUserNameLink}}'
+      )
+      | {{{ getUsername }}}
+    .chat-msg_t(
+        v-if='!isOwnMessage && !isClosest && directbot',
+        :class='{"chat-msg_t-customer-color":isCustomer}',
+        v-on:click="goInstagramProfile"
       )
       | {{{ getUsername }}}
     .chat-msg-wrap
@@ -21,6 +27,7 @@
 </template>
 
 <script type='text/babel'>
+  import { navigateTolink } from 'utils';
   import { getCurrentMember, getShopName, getLastMessageId } from 'vuex/getters/chat.js';
   import { user } from 'vuex/getters/user.js';
   import * as service from 'services/chat';
@@ -29,6 +36,10 @@
 
   export default{
     props: {
+      directbot: {
+        type: Boolean,
+        default: false
+      },
       msg: {
         type: Object,
         required: true
@@ -40,6 +51,11 @@
         getCurrentMember,
         getLastMessageId,
         user
+      }
+    },
+    methods:{
+      goInstagramProfile(){
+        navigateTolink(`http://instagram.com/${this.getUserNameLink}`, true);
       }
     },
     computed: {

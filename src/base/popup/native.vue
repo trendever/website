@@ -18,26 +18,21 @@ export default {
 
 <style lang="postcss">
 @import 'base/vars/vars.pcss';
-
 #native-popup {
   font-family: $font__family__regular;
   position: fixed 0 0 * 0;
   z-index: 110;
   size: 100%;
   background: rgba(0, 0, 0, 0.31);
-
-
   .popup-content {
     background: #F5F5F6;
     color: black;
     text-align: center;
     font-size: 20px;
-
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
     border-radius: 15px;
     overflow: hidden;
     width: 300px;
@@ -46,7 +41,6 @@ export default {
       width: 75%;
       font-size: 32px;
     }
-
   }
 
   .title-font {
@@ -55,7 +49,20 @@ export default {
     @media (--mobile) {
       font-size: 40px;
     }
+  }
+  
+  .title-text {
+    padding: 20px 10px 10px 10px;
+    @media (--mobile) {
+      padding: 50px 30px 10px 30px;
+    }
+  }
 
+  .main-text {
+    padding: * 5px 30px 5px;
+    @media (--mobile) {
+      padding: * 10px 50px 10px;
+    }
   }
 
   .title-text {
@@ -101,8 +108,5 @@ export default {
       }
     }
   }
-
 }
-
-
 </style>
