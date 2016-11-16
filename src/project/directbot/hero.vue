@@ -54,9 +54,9 @@
         .hero__content__landing__sub-title Отвечает всем #[br] клиентам сразу
         .hero__content__landing__caption Играюче уделит внимание каждому, #[br] быстро ответит.
           a.link-info(v-link="{ name: 'info-screen-1' }", v-if="isMobile")  Ни один клиент #[br] не успеет передумать
-          a.link-info(v-on:click="showPopup = true", v-if="!isMobile")  Ни один клиент #[br] не успеет передумать
-          info-popup(:show-popup="showPopup")
-            i.ic-close(v-if="!isMobile", v-on:click="showPopup = false")
+          a.link-info(v-on:click="showPopupA = true", v-if="!isMobile")  Ни один клиент #[br] не успеет передумать
+          info-popup(:show-popup="showPopupA")
+            i.ic-close(v-if="!isMobile", v-on:click="showPopupA = false")
             info-screen1
       .info-box
         .hero__content__landing__icon-2
@@ -64,9 +64,9 @@
         .hero__content__landing__sub-title Выполняет #[br] «мартышкин труд»
         .hero__content__landing__caption Больше не нужно отвечать #[br(v-if="isMobile")] и спрашивать #[br(v-if="!isMobile")] одно и то же. #[br(v-if="isMobile")]
           a.link-info(v-link="{name: 'info-screen-2'}", v-if="isMobile") Бот даст ссылку на сайт, #[br(v-if="!isMobile")] уточнит #[br(v-if="isMobile")] наличие, узнает размеры и адрес
-          a.link-info(v-on:click="showPopup = true", v-if="!isMobile") Бот даст ссылку на сайт, #[br(v-if="!isMobile")] уточнит #[br(v-if="isMobile")] наличие, узнает размеры и адрес
-          info-popup(:show-popup="showPopup")
-            i.ic-close(v-if="!isMobile", v-on:click="showPopup = false")
+          a.link-info(v-on:click="showPopupB = true", v-if="!isMobile") Бот даст ссылку на сайт, #[br(v-if="!isMobile")] уточнит #[br(v-if="isMobile")] наличие, узнает размеры и адрес
+          info-popup(:show-popup="showPopupB")
+            i.ic-close(v-if="!isMobile", v-on:click="showPopupB = false")
             info-screen2
       .info-box
         .hero__content__landing__icon-3
@@ -74,9 +74,9 @@
         .hero__content__landing__sub-title Подключается быстро, #[br] работает самостоятельно
         .hero__content__landing__caption Подключи бота и следи за чатами #[br(v-if="isMobile")] в своем #[br(v-if="!isMobile")] Instagram Direct. #[br(v-if="isMobile")] Ничего не надо скачивать. #[br]
           a.link-info(v-link="{name: 'info-screen-3'}", v-if="isMobile") Будущее наступило
-          a.link-info(v-on:click="showPopup = true", v-if="!isMobile") Будущее наступило
-          info-popup(:show-popup="showPopup")
-            i.ic-close(v-if="!isMobile", v-on:click="showPopup = false")
+          a.link-info(v-on:click="showPopupC = true", v-if="!isMobile") Будущее наступило
+          info-popup(:show-popup="showPopupC")
+            i.ic-close(v-if="!isMobile", v-on:click="showPopupC = false")
             info-screen3
     .hero__content__landing__title.middle Откуда бот знает, #[br(v-if="isMobile")] кому и что отвечать?
     .hero__content__landing__screen-1
@@ -100,10 +100,10 @@
         .hero__content__landing__caption Бот увидит новые посты, уточнит детали #[br] и наличие товаров. Потом добавит их #[br] в твой
           a.link-info(v-link="{name: 'info-screen-4'}", v-if="isMobile")  новый Интернет-магазин #[br] по ссылке
             span.bold  xxxx.drbt.io
-          a.link-info(v-on:click="showPopup = true", v-if="!isMobile")  новый Интернет-магазин #[br] по ссылке
+          a.link-info(v-on:click="showPopupD = true", v-if="!isMobile")  новый Интернет-магазин #[br] по ссылке
             span.bold  xxxx.drbt.io
-          info-popup(:show-popup="showPopup")
-            i.ic-close(v-if="!isMobile", v-on:click="showPopup = false")
+          info-popup(:show-popup="showPopupD")
+            i.ic-close(v-if="!isMobile", v-on:click="showPopupD = false")
             info-screen4
       .info-wrap
         .hero__content__landing__screen-3
@@ -145,7 +145,10 @@ export default {
       phoneNumber: '',
       smsSent: false,
       phoneError: false,
-      showPopup: false
+      showPopupA: false,
+      showPopupB: false,
+      showPopupC: false,
+      showPopupD: false
     }
   },
 
