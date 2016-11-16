@@ -27,7 +27,9 @@ var config = {
   /**
    * Other
    */
-  directbot_active: false,
+  directbot_active: true,
+
+  activate_monetization: false,
 
   edit_product_id: null, ////th4754
 

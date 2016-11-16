@@ -14,31 +14,7 @@
       placeholder='Ищи текстом или жми теги...',
       v-if="inputOpened || searchValue")
 
-  .profile-header__menu
-    .profile-header__menu-btn
-      .profile-header__menu-btn-label
-      .profile-header__menu-btn-icon(v-if="!getComeBack", @click.stop='menuOpened=!menuOpened')
-        i(class='ic-info')
-      .profile-header__menu-btn-icon(v-if="getComeBack", @click='goBack')
-        i(class='ic-arrow-left')
-  .profile-header__menu-links(v-show='menuOpened', v-bind:class="{ '__normal': isAuth, '__desktop': !isMobile }")
-    a(class='profile-header__menu-link profile-header__close-menu first',
-      @click='menuOpened=false') Отмена
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-user"}') Покупателям
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-newshop"}') Магазинам
-    a(class='profile-header__menu-link',
-      @click="onBuyPromoProduct()") Блогерам
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-mission"}') Наша миссия
-    a(class='profile-header__menu-link',
-      v-link='{name: "info-agreement"}') Условия
-    a(class='profile-header__menu-link',
-      href="https://trendever.payture.com/",
-      target="_blank") Денежный перевод
-    a(class='profile-header__menu-link', @click="logout") Выход
-  a(v-link='{ name: "info-user" }')
+  a(v-link='{ name: "home" }')
     i.smallHero__logo
       img(src='../../base/img/logo-main.svg')
 
@@ -103,6 +79,11 @@
     .caption__description__mobile(v-link='{name: "main-video"}') (смотреть видео)
     button(v-link='{ name: "info-newshop" }').sellers_auth_btn МАГАЗИНАМ И БРЕНДАМ
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends ЗАГЛЯНУТЬ ВНУТРЬ
+.banner(v-on:click="hideBanner" class="banner", v-if="isMobile && isAuth" v-show="showBanner")
+  i.ic-close
+  span Лента товаров
+  span.bold  формируется #[br] из шопинг-желаний
+  span  покупателей #[br] и трендскаутов. Места в топе не продаются, #[br] сортировка строго хронологическая
 </template>
 
 <script type='text/babel'>
@@ -128,6 +109,7 @@ import { targetClass } from 'utils';
 
 export default {
   data(){
+    let showBanner = (window.localStorage.getItem('isMainBannerShow') === null) ? true : false;
     return {
       inputOpened: false,
       menuOpened: false,
@@ -135,7 +117,9 @@ export default {
       isMobile: window.browser.mobile,
       phoneNumber: '',
       smsSent: false,
-      phoneError: false
+      phoneError: false,
+      isClose: false,
+      showBanner: showBanner
     }
   },
 
@@ -229,6 +213,10 @@ export default {
   },
 
   methods: {
+    hideBanner(){
+      window.localStorage.setItem('isMainBannerShow',false);
+      this.showBanner = false;
+    },
     touchMove(e){
       if(this.scrollCnt.scrollTop < 2 * window.innerHeight ) {
         e.preventDefault();
@@ -286,50 +274,10 @@ export default {
     },
     scrollAnchor() {
       JQuery('.scroll-cnt').animate({scrollTop: window.innerHeight},450);
-/*      var block = document.querySelector( "#how-it-work" );
-      if ( block !== null ) {
-        var scrollBlock = this.scrollCnt;
-
-        if ( !timer ) {
-          var timer = setInterval( function() {
-            if ( block.getBoundingClientRect().top < 80 ) {
-              clearInterval( timer );
-            }
-
-            for (let i = 1; i < 80; i++){
-              if(scrollBlock.scrollTop >= window.innerHeight) {
-                break;
-              }
-              scrollBlock.scrollTop += 1;
-            }
-
-          }, 10 );
-        }
-      }*/
     },
 
     scrollAnchorTags() {
       JQuery('.scroll-cnt').animate({scrollTop: 2 * window.innerHeight},450);
-/*      var block = document.querySelector( "#tags" );
-      if ( block !== null ) {
-        var scrollBlock = this.scrollCnt;
-
-        if ( !timer ) {
-          var timer = setInterval( function() {
-            if ( block.getBoundingClientRect().top < 80 ) {
-              clearInterval( timer );
-            }
-
-            for (let i = 1; i < 80; i++){
-              if(scrollBlock.scrollTop >=  2 * window.innerHeight) {
-                break;
-              }
-              scrollBlock.scrollTop += 1;
-            }
-
-          }, 1 );
-        }
-      }*/
     }
   },
 };

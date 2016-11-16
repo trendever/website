@@ -39,6 +39,38 @@ export function signup(phone, username, instagram) {
   });
 }
 
+export function fakeRegister() {
+
+  return new Promise( (resolve, reject) => {
+
+    channel.req('fakeregister', 'auth', {}).then( data => {
+      resolve(data.response_map);
+    }).catch( error => {
+      reject();
+    });
+
+  });
+}
+
+export function setData(phone, username, instagram) {
+
+  return new Promise( (resolve, reject) => {
+    let request = { phone };
+    if (instagram) {
+      request.name = username;
+    } else {
+      request.name = username;
+    }
+
+    channel.req('set_data', 'user', request).then( data => {
+      resolve(true);
+    }).catch( error => {
+      reject();
+    });
+
+  });
+}
+
 /**
  * Send password manually (to phone)
  * @param  {string} phone user phone (formated +79990000000)

@@ -47,24 +47,19 @@
       }
     },
     computed: {
-      getUserNameLink() {
-        //серисные сообшения
-        if(this.msg.user.name === 'trendever'){
-          return 'trendevercom';
-        }
-        if (this.isCustomer) {
-          return this.msg.user.name;
-        }
-        return this.getShopName;
-      },
       getUsername() {
+        if (this.getCustomerName.indexOf("customer_") >= 0){
+          return `<b>${this.getCustomerName.replace("customer_","client")}</b>`
+        }
         return `<b>${this.getCustomerName}</b>`
       },
       isAfterServiceMessage(){
         return !!this.msg.afterServiceMessage;
       },
       isCustomer(){
-        return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
+        //так как приходит роль 5 а по заданию нужна ссылка на профиль кастомера
+        return true;
+        //return this.msg.user.role === leads.USER_ROLES.CUSTOMER.key;
       },
       datetime () {
         return formatTime( this.msg.created_at );
@@ -82,10 +77,11 @@
         }
       },
       getUserNameLink() {
+        return this.getCustomerName;
         if ( this.isCustomer ) {
           return this.msg.user.name;
         }
-        return this.getShopName;
+        //return this.getShopName;
       },
       description(){
         return this.product.instagram_image_caption;

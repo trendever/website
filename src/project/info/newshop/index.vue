@@ -56,13 +56,9 @@ scroll-component
       p * подробнее об остальных функциях #[br(v-if="isMobile")]
        span внутри приложения
     button(v-if="isAuth", v-link='{ name: "info-instructions-1" }').how-to-sell КАК НАЧАТЬ ПРОДАВАТЬ?
-  fast-signup(v-if="!isAuth")
+  .wrap
+    fast-signup(v-if="!isAuth")
 </template>
-<style scoped>
-  #lp{
-    position: relative;
-  }
-</style>
 <script>
   import settings from 'settings'
 

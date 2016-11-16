@@ -661,7 +661,7 @@ scroll-component
             | в письменной форме.
           p
             | Все уведомления следует отправлять по адресу
-            a(href='mailto:legal@trendever.co.uk') legal@trendever.co.uk
+            a(href='mailto:legal@trendever.co.uk') hello@trendever.com
         .main__bottom
           a.link.link_primary(v-link='{name: "home"}') На главную
 </template>

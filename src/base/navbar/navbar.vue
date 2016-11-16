@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import { isAuth } from 'vuex/getters/user.js';
+  import { isAuth,isFake } from 'vuex/getters/user.js';
   import { getGlobalNotifyCount } from 'vuex/getters/lead.js';
 
   export default{
@@ -47,6 +47,7 @@
     vuex: {
       getters: {
         isAuth,
+        isFake,
         getGlobalNotifyCount,
       },
     },

@@ -80,6 +80,10 @@ export const formatPastTime = ( pasttime ) => {
 
     }
 
+    if(month > 12) {
+      return '1 мес';
+    }
+
     return `${month} мес`;
 
   }

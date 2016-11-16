@@ -2,7 +2,6 @@
 scroll-component(v-el:scroll-cnt)
   header-component(
     :title='title',
-    :back-link='{name: "home"}',
     :center-text-link="centerTextLink",
     :page="page",
     :avatar-url='avatarUrl',
@@ -14,6 +13,7 @@ scroll-component(v-el:scroll-cnt)
 </template>
 
 <script type="text/babel">
+  import { isAuth } from 'vuex/getters/user';
   import { openProduct, closeProduct, setScrollByProduct } from 'vuex/actions/products';
   import { getOpenedProduct, getScrollTopOfProduct } from 'vuex/getters/products';
   import { checkIsUserProduct } from 'vuex/actions/products';
@@ -30,8 +30,20 @@ scroll-component(v-el:scroll-cnt)
       HeaderComponent,
       PostComponent
     },
-    ready(){
-      this.checkIsUserProduct();
+    ready() {
+
+      if(this.isAuth){
+
+        this.checkIsUserProduct()
+        
+        .then(()=>{
+
+          this.$broadcast('isAuthProduct');
+
+        })
+
+      }
+  
     },
     computed: {
 
@@ -109,7 +121,8 @@ scroll-component(v-el:scroll-cnt)
     vuex: {
       getters: {
         getOpenedProduct,
-        getScrollTopOfProduct
+        getScrollTopOfProduct,
+        isAuth
       },
       actions: {
         openProduct,

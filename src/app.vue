@@ -19,6 +19,8 @@
   popup-fast-signup(v-if="authIsDone && showAuthBtn")
   router-view(v-if="authIsDone")
   listener-component(v-if="authIsDone")
+  monetization-logic
+  instructions-logic
 //-get user for ios push actions logic
 input(type="hidden", value="", id="get-user-login")
 </template>
@@ -26,7 +28,9 @@ input(type="hidden", value="", id="get-user-login")
 <script type='text/babel'>
   import settings from 'settings';
   import 'base/fonts/trendever-icons/trendever-icons.font'
+
   import appLoader from 'base/loader/loader';
+
   import listen from 'event-listener';
 
   import { browser } from 'utils'
@@ -36,6 +40,8 @@ input(type="hidden", value="", id="get-user-login")
   import store from 'vuex/store'
   import { authUser } from 'vuex/actions/user.js'
 
+  import MonetizationLogic from 'project/monetization/logic';
+  import InstructionsLogic from 'project/info/instructions/logic';
   import PopupFastSignup from 'base/auth-popup/fast-signup.vue'
   import ListenerComponent from 'project/listener/index.vue'
   import InappNotification from 'base/inapp-notification/index.vue';
@@ -70,6 +76,7 @@ input(type="hidden", value="", id="get-user-login")
           return false;
         }
       }
+      window.entryPoint = this.$route.name;
     },
     methods:{
       scrollTop(){
@@ -126,10 +133,14 @@ input(type="hidden", value="", id="get-user-login")
       }
     },
     components: {
+
       appLoader,
       ListenerComponent,
       PopupFastSignup,
-      InappNotification
+      InappNotification,
+      MonetizationLogic,
+      InstructionsLogic
+
     },
     store
   }

@@ -47,12 +47,19 @@
       },
       text(){
 
+        const { type, value, reason, what } = JSON.parse( this.msg.parts[ 0 ].content );
 
+        if(reason === 'Покупатель удалил чат' && what === 'lead_cancel') {
 
-        const { type, value } = JSON.parse( this.msg.parts[ 0 ].content );
+          return `${this.getCustomerName} удалил чат`;
+
+        }
 
         return statusString(type, value, this.getCustomerName);
 
+      },
+      content(){
+        return JSON.parse(this.msg.parts[ 0 ].content);
       }
     }
   }

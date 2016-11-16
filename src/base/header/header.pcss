@@ -50,6 +50,25 @@
     &.directbot-color {
       background-color: $color__blue
     }
+
+    .header__use-days {
+      position: absolute 18px * * 30px;
+      font-family: $font__family__semibold;
+
+      color: $color-orange;
+
+      .standalone & {
+          top: 60px;
+      }
+
+      .days-count {
+        font-size: 44px;
+      }
+
+      span {
+        font-size: 30px;
+      }
+    }
   }
 
   &__content {
@@ -245,7 +264,7 @@
 
   &__text {
     //padding-top: 0.1563em; // 10% for centered
-    color: #fff;
+    color: $color__white;
     position: relative;
     font-size: 28px;
     font-family: $font__family__semibold;
@@ -310,7 +329,7 @@
       &._active {
         cursor: default;
         span {
-          color: #fff;
+          color: $color__white;
         }
       }
 
