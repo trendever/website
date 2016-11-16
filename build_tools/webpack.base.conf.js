@@ -2,10 +2,13 @@ var path = require("path")
 var utils = require('./utils')
 var settings = require('../settings')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
+var config  = require('../config');
+
+let entryName = config.directbot_active ? './src/main.js' : './src/directbot-main.js'
 
 module.exports = {
   entry: {
-    trendever: ['./src/main.js']
+    trendever: [entryName]
   },
 
   output: {
