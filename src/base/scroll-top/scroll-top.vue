@@ -1,10 +1,11 @@
 <style src="./style.pcss"></style>
 <template lang="jade">
-.scroll-top( @click='up()', v-show="is_visible", :class='{"__fly": !isAuth}' )
+.scroll-top( @click='up()', v-show="is_visible", :class='{"__fly": !isAuth, "directbot-color": directbot }' )
   i.ic-arrow-up-thin(:class='{"arrow__down": !toUp}')
 </template>
 
 <script type="text/babel">
+  import settings from 'settings';
   import listen from 'event-listener';
   import { isAuth } from 'vuex/getters/user.js';
 
@@ -20,6 +21,7 @@
     data(){
       return {
         is_visible: false,
+        directbot: settings.directbotActive
       }
     },
     ready() {

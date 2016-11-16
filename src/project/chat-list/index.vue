@@ -6,6 +6,7 @@ scroll-component(v-el:scroll-cnt)
     header-component(:title='getTitle', :left-btn-show='false')
       .header__nav(slot='content' v-if='true')
         .header__nav__i.header__text(
+          v-if="!directbot",
           :class='{_active: getTab === "customer"}',
           @click='setTab("customer");',
           @touch='setTab("customer");')
@@ -13,14 +14,15 @@ scroll-component(v-el:scroll-cnt)
         .header__nav__i.header__text(
           :class='{_active: getTab === "seller"}',
           @click='setTab("seller");')
-          span Продаю
+          span(v-if="!directbot") Продаю
+          span(v-if="directbot") Чаты с покупателями
 
 
     .section.top.bottom(:class="{'little-move-up': !$root.isStandalone,'little-move-up-standalone': $root.isStandalone}")
       .section__content
         .chat-list(v-bind:style="styleObject")
             chat-list-item(v-for='lead in leadsArray | orderBy "updated_at" -1 | cutList', :lead='lead', track-by="id", v-ref:item)
-    template(v-if='!leadsArray.length')
+    template(v-if='!leadsArray.length && !directbot')
       .chat-list-cnt-is-empty(v-if="getTab === 'customer'")
         .chat-list-cnt-is-empty__container Нет чатов,#[br]
         span  потому что ты пока ничего #[br] не покупаешь
@@ -35,13 +37,23 @@ scroll-component(v-el:scroll-cnt)
        span Напиши&nbsp
        span.want "Покупай по комментарию @wantit&nbsp" #[br(v-if="!isMobile")]
        span
-        | #[br(v-if="isMobile")] под товарами в своем Instagram,
-        | #[br] чтобы продавать и видеть здесь покупателей
-       .how-to-sell-btn.chat-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile") Как начать продавать?
-       //-appstore-link(
-        text-link="ПОЛУЧИТЬ ПРИЛОЖЕНИЕ ДЛЯ ПРОДАЖ",
-        placeholder-link="Укажите номер, чтобы начать продавать",
-        v-if="!isMobile").chat-appstore-link
+        #[br(v-if="isMobile")] под товарами в своем instagram,
+        #[br] чтобы продавать и видеть здесь покупателей
+       .how-to-sell-btn.chat-btn( v-link="{name: 'info-instructions-1'}") Как начать продавать?
+       
+    //- D I R E C T  B O T
+    template(v-if='!leadsArray.length && directbot')
+      button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(v-link="{ name: 'turn-on-bot' }") ПОДКЛЮЧИТЬ БОТА
+      .chat-list-cnt-is-empty__banner.directbot-banner
+        span
+          | После подключения бота, здесь будет #[br]
+          | список чатов с покупателями как в #[br]
+        span.want
+          | Instagram Direct
+
+      .chat-list-cnt-is-empty
+        .chat-list-cnt-is-empty__container Нет чатов,#[br]
+        span  ... потому что ты пока ничего #[br] не продаешь
 navbar-component(current='chat')
 scroll-top
 app-loader.list-loader(v-if="!needLoadLeads")
@@ -95,7 +107,12 @@ app-loader.list-loader(v-if="!needLoadLeads")
   import ChatListItem from './chat-list-item.vue';
 
   export default {
-
+    props: {
+      directbot: {
+        type: Boolean,
+        default: false
+      }
+    },
     components: {
       AppstoreLink,
       appLoader,
@@ -223,21 +240,33 @@ app-loader.list-loader(v-if="!needLoadLeads")
 
     computed:{
       leadsArray(){
+        //return [];
+        if(!this.directbot) {
 
-        if(this.$store.state.leads.tab === 'customer') {
-          let leads = this.getLeads.filter(item=>{
-            return !(item.cancel_reason === 2) && !(item.cancel_reason === 1);
-          });
+          if(this.$store.state.leads.tab === 'customer') {
+            let leads = this.getLeads.filter(item=>{
+              return !(item.cancel_reason === 2) && !(item.cancel_reason === 1);
+            });
 
-          return leads;
+            return leads;
+          }
+
+          if(this.$store.state.leads.tab === 'seller') {
+            let leads = this.getLeads.filter(item=>{
+              return !(item.cancel_reason === 2) && !(item.cancel_reason === 1);
+            });
+
+            return leads;
+          }
         }
 
-        if(this.$store.state.leads.tab === 'seller') {
-          let leads = this.getLeads.filter(item=>{
-            return !(item.cancel_reason === 2) && !(item.cancel_reason === 1);
-          });
+        /**
+        /*D I R E C T B O T
+        */
+        if(this.directbot) {
+          this.setTab("seller");
+          return this.$store.state.leads.seller;
 
-          return leads;
         }
       },
       showTooltip(){

@@ -1,0 +1,491 @@
+@import 'base/vars/vars.pcss';
+
+.standalone .turn-on-bot{
+  padding-top: 80px;
+
+  .turn-on-bot__close{
+    top: 65px;
+    right: 30px;
+  }
+}
+.turn-on-bot {
+  position:relative;
+  overflow:hidden;
+  padding: 50px 30px 0 30px;
+  padding-top: 120px;
+  color: #FFF;
+  background-color: $color__dark-blue;
+  font-size: 24px;
+  line-height: 1.2;
+  min-height:100vh;
+  height:auto !important;
+  font-family: $font__family__light;
+
+
+  .turn-on-bot__close {
+    position: absolute;
+    z-index: 100;
+    top: 30px;
+    right: 30px;
+    text-align:center;
+
+    size: 70px;
+
+    cursor: pointer;
+
+    color: white;
+
+    align-items: center;
+    justify-content: center;
+    @media(--mobile) {
+      font-size: 36px;
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  .link-bottom {
+      opacity:.4;
+      margin-top: 20px;
+  }
+
+  @media(max-width:1279px) {
+    padding: 40px 30px 130px 30px;
+    font-size: 36px;
+  }
+
+  .btn-container {
+    padding:0 50px;
+  }
+
+  .input__clear-btn {
+    right: 0;
+
+    height: 48px;
+
+    i {
+      font-size: 20px;
+
+      @media (--mobile) {
+        font-size: 2rem;
+      }
+    }
+  }
+  .input input {
+    height: 3rem;
+    font-size: 24px;
+    font-family: $font__family__light;
+    &::-webkit-input-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
+    &::-moz-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
+    &:-moz-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
+    &:-ms-input-placeholder{opacity: .4; color: #fff;font-family: $font__family__light;}
+
+    @media(--mobile) {
+      height: 4rem;
+      font-size: 36px;
+    }
+  }
+  .input.confirm-input input{
+    height: 6rem !important;
+  }
+  h1.accept {
+    margin-bottom: 77px;
+
+    text-align: left;
+
+    font-size: 40px !important;
+
+    @media(--tabletandless) {
+      margin-bottom: 0;
+
+      text-align: center;
+      font-family: $font__family__semibold;
+
+    }
+  }
+  .confirm{
+    @media(--mobile) {
+      font-family: $font__family__light;
+    }
+  }
+  .section {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left:0;
+    transform: translateY(-50%);
+    max-width:1335px;
+    margin:0 auto;
+
+    @media(--smalldesktop) {
+      position: static;
+      transform: none;
+    }
+
+     @media(--tabletandless) {
+      position: static;
+      transform: none;
+     }
+  }
+  &.confirm h1 {
+    text-align: center;
+
+    @media(--mobile) {
+      margin-bottom: 0;
+
+      text-align: center;
+
+      font-size: 54px;
+    }
+  }
+  .bottom-container {
+    position: static;
+    right: 0;
+    bottom: 120px;
+    height:auto !important;
+    left: 0;
+    width: 520px;
+    padding: 20px 0;
+    padding-top: 0;
+    text-align: center;
+
+    @media(--smalldesktop) {
+      margin:0 auto;
+    }
+
+    @media(--tabletandless) {
+      float: none;
+
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+  &.confirm .bottom-container {
+    position: auto;
+    width: 100%;
+    padding-top: 60px;
+    padding-bottom: 0;
+
+
+    .link-bottom {
+
+      @media(--mobile) {
+        display:inline-block !important;
+      }
+    }
+
+    @media(--mobile) {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding-bottom: 138px;
+    }
+  }
+  .input-container {
+    padding: 20px 50px;
+
+    @media(--mobile) {
+      padding: 35px 15px 20px 50px;
+    }
+  }
+  &.confirm {
+    .link-container {
+      display: block;
+
+      width: 100%;
+    }
+    .input-container {
+      padding: 0;
+
+      @media(--mobile) { padding: 0 50px; }
+    }
+  }
+  .btn.__orange {
+    margin: 10px 0;
+    font-size: 36px;
+  }
+  .error {
+    color: #FFDE1E;
+  }
+  .emoji {
+    width: 40px;
+    height: 40px;
+
+    @media(--mobile) {
+      width: 50px;
+      height: 60px;
+    }
+  }
+  .column-desktop-50 {
+    position: relative;
+    width: 45%;
+
+    @media(--smalldesktop) {
+      width:auto;
+    }
+
+    @media(--tabletandless) {
+      position: static;
+      width: 100%;
+      margin-top:0;
+    }
+
+  }
+  .column-desktop-50.header {
+    padding: 0 50px;
+
+    @media(--smalldesktop) {
+      width:auto;
+      h1{
+        text-align:center;
+      }
+    }
+
+    @media(--tabletandless) {
+      padding: 0;
+      height: auto;
+    }
+  }
+  .column-desktop-right {
+    float: right;
+    width: 55%;
+    margin-right:8%;
+    margin-top: -60px;
+
+    @media(min-width:1441px) {
+      margin-right:0;
+    }
+
+    @media(--smalldesktop) {
+      width: auto;
+      margin-right:0;
+      float:none;
+    }
+
+    @media(--tabletandless) {
+      float: none;
+    }
+    @media(--mobile) { margin-top: 0; }
+  }
+  .logo{
+    display: block;
+    margin: 62px auto 55px auto;
+    width: 190px;
+    height: 211px;
+  }
+  .paragraph{
+    text-align: center;
+    font-size: 36px;
+    font-family: $font__family__light;
+    .bold{
+      font-family: $font__family__semibold;
+    }
+    .light{
+      line-height: 47px;
+    }
+  }
+  .enter-code-screen{
+    color: $color-orange;
+  }
+  .code-accept{
+    margin-top: 125px;
+    margin-bottom: 63px;
+  }
+  .desktop-text-right {
+    text-align: left;
+
+    @media(--mobile) { text-align: center; }
+
+  }
+  .btn.fast__big__btn {
+    width: 420px;
+    height: 77px;
+    margin: 10px 0;
+
+    font-family: $font__family__light;
+    font-size: 26px;
+    line-height: 1em;
+
+    @media(--mobile) {
+      width: 490px;
+      height: 118px;
+
+      font-size: 36px;
+      line-height: 1em;
+    }
+  }
+}
+
+.confirm .middle-container {
+  padding-top: 60px;
+
+  text-align: center;
+  height: 200px;
+
+  @media(--mobile) {
+    position: absolute;
+    top: 50%; right: 0; left: 0;
+    padding-top: 0;
+    transform: translateY(-50%);
+    text-align: center;
+  }
+}
+
+.confirm .middle-container.has-another-name {
+  @media (--mobile) {
+    top: 41%;
+    h1 {
+      margin-bottom: 30px;
+    }
+  }
+}
+
+.confirm .confirm-input {
+  text-align: center;
+  margin-left:0;
+}
+
+.input.confirm-input {
+  display: inline-block;
+  padding-left:0;
+  width: 160px;
+
+  @media(--mobile) { width: 240px; }
+}
+
+.input.confirm-input input {
+  margin-bottom: 10px;
+  padding: 0;
+  text-align: center;
+  letter-spacing: 10px;
+  font-size: 40px;
+
+  @media(--mobile) {
+    margin-bottom: -5px;
+
+    font-size: 56px;
+  }
+}
+
+.opened-key-board{
+  height: 555px;
+}
+
+.btn-container-mobile{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  right: 0;
+
+  div.link-div{
+    padding-bottom: 15px;
+  }
+
+  button.btn.btn_fixed-bottom{
+    @media(--tabletandless) {
+      position: relative;
+      width: 100%;
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.btn-container button.btn.btn_fixed-bottom{
+  @media(--tabletandless) {
+    position: fixed !important;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+  }
+}
+
+.input {
+  position:relative;
+  margin-left: 50px;
+
+  .ic-close {
+    right:0;
+    left:auto;
+    margin-top: -10px;
+  }
+
+  @media(--mobile) {
+    width:580px;
+    padding-left:0;
+    margin-left:40px;
+  }
+  &:last-child{
+    margin-top: 38px;
+  }
+
+  i {
+    position:absolute;
+    top: 50%;
+    margin-top: -17px;
+    left: -47px;
+
+    @media(--mobile) {
+      left:-91px;
+    }
+  }
+  .ic-insta-name {
+    font-size:28px;
+    left:-47px;
+
+    @media(--mobile) {
+      left: -79px;
+      font-size: 44px;
+      margin-top: -22px;
+    }
+  }
+
+  .ic-pass {
+    font-size:36px;
+    left: -51px;
+    margin-top: -23px;
+
+    @media(--mobile) {
+      font-size: 50px;
+      left: -79px;
+      margin-top:-27px;
+    }
+  }
+
+  .ic-user {
+    font-size:28px;
+    margin-top:-14px;
+    left:-46px;
+
+    @media(--mobile) {
+      font-size: 40px;
+      margin-top: -20px;
+      left: -77px;
+    }
+  }
+
+  .ic-code{
+    @media(--mobile) {
+      font-size: 42px;
+      left: -87px;
+      margin-top: -25px;
+    }
+  }
+}
+#code{
+  margin-top: 120px !important;
+}
+#pass-inp{
+  margin-top: 38px !important;
+}
+.clear{
+  top: 50% !important;
+}
+.new-sms{
+  a{
+    height: 48px;
+  }
+}

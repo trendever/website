@@ -4,7 +4,7 @@
     .loader-center(v-if="showLoader"): app-loader
     popup-img(v-if="imgPopUpUrl", :url="imgPopUpUrl", :width="imgWidth", :height="imgHeight", :on-close="closePopUp")
     chat-header(:notify-count='conversationNotifyCount')
-    .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu")
+    .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu", :class="{'directbot-color': isDirectbot }")
     .section.top.bottom(v-el:section)
       .chat.section__content
         .chat_messages(id="chatmessages", v-el:box-messages)
@@ -21,7 +21,8 @@
                 :msg='msg')
               chat-msg(
                 v-if='msg.parts[0].mime_type === "text/plain" && !hasData(msg)',
-                :msg='msg')
+                :msg='msg',
+                :directbot="directbot")
               chat-msg-info(
                 v-if='msg.parts[0].mime_type === "text/html"',
                 :msg='msg')
@@ -89,6 +90,12 @@
   import popupImg from 'base/popup-img/index.vue';
 
   export default {
+    props: {
+      directbot: {
+        default: false,
+        type: Boolean
+      }
+    },
 
     components: {
       ScrollComponent,
@@ -142,6 +149,25 @@
           }
         }
       },
+    },
+    created(){
+      /*
+      /*D I R E C T B O T
+      */
+      if(this.directbot){
+        if ( this.isDone ) {
+          if ( this.isAuth ) {
+            return this.run().then(()=>{
+              this.clearNotify(this.lead_id);
+              this.$nextTick( () => {
+                      this.goToBottom();
+                    } );
+            })
+          } else {
+            return Promise.resolve()
+          }
+        }
+      }
     },
     ready(){
 
@@ -217,6 +243,7 @@
       },
 
       run(){
+        if(this.directbot) this.lead_id = +this.$route.params.id;
         return this
           .setConversation( this.lead_id )
 

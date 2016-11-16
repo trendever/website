@@ -14,7 +14,7 @@ export function configRouter(router) {
     },
     '/': {
       name: 'home',
-      component: require('project/product-list/index.vue')
+      component: require('project/directbot/index.vue')
     },
 
     '/product/:id': {
@@ -65,12 +65,12 @@ export function configRouter(router) {
 
     '/signup': {
       name: 'signup',
-      component: require('project/auth/signup.vue'),
+      component: require('project/directbot/signup-directbot.vue'),
     },
 
     '/confirm-sms': {
       name: 'comfirm-sms',
-      component: require('project/auth/confirm-sms.vue'),
+      component: require('project/directbot/confirm-sms-directbot.vue'),
     },
 
     '/404': {
