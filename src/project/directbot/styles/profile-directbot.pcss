@@ -3,6 +3,9 @@
 .directbot-header .wrapper{
   background-color: $color__blue !important;
 }
+.db-bottom{
+  padding-bottom: 25px !important;
+}
 
 .profile-right-menu {
   position: absolute;
@@ -39,7 +42,7 @@
     &_insta-link {
 
       text-align: center;
-      margin-top: 10px;
+      margin-top: -3px;
       margin-bottom: 24px;
       cursor: pointer;
       .insta-link-text {
@@ -54,8 +57,8 @@
     }
 
     &_info {
-      padding-top: 36px;
-      text-align: center;
+      padding-top: 12px;
+      display: inline-block;
 
       &_img {
         position: relative;
@@ -91,7 +94,7 @@
         width: 80%;
         margin: 0 auto;
         font-size: 32px;
-        margin-top: 70px;
+        margin-top: 85px;
       }
       img{
         display: block;
@@ -113,8 +116,7 @@
       img{
         display: block;
         margin-left: 48px;
-        //margin-right: auto;
-        margin-top: 18px;
+        margin-top: 35px;
         margin-bottom: 20px;
         width: 642px;
       }
@@ -141,7 +143,7 @@
       width: 100%;
       padding-top: 20px;
       font-size: 24px;
-      position: absolute;
+      position: fixed;
       bottom: -20px;
       left: 0;
       font-family: $font__family__semibold;
@@ -173,7 +175,7 @@
       vertical-align: super;
         @media(--mobile) {
           font-size: 32px;
-          padding: 25px 15px 0px;
+          padding: 20px 15px 0px;
           width: 100%;
           vertical-align: inherit;
           display: block;
@@ -193,7 +195,7 @@
   }
 }
 .turn-on-bot-btn{
-  z-index: 30;
+  z-index: 20;
   bottom: 98px !important;
 }
 button.bot-active-btn{

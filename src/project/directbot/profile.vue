@@ -9,7 +9,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
         span.day д
   right-nav-component(current="profile")
 
-  .section.top.bottom
+  .section.top.bottom.db-bottom
     .section__content(v-cloak)
       .profile
         .profile_info
@@ -41,9 +41,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
           span  начнет мониторить все #[br] ваши новые посты и автоматически #[br] отвечать на вопросы покупателей
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(
-        v-link="{ name: 'turn-on-bot' }", v-if="getAuthUser.supplier_of === null && isMobile"
-        ) ПОДКЛЮЧИТЬ БОТА
-
+        v-link="{ name: 'turn-on-bot' }", v-if="getAuthUser.supplier_of === null && isMobile") ПОДКЛЮЧИТЬ БОТА
+        
         //button.bot-active-btn(v-if="false") БОТ АКТИВЕН
           //i.ic-close
 
