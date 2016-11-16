@@ -21,6 +21,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .profile_desc_t(v-if="getSlogan") {{getSlogan}}
           .profile_desc_caption.less(v-if="getUserCaption", v-on:click="this.isMoreClass = !this.isMoreClass" v-bind:class="{ more : isMoreClass, less: !isMoreClass}") {{{getUserCaption | captionSpaces}}}
 
+        .profile_insta-link(v-if="$route.name === 'profile' && shopId !== 1 && isMobile")
+          .insta-link-text ссылка на эту витрину
+          .insta-link(v-el:insta-link) {{ getUserName }}.drbt.io
+
 
        template(v-if="loaded")
         .profile_inactive(v-if="false")

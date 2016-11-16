@@ -36,6 +36,23 @@
 
 .profile-cnt {
   .profile {
+    &_insta-link {
+
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 24px;
+      cursor: pointer;
+      .insta-link-text {
+        font-size: 32px;
+        font-family: $font__family__light;
+      }
+      .insta-link {
+        color: $color__gray-dark;
+        font-family: $font__family__semibold;
+        font-size: 32px;
+      }
+    }
+
     &_info {
       padding-top: 36px;
       text-align: center;
@@ -43,18 +60,21 @@
       &_img {
         position: relative;
         display: inline-block;
-        vertical-align: middle;
         overflow: hidden;
         border-radius: 50%;
-        //background: whitesmoke;
-        width: 190px;
-        height: 190px;
-        margin: -25px 10px 0px 10px;
-        background-image: url(../icons/user_active.svg);
-        background-repeat: no-repeat;
-        background-position-x: -6px;
-        -webkit-background-size: 190px;
-        background-size: 190px;
+        background-image: url("../icons/user_active.svg");
+        size: 120px;
+        float: left;
+        margin: 5px 25px 0px 15px;
+          @media(--mobile) {
+            float: none;
+            size: 165px;
+            margin: 0px 27px 0px 30px;
+            background-repeat: no-repeat;
+            background-position-x: -6px;
+            -webkit-background-size: 190px;
+            background-size: 190px;
+          }
         img {
           height: 100%;
         }
@@ -141,6 +161,35 @@
         padding: 20px 16px 0px 16px;
       }
     }
+    &_desc {
+      color: $color__gray-dark;
+      text-align: left;
+      word-wrap: break-word;
+      font-family: $font__family__light;
+      font-size: 16px;
+      width: 495px;
+      padding: 30px 0px 0px 0px;
+      display: inline-block;
+      vertical-align: super;
+        @media(--mobile) {
+          font-size: 32px;
+          padding: 25px 15px 0px;
+          width: 100%;
+          vertical-align: inherit;
+          display: block;
+        }
+      &_t {
+        width: 100%;
+        word-wrap: break-word;
+        font-family: $font__family__semibold;
+      }
+      span{
+        display: inline-block;
+        width: 100%;
+        margin-top: 8px;
+        word-wrap: break-word;
+      }
+    }
   }
 }
 .turn-on-bot-btn{
@@ -196,4 +245,32 @@ button.bot-active-btn{
 }
 .right-nav .right-nav_i:last-child{
   display: none;
+}
+
+.less{
+  @media(--mobile) {
+    max-height: 233px;
+    position: relative;
+  }
+}
+.less::after{
+  @media(--mobile) {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    //border-bottom: 10px solid #fff;
+    background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+    background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 );
+  }
+}
+.more{
+  height: auto;
+  @media(--mobile) {
+    padding-bottom: 25px;
+  }
 }
