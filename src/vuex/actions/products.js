@@ -162,7 +162,7 @@ export const updateScroll = (() => {
       rowHeight,
       scrollTopReal = getScrollData( state ).scrollTop,
       searchOptions = getScrollData( state ).searchOptions
-    }
+    }, callback = null
   ) => {
 
     const { shift, direction } = getShift( state, scrollTop, rowHeight );
@@ -203,7 +203,13 @@ export const updateScroll = (() => {
 
             dispatch( types.PRODUCTS_SET_SCROLL, { isLoading: false, searchOptions: _searchOptions } );
 
-          } );
+          } ).then(()=>{
+
+            if(callback){
+              callback();
+            }
+
+          })
 
         }
 

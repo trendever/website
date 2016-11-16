@@ -2,9 +2,11 @@
 <template lang="jade">
 .photos(v-bind:style="styleObject", v-el:container)
   .photos__list(v-el:photos-list, v-if='items', v-bind:style="listStyle")
-
+    
+    .fake-block(v-el:fake-block, :style="{ height: blockHeight + 'px' }")  
+    
     template(v-for='line in items | lines' track-by="uid")
-      .photos__list__cell(v-bind:style="top[$index]")
+      .photos__list__cell
         template(v-for='item in line.bundle' track-by="id")
           photo-item( :product.once='item.data', :product-id.once="item.id", :animate='true' )
 
@@ -116,7 +118,8 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
         },
         lastSelectedTagId: null,
         isRunning: false,
-        containerClientWidth: ''
+        containerClientWidth: '',
+        blockHeight: 0
       }
     },
 
@@ -242,9 +245,15 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
             rowHeight: this.rowHeight,
             scrollTopReal: this.scrollCnt.scrollTop,
             searchOptions: { isSearch: search, isTags: tags, filterByShopId , filterByMentionerId }
+          }, ()=>{
+
+            this.blockHeight = this.scrollTop;
+            
           } );
 
         }
+
+
 
       },
 
