@@ -4,7 +4,7 @@ var settings = require('../settings')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
 var config  = require('../config');
 
-let entryName = config.directbot_active ? './src/directbot-main.js' : './src/main.js'
+var entryName = config.directbot_active ? './src/directbot-main.js' : './src/main.js'
 
 module.exports = {
   entry: {
