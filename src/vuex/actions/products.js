@@ -167,6 +167,8 @@ export const updateScroll = (() => {
 
     const { shift, direction } = getShift( state, scrollTop, rowHeight );
 
+    console.log(direction)
+
     dispatch( types.PRODUCTS_SET_SCROLL, { rowHeight, scrollTop: scrollTopReal, lastScrollTop: scrollTop, shift } );
 
     if ( oldShift !== shift ) {
@@ -203,16 +205,18 @@ export const updateScroll = (() => {
 
             dispatch( types.PRODUCTS_SET_SCROLL, { isLoading: false, searchOptions: _searchOptions } );
 
-          } ).then(()=>{
-
-            if(callback){
-              callback();
-            }
-
-          })
+          } )
 
         }
 
+      }
+
+      if(idStart >  0 && callback) {
+        callback();
+      }
+
+      if(!direction && idStart < 3 && callback) {
+        callback();
       }
 
       console.log( { idStart, idEnd } );
