@@ -260,7 +260,7 @@ export const loadMessage = (() => {
         if ( hasMore[ state.conversation.id ] ) {
 
           return messageService
-            .find( id, messages.length > 0 ? messages[ 0 ].id : undefined, getCountForLoading )
+            .find( id, messages.length > 0 ? messages[ 0 ].id : undefined, getCountForLoading, true )
             .then(
               ( messages ) => {
 

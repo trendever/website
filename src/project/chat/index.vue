@@ -370,7 +370,7 @@
       },
 
       scrollHandler(){
-        /*const SHAfter = this.$els.scrollCnt.scrollHeight;
+        const SHAfter = this.$els.scrollCnt.scrollHeight;
 
         if ( this.needLoadMessage ) {
           if ( this.$els.scrollCnt.scrollTop < 1500 ) {
@@ -393,7 +393,7 @@
             } );
 
           }
-        }*/
+        }
 
       },
       goToBottom(){
