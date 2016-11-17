@@ -1,6 +1,6 @@
 <template lang="jade">
 #app-loader
-  .loader-wrapper(:class="{'directbot-color': directbot, 'native': !directbot}")
+  .loader-wrapper
     .bounce1
     .bounce2
     .bounce3
@@ -14,7 +14,7 @@ export default {
 
   data(){
     return {
-      directbot: settings.directbotActive
+     
     }
   }
 
@@ -32,11 +32,11 @@ export default {
     margin: 0 auto;
 
 
-    &.directbot-color > div {
+    .directbot & > div {
       background-color: $color__blue !important;
     }
 
-    &.native > div {
+    & > div {
       width: 18px;
       height: 18px;
       background-color: $color__green !important;
