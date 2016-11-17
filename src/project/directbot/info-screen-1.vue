@@ -8,7 +8,9 @@
 <script>
 export default {
   data () {
-    return {}
+    return {
+      isMobile: window.browser.mobile
+    }
   },
   computed: {},
   mounted () {},
