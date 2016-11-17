@@ -23,22 +23,30 @@
 
 .profile-days{
   position: absolute;
-  top: 19px;
-  left: 30px;
-  font-size: 40px;
   color: $color-orange;
   font-family: $font__family__semibold;
+  font-size: 28px;
+  left: 225px;
+    @media(--mobile) {
+      top: 19px;
+      left: 30px;
+      font-size: 40px;
+    }
   .standalone & {
     top: 60px;
   }
 
   .day{
-    font-size: 24px;
+    font-size: 16px;
+      @media(--mobile) {
+        font-size: 24px;
+      }
   }
 }
 
 .profile-cnt {
   .profile {
+    position: relative;
     &_insta-link {
 
       text-align: center;
@@ -61,22 +69,26 @@
       display: inline-block;
 
       &_img {
-        position: relative;
-        display: inline-block;
+        position: absolute;
+        top: 22px;
+        left: 16px;
         overflow: hidden;
         border-radius: 50%;
         background-image: url("../icons/user_active.svg");
+        background-repeat: no-repeat;
+        -webkit-background-size: 120px;
+        background-size: 120px;
         size: 120px;
-        float: left;
-        margin: 5px 25px 0px 15px;
           @media(--mobile) {
+            position: relative;
+            display: inline-block;
             float: none;
+            top: 0;
+            left: 0;
             size: 165px;
             margin: 0px 27px 0px 30px;
-            background-repeat: no-repeat;
-            background-position-x: -6px;
-            -webkit-background-size: 190px;
-            background-size: 190px;
+            -webkit-background-size: 165px;
+            background-size: 165px;
           }
         img {
           height: 100%;
@@ -85,10 +97,13 @@
     }
 
     &_inactive{
-      margin-top: 50px;
+      position: absolute;
+      top: 82px;
+      left: 0;
+      right: 0;
       color: #595959;
       text-align: center;
-      font-size: 24px;
+      font-size: 16px;
       font-family: $font__family__light;
       @media(--mobile) {
         width: 80%;
@@ -97,40 +112,81 @@
         margin-top: 85px;
       }
       img{
-        display: block;
-        margin-bottom: 20px;
-        margin-left: 205px;
-        margin-top: -10px;
+        width: 113px;
+        height: 54px;
+        margin-left: 59px;
+          @media(--mobile) {
+            display: block;
+            margin-bottom: 20px;
+            margin-left: 205px;
+            margin-top: -10px;
+            width: 359px;
+            height: 172px;
+          }
       }
       .empty{
-        display: inline-block;
-        margin-bottom: 4px;
+        display: block;
         font-family: $font__family__semibold;
+        margin-bottom: 2px;
+          @media(--mobile) {
+            display: inline-block;
+            margin-bottom: 4px;
+          }
       }
     }
     &_active{
       text-align: center;
       color: $color__blue;
       font-family: $font__family__light;
-      font-size: 32px;
+      position: relative;
+      font-size: 16px;
+      padding-bottom: 160px;
+        @media(--mobile) {
+          font-size: 32px;
+          padding-bottom: 0px;
+        }
       img{
-        display: block;
-        margin-left: 48px;
-        margin-top: 35px;
-        margin-bottom: 20px;
-        width: 642px;
+        position: absolute;
+        top: 2px;
+        right: 214px;
+          @media(--mobile) {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin-left: 48px;
+            margin-top: 35px;
+            margin-bottom: 20px;
+          }
+      }
+      .text-box{
+        position: absolute;
+        top: 73px;
+        right: 227px;
+
+        @media(--mobile) {
+          position: relative;
+          top: 0;
+          right: 0;
+        }
       }
       .bold{
         display: inline-block;
-        margin-bottom: 5px;
         font-family: $font__family__semibold;
         position: relative;
+        @media(--mobile) {
+          margin-bottom: 5px;
+        }
 
         &:after{
           content: '...';
           position: absolute;
           top: 0;
-          right: -20px;
+          right: -13px;
+
+          @media(--mobile) {
+            right: -20px;
+          }
         }
       }
     }
@@ -139,13 +195,13 @@
       color: #595959;
       background-color: #ececec;
       text-align: center;
-      height: 100px;
       width: 100%;
       padding-top: 20px;
+      padding-bottom: 19px;
       font-size: 24px;
       position: fixed;
-      bottom: -20px;
-      left: 0;
+      bottom: 0px;
+      left: 0px;
       font-family: $font__family__semibold;
       z-index: 1000;
       span{
@@ -164,16 +220,21 @@
       }
     }
     &_desc {
+      position: absolute;
+      top: 48px;
+      left: 159px;
       color: $color__gray-dark;
       text-align: left;
       word-wrap: break-word;
       font-family: $font__family__light;
       font-size: 16px;
       width: 495px;
-      padding: 30px 0px 0px 0px;
-      display: inline-block;
       vertical-align: super;
+      overflow: hidden;
         @media(--mobile) {
+          position: relative;
+          left: 0;
+          top: 0;
           font-size: 32px;
           padding: 20px 15px 0px;
           width: 100%;
@@ -195,8 +256,37 @@
   }
 }
 .turn-on-bot-btn{
-  z-index: 20;
-  bottom: 98px !important;
+    @media(--mobile) {
+      z-index: 20;
+      bottom: 98px !important;
+    }
+}
+.blue-btn{
+  width: 196px;
+  height: 32px;
+  font-size: 16px;
+  font-family: $font__family__light;
+  color: $color__blue;
+  background-color: transparent;
+  border: 1px solid $color__blue;
+  border-radius: 5px;
+
+  &:hover{
+    cursor: pointer;
+    background-color: $color__blue;
+    border-color: $color__blue;
+    color: $color__white;
+  }
+}
+.turn-on-bot-btn-desk{
+  position: absolute;
+  top: 22px;
+  right: -2px;
+}
+.find-bloger-btn{
+  position: absolute;
+  top: 60px;
+  right: -2px;
 }
 button.bot-active-btn{
   width: 100%;
@@ -250,24 +340,26 @@ button.bot-active-btn{
 }
 
 .less{
+  max-height: 73px;
   @media(--mobile) {
     max-height: 233px;
     position: relative;
   }
 }
 .less::after{
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+  background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+  background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 );
   @media(--mobile) {
-    content: '';
-    position: absolute;
-    bottom: 0px;
-    left: 0;
-    width: 100%;
     height: 120px;
-    //border-bottom: 10px solid #fff;
-    background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-    background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
-    background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 );
+    bottom: 0;
   }
 }
 .more{

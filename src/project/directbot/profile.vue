@@ -4,7 +4,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
   header-component(:title='getUserName', :left-btn-show='true').directbot-header
       div.profile-right-menu(slot="content", v-if="isMobile && $route.name === 'profile'")
         i.ic-options_menu(@click="buyTg")
-      div.profile-days(slot="content", v-if="isMobile")
+      div.profile-days(slot="content")
         span 3
         span.day д
   right-nav-component(current="profile")
@@ -25,32 +25,37 @@ scroll-component(v-if="isDone", class="profile-cnt")
           .insta-link-text ссылка на эту витрину
           .insta-link(v-el:insta-link) {{ getUserName }}.drbt.io
 
+        button.turn-on-bot-btn-desk.blue-btn(
+        v-link="{ name: 'turn-on-bot' }", v-if="!isMobile") ПОДКЛЮЧИТЬ БОТА
+        button.find-bloger-btn.blue-btn(v-if="!isMobile") НАЙТИ БЛОГЕРА
 
        template(v-if="loaded")
         .profile_inactive(v-if="false")
           img(src="./img/empty-directbot-profile.png")
           span.empty Деактивирован
-          span #[br]мониторю 3 поста #[br] отправил 5 сообщений
-        .profile_active(v-if="isMobile")
-          img(src="./img/active-directbot-profile.png")
-          p.bold Активирован #[br]
-          p мониторю 3 поста #[br] отправил 5 сообщений
+          span #[br(v-if="isMobile")]мониторю 3 поста #[br] отправил 5 сообщений
+        .profile_active
+          img(src="./img/active-directbot-profile.png", v-if="isMobile")
+          img(src="./img/active-directbot-profile-desk.png", v-if="!isMobile")
+          .text-box
+            p.bold Активирован #[br]
+            p мониторю 3 поста #[br] отправил 5 сообщений
         .profile_no-goods-banner(v-if="false")
-          span После подключения #[br]
-          span.save Directbot
-          span  начнет мониторить все #[br] ваши новые посты и автоматически #[br] отвечать на вопросы покупателей
+          span После подключения #[br(v-if="isMobile")]
+          span.save Directbot #[br(v-if="!isMobile")]
+          span  начнет мониторить все #[br(v-if="isMobile")] ваши новые посты #[br(v-if="!isMobile")] и автоматически #[br(v-if="isMobile")] отвечать на вопросы покупателей
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.turn-on-bot-btn(
         v-link="{ name: 'turn-on-bot' }", v-if="getAuthUser.supplier_of === null && isMobile") ПОДКЛЮЧИТЬ БОТА
-        
+
         //button.bot-active-btn(v-if="false") БОТ АКТИВЕН
           //i.ic-close
 
         //a(class='profile-header__menu-link', @click="logout", v-if="isAuth") Выход
 
-  photos-component(
-    :filter-by-shop-id="shopId",
-    :list-id.sync="listId")
+        photos-component(
+          :filter-by-shop-id="shopId",
+          :list-id.sync="listId")
 
   .directbot-navbar
     navbar-component(:current='listId')
