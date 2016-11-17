@@ -1,7 +1,7 @@
 <style src='./styles/signup-directbot.pcss'></style>
 <template lang="jade">
 scroll-component
-  div
+  div.directbot
     .signup(:style='{ height: height }')
       .signup__close.__hello(@click='closePage'): i.ic-close
       .section
