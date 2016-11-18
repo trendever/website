@@ -7,7 +7,8 @@ scroll-component(v-if="isDone", class="profile-cnt")
       div.profile-days(slot="content")
         span 3
         span.day д
-  right-nav-component(current="profile")
+  .directbot-right-nav
+    right-nav-component(current="profile")
 
   .section.top.bottom.db-bottom
     .section__content(v-cloak)
@@ -16,10 +17,18 @@ scroll-component(v-if="isDone", class="profile-cnt")
 
           .profile_info_img()
             img(:src="getUserPhoto")
+          .profile_info_about(v-if="false")
+            span.profile_info_about_type Магазин
+              #[br(v-if="isMobile")]
+            span.profile_info_about_location  Красноярск
+              #[br(v-if="isMobile")]
+            span.profile_info_about_work-time  10.00-21.00
+              #[br(v-if="isMobile")]
+            span.profile_info_about_posts-quantity  951 постов
 
-        .profile_desc
+        .profile_desc.less(v-on:click="this.isMoreClass = !this.isMoreClass" v-bind:class="{ more : isMoreClass, less: !isMoreClass}")
           .profile_desc_t(v-if="getSlogan") {{getSlogan}}
-          .profile_desc_caption.less(v-if="getUserCaption", v-on:click="this.isMoreClass = !this.isMoreClass" v-bind:class="{ more : isMoreClass, less: !isMoreClass}") {{{getUserCaption | captionSpaces}}}
+          .profile_desc_caption(v-if="getUserCaption") {{{getUserCaption | captionSpaces}}}
 
         .profile_insta-link(v-if="$route.name === 'profile' && shopId !== 1 && isMobile")
           .insta-link-text ссылка на эту витрину
@@ -36,10 +45,10 @@ scroll-component(v-if="isDone", class="profile-cnt")
           span #[br(v-if="isMobile")]мониторю 3 поста #[br] отправил 5 сообщений
         .profile_active
           img(src="./img/active-directbot-profile.png", v-if="isMobile")
-          img(src="./img/active-directbot-profile-desk.png", v-if="!isMobile")
+          img(src="./img/active-directbot-profile-desk.svg", v-if="!isMobile")
           .text-box
             p.bold Активирован #[br]
-            p мониторю 3 поста #[br] отправил 5 сообщений
+            p.light мониторю 3 поста #[br] отправил 5 сообщений
         .profile_no-goods-banner(v-if="false")
           span После подключения #[br(v-if="isMobile")]
           span.save Directbot #[br(v-if="!isMobile")]
@@ -57,7 +66,7 @@ scroll-component(v-if="isDone", class="profile-cnt")
           :filter-by-shop-id="shopId",
           :list-id.sync="listId")
 
-  .directbot-navbar
+  .directbot-navbar(v-if="isMobile")
     navbar-component(:current='listId')
 
 </template>
