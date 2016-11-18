@@ -14,7 +14,7 @@ scroll-component
           .bottom-container(:class='{"opened-key-board":!showTitleSlider}')
             validator(name='signup')
               .input-container
-                .input.name
+                .input
                   i.ic-insta-name
                   input(type='text',
                     autocomplete="off",
