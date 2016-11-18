@@ -211,13 +211,18 @@ export const updateScroll = (() => {
 
       }
 
-      if(idStart >  0 && callback) {
-        callback();
+      if(typeof callback === 'function') {
+
+        if(idStart >  0) {
+          callback(true);
+        }
+
+        if(!direction && idStart === 0) {
+          callback(false);
+        }
+
       }
 
-      if(!direction && idStart < 3 && callback) {
-        callback();
-      }
 
       console.log( { idStart, idEnd } );
 

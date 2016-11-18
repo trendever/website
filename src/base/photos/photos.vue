@@ -245,9 +245,10 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
             rowHeight: this.rowHeight,
             scrollTopReal: this.scrollCnt.scrollTop,
             searchOptions: { isSearch: search, isTags: tags, filterByShopId , filterByMentionerId }
-          }, ()=>{
+          }, (back)=>{
 
-            this.blockHeight = this.scrollTop;
+            if(back) this.blockHeight = this.scrollTop - this.rowHeight;
+            if(!back) this.blockHeight = 0;
             
           } );
 
