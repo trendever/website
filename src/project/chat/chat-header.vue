@@ -55,6 +55,10 @@ div
       },
       leftBtnAction(){
         if (this.isFake){
+          if (this.$route.name === window.before.name && window.before.prev){
+            this.$router.go({ name: window.before.prev.name, params: window.before.prev.params})
+            return;
+          }
           this.$router.go({ name: window.before.name, params: window.before.params})
         }else{
           this.$router.go({name: "chat_list"})
