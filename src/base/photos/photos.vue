@@ -236,6 +236,10 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 
       _setScroll() {
 
+        let self = this;
+
+        const { idStart, idEnd } = this.getScrollData
+
         if ( this.rowHeight > 0 && this.isRunning ) {
 
           const { search, tags, filterByShopId, filterByMentionerId } = this;
@@ -245,12 +249,43 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
             rowHeight: this.rowHeight,
             scrollTopReal: this.scrollCnt.scrollTop,
             searchOptions: { isSearch: search, isTags: tags, filterByShopId , filterByMentionerId }
-          }, (back)=>{
 
-            if(back) this.blockHeight = this.scrollTop - this.rowHeight;
-            if(!back) this.blockHeight = 0;
+          }, (() => {
+
+            let count = 0;
+
+            return direction => {
+
+
+              if(direction && idStart > 0) {
+
+                self.scrollDisable = true;
+                self.blockHeight += self.rowHeight;
+               
+              } 
+
+              if(!direction && idStart === 0) {
+
+                count++;
+
+                if(count > 1) return;
+
+                self.blockHeight = 0;
+
+              }
+
+              if(!direction && idStart > 0) {
+                self.scrollDisable = true;
+                self.blockHeight -= self.rowHeight;
+
+              }
+
+
+              
+            }
+
             
-          } );
+          })() );
 
         }
 
@@ -400,7 +435,7 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
       },
 
       items() {
-        const height = ( this.itemsLength / this.getColumnCount + 1) * this.rowHeight;
+      const height = ( this.itemsLength / this.getColumnCount + 1) * this.rowHeight;
 
         this.$set( 'listStyle', {
           height: `${ height }px`,

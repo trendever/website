@@ -167,7 +167,7 @@ export const updateScroll = (() => {
 
     const { shift, direction } = getShift( state, scrollTop, rowHeight );
 
-    console.log(direction)
+   
 
     dispatch( types.PRODUCTS_SET_SCROLL, { rowHeight, scrollTop: scrollTopReal, lastScrollTop: scrollTop, shift } );
 
@@ -213,14 +213,8 @@ export const updateScroll = (() => {
 
       if(typeof callback === 'function') {
 
-        if(idStart >  0) {
-          callback(true);
-        }
-
-        if(!direction && idStart === 0) {
-          callback(false);
-        }
-
+        callback(direction)
+        
       }
 
 
