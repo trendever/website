@@ -1,4 +1,4 @@
-import { userID } from 'vuex/getters/user.js'
+import { userID,isAuth } from 'vuex/getters/user.js'
 
 export const getList = ( { products } ) => {
 
@@ -96,7 +96,7 @@ export const isLiked = ( state ) => {
 
       for ( let i = product.liked_by.length; i; i-- ) {
 
-        if ( userID( state ) === product.liked_by[ i - 1 ].id ) {
+        if ( userID( state ) === product.liked_by[ i - 1 ].id && isAuth(state)) {
 
           return true;
 

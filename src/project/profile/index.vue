@@ -121,7 +121,6 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
     .main-text {{message}}
     .button-text(v-on:click="showPopup = false")
       span OK
-
 .help-wrapper(v-if='isFirst')
   .attention(v-if='isFirst')
     p Для корректного отображения подсказок переверните устройство в портретную ориентацию

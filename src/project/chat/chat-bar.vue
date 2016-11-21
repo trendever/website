@@ -59,7 +59,8 @@ chat-menu(v-if="isMobile")
         txtMsg: '',
         isMobile: window.browser.mobile,
         directbot: settings.directbotActive,
-        fakeRegCount: 0
+        fakeRegCount: 0,
+        isMobile: window.browser.mobile
       }
     },
 
@@ -217,9 +218,6 @@ chat-menu(v-if="isMobile")
       send ( event ) {
         this.$dispatch('addPadding', 110)
 
-        if (this.getAction !== "approve"){
-          this.fakeRegCount++
-        }
 
         if(settings.activateMonetization){
           if(this.getUseDays === 0){
@@ -255,15 +253,7 @@ chat-menu(v-if="isMobile")
 
           let id = this.$route.params.id;
 
-          if (this.fakeRegCount === 1 && this.isFake){
-            setTimeout(() => {
-              window.fakeAuth = {text: "чтобы не пропустить ответ от", data: this.getShopName}
-              this.setCallbackOnSuccessAuth(()=>{
-                this.$router.go({name: 'chat', params: { id }})
-              })
-              this.$router.replace( { name: 'signup' } );
-            },700);
-          }
+          
 
         } )
 
@@ -284,6 +274,13 @@ chat-menu(v-if="isMobile")
         } )
       },
       approveChat(e){
+        if (this.isFake){
+          window.fakeAuth = {text: "чтобы не пропустить ответ от", data: this.getShopName}
+          this.setCallbackOnSuccessAuth(()=>{
+            this.$router.go({name: 'chat', params: { id }})
+          })
+          this.$router.replace( { name: 'signup' } );
+        }
 
         this.txtMsg = 'Привет;) да, подтверждаю!';
 
