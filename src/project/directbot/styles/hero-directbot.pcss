@@ -25,9 +25,9 @@
     background-size: cover;
 
     @media(--tabletandless) {
-      background: url(../img/Bgr_clg_mob.jpg) no-repeat;
+      background: url(../img/blue_bgr.png) no-repeat;
       background-size: cover;
-      height: 45.5%;
+      height: 45.55%;
     }
 
     .profile-header {
@@ -92,7 +92,7 @@
         display: inline-block !important;
         width: 445px;
         height: 345px;
-        margin-top: 14.5%;
+        margin-top: 12.4%;
       }
     }
 //mobile logo on first welcome screen
@@ -119,7 +119,7 @@
         font-size: 46px;
         text-align: center;
         margin-top: 15px;
-				margin-bottom: 103px;
+				margin-bottom: 81px;
         padding: 0px 30px;
         top: 0;
         left: 0;
@@ -223,12 +223,17 @@
     }
     .main{
 			@media(--mobile) {
-      	margin-top: 115px;
+      	margin-top: 118px;
 			}
     }
+		.middle{
+			@media(--mobile) {
+				margin-top: 77px;
+			}
+		}
     .bot{
 			@media(--mobile) {
-      	margin-top: 75px;
+      	margin-top: 76px;
 			}
     }
 
@@ -276,14 +281,16 @@
 		max-width: 1050px;
 		margin: 0 auto;
 			@media(--mobile) {
-		    padding: 0px 25px 160px 25px;
+		    padding: 0px 25px 0px 25px;
 				position: relative;
 		}
+
 //styles for the header on mob
     .directbot-header{
       display: block !important;
 			position: absolute;
-			top: -146px;
+			top: 11px;
+			height: 86px;
     }
     .directbot-wrap{
       background: #5E8BCE !important;
@@ -291,8 +298,47 @@
     .head{
       font-size: 40px;
     }
+		#header{
+			position: absolute;
+		}
 //styles for the header on mob
 
+		&__top-scheme{
+			height: 1400px;
+			width: 100%;
+			background-image: url(../img/top_scheme.svg);
+			background-repeat: no-repeat;
+			-webkit-background-size: 700px 1145px;
+			background-size: 700px 1145px;
+			-ms-background-position-y: 143px;
+			background-position-y: 143px;
+			//padding-top: 300px;
+
+			p{
+				text-align: left;
+				padding-left: 70px;
+				font-size: 36px;
+				font-family: $font__family__semibold;
+				color: $color__blue;
+
+				&:first-child{
+					padding-top: 495px;
+					padding-bottom: 50px;
+				}
+
+				&:last-child{
+					text-align: center;
+					padding-left: 0px;
+					padding-top: 602px;
+				}
+
+				i.ic-rub{
+					padding-top: 9px;
+					font-size: 26px;
+					font-family: $font__family__semibold;
+				}
+			}
+		}
 
     &__title{
 			font-family: $font__family__thin;
@@ -301,7 +347,7 @@
 			margin-top: 35px;
 			@media(--mobile) {
 	      font-size: 64px;
-	      margin-top: 158px;
+	      margin-top: 215px;
 			}
     }
     .middle{
@@ -327,8 +373,16 @@
 			}
 			@media(--mobile) {
       	margin-top: 125px;
+				margin-bottom: 5px;
 			}
     }
+
+		i.ic-smile:after{
+			content: url('../img/smile_sunglasses.png');
+			position: absolute;
+			top: -10px;
+			left: 288px;
+		}
 
     &__icon-2{
 			img{
@@ -344,7 +398,8 @@
 				}
 			}
 			@media(--mobile) {
-      	margin-top: 90px;
+      	margin-top: 96px;
+				margin-bottom: 8px;
 			}
     }
 
@@ -360,10 +415,17 @@
 				}
 			}
 			@media(--mobile) {
-	      margin-top: 90px;
+	      margin-top: 95px;
 	      margin-bottom: 10px;
 			}
     }
+
+		.screen-title{
+			display: inline-block;
+			font-size: 36px;
+			font-family: $font__family__semibold;
+			color: $color__blue;
+		}
 
     &__screen-1{
 			margin-top: 35px;
@@ -371,12 +433,12 @@
 				width: 465px;
 				height: 500px;
 				@media(--mobile) {
-					width: 580px;
-					height: 620px;
+					width: 453px;
+					height: 506px;
 				}
 			}
 			@media(--mobile) {
-      	margin-top: 55px;
+      	margin-top: 17px;
 			}
     }
 
@@ -385,12 +447,14 @@
 				width: 465px;
 				height: 500px;
 				@media(--mobile) {
-					width: 580px;
-					height: 620px;
+					width: 453px;
+					height: 500px;
+					margin-top: 3px;
 				}
 			}
 			@media(--mobile) {
-      	margin-top: 45px;
+      	margin-top: 13px;
+				margin-bottom: 30px;
 			}
     }
 
@@ -399,13 +463,41 @@
 				width: 465px;
 				height: 500px;
 				@media(--mobile) {
-					width: 580px;
-					height: 620px;
+					width: 453px;
+					height: 500px;
 				}
 			}
 			@media(--mobile) {
-				margin-top: 55px;
-				margin-bottom: 10px;
+				margin-top: 18px;
+			}
+		}
+
+		&__screen-4{
+			img{
+				width: 465px;
+				height: 500px;
+				@media(--mobile) {
+					width: 453px;
+					height: 500px;
+					margin-top: 5px;
+				}
+			}
+			@media(--mobile) {
+				margin-bottom: 20px;
+			}
+		}
+
+		&__screen-5{
+			img{
+				@media(--mobile) {
+					width: 457px;
+					height: 760px;
+					margin-top: 3px;
+				}
+			}
+			@media(--mobile) {
+				margin-top: 82px;
+				margin-bottom: 22px;
 			}
 		}
 
@@ -426,8 +518,7 @@
     }
 		.info{
 			@media(--mobile) {
-				margin-top: 5px;
-				margin-bottom: 20px;
+				margin-bottom: 7px;
 			}
 		}
 
@@ -435,6 +526,7 @@
 			font-size: 24px;
 			line-height: 32px;
     	padding-top: 4px;
+			position: relative;
 				@media(--mobile) {
 		      font-size: 36px;
 		      font-family: $font__family__light;
@@ -455,6 +547,19 @@
 				}
 			}
     }
+		.store{
+			margin-top: 0px;
+		}
+
+		&__tip{
+			margin-top: 14px;
+			font-size: 28px;
+			font-family: $font__family__light;
+
+			&:last-child{
+				margin-top: 17px;
+			}
+		}
 
 		.wrapper{
 			display: -webkit-flex;
@@ -490,8 +595,8 @@
 				margin-bottom: 3px;
 				@media(--mobile) {
 					font-size: 36px;
-					margin-top: 80px;
-					margin-bottom: 23px;
+					margin-top: 79px;
+					margin-bottom: 19px;
 				}
 			}
 
@@ -547,7 +652,7 @@
 			}
 			.info-wrap{
 				margin-top: 15px;
-				margin-bottom: 127px;
+				margin-bottom: 10px;
 			}
 		}
   }
@@ -579,3 +684,54 @@
       font-family: $font__family__light;
     }
   }
+
+	.info-block{
+		background-color: $color__dark-blue;
+		color: $color__white;
+		font-size: 36px;
+		font-family: $font__family__light;
+		margin-top: 65px;
+		height: 616px;
+
+		.title{
+			font-size: 46px;
+			font-family: $font__family__semibold;
+			text-align: center;
+			padding-top: 37px;
+			padding-bottom: 28px;
+		}
+
+		.list{
+			padding-left: 87px;
+
+			ol{
+				list-style-type: decimal;
+			}
+
+			li{
+				padding-bottom: 32px;
+				padding-left: 27px;
+			}
+		}
+
+		.tooltip{
+			font-size: 26px;
+			padding-left: 29px;
+			padding-bottom: 66px;
+			padding-top: 5px;
+		}
+	}
+
+	.free-connect{
+		text-align: center;
+		padding: 43px 30px 142px 30px;
+		font-size: 36px;
+		font-family: $font__family__semibold;
+		color: $color__black;
+
+		a{
+			display: inline-block;
+			color: $color__black;
+			border-bottom: 1px solid $color__black;
+		}
+	}

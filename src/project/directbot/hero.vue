@@ -13,10 +13,12 @@
     .hero__content__center-logo(v-if="!isMobile")
       img(src="./img/directbot-main-logo.png")
     .hero__content__description
-      span.bold Бот-консультант #[br]
-      span.light для Instagram-магазинов
+      span.bold Оператор вашего #[br] магазина в Instagram #[br]
+      span.light 24 часа, 7 дней, 2990&nbsp
+        i.ic-currency-rub
+        | /мес
     .hero__content__set-up
-      button.set-up-btn(v-if="isMobile", v-link='{ name: "signup" }') ПОДКЛЮЧИТЬ ЗА 0
+      button.set-up-btn(v-if="isMobile", v-link='{ name: "signup" }') ПОПРОБОВАТЬ ЗА 0
         i.ic-rub
       button.set-up-btn(v-if="!isMobile", v-link='{ name: "signup" }') ПОДКЛЮЧИТЬ БЕСПЛАТНО
     button.btn.btn_primary.__orange.__xl.enter__btn.fast__big__btn( v-link="{ name: 'signup' }") ВХОД И РЕГИСТРАЦИЯ
@@ -30,30 +32,38 @@
    .wrap-box
      .hero__content__2__title 9 из 10 покупателей
      .hero__content__2__paragraph
-       p узнают про товар в комментариях #[br] или Instagram Direct, а не на сайте
+       p спрашивают про товары #[br] в комментариях или Instagram Direct
    .wrap-box
-     .hero__content__2__title 10 из 10 инста-шопам
+     .hero__content__2__title.middle 10 из 10 инста-шопов
      .hero__content__2__paragraph
-       p нужны Интернет-магазин и активные #[br] ссылки на постах в Instagram
+       p хотят свой интернет-магазин и #[br] ставить активные ссылки под постами
    .wrap-box
      .hero__content__2__title.bot РЕШЕНИЕ
      .hero__content__2__paragraph
-       p.last Directbot сам ответит клиентам #[br] в Instagram Direct и, если нужно, #[br] создаст сайт
+       p.last Наш оператор ответит #[br] вашим клиентам в Instagram Direct #[br] и, если нужно, создаст сайт
   button(@click="scrollAnchorTags()" id="lookinside").shopping_trends КАК ЭТО РАБОТАЕТ?
   .hero__content__landing
    .section.header.section__content(id="header", v-if="isMobile")
       .header__content.u-fixed.directbot-header(v-show='is_visible')
         .wrapper.directbot-wrap
           .header__center
-            .header__text.head Подробнее о Directbot
-    .hero__content__landing__title Directbot сам отвечает #[br(v-if="isMobile")] в Instagram Direct
+            .header__text.head Как это работает?
+    .hero__content__landing__top-scheme
+      p СКАНИРУЕТ КОММЕНТАРИИ #[br] И DIRECT В INSTAGRAM
+      p БЫСТРО ОТВЕЧАЕТ #[br] КЛИЕНТАМ В DIRECT
+      p НАШ ОПЕРАТОР ВСЕ УСПЕВАЕТ #[br] И СТОИТ ВСЕГО 2990&nbsp
+        i.ic-rub
+        | /МЕС, #[br] ПОТОМУ ЧТО ЕМУ ПОМОГАЕТ #[br] DIRECTBOT, АВТОМАТИЗИРУЮЩИЙ БОЛЬШИНСТВО ДЕЙСТВИЙ
+    .hero__content__landing__title Преимущества #[br] нашего оператора
     .wrapper
       .info-box
         .hero__content__landing__icon-1
           img(src="./img/icon-1.png")
         .hero__content__landing__sub-title Отвечает всем #[br] клиентам сразу
-        .hero__content__landing__caption Играюче уделит внимание каждому, #[br] быстро ответит.
-          a.link-info(v-link="{ name: 'info-screen-1' }", v-if="isMobile")  Ни один клиент #[br] не успеет передумать
+        .hero__content__landing__caption Со смайлами&nbsp
+          i.ic-smile&nbsp&nbsp&nbsp&nbsp&nbsp
+          | уделит внимание #[br] каждому, быстро ответит. #[br]
+          a.link-info(v-link="{ name: 'info-screen-1' }", v-if="isMobile")  Ни один клиент не успеет передумать
           a.link-info(v-on:click="showPopupA = true", v-if="!isMobile")  Ни один клиент #[br] не успеет передумать
           info-popup(:show-popup="showPopupA")
             i.ic-close(v-if="!isMobile", v-on:click="showPopupA = false")
@@ -63,7 +73,7 @@
           img(src="./img/icon-2.png")
         .hero__content__landing__sub-title Выполняет #[br] «мартышкин труд»
         .hero__content__landing__caption Больше не нужно отвечать #[br(v-if="isMobile")] и спрашивать #[br(v-if="!isMobile")] одно и то же. #[br(v-if="isMobile")]
-          a.link-info(v-link="{name: 'info-screen-2'}", v-if="isMobile") Бот даст ссылку на сайт, #[br(v-if="!isMobile")] уточнит #[br(v-if="isMobile")] наличие, узнает размеры и адрес
+          a.link-info(v-link="{name: 'info-screen-2'}", v-if="isMobile") Оператор даст ссылку на сайт, #[br(v-if="!isMobile")] уточнит #[br(v-if="isMobile")] наличие, узнает размеры и адрес
           a.link-info(v-on:click="showPopupB = true", v-if="!isMobile") Бот даст ссылку на сайт, #[br(v-if="!isMobile")] уточнит #[br(v-if="isMobile")] наличие, узнает размеры и адрес
           info-popup(:show-popup="showPopupB")
             i.ic-close(v-if="!isMobile", v-on:click="showPopupB = false")
@@ -72,45 +82,73 @@
         .hero__content__landing__icon-3
           img(src="./img/icon-3.png")
         .hero__content__landing__sub-title Подключается быстро, #[br] работает самостоятельно
-        .hero__content__landing__caption Подключи бота и следи за чатами #[br(v-if="isMobile")] в своем #[br(v-if="!isMobile")] Instagram Direct. #[br(v-if="isMobile")] Ничего не надо скачивать. #[br]
-          a.link-info(v-link="{name: 'info-screen-3'}", v-if="isMobile") Будущее наступило
-          a.link-info(v-on:click="showPopupC = true", v-if="!isMobile") Будущее наступило
+        .hero__content__landing__caption Подключи нашего оператора к своему #[br] Instagram-магазину в один клик. #[br]
+          a.link-info(v-link="{name: 'info-screen-3'}", v-if="isMobile") Ничего не надо скачивать
+          a.link-info(v-on:click="showPopupC = true", v-if="!isMobile") Ничего не надо скачивать
           info-popup(:show-popup="showPopupC")
             i.ic-close(v-if="!isMobile", v-on:click="showPopupC = false")
             info-screen3
-    .hero__content__landing__title.middle Откуда бот знает, #[br(v-if="isMobile")] кому и что отвечать?
+    .hero__content__landing__title.middle Как работает наш #[br] оператор?
     .hero__content__landing__screen-1
+      span.screen-title СКАНИРУЕТ INSTAGRAM DIRECT
       img(src="./img/screen-1.png")
-    .hero__content__landing__sub-title.questions Бот понимает #[br] вопросы покупателей
-    .hero__content__landing__caption Не важно, задан вопрос #[br(v-if="!isMobile")] в комментариях #[br(v-if="isMobile")] или личном сообщении, #[br] бот распознает его и поймет, #[br] что нужно ответить клиенту
+    .hero__content__landing__screen-2
+      span.screen-title СКАНИРУЕТ КОММЕНТАРИИ
+      img(src="./img/screen-2.png")
+    .hero__content__landing__sub-title Оператор сразу видит #[br] вопросы покупателей
+    .hero__content__landing__captionНе важно, задан вопрос в комментариях #[br] или личном сообщении, #[br] оператор уже будет в чате #[br] с покупателем
     .hero__content__landing__toggle
-      .hero__content__landing__toggle__title У ТЕБЯ ЕСТЬ ИНТЕРНЕТ-МАГАЗИН?
+      .hero__content__landing__toggle__title ТЕПЕРЬ ОПЕРАТОРУ НУЖНО ЗНАТЬ, #[br] У ТЕБЯ ЕСТЬ ИНТЕРНЕТ-МАГАЗИН?
       button.yes ДА
       button.no НЕТ
     .toggle-box
-      .wrap-yes(v-if="false")
-        .hero__content__landing__screen-2
-          img(src="./img/screen-2-yes.png")
+      .wrap-yes
+        .hero__content__landing__screen-3
+          span.screen-title ИЗУЧИТ ТВОЙ ИНТЕРНЕТ-МАГАЗИН
+          img(src="./img/screen-3-yes.png")
+        .hero__content__landing__screen-4
+          span.screen-title УЗНАЕТ О ТОВАРАХ ПО АРТИКУЛУ
+          img(src="./img/screen-4-yes.png")
         .hero__content__landing__sub-title.info Есть сайт? Укажи артикул #[br] товара под постом
-        .hero__content__landing__caption Бот узнает о деталях и наличии товара #[br] по артикулу в описании поста. #[br] Ссылка на сайт должна быть #[br] в «био» инста-профиля
-      .wrap-no
-        .hero__content__landing__screen-2
-          img(src="./img/screen-2-no.png")
+        .hero__content__landing__caption Оператор узнает о деталях и наличии #[br] товара по артикулу в описании поста. #[br] Ссылка на сайт должна быть #[br] в «био» инста-профиля
+        .info-wrap
+          .hero__content__landing__screen-5
+            span.screen-title ОТВЕЧАЕТ В INSTAGRAM DIRECT
+            img(src="./img/screen-5.png")
+          .hero__content__landing__sub-title Оператор ответит на вопросы #[br] и поможет купить
+          .hero__content__landing__caption Клиенты получат консультацию* и ссылку #[br] для покупки товара в твоем #[br] интернет-магазине**
+          .hero__content__landing__tip *отслеживай диалог в кабинете или Instagram Direct
+          .hero__content__landing__tip **еще можно покупать не выходя из Instagram Direct
+      .wrap-no(v-if="false")
+        .hero__content__landing__screen-3
+          span.screen-title СОЗДАСТ ИНТЕРНЕТ-МАГАЗИН
+          img(src="./img/screen-3-no.png")
+        .hero__content__landing__screen-4
+          span.screen-title СПРАШИВАЕТ О ТОВАРАХ В ЧАТЕ
+          img(src="./img/screen-4-no.png")
         .hero__content__landing__sub-title.info Нет сайта? Ответь #[br] на вопросы о товарах
-        .hero__content__landing__caption Бот увидит новые посты, уточнит детали #[br] и наличие товаров. Потом добавит их #[br] в твой
-          a.link-info(v-link="{name: 'info-screen-4'}", v-if="isMobile")  новый Интернет-магазин #[br] по ссылке
-            span.bold  xxxx.drbt.io
-          a.link-info(v-on:click="showPopupD = true", v-if="!isMobile")  новый Интернет-магазин #[br] по ссылке
+        .hero__content__landing__caption.store Оператор увидит посты в Instagram #[br] и добавит их в твой
+          a.link-info(v-link="{name: 'info-screen-4'}", v-if="isMobile")  новый интернет-магазин по ссылке
+            span.bold  xxxx.drbt.io #[br]
+          a.link-info(v-on:click="showPopupD = true", v-if="!isMobile")  новый интернет-магазин по ссылке
             span.bold  xxxx.drbt.io
           info-popup(:show-popup="showPopupD")
             i.ic-close(v-if="!isMobile", v-on:click="showPopupD = false")
             info-screen4
-      .info-wrap
-        .hero__content__landing__screen-3
-          img(src="./img/screen-3.png")
-        .hero__content__landing__sub-title Бот даст ссылку на товар #[br] и ответит на вопросы
-        .hero__content__landing__caption Клиенты быстро получат ответы, #[br] без опечаток. Следи за диалогом #[br] прямо в своем Instagram #[br] и отвечай сам, если нужно
-
+          | Также уточнит детали и наличие товаров
+  .info-block
+    .title
+      p Подключайся и получишь:
+    .list
+      ol
+        li Опытного оператора в команду, #[br] но в 15 раз дешевле*
+        li Адаптивный интернет-магазин, #[br] с платежами и доставкой
+        li Сервис по подбору и организации #[br] рекламы через блогеров
+    .tooltip
+      p *из расчета средней зарплаты оператора 45 тыс.руб. #[br] в месяц, и это только за 8-часовой день с выходными
+  .free-connect
+    p ХОЧЕШЬ ПОДКЛЮЧИТЬ СВОЕГО #[br] ОПЕРАТОРА? ИЛИ ТЫ САМ ОПЕРАТОР?
+    a(v-link="{name: 'signup'}") ЖМИ СЮДА
 </template>
 
 <script type='text/babel'>
