@@ -99,10 +99,10 @@
     .hero__content__landing__captionНе важно, задан вопрос в комментариях #[br] или личном сообщении, #[br] оператор уже будет в чате #[br] с покупателем
     .hero__content__landing__toggle
       .hero__content__landing__toggle__title ТЕПЕРЬ ОПЕРАТОРУ НУЖНО ЗНАТЬ, #[br] У ТЕБЯ ЕСТЬ ИНТЕРНЕТ-МАГАЗИН?
-      button.yes ДА
-      button.no НЕТ
+      button.yes(v-on:click="yesScreen = true", v-if="noScreen = true") ДА
+      button.no(v-on:click="yesScreen = false") НЕТ
     .toggle-box
-      .wrap-yes
+      .wrap-yes(v-show="yesScreen")
         .hero__content__landing__screen-3
           span.screen-title ИЗУЧИТ ТВОЙ ИНТЕРНЕТ-МАГАЗИН
           img(src="./img/screen-3-yes.png")
@@ -119,7 +119,7 @@
           .hero__content__landing__caption Клиенты получат консультацию* и ссылку #[br] для покупки товара в твоем #[br] интернет-магазине**
           .hero__content__landing__tip *отслеживай диалог в кабинете или Instagram Direct
           .hero__content__landing__tip **еще можно покупать не выходя из Instagram Direct
-      .wrap-no(v-if="false")
+      .wrap-no(v-show="noScreen")
         .hero__content__landing__screen-3
           span.screen-title СОЗДАСТ ИНТЕРНЕТ-МАГАЗИН
           img(src="./img/screen-3-no.png")
@@ -186,7 +186,9 @@ export default {
       showPopupA: false,
       showPopupB: false,
       showPopupC: false,
-      showPopupD: false
+      showPopupD: false,
+      yesScreen: false,
+      noScreen: false
     }
   },
 
@@ -342,7 +344,6 @@ export default {
     scrollAnchorTags() {
       JQuery('.scroll-cnt').animate({scrollTop: 2 * window.innerHeight},450);
     },
-
 
   },
 };
