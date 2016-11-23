@@ -17,6 +17,12 @@ export const isFake = ( state ) => {
   if (username && username.indexOf("customer_") >= 0){
     is_fake = true;
   }
+  if (username && username.indexOf("Client") >= 0){
+    is_fake = true;
+  }
+  if (userData.isFake){
+    return userData.isFake;
+  }
   return is_fake;
 };
 
