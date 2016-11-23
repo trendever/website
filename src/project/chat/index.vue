@@ -151,6 +151,18 @@
       },
     },
     created(){
+      if(settings.activateMonetization && this.getCurrentMember.role === 2){
+        let storage = window.localStorage;
+
+        if(!storage.getItem('firstTimeChatVisited')) {
+          storage.setItem('firstTimeChatVisited', true)
+          this.$router.go({name: 'monetization'});
+        }
+
+        if(storage.getItem('supplierStatus') === 'disabled'){
+          this.$router.go({name: 'monetization'});
+        }
+      }
       /*
       /*D I R E C T B O T
       */
@@ -287,20 +299,6 @@
           }).then(()=>{
             //лоадер
             this.$set('showLoader', false);
-          }).then(()=>{
-            //Монетизация
-            if(settings.activateMonetization && this.getCurrentMember.role === 2){
-              let storage = window.localStorage;
-
-              if(!storage.getItem('firstTimeChatVisited')) {
-                storage.setItem('firstTimeChatVisited', true)
-                this.$router.go({name: 'monetization'});
-              }
-
-              if(storage.getItem('supplierStatus') === 'disabled'){
-                this.$router.go({name: 'monetization'});
-              }
-            }
           })
       },
 

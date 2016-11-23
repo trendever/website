@@ -132,13 +132,6 @@ chat-menu(v-if="isMobile")
       },
       openChatmenu(){
 
-        if(settings.activateMonetization){
-          if(this.getUseDays === 0){
-            this.$router.go({name: 'monetization'});
-            return;
-          }
-        }
-
         this.setShowMenu(true);
 
       },
@@ -217,14 +210,6 @@ chat-menu(v-if="isMobile")
 
       send ( event ) {
         this.$dispatch('addPadding', 110)
-
-
-        if(settings.activateMonetization){
-          if(this.getUseDays === 0){
-            this.$router.go({name: 'monetization'});
-            return;
-          }
-        }
 
         if(event) {
 

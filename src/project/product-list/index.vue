@@ -3,7 +3,7 @@
 .status_bar(v-if='isAuth || showStatusBar')
 
 scroll-component
-  hero-component
+  hero-component.trendever
   caption-component
 
   .section.main
