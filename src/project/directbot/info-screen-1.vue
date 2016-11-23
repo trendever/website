@@ -2,7 +2,7 @@
 <template lang="jade">
 .info-screen
   i.ic-close(@click='closePage', v-if="isMobile")
-  p.description.1 Directbot, как самый #[br(v-if="isMobile")] ответственный продавец, #[br(v-if="isMobile")] всегда на чеку для ваших #[br] клиентов в Instagram и может #[br(v-if="isMobile")] многое. Он вежливо поговорит #[br(v-if="isMobile")] с покупателем прямо в Instagram Direct, как #[br(v-if="!isMobile")] бот-консультант. #[br(v-if="isMobile")] Вы не тратите время на #[br(v-if="isMobile")] клиентов, которые #[br] не покупают
+  p.description.1 Наш опытный оператор, вооружившись Directbot-ом, обслужит всех ваших клиентов быстро и в #[br(v-if="isMobile")] любое время дня и ночи. #[br(v-if="isMobile")] Он вежливо поговорит #[br(v-if="isMobile")] с покупателем прямо #[br(v-if="isMobile")] в Instagram Direct, #[br(v-if="isMobile")] как консультант от #[br(v-if="isMobile")] имени вашего магазина. #[br(v-if="isMobile")] Вы не тратите время #[br(v-if="isMobile")] на клиентов, которые #[br(v-if="isMobile")] не покупают
 </template>
 
 <script>

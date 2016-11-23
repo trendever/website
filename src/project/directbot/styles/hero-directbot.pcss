@@ -304,15 +304,13 @@
 	//styles for the header on mob
 
 			&__top-scheme{
-				height: 1400px;
 				width: 100%;
 				background-image: url(../img/top_scheme.svg);
 				background-repeat: no-repeat;
 				-webkit-background-size: 700px 1145px;
 				background-size: 700px 1145px;
-				-ms-background-position-y: 143px;
-				background-position-y: 143px;
-				//padding-top: 300px;
+				-ms-background-position-y: 3px;
+				background-position-y: 3px;
 
 				p{
 					text-align: left;
@@ -322,14 +320,14 @@
 					color: $color__blue;
 
 					&:first-child{
-						padding-top: 495px;
-						padding-bottom: 50px;
+						padding-top: 370px;
+						padding-bottom: 30px;
 					}
 
 					&:last-child{
 						text-align: center;
 						padding-left: 0px;
-						padding-top: 602px;
+						padding-top: 483px;
 					}
 
 					i.ic-rub{
@@ -350,6 +348,9 @@
 		      margin-top: 215px;
 				}
 	    }
+			.main{
+				margin-top: 73px;
+			}
 	    .middle{
 				margin-top: 85px;
 				padding-top: 0px !important;
@@ -567,8 +568,20 @@
 				display: flex;
 				flex-wrap: wrap;
 				justify-content: center;
+				position: relative;
 				@media(--mobile) {
 					display: block;
+				}
+				&:after{
+					content: '';
+					position: absolute;
+					left: -25px;
+					right: 0;
+					top: -70px;
+					background-color: rgba(94, 139, 206, .03);
+					height: 107%;
+					width: 750px;
+					z-index: -1;
 				}
 				.info-box{
 					width: 45%;
@@ -682,6 +695,7 @@
 	      background: #5E8BCE;
 	      border: none;
 	      font-family: $font__family__light;
+				z-index: 100;
 	    }
 	  }
 
@@ -715,7 +729,7 @@
 			}
 
 			.tooltip{
-				font-size: 26px;
+				font-size: 28px;
 				padding-left: 29px;
 				padding-bottom: 66px;
 				padding-top: 5px;

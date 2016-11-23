@@ -2,13 +2,15 @@
 <template lang="jade">
 .info-screen
   i.ic-close(@click='closePage', v-if="isMobile")
-  p.description.third Мы знаем как много сейчас разных #[br(v-if="!isMobile")] CRM для управления продажами. #[br(v-if="!isMobile")] Бот хорош тем, #[br(v-if="isMobile")] что работает #[br(v-if="!isMobile")] на вас, а не вы #[br(v-if="isMobile")] в нем. #[br(v-if="!isMobile")] Нужно просто нажать #[br(v-if="isMobile")] на кнопку, #[br(v-if="!isMobile")] а не разбираться #[br(v-if="isMobile")] в новых #[br(v-if="!isMobile")] приложениях #[br(v-if="isMobile")] и программах
+  p.description.third Мы знаем как много сейчас разных CRM для управления продажами. Наш сервис #[br(v-if="isMobile")] хорош тем, что работает #[br(v-if="isMobile")] на вас, а не вы в нем. Нужно просто нажать на кнопку, #[br(v-if="isMobile")] а не разбираться в новых приложениях и программах
 </template>
 
 <script>
 export default {
   data () {
-    return {}
+    return {
+      isMobile: window.browser.mobile
+    }
   },
   computed: {},
   mounted () {},

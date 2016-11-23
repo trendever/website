@@ -1,19 +1,16 @@
 <style src="./styles/info-screen.pcss"></style>
-<style>
-  p.description.4{
-    padding-top: 280px;
-  }
-</style>
 <template lang="jade">
 .info-screen
   i.ic-close(@click='closePage', v-if="isMobile")
-  p.description.4 Да, вы не ослышались, Directbot #[br] умеет создавать интернет- #[br] магазины и наполнять их #[br] товарами из вашего Instagram. #[br] Поможет поддерживать #[br] ассортимент актуальным, просто #[br] задавая вам вопросы в чате. #[br] А еще, в этом онлайн-магазине, #[br] вы сможете принимать оплату
+  p.description.fourth Да, вы не ослышались, #[br(v-if="isMobile")] мы создадим вам интернет-магазин доступный с любых устройств и наполним #[br(v-if="isMobile")] его товарами из вашего Instagram. Поможем поддерживать ассортимент актуальным, просто задавая вопросы в чате. А еще, больше не нужно беспокоиться об оплате и доставке
 </template>
 
 <script>
 export default {
   data () {
-    return {}
+    return {
+      isMobile: window.browser.mobile
+    }
   },
   computed: {},
   mounted () {},

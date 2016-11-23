@@ -54,7 +54,7 @@
       p НАШ ОПЕРАТОР ВСЕ УСПЕВАЕТ #[br] И СТОИТ ВСЕГО 2990&nbsp
         i.ic-rub
         | /МЕС, #[br] ПОТОМУ ЧТО ЕМУ ПОМОГАЕТ #[br] DIRECTBOT, АВТОМАТИЗИРУЮЩИЙ БОЛЬШИНСТВО ДЕЙСТВИЙ
-    .hero__content__landing__title Преимущества #[br] нашего оператора
+    .hero__content__landing__title.main Преимущества #[br] нашего оператора
     .wrapper
       .info-box
         .hero__content__landing__icon-1
@@ -99,8 +99,8 @@
     .hero__content__landing__captionНе важно, задан вопрос в комментариях #[br] или личном сообщении, #[br] оператор уже будет в чате #[br] с покупателем
     .hero__content__landing__toggle
       .hero__content__landing__toggle__title ТЕПЕРЬ ОПЕРАТОРУ НУЖНО ЗНАТЬ, #[br] У ТЕБЯ ЕСТЬ ИНТЕРНЕТ-МАГАЗИН?
-      button.yes(v-on:click="yesScreen = true", v-if="noScreen = true") ДА
-      button.no(v-on:click="yesScreen = false") НЕТ
+      button.yes(v-on:click="noScreen = false, yesScreen = true") ДА
+      button.no(v-on:click="yesScreen = false, noScreen = true") НЕТ
     .toggle-box
       .wrap-yes(v-show="yesScreen")
         .hero__content__landing__screen-3
@@ -187,7 +187,7 @@ export default {
       showPopupB: false,
       showPopupC: false,
       showPopupD: false,
-      yesScreen: false,
+      yesScreen: true,
       noScreen: false
     }
   },

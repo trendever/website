@@ -3,8 +3,12 @@
 	font-family: GradeFive;
 	src: url(../font/PFKidsPro-GradeFive.ttf);
 }
+@font-face {
+	font-family: Parker;
+	src: url(../font/Parker.ttf);
+}
 .info-screen{
-  font-family: GradeFive;
+  font-family: Parker;
   color: $color__white;
 	background-color: $color__dark-blue;
   text-align: center;
@@ -41,14 +45,20 @@
   p{
 		line-height: 40px;
 			@media(--mobile) {
-		    padding-top: 240px;
-				line-height: 65px;
+		    padding-top: 226px;
+				line-height: 52px;
 			}
   }
 	.third{
 		padding-top: 30px;
 		@media(--mobile) {
-			padding-top: 315px;
+			padding-top: 355px;
 		}
+	}
+	.second{
+		padding-top: 278px;
+	}
+	.fourth{
+		padding-top: 275px;
 	}
 }
