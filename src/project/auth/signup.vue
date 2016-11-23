@@ -273,7 +273,11 @@ scroll-component
           this.setData().then( ()=> {
             this.$router.go({ name: 'comfirm-sms' });
           }).catch( (error) => {
-            this.onErrorPhone();
+            this.signup().then( ()=> {
+              this.$router.go({ name: 'comfirm-sms' });
+            }).catch( (error) => {
+              this.onErrorPhone();
+            })
           })
         }else{
           this.signup().then( ()=> {

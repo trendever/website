@@ -186,11 +186,6 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
 
         return this.openProfile( id )
         .then(()=>{
-          if (!this.$store.invShown){
-            if (browser.mobile && !browser.standalone){
-              document.location = 'tndvr://shop/'+id;
-            }
-          }
           this._setTab();
         })
         .catch( () => {
@@ -198,11 +193,6 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
 
           return this.openProfile( try_ )
           .then(()=>{
-            if (!this.$store.invShown){
-              if (browser.mobile && !browser.standalone){
-                document.location = 'tndvr://shop/'+try_;
-              }
-            }
             this._setTab();
           })
           .catch( () => {
