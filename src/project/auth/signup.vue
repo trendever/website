@@ -237,7 +237,7 @@ scroll-component
       },
 
       sendSMS() {
-        if(!this.login) {
+        if(!this.login && !this.isFake) {
           this.login = '';
           this.errorLogin = true;
           //this.textLink = TEXT_LINK['errorNoLogin'];
