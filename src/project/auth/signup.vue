@@ -310,6 +310,10 @@ scroll-component
           //this.textLink = '';
           this.phone = '';
         };
+        if (this.$get('errorLogin')) {
+          this.$set('errorLogin', false);
+          this.$set('login', '');
+        };
       },
 
       onErrorLogin() {
@@ -320,8 +324,9 @@ scroll-component
 
       // clear login and remove error class from <input>
       onFocusLogin() {
-        if (browser.android)
+        if (browser.android){
           this.$set('showTitleSlider',false);
+        }
         if (this.$get('errorLogin')) {
           this.$set('errorLogin', false);
           this.$set('login', '');
