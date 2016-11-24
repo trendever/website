@@ -68,10 +68,6 @@ scroll-component
             .btn-container
               button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
                 @click='sendSMS') Отправить sms-код
-              .link-container
-                a.link-bottom(href='#',
-                  @click.prevent='onClickLink')
-                  | {{{ textLink }}}
 </template>
 
 <style>
