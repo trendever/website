@@ -46,6 +46,16 @@ export const signup = ({ dispatch, state }) => {
   });
 };
 
+export const signin = ({ dispatch, state }) => {
+  return new Promise((resolve, reject) => {
+    auth.sendPassword(state.auth.phone).then( () => {
+      resolve(true);
+    }).catch( error => {
+      console.log(error);
+    });
+  });
+};
+
 export const setData = ({ dispatch, state }) => {
   return new Promise((resolve, reject) => {
 
