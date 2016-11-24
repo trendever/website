@@ -161,9 +161,6 @@ scroll-component
 
     ready() {
       this.$set('height', `${ document.body.scrollHeight }px`);
-      this.phone = this.authData.phone;
-      this.login = this.authData.username;
-      this.instagram = this.authData.instagram;
       const onResize = () => {
         this.$set('height', `${ document.body.scrollHeight }px`);
         this.$set('showTitleSlider', document.body.scrollHeight >= 1000 || document.body.scrollWidth > 750);
