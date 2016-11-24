@@ -266,14 +266,14 @@ scroll-component
         this.save();
 
 
-        if (this.isFake){
+        if (window.fakeAuth.text){
           this.setData().then( ()=> {
             this.$router.go({ name: 'comfirm-sms' });
           }).catch( (error) => {
             this.signin().then( ()=> {
               this.setCallbackOnSuccessAuth(()=>{
-              this.$router.go({name: 'home'});
-            })
+                this.$router.go({name: 'home'});
+              })
               this.$router.go({ name: 'comfirm-sms' });
             }).catch( (error) => {
               this.onErrorPhone();
