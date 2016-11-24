@@ -81,6 +81,7 @@ scroll-component
   import {
     saveAuthData,
     signup,
+    signin,
     setData
   } from 'vuex/actions';
   import {
@@ -180,6 +181,7 @@ scroll-component
       actions: {
         saveAuthData,
         signup,
+        signin,
         setData
       },
       getters: {
@@ -210,9 +212,10 @@ scroll-component
       },
 
       save() {
+        let savephone = this.phone.replace(/\D/g,'');
         this.saveAuthData({
           username: this.login,
-          phone: this.phone,
+          phone: savephone,
           instagram: this.instagram,
         })
       },
@@ -270,7 +273,7 @@ scroll-component
           this.setData().then( ()=> {
             this.$router.go({ name: 'comfirm-sms' });
           }).catch( (error) => {
-            this.signup().then( ()=> {
+            this.signin().then( ()=> {
               this.$router.go({ name: 'comfirm-sms' });
             }).catch( (error) => {
               this.onErrorPhone();
