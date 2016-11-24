@@ -95,7 +95,7 @@ scroll-component
   import { formatPhone } from 'utils.js';
 
   import ScrollComponent from 'base/scroll/scroll.vue'
-
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import Slider from './slider.vue';
 
   const TEXT_LINK = {
@@ -182,6 +182,7 @@ scroll-component
         saveAuthData,
         signup,
         signin,
+        setCallbackOnSuccessAuth,
         setData
       },
       getters: {
@@ -274,6 +275,9 @@ scroll-component
             this.$router.go({ name: 'comfirm-sms' });
           }).catch( (error) => {
             this.signin().then( ()=> {
+              this.setCallbackOnSuccessAuth(()=>{
+              this.$router.go({name: 'home'});
+            })
               this.$router.go({ name: 'comfirm-sms' });
             }).catch( (error) => {
               this.onErrorPhone();
