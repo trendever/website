@@ -116,6 +116,7 @@ scroll-component
 
   const PLACEHOLDER = {
     instagramMode: 'Введите свое Instagram имя',
+    fakeMode: 'Instagram имя (не обязательно)',
     withoutInstagramMode: 'Введите свое имя',
     errorPhoneFormat: 'Введите верный номер',
     errorLoginFormat: 'Только латинские буквы...',
@@ -133,7 +134,7 @@ scroll-component
         errorPhone: false,
         height: 'static',
         textLink: TEXT_LINK.instagramMode,
-        placeholder: PLACEHOLDER.instagramMode,
+        placeholder: (this.isFake) ? PLACEHOLDER.fakeMode : PLACEHOLDER.instagramMode,
         instagram: true,
         showTitleSlider: true,
         isStandalone: browser.standalone,
