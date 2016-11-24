@@ -36,10 +36,7 @@ scroll-component
                     spellcheck="false",
                     :class=' {error: errorLogin} ',
                     @focus='onFocusLogin',
-                    @keydown="checkValidate"
                     @keydown.enter='sendSMS()',
-                    @keyup='validateLogin',
-                    v-validate:login='[ "required" ]',
                     v-on:blur="blurInput",
                     v-model='login',
                     :placeholder='placeholder')
@@ -244,7 +241,6 @@ scroll-component
           //this.textLink = TEXT_LINK['errorNoLogin'];
           this.login = PLACEHOLDER['errorNoLogin'];
           return;
-
         }
 
         if(this.login.match(/[а-яё]+/g) !== null){
