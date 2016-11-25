@@ -263,7 +263,7 @@ scroll-component
         this.save();
 
 
-        if (window.fakeAuth.text){
+        if (this.isFake){
           this.setData().then( ()=> {
             this.$router.go({ name: 'comfirm-sms' });
           }).catch( (error) => {
