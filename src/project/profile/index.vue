@@ -197,7 +197,7 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
       canReuse: false,
       data( { to: { params: { id } }, from } ) {
         if (id === 'anlopan'){
-          this.debugMessage = JSON.stringify(navigator.userAgent.toLowerCase())
+          this.debugMessage = JSON.stringify(window.browser)
         }
 
         if(!from.name) {
