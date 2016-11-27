@@ -36,10 +36,7 @@ scroll-component
                     spellcheck="false",
                     :class=' {error: errorLogin} ',
                     @focus='onFocusLogin',
-                    @keydown="checkValidate"
                     @keydown.enter='sendSMS()',
-                    @keyup='validateLogin',
-                    v-validate:login='[ "required" ]',
                     v-on:blur="blurInput",
                     v-model='login',
                     :placeholder='placeholder')
@@ -68,10 +65,6 @@ scroll-component
             .btn-container
               button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom(
                 @click='sendSMS') Отправить sms-код
-              .link-container
-                a.link-bottom(href='#',
-                  @click.prevent='onClickLink')
-                  | {{{ textLink }}}
 </template>
 
 <style>
@@ -85,6 +78,7 @@ scroll-component
   import {
     saveAuthData,
     signup,
+    signin,
     setData
   } from 'vuex/actions';
   import {
@@ -98,7 +92,7 @@ scroll-component
   import { formatPhone } from 'utils.js';
 
   import ScrollComponent from 'base/scroll/scroll.vue'
-
+  import { setCallbackOnSuccessAuth } from 'vuex/actions';
   import Slider from './slider.vue';
 
   const TEXT_LINK = {
@@ -116,6 +110,7 @@ scroll-component
 
   const PLACEHOLDER = {
     instagramMode: 'Введите свое Instagram имя',
+    fakeMode: 'Instagram имя (не обязательно)',
     withoutInstagramMode: 'Введите свое имя',
     errorPhoneFormat: 'Введите верный номер',
     errorLoginFormat: 'Только латинские буквы...',
@@ -133,7 +128,7 @@ scroll-component
         errorPhone: false,
         height: 'static',
         textLink: TEXT_LINK.instagramMode,
-        placeholder: PLACEHOLDER.instagramMode,
+        placeholder: (this.isFake) ? PLACEHOLDER.fakeMode : PLACEHOLDER.instagramMode,
         instagram: true,
         showTitleSlider: true,
         isStandalone: browser.standalone,
@@ -166,9 +161,6 @@ scroll-component
 
     ready() {
       this.$set('height', `${ document.body.scrollHeight }px`);
-      this.phone = this.authData.phone;
-      this.login = this.authData.username;
-      this.instagram = this.authData.instagram;
       const onResize = () => {
         this.$set('height', `${ document.body.scrollHeight }px`);
         this.$set('showTitleSlider', document.body.scrollHeight >= 1000 || document.body.scrollWidth > 750);
@@ -183,6 +175,8 @@ scroll-component
       actions: {
         saveAuthData,
         signup,
+        signin,
+        setCallbackOnSuccessAuth,
         setData
       },
       getters: {
@@ -213,9 +207,10 @@ scroll-component
       },
 
       save() {
+        let savephone = this.phone.replace(/\D/g,'');
         this.saveAuthData({
           username: this.login,
-          phone: this.phone,
+          phone: savephone,
           instagram: this.instagram,
         })
       },
@@ -237,13 +232,12 @@ scroll-component
       },
 
       sendSMS() {
-        if(!this.login) {
+        if(!this.login && !this.isFake) {
           this.login = '';
           this.errorLogin = true;
           //this.textLink = TEXT_LINK['errorNoLogin'];
           this.login = PLACEHOLDER['errorNoLogin'];
           return;
-
         }
 
         if(this.login.match(/[а-яё]+/g) !== null){
@@ -273,7 +267,14 @@ scroll-component
           this.setData().then( ()=> {
             this.$router.go({ name: 'comfirm-sms' });
           }).catch( (error) => {
-            this.onErrorPhone();
+            this.signin().then( ()=> {
+              this.setCallbackOnSuccessAuth(()=>{
+                this.$router.go({name: 'home'});
+              })
+              this.$router.go({ name: 'comfirm-sms' });
+            }).catch( (error) => {
+              this.onErrorPhone();
+            })
           })
         }else{
           this.signup().then( ()=> {
@@ -306,6 +307,10 @@ scroll-component
           //this.textLink = '';
           this.phone = '';
         };
+        if (this.$get('errorLogin')) {
+          this.$set('errorLogin', false);
+          this.$set('login', '');
+        };
       },
 
       onErrorLogin() {
@@ -316,8 +321,9 @@ scroll-component
 
       // clear login and remove error class from <input>
       onFocusLogin() {
-        if (browser.android)
+        if (browser.android){
           this.$set('showTitleSlider',false);
+        }
         if (this.$get('errorLogin')) {
           this.$set('errorLogin', false);
           this.$set('login', '');

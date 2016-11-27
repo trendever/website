@@ -260,6 +260,7 @@ chat-menu(v-if="isMobile")
       },
       approveChat(e){
         if (this.isFake){
+          let id = this.$route.params.id;
           window.fakeAuth = {text: "чтобы не пропустить ответ от", data: this.getShopName}
           this.setCallbackOnSuccessAuth(()=>{
             this.$router.go({name: 'chat', params: { id }})

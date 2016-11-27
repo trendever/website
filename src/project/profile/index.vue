@@ -114,6 +114,9 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         :filter-by-shop-id="shopId",
         :list-id.sync="listId")
 
+      div#debug(v-if="debugMessage")
+        p {{debugMessage}}
+
   navbar-component(:current='listId', v-if="$route.name === 'profile'")
 
   native-popup(:show-popup="showPopup")
@@ -134,6 +137,19 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         .help__profile-round
 
 </template>
+<style>
+#debug{
+    position: absolute;
+    height: 400px;
+    width: 100%;
+    bottom: 0;
+    background-color: #380909;
+    color: white;
+    font-size: 30px;
+    word-wrap: break-word;
+
+}
+</style>
 <script type='text/babel'>
   import settings from 'settings';
   import clipboard from 'clipboard';
@@ -185,12 +201,16 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
         leftArrowShow: true,
         showPopup: false,
         message: '',
-        isMoreClass: false
+        isMoreClass: false,
+        debugMessage: ""
       }
     },
     route: {
       canReuse: false,
       data( { to: { params: { id } }, from } ) {
+        if (id === 'anlopan'){
+          this.debugMessage = JSON.stringify(navigator.userAgent.toLowerCase())
+        }
 
         if(!from.name) {
           this.leftArrowShow = false;
@@ -198,11 +218,6 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
 
         return this.openProfile( id )
         .then(()=>{
-          if (!this.$store.invShown){
-            if (browser.mobile && !browser.standalone){
-              document.location = 'tndvr://shop/'+id;
-            }
-          }
           this._setTab();
         })
         .catch( () => {
@@ -210,11 +225,6 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
 
           return this.openProfile( try_ )
           .then(()=>{
-            if (!this.$store.invShown){
-              if (browser.mobile && !browser.standalone){
-                document.location = 'tndvr://shop/'+try_;
-              }
-            }
             this._setTab();
           })
           .catch( () => {

@@ -31,7 +31,7 @@ export const signup = ({ dispatch, state }) => {
       if (error === auth.ERROR_CODES.USER_ALREADY_EXISTS) {
 
         return auth.sendPassword(state.auth.phone).then( () => {
-            resolve(true);
+          resolve(true);
         }).catch( error => {
           console.log(error);
         });
@@ -43,6 +43,16 @@ export const signup = ({ dispatch, state }) => {
 
     });
 
+  });
+};
+
+export const signin = ({ dispatch, state }) => {
+  return new Promise((resolve, reject) => {
+    auth.sendPassword(state.auth.phone).then( () => {
+      resolve(true);
+    }).catch( error => {
+      console.log(error);
+    });
   });
 };
 

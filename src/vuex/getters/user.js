@@ -11,11 +11,21 @@ export const isDone = ( { user } ) => {
 };
 
 export const isFake = ( state ) => {
+  if (state.user.all[state.user.myId].phone){
+    return false;
+  }
+
   const userData = user( state );
   let username = userData.name;
   let is_fake = false;
   if (username && username.indexOf("customer_") >= 0){
     is_fake = true;
+  }
+  if (username && username.indexOf("Client") >= 0){
+    is_fake = true;
+  }
+  if (userData.isFake){
+    return userData.isFake;
   }
   return is_fake;
 };
