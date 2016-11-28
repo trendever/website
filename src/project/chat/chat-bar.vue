@@ -2,7 +2,7 @@
 <template lang="jade">
 
 div.chat-bar
-  .chat-approve-btn.noaction(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat($event)') ПОДТВЕРДИТЬ
+  .chat-approve-btn.noaction(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat($event)' id="approve-button") ПОДТВЕРДИТЬ
   .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay' && getAction !== 'pendingpayment' ", id="inputbar")
     .chat-bar_menu-btn(@click.stop='openChatmenu')
       i.ic-chat_menu
@@ -56,13 +56,24 @@ chat-menu(v-if="isMobile")
 
   export default{
     data(){
+      this.$root.$on('chatEvent', (data) => {
+        if (data === 'approveButtonHasCome'){
+          if (window.chatAction === "approve"){
+            this.forceApprove = true;
+            this.approveChat(false);
+            window.chatAction = "";
+          }
+        }
+      });
       return {
         txtMsg: '',
-        isMobile: window.browser.mobile
+        isMobile: window.browser.mobile,
+        forceApprove: false
       }
     },
 
     ready(){
+
       this.scroll = document.querySelector( '.scroll-cnt' );
       if ( !window.browser.mobile ) {
 
@@ -264,7 +275,7 @@ chat-menu(v-if="isMobile")
         } )
       },
       approveChat(e){
-        if (this.isFake){
+        if (this.isFake && !this.forceApprove){
           let id = this.$route.params.id;
           window.fakeAuth = {text: "чтобы не пропустить ответ от", data: this.getShopName}
           this.setCallbackOnSuccessAuth(()=>{
@@ -275,7 +286,9 @@ chat-menu(v-if="isMobile")
 
         this.txtMsg = 'Привет;) да, подтверждаю!';
 
-        e.target.hidden = true;
+        if (e){
+          e.target.hidden = true;
+        }
 
         this.send();
 

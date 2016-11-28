@@ -62,6 +62,7 @@ const router = new VueRouter({
 window.history.scrollRestoration = 'manual';
 window.before = {};
 window.fakeAuth = {};
+window.chatAction = "";
 
 // configure router
 configRouter(router);
