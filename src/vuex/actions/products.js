@@ -381,15 +381,16 @@ export const getSearchOptions = (
 
   }
 
-  if ( filterByMentionerId ) {
-
-    request.mentioner_id = filterByMentionerId;
-
-  }
-
   if( includeNotSailed ) {
 
     request.include_not_on_sale = includeNotSailed
+
+  }
+
+  if ( filterByMentionerId ) {
+
+    request.mentioner_id = filterByMentionerId;
+    request.include_not_on_sale = true
 
   }
 
