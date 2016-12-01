@@ -169,7 +169,9 @@ div
       onComplete(user, token) {
         this.isCompleted = true;
         this.$els.confirmBtn.focus();
-        this.anotherName = user.name !== this.authData.username ? user.name : '';
+        if(user.name !== this.authData.username && this.authData.instagram) {
+          this.anotherName = user.name;
+        } 
         this
           .authUser(user, token)
           .then(() => {
