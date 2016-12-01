@@ -18,7 +18,7 @@ div
         .menu_i_t Запросить деньги
 
       label(class='menu_i menu_i-send-file') Отправить фото
-        input(type='file', hidden, @change='selectedFile')
+        input(type='file', hidden, @change='selectedFile',  accept="image/*")
 
       .menu_i(v-if='false')
         .menu_i_t Добавить шаблон
