@@ -52,7 +52,6 @@
 
       this.$nextTick(()=>{
         if (this.lastMessage) this.$dispatch('goToBottom')
-          console.log(this.lastMessage)
       })
 
     },

@@ -8,30 +8,30 @@
     .section.top.bottom(v-el:section)
       .chat.section__content
         .chat_messages(id="chatmessages", v-el:box-messages)
-          template(v-for='msg in getMessages | list', track-by='$index')
+          template(v-for='msg in filterMessages', track-by='$index')
             div(v-el:messages)
-              chat-msg-status(:last-message="$index === lastIdx",
+              chat-msg-status(
                 v-if='msg.parts[0].mime_type === "json/status"',
                 :msg='msg')
-              chat-msg-product-old(:last-message="$index === lastIdx"
+              chat-msg-product-old(
                 v-if='msg.parts[0].mime_type === "text/json"',
                 :msg='msg')
-              chat-msg-product(:last-message="$index === lastIdx",
+              chat-msg-product(
                 v-if='msg.parts[0].mime_type === "text/plain" && hasData(msg) ',
                 :msg='msg')
-              chat-msg(:last-message="$index === lastIdx",
+              chat-msg(
                 v-if='msg.parts[0].mime_type === "text/plain" && !hasData(msg)',
                 :msg='msg',
                 :directbot="directbot")
-              chat-msg-info(:last-message="$index === lastIdx",
+              chat-msg-info(
                 v-if='msg.parts[0].mime_type === "text/html"',
                 :msg='msg')
-              chat-msg-img(:last-message="$index === lastIdx",
+              chat-msg-img(
                 v-if='isImage(msg.parts[0].mime_type)',
                 :msg='msg')
-              chat-msg-payment(:last-message="$index === lastIdx",
+              chat-msg-payment(
                 v-if='msg.parts[0].mime_type === "json/payment" || msg.parts[0].mime_type === "json/cancel_order"', :msg='msg')
-            chat-msg-order(:last-message="$index === lastIdx",
+            chat-msg-order(
                 v-if='msg.parts[0].mime_type === "json/order"',
                 :msg='msg')
 
@@ -124,7 +124,6 @@
         timerId: '',
         fullScroll: 0,
         recursiveCount: 0,
-        lastIdx: 0
         }
     },
 
@@ -183,8 +182,7 @@
 
       this.$on('goToBottom', () => {
 
-        this.loadScrollLogic();
-
+        //this.loadScrollLogic();
 
       });
 
@@ -256,6 +254,16 @@
     },
     computed: {
 
+      filterMessages(){
+
+        const end   = this.getMessages.length;
+        const start = end - this.getLengthList - 1; // -1 потому что есть первое сообщение с датой.
+        let messages = this.getMessages.slice( (start <= 0) ? 0 : start, end );
+
+        return messages;
+
+      },
+
       messagesLength(){
 
         return this.$els.messages;
@@ -303,11 +311,11 @@
             () => {
                     this.$nextTick( () => {
 
-                      setTimeout(()=>{
+                      //setTimeout(()=>{
 
                         this.loadScrollLogic();
 
-                      },30)
+                      //},2000)
 
                     } );
             },
@@ -328,6 +336,7 @@
       },
 
       loadScrollLogic(){
+
         let conversation = this.$store.state.conversation;
         let id =  this.$store.state.conversation.id;
 
@@ -336,8 +345,8 @@
           .resolve()
 
           .then(()=>{
-
             if(conversation.allInit[id] && this.chatScrolls[id]) {
+
               this.$els.scrollCnt.scrollTop = this.chatScrolls[id].scroll;
               return false;
             }
@@ -348,6 +357,7 @@
           .then( goBottom =>{
 
             if(goBottom) {
+
               this.goToBottom();
             }
 
@@ -436,16 +446,17 @@
             this.$set( 'needLoadMessage', false );
 
             this.loadMessage().then( ( messages ) => {
+
               this.$nextTick( () => {
 
-                if ( messages !== null ) {
+                  if ( messages !== null ) {
 
-                  const SHDelta                 = this.$els.scrollCnt.scrollHeight - SHAfter;
-                  const percentTopOfHeight      = (this.$els.scrollCnt.scrollTop + SHDelta) / this.$els.scrollCnt.scrollHeight;
-                  this.$els.scrollCnt.scrollTop = percentTopOfHeight * this.$els.scrollCnt.scrollHeight;
-                  this.$set( 'needLoadMessage', true );
+                    const SHDelta                 = this.$els.scrollCnt.scrollHeight - SHAfter;
+                    const percentTopOfHeight      = (this.$els.scrollCnt.scrollTop + SHDelta) / this.$els.scrollCnt.scrollHeight;
+                    this.$els.scrollCnt.scrollTop = percentTopOfHeight * this.$els.scrollCnt.scrollHeight;
+                    this.$set( 'needLoadMessage', true );
 
-                }
+                  }
 
               } );
             } );

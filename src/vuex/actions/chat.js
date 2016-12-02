@@ -35,6 +35,8 @@ import { userID } from 'vuex/getters/user.js'
 
 export const setConversation = ( { dispatch, state }, lead_id ) => {
 
+  const lead = getLeadById( state, lead_id )
+
   function chatJoin( lead_id, callBack ) {
     /**
      * Если пользователь не участник чата то его необходимо присоединить к чату.
@@ -106,7 +108,9 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
         }
 
-        dispatch( CONVERSATION_SET, conversation_id, messages, getCountForLoading )
+        let count = state.conversation.allInit[lead.chat.id] ? messages.length : getCountForLoading
+
+        dispatch( CONVERSATION_SET, conversation_id, messages, count )
 
       }
 
@@ -114,7 +118,7 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
   }
 
-  const lead = getLeadById( state, lead_id )
+  //const lead = getLeadById( state, lead_id )
 
   if ( lead !== null ) {
 
