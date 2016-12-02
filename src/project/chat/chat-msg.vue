@@ -43,7 +43,18 @@
       msg: {
         type: Object,
         required: true
+      },
+      lastMessage: {
+        default: false
       }
+    },
+    ready(){
+
+      this.$nextTick(()=>{
+        if (this.lastMessage) this.$dispatch('goToBottom')
+          console.log(this.lastMessage)
+      })
+
     },
     vuex: {
       getters: {

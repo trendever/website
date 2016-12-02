@@ -12,7 +12,7 @@
     template(v-else)
       span
         | <b>{{getCancelName}}</b> отменил перевод
-      
+
 </template>
 
 <script>
@@ -28,16 +28,28 @@
           this.setConversationAction("base");
         }
       }
-      
+
       return {}
     },
     props: {
       msg: {
         type: Object,
         required: true
+      },
+      lastMessage: {
+        default: false
       }
     },
-    vuex: { 
+    ready(){
+
+      this.$nextTick(()=>{
+
+        if (this.lastMessage) this.$dispatch('goToBottom')
+
+      })
+
+    },
+    vuex: {
       getters: {
         getShopName,
         getCustomerName,

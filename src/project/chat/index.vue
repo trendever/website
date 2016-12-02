@@ -9,29 +9,29 @@
       .chat.section__content
         .chat_messages(id="chatmessages", v-el:box-messages)
           template(v-for='msg in getMessages | list', track-by='$index')
-            div
-              chat-msg-status(
+            div(v-el:messages)
+              chat-msg-status(:last-message="$index === lastIdx",
                 v-if='msg.parts[0].mime_type === "json/status"',
                 :msg='msg')
-              chat-msg-product-old(
+              chat-msg-product-old(:last-message="$index === lastIdx"
                 v-if='msg.parts[0].mime_type === "text/json"',
                 :msg='msg')
-              chat-msg-product(
+              chat-msg-product(:last-message="$index === lastIdx",
                 v-if='msg.parts[0].mime_type === "text/plain" && hasData(msg) ',
                 :msg='msg')
-              chat-msg(
+              chat-msg(:last-message="$index === lastIdx",
                 v-if='msg.parts[0].mime_type === "text/plain" && !hasData(msg)',
                 :msg='msg',
                 :directbot="directbot")
-              chat-msg-info(
+              chat-msg-info(:last-message="$index === lastIdx",
                 v-if='msg.parts[0].mime_type === "text/html"',
                 :msg='msg')
-              chat-msg-img(
+              chat-msg-img(:last-message="$index === lastIdx",
                 v-if='isImage(msg.parts[0].mime_type)',
                 :msg='msg')
-              chat-msg-payment(
+              chat-msg-payment(:last-message="$index === lastIdx",
                 v-if='msg.parts[0].mime_type === "json/payment" || msg.parts[0].mime_type === "json/cancel_order"', :msg='msg')
-            chat-msg-order(
+            chat-msg-order(:last-message="$index === lastIdx",
                 v-if='msg.parts[0].mime_type === "json/order"',
                 :msg='msg')
 
@@ -50,7 +50,8 @@
     loadMessage,
     closeConversation,
     openPopUp,
-    setConversationAction
+    setConversationAction,
+    setChatScroll
   } from 'vuex/actions/chat.js';
   import { clearNotify } from 'vuex/actions/lead.js';
 
@@ -122,8 +123,9 @@
         showLoader: true,
         timerId: '',
         fullScroll: 0,
-        recursiveCount: 0
-      }
+        recursiveCount: 0,
+        lastIdx: 0
+        }
     },
 
     watch: {
@@ -140,9 +142,6 @@
           if ( this.isAuth ) {
             return this.run().then(()=>{
               this.clearNotify(this.lead_id);
-              this.$nextTick( () => {
-                      this.goToBottom();
-                    } );
             })
           } else {
             return Promise.resolve()
@@ -151,6 +150,8 @@
       },
     },
     created(){
+
+
       if(settings.activateMonetization && this.getCurrentMember.role === 2){
         let storage = window.localStorage;
 
@@ -171,9 +172,6 @@
           if ( this.isAuth ) {
             return this.run().then(()=>{
               this.clearNotify(this.lead_id);
-              this.$nextTick( () => {
-                      this.goToBottom();
-                    } );
             })
           } else {
             return Promise.resolve()
@@ -183,7 +181,13 @@
     },
     ready(){
 
-      this.$on('goToBottom', this.goToBottom);
+      this.$on('goToBottom', () => {
+
+        this.loadScrollLogic();
+
+
+      });
+
       this.$on('addPadding', (val)=>{
         this.$els.section.style.paddingBottom = val + 'px';
         this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
@@ -218,7 +222,8 @@
         loadMessage,
         clearNotify,
         closeConversation,
-        openPopUp
+        openPopUp,
+        setChatScroll
       },
       getters: {
         imgPopUpUrl,
@@ -239,11 +244,31 @@
 
     filters: {
       list( value ){
-
         const end   = value.length;
         const start = end - this.getLengthList - 1; // -1 потому что есть первое сообщение с датой.
-        return value.slice( (start <= 0) ? 0 : start, end );
+        let messages = value.slice( (start <= 0) ? 0 : start, end );
+
+        this.lastIdx = messages.length - 1;
+
+        return messages;
+
       }
+    },
+    computed: {
+
+      messagesLength(){
+
+        return this.$els.messages;
+
+      },
+
+      chatScrolls(){
+
+        return this.$store.state.conversation.chatScrolls;
+
+      }
+
+
     },
 
     methods: {
@@ -280,7 +305,7 @@
 
                       setTimeout(()=>{
 
-                        this.goToBottom();
+                        this.loadScrollLogic();
 
                       },30)
 
@@ -300,6 +325,36 @@
             //лоадер
             this.$set('showLoader', false);
           })
+      },
+
+      loadScrollLogic(){
+        let conversation = this.$store.state.conversation;
+        let id =  this.$store.state.conversation.id;
+
+        Promise
+
+          .resolve()
+
+          .then(()=>{
+
+            if(conversation.allInit[id] && this.chatScrolls[id]) {
+              this.$els.scrollCnt.scrollTop = this.chatScrolls[id].scroll;
+              return false;
+            }
+
+            return true;
+
+          })
+          .then( goBottom =>{
+
+            if(goBottom) {
+              this.goToBottom();
+            }
+
+          })
+
+
+
       },
 
       runLoadingMessage(){
@@ -368,9 +423,14 @@
       },
 
       scrollHandler(){
+
+        //сохранение скролла в чатах
+        this.setChatScroll(this.$els.scrollCnt.scrollTop)
+
         const SHAfter = this.$els.scrollCnt.scrollHeight;
 
         if ( this.needLoadMessage ) {
+
           if ( this.$els.scrollCnt.scrollTop < 1500 ) {
 
             this.$set( 'needLoadMessage', false );
@@ -398,13 +458,13 @@
 
         let height = this.$els.scrollCnt.scrollHeight;
 
+        this.$els.scrollCnt.scrollTop = height;
+
         if(this.fullScroll !==  height) {
 
           this.$els.scrollCnt.scrollTop = height;
 
           this.fullScroll = height;
-
-          console.log(height);
 
           this.$nextTick(()=>{
 
