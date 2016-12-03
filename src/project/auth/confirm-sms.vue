@@ -171,15 +171,9 @@ div
         this.isCompleted = true;
         this.$els.confirmBtn.focus();
 
-        // if(user.name !== this.authData.username && this.authData.instagram) {
-        //   if(user.name) {
-        //       this.anotherName = user.name;
-        //   }
-        // }
-
         if(user.instagram_username) {
           if(user.instagram_username !== this.authData.username){
-            this.anotherName = user.name;
+            this.anotherName = user.instagram_username;
           }
         }
 
