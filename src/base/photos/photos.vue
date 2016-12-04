@@ -25,6 +25,7 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
 </template>
 
 <script type='text/babel'>
+  import settings from 'settings';
   import listen from 'event-listener';
 
   import scrollTop from 'base/scroll-top/scroll-top.vue';
@@ -116,7 +117,8 @@ scroll-top(:class="{'product__detail': $route.name === 'product_detail' && isMob
         },
         lastSelectedTagId: null,
         isRunning: false,
-        containerClientWidth: ''
+        containerClientWidth: '',
+        directbot: settings.directbotActive
       }
     },
 

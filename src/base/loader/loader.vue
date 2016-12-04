@@ -9,6 +9,16 @@
 
 
 <script type='text/babel'>
+import settings from 'settings';
+export default {
+
+  data(){
+    return {
+     
+    }
+  }
+
+}
 
 </script>
 
@@ -20,6 +30,11 @@
     width: 70px;
     text-align: center;
     margin: 0 auto;
+
+
+    .directbot & > div {
+      background-color: $color__blue !important;
+    }
 
     & > div {
       width: 18px;

@@ -4,7 +4,7 @@
 div.chat-bar
   .chat-approve-btn.noaction(v-if='getAction === "approve" && getCurrentMember.role === 1', @click='approveChat($event)' id="approve-button") ПОДТВЕРДИТЬ
   .chat-bar.section__content(v-if="getAction !== 'approve' && getAction !== 'pay' && getAction !== 'pendingpayment' ", id="inputbar")
-    .chat-bar_menu-btn(@click.stop='openChatmenu')
+    .chat-bar_menu-btn(@click.stop='openChatmenu', :class="{'directbot-color': directbot}")
       i.ic-chat_menu
     .chat-bar_input(v-el:bar)
       textarea(placeholder='Введите сообщение',
@@ -16,7 +16,7 @@ div.chat-bar
                @blur='blurInput($event)')
     .chat-bar_send-btn(v-on:mousedown='send($event)',
                        v-on:touchstart='send($event)',
-                       :class='{"__active": !!txtMsg}')
+                       :class='{"__active": !!txtMsg, "directbot-color": directbot}')
       i.ic-send-plane
     chat-menu(v-if="!isMobile")
 chat-menu(v-if="isMobile")
@@ -26,7 +26,6 @@ chat-menu(v-if="isMobile")
 <script type='text/babel'>
   import settings from 'settings';
   import listen from 'event-listener'
-
   import store from 'vuex/store'
   import {
     getAction,
@@ -68,6 +67,9 @@ chat-menu(v-if="isMobile")
       return {
         txtMsg: '',
         isMobile: window.browser.mobile,
+        directbot: settings.directbotActive,
+        fakeRegCount: 0,
+        isMobile: window.browser.mobile,
         forceApprove: false
       }
     },
@@ -97,6 +99,13 @@ chat-menu(v-if="isMobile")
     },
 
     beforeDestroy() {
+
+      if(this.$els.inputMsg) {
+
+        this.$els.inputMsg.blur();
+         
+      }
+
       if ( this.scrollEvent ) {
         this.scrollEvent.remove()
       }
@@ -132,13 +141,6 @@ chat-menu(v-if="isMobile")
         this.$dispatch('addPadding', this.$els.bar.offsetHeight)
       },
       openChatmenu(){
-
-        if(settings.activateMonetization){
-          if(this.getUseDays === 0){
-            this.$router.go({name: 'monetization'});
-            return;
-          }
-        }
 
         this.setShowMenu(true);
 
@@ -218,14 +220,6 @@ chat-menu(v-if="isMobile")
 
       send ( event ) {
         this.$dispatch('addPadding', 110)
-
-
-        if(settings.activateMonetization){
-          if(this.getUseDays === 0){
-            this.$router.go({name: 'monetization'});
-            return;
-          }
-        }
 
         if(event) {
 

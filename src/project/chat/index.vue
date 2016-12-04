@@ -4,12 +4,12 @@
     .loader-center(v-if="showLoader"): app-loader
     popup-img(v-if="imgPopUpUrl", :url="imgPopUpUrl", :width="imgWidth", :height="imgHeight", :on-close="closePopUp")
     chat-header(:notify-count='conversationNotifyCount')
-    .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu")
+    .chat-shadow(v-if="isMobile && getShowMenu || isMobile && getShowStatusMenu", :class="{'directbot-color': isDirectbot }")
     .section.top.bottom(v-el:section)
       .chat.section__content
         .chat_messages(id="chatmessages", v-el:box-messages)
-          template(v-for='msg in getMessages | list', track-by='$index')
-            div
+          template(v-for='msg in filterMessages', track-by='$index')
+            div(v-el:messages)
               chat-msg-status(
                 v-if='msg.parts[0].mime_type === "json/status"',
                 :msg='msg')
@@ -21,7 +21,8 @@
                 :msg='msg')
               chat-msg(
                 v-if='msg.parts[0].mime_type === "text/plain" && !hasData(msg)',
-                :msg='msg')
+                :msg='msg',
+                :directbot="directbot")
               chat-msg-info(
                 v-if='msg.parts[0].mime_type === "text/html"',
                 :msg='msg')
@@ -49,7 +50,8 @@
     loadMessage,
     closeConversation,
     openPopUp,
-    setConversationAction
+    setConversationAction,
+    setChatScroll
   } from 'vuex/actions/chat.js';
   import { clearNotify } from 'vuex/actions/lead.js';
 
@@ -89,6 +91,12 @@
   import popupImg from 'base/popup-img/index.vue';
 
   export default {
+    props: {
+      directbot: {
+        default: false,
+        type: Boolean
+      }
+    },
 
     components: {
       ScrollComponent,
@@ -115,8 +123,8 @@
         showLoader: true,
         timerId: '',
         fullScroll: 0,
-        recursiveCount: 0
-      }
+        recursiveCount: 0,
+        }
     },
 
     watch: {
@@ -133,9 +141,6 @@
           if ( this.isAuth ) {
             return this.run().then(()=>{
               this.clearNotify(this.lead_id);
-              this.$nextTick( () => {
-                      this.goToBottom();
-                    } );
             })
           } else {
             return Promise.resolve()
@@ -143,9 +148,44 @@
         }
       },
     },
+    created(){
+
+
+      if(settings.activateMonetization && this.getCurrentMember.role === 2){
+        let storage = window.localStorage;
+
+        if(!storage.getItem('firstTimeChatVisited')) {
+          storage.setItem('firstTimeChatVisited', true)
+          this.$router.go({name: 'monetization'});
+        }
+
+        if(storage.getItem('supplierStatus') === 'disabled'){
+          this.$router.go({name: 'monetization'});
+        }
+      }
+      /*
+      /*D I R E C T B O T
+      */
+      if(this.directbot){
+        if ( this.isDone ) {
+          if ( this.isAuth ) {
+            return this.run().then(()=>{
+              this.clearNotify(this.lead_id);
+            })
+          } else {
+            return Promise.resolve()
+          }
+        }
+      }
+    },
     ready(){
 
-      this.$on('goToBottom', this.goToBottom);
+      this.$on('goToBottom', () => {
+
+        //this.loadScrollLogic();
+
+      });
+
       this.$on('addPadding', (val)=>{
         this.$els.section.style.paddingBottom = val + 'px';
         this.$els.scrollCnt.scrollTop = this.$els.scrollCnt.scrollHeight;
@@ -180,7 +220,8 @@
         loadMessage,
         clearNotify,
         closeConversation,
-        openPopUp
+        openPopUp,
+        setChatScroll
       },
       getters: {
         imgPopUpUrl,
@@ -201,11 +242,41 @@
 
     filters: {
       list( value ){
-
         const end   = value.length;
         const start = end - this.getLengthList - 1; // -1 потому что есть первое сообщение с датой.
-        return value.slice( (start <= 0) ? 0 : start, end );
+        let messages = value.slice( (start <= 0) ? 0 : start, end );
+
+        this.lastIdx = messages.length - 1;
+
+        return messages;
+
       }
+    },
+    computed: {
+
+      filterMessages(){
+
+        const end   = this.getMessages.length;
+        const start = end - this.getLengthList - 1; // -1 потому что есть первое сообщение с датой.
+        let messages = this.getMessages.slice( (start <= 0) ? 0 : start, end );
+
+        return messages;
+
+      },
+
+      messagesLength(){
+
+        return this.$els.messages;
+
+      },
+
+      chatScrolls(){
+
+        return this.$store.state.conversation.chatScrolls;
+
+      }
+
+
     },
 
     methods: {
@@ -217,6 +288,7 @@
       },
 
       run(){
+        if(this.directbot) this.lead_id = +this.$route.params.id;
         return this
           .setConversation( this.lead_id )
 
@@ -240,11 +312,11 @@
             () => {
                     this.$nextTick( () => {
 
-                      setTimeout(()=>{
+                      //setTimeout(()=>{
 
-                        this.goToBottom();
+                        this.loadScrollLogic();
 
-                      },30)
+                      //},2000)
 
                     } );
             },
@@ -260,21 +332,39 @@
           }).then(()=>{
             //лоадер
             this.$set('showLoader', false);
-          }).then(()=>{
-            //Монетизация
-            if(settings.activateMonetization && this.getCurrentMember.role === 2){
-              let storage = window.localStorage;
-
-              if(!storage.getItem('firstTimeChatVisited')) {
-                storage.setItem('firstTimeChatVisited', true)
-                this.$router.go({name: 'monetization'});
-              }
-
-              if(storage.getItem('supplierStatus') === 'disabled'){
-                this.$router.go({name: 'monetization'});
-              }
-            }
           })
+      },
+
+      loadScrollLogic(){
+
+        let conversation = this.$store.state.conversation;
+        let id =  this.$store.state.conversation.id;
+
+        Promise
+
+          .resolve()
+
+          .then(()=>{
+            if(conversation.allInit[id] && this.chatScrolls[id]) {
+
+              this.$els.scrollCnt.scrollTop = this.chatScrolls[id].scroll;
+              return false;
+            }
+
+            return true;
+
+          })
+          .then( goBottom =>{
+
+            if(goBottom) {
+
+              this.goToBottom();
+            }
+
+          })
+
+
+
       },
 
       runLoadingMessage(){
@@ -343,43 +433,49 @@
       },
 
       scrollHandler(){
-        /*const SHAfter = this.$els.scrollCnt.scrollHeight;
+
+        //сохранение скролла в чатах
+        this.setChatScroll(this.$els.scrollCnt.scrollTop)
+
+        const SHAfter = this.$els.scrollCnt.scrollHeight;
 
         if ( this.needLoadMessage ) {
+
           if ( this.$els.scrollCnt.scrollTop < 1500 ) {
 
             this.$set( 'needLoadMessage', false );
 
             this.loadMessage().then( ( messages ) => {
+
               this.$nextTick( () => {
 
-                if ( messages !== null ) {
+                  if ( messages !== null ) {
 
-                  const SHDelta                 = this.$els.scrollCnt.scrollHeight - SHAfter;
-                  const percentTopOfHeight      = (this.$els.scrollCnt.scrollTop + SHDelta) / this.$els.scrollCnt.scrollHeight;
-                  this.$els.scrollCnt.scrollTop = percentTopOfHeight * this.$els.scrollCnt.scrollHeight;
-                  this.$set( 'needLoadMessage', true );
+                    const SHDelta                 = this.$els.scrollCnt.scrollHeight - SHAfter;
+                    const percentTopOfHeight      = (this.$els.scrollCnt.scrollTop + SHDelta) / this.$els.scrollCnt.scrollHeight;
+                    this.$els.scrollCnt.scrollTop = percentTopOfHeight * this.$els.scrollCnt.scrollHeight;
+                    this.$set( 'needLoadMessage', true );
 
-                }
+                  }
 
               } );
             } );
 
           }
-        }*/
+        }
 
       },
       goToBottom(){
 
         let height = this.$els.scrollCnt.scrollHeight;
 
+        this.$els.scrollCnt.scrollTop = height;
+
         if(this.fullScroll !==  height) {
 
           this.$els.scrollCnt.scrollTop = height;
 
           this.fullScroll = height;
-
-          console.log(height);
 
           this.$nextTick(()=>{
 

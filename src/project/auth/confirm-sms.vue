@@ -168,9 +168,16 @@ div
         })
       },
       onComplete(user, token) {
+
         this.isCompleted = true;
         this.$els.confirmBtn.focus();
-        this.anotherName = user.name !== this.authData.username ? user.name : '';
+
+        if(user.instagram_username) {
+          if(user.instagram_username !== this.authData.username){
+            this.anotherName = user.instagram_username;
+          }
+        }
+
         this
           .authUser(user, token)
           .then(() => {

@@ -39,7 +39,19 @@
       msg: {
         type: Object,
         required: true
+      },
+      lastMessage: {
+        default: false
       }
+    },
+    ready(){
+
+      this.$nextTick(()=>{
+
+        if (this.lastMessage) this.$dispatch('goToBottom')
+
+      })
+
     },
     vuex: {
       getters: {

@@ -2,8 +2,8 @@
 <template lang="jade">
   .chat-row.__center(v-if="isHide && text !== null")
     .chat-msg-status
-      span {{text}} 
-      
+      span {{text}}
+
 </template>
 
 <script>
@@ -16,7 +16,19 @@
       msg: {
         type: Object,
         required: true
+      },
+      lastMessage: {
+        default: false
       }
+    },
+    ready(){
+
+      this.$nextTick(()=>{
+
+        if (this.lastMessage) this.$dispatch('goToBottom')
+
+      })
+
     },
     vuex: {
       getters: {

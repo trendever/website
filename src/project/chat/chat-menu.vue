@@ -3,7 +3,7 @@
 div
   .loader-center(v-if="imgLoader"): app-loader
   menu-component(v-if='getShowMenu && !getShowStatusMenu')
-    div.menu-items(slot='items')
+    div.menu-items(slot='items', :class="{'directbot-color': isDirectbot}")
 
       //-.menu_i(v-if='canCallCustomer', @click='callCustomer()')
         .menu_i_t Позвать покупателя в чат
@@ -18,12 +18,12 @@ div
         .menu_i_t Запросить деньги
 
       label(class='menu_i menu_i-send-file') Отправить фото
-        input(type='file', hidden, @change='selectedFile', accept="image/*")
+        input(type='file', hidden, @change='selectedFile',  accept="image/*")
 
       .menu_i(v-if='false')
         .menu_i_t Добавить шаблон
       .menu_i(@click='setShowMenu(false)')
-        .menu_i_t.__txt-green Отмена
+        .menu_i_t(:class="{'directbot-color': isDirectbot, '__txt-green': !isDirectbot}") Отмена
 
   chat-menu-status( v-if='getShowStatusMenu')
   chat-menu-cancel( v-if='getShowCancelMenu')

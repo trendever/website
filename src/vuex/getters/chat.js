@@ -355,3 +355,11 @@ export const imgWidth = ( state ) => state.conversation.imgWidth;
 export const imgHeight = ( state ) => state.conversation.imgHeight;
 
 export const imgLoader = ( state ) => state.conversation.imgLoader;
+
+export const getChatScroll = ( { conversation } ) => {
+
+
+
+}
+
+

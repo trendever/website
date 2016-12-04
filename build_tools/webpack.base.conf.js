@@ -2,6 +2,7 @@ var path = require("path")
 var utils = require('./utils')
 var settings = require('../settings')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
+var config  = require('../config');
 
 module.exports = {
   entry: {

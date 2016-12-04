@@ -80,7 +80,19 @@ iframe.payment-window(v-if='showPayButton', id="paymentIframe" v-bind:src="payLi
       msg: {
         type: Object,
         required: true
+      },
+      lastMessage: {
+        default: false
       }
+    },
+    ready(){
+
+      this.$nextTick(()=>{
+
+        if (this.lastMessage) this.$dispatch('goToBottom')
+
+      })
+
     },
     vuex: {
       actions: {

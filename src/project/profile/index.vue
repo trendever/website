@@ -14,7 +14,9 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
   header-component(:title='getUserName', :left-btn-show='leftArrowShow')
     div.profile-right-menu(slot="content", v-if="isMobile && $route.name === 'profile'")
       i.ic-options_menu(@click.stop="setShowMenu(true)")
-
+    div.profile-days(slot="content", v-if="isMobile && false")
+      span 3
+      span.day д
       //-USER MENU
     div(slot="menu")
 
@@ -50,18 +52,28 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
       .profile
         .profile_info
 
-          //-.profile_info_count 01
-          //- .profile_info_count_t Подписчики
-
           .profile_info_img()
             img(:src="getUserPhoto")
+          .empty-img(v-if="noLikes && noProducts && isSelfPage")
+          .profile_info_about(v-if="false")
+            .profile_info_about_type Магазин
+              #[br]
+            .profile_info_about_location Красноярск
+              #[br]
+            .profile_info_about_work-time 10.00-21.00
+              #[br]
+            .profile_info_about_posts-quantity 951 постов
 
-          //-.profile_info_count 0
-          //- .profile_info_count_t Подписки
+          .profile_info_follow(v-if="false")
+            .profile_info_count_t Подписчики
+            .profile_info_count 1258
 
-        .profile_desc
+            .profile_info_count_t.following Подписки
+            .profile_info_count 53
+
+        .profile_desc.less(v-on:click="this.isMoreClass = !this.isMoreClass" v-bind:class="{ more : isMoreClass, less: !isMoreClass}")
           .profile_desc_t(v-if="getSlogan") {{getSlogan}}
-          .profile_desc_caption.less(v-if="getUserCaption", v-on:click="this.isMoreClass = !this.isMoreClass" v-bind:class="{ more : isMoreClass, less: !isMoreClass}") {{{getUserCaption | captionSpaces}}}
+          .profile_desc_caption(v-if="getUserCaption") {{{getUserCaption | captionSpaces}}}
 
         .profile_insta-link(v-if="$route.name === 'profile' && shopId !== 1 && isMobile")
           .insta-link-text ссылка на эту витрину
@@ -80,12 +92,15 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
          span #[br] потому что ты пока ничего #[br] не сохранил
         .profile_no-goods-guest(v-if="noLikes && noProducts && $route.name === 'user'") Пока здесь пусто ;( #[br] Пользователь еще не добавил #[br] тренды в свою ленту
         .profile_no-goods-banner(v-if="noLikes && noProducts && isSelfPage") Нажми Сохранить&nbsp
-         span под товаром #[br.break_1] или&nbsp
+         span под товаром #[br] или&nbsp
          | напиши&nbsp
-         span.save @savetrend&nbsp #[br(v-if="!isMobile")]
+         span.save @savetrend&nbsp
          span под постом в #[br.break_2] Instagram, #[br(v-if="!isMobile")] чтобы добавить тренд сюда в ленту
 
         button.btn.btn_primary.__orange.__xl.fast__big__btn.btn_fixed-bottom.profile-btn(@click="subscrib//e") ПОДПИСАТЬСЯ
+       template(v-if="loaded")
+         .find-bloger-btn(v-if='isSelfPage && showBloger && isSupplier', @click="buyServiceProduct") Найти блогера
+         .how-to-sell-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile && noLikes && noProducts") Как начать продавать?
 
       //- лайки
       photos-component(
@@ -109,9 +124,6 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
     .main-text {{message}}
     .button-text(v-on:click="showPopup = false")
       span OK
-  template(v-if="loaded")
-    .find-bloger-btn(v-if='isSelfPage && isMobile && showBloger && isSupplier', @click="buyServiceProduct") Найти блогера
-    .how-to-sell-btn( v-link="{name: 'info-instructions-1'}", v-if="isMobile && noLikes && noProducts") Как начать продавать?
 .help-wrapper(v-if='isFirst')
   .attention(v-if='isFirst')
     p Для корректного отображения подсказок переверните устройство в портретную ориентацию

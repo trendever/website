@@ -15,7 +15,8 @@ import {
   CONVERSATION_SEND_STATUS,
   CONVERSATION_INC_LENGTH_LIST,
   CONVERSATION_OPEN_IMG_POPUP,
-  CONVERSATION_SET_IMG_LOADER
+  CONVERSATION_SET_IMG_LOADER,
+  CONVERSATION_SET_CHAT_SCROLL
 } from '../mutation-types'
 import * as messageService from 'services/message.js'
 import * as leads from 'services/leads.js'
@@ -33,6 +34,8 @@ import { getLeadById, getGroup, getLeadByConversationId } from 'vuex/getters/lea
 import { userID } from 'vuex/getters/user.js'
 
 export const setConversation = ( { dispatch, state }, lead_id ) => {
+
+  const lead = getLeadById( state, lead_id )
 
   function chatJoin( lead_id, callBack ) {
     /**
@@ -105,7 +108,9 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
         }
 
-        dispatch( CONVERSATION_SET, conversation_id, messages, getCountForLoading )
+        let count = state.conversation.allInit[lead.chat.id] ? messages.length : getCountForLoading
+
+        dispatch( CONVERSATION_SET, conversation_id, messages, count )
 
       }
 
@@ -113,7 +118,7 @@ export const setConversation = ( { dispatch, state }, lead_id ) => {
 
   }
 
-  const lead = getLeadById( state, lead_id )
+  //const lead = getLeadById( state, lead_id )
 
   if ( lead !== null ) {
 
@@ -260,7 +265,7 @@ export const loadMessage = (() => {
         if ( hasMore[ state.conversation.id ] ) {
 
           return messageService
-            .find( id, messages.length > 0 ? messages[ 0 ].id : undefined, getCountForLoading )
+            .find( id, messages.length > 0 ? messages[ 0 ].id : undefined, getCountForLoading, true )
             .then(
               ( messages ) => {
 
@@ -587,4 +592,10 @@ export const setConversationActionData = (({dispatch}, value)=>{
 
 export const setConversationImgLoader = ({dispatch}, value) => {
   dispatch( CONVERSATION_SET_IMG_LOADER, value);
+}
+
+export const setChatScroll = ( { dispatch}, value ) => {
+
+  dispatch( CONVERSATION_SET_CHAT_SCROLL, value)
+
 }

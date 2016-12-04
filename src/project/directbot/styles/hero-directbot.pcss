@@ -1,0 +1,752 @@
+@import 'base/vars/vars.pcss';
+@import './profile-header.pcss';
+@font-face {
+	font-family: GradeFive;
+	src: url(../font/PFKidsPro-GradeFive.ttf);
+}
+.directbot{
+//Start first welcome screen on mobile and header on desktop
+	.hero {
+	  position: relative;
+	  z-index: 101;
+	  @media(--tabletandless) {
+	    height: 200%;
+	  }
+	  &__content {
+	    position: relative;
+
+	    height: 600px;
+	    max-width: none !important;
+
+	    text-align: center;
+
+	    background: url(../img/Bgr-blue.png) no-repeat;
+
+	    background-size: cover;
+
+	    @media(--tabletandless) {
+	      background: url(../img/blue_bgr.png) no-repeat;
+	      background-size: cover;
+	      height: 45.55%;
+	    }
+
+	    .profile-header {
+	      z-index: 2;
+	//auth btn on desktop (top right corner)
+	      &__auth-btn{
+	        position: absolute;
+	        top: 18px;
+	        right: 18px;
+	        width: 250px;
+	        height: 40px;
+	        border: 1px solid #fff;
+	        border-radius: 5px;
+	        background: transparent;
+	        color: $color__white;
+	        font-size: 16px;
+	        font-family: $font__family__semibold;
+	        z-index: 100;
+	        @media(--mobile) {
+	          display: none;
+	        }
+	        @media(--tabletandless) {
+	          display: none;
+	        }
+
+	      }
+	      &__auth-btn:hover{
+	        background: $color__white;
+	        border-color: $color__blue;
+	        color: $color__blue;
+	        cursor: pointer;
+	      }
+	    }
+	//auth btn on desktop (top right corner)
+
+	//logo on desktop (top left corner)
+			&__left-logo{
+				text-align: left;
+				a{
+					width: 202px;
+					height: 43px;
+					margin-top: 18px;
+					margin-left: 21px;
+				}
+				@media(--mobile) {
+					display: none;
+				}
+			}
+	//logo on desktop (top left corner)
+
+	//logo on desktop in the center of the screen
+			&__center-logo{
+				margin-top: 55px;
+			}
+	//logo on desktop in the center of the screen
+
+	//mobile logo on first welcome screen
+	    &__logo__mobile{
+	      display: none;
+	      @media(--tabletandless) {
+	        background: url(../img/directbot-logo.svg) no-repeat;
+	        display: inline-block !important;
+	        width: 445px;
+	        height: 345px;
+	        margin-top: 12.4%;
+	      }
+	    }
+	//mobile logo on first welcome screen
+
+	//description in the center of the screen both versions (mob&desk)
+	    &__description {
+	      z-index: 1;
+	      box-sizing: border-box;
+	      color: $color__white;
+	      font-size: 40px;
+	      text-align: center;
+				margin-top: 10px;
+	      @media(--mobile) {
+	        width: 100%;
+	        font-size: 54px;
+	        text-align: center;
+	        margin-top: 45px;
+	        padding: 0px 80px;
+	        position: relative;
+	        line-height: 60px;
+	      }
+	      @media(--tabletandless) {
+	        width: 100%;
+	        font-size: 46px;
+	        text-align: center;
+	        margin-top: 15px;
+					margin-bottom: 81px;
+	        padding: 0px 30px;
+	        top: 0;
+	        left: 0;
+	        font-family: $font__family__regular;
+					line-height: 55px;
+	      }
+				.bold{
+					font-family: $font__family__semibold;
+				}
+				.light{
+					font-family: $font__family__light;
+				}
+	    }
+	//description in the center of the screen both versions (mob&desk)
+
+	//set up btn in the center of welcome screen
+			&__set-up{
+				button{
+					width: 420px;
+					height: 60px;
+					color: $color__white;
+					font-family: $font__family__semibold;
+					font-size: 24px;
+					border-radius: 5px;
+					border: 2px solid $color__white;
+					background-color: transparent;
+					margin-top: 43px;
+					cursor: pointer;
+						&:hover{
+							background-color: $color__white;
+							border-color: $color__blue;
+							color: $color__blue;
+						}
+				}
+				@media(--mobile) {
+						display: block;
+					button{
+						width: 490px;
+						height: 120px;
+						font-size: 36px;
+						margin-top: 0px;
+					}
+					i.ic-rub{
+						font-size: 24px;
+						padding-top: 10px;
+						padding-left: 8px;
+						font-weight: bold !important;
+					}
+				}
+			}
+	//set up btn in the center of welcome screen
+	  }
+	}
+	//End first welcome screen on mobile and header on desktop
+
+	//Start second welcome screen on mobile and bottom part of desktop header
+	  .hero__content__2{
+			display: -webkit-flex;
+			display: -ms-flex;
+			display: flex;
+			position: absolute;
+			top: 497px;
+			width: 100%;
+			justify-content: center;
+	    @media(--tabletandless){
+				position: relative;
+				top:0;
+	      display: inline-block !important;
+	      height: 53%;
+	      text-align: center;
+	      background-image: url(../img/blue_bgr.png);
+	      background-repeat: no-repeat;
+	      background-size: cover;
+	      margin-bottom: 20px;
+	      background-position-x: -1px;
+	    }
+	//btn that put you down to the second screen
+	    a{
+				display: none;
+				@media(--mobile) {
+		      display: inline-block;
+		      width: 100%;
+		      font-size: 36px;
+		      color: #fff;
+		      margin-top: 30px;
+		      width: 100%;
+		      line-height: 40px;
+		      font-family: $font__family__light;
+				}
+	    }
+	//btn that put you down to the second screen
+	    &__title{
+				font-family: $font__family__semibold;
+				color: #fff;
+				font-size: 32px;
+				text-align: center;
+				@media(--mobile) {
+		      font-size: 46px;
+		      margin-top: 80px;
+				}
+	    }
+	    .main{
+				@media(--mobile) {
+	      	margin-top: 118px;
+				}
+	    }
+			.middle{
+				@media(--mobile) {
+					margin-top: 77px;
+				}
+			}
+	    .bot{
+				@media(--mobile) {
+	      	margin-top: 76px;
+				}
+	    }
+
+	    &__paragraph p{
+				font-family: $font__family__semibold;
+				color: #fff;
+				font-size: 18px;
+				margin-top: 5px;
+				@media(--mobile) {
+		      font-size: 36px;
+					margin-top: -3px;
+				}
+	    }
+			.top{
+				@media(--mobile) {
+					margin-top: -5px;
+				}
+			}
+			.last{
+				@media(--mobile) {
+					margin-top: 3px;
+				}
+			}
+			.wrap-box{
+				text-align: center;
+			}
+			.wrap-box:last-child{
+				display: none;
+				@media(--mobile) {
+					display: block;
+				}
+			}
+			.wrap-box:nth-child(3){
+				padding: 0px 49px;
+					@media(--mobile) {
+						padding: 0;
+					}
+			}
+	  }
+	//End second welcome screen on mobile and bottom part of desktop header
+
+	//Start landing main part
+	  .hero__content__landing{
+			text-align: center;
+			max-width: 1050px;
+			margin: 0 auto;
+				@media(--mobile) {
+			    padding: 0px 25px 0px 25px;
+					position: relative;
+			}
+
+	//styles for the header on mob
+	    .directbot-header{
+	      display: block !important;
+				position: absolute;
+				top: 11px;
+				height: 86px;
+	    }
+	    .directbot-wrap{
+	      background: #5E8BCE !important;
+	    }
+	    .head{
+	      font-size: 40px;
+	    }
+			#header{
+				position: absolute;
+			}
+	//styles for the header on mob
+
+			&__top-scheme{
+				width: 100%;
+				background-image: url(../img/top_scheme.svg);
+				background-repeat: no-repeat;
+				-webkit-background-size: 700px 1145px;
+				background-size: 700px 1145px;
+				-ms-background-position-y: 3px;
+				background-position-y: 3px;
+
+				p{
+					text-align: left;
+					padding-left: 70px;
+					font-size: 36px;
+					font-family: $font__family__semibold;
+					color: $color__blue;
+
+					&:first-child{
+						padding-top: 370px;
+						padding-bottom: 30px;
+					}
+
+					&:last-child{
+						text-align: center;
+						padding-left: 0px;
+						padding-top: 483px;
+					}
+
+					i.ic-rub{
+						padding-top: 9px;
+						font-size: 26px;
+						font-family: $font__family__semibold;
+					}
+				}
+			}
+
+	    &__title{
+				font-family: $font__family__thin;
+				color: #595959;
+				font-size: 60px;
+				margin-top: 35px;
+				@media(--mobile) {
+		      font-size: 64px;
+		      margin-top: 215px;
+				}
+	    }
+			.main{
+				margin-top: 73px;
+			}
+	    .middle{
+				margin-top: 85px;
+				padding-top: 0px !important;
+				@media(--mobile) {
+	      	margin-top: 125px;
+				}
+	    }
+	    .how-cost{
+	      margin-top: 80px;
+	      margin-bottom: 40px;
+	    }
+
+	    &__icon-1{
+				img{
+					width: 264px;
+					height: 201px;
+					@media(--mobile) {
+						width: 355px;
+						height: 265px;
+					}
+				}
+				@media(--mobile) {
+	      	margin-top: 125px;
+					margin-bottom: 5px;
+				}
+	    }
+
+			i.ic-smile:after{
+				content: url('../img/smile_sunglasses.png');
+				position: absolute;
+				top: -10px;
+				left: 288px;
+			}
+
+	    &__icon-2{
+				img{
+					width: 329px;
+					height: 197px;
+					padding-left: 34px;
+	    		margin-top: 91px;
+					@media(--mobile) {
+						width: 457px;
+						height: 320px;
+						padding-left: 0px;
+	    			margin-top: 0px;
+					}
+				}
+				@media(--mobile) {
+	      	margin-top: 96px;
+					margin-bottom: 8px;
+				}
+	    }
+
+	    &__icon-3{
+				img{
+					width: 235px;
+					height: 200px;
+					margin-top: 45px;
+					@media(--mobile) {
+						width: 350px;
+						height: 300px;
+						margin-top: 0px;
+					}
+				}
+				@media(--mobile) {
+		      margin-top: 95px;
+		      margin-bottom: 10px;
+				}
+	    }
+
+			.screen-title{
+				display: inline-block;
+				font-size: 36px;
+				font-family: $font__family__semibold;
+				color: $color__blue;
+			}
+
+	    &__screen-1{
+				margin-top: 35px;
+				img{
+					width: 465px;
+					height: 500px;
+					@media(--mobile) {
+						width: 453px;
+						height: 506px;
+					}
+				}
+				@media(--mobile) {
+	      	margin-top: 17px;
+				}
+	    }
+
+	    &__screen-2{
+				img{
+					width: 465px;
+					height: 500px;
+					@media(--mobile) {
+						width: 453px;
+						height: 500px;
+						margin-top: 3px;
+					}
+				}
+				@media(--mobile) {
+	      	margin-top: 13px;
+					margin-bottom: 30px;
+				}
+	    }
+
+			&__screen-3{
+				img{
+					width: 465px;
+					height: 500px;
+					@media(--mobile) {
+						width: 453px;
+						height: 500px;
+					}
+				}
+				@media(--mobile) {
+					margin-top: 18px;
+				}
+			}
+
+			&__screen-4{
+				img{
+					width: 465px;
+					height: 500px;
+					@media(--mobile) {
+						width: 453px;
+						height: 500px;
+						margin-top: 5px;
+					}
+				}
+				@media(--mobile) {
+					margin-bottom: 20px;
+				}
+			}
+
+			&__screen-5{
+				img{
+					@media(--mobile) {
+						width: 457px;
+						height: 760px;
+						margin-top: 3px;
+					}
+				}
+				@media(--mobile) {
+					margin-top: 82px;
+					margin-bottom: 22px;
+				}
+			}
+
+	    &__sub-title{
+				font-family: $font__family__semibold;
+				color: #595959;
+				font-size: 32px;
+				@media(--mobile) {
+		      font-size: 46px;
+			    margin-top: -5px;
+				}
+	    }
+	    .questions {
+				margin-top: -5px;
+				@media(--mobile) {
+	      	margin-top: 5px;
+				}
+	    }
+			.info{
+				@media(--mobile) {
+					margin-bottom: 7px;
+				}
+			}
+
+	    &__caption{
+				font-size: 24px;
+				line-height: 32px;
+	    	padding-top: 4px;
+				position: relative;
+					@media(--mobile) {
+			      font-size: 36px;
+			      font-family: $font__family__light;
+			      color: #595959;
+			      margin-top: 10px;
+						line-height: normal;
+	    			padding-top: 0px;
+					}
+
+				.link-info{
+					display: inline;
+					color: #595959;
+					border-bottom: 1px solid #595959;
+					cursor: pointer;
+
+					.bold{
+						font-family: $font__family__semibold;
+					}
+				}
+	    }
+			.store{
+				margin-top: 0px;
+			}
+
+			&__tip{
+				margin-top: 14px;
+				font-size: 28px;
+				font-family: $font__family__light;
+
+				&:last-child{
+					margin-top: 17px;
+				}
+			}
+
+			.wrapper{
+				display: -webkit-flex;
+				display: -ms-flex;
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				position: relative;
+				@media(--mobile) {
+					display: block;
+				}
+				&:after{
+					content: '';
+					position: absolute;
+					left: -25px;
+					right: 0;
+					top: -70px;
+					background-color: rgba(94, 139, 206, .03);
+					height: 107%;
+					width: 750px;
+					z-index: -1;
+				}
+				.info-box{
+					width: 45%;
+					@media(--mobile) {
+						width: 100%;
+					}
+				}
+				.info-box:first-child{
+					margin-right: 50px;
+					margin-top: 85px;
+					@media(--mobile) {
+						margin-right: 0px;
+						margin-top: 0px;
+					}
+				}
+			}
+
+			&__toggle{
+				&__title{
+					color: #595959;
+					font-family: $font__family__light;
+					font-size: 24px;
+					margin-top: 33px;
+					margin-bottom: 3px;
+					@media(--mobile) {
+						font-size: 36px;
+						margin-top: 79px;
+						margin-bottom: 19px;
+					}
+				}
+
+				button{
+					display: inline-block;
+					width: 122px;
+					height: 40px;
+					font-family: $font__family__light;
+					color: $color__blue;
+					background-color: transparent;
+					border: 1px solid $color__blue;
+					border-radius: 5px;
+					font-size: 16px;
+					vertical-align: super;
+						@media(--mobile) {
+							width: 330px;
+							height: 64px;
+							font-size: 28px;
+							vertical-align: baseline;
+						}
+
+					&:hover{
+						background-color: $color__blue;
+						color: $color__white;
+						cursor: pointer;
+					}
+				}
+					.yes{
+						margin-right: 10px;
+						@media(--mobile) {
+							margin-right: 30px;
+						}
+					}
+			}
+
+			.toggle-box{
+				display: -webkit-flex;
+				display: -ms-flex;
+				display: flex;
+				justify-content: space-between;
+	    	padding: 0px 20px 0px 96px;
+				@media(--mobile) {
+					display: block;
+					padding: 0;
+				}
+				.wrap-yes, .wrap-no{
+					margin-left: -77px;
+					margin-top: 16px;
+					@media(--mobile) {
+						margin-left: 0px;
+						margin-top: 0px;
+					}
+				}
+				.info-wrap{
+					margin-top: 15px;
+					margin-bottom: 10px;
+				}
+			}
+	  }
+	//End landing main part
+
+	  .enter__btn{
+	    display: none !important;
+	    @media(--tabletandless) {
+	      display: inline-block !important;
+	      position: absolute;
+	      bottom: 0;
+	      left: 0;
+	    }
+	  }
+
+	  .shopping_trends{
+	    display: none;
+	    @media(--tabletandless) {
+	      display: inline-block;
+	      font-size: 36px;
+	      color: #fff;
+	      width: 100%;
+	      height: 100px;
+	      position: absolute;
+	      bottom: 1px;
+	      left: 0;
+	      background: #5E8BCE;
+	      border: none;
+	      font-family: $font__family__light;
+				z-index: 100;
+	    }
+	  }
+
+		.info-block{
+			background-color: $color__dark-blue;
+			color: $color__white;
+			font-size: 36px;
+			font-family: $font__family__light;
+			margin-top: 65px;
+			height: 616px;
+
+			.title{
+				font-size: 46px;
+				font-family: $font__family__semibold;
+				text-align: center;
+				padding-top: 37px;
+				padding-bottom: 28px;
+			}
+
+			.list{
+				padding-left: 87px;
+
+				ol{
+					list-style-type: decimal;
+				}
+
+				li{
+					padding-bottom: 32px;
+					padding-left: 27px;
+				}
+			}
+
+			.tooltip{
+				font-size: 28px;
+				padding-left: 29px;
+				padding-bottom: 66px;
+				padding-top: 5px;
+			}
+		}
+
+		.free-connect{
+			text-align: center;
+			padding: 43px 30px 142px 30px;
+			font-size: 36px;
+			font-family: $font__family__semibold;
+			color: $color__black;
+
+			a{
+				display: inline-block;
+				color: $color__black;
+				border-bottom: 1px solid $color__black;
+			}
+		}
+}

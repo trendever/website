@@ -86,3 +86,39 @@ export function setToken(token,type){
     });
   })
 }
+
+
+export function coinsLog({ limit, offset, before, after, asc }){
+
+  return new Promise((resolve, reject)=>{
+
+    channel
+
+      .req( 'log ' , 'coins' , { limit, offset, before, after, asc } )
+
+      .then( data => {
+
+        resolve( data.response_map )
+
+      } )
+    
+  })
+}
+
+
+export function coinsBalance (){
+  
+    return new Promise((resolve, reject)=>{
+  
+      channel
+  
+        .req( 'balance ' , 'coins' )
+  
+        .then( data => {
+  
+          resolve( data.response_map )
+  
+        } )
+      
+    })
+}

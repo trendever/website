@@ -19,7 +19,7 @@
 
 <template lang="jade">
 .hero__content__input-wrap.lg-popup
-  input(type="text" placeholder="{{ placeholderLink }}" v-model="phoneNumber").lg-input
+  input(type="text" placeholder="{{ placeholderLink }}" v-model="phoneNumber" v-on:keyup.enter="getLink").lg-input
   button.hero__content__get-link.lg-btn(@click="getLink()" v-bind:disabled="disableButton") {{getLinkTitle}}
 </template>
 

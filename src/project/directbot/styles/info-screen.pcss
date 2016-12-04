@@ -1,0 +1,64 @@
+@import 'base/vars/vars.pcss';
+@font-face {
+	font-family: GradeFive;
+	src: url(../font/PFKidsPro-GradeFive.ttf);
+}
+@font-face {
+	font-family: Parker;
+	src: url(../font/Parker.ttf);
+}
+.info-screen{
+  font-family: Parker;
+  color: $color__white;
+	background-color: $color__dark-blue;
+  text-align: center;
+	width: 600px;
+	height: 500px;
+	font-size: 36px;
+	padding: 78px 33px 87px;
+		@media(--mobile) {
+	  	font-size: 54px;
+		  padding: 0px 35px;
+		  height: 100%;
+			width: 100%;
+		}
+	i.ic-close{
+		@media(--mobile) {
+			position: absolute;
+			color: $color__white;
+			top: 30px;
+			right: 30px;
+			font-size: 34px;
+		}
+	}
+  img{
+    opacity: .5;
+    color: $color__white;
+    width: 150px;
+    height: 170px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 200px;
+    margin: 0 auto;
+  }
+  p{
+		line-height: 40px;
+			@media(--mobile) {
+		    padding-top: 226px;
+				line-height: 52px;
+			}
+  }
+	.third{
+		padding-top: 30px;
+		@media(--mobile) {
+			padding-top: 355px;
+		}
+	}
+	.second{
+		padding-top: 278px;
+	}
+	.fourth{
+		padding-top: 275px;
+	}
+}
