@@ -139,14 +139,15 @@ div
         }
       },
       onButton() {
+        window.chatAction = "approve";
         if(this.anotherName){
           if (!this.callbackOnSuccessAuth) {
-                this.$router.go({name: 'chat_list'}), 1000;
-                return;
-              } else {
-                this.executeCallbackOnSuccessAuth()
-                return;
-              }
+            this.$router.go({name: 'chat_list'}), 1000;
+            return;
+          } else {
+            this.executeCallbackOnSuccessAuth()
+            return;
+          }
         }
         if (this.isDisabled) {
           return;

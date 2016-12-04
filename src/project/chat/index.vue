@@ -305,6 +305,7 @@
           }).then(flagMessage=>{
             if(!flagMessage && this.getCurrentMember.role === 1){
               this.setConversationAction('approve');
+              this.$root.$emit('chatEvent','approveButtonHasCome');
             }
 
           }).then(
@@ -320,7 +321,6 @@
                     } );
             },
             ( error ) => {
-              console.error( `[ CONVERSATION_SET ERROR ]: `, error );
               this.$router.go( { name: 'home' } );
             }
           ).then(()=>{
