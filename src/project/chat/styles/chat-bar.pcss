@@ -6,7 +6,7 @@
 }
 
 iframe.payment-window{
-  position: absolute;
+  position: fixed;
   width: 100%;
   background: white;
   height: 100%;
@@ -117,13 +117,12 @@ iframe.payment-window{
 .chat-bar {
   position: fixed * 0 0 0;
   display: table;
-  min-height: 50px;
+  max-width: 1050px;
+  width: 100%;
+  margin: 0 auto;
   background: $color__white;
   vertical-align: middle;
 
-  @media(--mobile) {
-    min-height: 90px;
-  }
 
   &_menu-btn {
     display: table-cell;
