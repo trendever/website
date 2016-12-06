@@ -210,7 +210,7 @@ scroll-component
         let savephone = this.phone.replace(/\D/g,'');
         this.saveAuthData({
           username: this.login,
-          phone: savephone,
+          phone: "+"+savephone,
           instagram: this.instagram,
         })
       },
