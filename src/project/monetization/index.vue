@@ -23,6 +23,8 @@
 
 <script>
 import { getUseDays } from 'vuex/getters/user';
+import { createLead } from 'vuex/actions/lead';
+import settings from 'settings';
 
 export default {
   data(){
@@ -34,6 +36,9 @@ export default {
   vuex: {
     getters: {
       getUseDays
+    },
+    actions: {
+      createLead
     }
   },
   methods:{
@@ -62,7 +67,15 @@ export default {
 
       }
 
-      this.$router.go({name: 'pay-on'});
+      this
+        .createLead( settings.monetizationHelpID )
+        .then(
+          ( lead ) => {
+            if ( lead !== undefined && lead !== null ) {
+              this.$router.go( { name: 'chat', params: { id: lead.id } } )
+            }
+          }
+        )
 
     }
   }
