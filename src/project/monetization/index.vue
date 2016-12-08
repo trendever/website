@@ -67,7 +67,7 @@ export default {
 
       }
 
-      this
+/*      this
         .createLead( settings.monetizationHelpID )
         .then(
           ( lead ) => {
@@ -75,7 +75,7 @@ export default {
               this.$router.go( { name: 'chat', params: { id: lead.id } } )
             }
           }
-        )
+        )*/
 
     }
   }
