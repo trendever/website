@@ -117,9 +117,8 @@ scroll-component
         if ( obj !== null ) {
 
           var selection = window.getSelection(),
-              before    = 'Интересен товар? Укажи комментарий @wantit 🙌 <br><br>',
-              after     = '<br><br>Если интересует товар, укажи @wantit в комментариях  ✒️' + obj.supplier.instagram_username + ', ' + obj.code,
-              copytext  = before + obj.instagram_image_caption + after,
+              after     = '<br><br>✒️' + obj.supplier.instagram_username + ', ' + obj.code,
+              copytext  = obj.instagram_image_caption + after,
               newdiv    = document.createElement( 'div' );
 
           //hide the newly created container

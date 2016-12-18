@@ -237,19 +237,7 @@ chat-menu(v-if="isMobile")
 
         const promise = this.createMessage( this.getId, txtMsg, 'text/plain' )
         promise.then( () => {
-          if (
-            this.getStatus === leads.STATUSES.NEW.key &&
-            this.getCurrentMember.role === leads.USER_ROLES.CUSTOMER.key
-          ) {
-            this.setStatus( 'PROGRESS', 'lead.state.changed' )
-          }
-
           this.setConversationAction("base");
-
-          let id = this.$route.params.id;
-
-          
-
         } )
 
         promise.catch( ( { code, errData } ) => {
