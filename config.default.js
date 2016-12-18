@@ -27,6 +27,8 @@ var config = {
   /**
    * Other
    */
+  monetization_help_id: 32069,
+
   directbot_active: true,
 
   activate_monetization: false,
