@@ -117,7 +117,7 @@ scroll-component
         if ( obj !== null ) {
 
           var selection = window.getSelection(),
-              after     = '<br><br>✒️' + obj.supplier.instagram_username + ', ' + obj.code,
+              after     = '<br><br>✒️' + obj.supplier.instagram_username,// + ', ' + obj.code,
               copytext  = obj.instagram_image_caption + after,
               newdiv    = document.createElement( 'div' );
 
