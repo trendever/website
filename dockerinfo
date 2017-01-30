@@ -1,0 +1,5 @@
+1. ставим докер
+2. билдим имадж: docker build -t trendever .
+2. запускаем: docker run -d -p 4000:4000 -v $PWD:/usr/src/app trendever
+3. запускаем сервер в контейнере: docker exec -it ~container_name~ /usr/bin/start
+
