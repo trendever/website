@@ -302,7 +302,7 @@
               .find(this.getId, null, 70, false)
               .then((data)=>{
                 return data.find(message=>{
-                  return message.user.user_id === this.getCustomerId()
+                  return message.user.user_id === this.getCustomerId
                 })
               });
 
