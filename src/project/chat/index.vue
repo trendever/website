@@ -39,7 +39,7 @@
   scroll-top(:to-up="false")
 </template>
 
-<script type='text/babel'>
+<script>
   import settings from 'settings';
   import appLoader from 'base/loader/loader';
   import listen from 'event-listener';
@@ -300,8 +300,9 @@
             return messages
               .find(this.getId, null, 70, false)
               .then((data)=>{
+                console.log("CHECK STARTS HJERE ")
                 return data.find(message=>{
-                  return message.parts[0].content === 'Привет;) да, подтверждаю!'
+                  return message.user.user_id === this.getCurrentMember.user_id
                 })
               });
 
