@@ -29,7 +29,7 @@ var config = {
    */
   monetization_help_id: 32069,
 
-  directbot_active: true,
+  directbot_active: false,
 
   activate_monetization: false,
 

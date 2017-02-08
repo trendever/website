@@ -39,7 +39,7 @@
   scroll-top(:to-up="false")
 </template>
 
-<script type='text/babel'>
+<script>
   import settings from 'settings';
   import appLoader from 'base/loader/loader';
   import listen from 'event-listener';
@@ -63,6 +63,7 @@
     getCurrentMember,
     getLengthList,
     getShowMenu,
+    getCustomerId,
     getShowStatusMenu,
     imgPopUpUrl,
     imgWidth,
@@ -301,7 +302,7 @@
               .find(this.getId, null, 70, false)
               .then((data)=>{
                 return data.find(message=>{
-                  return message.parts[0].content === 'Привет;) да, подтверждаю!'
+                  return message.user.user_id === this.getCustomerId()
                 })
               });
 
