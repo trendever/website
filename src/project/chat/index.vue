@@ -63,7 +63,6 @@
     getCurrentMember,
     getLengthList,
     getShowMenu,
-    getCustomerId,
     getShowStatusMenu,
     imgPopUpUrl,
     imgWidth,
@@ -301,8 +300,9 @@
             return messages
               .find(this.getId, null, 70, false)
               .then((data)=>{
+                console.log("CHECK STARTS HJERE ")
                 return data.find(message=>{
-                  return message.user.user_id === this.getCustomerId
+                  return message.user.user_id === this.getCurrentMember.user_id
                 })
               });
 
