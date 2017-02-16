@@ -49,7 +49,7 @@ export function createOrder({ amount, currency, lead_id, card }) {
 
     return new Promise((resolve, reject)=>{
 
-        channel.req('create', 'order', { amount, currency, lead_id, card })
+        channel.req('create', 'order', { amount, currency, lead_id, card, redirect: "trendever" })
             .then(data => {
                 resolve(data.response_map);
             })
