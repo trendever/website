@@ -47,6 +47,7 @@
       .profile-header__center
       button(v-link='{ name: "info-newshop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
       button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
+      button(v-link='{ name: "dressblogger" }').for-blogers БЛОГЕРАМ
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
         slider
