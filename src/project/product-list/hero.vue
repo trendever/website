@@ -45,8 +45,10 @@
   .section__content.hero__content(:class="{'cnt_app': isStandalone}", v-el:hero-one)
     .profile-header
       .profile-header__center
-      button(v-link='{ name: "info-newshop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
+      //-button(v-link='{ name: "info-newshop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
+      a(href="https://directbot.io", target="_blank").profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
       button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
+      a(href="/dressblogger", target="_blank").for-blogers БЛОГЕРАМ
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
         slider
