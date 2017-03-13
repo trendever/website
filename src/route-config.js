@@ -8,10 +8,6 @@ export function configRouter(router) {
       name: 'androidhack',
       component: require('base/androidhack/hack.vue')
     },
-    'dressblogger':{
-      name: 'dressblogger',
-      component: require('project/dress-blogger.vue')
-    },
     'app':{
       name: 'app',
       component: require('project/applink/index.vue')
