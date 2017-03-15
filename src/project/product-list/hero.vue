@@ -48,7 +48,7 @@
       //-button(v-link='{ name: "info-newshop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
       a(href="https://directbot.io", target="_blank").profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
       button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
-      a(href="https://www.trendever.com/dressblogger", target="_blank").for-blogers БЛОГЕРАМ
+      //-a(href="https://www.trendever.com/dressblogger", target="_blank").for-blogers БЛОГЕРАМ
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
         slider
