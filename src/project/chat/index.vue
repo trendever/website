@@ -20,7 +20,7 @@
                 v-if='msg.parts[0].mime_type === "text/plain" && hasData(msg) ',
                 :msg='msg')
               chat-msg(
-                v-if='msg.parts[0].mime_type === "text/plain" && !hasData(msg)',
+                v-if='msg.parts[0].mime_type === "text/plain" && !hasData(msg) || msg.parts[0].mime_type === "auto/answer"',
                 :msg='msg',
                 :directbot="directbot")
               chat-msg-info(
@@ -431,6 +431,16 @@
 
       hasData(msg){
         if (msg.parts[1] && msg.parts[1].mime_type === 'text/data'){
+          try {
+            //фишка с автоответами для чата спросить
+            //лучше добавить if c проверкой на этот чат
+            let content = JSON.parse(msg.parts[1].content)
+            if(content.type === "auto"){
+              return false;
+            }
+          } catch (e) {
+            console.warn('content is not a JSON')
+          }
           return true;
         }
         return false;

@@ -104,7 +104,8 @@ const addServiceMessage = (function() {
         MIME === 'image/base64' ||
         MIME === 'json/order' ||
         MIME === 'json/payment' ||
-        MIME === 'json/cancel_order'
+        MIME === 'json/cancel_order' ||
+        MIME === 'auto/answer'
       ) {
 
         if ( MIME !== 'json/status' ) {
