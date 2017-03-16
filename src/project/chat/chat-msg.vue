@@ -7,7 +7,7 @@
     i(:class='{"ic-check": isLoaded && !isRead, "ic-check-double": isRead, "ic-clock": !isLoaded}')
   .chat-msg.bubble(:class='{"chat-msg-closest":isClosest, "chat-msg-not-closest":!isClosest && !isAfterServiceMessage }')
     .chat-msg_t(
-        v-if='!isOwnMessage && !isClosest && !directbot',
+        v-if='!isOwnMessage && !isClosest && !directbot || showAutoAnswers',
         :class='{"chat-msg_t-customer-color":isCustomer}',
         v-link='{name: "user", params: {id: getUserNameLink}}'
       )
@@ -95,6 +95,9 @@
         return this.getShopName;
       },
       getUsername() {
+        if(this.showAutoAnswers){
+          return '<b>trendever(auto)</b>';
+        }
         //сервисные сообщения
         if(this.msg.user.name === 'trendever'){
           return '<b>trendever</b>';
@@ -121,6 +124,15 @@
       isClosest(){
         return this.msg.closestMessage;
       },
+      showAutoAnswers(){
+        return this.isSuperSeller && this.isAutoMessage;
+      },
+      isSuperSeller(){
+        return this.getCurrentMember.role === 4;
+      },
+      isAutoMessage(){
+        return this.msg.parts[0].mime_type === 'auto/answer';
+      },
       isOwnMessage() {
         if ( this.getCurrentMember !== null ) {
           return this.getCurrentMember.user_id === this.msg.user.user_id;
@@ -137,6 +149,9 @@
         return this.getLastMessageId >= this.msg.id
       },
       getSide() {
+        if(this.showAutoAnswers){
+          return  '__right';
+        }
         return this.isOwnMessage ? '__right' : '__left';
       },
     },
