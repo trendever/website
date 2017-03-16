@@ -125,10 +125,12 @@
         return this.msg.closestMessage;
       },
       showAutoAnswers(){
-        return this.isSuperSeller && this.isAutoMessage;
+        return this.isNotCustomer && this.isAutoMessage;
       },
-      isSuperSeller(){
-        return this.getCurrentMember.role === 4;
+      isNotCustomer(){
+        return this.getCurrentMember.role === 4 ||
+        this.getCurrentMember.role === 3 ||
+        this.getCurrentMember.role === 2;
       },
       isAutoMessage(){
         return this.msg.parts[0].mime_type === 'auto/answer';
