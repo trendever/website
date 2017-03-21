@@ -2,6 +2,8 @@
 <template lang="jade">
 .header__menu__overlay(v-show='menuOpened && isMobile', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
+brand-menu
+
 .section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
 
   .input__container(v-if="!isMobile")
@@ -46,8 +48,8 @@
     .profile-header
       .profile-header__center
       //-button(v-link='{ name: "info-newshop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
-      a(href="https://directbot.io", target="_blank").profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
-      button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
+      //-a(href="https://directbot.io", target="_blank").profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
+      //-button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
       //-a(href="https://www.trendever.com/dressblogger", target="_blank").for-blogers БЛОГЕРАМ
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
@@ -100,6 +102,7 @@ import { logOut } from 'vuex/actions/user.js'
 import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
 import RightNavComponent from 'base/right-nav/index';
+import BrandMenu from 'base/menu/brand-menu';
 import Slider from './slider.vue';
 import * as commonService from 'services/common';
 
@@ -127,7 +130,8 @@ export default {
 
   components :{
     Slider,
-    RightNavComponent
+    RightNavComponent,
+    BrandMenu
   },
 
   ready() {
