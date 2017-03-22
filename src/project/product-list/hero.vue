@@ -1,6 +1,88 @@
 <style src='./styles/hero.pcss'></style>
+<style lang="postcss">
+
+@import 'base/vars/vars.pcss';
+
+@define-mixin top__centered__block {
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%)
+}
+
+@font-face {
+  font-family: Parker;
+  src: url(./fonts/Parker.ttf);
+}
+
+#dressblogger-popup {
+  font-family: Parker;
+  position: fixed 0 0 * 0;
+  size: 100%;
+  z-index: 500;
+  color: white;
+  text-transform: uppercase;
+
+  i.ic-close {
+    position: absolute 0 0 * *;
+    font-size: 24px;
+    padding: 20px 20px;
+    color: white;
+    cursor: pointer;
+    @media (--mobile){
+      font-size: 36px;
+    }
+  }
+
+  .popup-content {
+    position: absolute;
+    background-color: #0E3333;
+
+    @media (--mobile) {
+      size: 100%;
+    }
+    @media (--overmobile){
+      @mixin top__centered__block;
+      size: 600px 500px;
+
+    }
+
+    .popup-text {
+      @mixin top__centered__block;
+      width: 100%;
+      text-align: center;
+      font-size: 36px;
+      line-height: 40px;
+      @media (--mobile){
+        font-size: 54px;
+        line-height: 52px;
+      }
+    }
+
+  }
+
+
+}
+
+</style>
 <template lang="jade">
 .header__menu__overlay(v-show='menuOpened && isMobile', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
+
+brand-menu
+
+#dressblogger-popup(
+  v-if="popupBlogger",
+  @click="popupBlogger=false")
+  .popup-content
+    i.ic-close
+    .popup-text
+      | БЛОГЕРЫ-УЧАСТНИКИ#[br]
+      | #ОДЕНЬБЛОГЕРА ПОКУПАЮТ В#[br]
+      | INSTAGRAM-МАГАЗИНАХ С#[br]
+      | ПОМОЩЬЮ МАРКЕТПЛЕЙСА#[br] TRENDEVER
+      | - КАТАЛОГЕ ЛУЧШИХ#[br] ТОВАРОВ ИЗ
+      | INSTAGRAM С УДОБНЫМ#[br] ПОИСКОМ
+      | И КАТЕГОРИЯМИ
 
 .section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
 
@@ -46,8 +128,8 @@
     .profile-header
       .profile-header__center
       //-button(v-link='{ name: "info-newshop" }').profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
-      a(href="https://directbot.io", target="_blank").profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
-      button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
+      //-a(href="https://directbot.io", target="_blank").profile-header__sellers-btn МАГАЗИНАМ И БРЕНДАМ
+      //-button(v-link='{ name: "signup" }').profile-header__auth-btn.btn-smaller ВХОД
       //-a(href="https://www.trendever.com/dressblogger", target="_blank").for-blogers БЛОГЕРАМ
       .profile-header__mobile-slider
        .profile-header__mobile-slider-slide
@@ -100,6 +182,7 @@ import { logOut } from 'vuex/actions/user.js'
 import { getComeBack } from 'vuex/getters/products.js'
 import * as leads from 'services/leads'
 import RightNavComponent from 'base/right-nav/index';
+import BrandMenu from 'base/menu/brand-menu';
 import Slider from './slider.vue';
 import * as commonService from 'services/common';
 
@@ -121,16 +204,22 @@ export default {
       smsSent: false,
       phoneError: false,
       isClose: false,
-      showBanner: showBanner
+      showBanner: showBanner,
+      popupBlogger: false
     }
   },
 
   components :{
     Slider,
-    RightNavComponent
+    RightNavComponent,
+    BrandMenu
   },
 
   ready() {
+    let query=this.$route.query;
+    if(query && query.popup==="dressblogger"){
+      this.popupBlogger = true
+    }
 
     this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
