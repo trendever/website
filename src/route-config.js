@@ -16,7 +16,10 @@ export function configRouter(router) {
       name: 'home',
       component: require('project/product-list/index.vue')
     },
-
+    'dressblogger':{
+       name: 'dressblogger',
+       component: require('project/dressblogger.vue')
+     },
     '/product/:id': {
       name: 'product_detail',
       component: require('project/product-detail/index.vue')
