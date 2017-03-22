@@ -48,7 +48,7 @@ export default {
   .menu-section {
 
     z-index: 300;
-    position: fixed 30px 30px * *;
+    position: absolute 30px 30px * *;
 
     i.ic-menu_bullets {
       padding:40px 25px;
