@@ -1,8 +1,88 @@
 <style src='./styles/hero.pcss'></style>
+<style lang="postcss">
+
+@import 'base/vars/vars.pcss';
+
+@define-mixin top__centered__block {
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%)
+}
+
+@font-face {
+  font-family: Parker;
+  src: url(./fonts/Parker.ttf);
+}
+
+#dressblogger-popup {
+  font-family: Parker;
+  position: fixed 0 0 * 0;
+  size: 100%;
+  z-index: 500;
+  color: white;
+  text-transform: uppercase;
+
+  i.ic-close {
+    position: absolute 0 0 * *;
+    font-size: 24px;
+    padding: 20px 20px;
+    color: white;
+    cursor: pointer;
+    @media (--mobile){
+      font-size: 36px;
+    }
+  }
+
+  .popup-content {
+    position: absolute;
+    background-color: #0E3333;
+
+    @media (--mobile) {
+      size: 100%;
+    }
+    @media (--overmobile){
+      @mixin top__centered__block;
+      size: 600px 500px;
+
+    }
+
+    .popup-text {
+      @mixin top__centered__block;
+      width: 100%;
+      text-align: center;
+      font-size: 36px;
+      line-height: 40px;
+      @media (--mobile){
+        font-size: 54px;
+        line-height: 52px;
+      }
+    }
+
+  }
+
+
+}
+
+</style>
 <template lang="jade">
 .header__menu__overlay(v-show='menuOpened && isMobile', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
 brand-menu
+
+#dressblogger-popup(
+  v-if="popupBlogger",
+  @click="popupBlogger=false")
+  .popup-content
+    i.ic-close
+    .popup-text
+      | БЛОГЕРЫ-УЧАСТНИКИ#[br]
+      | #ОДЕНЬБЛОГЕРА ПОКУПАЮТ В#[br]
+      | INSTAGRAM-МАГАЗИНАХ С#[br]
+      | ПОМОЩЬЮ МАРКЕТПЛЕЙСА TRENDEVER#[br]
+      | - КАТАЛОГЕ ЛУЧШИХ ТОВАРОВ ИЗ#[br]
+      | INSTAGRAM С УДОБНЫМ ПОИСКОМ#[br]
+      | И КАТЕГОРИЯМИ
 
 .section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
 
@@ -124,7 +204,8 @@ export default {
       smsSent: false,
       phoneError: false,
       isClose: false,
-      showBanner: showBanner
+      showBanner: showBanner,
+      popupBlogger: false
     }
   },
 
@@ -135,6 +216,10 @@ export default {
   },
 
   ready() {
+    let query=this.$route.query;
+    if(query && query.popup==="dressblogger"){
+      this.popupBlogger = true
+    }
 
     this.scrollCnt = document.querySelector( '.scroll-cnt' );
 
