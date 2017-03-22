@@ -79,9 +79,9 @@ brand-menu
       | БЛОГЕРЫ-УЧАСТНИКИ#[br]
       | #ОДЕНЬБЛОГЕРА ПОКУПАЮТ В#[br]
       | INSTAGRAM-МАГАЗИНАХ С#[br]
-      | ПОМОЩЬЮ МАРКЕТПЛЕЙСА TRENDEVER#[br]
-      | - КАТАЛОГЕ ЛУЧШИХ ТОВАРОВ ИЗ#[br]
-      | INSTAGRAM С УДОБНЫМ ПОИСКОМ#[br]
+      | ПОМОЩЬЮ МАРКЕТПЛЕЙСА#[br] TRENDEVER
+      | - КАТАЛОГЕ ЛУЧШИХ#[br] ТОВАРОВ ИЗ
+      | INSTAGRAM С УДОБНЫМ#[br] ПОИСКОМ
       | И КАТЕГОРИЯМИ
 
 .section.smallHero(v-if='isAuth', :class="{ 'header-glued': !isMobile }")
