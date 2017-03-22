@@ -150,7 +150,7 @@ scroll-component(v-if="isDone", class="profile-cnt", v-on:click="outerCloseMenu"
 
 }
 </style>
-<script type='text/babel'>
+<script>
   import settings from 'settings';
   import clipboard from 'clipboard';
   import * as productsService from 'services/products';
