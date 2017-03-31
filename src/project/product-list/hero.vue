@@ -68,7 +68,7 @@
 <template lang="jade">
 .header__menu__overlay(v-show='menuOpened && isMobile', @click='menuOpened=false', :class="{'color-green': !isAuth, 'color-black': isAuth}")
 
-brand-menu
+brand-menu(v-if="!isAuth")
 
 #dressblogger-popup(
   v-if="popupBlogger",
