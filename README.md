@@ -58,12 +58,21 @@
 
   + postcss-color-function
   + postcss-colormin
-  + postcss-cssnext
+  + postcss-cssnext gy
   + postcss-short-size
   + postcss-short-font-size
   + postcss-simple-vars
   + postcss-custom-media
   + postcss-import
   + postcss-nested
-
+<script>
+    new Vue(
+        {
+            el: '#app_basic',
+            data: {
+                message: '🐵 Hello World 🔮',
+                timestamp: `Timestamp ${new Date().toLocaleString()}`,
+            }
+        });
+</script>
 
